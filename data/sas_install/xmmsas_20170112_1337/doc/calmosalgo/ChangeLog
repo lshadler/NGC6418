@@ -1,0 +1,120 @@
+ChangeLog for calmosalgo
+=========================
+
+Open SPRs:
+    None
+
+Version 3.2.2 - 2013-04-18 (rds)
+-----------
+
+	+ (src/simple.f)		- Initialise all arrays to avoid
+					  strange problem occurring at 75 eV
+					     (SPR-7105)
+
+Version 3.2.1 - 2012-03-XX (rds)
+-----------
+
+	+ (src/voigt.f)			- Remove unused format statement
+
+Version 3.2 - 2012-02-02 (rds)
+-----------
+
+	+ (src/voigt.f)			- Force the first input
+					  parameter to the VOIGT function to 
+					  be +ve. Otherwise the routine hangs
+						(SPR-6687)
+
+Version 3.1 - 2010-09-15 (rds)
+-----------
+
+	(src/rmfrow.f, rmfcommon.f, CalMosAlgoRmf.h) - Addition of a new 
+						       parameter to the 
+						       MOS response calculation.
+
+Version 3.0 - 2010-09-01 (rds)
+-----------
+
+	Introduction of a new algorithm for the production of
+	MOS response matrices.
+
+        + (src/rmfrow.f, rmfcommon.f, CalMosAlgoRmf.h
+	   src/simple.f, simple_noloss.f, voigt.f)  
+
+	SCR-309
+
+Version 2.7.2 - 2002-12-04 (rds)
+-----------
+        + (src/rmfrow.f)  Bought in line with current LUX code
+
+Version 2.7.1 - 2002-02-28 (rds)
+-----------
+        + (src/rmfrow.f)  Fixed problem with double pixel RMF
+
+Version 2.7 - 2002-01-15 (rds, UL)
+-----------
+        + (src/rmfcommon.f, rmfrow.f) (SCR-72, pattern fractions)
+        + (src/rmf/d_lookup.f) SSE update
+
+Version 2.6 - 2001-04-30 (rds)
+-----------
+        + (src/rmf/rmfcommon.f, rmfrow.f, CalMosAlgoRmf.h) Added extra
+          parameters and code for SSE update (SPR-2007)
+
+Version 2.5 - 2001-03-16 (UL)
+-----------
+	+ moved contents of src/energy (energy combination code) to package
+	  emsaplib to resolve cyclic dependency problem cal-calmosalgo-cal
+	+ removed cal from DEPEND and combilibs/Makefile
+	
+Version 2.4 - 2001-03-13 (UL)
+-----------
+	+ integrated Steve Sembay's redistribution code (in src/rmf)
+	+ moved former contents of src (energy combination code) to
+	  src/energy
+
+Version 2.3 - 2001-02-21 (UL)
+-----------
+	+ brought in line with cal-3.99
+
+Version 2.2 - 2000-09-25 (UL)
+-----------
+	+ brought in line with cal-3.81
+
+Version 2.1 - 2000-05-22 (UL)
+-----------
+	+ brought in line with cal-3.71
+	
+Version 2.0 - 2000-04-14 (JB)
+-----------
+	+ changed type of energye2, e3, e4 arguments to int16.
+
+Version 1.3 - 2000-01-05 (JB)
+-----------
+	+ Fixed SPR 1401 (Package failing to build with static link).
+
+
+Version 1.2 - 1999-12-23 (ML)
+-----------
+	+ Modify EnergyCombinator.cc and EnergyCombinator.h so that
+          the algorithm to be in a single method AlgoCombine() which
+	  is called by the methods combine(), these lasts making the 
+	  interface with the optional arguments.
+
+Version 1.1 - 1999-12-23 (UL)
+-----------
+	+ changed type of 'flag' argument to PHAbuild methods to int32
+
+Version 1.0 - 1999-12-16 (UL)
+-----------
+	+ overhaul of C++/F90 I/F / interfaced to cal-3.36
+	+ added combilib feature (libcalmosalgo contains F90/C++)
+	+ added minimalistic test harness to test F90 I/F
+
+Version 0.2 - 1999-12-01 (UL)
+-----------
+	+ made it dependent on saslib
+
+Version 0.1 - 1999-11-19 (UL)
+-----------
+	+ directory structure created with pkgmaker
+	+ skeleton framework for development of EMOS energy merging algorithm

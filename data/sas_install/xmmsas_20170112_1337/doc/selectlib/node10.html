@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Character string constants, operators and functions</TITLE>
+<META NAME="description" CONTENT="Character string constants, operators and functions">
+<META NAME="keywords" CONTENT="selectlib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="selectlib.css">
+
+<LINK REL="next" HREF="node11.html">
+<LINK REL="previous" HREF="node9.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+selectlib (selectlib-4.74.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Vector operators and functions"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Null value function"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node30.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="selectlib.html">Home Page</A> / <A  HREF="node2.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00025000000000000000"></A><A NAME="selectlib:user:strings"></A>
+<BR>
+Character string constants, operators and functions
+</H2>
+Boolean subexpressions may also be formed from character string constants,
+identifiers that refer to text columns, and a limited set of
+associated operators and functions. As in C/C++ a string constant is a
+list of characters enclosed in double quotes (<TT>"</TT>). A double quote
+as part of the string must be preceded by a backslash. In addition, string
+constants may also be given as single-quoted text in which case they
+may contain un-escaped double quotes but no other single quote.
+Examples of valid string constants are: <TT>"XMM"</TT>, <TT>""</TT>,
+<TT>"The double quote:<SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$\backslash$"></SPAN>""</TT>,
+<TT>'A single-quoted string with a double quote (")'</TT>.
+
+<P>
+The following string operators and functions are available:
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">description</TD>
+<TD ALIGN="LEFT">symbol/name</TD>
+<TD ALIGN="LEFT"><TT>true</TT> example expression</TD>
+<TD ALIGN="LEFT">comment</TD>
+</TR>
+<TR><TD ALIGN="LEFT">equality</TD>
+<TD ALIGN="LEFT"><TT>==</TT>, <TT>!=</TT></TD>
+<TD ALIGN="LEFT"><TT>"X"=="X"</TT>, <TT>"XMM"!="XTE"</TT></TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">relational operators</TD>
+<TD ALIGN="LEFT"><TT>&lt;</TT>, <TT>&lt;=</TT>, <TT>&gt;</TT>, <TT>&gt;=</TT></TD>
+<TD ALIGN="LEFT"><TT>"a"&lt;"b"</TT>, <TT>"a"&lt;="b"</TT>,</TD>
+<TD ALIGN="LEFT">lexicographical order</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT"><TT>"b"&gt;"a"</TT>, <TT>"b"&gt;="a"</TT></TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">change case</TD>
+<TD ALIGN="LEFT"><TT>upper</TT>/<TT>lower</TT></TD>
+<TD ALIGN="LEFT"><TT>upper("Xmm")=="XMM"</TT></TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT"><TT>lower("XMM")=="xmm"</TT></TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">length</TD>
+<TD ALIGN="LEFT"><TT>strlen</TT></TD>
+<TD ALIGN="LEFT"><TT>strlen("XMM")==3</TT>,</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT"><TT>strlen("")==0</TT></TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">ASCII value</TD>
+<TD ALIGN="LEFT"><TT>ascii</TT></TD>
+<TD ALIGN="LEFT"><TT>ascii(" ")==32</TT>,</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT"><TT>ascii("Z")-ascii("A")+1==26</TT></TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">concatenation</TD>
+<TD ALIGN="LEFT"><TT>+</TT></TD>
+<TD ALIGN="LEFT"><TT>"Coca-"+"Cola"=="Coca-Cola"</TT></TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">range operator</TD>
+<TD ALIGN="LEFT"><TT>[:]</TT>, <TT>[:hi]</TT>,</TD>
+<TD ALIGN="LEFT"><TT>"XMM"[0:1]=="XM"</TT></TD>
+<TD ALIGN="LEFT">first character has index 0;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT"><TT>[lo:]</TT>, <TT>[lo:hi]</TT></TD>
+<TD ALIGN="LEFT"><TT>"FREDDY"[2:]=="EDDY"</TT></TD>
+<TD ALIGN="LEFT">omitted lower/upper bound</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">expands to 0/actual length-1</TD>
+</TR>
+</TABLE>
+</DIV>
+Please note: The name of a string column can be used everywhere
+where a string constant is syntactically correct. An error condition will
+be raised if a numeric column is used in a textual context. All of the
+above string operators and functions can be arbitrarily nested to form
+more complex expressions,
+e.g. <TT>(upper(STRCOL1)[:3]+STRCOL2)[5:]==upper(STRCOL3)</TT>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Vector operators and functions"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Null value function"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node30.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

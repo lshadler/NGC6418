@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="slconv">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="slconv.css">
+
+<LINK REL="next" HREF="node13.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="slconv.html">
+<LINK REL="next" HREF="node13.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+slconv (slconv-2.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node11.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Examples."></A>
+<A HREF="slconv.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="slconv.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="slconv:description:parameters"></A>
+<A NAME="713"></A>
+<tr valign=top bgcolor='silver'><td><b>srclisttab</b></td><td>yes</td><td><A HREF=../param/node3.html>table</A></td><td>srclist.ds:SRCLIST</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the FITS dataset+table which contains the input source list. If the colon + table name is not given, the first table in the dataset is used.
+    <br>&nbsp;</td></tr>
+
+<A NAME="720"></A>
+<tr valign=top bgcolor='silver'><td><b>racolumn</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>RA</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the column from which to read the Right Ascensions of the sources.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="727"></A>
+<tr valign=top bgcolor='silver'><td><b>deccolumn</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>DEC</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the column from which to read the Declinations of the sources.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="734"></A>
+<tr valign=top bgcolor='silver'><td><b>radecunits</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>decimaldeg</td><td>decimaldeg|hdms|radians</td></tr>
+
+<tr valign=top><td colspan=5>
+    The unit to employ when reading <TT>racolumn</TT> and <TT>deccolumn</TT>. NOTE that hdms (ie hh:mm:ss etc) is not yet supported.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="745"></A>
+<tr valign=top bgcolor='silver'><td><b>expression</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>`'</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Source selection expression, possibly involving column names, keyword values or constants. See <A NAME="753"></A><A NAME="tex2html10"
+  HREF="../selectlib/index.html"><SPAN  CLASS="textbf">selectlib</SPAN></A>
+for the grammar. Only those sources for which the expression evaluates to TRUE are plotted. The default (an empty string) is TRUE for all sources.
+    <br>&nbsp;</td></tr>
+
+<A NAME="757"></A>
+<tr valign=top bgcolor='silver'><td><b>withncut</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Switch which specifies whether the source list (after filtering with <TT>expression</TT>) should be truncated at some maximum number, specified by parameter <TT>ncut</TT>.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="768"></A>
+<tr valign=top bgcolor='silver'><td><b>ncutsortexpression</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>RATE</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If a truncation of the size of the source list is desired (ie if <TT>withncut</TT>=yes), the list must first be sorted according to some criterion. The task evaluates <TT>ncutsortexpression</TT> and sorts the sources in decreasing order of the result. The parameter <TT>ncut</TT> is then read and only the first <TT>ncut</TT> sources (in their sorted order) are plotted.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="783"></A>
+<tr valign=top bgcolor='silver'><td><b>ncut</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>30</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$0\le$"></SPAN><TT>ncut</TT></td></tr>
+
+<tr valign=top><td colspan=5>
+    Maximum number of sources to plot. This parameter has no effect when <TT>withncut</TT>=no.
+    <br>&nbsp;</td></tr>
+
+<A NAME="794"></A>
+<tr valign=top bgcolor='silver'><td><b>radiusexpression</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>RATE</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter specifies an arithmetical expression, possibly involving column names, keyword values or constants. The result is used to scale the radii of the plotted circles.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="801"></A>
+<tr valign=top bgcolor='silver'><td><b>radiusstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>raw</td><td>auto|raw</td></tr>
+
+<tr valign=top><td colspan=5>
+    The radii of the source circles are taken from the result of the expression supplied to parameter <TT>radiusexpression</TT>; but this result can either be used directly (<TT>radiusstyle</TT>=`raw', the default) or the value may be processed in an `intelligent' manner by the task (<TT>radiusstyle</TT>=`auto'). The `auto' routine attempts to choose the extrema and distribution of the circle radii so as to give a visually pleasing result.
+    <br>&nbsp;</td></tr>
+
+<A NAME="814"></A>
+<tr valign=top bgcolor='silver'><td><b>withlabels</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Switch which specifies whether labels should be added to the output.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="821"></A>
+<tr valign=top bgcolor='silver'><td><b>labelstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>expr</td><td>sortedint|expr</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read by the task if <TT>withlabels</TT>=`yes' and controls how source labels are assigned. See the description of this parameter in subsection <A HREF="node9.html#slconv:description:labels">3.6</A> but, briefly: if <TT>labelstyle</TT>=`expr', the task uses the values generated by evaluation of the column expression supplied to <TT>labelexpression</TT> directly as label text; for <TT>labelstyle</TT>=`sortedint', the labels are constrained to be a sequence of positive integers, assigned according to the setting of the parameter <TT>labelsortstyle</TT>.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="839"></A>
+<tr valign=top bgcolor='silver'><td><b>labelsortstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>expr</td><td>radius|expr|rownumber</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter controls how integer-sequence source labels are assigned - that is, it is read by the task only if <TT>labelstyle</TT>=`sortedint'. See the description of this parameter in subsection <A HREF="node9.html#slconv:description:labels">3.6</A> but, briefly: if <TT>labelsortstyle</TT> = `expr', the task evaluates <TT>sortexpression</TT> and assigns the (integer-valued) labels in decreasing order of the result; if <TT>labelsortstyle</TT> = `radius', the integers increase with decreasing source circle radius; whereas if <TT>labelsortstyle</TT> = `rownumber', the sequence of integers merely reflects the row number of the source entry in the (filtered, not original) source list.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="857"></A>
+<tr valign=top bgcolor='silver'><td><b>sortexpression</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>ML_ID_SRC</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is active only if <TT>labelstyle</TT> = `sortedint' and <TT>labelsortstyle</TT> = `expr'. In this case the task evaluates <TT>sortexpression</TT> and assigns the (integer-valued) labels in decreasing order of the result.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="870"></A>
+<tr valign=top bgcolor='silver'><td><b>labelexpression</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>ML_ID_SRC</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is active if <TT>labelstyle</TT> = `expr'. Eventually the task will be able to accept in this parameter an expression involving several numeric-valued columns, evaluate the expression, and set source labels from the result; however at present it cannot do this: you can only supply names of single columns from the source list. String-valued columns are also allowed in this case.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="879"></A>
+<tr valign=top bgcolor='silver'><td><b>colour</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>green</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Colour of the plotted circle + label. Available colours are black|white|red|green|blue|cyan|purple|yellow.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="886"></A>
+<tr valign=top bgcolor='silver'><td><b>shape</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>circle</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Shape of the plotted region. Available shapes are circle|box|diamond|ellipse|boxcircle.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="893"></A>
+<tr valign=top bgcolor='silver'><td><b>outputstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>ds9</td><td>ds9|gaia</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter controls the output format. At present only ds9 or gaia formats are available. Note that this parameter is not case-sensitive.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="900"></A>
+<tr valign=top bgcolor='silver'><td><b>extragaiacolumns</b></td><td>no</td><td><A HREF=../param/node3.html>string list</A></td><td>RADEC_ERR RATE</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This contains a list of extra column names to be copied to the gaia output file. It is of course only read if <TT>outputstyle</TT>=`gaia'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="909"></A>
+<tr valign=top bgcolor='silver'><td><b>outfilestyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>prefix</td><td>prefix|whole</td></tr>
+
+<tr valign=top><td colspan=5>
+    The user has the facility to supply just a file prefix (<TT>outfilestyle</TT>=`prefix'), in which case the post-period suffix is set to `reg' for ds9 files and `gaia' for gaia files, or to supply the full file name (<TT>outfilestyle</TT>=`whole').
+  <br>&nbsp;</td></tr>
+
+  <A NAME="920"></A>
+<tr valign=top bgcolor='silver'><td><b>outfileprefix</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>region</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Prefix of the output file name. This is followed by a period and the suffix `reg' or `gaia' for <TT>outputstyle</TT>=`ds9' or `gaia' respectively. This parameter is read if <TT>outfilestyle</TT>=`prefix'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="931"></A>
+<tr valign=top bgcolor='silver'><td><b>outfile</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>region.txt</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The complete output file name. This parameter is read if <TT>outfilestyle</TT>=`whole'.
+  <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node11.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Examples."></A>
+<A HREF="slconv.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

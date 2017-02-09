@@ -1,0 +1,290 @@
+ChangeLog for region
+===============================
+
+Open SPRs:
+----------
+Nil
+
+Version 7.13 - 2014-06-04 (AI)
+----------------------
+
+	+ (test/region_batch_test, test/region_pps_test) 
+	foreach syntax corrected.
+	
+Version 7.12.1 - 2010-12-03 (MAS/LUX)
+----------------------
+- Fixed SPR-6637 (bug appearing in a certain condition with operationstyle=global), with the corresponding additions to the test harness in test/region_test .
+	
+Version 7.12 - 2010-10-03 (MAS/LUX)
+----------------------
+- Clean up the test data in test/*/* when make clobber.
+	
+Version 7.11 - 2010-10-03 (MAS/LUX)
+----------------------
+- Fixed SPR-6620, 6621 (re operationstyle=batch).
+- Added region_pps_test and region_batch_test in the test harness.
+- DEPENDency upgraded to ssclib-4.21, testprods-1.21, fitsutils-1.4 .
+	
+Version 7.10 - 2010-06-28 (MAS/LUX)
+----------------------
+- Split some major parts (type definitions, subroutines, functions) of the main source file to newly created {\tt region_aux.f90} and make Library {\tt regionaux} .
+- Made it a bit more robust.
+- In order to avoid the test harness getting into an infinite loop in some environments (only LUX, apparently), added a slight numerical margin in the subroutine setOverlapFractions() in {\tt region_aux.f90}.
+- Added a test-harness source code {\tt testregionaux01.f90} to test the library {\tt regionaux} .
+	
+Version 7.9.4 - 2009-05-13 (EO)
+-------------
+	+ ssclib up to 4.8 in DEPEND file.
+
+Version 7.9.3 - 2008-06-26 (MAS/LUX)
+----------------------
+- Fixed the failing test-harness region_test, due to the change of the environment, which now uses SSCLib (so DEPEND ssclib-3.31).
+	
+Version 7.9.1 - 2007-09-21 (MAS/LUX)
+----------------------
+- Fixed SPR 3698 (abort sometimes when no source is selected) with update of test-harness.
+- Updated the History in the document (from Ver.7.1.4).
+
+Version 7.9 - 2005-11-17 (IMS/LUX)
+----------------------
+- Swapped order of CAL_setState(accuracyLevel=ACCURACY_MEDIUM)and call to CAL_psfValidityRanges(). Fixes SPR 3542/3544.
+- Warning messages in subroutine getEncircEnergyRadii a bit expanded.
+- Parameter --withboresightfudge (default 'yes') added to region (until sign of boresight psi is corrected).
+
+Version 7.8 - 2005-10-25 (IMS/LUX)
+----------------------
+- Some code rearrangement
+- Mode --bkgratestyle='image' is now supported.
+
+Version 7.7 - 2005-06-09 (IMS/LUX)
+----------------------
+- Added new parameter --tempset (fixes SPR 3471).
+- SCTS, BG_MAP columns are now only required if --radiusmode eq 'contour' (fixes SPR 3473)
+- ID_INST, ID_BAND columns now required only if --radiusmode ne 'userfixed'.
+
+Version 7.6 - 2005-02-21 (IMS/LUX)
+----------------------
+- Changed the noSourcesSelected error to a warning (for nicer running within a script).
+
+Version 7.5 - 2004-08-04 (IMS/LUX)
+----------------------
+- Test harness now fails if test data not found.
+
+Version 7.4 - 2004-04-19 (IMS/LUX)
+----------------------
+- Interfaces to ssclib upgraded to 3.9 standard.
+
+Version 7.3 - 2004-04-05 (IMS/LUX)
+----------------------
+- Now uses data in package testprods.
+
+Version 7.2 - 2004-03-25 (IMS/LUX)
+----------------------
+- Copy of patches to devtrack.
+
+Version 7.1.5 - 2004-02-12 (IMS SSC/LUX)
+--------------------------
+- Fixed SPR 3255.
+
+Version 7.1.4 - 2004-01-21 (IMS SSC/LUX)
+--------------------------
+- Pending resolution of SOC SPR 2500 I have, as a workaround, patched SSC SPR 3223 by including defaults for all mandatory parameters.
+- Default for --outunit changed from detxy to xy because as it was, the task would not run if the mandatories were supplied but all others left at default.
+
+Version 7.1.3 - 2004-01-13 (IMS SSC/LUX)
+--------------------------
+- Fixed SPR 3205 by left-justifying a string.
+- Fixed SPR 3206 by removing parameters --calinfostyle and --imageset and making --eventset mandatory.
+- Fixed SPR 3207 (this was a bug in ssclib).
+- Introduced some more messages.
+- Documentation update.
+- Can't reproduce SPR 3031.
+
+Version 7.1.2 - 2003-12-18 (IMS SSC/LUX)
+--------------------------
+- Fixed SPR 3183.
+
+Version 7.1.1 - 2003-12-17 (IMS SSC/LUX)
+--------------------------
+- Added 'oal' to the USEDLIBS line. Task wouldn't compile statically without it. Fixes SPR 3178.
+
+Version 7.1 - 2003-11-23 (IMS SSC/LUX)
+--------------------------
+- Removed old code.
+
+Version 7.0 - 2003-11-10 (IMS SSC/LUX)
+--------------------------
+- Temp_ssclib modules now merged into ssclib-3.0.
+- Rewritten and expanded, many new and changed parameters.
+- Some mods to test harness to cope with new parameter names.
+- As a side benefit the rewrite has fixed SPRs 3027 and 3155.
+
+Version 6.4 - 2002-07-12 (IMS SSC/LUX)
+--------------------------
+- Added sas to DEPEND.
+- Fixed bug (SPRs 2944 and 2945) in which task called tobkgfrac stuff when --radiusmode=enfrac. However I had to temporarily disable the --radiusmode=tobkgfrac stuff.
+
+Version 6.3 - 2002-05-17 (IMS SSC/LUX)
+--------------------------
+- Uses param-2.0
+- Slight doco fix.
+
+Version 6.2.2 - 08 Mar 2002 (IMS SSC/LUX)
+--------------------------
+- Updated DEPEND (including ssclib -> 2.4).
+- Think SPR 2673 went away during other modifications to region since v-5.0.
+
+Version 6.2.1 - 11 Feb 2002 (IMS SSC/LUX)
+--------------------------
+- Slight rearrangements to cope with corrections in ssclib (fixes to SPR 2744).
+- Removed unecessary dependency on sla.
+
+Version 6.2 - 24 Jan 2002 (IMS SSC/LUX)
+--------------------------
+- Changed the way SHAPE column entries in the region files are written, to eliminate spurious characters.
+- Restored the evselect calls in the test harness.
+
+Version 6.1 - 23 Jan 2002 (IMS SSC/LUX)
+--------------------------
+- Updated DEPEND and added evselect.
+- Fixed test harness (but temporarily commented out evselect calls).
+- Fixed variable decl., array bound bugs.
+
+Version 6.0 - 17 Jan 2002 (IMS SSC/LUX)
+--------------------------
+- Changed the major version number because what started as a bug fixed ended up as a complete rearrangement.
+- User now has choice between DETX/Y and X/Y systems (via param --outunit).
+- Changed parameters --regionfile and --bkgregionfile to optional and gave them defaults.
+- Choice 'tobkgfrac' added to param --radiusmode and param --bkgfraction added to handle this option.
+- Param --eventfile changed to dataset type ('e') and renamed --eventset.
+- SPRs 2385 and 2394 closed.
+
+Version 5.0 (and earlier: RGW/LUX)
+-----------
+	- updated to reflect changes in CAL interface to PSF info.
+	
+Version 4.9
+-----------
+	- fixed missing dependency in Makefile
+	
+Version 4.8
+-----------
+	- added identifying keywords to region files
+	
+Version 4.7
+-----------
+	- documentation update, config. file update (SSC-SPR-1593)
+	
+Version 4.6
+-----------
+	- updated test harness
+	- added info file
+	
+Version 4.5
+-----------
+	- documentation updates
+	
+Version 4.3
+-----------
+	- added GUI layout
+
+Version 4.2
+-----------
+	- added adjustradius parameter
+	
+Version 4.1
+-----------
+	- added DISTRIBUTION file
+	
+Version 3.6
+-----------
+	- changed parameters to specify source table using the SAS
+	    parameter convention
+	- updated to use full WCS info. from event file
+	- documentation updates
+	- now depends on evselect at v3.0
+	
+Version 3.5
+-----------
+	- fixed problem with source lists containing zero or one source
+	
+Version 3.4
+-----------
+	- increased the precision of the determination of the extraction
+	    radius in encircled energy fraction mode (now terminates
+	    when difference between obtained and requested EEF is <10^-6
+	    (SPR-LUX-1036).
+	- task now looks for SRCLIST extension in the source list, not
+	    SRCTBL (SSC-SPR-1014).
+	- fixed bug which caused source extraction regions not to be
+	    properly subtracted from the background region (SSC-SPR-1035).
+	- documentation updates (SSC-SPR-1034).
+	
+Version 3.3
+-----------
+	- documentation updates
+	
+Version 3.2
+-----------
+	- documentation updates
+	
+Version 3.1
+-----------
+	- updates to reflect changes in evselect parameters, and
+	  CAL upgrade
+	
+Version 3.0
+-----------
+	- upgrades for SAS v3: add option to calculate size of extraction
+	    region using info. from the CAL on the PSF
+	
+Version 2.5
+-----------
+	- Changed parameter names
+	- Work-around mssllib problems
+	
+Version 2.1
+-----------
+	- Updated test harness
+	
+Version 2.0
+-----------
+	- Changed to produce ASC-style FITS region files, rather than
+	     ASCII (SSC-SPR-0448)
+	- Use 'constants' module (SSC-SPR-0265)
+	- 'clobber' parameter removed (SSC-SPR-0266)
+	- Hard-coded unit numbers removed (SSC-SPR-0458)
+	- Parameter file improved (SSC-SPR-0448, SSC-SPR-0545)
+	- Source extraction regions are adjusted in size to avoid overlap
+	- New background region modes added (co-axial)
+	
+	
+Version 1.4
+-----------
+
+	- Use slalib v1.2 (SSC-SPR-0285)
+	
+Version 1.3
+-----------
+
+	- Converted parameter file to .par format (SSC-SPR-0263)
+	- Added DEPEND
+	- Removed "clobber" test
+
+Version 1.2
+-----------
+
+	- Removed obsolete binaries and symbolic links
+	   (SSC-SPR-0262, SSC-SPR-0264)
+	- Updated test harness (SSC-SPR-0270)
+	
+Version 1.1
+-----------
+
+	- Delivered to SOC
+	
+	
+Version 0.1
+-----------
+
+	- Directory structure created by pkgmaker.

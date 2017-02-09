@@ -1,0 +1,76 @@
+Cards
+  Page General
+    Frame "Input files"
+      Parameter evtfile	
+      Parameter ootfile	
+      Parameter gtifile	
+    end
+
+    Frame "Processing"
+      Parameter withemtaglenoise	
+      Parameter withbadpixupdate
+      Parameter withwindowmode
+      Parameter pimin
+      Parameter pimax
+      Parameter patmin
+      Parameter patmax
+      Parameter flag
+      Parameter flagout
+    end
+
+    Enable withfwcimages
+          Parameter fwcfile	
+    end
+
+    Enable withexposure
+          Parameter attfile	
+	  Enable withmask
+            Parameter threshold1	
+            Parameter threshold2
+          end
+    end
+
+  end
+
+
+
+
+  Page "Output image format"
+    Enable withattcalc
+          Parameter attfile	
+          Parameter nominalra
+          Parameter nominaldec
+          Parameter imagesize
+    end
+
+    Frame "evselect"
+
+		Enable withxranges
+		     Parameter ximagemin
+		     Parameter ximagemax
+		end
+		Enable withyranges
+		     Parameter yimagemin
+		     Parameter yimagemax
+		end
+
+		Choice imagebinning
+		     Page binSize
+		     	Parameter ximagebinsize
+		     	Parameter yimagebinsize
+		     end
+		     Page imageSize
+		     	Parameter ximagesize
+		     	Parameter yimagesize
+		     	Parameter squarepixels
+		     end
+		end
+
+		Enable withcelestialcenter
+		     Parameter raimagecenter
+		     Parameter decimagecenter
+		end
+    end
+  end
+end
+

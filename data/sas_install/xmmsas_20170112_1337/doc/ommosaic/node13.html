@@ -1,0 +1,331 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm- Sky Images</TITLE>
+<META NAME="description" CONTENT="Algorithm- Sky Images">
+<META NAME="keywords" CONTENT="ommosaic">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ommosaic.css">
+
+<LINK REL="next" HREF="node21.html">
+<LINK REL="previous" HREF="node12.html">
+<LINK REL="up" HREF="ommosaic.html">
+<LINK REL="next" HREF="node14.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ommosaic (ommosaic-2.8.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node12.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="ommosaic.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Coordinate conversions"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ommosaic.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00090000000000000000"></A>
+<A NAME="ommosaic:description:algorithm1"></A>
+<BR>
+Algorithm- Sky Images
+</H1>
+
+<P>
+This section describes how ommosaic works when the input images are all <SPAN  CLASS="textbf">OM</SPAN> product sky-images.
+
+<P>
+<SPAN  CLASS="textbf">STAGE 1</SPAN>- Checking of input files
+
+<P>
+<PRE>
+  Read in the list of input images from the parameter imagesets
+
+  Check that all the input files are either sky-images or unrotated images- if not stop the program with an error message.
+
+  Check that all the files have different names- if not stop the program with an error message
+</PRE>
+
+<P>
+<SPAN  CLASS="textbf">STAGE 2</SPAN>- Some initialization- Inputting of various bits of information from the input files.
+
+<P>
+<PRE>
+Loop over each input file
+
+    1) Extract the values for the following FITS keywords in the file header
+        1) FILTER   - the OM filter 
+        2) OBS_ID   - the observation identifier
+        3) RA_PNT   - RA pointing direction of OM (degees)
+        4) DEC_PNT  - Dec pointing direction of OM (degrees)
+        5) POSCOROK - True if astrometry correction applied, FALSE otherwise
+        6) RAOFFSET - Computed RA offset correction * cos(DEC_PNT) (arcsecs) - 0 if POSCOROK = FALSE
+        7) DEOFFSET - Computed Dec offset correction (arcsecs)- 0 if POSCORK  = FALSE 
+        8) CDELT1   - Plate-scale in RA direction
+        9) CDELT2   - Plate-scale in Dec direction
+       10) CRPIX1   - Reference x pixel
+       11) CRPIX2   - Reference y pixel
+       12) CRVAL1   - RA value at CRPIX1
+       13) CRVAL2   - Dec value at CRPIX2
+       14) BINAX1   - Binning factor (0 or 1)
+       15) BINBPE   - Binning on (True or False)
+       16) WINDOWDX - Image x-axis length
+       17) WINDOWDY - Image y-axis length
+       18) DATE_OBS - Start time of observation
+       19) DATE_END - End time of observation 
+       20) EXPOSURE - The exposure time (secs)
+       
+    2) Compute the following quantities
+        1) RA of bottom left-hand corner of image
+        2) Dec of bottom left-hand corner of image          
+        3) RA of bottom right-hand corner of image
+        4) Dec of top left-hand corner of image  
+        5) Modified Julian date of mid-point of exposure
+
+End loop
+</PRE>
+
+<P>
+<SPAN  CLASS="textbf">STAGE 3</SPAN>- Checking the astrometry of the images- Some images may have had an astrometry correction applied
+to their <SPAN  CLASS="textbf">CRVAL1</SPAN> and <SPAN  CLASS="textbf">CRVAL2</SPAN> values. For those that don't, a correction will be applied to <SPAN  CLASS="textbf">CRVAL1</SPAN> 
+and <SPAN  CLASS="textbf">CRVAL2</SPAN> by interpolation/extrapolation using a list of the corrections applied to the rest and a list of their mid-point exposure times.  
+
+<P>
+<PRE>
+    Create an empty list (raList) to store  computed astrometry RA  offsets
+    Create an empty list (decList) to store computed astrometry Dec offsets
+    Create an empty list (timeList) to store the computed mid-observation times 
+
+
+    Loop over each input file
+
+        If POSCOROK is true then:
+            1) Add the RA astrometry correction to raList.
+            2) Add the Dec astrometry correction to decList.
+            3) Add the mid-point exposure time to timeList.
+         End if
+       End Loop
+
+    If the size of raList is zero then terminate STAGE 3 and go on to STAGE 4 
+
+    Sort raList, decList and timeList into increasing time order
+
+
+    Loop over each input file
+        If POSCOROK is false then:
+            1) Compute an interpolated/extrapolated RA astrometry correction and replace its RAOFFSET value with it.
+            2) Compute an interpolated/extrapolated Dec astrometry correction and replace its DEOFFSET value with it.           
+        End if
+    End Loop
+</PRE>
+
+<P>
+<SPAN  CLASS="textbf">STAGE 4</SPAN>- Adding extra astrometric keywords to the image files FITS headers to say whether or not
+an interpolated/extrapolated astrometric correction has been computed.
+
+<P>
+<PRE>
+    Loop over each input file
+        If POSCOROK is TRUE then:
+            1) Add a new boolean FITS keyword POSINTRP to the FITS header and set its value to FALSE.
+            2) Add a new 32-bit float keyword RA_OFF to the FITS header and set its value to 0.      
+            3) Add a new 32-bit float keyword DEC_OFF to the FITS header and set its value to 0.      
+        else
+            1) Add a new boolean FITS keyword POSINTRP to the FITS header and set its value to TRUE.
+            2) Add a new 32-bit float keyword RA_OFF to the FITS header and set its value to the 
+               interpolated/extrapolated value.      
+            3) Add a new 32-bit float keyword DEC_OFF to the FITS header and set its value to the 
+               interpolated/extrapolated value.      
+        end if
+      
+    End Loop
+</PRE>
+
+<P>
+<SPAN  CLASS="textbf">STAGE 5</SPAN> - Alignment of images by cross-correlation <SPAN  CLASS="textbf">(This stage is optional and in the omichain will be skipped)</SPAN>
+
+<P>
+Read in the value of the input parameter <SPAN  CLASS="textbf">mincorr</SPAN>. If its absolute value is less than 0.0001 then skip
+    this stage and go on to <SPAN  CLASS="textbf">STAGE 6</SPAN>. Otherwise, please refer to <SPAN  CLASS="textbf">Section Image Alignment</SPAN>.
+
+<P>
+<SPAN  CLASS="textbf">STAGE 6</SPAN> - Creation of the output image, exposure-image and quality-image.
+
+<P>
+<PRE>
+    1)  Find the maximum left-hand corner RA coordinate (RAL) from all the images 
+        (remember that the RA increase leftwards)  
+    2)  Find the minimun right-hand corner RA coordinate (RAR) from all the images   
+    3)  Find the minumum bottom edge Dec coordinate (DECL) from all the images  
+    4)  Find the maximum top edge Dec coordinate (DECU) from all the images  
+    5)  Determine the number of pixels in the x-direction (nx) using the plate-scale
+    6)  If nx exceeds 5000 (possible if using images from different observations),
+        give a warning message and reset nx to 5000. 
+    7)  Determine the number of pixels in the y-direction (ny) using the plate-scale
+    8)  If ny exceeds 5000 (possible if using images from different observations),
+        give a warning message and reset ny to 5000. 
+    9)  Create a 2-d 32-bit float image to store the stacked PRIMARY image.
+   10)  Create a 2-d 32-bit float image to store the computed EXPOSURE image.
+   11)  Create a 2-d 16-bit integer image to store the computed QUALITY image.
+   12)  Set CRPIX1 to nx / 2 and CRPIX2 to ny / 2 (these refer to the output image)
+   13)  Set CRVAL1 to (RAL+RAR) / 2 and CRVAL2 to (DECL+DECU)/2 (these refer to the 
+        output images)
+</PRE>
+
+<P>
+<SPAN  CLASS="textbf">STAGE 7</SPAN> - Set the pixels in the output <SPAN  CLASS="textbf">PRIMARY</SPAN>, <SPAN  CLASS="textbf">EXPOSURE</SPAN> and <SPAN  CLASS="textbf">QUALITY</SPAN> images. 
+
+<P>
+<PRE>
+1) If the images are comprised of a mixture of low/high resolution images set a variable mixedImages to
+true- otherwise set it to false.  
+
+2)  Loop over input image files
+
+    Load the image from the PRIMARY block in the file.
+    If mixedImages=true and the image is a high-resolution one, then multiply each pixel of the image
+    by four (to effectively convert it into a low-resolution one for interpolation purposes).   
+  
+
+     Loop over pixels in output image
+        1) Convert the tangent-plane coordinates, x and y, of the pixel to RA and Dec. 
+        2) Convert RA and Dec to input image tangent-plane coordinates, x1 and y1, using the WCS values 
+           for the image. 
+        3) Check to see that x1, y1 lies within the image, if not move onto the next pixel.
+        4) Compute the value of the image at x1, y1 by 2-d bilinear interpolation and add this 
+           value to the output image pixel value at x, y.
+        5) Compute the value of the exposure image at x1, y1 by 2-d bilinear interpolation and add 
+           this value to the output exposure image pixel value at x, y.
+        6) Compute the value of the quality image at x1, y1 by determining which bits are set at 
+           each of the 9 neighbouring pixels and then by setting the corresponding bits of the quality-image 
+           pixels at x, y.
+ 
+     End loop
+  End loop
+
+
+3)  Divide each pixel value of the output PRIMARY image by its corresponding EXPOSURE pixel value.
+</PRE>
+
+<P>
+<SPAN  CLASS="textbf">STAGE 8</SPAN> - Creation of the mosaiced image file.
+
+<P>
+Determine the name of the output image file from the parameter <SPAN  CLASS="textbf">MOSAICEDSET</SPAN>
+    Create a <SPAN  CLASS="textbf">FITS</SPAN> file with that name.
+
+<P>
+Add various keywords to the FITS header, including the following-
+
+<OL>
+<LI><SPAN  CLASS="textbf">FILTER</SPAN>    - the OM filter (could be more than one)
+</LI>
+<LI><SPAN  CLASS="textbf">OBS_ID</SPAN>   - the observation identifier (could be more than one)
+</LI>
+<LI><SPAN  CLASS="textbf">RA_PNT</SPAN>   - Aveaged RA pointing direction of OM (degrees)
+</LI>
+<LI><SPAN  CLASS="textbf">DEC_PNT</SPAN>  - Averaged Dec pointing direction of OM (degrees)
+</LI>
+<LI><SPAN  CLASS="textbf">CDELT1</SPAN>    - Plate-scale in RA direction
+</LI>
+<LI><SPAN  CLASS="textbf">CDELT2</SPAN>    - Plate-scale in Dec direction
+</LI>
+<LI><SPAN  CLASS="textbf">CRPIX1</SPAN>    - Reference x pixel
+</LI>
+<LI><SPAN  CLASS="textbf">CRPIX2</SPAN>    - Reference y pixel
+</LI>
+<LI><SPAN  CLASS="textbf">CRVAL1</SPAN>    - RA value at <SPAN  CLASS="textbf">CRPIX1</SPAN>
+</LI>
+<LI><SPAN  CLASS="textbf">CRVAL2</SPAN>    - Dec value at <SPAN  CLASS="textbf">CRPIX2</SPAN>
+</LI>
+<LI><SPAN  CLASS="textbf">BINAX1</SPAN>    - Binning factor (0 or 1)
+</LI>
+<LI><SPAN  CLASS="textbf">BINBPE</SPAN>    - Binning on (True or False)
+</LI>
+<LI><SPAN  CLASS="textbf">WINDOWDX</SPAN>  - Image x-axis length
+</LI>
+<LI><SPAN  CLASS="textbf">WINDOWDY</SPAN>  - Image y-axis length
+</LI>
+<LI><SPAN  CLASS="textbf">DATE_OBS</SPAN> - Minimum <SPAN  CLASS="textbf">DATE_OBS</SPAN> of all the input images <SPAN  CLASS="textbf">DATE_OBS</SPAN>
+</LI>
+<LI><SPAN  CLASS="textbf">DATE_END</SPAN> - Maximum <SPAN  CLASS="textbf">DATE_END</SPAN> of all the input images <SPAN  CLASS="textbf">DATE_END</SPAN>
+</LI>
+<LI><SPAN  CLASS="textbf">POSCOROK</SPAN>  - The input images <SPAN  CLASS="textbf">CRVAL1</SPAN> and <SPAN  CLASS="textbf">CRVAL2</SPAN> coordinates were
+                           astrometrically corrected (some maybe by interpolation or extrapolation)
+</LI>
+<LI><SPAN  CLASS="textbf">RAOFFSET</SPAN>  - The mean <SPAN  CLASS="textbf">RAOFFSET</SPAN> value from all the input images.
+</LI>
+<LI><SPAN  CLASS="textbf">DEOFFSET</SPAN>  - The mean <SPAN  CLASS="textbf">DEOFFSET</SPAN> value from all the input images.
+
+<P>
+</LI>
+</OL>
+
+<P>
+<PRE>
+   
+    Add the PRIMARY image to the output file.
+    Add the EXPOSURE image to the output file.
+    Add the QUALITY image to the output file.
+</PRE>
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html197"
+  HREF="node14.html">Coordinate conversions</A>
+<LI><A NAME="tex2html198"
+  HREF="node15.html">Initialization (image alignment mode)</A>
+<UL>
+<LI><A NAME="tex2html199"
+  HREF="node16.html">Initialization example</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html200"
+  HREF="node17.html">Image alignment</A>
+<UL>
+<LI><A NAME="tex2html201"
+  HREF="node18.html">MAD test for data outliers</A>
+<LI><A NAME="tex2html202"
+  HREF="node19.html">Alignment example</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html203"
+  HREF="node20.html">Cross-correlation</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node12.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="ommosaic.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Coordinate conversions"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

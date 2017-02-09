@@ -1,0 +1,302 @@
+ChangeLog for epatplot
+===============================
+Open SPRs:
+- none
+
+Version 1.20 - 2016-09-16 (MJF)
+-------------------------------
+- (src/epatplot_mod.f90): warning if empty EVENTS extension
+
+Version 1.19 - 2013-11-14 (MJF)
+-------------------------------
+- (src/epatplot_mod.f90): plot also real-valued SRCPOSX and SRCPOSY for 
+   EPIC-pn if new parameter "withsrcxy=Y" (default "Y") and SRCPOSX and
+   SRCPOSY keywords found in event file header
+- (config/epatplot.*): as above
+- (doc/epatplot_description): as above
+
+Version 1.18 - 2013-06-07 (MJF)
+-------------------------------
+- (src/epatplot_mod.f90): plot also average DETX and DETY for EPIC-pn 
+  if new parameter "withdetxy=Y" (default "N", old behaviour)
+- (config/epatplot.*): as above
+- (doc/epatplot_description): as above
+- (test/epatplot_test): run with "withdetxy=Y"
+
+Version 1.17 - 2012-08-14 (MJF)
+-------------------------------
+- (src/epatplot_mod.f90): split "doubles" into "horizontal doubles" 
+  (PATTERN==2 and PATTERN==4) and "vertical doubles" (PATTERN==1 and
+   PATTERN==3) in addition to the sum of both double types (for PN only)
+- (src/epatplot_mod.f90): "invalid patterns" now changed into "invalid triples"
+  and "invalid quadruples" (not yet implemented, but prepared for)
+- (src/epatplot_mod.f90): write out average RAWX position for all modes
+- (src/epatplot_mod.f90): write out also LIVETIME keyword if present
+- (src/epatplot_mod.f90): write out also OBJECT keyword if present
+- (src/epatplot_mod.f90): use CCDLIMSEL in average RAWY computation
+- (src/epatplot_mod.f90): corrected typo in MOSMODE list
+- (src/epatplot_mod.f90): use empirical model for lower threshold 100 for
+  SW mode instead of CAL model (to be used for 0056_01223307010_PNU002)
+
+Version 1.16.1 - 2012-06-15 (AI)
+------------------------------
+
+	- (src/epatplot_mod.f90): "CALstat_node" variable initialization in
+	case of MOS analysis.
+	- (test/epatplot_mos_test): New MOS test harness added.
+
+	
+Version 1.16 - 2010-02-24 (HB)
+------------------------------
+
+- (doc/epatplot_description.tex): three example plots were updated; 
+	                          this closes SPR-6590
+	
+
+Version 1.15 - 2006-10-30 (HB)
+------------------------------
+
+- (src/epatplot_mod.f90): forced background colour to white	
+                          closed SSC-SPR-3632	
+	
+Version 1.14 - 2006-06-01 (HB)
+------------------------------
+
+- devtrack version (same as 1.13.7)	
+	
+Version 1.13.7 - 2006-06-01 (HB)
+--------------------------------	
+
+- (src/epatplot_mod.f90): new parameter modifyInSet: skip keyword writing 
+	                  to increase speed if set to "N" (default: "Y");
+	                  mean RAWY calculation now correctly reflects
+	                  RAWX/RAWY range set on command line
+- (doc/epatplot_description): new parameter added to description	
+- (config/epatplot.par): new parameter added	
+         	
+Version 1.13.6 - 2006-01-13 (HB)
+--------------------------------
+
+- (doc/epatplot_description.tex): images reduced in size to prevent
+              	                  problems with latex to html converison; 
+	                          SSC-SPR-3431 closed
+	
+Version 1.13.5 - 2004-07-26 (HB)
+--------------------------------
+
+- (src/epatplot_mod.f90): weights of model pattern fractions
+	                  for pile-up number calculation corrected
+- (src/epatplot_mod.f90): prevented division by zero in the case of 
+	                  inappropriat energy band for pile-up number
+	                  calculation 
+- (doc/epatplot_description.tex): new warning (no signal in observed-to-
+	                          model band) added	
+	
+Version 1.13.4 - 2004-06-30 (HB)
+--------------------------------
+
+- (src/epatplot_mod.f90): new task parameter to specify energy range 
+	                  for pile-up-number
+- (doc/epatplot_description.tex) |
+- (config/epatplot.par)          |
+- (config/epatplot.lyt)	         | new parameter added
+	
+Version 1.13.3 - 2004-03-26 (HB)
+--------------------------------
+ 
+- (src/epatplot_mod.f90): MOS channel-nr. calculation for obs-to-mod
+	                  fraction corrected
+	                  
+Version 1.13.2 - 2004-03-18 (HB)
+--------------------------------
+ 
+- (src/epatplot_mod.f90): CALstat_ccd set to 4 for PN multi-chip
+	                  eventsets to avoid missleading warning
+	
+Version 1.13.1 - 2004-03-16 (HB)
+--------------------------------
+- (config/epatplot.lyt): two missing parameters added	
+	
+Version 1.13 - 2003-12-03 (HB)
+-------------------------------
+- (src/epatplot_mod.f90): wrong average rawy value correct; task now
+	                  doesn't attempt to modify gzip'ed input files;
+	                  problems with some background sets solved
+  (doc/epatlot_description.tex): description of parameter backscal extended
+			
+Version 1.12 - 2003-07-11 (HB)
+-------------------------------
+- (src/epatplot_mod.f90): optional input of background set to determine
+	                  background subtracted pattern fractions.
+	                  Output of pile-up diagnostic numbers.
+  (doc/epatplot_description.tex): some updates; low energy noise explained.
+		
+Version 1.11 - 2003-06-05 (HB)
+-------------------------------	
+
+- (src/epatplot_mod.f90): usermode fixed. Now works for PN and MOS.
+	                  CAL_setState call corrected for MOS.
+  (doc/epatplot_description.tex): new warning described	
+	
+Version 1.10 - 2003-05-09 (HB)
+-------------------------------
+- (src/epatplot_mod.f90): pattern fraction calibration values added to qdp output	
+	
+Version 1.9 - 2003-05-07 (HB)	
+-------------------------------
+- (config/epatplot.par): modified to enable param-2.0 functionality	
+		
+Version 1.8  - 2003-02-14 (MJF)
+-------------------------------
+- (src/epatplot_mod.f90): new parameters "ccdlimits" (only active for PN, to
+  select range in RAWX, RAWY, CCDNR for the distributions) and "plotyrange"
+  to fix the Y range (in log10 values) for an easier comparison with other
+  observations (if second value is not larger than first value then do an
+  automatic determination as before, default "0 0")
+- (config/epatplot.*): as above
+- (doc/epatplot_description.tex): as above
+
+Version 1.7  - 2002-12-19 (HB)
+------------------------------
+- SSC-SPR-3038 (src/epatplot_mod.f90): treatment of PN and MOS has 
+  been unified: the MOS code now also uses pattern fractions in 
+  channel space.	
+- SSC-SPR-3052 (scr/epatplot_mod.f90): RAWY set to center value of chip
+  if no RAWY column in input file (as in MOS timing mode)	
+	
+Version 1.6  - 2002-11-13 (MJF)
+-------------------------------
+- (src/epatplot_mod.f90): removed obsolete code using hardcoded numbers [as in 1.1.6]
+
+Version 1.5  - 2002-11-12 (MJF)
+-------------------------------
+- (src/epatplot_mod.f90): call "CAL_getPatternFraction*()" routines for EPIC MOS
+- (doc/epatplot_description.tex): updated
+
+Version 1.4  - 2002-11-11 (MJF)
+-------------------------------
+- (src/epatplot_mod.f90): call "CAL_getPatternFraction*()" routines for EPIC pn
+- (DEPEND): needs `cal-3.149'
+
+Version 1.3  - 2002-07-17 (MJF)
+-------------------------------
+- (src/epatplot_mod.f90): show also invalid PN patterns and its energy fraction (as in 1.1.5)
+- (doc/epatplot_description.tex): added remark about invalid patterns (as in 1.1.5)
+- (DEPEND): added "sas" as required by new infrastructure (sas-1.302)
+
+Version 1.2  - 2002-05-15 (MJF)
+-------------------------------
+- (config/epatplot.par): updated for `param-2.0'
+- (DEPEND): needs `param-2.0', updated all other entries to latest
+
+Version 1.1.4 - 2002-05-15 (MJF)
+--------------------------------
+- (src/epatplot_mod.f90): updated LW and TI model for EPIC pn
+- (src/epatplot_mod.f90): plot also singles+doubles for EPIC pn
+- (src/epatplot_mod.f90): moved model and RAWY label
+- (src/epatplot_mod.f90): use SRCPOS instead of mean RAWY for EPIC pn TI+BU modes
+
+Version 1.1.3 - 2002-03-28 (MJF)
+--------------------------------
+- (doc/epatplot_description.tex): added an example output plot with pile-up
+
+Version 1.1.2 - 2002-03-05 (MJF)
+--------------------------------
+- (src/epatplot_mod.f90): updated TI model and new BU model for EPIC pn
+
+Version 1.1.1 - 2002-02-22 (MJF)
+--------------------------------
+- (src/epatplot_mod.f90): write also revolution number on plot
+
+Version 1.1 - 2002-01-23 (MJF)
+------------------------------
+- (src/epatplot_mod.f90): made more robust against missing or empty extensions
+
+Version 1.0 - 2002-01-10 (MJF)
+------------------------------
+- (*) converted all occurences of "eppatplot" to "epatplot"
+Note: after the first "official" support of MOS in `eppatplot-1.9' the task
+  is renamed from `eppatplot' to `epatplot' and maintained under the new name
+
+Version 1.9 - 2002-01-09 (MJF)
+------------------------------
+- (src/eppatplot_mod.f90): activated MOS1 model curves
+- (config/eppatplot.par): changed default from "xaxisadu=Y" to "N" 
+- (config/eppatplot.info): added "MOS" to description 
+
+Version 1.8 - 2002-01-09 (MJF)
+------------------------------
+- (src/eppatplot_mod.f90): added MOS support for parameter `withoutputmask'
+
+Version 1.7 - 2002-01-08 (MJF)
+------------------------------
+- (src/eppatplot_mod.f90): activate "xaxisadu=N" (i.e. X axis: adu -> eV)
+- (src/eppatplot_mod.f90): allow creation of CCD map with FLAG==0 positions
+- (config/eppatplot.*): new parameters `withoutputmask' and `outmaskname', 
+   defaults "N" and "flag0_map_##.dat"
+- (doc/eppatplot_description.tex): see above, sections: description, parameters
+
+Version 1.6 - 2001-12-20 (MJF)
+------------------------------
+- (src/eppatplot_mod.f90): update SW model (calpnalgo-2.29)
+- (src/eppatplot_mod.f90): allow user-defined Y-postion instead of event file
+   average value for the spatial model dependence
+- (config/eppatplot.*): new parameters `withuserrawy' and `userrawy', defaults
+   "N" and "190.0"
+- (doc/eppatplot_description.tex): see above
+
+Version 1.5 - 2001-12-18 (MJF)
+------------------------------
+- (src/eppatplot_mod.f90): add average RAWY position to plot
+- (src/eppatplot_mod.f90): strip redundant "/" and "./" from file paths
+- (src/eppatplot_mod.f90): allow user-defined mode instead of SUBMODE to be
+   plotted as model curve in pattern distribution
+- (config/eppatplot.*): new parameters `withusermode' and `usermode', defaults
+   "N" and "0"
+- (doc/eppatplot_description.tex): see above
+
+Version 1.4 - 2001-12-17 (MJF)
+------------------------------
+- (src/eppatplot_mod.f90): accept pn FastBurst mode even if no model exists
+
+Version 1.3 - 2001-12-09 (MJF)
+------------------------------
+- (src/eppatplot_mod.f90): updated models, implemented spatial dependence
+
+Version 1.2 - 2001-08-07 (MJF)
+------------------------------
+- (src/eppatplot_mod.f90): implemented eFF model, check if model of event file
+   is already implemented (otherwise do not try to plot model labels)
+- (doc/eppatplot_mod.tex): updated models part
+
+Version 1.1 - 2001-06-11 (MJF)
+------------------------------
+- (src/eppatplot_mod.f90): updated SW model (new high-energy CTI correction)
+
+Version 1.0.2 - 2001-06-05 (MJF)
+--------------------------------
+- (src/eppatplot_mod.f90): added support for FLAG column via new parameter
+   "withflag", default=Y (i.e. select only events with FLAG=0), added new
+   warning if FLAG column is not present (continue without FLAG selection)
+- (config/eppatplot.*): see above
+- (doc/eppatplot_description.tex): see above
+- (test/eppatplot_test): call explicitly with "withflag=Y" (default)
+
+Version 1.0.1 - 2001-05-11 (MJF)
+--------------------------------
+- (src/eppatplot_mod.f90): added support for LW and TI model
+- (doc/eppatplot_description.tex): updated for new models
+
+Version 1.0 - 2001-04-23 (MJF)
+------------------------------
+- (src/eppatplot_mod.f90): read INSTRUME attribute
+
+Version 0.2 - 2001-04-19 (MJF)
+------------------------------
+- (doc/eppatplot_description.tex): included suggestions by DL and JB
+- (test/): moved test data file to new package `eptestdata'
+- (DEPEND): depend on `eptestdata-0.2'
+
+Version 0.1 - 2001-03-26 (MJF)
+------------------------------
+- first draft version

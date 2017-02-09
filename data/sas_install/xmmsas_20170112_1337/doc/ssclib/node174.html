@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Regrids in the Cartesian coordinates</TITLE>
+<META NAME="description" CONTENT="Regrids in the Cartesian coordinates">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="previous" HREF="node173.html">
+<LINK REL="up" HREF="node172.html">
+<LINK REL="next" HREF="node175.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node173.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Calculates OldPixelCorners via an"></A>
+<A HREF="node172.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Utilities to regrid 1D"></A>
+<A HREF="node175.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Short cuts to saving"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node172.html">Utilities to regrid 1D</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000282000000000000000"></A>
+<A NAME="ssclib:description:regridCartesian"></A>
+<BR>
+Regrids in the Cartesian coordinates
+</H2>
+
+<P>
+<PRE>
+interface regridCartesian
+  subroutine regridScalar(oldPixelCorners, oldImage, newImage, status&amp;
+  , testFlagArg, averagingStyle)
+    real(single),   intent(in)            :: oldImage(:,:)
+    type(Point2dT), intent(in)            :: oldPixelCorners(size(oldImage,1)+1&amp;
+                                                            ,size(oldImage,2)+1)
+    real(single),   intent(out)           :: newImage(:,:)
+    integer,        intent(out), optional :: status
+    logical(bool),  intent(in),  optional :: testFlagArg
+    character(*),   intent(in),  optional :: averagingStyle
+  end subroutine regridScalar
+
+  subroutine regridScalarDouble(oldPixelCorners, oldImage, newImage, status&amp;
+  , testFlagArg, averagingStyle)
+    real(single),       intent(in)            :: oldImage(:,:)
+    type(Point2dDbleT), intent(in)            :: oldPixelCorners(&amp;
+                                                   size(oldImage,1)+1,&amp;
+                                                   size(oldImage,2)+1)
+    real(single),       intent(out)           :: newImage(:,:)
+    integer,            intent(out), optional :: status
+    logical(bool),      intent(in),  optional :: testFlagArg
+    character(*),       intent(in),  optional :: averagingStyle
+  end subroutine regridScalarDouble
+
+  subroutine regridVector(oldPixelCorners, oldImages, newImages, status&amp;
+  , testFlagArg, averagingStyle)
+    real(single),   intent(in)            :: oldImages(:,:,:)
+    type(Point2dT), intent(in)            :: oldPixelCorners(&amp;
+                                               size(oldImages,2)+1,&amp;
+                                               size(oldImages,3)+1&amp;
+                                             )
+    real(single),   intent(out)           :: newImages(:,:,:)
+    integer,        intent(out), optional :: status
+    logical(bool),  intent(in),  optional :: testFlagArg
+    character(*),   intent(in),  optional :: averagingStyle
+  end subroutine regridVector
+end interface
+</PRE>
+
+<P>
+This subroutine is intended to allow rebinning of an image from one cartesian
+coordinate system to another. Now, we define here an image as a 
+two-dimensional array of uniform rectangular pixels. If we change the
+coordinate system, this image becomes distorted. It is nice to be able
+to convert it once again to an array of rectangular pixels, but this
+time in the new coordinate system. This involves taking each of the
+old, distorted pixels and dividing its contents up among the new
+pixels. It is assumed here that (i) the distorted pixel still has
+straight 'sides', ie it is a quadrilateral (a polygon for generality);
+(ii) that the value within the old pixel is evenly distributed through
+the pixel (this assumption <EM>MAY BE INVALID</EM> for extremely nonlinear
+distortions); (iii) that the distorted pixel is not folded over - ie
+that no two of its sides cross; (iv) that the old pixels are not
+greatly larger than the new - the present algorithm still works ok in
+such a regime, but the result will look `steppy.' In this case an
+interpolation algorithm would yield smoother-looking results.
+
+<P>
+The relation between the old and new coordinate systems is here
+entirely contained within the input array oldPixelCorners. This gives
+the coordinates of each pixel in the array oldImage, expressed in the
+wcs `pixel' system of newImage. What does `wcs pixel system' mean? It
+means that the width and height of pixels in newImage are both equal
+to 1.0 and the centre of the pixel newImage(1,1) is at (1.0, 1.0).
+
+<P>
+NOTE <TT>newImages</TT> is <B>NOT</B> defined if any error is detected before processing.
+
+<P>
+Note <TT>type(Point2dT)</TT> is defined in <TT>geometric_types</TT>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node173.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Calculates OldPixelCorners via an"></A>
+<A HREF="node172.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Utilities to regrid 1D"></A>
+<A HREF="node175.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Short cuts to saving"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

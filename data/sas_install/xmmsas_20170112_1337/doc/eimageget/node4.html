@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Event selection from input files</TITLE>
+<META NAME="description" CONTENT="Event selection from input files">
+<META NAME="keywords" CONTENT="eimageget">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eimageget.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eimageget (eimageget-0.6) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Image creation"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eimageget.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000"></A>
+<A NAME="eimageget:description:description:selection"></A>
+<BR>
+Event selection from input files
+</H2>
+
+<P>
+The essential input files are the event file of the observation and, in case of EPIC-pn, an OOT event file (e.g. created with the epproc or epchain tasks),
+as well as a detector background event file, available at:
+<BR>
+http://xmm2.esac.esa.int/external/xmm_sw_cal/background/filter_closed/index.shtml 
+<BR>
+These are created from observations with closed filter wheel.
+
+<P>
+In most cases, images will be created from filtered event lists.
+
+<P>
+The filtering can be done beforehand and the filtered event files can be used as input for eimageget.
+Note that in this case, filtering should be applied homogeneously to all input event files.
+E.g. if events around the EPIC-pn Cu line (7.2<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$-$"></SPAN>9.2 keV) will be removed, these events should be filtered from the FWC and OOT file as well.
+Also note, that events outside of the field of view (i.e. the detector corners) must be present for the scaling of the FWC images, 
+which is e.g. not the case when selecting the <TT>XMMEA_EM</TT> flag or <TT>FLAG==0</TT> events.
+
+<P>
+Alternatively, eimageget parameters can be used for commonly used selections:
+
+<UL>
+<LI>Good-time intervals can be selected by giving a <TT>gtifile</TT>. This temporal selection will not be applied to the detector-background event file.
+
+<P>
+</LI>
+<LI>Energy bands are defined by the <TT>pimin</TT> and <TT>pimax</TT> parameters.
+Output image sets can be created for several energy bands simultaneously.
+Default values are the five XMM-Newton standard energy bands (0.2<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$-$"></SPAN>0.5, 0.5<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$-$"></SPAN>1.0, 1.0<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$-$"></SPAN>2.0, 2.0<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$-$"></SPAN>4.5, and 4.5<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$-$"></SPAN>12.0 keV)
+
+<P>
+</LI>
+<LI>A pattern selection can be defined by the <TT>patmin</TT> and <TT>patmax</TT> parameters, for each energy band.
+Default values are pattern 0<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$-$"></SPAN>12 (single- to quadruple-pixel events) for EPIC-MOS images,
+0<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$-$"></SPAN>4 (single- and double-pixel events) in the case of EPIC-pn for energy band above 0.5 keV
+and 0 (single-pixel events) for EPIC-pn energy bands that reach below 0.5 keV.
+
+<P>
+</LI>
+<LI>Flags can be defined separately for the selection of the field-of-view region (the final images) and the detector corners (used for scaling).
+
+<P>
+</LI>
+<LI>EPIC-MOS CCDs can show an anomalous state with enhanced low-energy background.
+The task <A NAME="576"></A><A NAME="tex2html5"
+  HREF="../emtaglenoise/index.html"><SPAN  CLASS="textbf">emtaglenoise</SPAN></A>
+is used to remove events from affected CCDs.
+If only images above <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$\sim$"></SPAN>1keV are of interest, this can be turned of
+by setting <TT>withemtaglenoise</TT> to ``no''.
+
+<P>
+</LI>
+<LI>If additional bad pixels should be removed, it is sufficient to add them to the bad-pixel extension of one of the input event files. 
+eimageget will apply all bad-pixel extensions to all images homogeneously, unless <TT>withbadpixupdate</TT> is set to ``no''. 
+Especially, some CCD columns can be bright in the the FWC data below 300 eV, but not in the data of the observation, which might cause an over-subtraction here.
+
+<P>
+</LI>
+</UL>
+
+<P>
+<BR>
+<DIV ALIGN="CENTER">
+<A NAME="especget:table:defsel"></A>
+<BR>
+<A NAME="514"></A>
+<TABLE CELLPADDING=3 BORDER="1" ALIGN="CENTER">
+<CAPTION><STRONG>Table 1:</STRONG>
+<B>Default pattern selections</B></CAPTION>
+<TR><TD ALIGN="LEFT">Parameter</TD>
+<TD ALIGN="CENTER" COLSPAN=3><SPAN>Camera</SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">MOS</TD>
+<TD ALIGN="CENTER">PN (<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&gt;$"></SPAN>0.5 keV)</TD>
+<TD ALIGN="CENTER">PN (<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$&lt;$"></SPAN>0.5 keV)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">PATTERN</TD>
+<TD ALIGN="CENTER">0-12</TD>
+<TD ALIGN="CENTER">0-4</TD>
+<TD ALIGN="CENTER">0</TD>
+</TR>
+</TABLE>
+</DIV>
+<BR>
+
+<P>
+<BR>
+<DIV ALIGN="CENTER">
+<A NAME="especget:table:defsel"></A>
+<BR>
+<A NAME="515"></A>
+<TABLE CELLPADDING=3 BORDER="1" ALIGN="CENTER">
+<CAPTION><STRONG>Table 2:</STRONG>
+<B>Default flag selections</B></CAPTION>
+<TR><TD ALIGN="LEFT">Parameter</TD>
+<TD ALIGN="CENTER" COLSPAN=2><SPAN>Camera</SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">MOS</TD>
+<TD ALIGN="CENTER">PN</TD>
+</TR>
+<TR><TD ALIGN="LEFT">FLAG (FoV)</TD>
+<TD ALIGN="CENTER">(FLAG &amp; 0x766ba000) == 0</TD>
+<TD ALIGN="CENTER">FLAG == 0</TD>
+</TR>
+<TR><TD ALIGN="LEFT">FLAG (corner)</TD>
+<TD ALIGN="CENTER">(FLAG &amp; 0x766aa000) == 0</TD>
+<TD ALIGN="CENTER">(FLAG &amp; 0xcfa0000) == 0)</TD>
+</TR>
+</TABLE>
+</DIV>
+<BR>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Image creation"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

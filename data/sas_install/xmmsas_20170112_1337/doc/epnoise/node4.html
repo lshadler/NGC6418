@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>General</TITLE>
+<META NAME="description" CONTENT="General">
+<META NAME="keywords" CONTENT="epnoise">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epnoise.css">
+
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epnoise (epnoise-0.7.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epnoise.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+General</A>
+</H2>
+
+<P>
+<A NAME="313"></A><A NAME="tex2html1"
+  HREF="../epniose/index.html"><SPAN  CLASS="textbf">epniose</SPAN></A>
+task removes soft X-ray noisy frames from EPIC-pn camera. 
+
+<P>
+The task calculates the number of events per frame between 20 to 30
+adu and removes those frames above a certain thershold defined by
+<TT>noisecut</TT> parameter. Once the noisy frames have been removed, 
+the exposure time is updated accordingly. 
+<BR>
+<P>
+To do this filtering, the <A NAME="318"></A><A NAME="tex2html2"
+  HREF="../epnoise/index.html"><SPAN  CLASS="textbf">epnoise</SPAN></A>
+task logic has been divided
+in two different steps.
+<BR>
+<P>
+During the first step, <A NAME="322"></A><A NAME="tex2html3"
+  HREF="../epnoise/index.html"><SPAN  CLASS="textbf">epnoise</SPAN></A>
+is run using as input the
+output files of <A NAME="326"></A><A NAME="tex2html4"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>
+and <A NAME="330"></A><A NAME="tex2html5"
+  HREF="../badpixfind/index.html"><SPAN  CLASS="textbf">badpixfind</SPAN></A>
+tasks. Then,
+<A NAME="334"></A><A NAME="tex2html6"
+  HREF="../epnoise/index.html"><SPAN  CLASS="textbf">epnoise</SPAN></A>
+identify the noisy frames, creates or updates the
+column NEVT_FRM, containing the number of events per frame and CCD
+with PHA values below a certain threshold, and write keywords
+ containing sugestions for subsequent
+filtering. Where the keywords are: 
+<BR>
+<UL>
+<LI>LAMBDA: lambda of poissonian fit
+</LI>
+<LI>NORM: normalization of poissonian fit
+</LI>
+<LI>NEVT_CUT:suggested cut value ("10
+</LI>
+<LI>NEVT_ALT: alternative cut value (1.0)
+</LI>
+</UL>
+
+<P>
+Pixels which are affected by bright celestial sources in this energy
+range are removed through a mask generation.  To create this mask for
+removing bright sources, epnoise calculate the median of the full
+image and apply a cut using the <TT>sigmacut</TT> parameter.  Then a
+mask for badpixel is created and added to the previous mask.  The
+<TT>savemasks</TT> parameter writes to disk the masks of all CCDs.
+
+<P>
+After this first step of <A NAME="340"></A><A NAME="tex2html7"
+  HREF="../epnoise/index.html"><SPAN  CLASS="textbf">epnoise</SPAN></A>, the rest of the EPIC-pn
+processing chain is executed, propagating the new column (NEVT_FRM)
+and the new keywords (LAMBDA,NORM,NEVT_CUT,NEVT_ALT).
+
+<P>
+During the second step, <A NAME="344"></A><A NAME="tex2html8"
+  HREF="../epnoise/index.html"><SPAN  CLASS="textbf">epnoise</SPAN></A>
+filter the final event list
+using the NEVT_CUT threshold for each CCD. The <A NAME="348"></A><A NAME="tex2html9"
+  HREF="../epnosie/index.html"><SPAN  CLASS="textbf">epnosie</SPAN></A>
+filter the
+final event list cretaing the following expression per CCD (NEVT_FRM
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$&gt;$"></SPAN>= NEVT_CUT). Update the STDGTI extension adding the gaps
+corresponding to the frames that have been removed. Then, update the
+ONTIME and LIVETIME keywords.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

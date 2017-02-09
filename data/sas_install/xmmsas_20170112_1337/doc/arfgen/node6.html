@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Example 2: Correcting for bad pixels</TITLE>
+<META NAME="description" CONTENT="Example 2: Correcting for bad pixels">
+<META NAME="keywords" CONTENT="arfgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="arfgen.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+arfgen (arfgen-1.93.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Example 1: Point source"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Usage and Examples"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Example 3: Point source"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node44.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="arfgen.html">Home Page</A> / <A  HREF="node4.html">Usage and Examples</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00042000000000000000">
+Example 2: Correcting for bad pixels</A>
+</H2>
+To correct for bad pixels and bad columns (section&nbsp;<A HREF="node30.html#arfgen:description:description:bpc">5.10</A>)
+a file containing the bad pixel extensions must be
+specified on the command line by:
+
+<P>
+<TT>arfgen spectrumset=spectrum.ds badpixlocation=myevents.ds
+</TT>
+
+<P>
+The bad pixel information is, at least initially, stored in the event
+files.
+
+<P>
+By default the code looks for pixels which fall outside the CCD collecting
+area and outside the field-of-view with a resolution of 2 arcseconds if
+the <TT>extendedsource</TT> parameter is set and 0.5 arcseconds for a point
+source. In some cases, for example if the majority of the source region lies
+outside the field of view, or a significant fraction of the counts
+from a point source fall within a chip gap, then this resolution is too coarse. It may be changed by:
+
+<P>
+<TT>arfgen spectrumset=spectrum.ds badpixlocation=myevents.ds badpixelresolution=1.0
+</TT>
+
+<P>
+which improves the accuracy of the bad pixel calculation for an extended source. The downside is that
+an increased resolution will cause the execution time of the code to increase substantially.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Example 1: Point source"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Usage and Examples"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Example 3: Point source"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node44.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

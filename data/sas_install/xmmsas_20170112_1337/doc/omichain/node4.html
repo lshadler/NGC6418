@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Running the Omichain</TITLE>
+<META NAME="description" CONTENT="Running the Omichain">
+<META NAME="keywords" CONTENT="omichain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omichain.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="omichain.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omichain (omichain-1.71.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="omichain.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Decreasing processing time"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omichain.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Running the Omichain</A>
+</H1>
+
+<P>
+The location of the ODF files to be processed is specified by either setting 
+the environment variable SAS_ODF (setenv SAS_ODF directory_path, c-shell), or by 
+specifying the input directory (omichain inpdirectory=directory path), or by 
+setting the environment variable SAS_ODF to a SAS summary file. For the latter, 
+the omichain will extract the directory path from the SAS summary file. 
+It is a good idea to ensure that the SAS environment variable <SPAN  CLASS="textbf">SAS_VERBOSITY</SPAN>
+is set to 5 (<SPAN  CLASS="textbf">setenv SAS_VERBOSITY 5</SPAN>, so that all messages, warnings
+and errors from the omichain are displayed. It is also useful to redirect 
+the output to a log file (<SPAN  CLASS="textbf">omichain ...... <!-- MATH
+ \begin{math}
+>\&
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$&gt;\&amp;$"></SPAN> 
+omichain.log &amp;</SPAN>, c-shell).
+All ODF files should be in an uncompressed state (otherwise some functions 
+in the omichain won't
+work properly).
+
+<P>
+
+<OL>
+<LI>Use command `omichain` to process the ODF data set in the current
+directory or to where SAS_ODF has been set to, and to place the product 
+files in the current directory.
+</LI>
+<LI>Use command `omichain inpdirectory=input-directory-path` to process 
+the OM ODF data set in the specified directory, and to place the product files in the
+current directory. In the following, the term <SPAN  CLASS="textbf">output file</SPAN> refers to a file 
+created by one one of the <SPAN  CLASS="textbf">OM SAS</SPAN> programs during the running of the omichain.
+Apart from two files, which are ps (PostScript) and pdf (Portable Document Format) files, 
+all the other output files are <SPAN  CLASS="textbf">FITS</SPAN> (Flexible Image Transport System) files. 
+
+<P>
+</LI>
+<LI>Use command `omichain outdirectory=output-directory-path` to process the
+ODF data set in the current directory or to where SAS_ODF has been set to,
+and to place the output files in the specified  directory.
+</LI>
+<LI>Use command `omichain inpdirectory=input-directory-path
+outdirectory=output-directory-path` to specify both the location of the ODF
+data set and the directory where the output files are to be placed.
+
+<P>
+Using the default parameter settings the omichain will process all the image
+files in the data directory. However, if only the images of particular 
+exposures are required to be processed, or the images for particular filters, 
+the parameters  <SPAN  CLASS="textbf"> exposures</SPAN> and  <SPAN  CLASS="textbf"> filters</SPAN>, respectively, can be 
+used to achieve this as follows:
+
+<OL>
+<LI>To specify which filter/filters to process add the parameter <SPAN  CLASS="textbf"> filters=''filter1 filter2 ...</SPAN> to any of
+the previous commands.
+</LI>
+<LI>To specify which exposure/exposures to process add the parameter <SPAN  CLASS="textbf"> exposuress=''exposure1 exposure2 ...</SPAN> to any of
+the previous commands.
+</LI>
+</OL>
+
+<P>
+</LI>
+<LI>To perform source-detection on the mosaiced sky-images add the argument <SPAN  CLASS="textbf">processmosaicedimages=t</SPAN> to the command-line. 
+
+<P>
+</LI>
+</OL>
+
+<P>
+<SPAN  CLASS="textbf"> (In the event that the SAS summary files does not exist, it can be created by running the SAS program
+odfingest.)</SPAN>
+
+<P>
+Some of the parameters for individual tasks can be set using the appropriate
+omichain parameter - the parameter names are the same as the task parameter names, 
+prefixed with the name of the task - <SPAN  CLASS="textbf"> Please see Section 9.0.</SPAN>
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html81"
+  HREF="node5.html">Decreasing processing time</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="omichain.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Decreasing processing time"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

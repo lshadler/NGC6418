@@ -1,0 +1,348 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="emframes">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emframes.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="emframes.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emframes (emframes-5.10) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="emframes.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emframes.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="emframes:description:description"></A>
+<BR>
+Description
+</H1>
+<A NAME="633"></A><A NAME="tex2html1"
+  HREF="../emframes/index.html"><SPAN  CLASS="textbf">emframes</SPAN></A>
+analyzes the frames (auxiliary) file, adding four columns 
+(a quality flag, the dead time fraction, the time and
+the GATTI value), performing various checks and computing the
+specific (to the CCD node) Good Time Intervals.
+The flag value allows to identify why the frame was flagged
+(using binary coding).
+<A NAME="637"></A><A NAME="tex2html2"
+  HREF="../emframes/index.html"><SPAN  CLASS="textbf">emframes</SPAN></A>
+does not normally modify the events file
+(except in the case of frame renumbering as explained below).
+Events belonging to frames flagged as bad are themselves 
+flagged for rejection by CUT_GTI in <A NAME="641"></A><A NAME="tex2html3"
+  HREF="../emevents/index.html"><SPAN  CLASS="textbf">emevents</SPAN></A>.
+<BR>
+<A NAME="645"></A><A NAME="tex2html4"
+  HREF="../emframes/index.html"><SPAN  CLASS="textbf">emframes</SPAN></A>
+may be applied as is to slew data.
+
+<P>
+<A NAME="649"></A><A NAME="tex2html5"
+  HREF="../emframes/index.html"><SPAN  CLASS="textbf">emframes</SPAN></A>
+may renumber the frames in the
+case of long telemetry drops. Frame renumbering allows to compute
+the GATTI value correctly, and to flag the events with truncated energy
+(as <A NAME="653"></A><TT>REJECTED_BY_GATTI</TT>) in <A NAME="655"></A><A NAME="tex2html6"
+  HREF="../emevents/index.html"><SPAN  CLASS="textbf">emevents</SPAN></A>. Those flagged
+events are the best way to detect proton flares.
+Frame renumbering requires altering the events file as well.
+
+<P>
+When it is launched on an auxiliary file (straight from the ODF), 
+<A NAME="659"></A><A NAME="tex2html7"
+  HREF="../emframes/index.html"><SPAN  CLASS="textbf">emframes</SPAN></A>
+needs to access the ODF directory where
+the data comes from. This should be specified through the SAS_ODF
+environment variable, or the generic <TT>odf</TT> parameter 
+on the command line. In that context, <A NAME="664"></A><A NAME="tex2html8"
+  HREF="../emframes/index.html"><SPAN  CLASS="textbf">emframes</SPAN></A>
+also needs
+an events file (<TT>odfeventset</TT> parameter) to define the CCD/node
+and set the OAL state.
+<BR>
+In that case <A NAME="669"></A><A NAME="tex2html9"
+  HREF="../emframes/index.html"><SPAN  CLASS="textbf">emframes</SPAN></A>
+writes to the output frames file keywords
+filled using values taken from the summary file via OAL calls.
+It also copies the <A NAME="673"></A><TT>FILTER</TT> keyword to the events file (for the CAL) 
+if the events file was modified (<TT>newevent</TT>=Y or frame renumbering).
+If the events file was not modified the <A NAME="676"></A><TT>FILTER</TT> keyword is not copied
+to avoid the overhead of rewriting the full file.
+
+<P>
+On the other hand, <A NAME="678"></A><A NAME="tex2html10"
+  HREF="../emframes/index.html"><SPAN  CLASS="textbf">emframes</SPAN></A>
+launched on its own output
+does not need an ODF directory nor an events file. All functions
+described below may be called that way except FRAMES.
+
+<P>
+<A NAME="682"></A><A NAME="tex2html11"
+  HREF="../emframes/index.html"><SPAN  CLASS="textbf">emframes</SPAN></A>
+calls (in order) the following subroutines, all of which
+can be individually switched off:
+
+<UL>
+<LI>FRAMES.
+The time transmitted in the ODF is still
+in <A NAME="686"></A><TT>FTCOARSE</TT>/<A NAME="688"></A><TT>FTFINE</TT> form 
+(<A NAME="690"></A><TT>FTFINE</TT> is in units of 40 <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\mu$"></SPAN>s). 
+FRAMES starts by converting that in seconds
+(double precision real) and adding the sequencing delays, 
+creating a <A NAME="692"></A><TT>TIME</TT> column.
+FRAMES computes the precise frame integration time
+and writes it into the <A NAME="694"></A><TT>FRMTIME</TT> keyword if it is significantly
+different from the original <A NAME="696"></A><TT>FRMTIME</TT> value.
+It adds the (constant) time offset to all frame times after wrap-around
+in the event of a long exposure (<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$&gt;$"></SPAN> 32767 s), and converts the times
+into standard XMM times (running from 01/01/1998).
+<BR>
+In TIMING mode the times are corrected for the delay necessary
+to transfer the data through the 600 rows in the framestore area,
+and to transfer the data to the framestore area, assuming 
+the vertical binning is 101. 
+By default the source position is taken from the target coordinates
+(<A NAME="698"></A><TT>RA_OBJ</TT>, <A NAME="700"></A><TT>DEC_OBJ</TT>). 
+This may be overridden by the user setting the source position 
+manually via the parameters <TT>srcra</TT> and <TT>srcdec</TT>.
+If no <A NAME="704"></A><TT>RA_OBJ</TT>, <A NAME="706"></A><TT>DEC_OBJ</TT> keyword is present and 
+<TT>srcra/dec</TT> are not set 
+the source is assumed to be at the centre of the CCD.
+The <A NAME="709"></A><TT>NPIXEL</TT> column is recomputed to give
+the number of pixels above threshold per cycle (in the auxiliary file
+<A NAME="711"></A><TT>NPIXEL</TT> gives the integrated number of pixels above threshold
+since the beginning of the exposure).
+<BR>
+Finally, FRAMES tests whether the data was obtained with GATTI on or off
+and writes a <A NAME="713"></A><TT>GATTI_ON</TT> keyword to reflect that.
+</LI>
+<LI>Frame renumbering.
+The frame numbers are first scanned for regular increase, and a
+permutation array is created if some subset of frame numbers needs to
+be sorted. If a forward jump
+is detected then the time difference between the frames across the jump
+is examined. As the frame number is known only modulo 16 in the telemetry,
+a multiple of 16 frames may need to be inserted. How many times 16 frames
+is known by dividing the time difference by the frame integration time.
+This (-1) gives the most likely value of (and an upper bound to) 
+the true number of missing frames (each extended frame reduces that
+number). If the interruption was due to counting mode, and the counting
+mode file was entered via the <TT>countingset</TT> parameter, then
+the number of missing frames is taken directly from the corresponding
+entry in that file.
+The number of missed frames is added to the <A NAME="716"></A><TT>FRAME</TT> columns
+in the frames and events files after the jump.
+<BR>
+If a frame number is repeated then FRAMES attempts to find one of the set
+with the expected time value; failing that, to find one of the set that
+might represent a cycling of the time; and failing that the frame with
+the smallest increase in time available.  This ``good frame'' is marked
+with flag_mulfid and retained in the output data, while the other frames
+in the set are marked with flag_badfid and rejected.
+<BR>
+Frames with extended (n times) integration time are detected
+by looking at the time difference between successive frames
+(n times the frame integration time for extended frames).
+A statistical test on <A NAME="718"></A><TT>NPIXEL</TT> (comparing the local value
+with the overall distribution in the file) is performed to tell 
+extended frames from undetected telemetry drops (integer multiple
+of 16 frames). <A NAME="720"></A><TT>NPIXEL</TT> (total number of pixels above threshold)
+must be larger in an extended frame.
+<BR>
+One row per frame (including dummies for missing frames) is created in output.
+This allows direct access by <A NAME="722"></A><A NAME="tex2html12"
+  HREF="../emevents/index.html"><SPAN  CLASS="textbf">emevents</SPAN></A>. A dummy first row
+is always added (giving the estimated start time of the first frame).
+The first and last frames are flagged (they are usually not reliable).
+</LI>
+<LI>FLAG_HK.
+Outside normal operating conditions the instrument performances would
+presumably be degraded, possibly so much so that the following operations
+do not even make sense. 
+Some of the later tasks (CCDBKG in <A NAME="726"></A><A NAME="tex2html13"
+  HREF="../emenergy/index.html"><SPAN  CLASS="textbf">emenergy</SPAN></A>)
+build integrated images over the whole exposure, from which the frames
+judged bad by <A NAME="730"></A><A NAME="tex2html14"
+  HREF="../tabgtigen/index.html"><SPAN  CLASS="textbf">tabgtigen</SPAN></A>
+must be excluded. 
+All frames whose start and end times are not inside 
+the same good time interval (defined by <A NAME="734"></A><A NAME="tex2html15"
+  HREF="../tabgtigen/index.html"><SPAN  CLASS="textbf">tabgtigen</SPAN></A>) are flagged as bad.
+</LI>
+<LI>FIFO
+tests all the frames for a possible FIFO overflow flag
+and flags them as bad.
+</LI>
+<LI>VALID
+checks the number of events in the events file corresponding 
+to a given frame versus the <A NAME="738"></A><TT>NVALID</TT> field in the frames file
+and flags as bad incomplete frames with the wrong number of events.
+In that case <A NAME="740"></A><TT>NVALID</TT> is set to the number of events in the events file.
+</LI>
+<LI>CR_DEAD.
+Every cosmic ray interaction with a CCD prevents a genuine X-ray from
+being detected there. This amounts to a source of dead time, which
+should be quite small on average (<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$&lt;$"></SPAN> 1%). The number
+of pixels affected can be readily calculated by subtracting the number
+of pixels above threshold in the true events (known from their pattern,
+excluding ``cosmic-ray'' patterns) 
+from the total number of pixels above threshold (<A NAME="742"></A><TT>NPIXEL</TT>) 
+in the frame. The number of events below the lower EMDH
+threshold (<A NAME="744"></A><TT>NBELOW</TT>) should also be subtracted (those are mostly 
+single noise excursions and incur no loss of efficiency). 
+This allows to check the coherence of <A NAME="746"></A><TT>NPIXEL</TT> with the other data,
+since the subtraction must always remain positive. If it is not
+then the frame is flagged for rejection. <BR>
+Since all pixels neighbouring
+cosmic ray events are also lost, a statistical factor 
+(COSMICSIZE field in the <TT>XMM_MISCDATA</TT> CCF file) must be applied.
+Another statistical correction must be applied because only part of 
+the CCD surface is in view of the sky (because it is partly outside 
+the field of view or because the edges are masked by other CCDs above), 
+and because the dark part sees cosmic rays differently 
+(COSMICOUTOVERIN field in the <TT>XMM_MISCDATA</TT> CCF file).
+<BR>
+The list of ``cosmic-ray'' patterns is derived from the patterns' definition
+by looking for all non-isolated patterns (where pixels around the central
+event are not necessarily below threshold) and
+is written into keywords <A NAME="750"></A><TT>CRPATi</TT>.
+<BR>
+In Compressed Timing mode where the pattern number is not transmitted
+to the ground it is taken to be 0 (single event, most likely value).
+As the true number of pixels per event can only be larger, 
+this means the dead time is slightly overestimated in that mode.
+</LI>
+<LI>MAKE_GTI
+forms good time intervals for the current CCD, excluding all frames flagged 
+as bad by FRAMES, FIFO, VALID or CR_DEAD (but not those flagged by FLAG_HK).
+It finally computes and writes the <A NAME="752"></A><TT>LIVETIME</TT> and <A NAME="754"></A><TT>ONTIME</TT> keywords 
+corresponding to the total good time corrected or not for dead time,
+and rejecting the bad frames and those flagged by FLAG_HK.
+</LI>
+<LI>PUT_GATTI
+recomputes
+the GATTI value along its periodic triangle variation from 0 to 255
+and back, using the GATTI flag as a marker, into <A NAME="756"></A><TT>GATTIVAL</TT>. 
+This prepares SP_GATTI
+of <A NAME="758"></A><A NAME="tex2html16"
+  HREF="../emevents/index.html"><SPAN  CLASS="textbf">emevents</SPAN></A>, which allows to check how the GATTI correction works.
+If the number of frames is less than 510 (this is often true for calibrations),
+no GATTI flag appears and this technique is not applicable.
+In that case the GATTI value is set to the input row number 
+(best guess).
+<BR>
+In free run modes (Timing or free run Window) the GATTI is not used
+and PUT_GATTI just sets <A NAME="762"></A><TT>GATTIVAL</TT> to 0.
+</LI>
+</UL>
+Recapitulation of flag definitions (flags below 64 are just warnings):
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="RIGHT">
+<DIV ALIGN="CENTER">
+
+</DIV>
+Value</TD>
+<TD ALIGN="LEFT">Meaning</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">1</TD>
+<TD ALIGN="LEFT">Extended frame integration time</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">2</TD>
+<TD ALIGN="LEFT">Telemetry drop before this frame</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">4</TD>
+<TD ALIGN="LEFT">Frame kept from a sequence of duplicated data with increasing IDs</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">8</TD>
+<TD ALIGN="LEFT">No attitude available (Timing mode only)</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">16</TD>
+<TD ALIGN="LEFT">Frame thought to contain good data, whose ID number was duplicated</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">64</TD>
+<TD ALIGN="LEFT">Frame thought to contain bad data, whose ID number was duplicated</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">128</TD>
+<TD ALIGN="LEFT"><A NAME="764"></A><TT>NPIXEL</TT> too small or <A NAME="766"></A><TT>NABOVE</TT> too large</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">256</TD>
+<TD ALIGN="LEFT">Frame is not inside Good Time Interval from Housekeeping</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">512</TD>
+<TD ALIGN="LEFT">FIFO overflow</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">1024</TD>
+<TD ALIGN="LEFT">Number of events in the events file is not <A NAME="768"></A><TT>NVALID</TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">2048</TD>
+<TD ALIGN="LEFT">Time negative or aberrant leap in time tag</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">4096</TD>
+<TD ALIGN="LEFT">Missing frame inserted after detection of telemetry drop</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">8192</TD>
+<TD ALIGN="LEFT">First or last frame</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">16384</TD>
+<TD ALIGN="LEFT">Time decreased unexpectedly</TD>
+</TR>
+</TABLE>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="emframes.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

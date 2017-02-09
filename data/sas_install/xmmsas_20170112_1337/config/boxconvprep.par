@@ -1,0 +1,77 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="smoothconvset" type="dataset" default="smooth_conv.ds">
+   <DESCRIPTION>
+    The name of the dataset to contain the background-smoothing convolver.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="detconvset" type="dataset" default="det_conv.ds">
+   <DESCRIPTION>
+    The name of the dataset to contain the source-detection convolver.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="detboxhalfsize" type="int" default="2">
+   <DESCRIPTION>
+    The size of the detection box = 2*detboxhalfsize+1.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    detboxhalfsize in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="smoothsigma" type="real" default="10.0">
+   <DESCRIPTION>
+    The width of the smoothing gaussian.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    smoothsigma in (0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="detfieldstyle" type="string" default="square">
+   <DESCRIPTION>
+    Shape of the non-zero field for the source-detection convolver.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="square">
+    </ITEM>
+    <ITEM value="circle">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="detconvstyle" type="string" default="flat">
+   <DESCRIPTION>
+    Functional form of the source-detection convolver.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="flat">
+    </ITEM>
+
+    <ITEM value="matched">
+     <PARAM id="likemin" type="real" default="10.0">
+      <DESCRIPTION>
+       Likelihood cutoff for calculation of matched detection convolver.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       likemin in (0:]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="bkg" type="real" default="0.1">
+      <DESCRIPTION>
+       Background level (counts/pixel) for calculation of matched detection convolver.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       bkg in (0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

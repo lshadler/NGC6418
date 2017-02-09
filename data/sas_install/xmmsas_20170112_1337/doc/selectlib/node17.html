@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>File-based filters</TITLE>
+<META NAME="description" CONTENT="File-based filters">
+<META NAME="keywords" CONTENT="selectlib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="selectlib.css">
+
+<LINK REL="next" HREF="node21.html">
+<LINK REL="previous" HREF="node16.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node18.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+selectlib (selectlib-4.74.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node16.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Three-dimensional filter functions"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="gti-filter"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node30.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="selectlib.html">Home Page</A> / <A  HREF="node2.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000212000000000000000"></A>
+<A NAME="selectlib:user:filebased"></A>
+<BR>
+File-based filters
+</H2>
+There are three special file-based filters which perform filtering with Good
+Time Intervals, spatial image masks, and region tables. The syntax is:
+<BR>
+<BR>
+<DIV><TT>
+<BR>&nbsp;&nbsp;&nbsp;gti(<EM>blockspec</EM>,Tcolumn)
+<BR>
+<BR>&nbsp;&nbsp;&nbsp;mask(<EM>blockspec</EM>,Xoffset,Yoffset,Xcolumn,Ycolumn)
+<BR>
+<BR>&nbsp;&nbsp;&nbsp;region(<EM>blockspec</EM>,Xcolumn,Ycolumn) or region(<EM>blockspec</EM>)
+<BR>
+<BR></TT></DIV>
+<BR>
+with
+<PRE><TT>
+<TT>Tcolumn</TT> 		 : the time value to be checked; usually a column name
+<BR><TT>Xoffset,Yoffset</TT> 		 : a vector by which the image mask is to beshifted
+<BR><TT>Xcolumn,Ycolumn</TT> 		 : coordinates of point to test - usually givenas column names
+</TT></PRE>
+
+<P>
+<EM>blockspec</EM> is a block specifier which must point to a GTI table,
+a mask image, or a region table respectively. It must
+be in either of the four forms <TT>setname</TT>, <TT>setname+blockid</TT>,
+<TT>setname[blockid]</TT>, or <TT>setname:blockid</TT> where <TT>setname</TT> must
+be the name of an existing data set and
+<TT>blockid</TT> an identifier of a block in that data set.
+If the first form, <TT>setname</TT>, is used, the filter data are sought in the
+<EM>first</EM> block of the named data set. For the latter three forms, the
+data set name is optional. If omitted, it refers to the data set of
+the currently processed table. <EM>blockid</EM> can either be an identifier
+starting with a letter which must then be the name of a block in the
+specified data set or a simple number which is directly interpreted as a
+block sequence number (starting from 1).<A NAME="tex2html8"
+  HREF="footnode.html#foot907"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A>
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html281"
+  HREF="node18.html"><TT>gti</TT>-filter</A>
+<LI><A NAME="tex2html282"
+  HREF="node19.html"><TT>mask</TT>-filter</A>
+<LI><A NAME="tex2html283"
+  HREF="node20.html"><TT>region</TT>-filter</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node16.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Three-dimensional filter functions"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="gti-filter"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node30.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

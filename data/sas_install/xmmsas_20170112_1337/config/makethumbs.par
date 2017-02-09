@@ -1,0 +1,259 @@
+<!-- saved settings for task ""-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="imageset" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    Input image FITS file.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withsrclist" type="bool" default="yes">
+   <DESCRIPTION>
+    Whether to use the source list in the observation.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+      <PARAM id="srclisttab" type="table" mandatory="yes">
+       <DESCRIPTION>
+        Source list (eg., P0123456789EPX000OBSMLI0000.FIT:SRCLIST) in the observation.
+       </DESCRIPTION>
+      </PARAM>
+    </ITEM>
+
+    <ITEM value="no">
+      <PARAM id="withcoords" type="bool" default="no">
+       <DESCRIPTION>
+        Whether to give the coordinates in the command-line arguments.
+       </DESCRIPTION>
+       <CASE>
+        <ITEM value="no" />
+        <ITEM value="yes">
+          <PARAM id="ra" type="angle" mandatory="yes">
+           <DESCRIPTION>
+            Right Ascension (in degree) of the source position in the J2000 coordinates.  This is mandatory to be specified if withsrclist=no and withcat=no.
+           </DESCRIPTION>
+           <CONSTRAINTS>
+            ra in [-360:360]
+           </CONSTRAINTS>
+          </PARAM>
+
+          <PARAM id="dec" type="angle" mandatory="yes">
+           <DESCRIPTION>
+            Declination (in degree) of the source position in the J2000 coordinates.  This is mandatory to be specified if withsrclist=no and withcat=no.
+           </DESCRIPTION>
+           <CONSTRAINTS>
+            dec in [-90:90]
+           </CONSTRAINTS>
+          </PARAM>
+        </ITEM>
+       </CASE>
+      </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withcat" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to use the (bigger) external catalogue set, which tabulates the source IAUNAME etc.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no" />
+    <ITEM value="yes">
+     <PARAM id="cattab" type="table" mandatory="yes">
+      <DESCRIPTION>
+       Catalogue table name (eg., 'cat2xmm.fits:SRCLIST').
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withsrcnum" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to specify SRC_NUM.  This is mandatory if withsrclist=no and withcat=yes.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no" />
+    <ITEM value="yes">
+      <PARAM id="srcnum" type="int" default="0" mandatory="no">
+       <DESCRIPTION>
+        ID number (SRC_NUM) of the source in the given source list to process (0 (Default) means all the sources, which is valid only when withsrclist=yes).
+       </DESCRIPTION>
+       <CONSTRAINTS>
+        srcnum in [0:]
+       </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="autofname" type="bool" default="yes">
+   <DESCRIPTION>
+    Whether to automatically determine the output GIF filenames (yes) or use user-specified single filename (no).
+    If no, either withsrclist has to be no or srcnum has to be non-zero.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+     <PARAM id="outfilename" type="file" mandatory="yes">
+      <DESCRIPTION>
+       Filename of the output GIF (with suffix mandatory).
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="yes">
+      <PARAM id="gifroot" type="string" default="thumb">
+       <DESCRIPTION>
+        Root of the output filenames.    
+       </DESCRIPTION>
+      </PARAM>
+    
+      <PARAM id="fnamestyle" type="string" default="srcnum">
+       <DESCRIPTION>
+        Style in naming the output GIF files.
+       </DESCRIPTION>
+       <CASE>
+        <ITEM value="srcnum" />
+        <ITEM value="hexsrcnum" />
+        <ITEM value="detid" />
+        <ITEM value="srcid" />
+        <ITEM value="srcnum_detid" />
+        <ITEM value="srcnum_srcid" />
+        <ITEM value="all" />
+       </CASE>
+      </PARAM>
+    
+      <PARAM id="gifsuffix" type="string" default=".gif" mandatory="no">
+       <DESCRIPTION>
+       The suffix of the output GIF filename.	
+       </DESCRIPTION>
+      </PARAM>
+    
+      <PARAM id="fnameseparator" type="string" default=" ___" mandatory="no">
+       <DESCRIPTION>
+       The separators in the output GIF filenames: eg., "ROOT@@_@@-@@s@@" for " _-s".
+       </DESCRIPTION>
+      </PARAM>
+
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="srcindexstyle" type="string" default="DEFAULT">
+   <DESCRIPTION>
+    Style of the index printed in the GIF.  In default, it is 'detid' if withcat=yes, 'srcnum' if withsrclist=yes, or 'none' otherwise.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="DEFAULT"/>
+    <ITEM value="none"/>
+    <ITEM value="srcnum"/>
+    <!-- ITEM value="hexsrcnum"/ -->
+    <ITEM value="detid"/>
+    <ITEM value="srcid"/>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="srcindexseparator" type="string" default="DEFAULT" mandatory="no">
+   <DESCRIPTION>
+   The separator between the source name and index displayed in the output image.  Default is ':' and '/' for srcindexstyle='detid' and 'srcnum', respectively.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="iaunameprefix" type="string" default="">
+   <DESCRIPTION>
+    Prefix for the IAUNAME in case the catalogue (if given) is missing it.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="obsidstr" type="string" default="DEFAULT" mandatory="no">
+   <DESCRIPTION>
+    String expression of OBS_ID.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="erangestr" type="string" default="" mandatory="no">
+   <DESCRIPTION>
+    String expression of the energy band, such as, '0.5-10 keV'.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="inststr" type="string" default="DEFAULT" mandatory="no">
+   <DESCRIPTION>
+    String expression of the instrument.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="commlower" type="string" default="" mandatory="no">
+   <DESCRIPTION>
+    Comment appearing at right-hand side in the second row in the output image.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="commupper" type="string" default="" mandatory="no">
+   <DESCRIPTION>
+    Comment appearing at right-hand side in the first row in the output image.
+   </DESCRIPTION>
+  </PARAM>
+
+
+  <PARAM id="imagesize" type="real" default="8" mandatory="no">
+   <DESCRIPTION>
+    Size of the output image in unit of arcmin.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    imagesize in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="lwidth" type="int" default="0" mandatory="no">
+   <DESCRIPTION>
+    Lwidth of the cross in the image (0 (Default) means automatically calculated).
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    lwidth in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="sizeratiocross" type="real" default="0.0" mandatory="no">
+   <DESCRIPTION>
+    Ratio of the size of closeness of the cross to the source (0 (Default) means automatically calculated).
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    sizeratiocross in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="fontnumber" type="int" default="0" mandatory="no">
+   <DESCRIPTION>
+    Font number in PGPLOT used in output images (Default=0 (not specified)).
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    fontnumber in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="colourmapid" type="int" default="3" mandatory="no">
+   <DESCRIPTION>
+    Colour Map ID (Default=3, heat).
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    colourmapid in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="printparams" type="bool" default="no">
+   <DESCRIPTION>
+    Display to STDOUT the source parameters if yes.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="dryrun" type="bool" default="no">
+   <DESCRIPTION>
+    Dry-run if yes.
+   </DESCRIPTION>
+  </PARAM>
+
+
+ </CONFIG>
+</FILE>

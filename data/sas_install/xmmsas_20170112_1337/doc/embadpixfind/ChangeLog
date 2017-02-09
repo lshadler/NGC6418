@@ -1,0 +1,182 @@
+ChangeLog for embadpixfind
+==========================
+
+Open SPRs:
+----------
+	None.
+
+Version 2.5 - 2015-11-20 (AI)
+-----------
+- Type declaration for "node" and "tabname" variables
+	
+Version 2.4 - 2015-11-18 (AI)
+-----------
+- New compatibility with RGS images to detect hot pixels and columns
+	
+Version 2.3 - 2009-01-08 (JB)
+-----------
+- mu and mu2 variables were not initialized in findBadPix. Failed with F95 5.1
+- Improve gradient correction to dispersion estimate near the borders
+- Consider that bright pixels declared in CCF are bad by default
+- Add ignoreccfbright parameter to allow testing them anyway
+
+Version 2.2 - 2005-09-12 (JB)
+-----------
+- Fixed SPR 3517: Task fails with SLATEC error. Occurs when pixels on borders
+  are surrounded by many bad pixels.
+
+Version 2.1.1 - 2005-04-22 (JB)
+-------------
+- Fix bug occurring when entire CCD is set to bad (for MOS1 CCD6).
+
+Version 2.1 - 2005-01-13 (JB)
+-----------
+- Remove two useless residual development files under src.
+
+Version 2.0 - 2005-01-11 (JB)
+------------
+- Remove PSF factor in favor of local dispersion.
+- Add halfwidth2d, halfwidth1d, minratio parameters.
+- Remove medianset parameter (compute median internally)
+- Relax stopping criterion to avoid missing bright pixels.
+- Use new statistic (Li&Ma or binomial) to test faint pixels.
+
+Version 1.21 - 2004-12-23 (JB)
+------------
+- Fixed SPR 3414: Blank segments in MOS images.
+- Do not reject columns/rows when local dispersion is large.
+- Modify findBadSeg so that pixrate is a vector.
+- Always call findBadCol and findBadRow for both positive and negative peaks.
+- Always detect dark columns/rows internally whatever maxratio.
+- Modify findBad1D to account for the brightness profile along the projection
+  direction.
+- Change findBadPix11, findBad1D11, getMedian11 warnings into messages.
+
+Version 1.20.1 - 2004-03-16 (JB)
+--------------
+- Bug fix on bad pixel type.
+
+Version 1.20 - 2003-10-08 (JB)
+------------
+- Moved medloc function to emsaplib as localMedian.
+
+Version 1.19 - 2003-07-10 (JB)
+------------
+- Make coherent with emsaplib 2.19 on quantilePoisson.
+
+Version 1.18 - 2003-04-12 (JB)
+------------
+- quantile changed into quantilePoisson in emsaplib.
+
+Version 1.17 - 2003-04-11 (JB)
+------------
+- Moved quantile function to emsaplib.
+
+Version 1.16 - 2003-04-07 (JB)
+------------
+- Improvement to the combined bright/dead row/column search.
+
+Version 1.15 - 2003-03-28 (JB)
+------------
+- Now looks for bright and dead columns/rows together.
+- The bad pixel type was not set when found in getMedian.
+
+Version 1.14 - 2002-11-27 (JB)
+------------
+- Allow very small probathreshold.
+
+Version 1.13 - 2002-08-26 (JB)
+------------
+- Iterate over full loop (dead, pixels, rows, columns).
+
+Version 1.12 - 2002-07-24 (JB)
+------------
+- readBadpix, writeBadpix and mergeBad moved to emsaplib.
+
+Version 1.11 - 2002-05-27 (JB)
+------------
+- Clarify warnings in code and doc.
+
+Version 1.10 - 2002-05-07 (JB)
+------------
+- Upgrade parameter file to param 2.0.
+
+Version 1.9 - 2002-04-30 (JB)
+-----------
+- Improve mergeBad to accept duplicated bad pixels as in the CCF.
+
+Version 1.8 - 2002-04-29 (JB)
+-----------
+- Included possibility of diagonals in check for errors in CCF.
+- Added security in quantile to avoid infinite loops as in SPR 2828.
+- Add nval argument to medloc function to compensate packSpace argument
+  introduced in 1.6.1 (it changed the result).
+- Fixed SPR 2835: task crashes with no message (just prior warnings)
+- Fixed SPR 2810: bright bad pix in test pipeline images
+
+Version 1.7 - 2002-04-16 (JB)
+-----------
+- Fixed SPR 2828: task goes in indefinit loop
+
+Version 1.6.1 - 2002-03-08 (JB)
+-------------
+- Add packSpace argument to all pack calls, to work around a problem
+  with pack in the sas (src/embadpixfind_mod.f90).
+
+Version 1.6  -  2002-01-17 (JB)
+-----------
+- Add security against gradients in strong statistics (1D).
+- Add security against false dark rows/columns via maxratio parameter.
+
+Version 1.5  -  2002-01-03 (JB)
+-----------
+- Add security against CCF bright pixels outside the formal CCD.
+- Uses EXPIDSTR instead of EXP_ID.
+
+Version 1.3.1  -  2001-11-09 (JB)
+-------------
+- Fixed SPR 2626 (slatec error in embadpixfind).
+
+Version 1.3  -  2001-10-22 (JB)
+-----------
+- Adapted to cal-3.121.
+
+Version 1.2.2  -  2001-10-17 (JB)
+-------------
+- MOS1 PSF hardcoded (not peaked enough in CCF).
+
+Version 1.2.1  -  2001-10-15 (JB)
+-------------
+- Fixed SPR 2598 (Subscript 1 of XBAD is out of range).
+
+Version 1.2  -  2001-10-10 (JB)
+-----------
+- Check uplinked bad pixels declared in CCF.
+
+Version 1.1.1  -  2001-07-06 (JB)
+-------------
+- Optimize when finddead=N.
+
+Version 1.1  -  2001-07-03 (JB)
+-----------
+- Look for brightest pixels before dark rows and columns.
+
+Version 1.0.1  -  2001-06-05 (JB)
+-------------
+- Bug correction.
+
+Version 1.0  -  2001-05-11 (JB)
+-----------
+- First accepted version. emeventsproj is now an independent package.
+
+Version 0.2  -  2001-04-17 (JB)
+-----------
+- Add bright segment detection along rows and columns.
+- Add dead pixel detection.
+- Add PSF correction factor.
+- Add incremental mode.
+- Adapt to window modes.
+
+Version 0.1  -  2000-09-29 (JB)
+-----------
+- Initial version for outside testing.

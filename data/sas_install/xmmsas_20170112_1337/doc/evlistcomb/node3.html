@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="evlistcomb">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="evlistcomb.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="evlistcomb.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+evlistcomb (evlistcomb-4.19.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="evlistcomb.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="evlistcomb.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="evlistcomb:description:description"></A>
+<BR>
+Description
+</H1>
+The MOS, PN or RGS chains
+are applied separately to event lists attached to a single CCD
+(or CCD/node for MOS).
+<A NAME="520"></A><A NAME="tex2html1"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A>
+builds a global calibrated event list (PPS product) 
+for one EPIC or RGS camera from their outputs.
+This is done by taking in all input files the extension
+whose name is specified by the <TT>maintable</TT> parameter 
+(called 'merged extension' in what follows)
+and merging the columns into a single output extension of the same name.
+A <A NAME="525"></A><TT>CCDNR</TT> column is added to the extension to keep track
+of all events' origin. Its contents is taken from the <A NAME="527"></A><TT>CCDID</TT> keyword
+(and <A NAME="529"></A><TT>QUADRANT</TT> for EPIC PN).
+For EPIC MOS only (not RGS) the node (<A NAME="531"></A><TT>CCDNODE</TT> keyword) 
+is coded into the CCD number 
+by adding 10 if the redundant node is used. <BR>
+Actually two calibrated event lists
+are built if all CCDs are not operated in the same mode.
+The mode is recognized by the <A NAME="533"></A><TT>DATAMODE</TT> keyword,
+which must be one of both values specified in the <TT>xxxdatamodes</TT> 
+parameter.
+The first <A NAME="536"></A><TT>DATAMODE</TT> keyword is associated with the <TT>imagingset</TT>,
+<TT>xxximgcolnames</TT>) and <TT>xxximgcoltypes</TT> parameters
+(it need not be IMAGING, for example it is used for RGS SPECTROSCOPY mode).
+The second keyword in <TT>xxxdatamodes</TT> is associated with 
+the <TT>timingset</TT>,
+<TT>xxxtimcolnames</TT>) and <TT>xxxtimcoltypes</TT> parameters. <BR>
+The <TT>xxxdatamodes</TT> parameter is only a way to tell 
+<A NAME="546"></A><A NAME="tex2html2"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A>
+the name of the modes. 
+It cannot be used to select which mode you want in output, and should
+not be set differently in the various instrument modes.
+
+<P>
+When used in default mode, <A NAME="550"></A><A NAME="tex2html3"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A>
+propagates only 
+that subset of the original columns, specified in the Data Products ICD.
+The columns are converted into the type of the ICD if need be.
+This is done by specifying the <TT>instrument</TT> parameter to 'emos',
+'epn' or 'rgs'. The task will then use the default list of modes 
+(<TT>xxxdatamodes</TT>), column names (<TT>xxxyyycolnames</TT>) and types
+(<TT>xxxyyycoltypes</TT>), where xxx is the 3 or 4-letter instrument symbol 
+and yyy the mode symbol ('img' or 'tim'). 
+The columns appearing in the list but not present in the input files
+are not created.
+When transtyping <A NAME="558"></A><A NAME="tex2html4"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A>
+checks for overflow and sets to null
+the data which overflow the output type.
+
+<P>
+In order to generate an output file with other columns,
+one needs to specify by hand the <TT>xxxyyycolnames</TT> 
+and <TT>xxxyyycoltypes</TT> parameters for the instrument and mode(s)
+one is interested in. The correspondance between
+the column names and types is done simply by order of appearance.
+
+<P>
+The task also copies over the secondary extensions specified 
+by the <TT>othertables</TT> parameter for all files into 
+extensions with the same name (truncated to 6 characters) followed by nn
+(the 2-digit <A NAME="565"></A><TT>CCDNR</TT>). This works both for tables and arrays.
+Except their name, those extensions are copied without change
+and entirely (data and keywords).
+
+<P>
+The compatibility of the files is checked through a number 
+of primary keywords, specified by the <TT>primarychecks</TT> parameter.
+Those keywords must exist in all files.
+All files in the list  which do not share the first file's setting 
+are rejected.
+All keywords (not only those in <TT>primarychecks</TT>) present in 
+the primary header of any of the input files are
+propagated to the primary header of the output file,
+except <A NAME="569"></A><TT>FILENAME</TT> which is clearly file-specific.
+In practice this means a keyword takes the value it has
+in the last file of the list (of that mode) where it is present.
+All those (global) keywords are also copied to all output extensions,
+except those specified in <TT>primaryonly</TT>.
+
+<P>
+Some keywords in the merged extensions (<TT>extensionchecks</TT> parameter)
+may also be checked for compatibility between files. Those do not have
+to exist, but will be propagated if they do.
+Other keywords (specified by the <TT>mainattributes</TT> parameter) 
+may also be propagated to the merged extensions. 
+Those will take the value they have in the last file of the list 
+where they are present.
+Yet other keywords in the merged extensions may be maximised 
+(<TT>maxattributes</TT>) or minimised (<TT>minattributes</TT>).
+<BR>
+The four sets of parameters (<TT>extensionchecks</TT>, <TT>mainattributes</TT>,
+<TT>maxattributes</TT>, <TT>minattributes</TT>) may include 
+column specific keywords as well.
+
+<P>
+All keywords in the merged extensions are not automatically propagated,
+as those keywords are usually different for each CCD/node.
+If CCD-dependent keywords are needed down the line, they must be propagated
+by means of one of the secondary extensions 
+(<A NAME="580"></A><A NAME="tex2html5"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A>
+does not do that automatically).
+
+<P>
+The standard column specific keywords (<A NAME="584"></A><TT>TNULL</TT>, <A NAME="586"></A><TT>TUNIT</TT>) 
+are taken from the first valid file where they are set.
+All subsequent files which have those keywords set to a different value
+are rejected (files with keywords not set are accepted).
+To propagate other column specific keywords, they must be specified manually
+via the <TT>extensionchecks</TT>, <TT>mainattributes</TT>,
+<TT>maxattributes</TT> and <TT>minattributes</TT> parameters (see above).
+
+<P>
+It is possible to merge several extensions (<TT>maintable</TT> may be a list).
+In that case all keyword operations 
+(<TT>extensionchecks</TT>, <TT>mainattributes</TT>,
+<TT>maxattributes</TT>, <TT>minattributes</TT>) are done on all extensions.
+It is not possible to specify a specific list of columns for each
+of the extensions to merge. All columns to be merged (in all extensions)
+must appear in the <TT>xxxyyycolnames</TT> and <TT>xxxyyycoltypes</TT>
+parameters (but they don't have to exist).
+
+<P>
+<A NAME="599"></A><A NAME="tex2html6"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A>
+will also accept in input files generated by a previous
+call to <A NAME="603"></A><A NAME="tex2html7"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A>. In that case the <A NAME="607"></A><TT>CCDNR</TT> column will
+be propagated as a normal column (but need not be specified in the list
+of columns to propagate), and all the secondary extensions
+whose first 6 characters are common with one of <TT>othertables</TT>
+will be propagated.
+
+<P>
+In the PPS, <A NAME="610"></A><A NAME="tex2html8"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A>
+must be followed by a call to 
+<A NAME="614"></A><A NAME="tex2html9"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+which will apply the selection on Good Time intervals
+and add the <A NAME="618"></A><TT>EXPOSURE</TT> keyword.
+<A NAME="620"></A><A NAME="tex2html10"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A>
+can be applied as is to slew data.
+
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="evlistcomb.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>General</TITLE>
+<META NAME="description" CONTENT="General">
+<META NAME="keywords" CONTENT="eslewsearch">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eslewsearch.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eslewsearch (eslewchain-1.11) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="How to use"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eslewsearch.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000"></A>
+<A NAME="eslewsearch:description:description"></A>
+<BR>
+General
+</H2>
+
+<P>
+The aim of <A NAME="312"></A><A NAME="tex2html3"
+  HREF="../eslewsearch/index.html"><SPAN  CLASS="textbf">eslewsearch</SPAN></A>
+is to produce lists of sources detected
+in an XMM-Newton slew. It is designed to work with data from the
+EPIC-pn camera.
+
+<P>
+<A NAME="316"></A><A NAME="tex2html4"
+  HREF="../eslewsearch/index.html"><SPAN  CLASS="textbf">eslewsearch</SPAN></A>
+takes as input a set of slew images and exposure maps
+which have been previously created by the task <A NAME="320"></A><A NAME="tex2html5"
+  HREF="../eslewchain/index.html"><SPAN  CLASS="textbf">eslewchain</SPAN></A>.
+It runs the following sequence of SAS tasks separately on the
+soft band (0.2-2 keV), hard band (2-12 keV) and total band (0.2-12 keV)
+subimages.
+
+<P>
+
+<OL>
+<LI><A NAME="324"></A><A NAME="tex2html6"
+  HREF="../emask/index.html"><SPAN  CLASS="textbf">emask</SPAN></A>
+expimageset=EXPMAP
+</LI>
+<LI><A NAME="328"></A><A NAME="tex2html7"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+usemap=no (local mode)
+</LI>
+<LI><A NAME="332"></A><A NAME="tex2html8"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>
+(make the background map)
+</LI>
+<LI><A NAME="336"></A><A NAME="tex2html9"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+usemap=yes (map mode)
+</LI>
+<LI><A NAME="340"></A><A NAME="tex2html10"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+</LI>
+</OL>
+
+<P>
+The individual source lists are combined using the ftools,
+<TT>ftlist, fcreate, fsort into a single file.
+</TT>
+<P><HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

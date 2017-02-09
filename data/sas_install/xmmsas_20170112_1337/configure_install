@@ -1,0 +1,451 @@
+#!/bin/bash
+#
+# $Id: configure_install,v 1.15 2013/12/09 14:57:13 eojero Exp $
+#
+# This script comes with any sas distribution in its top directory 
+# 
+# This script creates a pair of shell scripts, one for sh/bash 
+# and the other for csh/tcsh, both within the top directory
+# named respectively setsas.sh and setsas.csh.
+#
+# These setsas.(c)sh scripts could be used to initialize the SAS 
+# without having to remember or set explicitly the SAS_DIR where 
+# the SAS is installed. 
+#
+# Before creating these two scripts, the configure_install makes 
+# several sanity checks about the correctness of this installation of SAS.
+#
+# This script must be run from the top directory of the 
+# installation, otherwise complaints.
+#
+# Typically any SAS installation would be of the form 
+# 
+#      /some_directory_path/xmmsas_YYYYMMDD_HHMM
+#
+# where xmmsas_YYYYMMDD_HHMM is the so called "manifest"
+#
+# The manifest name is written as well in the file RELEASE
+
+
+# sasdir is the directory where the install.sh is launched.
+
+sasdir=`pwd`
+
+# Functions 
+
+# 1 - function release
+
+# checks that the script is run from the installation top directory
+
+release()
+{
+echo -n "Checking for the RELEASE file: "
+if [ ! -f RELEASE ] ; then
+   echo "Error: Run this script from the installation top directory."
+   return 1
+fi
+echo  "OK"
+return 0
+}
+
+
+# 2 - function topdir
+
+# Checks that the directory component of $sasdir (last part) 
+
+# is equal to the manifest name as contained in RELEASE. 
+
+# This is de default name given by the SAS install. 
+
+topdir()
+{
+
+echo -n "Checking we are in the top directory: "
+
+RELEASE=`cat RELEASE`
+last=${sasdir##*/}
+
+if [ "$last" != "$RELEASE" ]; then
+   echo
+   echo "Error: Installation directory name not equal to $RELEASE - Can not proceed"
+   return 1
+fi
+echo "OK"
+return 0
+}
+
+
+# 3 - function setup_scripts
+
+# checks that the sas-setup scripts are present in the top dir
+
+# depends on function top to work
+
+setup_scripts()
+{
+
+echo -n "Checking for presence of sas-setup.sh : "
+
+if ! test -f ${sasdir}/sas-setup.sh ; then
+        echo
+	echo "Error: $sasdir is missing sas-setup.sh - Can not proceed"
+	return 1
+fi
+
+if ! test -f ${sasdir}/sas-setup.csh ; then
+        echo
+        echo "Error: $sasdir is missing sas-setup.csh - Can not proceed"
+        return 1
+fi
+
+echo "OK"
+return 0
+}
+
+
+# 4 - function identify_perl
+
+# Checks for an the existence of an installed perl in the following order:
+
+# 1) Forces to take the perl defined in SAS_PERL env variable, if exists.
+
+# 2) Takes /usr/local/bin/perl whether is as a real binary or a soft link but 
+#    only if the real binary ELF type matches the kernel ("uname -m").
+
+# 3) Takes /usr/bin/perl (Linux distributions and Mac OS X)
+
+# 4) Takes /opt/local/bin/perl (MacPorts install on Mac OS X)
+
+# 5) Takes /sw/bin (Fink install on Mac OS X)
+
+
+identify_perl()
+{
+perl="" ; perlsed=""
+
+echo "Checking whether perl is available or not ..."
+
+# First checks whether the SAS_PERL environment variable is set or not.
+
+if [ $SAS_PERL ] ; then
+
+  # checks whether the perl set in SAS_PERL exists and is a real executable
+
+  if [ -L "$SAS_PERL" ] ; then 
+    echo "Error: $SAS_PERL is a soft link not a real binary  - Exiting !"
+    return 1
+  fi
+
+  if [ -x "$SAS_PERL" ] ; then 
+
+    perl=$SAS_PERL              ; perlsed=`echo $perl | sed 's:\/:\\\/:g'`
+    perlsed="$perlsed -w"  
+    echo ; echo "SAS_PERL=$SAS_PERL is available."
+    echo "It will be used in all SAS perl tasks."
+    return
+  else
+    echo ; echo "Error: The selected $SAS_PERL is not executable - Exiting !"
+    return 1
+  fi
+
+fi
+
+# Next, checks whether /usr/local/bin/perl is a real binary. 
+
+# Checks whether its ELF type and the system kernel type match or not.
+
+if [ -x "/usr/local/bin/perl" -a ! -L "/usr/local/bin/perl" ] ; then 
+ 
+  # Check whether the perl executable ELF type matches the kernel type
+
+  cputype=`uname -m`
+
+  case "$cputype" in
+    i386|i486|i586|i686) kernelbits=32 ;;
+    x86_64)                kernelbits=64 ;;
+  esac
+
+  perl32=`file /usr/local/bin/perl | grep -c "32-bit"`
+  perl64=`file /usr/local/bin/perl | grep -c "64-bit"` 
+  
+  [ "$perl32" = "1" ]  && perlexectype=32
+  [ "$perl64" = "1" ]  && perlexectype=64
+
+  if [ "$perl32" != "1" -a "$perl64" != "1" ] ; then 
+    echo "Error: Unable to verify the ELF type of $perl - Exiting !" 
+    return 1
+  fi
+
+  # Match kernelbits and perlexectype ? If yes, we take it.
+
+  if [ "$kernelbits" = "$perlexectype" ] ; then 
+
+    perl="/usr/local/bin/perl" ; perlsed="\/urs\/local\/bin\/perl -w"
+
+    echo ; echo "$perl is available. It will be used in all SAS perl tasks."
+
+    return
+  fi
+
+fi
+
+# /usr/bin/perl (Linux and Mac OS X)
+
+if [ -x "/usr/bin/perl" ]       ; then 
+  perl="/usr/bin/perl"          ; perlsed="\/usr\/bin\/perl -w"
+  echo  ; echo "$perl is available. It will be used in all SAS perl tasks."
+  return
+fi
+
+# /opt/local/bin/perl (Mac OS X - MacPort installed)
+
+if [ -x "/opt/local/bin/perl" ] ; then 
+  perl="/opt/local/bin/perl"    ; perlsed="\/opt\/local\/bin\/perl -w"
+  echo ; echo "$perl is available. It will be used in all SAS perl tasks."
+  return
+fi
+
+# /sw/bin/perl (Mac OS X - Fink installed)
+
+if [ -x "/sw/bin/perl" ]        ; then 
+  perl="/sw/bin/perl"           ; perlsed="\/sw\/bin\/perl -w"
+  echo ; echo "$perl is available. It will be used in all SAS perl tasks."
+  return
+fi
+
+if [ ! "$perl" ] ; then
+  echo "Error: No perl installed in the system !"
+  echo ; echo "Please install perl and run again configure_install."
+  return 1
+fi
+}
+
+# 5 - function change_perl 
+ 
+# This function will change the she-bang in all SAS perl tasks as it is
+# written by the building system to the $perl identified by function identify_perl
+# This function assumes the script is executed in the $sasdir.
+
+change_perl()
+{
+
+if [ ! "$perl" ] ; then
+  echo "Error: perl has not been identified yet - Please report this problem !"
+  return 1
+fi
+
+# Execute a find on bin and lib/perl5 to look for files which contain she-bangs
+# These files could be perl and shell scripts.
+# Once we identify them, filter out those which have a she-bang not in the first line.
+# That is the case of perl scripts which have included another perl scripts.
+# Then filter out not perl she-bangs.
+
+# Note that we must consider she-bangs with and without a blank space 
+# between #! and the full path of perl binary. That is why using two "-e" 
+# Also note the usage of option -H to grep together with -n to obtain both,
+# the filename and the line where the match occurs.
+
+find bin lib/perl5 -type f -exec grep -Hn -e '^\#\! \/' -e '^\#\!\/' {} \; | while read output1 
+do
+  # The following criptical expression serves to filter out any non-printable
+  # characters in the string read from file. [:print:] include ASCII 32-126 plus
+  # the space character.
+  output=${output1//[^[:print:]]/}
+
+  file=`echo $output | awk -F":" '{print $1}'`
+
+  filebase=`basename $file` ; filepath=`dirname $file`  
+
+  isold=`echo $filebase | awk -F"." '{print $NF}'` 
+
+  # Filter out those files that might be genrated by a previous run of this script
+  [ "$isold" = "old"  ] && continue  
+
+  # Filter out any other matching except for she-bang in first line
+  linenumber=`echo $output | awk -F":" '{print $2}'`
+
+  [ "$linenumber"  != "1"  ] && continue
+
+  # Get the file she-bang
+  filesb1=`head -n 1 $file | tail -n 1`
+
+  # Filter out the string of any non-printable character
+  filesb=${filesb1//[^[:print:]]}
+
+  # Filter out any other she-bang except perl she-bangs
+  hasperl=`echo $filesb | grep -c perl` 
+
+  [ "$hasperl" = "0" ] && continue
+
+  # Prepare she-bang for replacement with sed
+  perlshebang=`echo $filesb | sed 's:\/:\\\/:g'`
+
+  sed -e "s/${perlshebang}/\#\! ${perlsed}/g" $file > ${filepath}/${filebase}.tmp
+
+  chmod 755 ${filepath}/${filebase}.tmp
+
+  # keeps a copy of previous version of the filed to be modified
+
+  mv ${filepath}/${filebase} ${filepath}/${filebase}.old
+
+  mv ${filepath}/${filebase}.tmp $file
+
+done
+
+}
+
+
+
+# 5 - function write_setsas_scripts()
+
+# function depends on $sasdir
+
+# scripts do not set neither SAS_CCFPATH nor SAS_CCF and SAS_ODF
+
+write_setsas_scripts()
+{
+
+echo -n "Writing setsas.sh : "
+
+# The version for sh/bash
+                                                                                
+cat << EOF > $sasdir/setsas.sh
+#!/bin/bash
+#
+# setsas.sh - Automatically generated by configure_install at installation
+# 
+# \$Id: configure_install,v 1.15 2013/12/09 14:57:13 eojero Exp $
+#
+
+platform=\`uname -s\`
+
+if [ -z "\$LHEASOFT" ] ; then 
+  echo "setsas.sh: Error  - Please define and initialize HEASOFT! "
+  return 1
+fi
+
+if [ -z "\$SAS_PREV_PATH" ] ; then 
+  SAS_PREV_PATH=\$PATH                                ; export SAS_PREV_PATH
+  if [ "\$platform" = "Darwin" ] ; then
+    SAS_PREV_DYLD_LIBRARY_PATH=\$DYLD_LIBRARY_PATH    ; export SAS_PREV_DYLD_LIBRARY_PATH
+  else
+    SAS_PREV_LD_LIBRARY_PATH=\$LD_LIBRARY_PATH        ; export SAS_PREV_LD_LIBRARY_PATH
+  fi
+else
+  PATH=\$SAS_PREV_PATH                                ; export PATH
+  if [ "\$platform" = "Darwin" ] ; then 
+    DYLD_LIBRARY_PATH=\$SAS_PREV_DYLD_LIBRARY_PATH    ; export DYLD_LIBRARY_PATH
+  else
+    LD_LIBRARY_PATH=\$SAS_PREV_LD_LIBRARY_PATH        ; export LD_LIBRARY_PATH
+  fi  
+fi
+
+SAS_DIR=`echo \$sasdir`                               ; export SAS_DIR
+# Unset any previous definition of SAS_PATH (previous SAS initializations!)
+unset SAS_PATH
+. \$SAS_DIR/sas-setup.sh
+if [ "\$platform" = "Darwin" ] ; then 
+  ulimit -d unlimited
+  ulimit -s 65532
+fi
+
+echo ; sasversion
+echo ; echo "Do not forget to define SAS_CCFPATH, SAS_CCF and SAS_ODF"; echo
+EOF
+                                                                           
+echo "Done"
+
+echo -n "Writing setsas.csh: "
+     
+# The version for csh/tcsh
+                                                                                
+cat << EOF > $sasdir/setsas.csh
+#!/bin/csh
+#
+# setsas.csh - Automatically generated by configure_install at installation
+#
+# \$Id: configure_install,v 1.15 2013/12/09 14:57:13 eojero Exp $
+#
+
+set platform=\`uname -s\`
+
+if ( ! \$?LHEASOFT ) then 
+  echo "setsas.csh: Error - Please define and initialize HEASOFT !"
+  exit 1
+endif
+
+
+# C-shell does not like undefined env. variables
+
+if ( ! \$?LD_LIBRARY_PATH ) then
+  setenv LD_LIBRARY_PATH ""
+endif
+
+if ( \$platform == "Darwin" &&  ! \$?DYLD_LIBRARY_PATH ) then
+  setenv DYLD_LIBRARY_PATH ""
+endif
+
+if ( ! \${?SAS_PREV_PATH} ) then 
+  setenv SAS_PREV_PATH                   \$PATH
+  if ( \$platform == "Darwin" ) then
+    setenv SAS_PREV_DYLD_LIBRARY_PATH    \$DYLD_LIBRARY_PATH
+  else
+    setenv SAS_PREV_LD_LIBRARY_PATH      \$LD_LIBRARY_PATH
+  endif
+else
+  setenv PATH                            \$SAS_PREV_PATH
+  if ( \$platform == "Darwin" ) then 
+    setenv DYLD_LIBRARY_PATH             \$SAS_PREV_DYLD_LIBRARY_PATH
+  else
+    setenv LD_LIBRARY_PATH               \$SAS_PREV_LD_LIBRARY_PATH
+  endif  
+endif
+
+setenv SAS_DIR `echo \$sasdir`
+# Unset any previous definition of SAS_PATH (previous SAS initializations!)
+unsetenv SAS_PATH
+source \$SAS_DIR/sas-setup.csh
+if ( \$platform == "Darwin" ) then 
+  limit datasize unlimited
+  limit stacksize 65532
+endif
+
+echo ; sasversion
+echo ; echo "Do not forget to define SAS_CCFPATH, SAS_CCF and SAS_ODF"; echo
+EOF
+
+echo "Done"
+return 0
+}
+
+
+
+# main
+
+echo
+
+release
+
+[ $? -ne 0 ] && exit 1
+
+topdir
+
+[ $? -ne 0 ] && exit 1
+
+setup_scripts
+
+[ $? -ne 0 ] && exit 1
+
+identify_perl
+
+[ $? -ne 0 ] && exit 1
+
+change_perl
+
+[ $? -ne 0 ] && exit 1
+
+echo ; echo "" ; echo
+
+write_setsas_scripts
+
+echo

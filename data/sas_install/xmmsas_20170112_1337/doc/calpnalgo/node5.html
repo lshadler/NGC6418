@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>CTI correction</TITLE>
+<META NAME="description" CONTENT="CTI correction">
+<META NAME="keywords" CONTENT="calpnalgo">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="calpnalgo.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+calpnalgo (calpnalgo-2.44.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="General"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Gain correction"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="calpnalgo.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000">
+CTI correction</A>
+</H2>
+
+<P>
+In CCDs part of the charge released by an absorbed photon is lost during
+transfer to the readout node. This loss depends on several parameters, in
+particular on the position where the photon was detected, its energy, the
+temperature of the CCD, and the saturation of traps by charges preceding along
+the readout direction. In order to determine how these parameters affect the
+charge loss of the pn-CCD cameras, more than three billion events were
+recorded in extensive sets of calibration measurements from February 1998 to
+January 1999.
+
+<P>
+For deriving the CTI, each CCD column was split into macro pixels, which were
+determined by adaptive binning to contain a sufficient number of first singles
+around the line feature. The charge losses were then obtained, column by
+column, by cross-correlating a spectral template accumulated from all first
+singles of a column with spectra from the macro pixels of the same column, to
+yield a first estimate of the energy shifts. This value was then used to
+improve the template and the cross-correlation was repeated until convergence
+was achieved.
+
+<P>
+In order to obtain a general CTI correction code, a model based on the capture
+and emission process of electrons in deep level traps was developed. This
+model, described in detail in 
+[], 
+considers the dependence of the
+CTI on energy and temperature, and takes the effect of precursors and the
+presence of noisy pixels into account. It was calibrated with the spatially
+resolved charge losses obtained with the technique described above, and makes
+it possible to calibrate not only the spectral response of each pixel, but
+also the mutual influence of pixels along the same CCD readout column.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="General"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Gain correction"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,296 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="rgsrmfgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsrmfgen.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="rgsrmfgen.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsrmfgen (rgsrmfgen-1.15.6) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="rgsrmfgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsrmfgen.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="rgsrmfgen:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+
+<UL>
+<LI>The following algorithm defines how certain filenames are inferred
+  when not explicitly provided.  This mechanism will work nicely when
+  the task is run with product files from the PPS or from
+  <A NAME="858"></A><A NAME="tex2html15"
+  HREF="../rgsproc/index.html"><SPAN  CLASS="textbf">rgsproc</SPAN></A>.  Note also that when the template filename is
+
+shorter than the PPS convention allows, an alternate convention is
+  assumed, which the user may find more convenient under special
+  circumstances.
+
+<P>
+<PRE>
+IF *newrmf
+  IF *withspectrum
+    template = *spectrumset
+  ELSE
+    template = *evlist OR *srclist
+ELSE
+  template = *rmfset
+
+IF *srclist == ""
+  IF template.root.length &gt;= 10
+    *srclist = template with "SRCLI_0000" substituted
+  ELSE
+    *srclist = "srcli." + template.suffix
+
+IF *evlist == ""
+  IF template.root.length &gt;= 10
+    *evlist = template with "EVENLI0000" substituted
+  ELSE
+    *evlist = "evenli." + template.suffix
+
+IF *newrmf AND *rmfset == ""
+  IF template.root.length &gt;= 10
+    *rmfset = template with ("RSPMAT",*order,*source) substituted
+  ELSE
+    *rmfset = "rspmat." + template.suffix
+</PRE>
+
+<P>
+</LI>
+<LI>NarrowLSF
+<BR>
+The following algorithm defines the narrow-feature
+  line-spread-function for a given source position, reflection order,
+  and incident energy bin.  The large-angle-scattering distribution is
+  not included here because, in principle at least, it could be
+  computed on a much coarser channel grid and thus consume much less
+  space in the output.  However, OGIP does not currently support a
+  response matrix file format with both a fine-grid matrix and a
+  coarse-grid matrix, and so the broad and narrow
+  line-spread-functions are currently just added together as the
+  response matrix is assembled.
+
+<P>
+<PRE>
+IF GratingDataServer::beta(source,order,energy) within matrix channel space
+
+  // prepare various distributions in wrap-around order for convolution
+
+    // small angle scattering distribution
+      D = GratingDataServer::scatteringDistribution(source,order,energy)
+      (a,b) = GratingDataServer::scatteringDistributionContribs
+      D[peak] += (1-a)*(1-b)
+
+    // mirror point spread distribution
+      IF *withmirrorpsf
+        PsfDataServer::dispersionFigureDistribution(source,order,energy)
+
+    // custom angular distribution
+      IF *withangdist
+        customFigureDistribution(order,energy)
+
+    // grating bow induced misalignment distribution
+      GratingDataServer::bowingFigureDistribution(source,order,energy)
+
+    // geometric defocus approximation distribution
+      GeometryDataServer::lsfDefocusDistribution(source,order,energy)
+
+    // finite energy band broadening distribution
+      GratingDataServer::broadeningDistribution(source,order,energy)
+
+  // prepare the primary distribution on the matrix channel grid
+
+    GratingDataServer::misalignmentFigureDistribution(source,order,energy)
+
+  LSF = convolution(primary,various...)
+
+ELSE
+
+  // distributions peak outside the matrix channel space, so skip
+  // convolutions, and instead just use the tail of the small angle
+  // scattering distribution where it overlaps the channel space
+
+    LSF = GratingDataServer::scatteringDistribution(source,order,energy)
+
+// scale the LSF by the effective area
+
+  IF dyneffarecorr
+    scale = EffectiveAreaDataServer::realisticEffectiveAreaCurve(source,order)::area(energy)
+  ELSE
+    scale = EffectiveAreaDataServer::intrinsicEffectiveAreaCurve(source,order)::area(energy)
+  
+  IF withrectification
+    scale = EffectiveAreaDataServer::effectiveAreaRectification(scale)::area(energy)
+    
+  NarrowLSF = scale * LSF
+</PRE>
+
+<P>
+</LI>
+<LI>BroadLSF
+<BR>
+The broad-feature line-spread-function is uncomplicated.
+
+<P>
+<PRE>
+// place the large angle scattering distribution on the matrix channel
+// grid and scale it by the effective area
+
+  LSF = GratingDataServer::scatteringDistribution(source,order,energy)
+  scale = EffectiveAreaDataServer::intrinsicEffectiveAreaCurve(source,order)::area(energy)
+  BroadLSF = scale * LSF
+</PRE>
+
+<P>
+</LI>
+<LI>empiricalCrossLA
+<BR>
+The following calibration formula should eventually be transfered to
+  the CAL.  Input parameters are: a one-dimensional selection region in
+  cross-dispersion channels, the source position, and the incident
+  energy in keV.
+
+<P>
+<PRE>
+dpsi = source.DELTA_XDSP * pi/10800
+k = (energy * 10800) / (0.678 * pi)
+
+FOREACH span = interval [min,max] of cross-dispersion channels
+  s += (atan(k*(xdsp(max+0.5)+dpsi)) - atan(k*(xdsp(min-0.5)+dpsi))) / pi
+  n += span.length
+
+empiricalCrossLA = s/n
+</PRE>
+
+<P>
+</LI>
+<LI>The above two line-spread-functions are computed for each reflection
+  order, including the zeroth, and combined with various
+  response-suppressing factors to produce the output response matrix.
+  The following algorithm shows the rough details of these
+  calculations.  Here the arrays prefixed with src and bkg refer,
+  respectively, to the source and background spatial selection
+  regions.  In particular the arrays src.spans and bkg.spans are the
+  selection regions themselves, converted to an image mask, and
+  represented as a list of cross-dispersion channel intervals at each
+  dispersion channel.  Similarly the energy selection region for the
+  reflection order of the output matrix is converted to the array
+  called banana.
+
+<P>
+<PRE>
+// analyze the exposure maps within the spatial selection regions
+
+FOREACH node
+  FOREACH b = dispersion channel of node
+    src.exposure[node,b] = EXPMAP&lt;node&gt;[b] summed over src.spans[node,b]
+    bkg.exposure[node,b] = EXPMAP&lt;node&gt;[b] summed over bkg.spans[node,b]
+    D = EXPMAP&lt;node&gt;[b] * CanonicalCrossPsf::probability(beta(b),source)
+    src.crossPSF[node,b] = D summed over src.spans[node,b]
+    bkg.crossPSF[node,b] = D summed over bkg.spans[node,b]
+
+// compute the response matrix
+
+FOREACH incident energy bin
+
+  // compute the loss factors specific to the narrow-featured LSF
+
+  loss = 0
+  FOREACH node
+    FOREACH b = dispersion channel of node
+      y = src.crossPSF[node,b]
+      IF *bkgcorrect AND bkg.exposure[node,b]
+        y -= bkg.crossPSF[node,b] * src.exposure[node,b] / bkg.exposure[node,b]
+      loss[b] += y * ccdQuantumDataServer(node)::efficiency(energy)
+
+  // combine with the narrow-featured LSF for each reflection order
+
+  LSF = 0
+  FOREACH order in [0,5]
+    LSF += NarrowLSF(source,order,energy)
+  response = LSF * loss
+
+  // compute the loss factors specific to the broad-featured LSF
+
+  loss = 0
+  FOREACH node
+    FOREACH b = dispersion channel of node
+      y = empiricalCrossLA(src.spans[node,b],source,energy)
+      IF *bkgcorrect
+        y -= empiricalCrossLA(bkg.spans[node,b],source,energy)
+      loss[b] += y * src.exposure[node,b] * ccdQuantumDataServer(node)::efficiency(energy)
+
+  // combine with the broad-featured LSF for each reflection order
+
+  LSF = 0
+  FOREACH order in [0,5]
+    LSF += BroadLSF(source,order,energy)
+  response += LSF * loss
+
+  // apply loss factors that are not specific to the type of LSF;
+  // the redistribution function varies slowly with incident energy
+  // and so it is recomputed no more often than every .02 keV.
+  // Since version 1.13.4, the redistribution is calculated for all 
+  // input energies.
+
+  IF redistLoss is stale
+    FOREACH b = response channel
+      redistLoss[b] = CanonicalRedist::spectrum(energy) summed over banana[b]
+  response *= redistLoss * GratingDataServer::selfVignettingEfficiency
+
+  // copy all response channels above LO_THRES to the output matrix
+</PRE>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="rgsrmfgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

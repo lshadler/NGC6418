@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="xmmextractor">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="xmmextractor.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="xmmextractor.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+xmmextractor (xmmextractor-1.4.4) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="xmmextractor.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="xmmextractor.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="xmmextractor:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+The SAS package <A NAME="343"></A><A NAME="tex2html4"
+  HREF="../xmmextractor/index.html"><SPAN  CLASS="textbf">xmmextractor</SPAN></A>
+can be used to process data from EPIC
+MOS and PN, RGS and OM instruments, starting at the ODF level. <A NAME="347"></A><A NAME="tex2html5"
+  HREF="../xmmextractor/index.html"><SPAN  CLASS="textbf">xmmextractor</SPAN></A>
+task 
+only needs the environmental SAS_ODF pointing to the location of the ODF data to run.
+<BR>
+<P>
+<A NAME="351"></A><A NAME="tex2html6"
+  HREF="../xmmextractor/index.html"><SPAN  CLASS="textbf">xmmextractor</SPAN></A>
+has only one input parameter <TT>paramfile</TT>, this parameter is an 
+XML file produce by <A NAME="356"></A><A NAME="tex2html7"
+  HREF="../odfParamCreator/index.html"><SPAN  CLASS="textbf">odfParamCreator</SPAN></A>
+task, for more information about the XML structure 
+and content, please read the <A NAME="360"></A><A NAME="tex2html8"
+  HREF="../odfParamCreator/index.html"><SPAN  CLASS="textbf">odfParamCreator</SPAN></A>
+documentation. Nevertheless, 
+and the end of this chapter we have added the explanation of the XML tag <B>analisisoption</B> for completion. 
+If the user leaves this parameter empty, the <A NAME="364"></A><A NAME="tex2html9"
+  HREF="../xmmextractor/index.html"><SPAN  CLASS="textbf">xmmextractor</SPAN></A>
+task runs automatically the <A NAME="368"></A><A NAME="tex2html10"
+  HREF="../odfParamCreator/index.html"><SPAN  CLASS="textbf">odfParamCreator</SPAN></A>
+generating the XML file.
+<BR>
+<P>
+Firt of all, <A NAME="372"></A><A NAME="tex2html11"
+  HREF="../xmmextractor/index.html"><SPAN  CLASS="textbf">xmmextractor</SPAN></A>
+runs <A NAME="376"></A><A NAME="tex2html12"
+  HREF="../cifbuild/index.html"><SPAN  CLASS="textbf">cifbuild</SPAN></A>
+and <A NAME="380"></A><A NAME="tex2html13"
+  HREF="../odfingest/index.html"><SPAN  CLASS="textbf">odfingest</SPAN></A>, 
+setting the corresponding environmental variables SAS_CCF and SAS_ODF to the right values. <A NAME="384"></A><A NAME="tex2html14"
+  HREF="../xmmextractor/index.html"><SPAN  CLASS="textbf">xmmextractor</SPAN></A>
+comprises calls to several metatasks, <A NAME="388"></A><A NAME="tex2html15"
+  HREF="../epproc/index.html"><SPAN  CLASS="textbf">epproc</SPAN></A>, <A NAME="392"></A><A NAME="tex2html16"
+  HREF="../emproc/index.html"><SPAN  CLASS="textbf">emproc</SPAN></A>,
+<A NAME="396"></A><A NAME="tex2html17"
+  HREF="../rgsproc/index.html"><SPAN  CLASS="textbf">rgsproc</SPAN></A>, <A NAME="400"></A><A NAME="tex2html18"
+  HREF="../omichain/index.html"><SPAN  CLASS="textbf">omichain</SPAN></A>, thus performing the whole data reduction corresponding to any combination of 
+chosen data within an observation with the final products of all those
+metatasks. In addition it allows the user to perform in a
+semi-automatic way the usual analysis corresponding to a point source
+by the EPIC data, starting from the source coordinates, and including
+source extraction radius, background region, and eventual measures to
+avoid pile-up. Interactivity for optimization of all these parameters
+can be enabled, which allows the user to select a source and a
+background regions. For GTI filtering, there are two alternative ways
+for optimization, the default choice is the use of
+<A NAME="404"></A><A NAME="tex2html19"
+  HREF="../eregionanalyse/index.html"><SPAN  CLASS="textbf">eregionanalyse</SPAN></A>, which is applied also automatically in the non
+interactive case. The alternative to it is an optimization based on
+maximization of the signal to noise ("MaxSNR") described in the
+Appendix A of [Pic2004]<A NAME="tex2html3"
+
+HREF="footnode.html#foot183"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A>. In this case the user has to define graphically source and
+background regions.  The final products are spectra with corresponding
+response matrices and exposure corrected light curves. General source
+detection can be also enabled for the EPIC data, including control of
+the main parameters corresponding to
+<A NAME="408"></A><A NAME="tex2html20"
+  HREF="../edetect_chain/index.html"><SPAN  CLASS="textbf">edetect_chain</SPAN></A>. If processing of RGS data is enabled, the whole
+of <A NAME="412"></A><A NAME="tex2html21"
+  HREF="../rgsproc/index.html"><SPAN  CLASS="textbf">rgsproc</SPAN></A>
+runs up with eventually defined source coordinates,
+otherwise the proposal coordinates will be used. For OM analysis, the
+dedicated chain <A NAME="416"></A><A NAME="tex2html22"
+  HREF="../omichain/index.html"><SPAN  CLASS="textbf">omichain</SPAN></A>
+is ran.
+
+<P>
+For EPIC spectral and light curve analysis, the standard filtering is
+applied to the calibrated event list. For PN analysis, the following
+filter parameters are applied: PATTERN <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\le$"></SPAN> 4, FLAG == 0 and
+#XMMEA_EP. For MOS analysis, the following filter parameters are
+applied: PATTERN <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\le$"></SPAN> 12 (Imaging) and PATTERN == 0 (Timing) , FLAG
+== 0 and #XMMEA_EM.
+
+<P>
+<A NAME="420"></A><A NAME="tex2html23"
+  HREF="../xmmextractor/index.html"><SPAN  CLASS="textbf">xmmextractor</SPAN></A>
+creates the following directory structure:
+<PRE>
+  \[workingDirectory]
+    \pn::       epproc products
+    \mos::      emproc products
+    \rgs::      rgsproc and rgslccorr products 
+    \om::       omchain products
+    \gti::      GTI filtering products
+    \epatplot:: epatplot products
+    \images::   edetectchain products
+    \spectra::  eregionanalyse and especget products
+    \lcurve::   epiclccorr products
+    \results::  output log files
+</PRE>
+
+<P>
+One of the most important parameter in the XML file is: <B>analisisoption</B>. There are 6 different analysis options:
+
+<P>
+
+<OL>
+<LI><TT>0:all</TT> : all the exposures corresponding to the chosen observation are reduced to calibrated event lists, unless disabled via 
+the corresponding parameter (<TT>PN</TT>, <TT>MOS</TT>, <TT>RGS</TT>,
+<TT>OM</TT>, all set to "yes" by default). If the calibration index file or
+SAS summary file are missing from the working directory they are created
+in a previous step. In addition, source spectrum, light curve and response
+matrices are extracted using the user defined coordinates as input for the center of the
+source region (or, if not specified by the user, the coordinates are taken from the SAS summary file). The EPIC data is then searched for source detections, via
+<A NAME="429"></A><A NAME="tex2html24"
+  HREF="../edetect_chain/index.html"><SPAN  CLASS="textbf">edetect_chain</SPAN></A>. By default, for the EPIC data, if more than one exposure is present, these actions are taken over the event list corresponding to the 
+longest observation. In the case of EPIC MOS in Timing, the timing observation is analysed, leaving out the imaging part of the exposure corresponding to the outer CCDs.
+Also, RGS spectra are derived together with response matrices, fluxed spectra and exposure corrected and background subtracted light curves. In the case
+of OM data, all the products from running <A NAME="433"></A><A NAME="tex2html25"
+  HREF="../omchain/index.html"><SPAN  CLASS="textbf">omchain</SPAN></A>
+are generated, using the
+default parameters.
+
+<P>
+</LI>
+<LI><B>1:events</B>: this option runs <A NAME="437"></A><A NAME="tex2html26"
+  HREF="../epproc/index.html"><SPAN  CLASS="textbf">epproc</SPAN></A>, <A NAME="441"></A><A NAME="tex2html27"
+  HREF="../emproc/index.html"><SPAN  CLASS="textbf">emproc</SPAN></A>,
+
+<A NAME="445"></A><A NAME="tex2html28"
+  HREF="../rgsproc/index.html"><SPAN  CLASS="textbf">rgsproc</SPAN></A>, <A NAME="449"></A><A NAME="tex2html29"
+  HREF="../omichain/index.html"><SPAN  CLASS="textbf">omichain</SPAN></A>, all with default parameters,
+
+<P>
+</LI>
+<LI><B>2:gti</B>: starting from the calibrated EPIC event lists,
+      this option optimizes signal to noise ratio through definition
+      of GTIs for graphically chosen source and background area,
+
+<P>
+</LI>
+<LI><B>3:edetectchain</B>: starting from EPIC event lists, source detection is performed with <A NAME="453"></A><A NAME="tex2html30"
+  HREF="../edetect_chain/index.html"><SPAN  CLASS="textbf">edetect_chain</SPAN></A>
+<P>
+</LI>
+<LI><B>4:epic_spectra</B>: either using the GTIs produced by the
+      "MaxSNR" method, or by running (default) <A NAME="457"></A><A NAME="tex2html31"
+  HREF="../eregionanalyse/index.html"><SPAN  CLASS="textbf">eregionanalyse</SPAN></A>,
+source and background spectra + corresponding response matrices are derived,
+
+<P>
+</LI>
+<LI><B>5:epic_lightcurve</B>: either using the GTIs produced by the
+      "MaxSNR" method, or by running (default) <A NAME="461"></A><A NAME="tex2html32"
+  HREF="../eregionanalyse/index.html"><SPAN  CLASS="textbf">eregionanalyse</SPAN></A>,
+
+exposure corrected and background subtracted light curves are produced via <A NAME="465"></A><A NAME="tex2html33"
+  HREF="../epiclccorr/index.html"><SPAN  CLASS="textbf">epiclccorr</SPAN></A>,
+
+<P>
+</LI>
+<LI><B>6:rgs_lightcurve</B>: starting from the calibrated RGS event
+      lists, this option creates RGS background substracted
+      lightcurves running <A NAME="469"></A><A NAME="tex2html34"
+  HREF="../rgslccorr/index.html"><SPAN  CLASS="textbf">rgslccorr</SPAN></A>.
+
+<P>
+</LI>
+</OL>
+
+<P>
+<A NAME="473"></A><A NAME="tex2html35"
+  HREF="../xmmextractor/index.html"><SPAN  CLASS="textbf">xmmextractor</SPAN></A>
+produces as output a new XML file with the same structure as the input
+ parameter file but with additional information gathered during the execution of  the task. 
+ This new information is mainly the expressions used for spectral and light curve production.
+ The output parameter file can be used as input to the <A NAME="477"></A><A NAME="tex2html36"
+  HREF="../xmmextractor/index.html"><SPAN  CLASS="textbf">xmmextractor</SPAN></A>
+task. 
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="xmmextractor.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

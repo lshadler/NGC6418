@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="bkgfit">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="bkgfit.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="bkgfit.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+bkgfit (ebkgmap-2.9) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="bkgfit.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Bottom-up explanation:"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="bkgfit.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="bkgfit:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+Although the task is non-XMM specific, it is primarily intended to generate maps of the background in XMM EPIC images. The task does this by fitting a linear combination of background-model component images. The task takes three main inputs (see section <A HREF="node12.html#bkgfit:description:inputfiles">6</A> for details): (i) the Poissonian FITS image which is to be fitted; (ii) a list of <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$N$"></SPAN> model component FITS images; (iii) (optionally) a FITS mask image. The output is a single FITS image which represents the best-fit background model. The best-fit amplitudes <!-- MATH
+ $\mathbf{a}_{\rm {opt}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\mathbf{a}_{\rm {opt}}$"></SPAN> and the names of the component datasets are recorded in this output dataset in a binary table extension.
+
+<P>
+Clearly all the input images must have the same dimensions: call this <SPAN CLASS="MATH"><IMG
+ WIDTH="51" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$X \times Y$"></SPAN> pixels.
+
+<P>
+The fitting is done by minimizes the maximum-likelihood estimator  <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$L$"></SPAN> defined as follows:
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+L(\mathbf{a}) = -2\sum_{x=1}^{X}\sum_{y=1}^{Y} ln[P_{x,y}(\mathbf{a})]
+\end{equation}
+ -->
+<A NAME="equ_L"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="equ_L"></A><IMG
+ WIDTH="199" HEIGHT="58" BORDER="0"
+ SRC="img5.png"
+ ALT="\begin{displaymath}
+L(\mathbf{a}) = -2\sum_{x=1}^{X}\sum_{y=1}^{Y} ln[P_{x,y}(\mathbf{a})]
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">1</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+where <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$\mathbf{a}$"></SPAN> is the vector of <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$N$"></SPAN> component amplitudes, and the sums are understood to be over all unmasked image pixels. Suppressing the <SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$x,y$"></SPAN> subscript for the sake of brevity, the Poissonian probability <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$P$"></SPAN> is given by
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+P(\mathbf{a}) = \frac{B^{I}(\mathbf{a}) \, exp[-B(\mathbf{a})]} {I!}
+\end{equation}
+ -->
+<A NAME="equ_P"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="equ_P"></A><IMG
+ WIDTH="181" HEIGHT="42" BORDER="0"
+ SRC="img9.png"
+ ALT="\begin{displaymath}
+P(\mathbf{a}) = \frac{B^{I}(\mathbf{a}) \, exp[-B(\mathbf{a})]} {I!}
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">2</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+where the total background model <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$B$"></SPAN> is the linear combination of the <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$N$"></SPAN> components <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$b_i$"></SPAN>, viz
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+B(\mathbf{a}) = \sum_{i}^{N} a_i b_i,
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="110" HEIGHT="56" BORDER="0"
+ SRC="img12.png"
+ ALT="\begin{displaymath}
+B(\mathbf{a}) = \sum_{i}^{N} a_i b_i,
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="$I$"></SPAN> represents the value at that pixel of the Poissonian image. Inserting equation <A HREF="node7.html#equ_P">5</A> into <A HREF="#equ_L">1</A> gives
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+L(\mathbf{a}) = -2\sum_{x=1}^{X} \sum_{y=1}^{Y} \big\{ I_{x,y} \, ln[B_{x,y}(\mathbf{a})] - B_{x,y}(\mathbf{a}) - ln(I_{x,y}!) \big\}.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="401" HEIGHT="58" BORDER="0"
+ SRC="img14.png"
+ ALT="\begin{displaymath}
+L(\mathbf{a}) = -2\sum_{x=1}^{X} \sum_{y=1}^{Y} \big\{ I_{x,...
+...x,y}(\mathbf{a})] - B_{x,y}(\mathbf{a}) - ln(I_{x,y}!) \big\}.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html62"
+  HREF="node4.html">Bottom-up explanation:</A>
+<LI><A NAME="tex2html63"
+  HREF="node5.html">Fitting algorithm:</A>
+<UL>
+<LI><A NAME="tex2html64"
+  HREF="node6.html">Constraints on the model components:</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html65"
+  HREF="node7.html">Truncated Poisson fitting:</A>
+<LI><A NAME="tex2html66"
+  HREF="node8.html">Uncertainties in the coefficients:</A>
+<LI><A NAME="tex2html67"
+  HREF="node9.html">Goodness of fit:</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="bkgfit.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Bottom-up explanation:"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

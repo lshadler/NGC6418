@@ -1,0 +1,183 @@
+ChangeLog for barycen
+=====================
+
+Version 1.20.5 - 2013-10-30 (AI)
+------------		
+	+ (f90/barycen.f90) Instrument variable changed to int32 type.
+	
+Version 1.20.4 - 2013-03-05 (AI)
+------------	
+	+ Cal setInstrument  bug fixed.
+	
+Version 1.20.3 - 2013-02-28 (AI)
+------------
+	+ Implementation of the Sun Angle correction for rgsangles.
+	SOC-SCR-340
+	
+Version 1.20.2 - 2012-06-15 (RDS)
+------------
+	+ doc/barycen_description.tex	Added warnings into documentation
+		(SPR-6740)
+
+Version 1.20.1 - 2012-05-11 (AI)
+------------
+	+ Heliocentricorr documentation updated.
+	+ Heliocentricorr parameters modifed.
+	
+Version 1.20 - 2011-10-18 (AI)
+------------
+	+ New parameters "srclist" and "source" for "heliocentriccorr" task.
+	
+Version 1.19 - 2011-10-14 (AI)
+------------
+	+ New task "heliocentriccorr". This task calculates the Heliocentric
+	velocity corrrection for a given pointing direction and time.
+	
+Version 1.18 - 2009-09-17 (AI)
+------------
+	+  New funtionality to switch between DE200 and DE405 ephemerides added.
+	SOC-SCR-285 closed.
+	
+Version 1.17.5 - 2009-09-03 (AI)
+------------
+	+Fixes to make barycen gcc-4.3 compliant
+
+Version 1.17.4 - 2007-06-19 (AI)
+------------
+	+ (src/BaryCenterableDataSet.h) New method "processExposu" that corrects the 
+	EXPOSU time values. SOC-SPR-6485
+	+ New parameter (barycen and earthbarycen) "processexposutable". 
+	+ Documentation updated. 
+	
+Version 1.17.3 - 2004-09-10 (RDS)
+------------
+	+ changed start time in barycen and earthbarycen documentation
+      from 1998-01-01T00:00:00 UTC to 1998-01-01T00:00:00 TT (SPR-2529)
+
+Version 1.17.2 - 2004-05-05 (EO)
+--------------
+	+ Removed unnecessary dependency on deceit.
+
+Version 1.17.1 - 2004-03-18 (RDS)
+------------
+	+ documented missing parameters and the earthbarycen task.
+
+Version 1.17 - 2003-05-01 (UL)
+------------
+	+ added functionality to access Earth ephemeris data as needed
+	  by planned new Doppler-shift correction to RGS data in rgsevents
+	  task
+
+Version 1.16 - 2003-01-06 (UL)
+------------
+	+ fixed SPR 2394: jodrellbanktest error
+
+Version 1.15 - 2002-07-12 (UL)
+------------
+	+ now depends on package sas
+	+ strstream -> stringstream
+
+Version 1.14 - 2002-05-27 (UL)
+------------
+	+ made param-2.0 compliant
+
+Version 1.13.2 - 2002-03-25 (UL)
+--------------
+	+ fixed dependency problem
+
+Version 1.13.1 - 2002-03-22 (UL)
+--------------
+	+ fixed fundamental bug in computation of barycentric delta: S/C
+	  position vector was constructed as (x, y, y) [instead of (x, y, z)]
+
+Version 1.13 - 2002-01-23 (GV)
+------------
+	+ Add spr2176 test script.
+
+Version 1.12 - 2002-01-18 (GV)
+------------
+	+ (barycen_description.tex) XMM-Newton mission reference time was
+	given in UTC instead of TT (SOC-SPR-2232).
+	+ Now does not run twice on the same dataset (SOC-SPR-2176).
+	
+Version 1.11 - 2001-12-17 (GV)
+------------
+	+ fix test harness that was using the wrong Crab files.
+
+Version 1.10 - 2001-10-12 (GV)
+------------
+	+ DEPEND adjusted to match new dscalc.
+	+ (test) no longer run deceit as part of the test harness.
+	
+Version 1.9 - 2001-04-04 (UL)
+-----------
+	+ implemented SPR 1836: srcra and srcdec should be of type angle
+
+Version 1.8 - 2001-03-28 (UL)
+-----------
+	+ fixed SPR 1965: coding bug
+
+Version 1.7 - 2001-03-09 (UL)
+-----------
+	+ fixed linking problem introduced in 1.6
+
+Version 1.6 - 2001-03-02 (UL)
+-----------
+	+ brought in line with caloalutils-1.43
+
+Version 1.5 - 2000-12-20 (UL)
+-----------
+	+ some trivial changes to make optimizer happy
+
+Version 1.4.5 - 2000-11-18 (GV)
+-------------
+	+ DEPEND: add dscalc
+
+Version 1.4.4 - 2000-11-17 (UL/GV)
+-------------
+	+ earthbarycen: look also at "TIMESYS", if it is not TT, add UT->TT
+	  offset to time tags
+	+ (test/*) add test harness for earthbarycen.
+
+Version 1.4.3 - 2000-11-05 (UL)
+-------------
+	+ bug fix in EarthPositionLocator
+
+Version 1.4.2 - 2000-11-03 (UL)
+-------------
+	+ added earthbarycen task
+	+ code re-organization
+
+Version 1.4.1 - 2000-10-27 (UL)
+-------------
+	+ fixed GROUPS entry in task info file
+
+Version 1.4 - 2000-10-02 (UL)
+-----------
+	+ redelivery as 1.4 for v5 code freeze
+
+Version 1.3.1 - 2000-07-05 (UL)
+-------------
+	+ fixed small problem with test harness under Liunx
+
+Version 1.3 - 2000-05-25 (UL)
+-----------
+	+ added taskinfo file
+
+Version 1.2 - 2000-04-25 (GV)
+-----------
+	+ DEPEND: add taskmain
+
+Version 1.1 - 2000-03-06 (UL)
+-----------
+	+ specify ODF directory in test harness
+	+ in data: create sym-links to JPL ephemeris files in $SAS_DIR/lib
+
+Version 1.0 - 2000-03-03 (UL)
+-----------
+	+ first fully functional version
+
+Version 0.0 - 1999-01-28 (UL)
+-----------
+	+ nothing is working; just task description submitted for approval
+

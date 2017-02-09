@@ -1,0 +1,4719 @@
+#! /usr/bin/perl -w
+#
+#
+# main for SAS perl tasks.
+#
+require 5;
+use strict;
+use Getopt::Long;
+Getopt::Long::Configure ("pass_through");
+use SAS::error;
+## At build time the following strings (enclosed in --, that is
+## -string-) are replaced:
+##  sasperl  -> This is taken from the PERL variable defined by configure
+##  taskname
+##  version
+##  release
+##  aka
+## Make sure they do not occur anywhere else in main.pl unless you
+## want them to be replaced.
+##  taskname also occurs at the end of main.pl
+##
+my $name = "omichain";
+SAS::error::client($name);
+my $VERSION = "1.71.1";
+my $RELEASE = "xmmsas_20170112_1337-16.0.0";
+my $AKA = "16.0.0";
+
+## 
+## Standard options: these follow taskmain.
+##
+## -a|--ccfpath <dir1>[:<dir2>...] --> SAS_CCFPATH
+## -f|--ccffiles <f1> [<f2>...] --> cannot be implemented
+## -c|--noclobber --> SAS_CLOBBER
+## -d|--dialog --> tool(sasdialog)
+## -h|--help --> tool(listparams)
+## -i|--ccf <cif> --> SAS_CCF
+## -m|--manpage --> sashelp
+## -o|--odf <sumfile> --> SAS_ODF
+## -V|--verbosity <level> -- SAS_VERBOSITY
+## -v|--version --> local implementation
+##
+## Getopt::Long provides support for short versions with single "-" except for -v.
+## Therefore all short versions were automatically included either with first letter
+## or via an alias as for -a, -i, -o and -V.
+##
+## -v deserves special care due to the existence of support for $version within the
+## Getopt module. Therefore -v is treated specially. 
+
+my ($ccfpath, $noclobber, $dialog, $help, $ccf, $manpage, $odf, $verbosity, $version);
+
+exit(1) unless
+    GetOptions("ccfpath|a=s"    => \$ccfpath,
+	       "noclobber"      => \$noclobber,
+	       "dialog"         => \$dialog,
+	       "help"           => \$help,
+	       "ccf|i=s"        => \$ccf,
+	       "manpage"        => \$manpage,
+	       "odf|o=s"        => \$odf,
+	       "verbosity|V=i"  => \$verbosity,
+	       "version"        => \$version,
+	      );
+
+my $arg;
+foreach $arg (@ARGV) {
+  $version=1 if ( $arg =~ "-v" );
+}
+
+$ENV{SAS_CCFPATH}   = $ccfpath if($ccfpath);
+$ENV{SAS_CLOBBER}   = 0 if($noclobber);
+$ENV{SAS_CCF}       = $ccf if($ccf);
+$ENV{SAS_ODF}       = $odf if($odf);
+$ENV{SAS_VERBOSITY} = $verbosity if($verbosity);
+
+use SAS::param;
+
+
+if($version){
+    print "$name-$VERSION [$RELEASE-$AKA]\n";
+    exit(0);
+}
+if($manpage){
+    system("sashelp --doc=$name");
+    my $x = $? >> 8; # perldoc -f system
+    exit($x);
+}
+if($help){
+    system("listparams $name");
+    my $x = $? >> 8;
+    exit($x);
+}
+if($dialog){
+    system("sasdialog $name");
+    my $x = $? >> 8;
+    exit($x);
+}
+
+&omichain();
+
+#!/usr/local/bin/perl
+#
+#
+# OMICHAIN
+#
+# XMM Pipeline Processing System OMICHAIN scriptrstore
+#
+# Author: Jon Rainger (jfr@mssl.ucl.ac.uk)
+#
+# Description: This script runs the tasks required for to produce
+#              PPS products from Imaging Mode ODFs.
+#
+# $Id: module.f90,v 1.6 1998/05/27 13:45:39 gvacanti Exp $
+#
+#
+#    MODIFICATIONS:
+#    12/06/2000 - AMK - Removed call to OMPSF as none of the pipleline tasks use it's output.
+#
+#    12/06/2000 - AMK - Redirected sreen output to a file omichain_log as user will lose the output during a complete ODF
+#
+#    06/09/2000 - AMK - Ammended code so that the new style house keeping files are processed correctly.
+#
+#    06/09/2000 - AMK - Ammended code so that product names conform to specification.
+#
+#    29/09/2000 - AMk - Changed flat field product file name to tmp_flat_field as this file should NOT be a product.
+#
+#    11/10/2000 - AMK - Removed the die calls and replace with SAS::fatal calls.
+#
+#    03/11/2000 - CB  - Modified so that images with "BLOCKED" or "UNKNOWN" filters are not processed.sas
+#                       Added call to ps2pdf.
+#    21/01/2000 - CB - Modified so that "ommosaic" runs at the end to produce a composite image for each filter.
+#    10/08/2001 - CB - Modified to process engineering 2 and 4 data and restructured.
+#    11/20/2001 - CB - Modified to accept command-line parameters for ommodmap, omdetect, ommodmap, ommosaic
+#                      and omsrclistcomb.     
+#    12/12/2001 - CB - Modified to process the exposures for each filter in the order that the filters 
+#                      appear in the SAS summary file.                       
+#    08/-5/2002 - CB - Modified to keep the intermediate source-list files from omdetect & ommag
+#    03/12/2002 - CB - Modified to use the omatt parameter rotateimage
+#    15/06/2003 - CB - Perl script overhauled for latest Perl
+#    27/01/2004 - VNY - an error with input parameters and verbosity > 7 is by-passed
+#    01.02.2004 - VNY the verbosity level is lowered to 5 for the moment 
+#                 of reading the input parameters of omichain
+#    14.04.2004 - VNY - protected against using an uninitialized string 
+#                       variable in the lines 398-413 (to fix SSC-SPR-3286)
+#    2004-05-29 - VNY   Correction in the subroutine GetODFDirectory to protect 
+#                  the task from failure during its test in Mac-machines 
+#    2012-10-23 - VNY - introduced the compillation of the USNO catalogue subset,
+#                       the USNO subset files being given their corresponding names
+#    2012-11-24   VNY the task will generate the name for the USNO subset only 
+#                 if the parameter cafile is not specified 
+#    2012-12-01  VNY adding the task omregion to generate the ASCII region-product
+#                file for full-frame images (the region file for the mosaiced images 
+#                is generated by omdetect).
+# 2012-12-04 VNY protected from a crash in the case of finding an undefined OM filter
+#
+#  2014-03-20 (vny,eop) Changed the name of the intermediate image (detectorCoordImageFileName)
+#  which was marked as a product (P...), but which is not the final product (should be I...) 
+#  in the call to the routine omqualitymap. The terminating string of this 
+#  name is changed from _windowNo0 to 3windowNo0. The name of the image containing the quality 
+#  map (stringQmap2) is changed from QIMA2_windowNo to IMAGE_windowNo.
+#**************************************************************************************
+#use DAL;
+use SAS;
+my @FilterList =();                   # Stores a list of the filters in the summary file
+my @FilterFileList = (); 
+my @ExposureNoList =();               # Stores a list of the exposure numbers
+my %ExposureFilterList =();           # Stores a list of the filter for each exposure number
+my @E2IMIList =();                    # Stores the IMI files created by omengine2
+my @E4IMIList =();                    # Stores the engineering 4 mode image files
+my @Simage2000Files = ();   
+my %ExposureType = ();
+my $SASFile = "TEST";
+my @FileList = (); 
+
+my @InputFilterList = ();    
+my @OMFilterCodes = ();
+my @ExposureImageList = ();
+my %ExposureExtension = ();
+my %ExposureScheduleList = ();
+
+my (@UserExposureList) = @_;         # The list of exposures in the parameter list
+my (@OMFilterList); # The list of OM filters from the SAS summary file
+   
+my (@ExposureList) = ();
+my @osw_file_list = ();
+
+my %orb_list = ();
+ 
+
+
+my $inp_directory = "";  # The input directory
+my $out_directory = "";  # The output directory
+my $redirect = 0; 
+
+
+#************************************************************
+#
+# For processing summary
+#
+#************************************************************
+my %processedImageList = ();
+my %processedSourceList = ();
+my %processedSkyImageList = ();
+my %processedMosaicedImageList = ();
+my %processedMosaicedSourceList = ();
+my %observationSourceList = ();
+
+#*************************************************************
+#
+# Tracking-history product files (time-series and plot file) 
+#
+#************************************************************
+
+my @TSTRTSList = ();
+my @TSHPLT1List = ();
+my @TSHPLT2List = ();
+my $tracking_history_found=0;
+
+#*************************************************
+# Output files
+#************************************************
+my $tracking_history_filename;
+my $in_orbit_flat_field_filename;
+my $flatFieldFileName;
+my $detectorCoordImageFileNameNoQmap;
+my $detectorCoordImageFileName;
+
+my $detectorCoordQualityFileName;
+my $detectorCoordQualityFileName2;
+
+my $usnoSubsetFileName="";
+
+my $IntermediateImage1FileName;
+my $IntermediateImage2FileName;
+my $modulo_8_product_filename;
+my $regionFileName;
+my $levelImageFileName;
+my $backgroundImageFileName;
+
+my $osw_list_intermediary_detect_filename;
+my $osw_list_intermediary_detect_filename1;
+my $osw_list_intermediary_detect_filename2;
+my $trackingHistoryOutputFileName;
+my $tracking_history_plot_filename;
+my $tracking_history_plot_filename1;
+my $window_data_filename; 
+my $periodic_hk_filename;
+my $non_periodic_hk_filename;
+my $tracking_history_timeseries_filename;
+my $observation_source_list_pps_product_filename;
+my $observation_source_list_region_product_filename;
+my $skyCoordImageFileName;
+my $flat_field_product_filename;
+
+
+
+my $periodic_file_flag;
+my $non_periodic_file_flag;
+
+my $obs_key;
+my $win_key;
+my $exp_type;
+my $orb_key;
+
+#*********************************************
+# Input parameters
+#*********************************************
+my $ommodmap_nsig;
+my $ommodmap_nbox;
+my $omdetect_nsigma;
+my $omdetect_minsignificance;
+my $omdetect_detectextended;
+my $omsrclistcomb_nsigma;
+my $omsrclistcomb_usecat;
+my $omsrclistcomb_alignaxes;
+
+
+my $maxradecerr;
+my $maxrmsres;
+my $omatt_usecat;
+my $catfile;
+my $catfileSpecified=0;
+my $omatt_rotateimage = 1;
+my $detect_stacked = "F";
+my $psfPhotometryEnabled = "F";
+my $backgroundMethod = 1;
+my $maxRawCountRate =50.0;
+my $rawattitude=0;
+
+#******************************************
+# Parameters for ommergelsts
+#*****************************************
+my $ommergelistsRegionFile = "";
+my $ommergelistsPlotFile = "ommergelists.ps";
+
+my $ommergelistsTolerance = 2.0;
+my $ommergelistsMaxrawrate = 2.0;
+
+
+#********************************************
+#
+# Parameters for omvariability
+#********************************************
+
+
+my $omvariability_minStd = 2.0;
+my $omvariability_plotFile = "omvariability.ps";
+
+
+sub omichain 
+
+{
+
+
+#/////////////////////////////////////////
+    my $SASVERBOSITY = " ";
+    if (exists($ENV{SAS_VERBOSITY}))
+    {
+	$SASVERBOSITY = $ENV{SAS_VERBOSITY};
+    }
+    else
+    {
+	$SASVERBOSITY = "5";
+	$ENV{SAS_VERBOSITY} = "5";
+    }
+    if ($SASVERBOSITY > 7) 
+    {
+	$ENV{SAS_VERBOSITY} = "5";
+    }
+
+    #************************************************
+    # For program development message can be written
+    # to a file "omichain_log"
+    # REMEMBER TO BLANK OUT NEXT LINE BEFORE UPLOADING
+    #***********************************************
+    $redirect = 1;       
+#    &CreateLogFile;
+
+     
+
+    #**************************************
+    # Set up the directory paths for input
+    # and output.
+    #**************************************
+    &SetUpDirectoryPaths;
+
+  
+    my $taskname='OMICHAIN';
+      
+   
+    #my $VERSION='1.69';
+    my $date = &date_time;
+    my $comment = stringParameter("comment");
+
+    my $commentLength=length($comment);
+    if ($commentLength > 255)
+    {
+	$comment=" ";
+	$commentLength=1;
+ 
+   }
+
+    $detect_stacked = "T";
+    $psfPhotometryEnabled = "F";
+    $backgroundMethod = 1;
+    $maxRawCountRate =50.0;
+    $rawattitude=0;
+    $omatt_rotateimage = 1;
+    $ommergelistsTolerance = 2.0;
+    $ommergelistsMaxrawrate = 2.0;
+    $ommergelistsPlotFile = "ommergelists.ps";
+    $ommergelistsRegionFile = "ommergelists.fit";
+
+    
+    $omvariability_minStd = 2.0;
+    $omvariability_plotFile = "omvariability.ps";
+    
+    
+    
+    my $create = "Running SAS task $taskname V$VERSION $date";      
+    my $text1 = "Input directory = $inp_directory";  
+    my $text2 = "Output directory = $out_directory"; 
+      
+    &HighlightedMessage("*", $create, $comment, "   ", $text1, $text2);
+      
+    #**************************************
+    # Get the parameters for ommodmap,
+    # omdetect, omatt, omsrclistcomb 
+    #**************************************
+    &GetOmmodmapParameters;
+
+    &GetOmdetectParameters;
+ 
+    &GetOmattParameters;
+
+ 
+    &GetOmsrclistcombParameters;
+
+
+    #*************************************************
+    # Get the parameters for ommergelists
+    #*************************************************
+    &GetOmmergelistsParameters;
+
+
+
+ #   &GetOmvariabilityParameters;
+
+
+    $rawattitude = intParameter("rawattitude");
+
+    #print("L282 rawattitude=$rawattitude \n");
+    #***************************************************************
+    # Process the mosaiced sky-images or not
+    #
+    #***************************************************************
+    $detect_stacked = &GetBooleanParameter("processmosaicedimages");
+
+    #**************************************
+    #
+    # Get the list of filters that the
+    # user wants to process (if any in list)
+    #
+    #**************************************
+  
+    @InputFilterList = &GetStringParameterList("filters");
+    for(my $i = 0; $i < @InputFilterList; $i++)
+    {
+        $InputFilterList[$i] = &convertToUpperCase( $InputFilterList[$i] );
+    }
+
+
+# Return SAS_VERBOSITY to its requested level
+    if ($SASVERBOSITY > 7) 
+    {
+	$ENV{SAS_VERBOSITY} = $SASVERBOSITY;
+    }
+       
+    #*****************************************************
+    # Read the SAS summary file to get a list of 
+    # observations, etc, to be processed
+    #***************************************************** 
+    &ExamineSASFile;     
+      
+    #***************************************************
+    #
+    # Initialise the lists of engineering 2/4 data, etc.
+    #
+    #***************************************************
+
+    &InitialiseLists;
+   
+    #************************************************** 
+    # Check for the presence of the house keeping files
+    #**************************************************
+    &CheckForHouseKeepingFiles;
+
+    #**********************************************
+    # Run the pipeline- Loop over all observations.
+    #**********************************************
+   
+    foreach $orb_key (keys(%orb_list))
+    {
+
+
+        #********************************************
+        # Process the data for each orbit in the list
+        #********************************************
+        &ProcessOrbit($orb_key, @InputFilterList);  
+
+    }
+  
+    #********************************************
+    # We don't want to keep any new image file
+    # created from Engineering mode 2 data
+    #********************************************
+#    &DeleteNewImageFiles;
+
+
+    #*************************************************
+    #
+    # Produce a report of product files
+    #
+    #************************************************
+    &processingReport;
+
+
+
+    $date = &date_time;
+       
+    my $message = "Finished running SAS task $taskname V$VERSION $date";
+    &HighlightedMessage("*", $message);
+
+    
+
+    #******************************
+    # For test purposes
+    #******************************
+    if ($redirect == 5)
+    {
+        close(STDOUT);
+        close(STDERR);
+    }
+   
+}
+#***********************************************************
+#
+# Subroutine section
+#
+#***********************************************************
+sub date_time {          # create the file creation datestring
+
+    my  $datestring;
+    $datestring = `date -u`;
+    chop $datestring;
+    return $datestring;
+}
+#**************************************
+# subroutine GetFilterCode
+# Given a filter from the SAS file
+# returns the filter code to be used
+# in constructing the output file name.
+#**************************************
+sub GetFilterCode
+{
+    my($filter) = @_;  # The input filter name
+    
+    
+    my @OMFilters = ("BLOCKED", "V",  "Magnifier", "MAGNIFIER", "U",  "B",  
+                     "WHITE", "GRISM2", "Grism2", "UVW1", "UVM2", "UVW2", 
+                     "GRISM1", "Grism1");
+
+    my @OMFilterCodes = ("BL",  "V", "MA", "MA", "U", "B", "W", 
+                          "G",  "G",  "L",   "M",   "S", "H", "H");
+
+    my $undefinedFilterCode="X";
+
+    for (my $i = 0; $i < @OMFilters; $i++)
+    {
+       
+        if ($OMFilters[$i] eq $filter)
+        {
+            return $OMFilterCodes[$i];
+        
+	}
+    }
+    #die("No such filter ($filter) in filter table!");
+    return $undefinedFilterCode; 
+    
+}
+#************************************
+# Sub IsHighResCentralWindow
+#************************************
+sub IsHighResCentralWindow
+{
+    my ($fileName) = @_;
+                 
+    if($fileName =~ /OMS00/)
+    {
+       
+        if($fileName =~ /IMAGE_1000/)
+        {
+            return 1;
+       
+        }     
+    }    
+    return 0;
+}
+#********************************************************************
+# subroutine FindEngineering4ImageFiles
+#********************************************************************
+sub FindEngineering4ImageFiles
+{
+    my $numExposures = @ExposureNoList;
+  
+    my @ImageFile = <$inp_directory/*E4I.FIT*>;        
+
+#    print("Findengineering4Imagefiles line 356\n");
+
+    my $numFiles = @ImageFile;
+   
+    if($numFiles == 0) 
+    {
+        return;   
+    }
+
+
+#    print("Findengineering4imagefiles line 363\n");
+
+
+    #************************************************************************
+    # Create a list of engineering 4 image files, without the directory path
+    #************************************************************************
+    for (my $i = 0; $i < $numFiles; $i++)
+    {
+        my $fileName = $ImageFile[$i];       
+        my $pos = index($fileName, "E4I") - 24;
+        my $name = substr($fileName, $pos, 32);    # Get rid of the directory name                        
+
+
+
+#	print("Line 377 $i) file=$fileName\n");
+
+        push(@E4IMIList, $name);                          # Add it to the list of engineering mode 4 data
+      
+
+        $fileName = $name;
+
+        #*********************************************
+        # Find out which exposure this file is
+        #*********************************************
+        my $exposure = substr($fileName, 19, 3);      # The exposure number
+    
+        my $found = 0;
+        my $j = 0;
+
+        while ($j < $numExposures and $found == 0)
+        {
+            
+            my $exposureNo = substr($ExposureNoList[$j], 0, 3);
+        
+            if ($exposure eq  $exposureNo)
+            { 
+                $ExposureType{$exposureNo} = "ENG4";
+                $ExposureExtension{$exposureNo} = "*E4I.FIT*";
+	    
+		$found = 1;
+                       
+            }
+            $j++;
+        }
+
+    }
+}
+#******************************************************
+# Subroutine FillExposureList
+# Obtains a list of the exposures in the summary file
+#******************************************************  
+sub FillExposureNoList
+{
+   
+    open (SASFILE, $SASFile) || die("Unable to open SAS SUMMARY FILE $SASFile- Please check directory paths and SAS_ODF variable"); 
+
+    my $line;
+   
+
+#    print("fillexposurenolist line 414\n");
+
+   
+    #*************************************************
+    #
+    # Skip past the EPIC and RGS stuff
+    #
+    #*************************************************
+ 
+    while ($line = <SASFILE>) {
+	my $k=substr($line, 0, 2);
+	next unless $k eq "OM";
+	last;
+    }
+       
+#    until (substr($line, 0, 2) eq "OM")
+#    {
+#
+#       $line = <SASFILE>;
+#                                  
+#    } 
+
+    while ($line = <SASFILE>)
+    {
+        
+        if ($line =~ "/ Exposure Identifier")
+        {        
+	    #print("L541 line=$line \n");
+
+            #my $exposureNo = substr($line, 0, 3);
+            my $exposureNo = substr($line, 32, 4);
+            my $exposureSchedule = substr($line, 32, 1); 
+	    
+            push(@ExposureNoList, $exposureNo);      
+                 
+            $ExposureScheduleList{$exposureNo} = $exposureSchedule;
+
+	    #print("L550 exposureno=$exposureNo, exposureschedule=$exposureSchedule\n");
+
+
+            #****************************************
+            # Get the filter name from the SAS file
+            #****************************************
+	    
+	    my $filterName = &GetNextSASFilter;
+	   
+            if ($filterName eq "")
+            {
+                last;
+            }
+            #************************************************************************
+            #  Store the exposure number for this filter
+            #************************************************************************
+            # 2011-05-20: there is a possibility that the observation contains
+	    # two data sets with the same exposureNo, e.g. 006, the difference being
+	    # S006 and U006, one belongs to the W1-filter, and another M2-filter
+	    # To distinguish them the variable exposureNo should be modified
+	    #
+            #print("fillexposurenolist L565 - filter name=$filterName, exposureno=$exposureNo\n");
+            #print("Line was $line\n");
+            %ExposureFilterList = Store($filterName, $exposureNo, %ExposureFilterList);
+
+
+	    #print("L570 - exposureno=$exposureNo, filter=$filterName\n");
+	    
+	       
+        }
+    }
+
+
+
+
+    
+#    close $handle;
+    close SASFILE;
+    
+
+
+}
+#***************************************************************
+# Subroutine DeleteNewImageFiles
+# Renames the new image files created from each set of four
+# engineering 2 mode image files.
+#***************************************************************
+sub DeleteNewImageFiles
+{
+
+    if ($out_directory ne $inp_directory)
+    { 
+        my $num = @E2IMIList;   
+
+
+        for (my $j = 0; $j < $num; $j++)
+        {
+        
+            my $fileName = $E2IMIList[$j];       
+            my $pos = index($fileName, "E2I") - 24;
+            my $name = $out_directory . '/' . substr($fileName, $pos, 32);    # Get rid of the directory name               
+    
+      
+            system("cp $fileName $name"); 
+        }         
+        	    		
+        unlink (@E2IMIList);
+    }
+              
+
+
+    #*********************************************
+    # Move the flatfield file created by omflatgen
+    # to the output directory and delete the one
+    # in the input directory
+    #*********************************************
+    if ($flatFieldFileName ne "BLANK" and $out_directory ne $inp_directory) 
+    {
+        my $name = $inp_directory . '/'. $flatFieldFileName;
+        system("cp $flatFieldFileName  $name"); 
+        unlink $flatFieldFileName;
+    }
+
+    #******************************************
+    # Delete temp files
+    #*****************************************
+    chdir $out_directory;
+
+    &DeleteFileList("tmp");
+
+    #******************************************
+    # Delete imi files
+    #*****************************************
+    &DeleteFileList("imi");
+ 
+    #******************************************
+    # Delete fit files
+    #*****************************************
+    &DeleteFileList("fit");
+ 
+
+}
+#***************************************
+# DeleteFileList
+#***************************************
+sub DeleteFileList($)
+{ 
+    my ($name) = @_;
+   
+    my @List = <*$name*> ;    # Creates a list of FIT file names    
+
+    unlink (@List);
+}
+
+#**************************************************************
+# Subroutine MissingImageFileWarning
+#*************************************************************
+sub MissingImageFileWarning($)
+{ 
+
+
+#    my ($fileName) = @_;
+    my $exp_key = " ";
+    my $value = $ExposureType{$exp_key};
+    
+    if ($value eq "ENG2" or $value eq "ENG4" and $value ne "")
+    {
+        return;
+    }
+
+    my $imi_file = $orb_key . "_" . $obs_key . "_OM" . $exp_type . $exp_key . $win_key . "IMI.FIT";
+    
+	
+    &Message("*** Warning *************************************************");
+
+    my $message = "Warning! - Window '$win_key' of exposure '$exp_key' in observation '$obs_key' is missing the image file $imi_file.";
+    &HighlightedMessage("*", $message);
+   
+  
+    
+}
+#********************************************
+# Subroutine CreatePoductFileNames
+#********************************************
+sub CreateProductFileNames($)
+{
+    
+    my ($observationNo, $exposureSchedule, $exposureNo, $windowNo, $filter) = @_;           # The exposure and window numbers
+    $windowNo = substr($windowNo, 1, 1);
+    my $exposureType = $ExposureType{$exposureNo}; # Rudi5, ENG2 or ENG4
+
+     
+    my $filterCode = &GetFilterCode($filter);
+    my $string1;
+    my $string2;
+    my $string3;
+    my $stringUsno;
+    my $stringQmap;
+    my $stringQmap2;
+    #print("L707 exposureType=$exposureType \n");
+    #print("L737 filterCode=$filterCode \n");
+
+    if ($exposureType eq "RUDI5")       # Rudi-5 case
+    {
+        $string1 = "SIMAGE$windowNo";
+        $string2 = "IMAGE_$windowNo";
+        $string3 = $windowNo;
+	$stringQmap = "QIMAG_$windowNo";	
+	#$stringQmap2 = "QIMA2_$windowNo";
+	$stringQmap2 = "IMAGE_$windowNo";
+	$stringUsno="USNO$windowNo";
+    }
+    elsif ($exposureType eq "ENG2")     # Engineering-2 case
+    {
+        $string1 = "FSIMAG$filterCode";
+        $string2 = "FIMAG_$filterCode";
+	$stringQmap = "FQIMA_$windowNo";	
+	#$stringQmap2 = "FQIM2_$windowNo";
+	$stringQmap2 = "FIMAG_$windowNo";
+        $string3 = $filterCode;
+	$stringUsno="FUSNO$filterCode";
+    }
+    elsif ($exposureType eq "ENG4")     # Engineering-4 case
+    {
+        
+        $string1 = "FSIMAG$filterCode";
+        $string2 = "FIMAG_$filterCode";
+	$stringQmap = "FQIMA_$windowNo";	
+	#$stringQmap2 = "FQIM2_$windowNo";
+	$stringQmap2 = "FIMAG_$windowNo";
+        $string3 = $filterCode;
+	$stringUsno="FUSNO$filterCode";
+    }
+    else
+    {
+        die("UNKNOWN EXPOSURE TYPE ($exposureType)");
+    } 
+    #print("!!!!!!!!!!!!!!!!!!!!\n");
+    #print("L781 stringQmap2=$stringQmap2   windowNo=$windowNo \n");
+    #print("!!!!!!!!!!!!!!!!!!!!\n");
+    
+    #***************************************************
+    # The detector-coordinate (ie non-rotated image) file name
+    #***************************************************
+    #***************************************************************
+    # 2011-05-20 modification to get the unique exposure number
+    #***************************************************************
+    
+    #$detectorCoordImageFileName = $out_directory . "/P$observationNo" 
+    #	. "OM$exposureNo$string2" . "000.FIT";
+    $detectorCoordImageFileName = $out_directory . "/I$observationNo" 
+	. "OM$exposureNo" . "IMAGE3" . $windowNo . "000.FIT";
+
+    #***************************************************************
+    # 2012-09-23 adding a new product: raw quality map
+    #***************************************************************
+    $detectorCoordQualityFileName = $out_directory . "/I$observationNo" 
+    	. "OM$exposureNo$stringQmap" . "000.FIT";
+    #$detectorCoordQualityFileName = $out_directory . "/I$observationNo" 
+    #	. "OM$exposureNo$stringQmap" . $windowNo . "00.FIT";
+    $detectorCoordQualityFileName2 = $out_directory . "/P$observationNo" 
+    	. "OM$exposureNo$stringQmap2" . "000.FIT";
+    #$detectorCoordQualityFileName2 = $out_directory . "/P$observationNo" 
+    #	. "OM$exposureNo$stringQmap2" . $windowNo . "00.FIT";
+
+    #***************************************************
+    # The sky-coordinate (ie rotated image) file name
+    #***************************************************
+    #$skyCoordImageFileName = $out_directory . "/P$observationNo" . "OM$exposureSchedule$exposureNo$string1" . "000.FIT";
+    $skyCoordImageFileName = $out_directory . "/P$observationNo" 
+	. "OM$exposureNo$string1" . "000.FIT";
+    
+    #***************************************************
+    # The file name for the USNO catalogue subset
+    #**************************************************
+    $usnoSubsetFileName=$out_directory . "/I$observationNo" 
+	. "OM$exposureNo$stringUsno" . "000.FIT";
+
+    #************************************
+    # The intermediate image file names
+    #***********************************
+    #$IntermediateImage1FileName = $out_directory . "/I$observationNo". "OM$exposureSchedule$exposureNo" . "IMAGE1$windowNo" . "000.FIT";
+    $IntermediateImage1FileName = $out_directory . "/I$observationNo"
+	. "OM$exposureNo" . "IMAGE1$windowNo" . "000.FIT";
+    #$IntermediateImage2FileName = $out_directory . "/I$observationNo" . "OM$exposureSchedule$exposureNo" . "IMAGE2$windowNo" . "000.FIT";
+    $IntermediateImage2FileName = $out_directory . "/I$observationNo" 
+	. "OM$exposureNo" . "IMAGE2$windowNo" . "000.FIT";
+    #$flat_field_product_filename = $out_directory . "/I$observationNo" . "OM$exposureSchedule$exposureNo" . "FLATF$windowNo" . "000.FIT";
+    $flat_field_product_filename = $out_directory . "/I$observationNo" 
+	. "OM$exposureNo" . "FLATF$windowNo" . "000.FIT";
+
+    #******************************
+    # Product created by ommodmap
+    #*****************************
+    #$modulo_8_product_filename = $out_directory .  "/I$observationNo" . "OM$exposureSchedule$exposureNo" . "MOD8$windowNo" . "000.FIT";
+    $modulo_8_product_filename = $out_directory .  "/I$observationNo" 
+	. "OM$exposureNo" . "MOD8$windowNo" . "000.FIT";
+
+    #*****************************
+    #
+    # Products created by omdetect
+    #
+    #*****************************
+    #$regionFileName = $out_directory .  "/I$observationNo" . "OM$exposureSchedule$exposureNo" . "REGION$windowNo" . "000.ASC";
+    $regionFileName = $out_directory .  "/I$observationNo" 
+	. "OM$exposureNo" . "REGION$windowNo" . "000.reg";
+	#. "OM$exposureNo" . "REGION$windowNo" . "000.ASC";
+
+    #$levelImageFileName = $out_directory .  "/I$observationNo" . "OM$exposureSchedule$exposureNo" . "LEVELIMAGE$windowNo" . "000.FIT";
+    $levelImageFileName = $out_directory .  "/I$observationNo" 
+	. "OM$exposureNo" . "LEVELIMAGE$windowNo" . "000.FIT";
+
+    #$backgroundImageFileName = $out_directory .  "/I$observationNo" . "OM$exposureSchedule$exposureNo" . "BCKIMAGE$windowNo" . "000.FIT";
+    $backgroundImageFileName = $out_directory .  "/I$observationNo" 
+	. "OM$exposureNo" . "BCKIMAGE$windowNo" . "000.FIT";
+
+
+
+    #**************************************************
+    # The source=list created by omdetect
+    #**************************************************
+    #$osw_list_intermediary_detect_filename1 = "I$observationNo" . "OM$exposureSchedule$exposureNo"."SWSRLI1$string3"."000.FIT";
+    $osw_list_intermediary_detect_filename1 = "I$observationNo" 
+	. "OM$exposureNo"."SWSRLI1$string3"."000.FIT";
+
+    #**************************************************
+    # The source-list created by ommag
+    #**************************************************
+    #$osw_list_intermediary_detect_filename2 = "I$observationNo" . "OM$exposureSchedule$exposureNo"."SWSRLI1$string3"."001.FIT";
+    $osw_list_intermediary_detect_filename2 = "I$observationNo" 
+	. "OM$exposureNo"."SWSRLI1$string3"."001.FIT";
+    #**************************************************
+    # The source-list created by ommat (the product file)
+    #**************************************************
+    #$osw_list_intermediary_detect_filename = "P$observationNo" . "OM$exposureSchedule$exposureNo"."SWSRLI$string3"."000.FIT";
+    $osw_list_intermediary_detect_filename = "P$observationNo" 
+	. "OM$exposureNo"."SWSRLI$string3"."000.FIT";
+
+}
+#********************************************
+# Subroutine CheckTHXFileExits
+#********************************************
+sub CheckTHXFileExists($)
+{
+    
+    my ($orbitNo, $observationNo, $exposureSchedule, $exposureNo) = @_;           
+# The exposure and window numbers
+ 
+
+    
+    #$tracking_history_filename = $inp_directory . "/". $orbitNo . "_" . $observationNo . "_OM" . $exposureSchedule . $exposureNo . "00" . "THX.FIT";
+    $tracking_history_filename = $inp_directory . "/". $orbitNo . "_" 
+	. $observationNo . "_OM" . $exposureNo . "00" . "THX.FIT";
+  
+
+    #***************************************************
+    #
+    # Check for existence of file
+    #
+    #**************************************************
+    if (-e  $tracking_history_filename) 
+    {
+      $tracking_history_found=1; 
+    }	 
+    else    
+    {
+    
+        #***********************************
+        # Create a dummy name to fool OMPREP
+        #***********************************
+        $tracking_history_filename = $out_directory . "/DUMMYTHX.FIT";
+	$tracking_history_found=0;
+ 
+    }
+
+}
+
+#************************************************
+# Subroutine ProcessIageFile
+# Processes an OM imaging file
+#***********************************************
+sub ProcessImageFile($)
+{ 
+
+    my ($image_filename, $observationNo, $exposureSchedule, $exposureNo, $windowNo, $filter) = @_;   
+
+
+    #print("L845 image_filename=$image_filename \n");
+    #print("L846 exposureNo=$exposureNo \n");
+    my $position = rindex($image_filename, "OM") + 2;
+   
+    my $text = substr($image_filename, $position, 1);
+
+    if ($text eq "U" or $text eq "S")
+    {
+        $exposureSchedule = $text;
+
+    }
+#    print("schedule identifier at position $position=$text\n");
+
+
+#    print("Line 772 processimagefile file_name=$image_filename, exposureschedule=$exposureSchedule, exposureno=$exposureNo\n");
+ 
+    my $exposureType = $ExposureType{$exposureNo};   # Rudi5, ENG2 or ENG4
+   
+
+
+    #******************************************
+    # Set pipeline variables.
+    #**************************
+    &CreateProductFileNames($observationNo, $exposureSchedule, $exposureNo, $windowNo, $filter);
+
+    #print("L937 filter=$filter \n");
+
+    #***********************************
+    # Produce image mode products.
+    #***********************************
+
+    &HighlightedMessage("*", "Processing image file $image_filename");
+    #*********************************
+    # omprep
+    #*********************************
+    &HighlightedMessage("*", "omprep");
+   
+
+    my $arg_list = "set=$image_filename" .
+                   " nphset=$non_periodic_hk_filename" .
+                   " pehset=$periodic_hk_filename" .
+                   " wdxset=$window_data_filename" .
+		   " rawattitude=$rawattitude" .
+		   " outset=$IntermediateImage1FileName";
+
+
+#    &Message("omprep $arg_list");
+
+    #**************************************************************
+    # Modified so that if omprep fails it just skips the observation,
+    # but does not kill the chain (1.11.2000)
+    #**************************************************************
+    system("omprep $arg_list");
+    my $exit_value = $? >> 8;   # 0 okay, 1 call fatal called, or some other disaster
+    
+    if ($exit_value !=0){
+	&HighlightedMessage("-", "omprep has datected a problem: trying without using raw attitudes ");
+    
+
+    
+	$arg_list = "set=$image_filename" .
+	    " nphset=$non_periodic_hk_filename" .
+	    " pehset=$periodic_hk_filename" .
+	    " wdxset=$window_data_filename" .
+	    " outset=$IntermediateImage1FileName";
+	system("omprep $arg_list");
+	$exit_value = $? >> 8;
+	if ($exit_value == 1) # Failure in omprep 
+	{ 
+	    &HighlightedMessage("*", "omprep has detected an error - this observation will not be processed");
+	    return;
+	    
+	}     
+    }
+    
+    #******************************************
+    # omcosflag
+    #******************************************
+    &HighlightedMessage("*", "omcosflag");
+
+    $arg_list = "set=" .  $IntermediateImage1FileName .
+                " thxset=" . $trackingHistoryOutputFileName;
+
+#    &Message("omcosflag $arg_list");
+     system("omcosflag $arg_list") && SAS::fatal("Task Failure","omcosflag failed.");
+ 
+  
+    #****************************************
+    # omflatfield
+    #****************************************
+    &HighlightedMessage("*", "omflatfield");
+
+    $arg_list = "set=$IntermediateImage1FileName" .
+                " thxset=$trackingHistoryOutputFileName" .
+                " inorbitflatset=$in_orbit_flat_field_filename" .
+                " tsflatset=$flat_field_product_filename" .
+                " outset=$IntermediateImage2FileName";
+
+#    &Message("omflatfield $arg_list");
+
+    system("omflatfield $arg_list") && SAS::fatal("Task Failure","omflatfield failed.");
+               
+
+    #***************************************
+    # ommodmap
+    #***************************************
+    &HighlightedMessage("*", "ommodmap");
+
+    $arg_list = "set=$IntermediateImage2FileName" .
+                " mod8product=yes" .
+		" mod8set=$modulo_8_product_filename" .
+                " outset=$detectorCoordImageFileName" . 
+#                " outset=$IntermediateImage3FileName" .
+                " nsig=$ommodmap_nsig" .
+                " nbox=$ommodmap_nbox";  
+
+#    &Message("ommodmap $arg_list");
+    system("ommodmap $arg_list") && SAS::fatal("Task Failure","ommodmap failed.");
+                     
+
+    #*****************************************************
+    # Store this file
+    # NB Store(key, value, self)
+    #*****************************************************
+    %processedImageList = Store($filter, $detectorCoordImageFileName, %processedImageList);
+      
+
+
+    #***********************************************
+    #
+    # Stop processing image file if a grism image
+    #
+    #***********************************************  
+    if ($filter eq "GRISM1" or $filter eq "GRISM2" or $filter eq "MAGNIFIER" or $filter eq "Magnifier") 
+    {
+        &HighlightedMessage("X", "Cannot process this image file any further ($filter image)");
+        return 1;
+
+
+    }
+
+
+    #**************************************************************************
+    #
+    # 2012-09-23 VNY modifying the program omqualitymap
+    # to make it working similarly to uvotflagqual 
+    # and producing a raw-image quality map
+    #*************************************************************************
+
+    &HighlightedMessage("*", "omqualitymap");
+
+    $arg_list = "set=$detectorCoordImageFileName" .
+                #" outset=$detectorCoordImageFileName" .
+	        " outset=$detectorCoordQualityFileName" .
+                " mode=setqualityimage"; 
+    system("omqualitymap $arg_list") && SAS::fatal("Task Failure","omquality failed.");
+
+
+    #**************************************************
+    # omdetect
+    #**************************************************
+    &HighlightedMessage("*", "omdetect");
+
+    $arg_list = "nsigma=$omdetect_nsigma" .
+                " minsignificance=$omdetect_minsignificance" .
+                " detectextended=$omdetect_detectextended" .
+                #" set=$detectorCoordImageFileName" .
+		" set=$detectorCoordQualityFileName" .
+                " regionfile=$regionFileName" .
+                " levelimage=$levelImageFileName" .
+                " backgroundimage=$backgroundImageFileName" .
+                " outset=$out_directory/$osw_list_intermediary_detect_filename";# .
+#		" psfphotometryenabled=$psfPhotometryEnabled" .
+#		" backgroundmethod=$backgroundMethod" .
+#		" maxrawcountrate=$maxRawCountRate";
+		
+#    &Message("omdetect $arg_list");
+
+    system("omdetect $arg_list") && SAS::fatal("Task Failure","omdetect failed.");
+
+    #*********************************************************************
+    # Keep a copy of this source-list
+    #*********************************************************************
+
+    system("cp $out_directory/$osw_list_intermediary_detect_filename $out_directory/$osw_list_intermediary_detect_filename1");
+
+
+    if( $detect_stacked eq "T")
+    {
+
+        #**************************************************************************
+        #
+        # November 5th 2008- new program omqualitymap
+        # This program will add "quality" flag information from the 
+        # source-list file to the quality image in the image file
+        #*************************************************************************
+
+        &HighlightedMessage("*", "omqualitymap");
+
+        #$arg_list = "set=$detectorCoordImageFileName" .
+	$arg_list =" set=$detectorCoordQualityFileName" .
+                    " srclistset=$out_directory/$osw_list_intermediary_detect_filename".
+                    #" outset=$detectorCoordImageFileName" .
+		    " outset=$detectorCoordQualityFileName2" .
+                    " mode=setqualityimage"; 
+        system("omqualitymap $arg_list") && SAS::fatal("Task Failure","omquality failed.");
+
+    }
+
+
+
+
+
+
+    #*********************************************** 
+    # ommag
+    #***********************************************
+    &HighlightedMessage("*", "ommag");
+
+    $arg_list = "set=$out_directory/$osw_list_intermediary_detect_filename";
+                
+
+#    &Message("ommag $arg_list");
+
+    system("ommag $arg_list") && SAS::fatal("Task Failure","ommag failed.");
+
+    #*********************************************************************
+    # Keep a copy of this source-list
+    #*********************************************************************
+    system("cp $out_directory/$osw_list_intermediary_detect_filename $out_directory/$osw_list_intermediary_detect_filename2");
+
+
+    #***********************************************************************
+    #
+    #**********************************************************************
+#    if($omatt_usecat eq "t" or $omatt_usecat eq "T")
+#    {
+#        if (not  -e $catfile)
+#        {
+#            my $command = "omcat set=$out_directory/$osw_list_intermediary_detect_filename outset=$catfile";
+#            system( $command );
+#        } 
+#
+#    }
+
+
+    #***********************************************
+    # omatt
+    #***********************************************
+    &HighlightedMessage("*", "omatt");
+
+    
+    #$arg_list ="set=$detectorCoordImageFileName" .
+    if ($catfileSpecified==1){
+	$arg_list = " set=$detectorCoordQualityFileName2" .
+	    " sourcelistset=$out_directory/$osw_list_intermediary_detect_filename" . 
+	    " ppsoswset=$skyCoordImageFileName" .
+	    " catfile=$catfile" .	    
+	    " usecat=$omatt_usecat" .
+	    " maxradecerr=$maxradecerr" .
+	    " maxrmsres=$maxrmsres" .
+	    " rotateimage=$omatt_rotateimage";
+    } else {
+	$arg_list = " set=$detectorCoordQualityFileName2" .
+	    " sourcelistset=$out_directory/$osw_list_intermediary_detect_filename" . 
+	    " ppsoswset=$skyCoordImageFileName" .
+	    " catfile=$usnoSubsetFileName" .
+	    " usecat=$omatt_usecat" .
+	    " maxradecerr=$maxradecerr" .
+	    " maxrmsres=$maxrmsres" .
+	    " rotateimage=$omatt_rotateimage";
+    }
+   
+   
+#    &Message("omatt $arg_list");
+    system("omatt $arg_list") && SAS::fatal("Task Failure","omatt failed.");
+   
+
+    %processedSourceList = Store($filter,"$out_directory/$osw_list_intermediary_detect_filename", %processedSourceList);
+   
+ 
+    if( $omatt_rotateimage eq 'T' or $omatt_rotateimage = 't')
+    {
+        #*****************************************************
+        # Store this file
+        # NB Store(key, value, self)
+        #*****************************************************
+        %processedSkyImageList = Store($filter, $skyCoordImageFileName, %processedSkyImageList);
+      
+    }
+
+
+
+
+
+    #**********************************************************
+    # 12.6.2001
+    # Add the file to the list if it is not the high-resolution
+    # central image
+    #**********************************************************
+                  
+#    print("Line 1096 file=$osw_list_intermediary_detect_filename\n");
+   
+
+#    if ( &IsHighResolutionCentralWindow("$out_directory/$osw_list_intermediary_detect_filename") eq 'F')
+ 
+
+
+     {            
+#	 print("*******************************************************************\n");
+#	print("Line 1032 $osw_list_intermediary_detect_filename IS NOT a high-re central window\n");
+       
+	my $name = $out_directory . '/' . $osw_list_intermediary_detect_filename;
+
+        #***********************************************************
+        #
+        # Add to the list of SWS files for omsrclistcomb
+        #
+        #***********************************************************
+        push(@osw_file_list, $out_directory . '/' . $osw_list_intermediary_detect_filename);
+
+
+
+        if ( &IsHighResolutionRudi5Window( "$out_directory/$osw_list_intermediary_detect_filename") eq 'T' )
+        {
+            return;
+
+        }
+
+      
+        push(@Simage2000Files, $skyCoordImageFileName);
+              
+ 
+    }
+ #   else
+ #   {
+
+#	print("Line 1048 $osw_list_intermediary_detect_filename is a high-re central window\n");
+ ##   }
+       
+
+} #***************
+
+
+#*********************************************
+# GetFlatFieldImage
+#*********************************************
+sub GetFlatFieldImage($)
+{
+    my ($orb_key, $obs_key) = @_;   
+  
+
+    
+    &HighlightedMessage("-", "omflatgen");
+      
+    $flatFieldFileName = "P$orb_key" . $obs_key . "X000FLAFLD0000.FIT";
+        
+    $flatFieldFileName = $out_directory . "/$flatFieldFileName";
+    my $arg_list = "outset=$flatFieldFileName";
+
+    my $message = "omflatgen $arg_list";
+#    &Message($message);
+    #********************************
+    # Create an artificial one
+    #********************************
+
+    system("omflatgen $arg_list") && SAS::fatal("Task Failure", "omflatgen");
+
+
+#    my $flat = "/opt/data/ssco2/odf/flatfield/pix2pix2006.fits";
+#    if(-e $flat)
+#    {
+#        my $command = "cp $flat $flatFieldFileName";
+#        print("$command\n");
+#        system( $command );
+
+#    }
+#    else
+#    {
+#	die("file $flat not found\n");
+#    }
+    $in_orbit_flat_field_filename = $flatFieldFileName;  
+      
+
+  
+    return $in_orbit_flat_field_filename;
+
+}
+#****************************************************
+# Subroutine ProcessExposure
+#****************************************************
+sub ProcessExposure($)
+{
+    my ($orbitNo, $observationNo, $exposureNo, $exposureSchedule, $exposureType, $filter) = @_; 
+    my ($type) = $ExposureType{$exposureNo};     # One of RUDI5, ENG2 or ENG4
+ 
+    #***********************************************
+    # Determine if RUDI5, ENG2 or ENG4 exposure
+    #***********************************************
+
+    #print("L1204 exposureSchedule=$exposureSchedule, exposuretype=$exposureType, filter=$filter\n");
+
+ 
+    if ($exposureType eq "MISSING")
+    {
+     
+        &HighlightedMessage("x", "Warning! - No image files found for exposure $exposureNo - ignoring exposure");
+        return;    
+          
+    }
+    my $text = "Processing exposure no $exposureNo (Imaging)";
+    &HighlightedMessage(".", $text);
+
+
+    my ($exposureKey) = $exposureType . $exposureNo;
+    my ($i) = 0;
+    my $directory;
+
+    #**************************************************
+    # If the exposure is an engineering-2 one combine
+    # the four separate images into one.
+    #**************************************************
+    if ($exposureType eq "ENG2")
+    {
+        &CombineEng2Images($observationNo,  $exposureSchedule, $exposureNo);
+        $directory = $out_directory;
+    }
+    else
+    {
+        $directory = $inp_directory;
+    }
+
+   
+    #*******************************************************************
+    # Check consistancy of odf.
+    #
+    # We need only check for the presence of the WDX and THX files here.
+    #
+    # We now have a true or dummy tracking history file name
+    #*******************************************************************
+    $tracking_history_found=0;
+
+    &CheckTHXFileExists($orbitNo, $observationNo, $exposureSchedule, $exposureNo);
+    #print("L1264 tracking_history_found=$tracking_history_found \n");
+    #print("L1265 exposureType=$exposureType rawattitude=$rawattitude \n");
+
+    #*******************************************************************
+    # 2011-06-07 Modify the value of the parameter rawattitude 
+    # if the exposure is in the full-frame mode (ENG2 or ENG4)
+    # or if the tracking history file was not found
+    #*******************************************************************
+    if ($tracking_history_found==0 || $exposureType eq "ENG2" || $exposureType eq "ENG4"){
+	# the parameter rawattitude =2 is for averaging along the whole exposure
+	$rawattitude=2;
+	my $message = sprintf("%s", "Raw attitude will be averaged for the whole exp.time ");
+	SAS::message($SAS::AppMsg, $SAS::SparseMsg, $message);
+    }
+    else{
+	if ($rawattitude==1){
+            # the parameter rawattitude =1 is for averaging during the first 20s
+	    my $message = sprintf("%s", "Raw attitude will be averaged for the first 20s of exposure");
+	    SAS::message($SAS::AppMsg, $SAS::SparseMsg, $message);
+	}
+    }
+
+    #***********************************************************
+    # 2011-05-20 modification to get the unique exposure number
+    #***********************************************************
+    #$window_data_filename = $inp_directory . "/". $orbitNo . "_" . $observationNo . "_OM" . $exposureSchedule . $exposureNo . "00WDX.FIT";
+
+    $window_data_filename = $inp_directory . "/". $orbitNo . "_" 
+	. $observationNo . "_OM" . $exposureNo . "00WDX.FIT";
+
+
+    if (&FileExists($window_data_filename) == 0)
+    {    
+
+        my $text = "Missing WDX file- skipping exposure";
+        &HighlightedMessage("x", $text);
+        return;     
+    }     
+
+    #**************************
+    #
+    # Set pipeline variables.
+    #
+    #**************************
+
+    #**********************************************************
+    # 2011-05-20 modification to get the unique exposure number
+    #**********************************************************
+    #$tracking_history_plot_filename = $out_directory . "/P" . $observationNo . "OM" . $exposureSchedule . $exposureNo . "TSHPLT" . "000.ps";
+    $tracking_history_plot_filename = $out_directory . "/P" 
+	. $observationNo . "OM" . $exposureNo . "TSHPLT" . "000.ps";
+
+    #$tracking_history_plot_filename1 = $out_directory . "/P" . $observationNo . "OM" . $exposureSchedule . $exposureNo . "TSHPLT" . "000.PDF";
+    $tracking_history_plot_filename1 = $out_directory . "/P" 
+	. $observationNo . "OM" . $exposureNo . "TSHPLT" . "000.PDF";
+
+
+    #$tracking_history_timeseries_filename = $out_directory . "/P" . $observationNo . "OM" . $exposureSchedule . $exposureNo . "TSTRTS000.FIT";
+    $tracking_history_timeseries_filename = $out_directory . "/P" 
+	. $observationNo . "OM" . $exposureNo . "TSTRTS000.FIT";
+
+    #************************************
+    # Tracking pipeline
+    #************************************
+    &HighlightedMessage(" ", "Running tracking chain");
+
+    #********************************************
+    #  omprep
+    #********************************************
+    &HighlightedMessage("-", "omprep");
+
+    #********************************
+    # The tracking-history file name
+    #*******************************
+    #**************************************************************
+    # 2011-05-20 modification to get the unique exposure number
+    #**************************************************************
+    #$trackingHistoryFileName = $out_directory . "/I" . $observationNo . "OM" . $exposureSchedule . $exposureNo . "TRHIS0000.FIT";
+    $trackingHistoryOutputFileName = $out_directory . "/I" . $observationNo 
+	. "OM" . $exposureNo . "TRHIS0000.FIT";
+    #print("L1320 trackinhHistoryFileName=$trackingHistoryFileName \n");
+
+    my $arg_list = "set=$tracking_history_filename" .
+                " nphset=$non_periodic_hk_filename" .
+                " pehset=$periodic_hk_filename" .
+                " wdxset=$window_data_filename" .
+		" rawattitude=$rawattitude" .
+                " outset=$trackingHistoryOutputFileName" .
+                " modeset=3";                          
+
+    system("omprep -v");
+#    &Message("... omprep  $arg_list"); 
+ 
+    system("omprep  $arg_list");
+
+    my $exit_value = $? >> 8;   # 0 okay, 1 call fatal called, or some other disaster
+    if ($exit_value == 1) # Failure in omprep 
+    { 
+        &Message("omprep has detected an error- this observation will not be processed");
+        return;  
+    }     
+   
+
+    #************************************************************
+    # omdrifthst
+    #************************************************************
+    &HighlightedMessage("-", "omdrifthist");
+
+    $arg_list = "set=$trackingHistoryOutputFileName" .
+                " plotfile=" .  $tracking_history_plot_filename;
+
+#    &Message("omdrifthist $arg_list");
+
+    system("omdrifthist $arg_list") && SAS::fatal("Task Failue","omdrifthist failed.");
+	     
+
+    #*******************************************************************
+    # Only run ps2pdf if tracking-history file exists
+    #*******************************************************************
+    
+    if (&FileExists($tracking_history_plot_filename) == 1) 
+    {
+
+        #&HighlightedMessage("*", "ps2pdf");
+
+        $arg_list = "$tracking_history_plot_filename $tracking_history_plot_filename1";
+#        &Message("ps2pdf  $arg_list");
+             
+	  
+        system("ps2pdf $arg_list") && SAS::fatal("Task Failure","ps2pdf failed.");
+      
+        #*****************************************************
+        # Store this file
+        # NB Store(key, value, self)
+        #*****************************************************
+        push( @TSHPLT1List, $tracking_history_plot_filename);
+    
+        push( @TSHPLT2List, $tracking_history_plot_filename1);
+      
+#	print("Line 1324 2 tracking-history files are  $tracking_history_plot_filename and  $tracking_history_plot_filename1\n");
+
+ 
+
+    }
+    else
+    {
+      
+    
+        &HighlightedMessage("x", "Tracking-history-plot file name doesn't exist");
+      
+    }
+    #************************************************************
+    # omthconv
+    #************************************************************
+    &HighlightedMessage("-", "omthconv");
+
+    $arg_list = "thxset=$trackingHistoryOutputFileName" .
+                " nphset=$non_periodic_hk_filename" .
+                " outset=$tracking_history_timeseries_filename" ;
+
+    push(@TSTRTSList, $tracking_history_timeseries_filename);
+
+
+#    &Message("omthconv $arg_list");
+
+    system("omthconv $arg_list") && SAS::fatal("Task Failure","omthconv failed.");
+    
+
+    #***************************************************
+    # Loop over the windows (0 or 1) for RUDI5 images
+    # (Low res & high res window)
+    #***************************************************
+
+
+    #**************************************************
+    # Get a list of the IMI/E2I/E4I for this exposure
+    #**************************************************
+    my $extension = $ExposureExtension{$exposureNo};     # One of RUDI5, ENG2 or ENG4
+
+    #***********************************************
+    # Get a list of image files for this exposure
+    #***********************************************
+
+    my @FileList = &GetExposureFileList($directory, $exposureNo, $extension);
+
+    #************************************************
+    # If the exposure is a Rudi-5 one check that
+    # there are 2 exposures (high and low resolution)
+    #************************************************
+
+    if ($exposureType eq "RUDI5")
+    {
+        &CheckRudi5Images($exposureNo, @FileList);
+    } 
+    #!!!!!!!!!!!!!!!!!!!
+    #die;
+    #!!!!!!!!!!!!!!!!!!
+
+    #*********************************************
+    # The imaging pipeline
+    #*********************************************
+
+    &HighlightedMessage("*", "Running Imaging pipeline");
+
+
+#    print("Process exposure - the list of files for exposure schedule $exposureSchedule\n");
+
+
+#    for (my $i = 0; $i < @FileList; $i++)
+#    {                                     
+#        my $imageFileName = $FileList[$i];
+#	print("$i) $imageFileName\n");
+#    }
+
+
+    for (my $i = 0; $i < @FileList; $i++)
+    {
+                                     
+        my $imageFileName = $FileList[$i];
+
+         
+        my $pos = index($imageFileName, $extension) - 24;
+        my $name = substr($imageFileName, $pos, 32);    # Get rid of the directory name               
+        my $windowNo = substr($name, 16, 2);            # Window no- 00 or 01
+               
+        &ProcessImageFile($imageFileName, $observationNo, $exposureSchedule, $exposureNo, $windowNo, $filter);
+  
+    }
+
+}
+
+
+#***************************
+#
+# Subroutine ProcessOrbit
+#
+#***************************
+sub ProcessOrbit($)
+{
+    my ($orbitNo, @UserFilterList) = @_; 
+       
+    my $obs_list = $orb_list{$orbitNo};
+
+    my $message;
+ 
+  
+    my @List = RetrieveList($orbitNo, %orb_list);
+ 
+    #************************************************
+    # Process observations for the orbit number
+    #***********************************************
+    for (my $i = 0; $i < @List; $i++)
+    {
+     
+        my $exposureNo;
+        my $oldExposureType; 
+        my $exposureType;
+ 
+
+
+	$obs_key = $List[$i];
+
+        #*************************************************
+        # Get the flat-field (create one if necessary)
+        #*************************************************     
+        $in_orbit_flat_field_filename = &GetFlatFieldImage($orbitNo, $obs_key); 
+       
+       
+        &HighlightedMessage("*", "Observation $obs_key");
+       
+    
+        #**************************************************
+        #
+        # Process the data for each exposure of each filter
+        #
+        #**************************************************
+  
+        @UserExposureList = &GetStringParameterList("exposures");
+
+
+        if (@UserFilterList > 0 and @UserExposureList > 0)
+        {
+            &HighlightedMessage("x", "Error! - You can only supply either a list of filters or a list of exposures- aborted");
+            die;    
+        } 
+        my $userSupplied = 0;
+        my @List = ();
+        if (@UserFilterList > 0)
+        {
+            #*****************************************************
+            #
+            # Check that the list is valid and modify accordingly
+            #
+            #*****************************************************
+            @List = &CheckUserFilterList(@UserFilterList);
+             
+        }
+        elsif (@UserExposureList > 0)
+        {
+           
+
+            #*****************************************************
+            # Obtain the list of filters for the user-specified
+            # exposures
+            #*****************************************************
+            @List = &CheckUserExposureList(@UserExposureList);
+
+#	    print("Line 1359 user-supplied list of exposures\n");
+
+
+            $userSupplied = 1;
+        }
+        else
+        {
+            @List = &GetFilterList;  # List of OM filters in summary file
+        }
+      
+
+        #*********************************************************************
+        #
+        # Loop through the list of filters for this observation
+        #
+        #*********************************************************************
+
+
+	my @mosaicedSkyImageList = (); # For storing the mosaiced sky-images
+	my @mosaicedFilterList = ();   # For storing the mosaiced filters
+
+        for (my $k = 0; $k < @List; $k++)
+        {
+	  
+
+	   #print("Line 1384 filter=$List[$k] \n");
+
+           #***********************************************
+           #
+           # Stop processing image file if a grism image
+           #
+           #***********************************************
+  
+       
+            @Simage2000Files = () ;    # Stores a list of the image files for mosaicing    
+    
+	   #print("----- \n");
+	   #print("L1699 ExposureFilterList==\n");
+	   #print(%ExposureFilterList);
+	   #print("\n");	 
+	 
+ 
+	    my @List1 = &RetrieveList($List[$k], %ExposureFilterList);
+
+	   #print("----- \n");
+	   #print("L1707 List1=\n");
+	   #print(@List1);
+	   #print("\n");	   
+ 
+
+            if ($userSupplied == 1)
+            {
+		
+#                print("Line 1398\n"); 
+                my @temp = ();
+                my $l = 0;
+                for ($l = 0; $l < @UserExposureList; $l++)
+                {
+                    my $m = 0;
+                    my $found = 0;
+                    while ($m < @List1 and $found == 0)
+                    {
+                        if($UserExposureList[$l] eq $List1[$m])
+                        {
+                            $found = 1;
+#			    print("Line 1410 found $List1[$m]\n");
+                            push(@temp, $UserExposureList[$l]);
+                        }
+                        $m++;
+                    }
+                 }
+                 @List1 = @temp;
+      
+	    } 
+
+            my $noExposures = @List1;
+            my $message;
+            if ($noExposures == 0) 
+            {
+                next;
+            }
+
+	   
+	    #Ignore also UNDEFINED filter
+	    if ( $List[$k] eq "GRISM1" or $List[$k] eq "GRISM2" or $List[$k] eq "UNDEFINED") 
+	    {
+		if ( $List[$k] eq "GRISM1" or $List[$k] eq "GRISM2"){
+		    my $message = "Ignoring filter $List[$k]- please use the omgrism chain to reduce the data";
+		    &HighlightedMessage("x", $message);
+		} else {
+		    my $message = "Ignoring filter $List[$k] - please check the input data";
+		    &HighlightedMessage("x", $message);
+		}
+		
+                  next;
+
+           }
+	 
+
+
+	    if ($noExposures == 1)
+            {
+                $message = "Processing $List[$k] band image (exposure " . join(", ", @List1) . ")";   
+            }
+            else
+            {    
+                $message = "Processing $List[$k] band images (exposures " . join(", ", @List1) . ")";   
+            }
+	    &HighlightedMessage(" ", $message);
+             
+                    
+            my $start = time();
+ 
+	   #print("Line 1452 noexposures=$noExposures\n");
+
+            for (my $i = 0; $i < $noExposures; $i++) 
+            {
+
+
+                $exposureNo = $List1[$i];
+
+                #print("Line 1460 finding exposure type for exosure no $exposureNo\n");  
+                $exposureType = &FindExposureType($exposureNo);
+   
+		#print("$i, )Line 1463 exposureno=, $exposureNo, exposuretype=$exposureType\n");
+
+
+	       
+                if ($exposureType ne "MISSING")
+                {
+                    $oldExposureType = $exposureType;
+		  
+                } 
+                my $exposureSchedule = $ExposureScheduleList{$exposureNo};
+         
+                my $exposure_key = $exposureSchedule . $exposureNo;
+         
+           
+                &ProcessExposure($orbitNo, $obs_key, $exposureNo, $exposureSchedule, $exposureType,  $List[$k]);
+	       
+		
+            }
+            $exposureType = $oldExposureType;
+
+
+
+            #****************************************
+            # Mosaic the images for thsi filter
+            #****************************************    
+ 	    my $num = @Simage2000Files;
+
+	    #print("L1779 *****************************************\n");
+	    #print("L1780 Finished processing exposures num=$num \n");
+	  
+            if ($num > 0)
+            {
+                	
+		#print("L1792 mosaicing images \n");
+
+                my $mosaicedSkyImage = &MosaicImages($exposureType, $List[$k], @Simage2000Files);    
+
+
+                #********************************************************************************
+                #
+                # Store this mosaiced sky-image for possible source-detection later on
+                #
+                #********************************************************************************
+		my $lengthMosaicedSkyImage=length($mosaicedSkyImage);
+		#print("L1803 lengthMosaicedSkyImage=$lengthMosaicedSkyImage \n");
+
+                if ( length($mosaicedSkyImage) > 2)
+                { 
+                  
+
+                    #print("L1809 filter=$List[$k], mosaicedskyimage=$mosaicedSkyImage\n");
+
+                    push( @mosaicedSkyImageList, $mosaicedSkyImage );
+                    push( @mosaicedFilterList, $List[$k] );
+
+
+                    #*****************************************************
+                    # Store this file
+                    # NB Store(key, value, self)
+                    #*****************************************************
+                   %processedMosaicedImageList = Store($List[$k], $mosaicedSkyImage, 
+						       %processedMosaicedImageList);
+      
+
+                }
+            }
+
+
+#            else
+#            {
+#                if ($num == 1)
+#                {
+#                    my $zero = 0;
+#                    &HighlightedMessage("*", "Warning- there is only one sky-coord image ($Simage2000Files[$zero]" . "- ommosaic will not run");
+#                }
+#            } 
+            my $time = time() - $start;
+            if ($time > 1)
+            {
+                my $message = "Finished processing images for filter $List[$k] - time taken= $time  seconds";
+	        &HighlightedMessage("*", $message);
+            }       
+        } 
+
+        #***********************************************
+        # Check that there is at least one source-list
+        #***********************************************
+        my $numSourceLists = @osw_file_list;
+	#print("L1847 numSourceLists=$numSourceLists \n");
+
+        if ($numSourceLists > 0) 
+        {  
+
+	    #print("L1852 continue processing multiple source lists \n");
+
+            #**********************************
+            # Set remaining pipeline variables.
+            #**********************************
+            $observation_source_list_pps_product_filename = "P$obs_key" ."OMCOMBOBSMLI0000.FIT";
+	    $observation_source_list_region_product_filename = "P$obs_key" ."OMCOMBOBSMLI0000.reg";
+            $omvariability_plotFile = "P$obs_key" ."OMLIGHTCURVE0000";
+
+            #**********************************************
+            # omsrclistcomb.
+            #********************************************** 
+            &HighlightedMessage("-", "omsrclistcomb");
+
+            my $obsFile = "$out_directory/$observation_source_list_pps_product_filename";
+	    my $arg_list="";
+	    if ($catfileSpecified==1){
+		$arg_list = "sourcelistsets=\"" . join(" ", @osw_file_list) . "\"" .   
+		    " nsigma=$omsrclistcomb_nsigma" .
+		    " usecat=$omsrclistcomb_usecat" .
+		    " alignaxes=$omsrclistcomb_alignaxes" .
+		    " catfile=$catfile" .
+		    " maxradecerr=$maxradecerr" .
+		    " maxrmsres=$maxrmsres" .
+		    " outset=$obsFile";
+	    } else {
+		$arg_list = "sourcelistsets=\"" . join(" ", @osw_file_list) . "\"" .   
+		    " nsigma=$omsrclistcomb_nsigma" .
+		    " usecat=$omsrclistcomb_usecat" .
+		    " alignaxes=$omsrclistcomb_alignaxes" .
+		    " catfile=$usnoSubsetFileName" .
+		    " maxradecerr=$maxradecerr" .
+		    " maxrmsres=$maxrmsres" .
+		    " outset=$obsFile";
+	    }
+
+#            &Message("omsrclistcomb $arg_list");
+
+            system("omsrclistcomb $arg_list") && SAS::fatal("Task Failure","omsrclistcomb failed.");
+
+            $observationSourceList{"EXPOSURES"} = $obsFile;   
+
+            # create a region file for the combined source list
+	    $arg_list = "set=$obsFile srcfile=$observation_source_list_region_product_filename";   
+	    system("omregion $arg_list") && SAS::fatal("Task Failure","omregion failed.");
+
+            #***********************************************************************
+            # Run omvariability
+            #********************************************************************** 
+            &runOmvariability($obsFile,  @osw_file_list );
+
+	    
+            if( $detect_stacked eq "T" and @mosaicedSkyImageList > 0)
+            {
+		
+
+                #*****************************************************************************
+                # 5th November 2008
+                # Now want to run omdetect on the mosaiced sky images
+                #*****************************************************************************          
+                my @swsList = &ProcessMosaicedSkyImages( \@mosaicedSkyImageList, \@mosaicedFilterList);
+
+
+                if( @swsList > 0)
+                {
+                    #*****************************************************************************
+                    # 5th November 2008
+                    # Now want to run omsrclistcomb on the mosaiced SWS files
+                    #*****************************************************************************
+                    my $mosaicedObsSWSFile = "$out_directory/P$obs_key" ."OMCOMBOBSMOS0000.FIT";
+
+
+                    &ProcessMosaicedSWSList( $mosaicedObsSWSFile, @swsList );
+                    $observationSourceList{"MOSAICED"} = $mosaicedObsSWSFile;   
+
+
+                    #******************************************************************************
+                    # Now need to merge the two observation source-list files
+                    #******************************************************************************
+                    my $mergedList = $out_directory . "/P$obs_key" . "OMCOMBOBSMER0000.FIT";
+		    my $mergedListRegion = $out_directory . "/P$obs_key" . "OMCOMBOBSMER0000.reg";
+                    &mergeLists( $obsFile, $mosaicedObsSWSFile, $mergedList);
+                    $observationSourceList{"MERGED"} = $mergedList;   
+		    
+		    # create a region file for the merged source list
+
+		    $arg_list = "set=$mergedList srcfile=$mergedListRegion";   
+		    system("omregion $arg_list") && SAS::fatal("Task Failure","omregion failed.");
+
+                 }
+	    }
+
+        }
+        else
+        {
+            &HighlightedMessage("Warning!- There are no source-list files for omsrclistcomb to process");
+        }
+
+          
+      
+
+    }   # The end of looping through the list of observations
+
+}
+#*******************************
+# sub SetUpDirectoryPaths
+#*******************************
+sub SetUpDirectoryPaths
+{
+
+    $inp_directory = stringParameter("inpdirectory");
+    
+
+    my $directory;
+    if (length($inp_directory) < 2 || length($inp_directory) >255)
+    {
+        #*************************************************
+        # If the SAS_ODF environment variable has been set
+        # then set the input directory to it- otherwise
+        # set the input directory to the current directory
+        #*************************************************
+	my $length1=length($inp_directory);
+	
+        my $len = 0;
+        my $input = " ";
+        if (exists($ENV{SAS_ODF}))
+        {
+            $len = length($ENV{SAS_ODF});
+            $input = $ENV{SAS_ODF};
+	    
+        }      
+
+        if ($len < 3)
+        {
+            $inp_directory = &GetCurrentDirectory;
+	    
+            $ENV{SAS_ODF} = $inp_directory;
+            my @SASFiles = <$inp_directory/*.SAS>;        
+            $SASFile = shift @SASFiles;
+        }
+        else
+        {     
+            #*************************************************
+            # If SAS_ODF is set to a .SAS file then need
+            # to get the ODF directory from it
+            #************************************************
+
+            my $pos = index($input, "SAS");
+          
+             
+            if ($pos > 0) 
+            {
+	        my $length = length($input);
+                $directory = substr($input, 1, $length - 4); 
+                $SASFile = $input;
+		$inp_directory = &GetODFDirectory;   
+            }
+            else
+            {
+                $inp_directory = $input;
+             
+                my @SASFiles = <$inp_directory/*.SAS>;        
+        
+ 
+                $SASFile = shift @SASFiles;
+                my $string =  "$inp_directory/*.FIT";
+                     
+            }
+        }
+	
+    }
+    else
+    {
+	my @SASFiles = <$inp_directory/*.SAS>;        
+	
+	$SASFile = shift @SASFiles;
+	$ENV{SAS_ODF} = $inp_directory;
+    }   
+    
+    $out_directory = stringParameter("outdirectory");
+    
+
+    if (length($out_directory) < 2 || length($out_directory) > 255)
+    {
+
+	$out_directory = &GetCurrentDirectory;
+	#print("L1948 out_directory=$out_directory \n");
+      
+    }
+    
+    my $fileExists1=FileExists($out_directory);
+    
+    if (FileExists($out_directory) == 0) 
+    { 
+#        SAS::fatal("Task Failure","$out_directory doesn't exist");
+	die("Task Failure (out_directory): $out_directory doesn't exist");
+
+    }
+    
+    if (length($inp_directory) < 2 || length($inp_directory) > 255)
+    {
+	
+	$inp_directory = &GetCurrentDirectory;
+	#print("L1965 inp_directory=$inp_directory \n");
+    }
+
+    $fileExists1=FileExists($inp_directory);
+    
+    if (FileExists($inp_directory) == 0) 
+    { 
+#        SAS::fatal("Task Failure","$inp_directory doesn't exist");
+        die("Task Failure (inp_directory): $inp_directory doesn't exist");
+    }
+
+  
+}
+#**********************************
+# sub CheckForHouseKeepingFiles
+#**********************************
+sub CheckForHouseKeepingFiles
+{
+    if($periodic_file_flag == 0)
+    {
+        &Message("The ODF does NOT contain a Periodic Housekeeping file. Please insert into the ODF. ");
+        SAS::fatal("Task Failure","Incomplete ODF.");
+    }
+
+    if($non_periodic_file_flag == 0)
+    {
+        &Message("The ODF does NOT contain a Non Periodic Housekeeping file. Please insert into the ODF.");
+        SAS::fatal("Task Failure","incomplete ODF.");
+    }
+}
+
+#**************************************
+# Subroutine InitialiseLists
+#**************************************
+sub InitialiseLists
+{
+   
+#    print("initilaiselists line 1509\n");
+
+    &FillExposureNoList;           # Stores a list of exposures from the summary file. 
+
+   
+}
+#**************************************
+# Subroutine Message
+#**************************************
+sub Message($)
+{ 
+    my ($message) = @_;  
+
+#    my $length = length($message);
+
+#    if ($length <= 72)
+#    { 
+
+#    for (my $i = 0; $i < $maxLength; $i++)
+#    { 
+#        $text = $text . $character;
+#    }
+   
+
+
+
+
+        if ($redirect == 5) 
+        {
+            print("$message \n");
+        }
+        else  
+        {
+            SAS::message($SAS::AppMsg, $SAS::SparseMsg, $message);
+
+
+
+        }
+#    }
+#    else
+#    {
+#       my $i = 0;
+#       my $j = 0;
+#       do {
+       
+#	    $j += 72;
+#            my $message1 = substr($message, $i, 72);
+#            if ($redirect == 5) 
+#            {
+#                print("$message1 \n");
+#            }
+#            else  
+#            {
+#                SAS::message($SAS::AppMsg, $SAS::SparseMsg, $message1);
+
+
+
+#            }
+#            $i += 1;
+#        } until ($j >= $length);  
+
+#    }
+
+}
+#**************************************
+# Subroutine HighlightedMessage
+# Outputs lines of text
+#**************************************
+sub HighlightedMessage($)
+{ 
+    
+    my ($character, @Messages) = @_;  
+   
+    my $noLines = @Messages;
+    my $maxLength = length($Messages[0]);
+ 
+    if ($noLines > 1)
+    {
+        for (my $i = 1; $i < $noLines; $i++)
+        {
+            if (length($Messages[$i]) > $maxLength)
+	    {
+                $maxLength = length($Messages[$i]);
+            }
+        } 
+    }
+
+    if ($maxLength > 80)
+    {
+	$maxLength=80;
+    }
+
+    my $text = "";
+   
+    for (my $i = 0; $i < $maxLength; $i++)
+    { 
+        $text = $text . $character;
+    }
+
+    &Message("$text");
+
+    for (my $i = 0; $i < $noLines; $i++)
+    { 
+       
+        &Message($Messages[$i]);
+    }
+
+    &Message($text);
+   
+
+}
+
+#***************************************
+# CreateLogFile
+#**************************************
+sub CreateLogFile
+{
+   
+    $redirect = 5;
+   
+    open (STDOUT, ">omichain_log"); # and die("Couldn't open file");;
+ 
+    
+ 
+    open (STDERR, ">&STDOUT");
+ 
+ 
+    select (STDERR);
+  
+ 
+}
+#***********************************
+# Subroutine GetCurrentDirectory
+#**********************************
+sub GetCurrentDirectory
+{
+    my $command = "pwd";
+    my $curdir = `$command`;
+
+    my $leng = length($curdir);
+    substr($curdir, $leng - 1) = "";    
+    return $curdir;
+}
+
+
+#******************************
+# Subroutine GetODFDirectory
+# Retrieves the directory-path
+# of the ODF data files.
+#******************************
+sub GetODFDirectory($)
+{
+     
+   
+
+    open (SASFILE, $SASFile) || SAS::fatal("OMICHAIN","Unable to open SAS SUMMARY FILE $SASFile"); 
+ 
+
+    my $line = <SASFILE>;
+        
+  
+    while ($line = <SASFILE>)
+    {
+        
+        if ($line =~ "PATH")
+        {        
+
+            my $length = length($line);
+            my $directory = substr($line, 5, $length - 6); 
+            #if ($directory eq "." or $directory eq "./")
+            #{
+            #    my $length = length($SASFile);
+            #    $directory = substr($SASFile, 0, $length - 32);
+            #}
+            close SASFILE;
+            return $directory; 
+             
+        }
+    }
+    close SASFILE;
+
+
+}
+
+#************************************
+# Sub GetOmmodmapParameters
+#************************************
+sub GetOmmodmapParameters
+{
+    $ommodmap_nsig = intParameter("ommodmapnsig");
+    $ommodmap_nbox = intParameter("ommodmapnbox"); 
+
+    if ($ommodmap_nsig > 10 || $ommodmap_nsig < 1)
+    {
+	$ommodmap_nsig=3;
+    }
+    if ($ommodmap_nbox > 2048 || $ommodmap_nbox < 1)
+    {
+	$ommodmap_nbox=16;
+    }
+}
+#************************************
+# Sub GetOmdetectParameters
+#************************************
+sub GetOmdetectParameters
+{
+  
+    $omdetect_nsigma = realParameter("omdetectnsigma");
+    $omdetect_minsignificance = realParameter("omdetectminsignificance");
+#    print("omdetectminsignificance= $omdetect_minsignificance\n");
+
+    $omdetect_detectextended = booleanParameter("omdetectdetectextended");
+    $psfPhotometryEnabled = booleanParameter("psfphotometryenabled");
+    $backgroundMethod = intParameter("backgroundmethod");
+    $maxRawCountRate=realParameter("maxrawcountrate");
+
+    if ($omdetect_nsigma > 20.0 || $omdetect_nsigma < 1.0 )
+    {
+	$omdetect_nsigma=2.0;
+    }
+    if ($omdetect_minsignificance < 20.0 and $omdetect_minsignificance > 0.0 )
+    {
+	$omdetect_minsignificance=$omdetect_minsignificance * 1.0;
+    }
+    else
+    {
+	$omdetect_minsignificance = 0.0;
+    }
+    if ($omdetect_detectextended eq 0 or $omdetect_detectextended eq "no" 
+	or $omdetect_detectextended eq "NO" )
+    {
+	$omdetect_detectextended="F";
+    }
+    else
+    {
+	$omdetect_detectextended="T";
+    }
+
+}
+#************************************
+# Sub GetOmsrclistcombParameters
+#************************************
+sub GetOmsrclistcombParameters
+{
+   
+    $omsrclistcomb_nsigma = realParameter("omsrclistcombnsigma");
+    $omsrclistcomb_usecat = &GetBooleanParameter("omsrclistcombusecat");
+    $omsrclistcomb_alignaxes = &GetBooleanParameter("omsrclistcombalignaxes");
+
+ 
+
+    if ($omsrclistcomb_nsigma >10.0 || $omsrclistcomb_nsigma < 1.0)
+    {
+	$omsrclistcomb_nsigma = 3.0;
+    }
+
+  
+}
+
+#************************************
+#
+# Sub GetOmattParameters
+#
+#************************************
+sub GetOmattParameters
+{    
+    $omatt_usecat = &GetBooleanParameter("usecat");
+    $catfile = stringParameter("catfile");
+   
+    if (length($catfile) < 2 || length($catfile) >255)
+    {
+	$catfile=$inp_directory/"usnocat.fit";
+	$catfileSpecified=0;
+    } else {
+	$catfileSpecified=1;
+    }
+    if (-e  $catfile){ 
+	# file ixists: OK
+	$usnoSubsetFileName=$catfile;
+    } else{ # specified file does not exist, using internal name
+	
+	$catfile=$usnoSubsetFileName;
+	$catfileSpecified=0;
+    }
+
+    $omatt_rotateimage =  &GetBooleanParameter("omattrotateimage");
+
+
+    $maxradecerr =  realParameter("maxradecerr");
+    $maxrmsres = realParameter("maxrmsres");
+
+}
+
+
+#************************************
+# Sub GetOmmergelistsParameters
+#************************************
+sub GetOmmergelistsParameters
+{    
+   
+   $ommergelistsRegionFile = stringParameter("ommergelistsregionfile");
+  
+   if (length($ommergelistsRegionFile) < 2 || length($ommergelistsRegionFile) >255)
+   {
+       $ommergelistsRegionFile= "";
+
+   }
+ 
+  
+   $ommergelistsPlotFile = stringParameter("ommergelistsplotfile");
+  
+   if (length($ommergelistsPlotFile) < 2 || length($ommergelistsPlotFile) >255)
+   {
+       $ommergelistsPlotFile= "";
+
+   }
+ 
+
+
+
+
+
+
+   $ommergelistsTolerance =  realParameter("ommergeliststolerance");
+
+
+    if ($ommergelistsTolerance > 10.0 || $ommergelistsTolerance < 1.0)
+    {
+	$ommergelistsTolerance = 2.0;
+    }
+
+
+    $ommergelistsMaxrawrate = realParameter("ommergelistsmaxrawrate");
+
+    if ($ommergelistsMaxrawrate > 100.0 || $ommergelistsMaxrawrate < 0.0)
+    {
+
+	$ommergelistsMaxrawrate = 5.0;
+    }
+
+}
+
+#************************************
+# Sub GetOmvariabilityParameters
+#************************************
+sub GetOmvariabilityParameters
+{    
+   
+   
+    $omvariability_minStd =  realParameter("omvariabilityminstd");
+
+    if ($omvariability_minStd > 100.0 || $omvariability_minStd < 0.5)
+    {
+	$omvariability_minStd = 2.0;
+    }
+
+}
+
+#**************************************
+# GetBooleanParameter
+#**************************************
+sub GetBooleanParameter($)
+{
+    my ($name) = @_;
+    my ($parameter) = booleanParameter($name);
+   
+    my ($converted) = "F";
+    if ($parameter eq "1" or $parameter eq "yes" 
+         or $parameter eq "YES" or $parameter eq "TRUE" or $parameter eq "true" 
+         or $parameter eq "T"  or $parameter eq "t")
+    {
+        $converted = "T";
+    }
+  
+    return $converted;
+}
+#**************************************
+# Sub GetFilterList
+# Returns a list of the OM filters
+# in the SAS summary file
+#**************************************
+sub GetFilterList
+{
+
+   open (SASFILE, $SASFile) || SAS::fatal("OMICHAIN","Unable to open SAS SUMMARY FILE $SASFile"); 
+ 
+    #*************************************************
+    # Skip past the EPIC and RGS stuff
+    #*************************************************
+   
+  
+    my $line = <SASFILE>;
+       
+    until (substr($line, 0, 2) eq "OM")
+    {
+
+        $line = <SASFILE>;
+        if( eof)
+        {
+            die("Error reading SAS summary file"); 
+
+        }
+                                  
+    } 
+
+    @FilterList = (); 
+
+    while ($line = <SASFILE>)
+
+    {
+        
+        if ($line =~ "/ Exposure Identifier")
+        {                 
+
+
+	   my $filterName = &GetNextSASFilter;
+	  
+           if ($filterName eq "")
+           {
+               last;
+           }       
+           
+            
+            #*********************************************
+            # Add the filter to the list
+            #*********************************************
+            my $numFilters = @FilterList;
+            my $exists = 0;
+       
+        
+	    my $i = -1;
+            while (++$i < $numFilters and $exists == 0) 
+            {
+	   
+                if ($filterName eq $FilterList[$i])
+                {
+                
+                    $exists = 1;
+               
+
+                }
+
+            }
+	    
+            if ($exists == 0)  # Found a different filter
+            {
+ 
+                if (&FilterOkay($filterName) == 0)
+                {
+                    push(@FilterList, $filterName);
+                }
+	    }
+        }
+    }
+
+
+
+   close SASFILE;
+    
+#   &Display("The list of filters",  @FilterList);
+
+
+#   die("stopped at line 2209");
+
+
+    return @FilterList;
+    
+}
+#************************************************
+# Sub GetFilterFileList
+# Returns a list of files for a
+# given filter which contain
+# the given expression
+# Usage :: @List = @GetFilterList("V", "*IMI*");
+#************************************************
+sub GetFilterFileList($)
+{
+    my ($filter, $string) = @_;  
+ #   my($i, $j) = 0;
+    
+    open (SASFILE, $SASFile) || SAS::fatal("OMICHAIN","Unable to open SAS SUMMARY FILE $SASFile"); 
+ 
+    #*************************************************
+    # Skip past the EPIC and RGS stuff
+    #*************************************************
+
+ 
+    my $line = <SASFILE>;
+       
+    until (substr($line, 0, 2) eq "OM")
+    {
+        $line = <SASFILE>;
+                                  
+    } 
+    my @List =();           # Initialise the file list    
+ 
+    while ($line = <SASFILE>)
+    {
+        
+        if ($line =~ "FILTER =")
+        {
+         
+            my $pos = index($line, "//");
+
+            my $filterName = substr($line, 9, $pos - 10); # Get rid of the characters after the end of the filter
+	    
+
+
+            if ($filterName eq "White")
+            {
+                $filterName = "WHITE";
+	    }
+            if ($filterName eq "Grism1")
+            {
+                $filterName = "GRISM1";
+	    }
+
+            if ($filterName eq "Grism2")
+            {
+                $filterName = "GRISM2";
+	      
+	    }
+             
+            if ($filterName eq "Blocked")
+            {
+                $filterName = "BLOCKED";
+	
+            }
+     
+
+            if ($filterName eq $filter)
+            {  
+                until ($line =~ "/ Exposure Identifier")
+               
+                {
+	            $line = <SASFILE>;
+           
+                } 
+                 
+                my $exposureNo = substr($line, 0, 3);
+                push(@List, $exposureNo);         
+#print("Line 2277 getfiltefilelist- filter=$filter, string=$string\n"); 
+                     
+            }  
+        }
+    }
+   
+    close SASFILE;
+    #******************************************************
+    # Select all the files containing the specified string    
+    #******************************************************
+    my @FileList = <$inp_directory/$string>;        
+
+      
+    @FilterFileList =();           # Initialise the file list    
+ 
+    for (my $i = 0; $i < @FileList; $i++)
+    { 
+       
+        for (my $j = 0; $j < @List; $j++)
+        {
+            if ($FileList[$i] =~ $List[$j])
+            {
+                push(@FilterFileList, $FileList[$i]);         
+            } 
+        }
+    }
+    return @FilterFileList;  
+    
+}
+#*****************************
+# Subroutine Display
+# Displays the given list
+#****************************
+sub Display($)
+{
+    my ($title, @List) = @_;
+   
+#    print("DISPLAYING LIST $title \n"); 
+ 
+  
+    for (my $i = 0; $i < @List; $i++)
+    {
+        print("$i) $List[$i] \n");
+    }
+}
+#*******************************************
+#
+#
+# GetNextSASFilter
+#
+#
+#******************************************
+
+sub GetNextSASFilter
+
+{
+    my $line = <SASFILE>;
+ 
+ #   print("getnextsasfilter line 2331\n");
+
+    my $count = 0;
+    until($line =~ "FILTER =" or $line eq "")
+    {
+        $line = <SASFILE>;
+        ++$count;
+        if( $count > 100)
+        {
+            die("Error reading sas summary file");
+
+        }
+       
+    } 
+    if ($line eq "")
+    {
+      
+        return $line;
+
+    }
+            
+    my $pos = index($line, "//");
+
+    my $filterName = substr($line, 9, $pos - 10); # Get rid of the characters after the end of the filter
+
+#print("getnextsasfilter line 2353 - line=$line filterName=$filterName\n");
+
+
+    if ($filterName eq "White")
+    {
+        $filterName = "WHITE";
+    }
+
+
+    if ($filterName eq "Grism1")
+    {
+        $filterName = "GRISM1";
+    }
+
+    if ($filterName eq "Grism2")
+    {
+        $filterName = "GRISM2";
+	
+    }
+             
+    if ($filterName eq "Blocked")
+    {
+        $filterName = "BLOCKED";
+	
+    }
+             
+   
+    return $filterName;
+}
+#************************************
+# GetExposureNoListForFilter      
+# Returns a list of the exposures
+# made for the given filter
+#************************************
+sub GetExposureNoListForFilter($)
+{
+    my ($filter, $exposureNo) = @_;  
+    
+       
+    my @ExposureNoFilterList = ();
+
+ 
+ 
+    my @ExposureNoList = RetrieveList($filter, %ExposureFilterList);
+  
+ 
+
+    return  @ExposureNoList;  
+}    
+#*******************************************
+# Sub FindExposureType
+# Determines if the given exposure number
+# is for a RUDI5 sequence, or ENG2
+#*******************************************
+sub FindExposureType($)
+{
+    my ($exposureNo) = @_;  
+ 
+
+    #*****************************************************************
+    # Get a list of IMI files from the input directory
+    #*****************************************************************
+
+    my(@ImageFiles) = <$inp_directory/*IMI.FIT*>;           
+
+    #print("L2644 Findexposure looking for exposureNo $exposureNo\n");
+
+    my $num;
+    my $numFiles = @ImageFiles;
+      
+    @ExposureImageList = ();           # Initialise the file list    
+     
+    my $type;
+
+    for (my $j = 0; $j < $numFiles; $j++)
+    {
+               
+        my $fileName = $ImageFiles[$j];       
+        my $pos = index($fileName, "IMI") - 24;
+
+        my $string = substr($fileName, $pos, 32);    # Get rid of the directory name
+
+
+	#print("$j) - L2632 filename=$fileName, string=$string\n");
+
+	#***********************************************************
+	# 2011-05-20 Modifying the exposure number to get it unique
+	#***********************************************************
+        #my $text = substr($string, 19, 3);           # The exposure number
+	my $text = substr($string, 18, 4);           # The exposure number
+   
+        #print("L2638 text=$text (exposure number\n");
+        if ($text eq $exposureNo)
+        {
+
+            #print("L2642 found exposure number $exposureNo\n");
+            push(@ExposureImageList, $fileName);         
+          
+        }            
+              
+                  
+    }
+
+
+    my $numIMIFiles = @ExposureImageList;
+
+    #print("L2685 numimifiles=$numIMIFiles\n");
+   
+    $num = 0;
+    
+        
+    if ($numIMIFiles > 0)
+    {
+
+        for (my $j = 0; $j < $numIMIFiles; $j++)
+        {
+        
+            my $fileName = $ExposureImageList[$j];       
+ #           print("$j, ) Line 2408 filename=$fileName\n");
+            my $pos = index($fileName, "IMI") - 24;
+            my $name = substr($fileName, $pos, 32);    # Get rid of the directory name               
+            my $pattern = "0" .  $j . "IMI";  
+            $pos = index($name, $pattern);
+
+ #           print("Line 2414 pattern=$pattern, pos=$pos\n");  
+            if ($pos > 0) 
+            {
+                $num++;
+            }
+        }
+	#print("Line 2709 numimfiles = $numIMIFiles num=$num\n");
+#	die();
+
+# MODIFICATION ON 2nd NOVEMBER
+
+
+   if ($num == 4 or $num == 3)
+     
+#        if ($num == 4)
+        {
+            $type = "ENG2";
+            $ExposureType{$exposureNo} = "ENG2";
+	    $ExposureExtension{$exposureNo} = "*ENG2.FIT*";
+	    #print("L2722 ENG2 type \n");
+        }
+        else
+        {
+            $type = "RUDI5";
+            $ExposureType{$exposureNo} = "RUDI5";
+	    $ExposureExtension{$exposureNo} = "*IMI.FIT*";
+	    #print("L2729 RUDI5 type \n");
+        }
+    }
+    else
+    {
+
+
+        my(@ImageFiles) = <$inp_directory/*E4I.FIT*>;           
+        $numFiles = @ImageFiles;
+   
+	#print("L2739 numFiles=$numFiles \n");
+        for (my $j = 0; $j < $numFiles; $j++)
+        {
+               
+            my $fileName = $ImageFiles[$j];       
+            my $pos = index($fileName, "E4I") - 24;
+
+            my $string = substr($fileName, $pos, 32);    # Get rid of the directory name
+
+            #my $text = substr($string, 19, 3);           # The exposure number
+	    my $text = substr($string, 18, 4);           # The exposure number  
+ 
+            if ($text eq $exposureNo)
+            {
+                push(@ExposureImageList, $fileName);         
+          
+            }            
+              
+                  
+        }
+
+        my $numFiles = @ExposureImageList;
+	#print("L2760 numFiles=$numFiles \n");
+  
+        if ($numFiles == 0 )
+        {
+	    #print("L2764 Missing \n");
+            $type = "MISSING";
+        }
+        else
+        {
+	    #print("L2769 ENG4 type \n");
+	    $type = "ENG4";
+            $ExposureType{$exposureNo} = "ENG4";
+            $ExposureExtension{$exposureNo} = "*E4I.FIT*";
+	
+        }
+
+    }
+
+
+    #print("Line 2778 numfiles=$numFiles, type=$type\n");
+
+    return $type;
+    
+}
+#******************************************************
+# Sub MosaicImage
+# Mosaics the given list of
+# images
+#*****************************************************
+sub MosaicImages($)
+{
+
+ 
+    if ($omatt_rotateimage eq 0) 
+    {
+
+        return "";
+    }
+
+  
+  
+
+
+
+    my($exposureType, $filter, @ImageList) = @_;
+
+
+
+    my $size = @ImageList;
+    #print("L2753 ImageList size=$size \n");
+    
+    if($size < 2) 
+    {
+        return "";
+
+    } 
+
+ 
+
+    my $text = "ommosaic- mosaicing images for filter $filter";
+    &HighlightedMessage("*", $text);
+    
+    my $string; 
+
+    if ($exposureType eq "RUDI5")
+    { 
+        $string = "RSIMAG";
+    }
+    elsif($exposureType eq "ENG2")
+    {
+        $string = "LSIMAG";
+    }
+    elsif($exposureType eq "ENG4")
+    {
+        $string = "HSIMAG";
+    }
+    elsif($exposureType eq "MISSING")
+    {
+        return "";
+    }
+    else
+
+    {
+        die ("UNIDENTIFIED EXPOSURE TYPE ($exposureType)");
+
+
+    }
+            
+
+
+
+
+    my $filterCode = &GetFilterCode($filter);
+
+    my $position = rindex($ImageList[0], "OM") - 11;
+    
+   
+    my $outputFileName = $out_directory . "/" . substr($ImageList[0], $position, 14) . "000$string" . $filterCode . ".FIT";
+    my $outputRegionName = $out_directory . "/" . substr($ImageList[0], $position, 14) . "000$string" . $filterCode . ".reg"; 
+
+
+#    print("Line 2543 imagelist[0]=$ImageList[0] filtercode=$filterCode\n");
+#    print("outputfilename=$outputFileName\n");
+   
+#    my $arg_list = "imagesets=\"" . join(" ", @ImageList) . "\" mosaicedset=$outputFileName" . 
+#                   " exposuremap=$ommosaic_exposuremap " . "exposure=$ommosaic_exposure";
+
+
+# my $arg_list = "imagesets=\"" . join(" ", @ImageList) . "\" mosaicedset=$outputFileName" . 
+#                   " exposuremap=true " . "exposure=$ommosaic_exposure";
+
+
+
+
+ my $arg_list = "imagesets=\"" . join(" ", @ImageList) . "\" mosaicedset=$outputFileName" . 
+                   " mincorr=0.0";
+
+
+
+
+
+
+
+
+
+#    &Message("ommosaic $arg_list");
+
+
+     system("ommosaic $arg_list") && SAS::fatal("Task Failure", "ommosaic");
+
+
+    return $outputFileName;
+
+
+}
+#************************************************
+# Sub GetFilterFileList
+# Returns a list of files for a
+# given filter which contain
+# the given expression
+# Usage :: @List = @GetFilterList("V", "*IMI*");
+#************************************************
+sub GetExposureFileList($)
+{
+
+    my ($directory, $exposureNo, $string) = @_;  
+  
+    #print("L3026 directory=$directory exposureNo=$exposureNo \n");
+    #print("L3027 string=$string \n");
+    #******************************************************
+    # Select all the files containing the specified string    
+    #******************************************************
+    my(@FileList) = <$directory/$string>;        
+    
+    #print("L3033 fileList=\n");
+    #print(@FileList);
+    #print("\n");
+
+    my @ExposureFileList =();           # Initialise the file list    
+ 
+    for (my $i = 0; $i < @FileList; $i++)
+    { 
+	#***********************************************************
+	# 2011-05-20 modification to get the unique exposure number
+	#***********************************************************
+        #my $position = length($FileList[$i]) - 12; 
+        #if (substr($FileList[$i], $position, 3) =~ $exposureNo)
+	#print("L3046 i=$i fileList[i]=$FileList[$i] \n");
+	#print("L3047 length="); print(length($FileList[$i])); print("\n");
+	
+        my $position = length($FileList[$i]) - 13;
+ 
+        if (substr($FileList[$i], $position, 4) =~ $exposureNo) 
+        {
+	    #print("L3053 pushing i=$i \n");
+            push(@ExposureFileList, $FileList[$i]);         
+        } 
+    }
+    
+    return @ExposureFileList;  
+    
+}
+#***************************************
+# Subroutine CheckRudi5Images
+#***************************************
+sub CheckRudi5Images($)
+{
+    my ($exposureNo, @FileList) = @_; 
+
+    my $number = @FileList;
+
+    #print("L2949 number=$number \n");
+    #print("L2950 exposureNo=$exposureNo \n");
+    #print("L2951 FileList=\n");
+    #print(@FileList);
+    #print("\n");
+
+    if ($number ne 2)
+    {
+
+        my $text = "Warning - Missing Rudi-5 image file";
+        &HighlightedMessage(" ", $text);
+    }
+}
+#******************************************
+# Subroutine CombineEng2Images
+# Combines the 4 separate ENG2 image files
+# into a single image
+#******************************************    
+sub CombineEng2Images($)
+{
+ 
+    my ($observationNo, $exposureSchedule, $exposureNo) = @_;
+            
+    my($fileName) = $ExposureImageList[0];       
+    my($pos) = index($fileName, "IMI") - 24;
+    my($name) = substr($fileName, $pos, 32);    # Get rid of the directory name                          
+
+    #*****************************************************************
+    # The new image file is temporarily stored in the input directory 
+    #*****************************************************************  
+
+    #my $outputFileName = $out_directory . "/I$observationNo" . "OM$exposureSchedule$exposureNo" . "00E2I.FIT";
+    my $outputFileName = $out_directory . "/I$observationNo" 
+	. "OM$exposureNo" . "00E2I.FIT";
+  
+  
+    
+
+    &HighlightedMessage("*", "omcomb");
+    my $arg_list = "imagesets=\"" . join(" ", @ExposureImageList) . "\"" . " outset=$outputFileName";
+
+
+              
+    system("omcomb $arg_list") && SAS::fatal("Task Failure", "omcomb");
+    #***********************************************
+    # Check to see if omcomb ran successfully
+    #***********************************************
+    my $exit_value = $? >> 8;   # 0 okay, 1 call fatal called, or some other disaster
+   
+    if ($exit_value == 1)  
+    { 
+       
+
+	$ExposureType{$exposureNo} = "RUDI5";
+	$ExposureExtension{$exposureNo} = "*IMI.FIT*";
+	                
+     
+        &Message("The test in omcomb have failed - This exposure ($exposureNo) will be treated as normal imaging data");
+        
+    }      
+    else
+    {
+
+                          
+        $ExposureType{$exposureNo} = "ENG2";
+	$ExposureExtension{$exposureNo} = "*E2I.FIT*";
+		
+        push(@E2IMIList, $outputFileName);   # A list of the combined image files           
+        	
+    }  
+}
+#************************************
+# Subroutine FilterOkay
+#************************************
+sub FilterOkay($)
+{
+    my ($filter) = @_;
+    
+    my (@BadFilter) = ("BLOCKED", "Blocked");
+    
+    for (my $i = 0; $i < @BadFilter; $i++)
+    {
+	
+        if ($filter eq $BadFilter[$i])
+        {
+            my $message = "Warning! - Cannot process filter $filter. The image files for this filter will not be processed";
+            &HighlightedMessage("X", $message);
+         
+            return 1;
+        }
+    }
+    
+    return 0;
+}
+#***************************
+# Subroutine GetFileList
+#***************************
+sub GetFileList($)
+{
+    my (@Pattern) = @_;
+    my @Filelist = ();
+    
+
+    
+    for (my $i = 0; $i < @Pattern; $i++)
+    {
+	
+        my (@List) = <$Pattern[$i]>;
+        for (my $j = 0; $j < @List; $j++)
+        {
+            push(@FileList, $List[$j]);
+        }
+    }
+    &Display("test", @FileList);
+    return @FileList;
+}         
+#*****************************************
+# Checks to see if the given file exists
+# Returns 1 if it does, 0 otherwise.
+#
+#*****************************************
+sub FileExists($)
+{
+
+    my ($file) = @_;
+  
+    if (-e $file)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+#***************************
+# GetStringParameterList
+# Gets the list of strings
+# in the command line for a
+# specified parameter name
+#***************************
+sub GetStringParameterList($)
+{
+  
+    my($parameter) = @_;
+    my $num = 0;
+    $num = parameterCount($parameter);
+    my (@ParameterList) = ();
+   
+   
+    if ($num eq 0)
+    {
+        return @ParameterList;
+    }
+  
+  
+   for (my $i = 0; $i < $num; $i++)
+   {
+        $ParameterList[$i] = stringParameter($parameter, $i);
+
+   }
+   return @ParameterList; 
+   
+}
+#************************************************************
+# Sub CheckUserFilterList
+# Checks that the user-supplied list of filters exist in 
+# the SAS summary file and returns a new list (if necessary)
+#************************************************************  
+sub CheckUserFilterList($)
+{
+    my(@UserFilterList) = @_;
+    my(@List) = &GetFilterList;  # List of OM filters in summary file
+      
+   
+    my @ModifiedList = ();
+
+    for (my $i = 0; $i < @UserFilterList; $i++)
+    {
+        my $found = 0;
+        my $j = 0;
+        while ($j lt @List and $found == 0)
+        {
+ 
+            if ($List[$j] eq $UserFilterList[$i] )
+            {  
+                push(@ModifiedList,  $UserFilterList[$i]);
+                $found = 1;
+            }
+            $j++;
+        }
+        if ($found == 0)
+        {
+            my $message = "Warning! - Filter $UserFilterList[$i] does not exist in SAS Summary file- ignoring filter";
+            &HighlightedMessage("X", $message); 
+        }
+    }
+    if (@ModifiedList == 0)
+    {
+        @OMFilterList = &GetFilterList; # The list of OM filters from the SAS summary file
+     
+        my $message = "Error! - No valid filters to process (Valid filters are ". join(", ", @OMFilterList) .")- Aborting";
+    
+        &HighlightedMessage("X", $message);
+       
+        die;
+    }
+    return @ModifiedList;
+}
+#*******************************
+# Sub CheckUserExposureList
+# Checks that the command-line 
+# list of exposures is valid
+# (ie the filters are present)
+# and get a list of the filters
+# for the exposure list
+#*******************************
+sub CheckUserExposureList($)
+{
+
+    @OMFilterList = &GetFilterList; # The list of OM filters from the SAS summary file
+
+
+    
+
+    #**************************************************
+    # Loop through the user-supplied list of exposures
+    # and produce a filter list
+    #**************************************************
+
+
+    for (my $i = 0; $i < @UserExposureList; $i++)
+    {
+        my $found = 0;
+        my $j = 0;
+
+        #******************************************************************
+        # Loop through the filter list obtained from the SAS summary file
+        #******************************************************************
+        while ($j < @OMFilterList and $found == 0)
+        {
+
+ 
+            #****************************************************
+            # Get a list of the exposures for this filter
+            #****************************************************
+         
+            my (@ExposureNoList) = &GetExposureNoListForFilter($OMFilterList[$j]);
+            my $k = 0;
+
+            while ($k < @ExposureNoList and $found == 0)
+            {
+               
+                push(@ExposureList, $ExposureNoList[$k]); 
+                if ($ExposureNoList[$k] eq $UserExposureList[$i])
+                {
+                    my $filterExists = 0;
+
+		    my $l = 0;
+                    while($l < @FilterList and $filterExists == 0)
+                    {
+                       
+                        if ($FilterList[$l] eq  $OMFilterList[$j])
+                        {
+                      
+                            $filterExists = 1;
+                            last;
+                        }
+                        $l++;
+                    }
+                    if ($filterExists == 0) 
+                    {
+                        push(@FilterList, $OMFilterList[$j]);
+                    } 
+                    $found = 1;
+                  
+                }
+                $k++;
+            }
+            $j++;
+	}
+        if ($found == 0) 
+        {
+            &HighlightedMessage("X", "Warning! - Invalid exposure no ($UserExposureList[$i])");
+        }  
+           
+    }
+  
+    if (@FilterList == 0)
+    {
+
+        my @Message = ();
+        push (@Message, "Error!- Invalid list of exposures- aborted");
+        for (my $i = 0; $i < @OMFilterList; $i++ )
+        {
+            my (@ExposureNoList) = &GetExposureNoListForFilter($OMFilterList[$i]);
+            my $text = "Valid exposures for filter $OMFilterList[$i] are "; 
+      
+            $text = $text . join(", ", @ExposureNoList);   
+            push(@Message, $text);
+	}
+        &HighlightedMessage("X", @Message);
+    }
+ 
+  
+    return @FilterList;
+}                 
+
+#***************************************************
+# Purpose:- Given an hash list and a key, stores
+# the given value
+#
+#**************************************************
+sub Store
+{
+    my ($key, $value, %self) = @_;
+   
+    my %List = %self;     
+
+    push @{$List{$key}}, $value;
+   
+ 
+    
+    return %List;
+}
+#***************************************************
+# Purpose:- Given an hash list and a key, returns
+# an array containing the values for that key 
+#
+#**************************************************
+sub RetrieveList
+{
+
+
+    my ($key, %self) = @_;
+
+    
+    
+    my @List = ();
+
+    my $k = exists($self{$key});
+    if ($k == 0)
+    {
+        return @List;
+
+    }
+    my $n =  @{$self{$key}};
+ 
+
+
+
+
+    for (my $i = 0; $i < $n; $i++)
+    {
+    
+        my $value =  $self{$key}[$i];
+      
+       
+
+#        print("$i) value=$value\n"); 
+        push(@List, $value);
+
+    }
+
+    return @List;
+}
+#******************************************************
+# ExamineSASFile
+# Obtains a list of the exposures in the summary file
+#******************************************************  
+sub ExamineSASFile
+{
+
+    my %ObservationIdentifier = ();
+    my %RevolutionIdentifier = ();
+    open (SASFILE, $SASFile) || SAS::fatal("OMICHAIN","Unable to open SAS SUMMARY FILE $SASFile"); 
+  
+
+   
+    #*************************************************
+    # Skip past the EPIC and RGS stuff
+    #*************************************************
+ 
+    $periodic_file_flag = 0;
+    $non_periodic_file_flag = 0;
+    my $observationId = "blank";
+    my $revolutionId = "blank";
+ 
+    my $line;
+    
+
+    while ($line = <SASFILE>)
+    {
+#      print("Line 2670 line=$line \n");        
+       if ($line =~ "/ ODF Constituent" and $line =~ "OM")    # An ODF file
+
+#   if ($line =~ "file" and $line =~ "OM")    # An ODF file
+
+
+       {
+            my $file = substr($line, 0, 31);
+#print("Line 2674 file=$file \n");                        
+            if ($file =~ "NPH")    # An NPH file
+            {
+                $non_periodic_file_flag = 1;
+                $non_periodic_hk_filename = $inp_directory . "/" . $file;
+
+            } 
+            if ($file =~ "PEH")    # An PEH file
+            {
+                $periodic_file_flag = 1;
+                $periodic_hk_filename =  $inp_directory ."/" . $file;
+
+
+            } 
+       }
+       if ($line =~ "Observation Identifier") 
+
+#   if ($line =~ "Observation Identifier" or $line =~ "Exposure Id") 
+
+
+       {
+           $observationId = substr($line, 0, 10);
+           $ObservationIdentifier{$observationId} = $observationId;
+
+#	   print("Observation identifier =$observationId\n");
+
+
+#       if ($revolutionId ne "blank" and $observationId ne "blank")
+#           {
+       
+#	       print("Storing in orb list $revolutionId, $observationId \n");
+#               %orb_list = Store($revolutionId, $observationId, %orb_list);
+#           }
+
+
+
+
+
+
+
+       }
+
+
+       if ($line =~ "Revolution Identifier")
+
+#    if ($line =~ "Revolution Identifier" or $line =~ "Revolution number")
+
+       {
+
+           $revolutionId = substr($line, 0, 4);
+
+#	   print("Revolution identifier =$revolutionId\n");
+
+
+           $RevolutionIdentifier{$revolutionId} = $name;
+           if ($revolutionId ne "blank" and $observationId ne "blank")
+           {
+       
+#	       print("Storing in orb list $revolutionId, $observationId \n");
+               %orb_list = Store($revolutionId, $observationId, %orb_list);
+           }
+
+       }
+                                
+    } 
+    close SASFILE;
+
+}
+#************************************************************************
+#
+# November 5th 2008
+# NB filter is the second argument
+#
+#************************************************************************
+
+sub ProcessMosaicedSkyImages( )
+{
+  
+    my $message = "Processing the mosaiced sky-images";
+    &HighlightedMessage("*", $message);
+
+
+    my ($mosaicedSkyImageList1, $filterList1) = @_;
+
+
+    #*******************************************
+    #
+    # De-reference the array list
+    #
+    #******************************************
+    my (@mosaicedSkyImageList) = @$mosaicedSkyImageList1;
+
+    my (@filterList) = @$filterList1; # Get the list of OM filters
+ 
+
+    my @swsFileList = ();
+    my $i = 0; 
+    foreach ( @mosaicedSkyImageList ) # Loop through the mosaiced sky-images
+    {
+        my $filter = $filterList[$i];
+        my $imageFile = $mosaicedSkyImageList[$i];
+
+        my $swsFile = $imageFile;
+        my $k = length($swsFile);
+        substr($swsFile, $k - 8, 3) = "SWS"; 
+ 
+   
+        my $message = "Filter $filter- processing image";
+        &HighlightedMessage("*", $message, $imageFile);
+
+
+        #*************************************************************************
+        #
+        # Run omdetect on this image
+        #
+        #*************************************************************************
+        &runOmdetect( $imageFile, $swsFile);
+
+        #*****************************************************
+        # Store this file
+        # NB Store(key, value, self)
+        #*****************************************************
+        %processedMosaicedSourceList = Store($filter, $swsFile, %processedMosaicedSourceList);
+      
+
+
+
+    
+        #*************************************************************************
+        #
+        # Run ommag on this SWS file
+        #
+        #*************************************************************************
+        &runOmmag( $swsFile );
+ 
+
+        #*************************************************************************
+        #
+        # Set the quality flags using the quality map
+        #
+        #*************************************************************************
+        my $mode = "usequalityimage";
+        &runOmqualitymap( $imageFile,  $swsFile, $swsFile, $mode );
+ 
+        push(@swsFileList, $swsFile);
+        ++$i;
+
+    }
+    return @swsFileList;
+
+}
+#***********************************************************************
+#
+#
+#***********************************************************************
+sub runOmqualitymap
+{
+
+    my ($imageFile, $swsFile, $outSet, $mode) = @_;
+
+    &HighlightedMessage("-", "omqualitymap");
+
+    my $arg_list = "set=$imageFile" .
+                " srclistset=$swsFile".
+                " outset=$outSet" .
+                " mode=$mode";
+    
+    system("omqualitymap $arg_list") && SAS::fatal("Task Failure","omquality failed.");
+
+
+
+}
+
+
+
+#******************************************************************************
+#
+#
+#
+#*****************************************************************************
+sub runOmdetect()
+{
+    my ($imageFile, $swsFile) = @_;
+
+
+   #**************************************************
+    # omdetect
+    #**************************************************
+    &HighlightedMessage("-", "omdetect");
+
+    my $regFileName = $imageFile;
+    $regFileName =~ s/.FIT/.reg/;
+    my $arg_list = "nsigma=$omdetect_nsigma" .
+                " minsignificance=$omdetect_minsignificance" .
+                " detectextended=$omdetect_detectextended" .
+                " set=$imageFile" .
+		" regionfile=$regFileName" .
+                " outset=$swsFile" ;#.
+		" psfphotometryenabled=$psfPhotometryEnabled" .
+		" backgroundmethod=$backgroundMethod" .
+		" maxrawcountrate=$maxRawCountRate";
+		
+    system("omdetect $arg_list") && SAS::fatal("Task Failure","omdetect failed.");
+
+}
+
+
+#*********************************************** 
+# ommag
+#***********************************************
+sub runOmmag()
+{
+    my ($swsFile) = @_;
+
+
+    &HighlightedMessage("-", "ommag");
+
+    my $arg_list = "set=$swsFile";
+                
+
+    system("ommag $arg_list") && SAS::fatal("Task Failure", "ommag failed.");
+
+
+}
+
+
+
+#**********************************************
+#
+# omsrclistcomb.
+#
+#********************************************** 
+sub runOmsrclistcomb()
+{
+
+
+    my ($outputFile, @swsFileList) = @_;
+
+
+    &HighlightedMessage("-", "omsrclistcomb");
+    my $arg_list="";
+    if ($catfileSpecified == 1) {
+	$arg_list = "sourcelistsets=\"" . join(" ", @swsFileList) . "\"" .   
+	    " nsigma=$omsrclistcomb_nsigma" .
+	    " usecat=$omsrclistcomb_usecat" .
+	    " alignaxes=$omsrclistcomb_alignaxes" .
+	    " catfile=$catfile" .
+	    " maxradecerr=$maxradecerr" .
+	    " maxrmsres=$maxrmsres" .
+	    " outset=$outputFile";
+    } else {
+	$arg_list = "sourcelistsets=\"" . join(" ", @swsFileList) . "\"" .   
+	    " nsigma=$omsrclistcomb_nsigma" .
+	    " usecat=$omsrclistcomb_usecat" .
+	    " alignaxes=$omsrclistcomb_alignaxes" .
+	    " catfile=$usnoSubsetFileName" .
+	    " maxradecerr=$maxradecerr" .
+	    " maxrmsres=$maxrmsres" .
+	    " outset=$outputFile";
+    }
+
+    system("omsrclistcomb $arg_list") && SAS::fatal("Task Failure","omsrclistcomb failed.");
+
+}
+
+
+
+
+#**********************************************
+# omvariability
+#********************************************** 
+sub runOmvariability()
+{
+
+    #return;
+    my ($obsFile, @swsFileList) = @_;
+
+    #print("L3776 obsFile= $obsFile \n");
+
+    &HighlightedMessage("-", "omvariability");
+    my $plotFile = "$out_directory/$omvariability_plotFile.ps";
+    my $arg_list = "srclistsets=\"" . join(" ", @swsFileList) . "\"" .   
+                   " minstd=$omvariability_minStd" .
+                   " obsset=$obsFile" .
+                   " plotfile=$plotFile";
+
+    #print("$arg_list\n");
+    system("omvariability $arg_list") && SAS::fatal("Task Failure","omvariability failed.");
+
+
+    #********************************************************************************
+    #
+    #
+    #
+    #******************************************************************************** 
+    if (-e $plotFile)
+    {
+        my $plotFile1 = "$out_directory/$omvariability_plotFile.PDF";
+
+        #&HighlightedMessage("*", "ps2pdf");
+
+        $arg_list = "$plotFile $plotFile1";
+	  
+        system("ps2pdf $arg_list") && SAS::fatal("Task Failure","ps2pdf failed.");
+  
+    }
+
+
+}
+
+
+
+
+
+#*************************************************************************************
+#
+#
+#
+#*************************************************************************************
+sub ProcessMosaicedSWSList()
+{
+    my ($outputList, @swsList) = @_;
+#    $omsrclistcomb_usecat = "false";
+    
+    &runOmsrclistcomb( $outputList, @swsList );
+
+
+}
+
+#******************************************************************************
+#
+# Now need to merge the two observation source-list files
+#
+#******************************************************************************
+sub mergeLists()
+{
+    my ($obsFile1, $obsFile2, $obsFile3) = @_;
+
+
+    if(-e $obsFile1 and -e $obsFile2)
+    {
+        &HighlightedMessage("-", "ommergelists");
+
+        my $regionFile = "";
+        if (length( $ommergelistsRegionFile) > 2)
+        {
+            $regionFile="$out_directory/$ommergelistsRegionFile";
+
+        }
+        my $plotFile = "";
+        if (length( $ommergelistsPlotFile) > 2)
+        {
+            $plotFile="$out_directory/$ommergelistsPlotFile";
+
+        }
+       
+
+        my $arg_list = "srclist1=$obsFile1 srclist2=$obsFile2 outset=$obsFile3 tolerance=$ommergelistsTolerance" . 
+                   " maxrawrate=$ommergelistsMaxrawrate regionfile=$regionFile plotfile=$plotFile";   
+
+        system("ommergelists $arg_list") && SAS::fatal("Task Failure","ommergelists failed.");
+
+    }
+}
+
+#******************************************************************************
+#
+# 
+#
+#
+#******************************************************************************
+sub getFitsAttribute()
+{
+    my ($file, $attribute) = @_;
+
+  #  print("Get fits attribute file=$file, attribute=$attribute\n");
+  
+    open (FITSFILE, $file) || die("Unable to open FITS FILE $file"); 
+
+    
+    my ($buf, $text, $n);
+    my $count = 0; 
+
+    #****************************************************
+    #
+    # Read each line of the FITS header
+    #
+    #****************************************************
+    my $value = "";
+    while (($n = read FITSFILE, $text, 80) != 0) 
+    {            
+        if( $text =~ $attribute )
+        {
+            my $k1 = index($text, '=') + 1;
+            my $k2 = rindex($text, '/');
+            $value = substr($text, $k1, $k2 - $k1);
+
+            $value =~ s/[ ]//g;       # Remove all blank characters
+
+            #print("Attribute $attribute found\n");
+            
+            
+            last; 
+
+        }  
+        if ($count > 1000) 
+	{
+            last;
+        }
+	 ++$count;
+    } 
+
+
+    close FITSFILE;
+   
+    return $value;
+}
+#******************************************************************************
+#
+# Retrieves the values for the input list of attributes
+# from a given FITS file 
+#
+#
+#******************************************************************************
+sub getFitsAttributes()
+{
+    my ($file, @attributes) = @_;
+
+    open (FITSFILE, $file) || die("Unable to open FITS FILE $file"); 
+    
+    my ($buf, $text, $i);
+    my $count = 0; 
+
+    #****************************************************
+    #
+    # Read each line of the FITS header
+    #
+    #****************************************************
+    my $n = @attributes;
+    
+    my %value;
+    while (($i = read FITSFILE, $text, 80) != 0) 
+    {            
+        my $attribute;
+        foreach $attribute (@attributes)
+        {
+            if( $text =~ $attribute )
+            {
+                my $k1 = index($text, '=') + 1;
+                my $k2 = rindex($text, '/');
+                $value{$attribute} = substr($text, $k1, $k2 - $k1);
+
+                $value{$attribute} =~ s/[ ]//g;       # Remove all blank characters
+
+                ++$count;
+            }
+        }  
+
+        if ($count == $n)  # Found all the attributes 
+	{
+            last;
+        }
+       
+    } 
+
+    close FITSFILE;
+  
+    return %value;
+}
+
+#************************************
+#
+# Sub IsHighResolutionCentralWindow
+# Return T (true) if the image is a
+# high-resolution RUDI-5 segment
+#************************************
+sub IsHighResolutionCentralWindow()
+{
+
+    my ($file) = @_;
+
+
+#    print("Line 3733 checking file $file\n");
+
+
+    if(not -e $file)
+    {
+    
+        return 'F';
+
+    }
+
+
+#    print("Line 3740 checking file $file\n");
+
+    #**********************************************************************************
+    #
+    # Check to see if possible RUDI-5 HIGH-RESOLUTION IMAGE
+    # 
+    #
+    #*********************************************************************************
+    my $position = index($file, "SWSRLI0000"); 
+
+
+    if ($position == -1) # Not found
+    {
+
+  
+        return 'F';
+
+    }
+
+#   print("Line 3764 checking file $file\n");
+
+
+    #**********************************************************
+    #
+    #
+    # Check to see if 
+    #
+    #**********************************************************
+    my $k = length($file);
+    my $file1 = substr($file, 0, $k - 8) . "1" . substr($file, $k - 7, 100);                           
+
+
+   
+    if ( &FileExists($file1) == 0)
+    {
+
+        return 'F';
+
+
+    } 
+
+#  print("Line 3785 checking file $file\n");
+
+
+
+
+
+    if ( &IsRudi5LowResCentralImage( $file1 ) eq 'F')
+    {
+        return 'F';
+
+
+    }
+
+
+
+
+#  print("Line 3801 checking file $file\n");
+#    print("Line 3765 file=$file, file1=$file1\n");
+
+
+
+    my @attributes = ("BINAX1", "BINBPE", "WINDOWX0", "WINDOWDX", "WINDOWY0", "WINDOWDY" );
+
+    my %value;
+    my $attribute;
+    foreach $attribute (@attributes)
+    {
+	$value{$attribute} = $attribute;
+    } 
+
+    %value = &getFitsAttributes($file, @attributes);
+
+    my $binAxis = $value{"BINAX1"};
+    my $binBpe  = $value{"BINBPE"};
+    my $x0      = $value{"WINDOWX0"};
+    my $y0      = $value{"WINDOWY0"};
+    my $nx      = $value{"WINDOWDX"};
+    my $ny      = $value{"WINDOWDX"};
+
+
+
+
+#    print("x0=$x0, y0=$y0, nx=$nx, ny=$ny binaxis=$binAxis, binbpe=$binBpe\n");
+
+   
+
+    if( $binAxis != 0 or $nx != $ny or abs($nx - 224) > 10 or
+             abs(920 - $x0) > 50 or abs(920 - $y0) > 50 or 
+            ($binBpe eq 't' or $binBpe eq 'y' or $binBpe eq 'T' or $binBpe eq 'Y') ) 
+    {
+      
+        return 'F';
+
+    }
+    else
+    {
+
+       
+        return 'T';
+    }
+
+}
+
+#************************************
+#
+# Sub IsHighResolutionCentralWindow
+# Return T (true) if the image is a
+# high-resolution RUDI-5 segment
+#************************************
+sub IsHighResolutionRudi5Window()
+{
+    my ($file) = @_;
+
+    if(not -e $file)
+    {
+    
+        return 'F';
+
+    }
+
+
+    my @attributes = ("BINAX1", "BINBPE", "WINDOWX0", "WINDOWDX", "WINDOWY0", "WINDOWDY" );
+
+    my %value;
+    my $attribute;
+    foreach $attribute (@attributes)
+    {
+	$value{$attribute} = $attribute;
+    } 
+
+    %value = &getFitsAttributes($file, @attributes);
+
+    my $binAxis = $value{"BINAX1"};
+    my $binBpe  = $value{"BINBPE"};
+    my $x0      = $value{"WINDOWX0"};
+    my $y0      = $value{"WINDOWY0"};
+    my $nx      = $value{"WINDOWDX"};
+    my $ny      = $value{"WINDOWDX"};
+
+
+
+
+#    print("x0=$x0, y0=$y0, nx=$nx, ny=$ny binaxis=$binAxis, binbpe=$binBpe\n");
+
+   
+
+    if( $binAxis != 0 or $nx != $ny or abs($nx - 224) > 10 or
+             abs(920 - $x0) > 50 or abs(920 - $y0) > 50 or 
+            ($binBpe eq 't' or $binBpe eq 'y' or $binBpe eq 'T' or $binBpe eq 'Y') ) 
+    {
+      
+      return 'F';
+   
+
+
+    }
+    else
+    {
+        return 'T';
+    
+
+    }
+
+}
+
+
+#*******************************************************************
+#
+#
+#
+#******************************************************************/
+sub IsFullFrameHighResImage()
+{
+
+    my ($file) = @_;
+ 
+
+    my @attributes = ( "WINDOWDX", "WINDOWDY" );
+
+    my %value;
+    my $attribute;
+    foreach $attribute (@attributes)
+    {
+	$value{$attribute} = $attribute;
+    } 
+
+    %value = &getFitsAttributes($file, @attributes);
+   
+    my $nx      = $value{"WINDOWDX"};
+    my $ny      = $value{"WINDOWDX"};
+
+    my $result = 'T';
+
+    if( $nx != 2048 and $ny != 2048) 
+    {    
+        $result = 'F';
+
+    }
+    return $result;
+  
+}
+
+#*******************************************************************
+#
+#
+# Checks to see if the FITS image is a Rudi-5 low resolution strip
+#
+#******************************************************************/
+sub IsRudi5LowResImage()
+
+{
+
+
+    my ($file) = @_;
+ 
+
+
+
+    my @x0 = (16, 48, 224, 1504, 528);
+    my @dx = (1792, 480, 1792, 480, 976);
+  
+    my @y0 = (1488, 16, 48, 240, 528);
+    my @dy=  (480, 1792, 480, 1792, 960);
+
+
+    my @attributes = ("BINAX1", "WINDOWX0", "WINDOWDX", "WINDOWY0", "WINDOWDY" );
+
+    my %value;
+    my $attribute;
+
+    foreach $attribute (@attributes)
+    {
+	$value{$attribute} = $attribute;
+    } 
+
+    %value = &getFitsAttributes($file, @attributes);
+
+    my $result = 'F';
+
+
+
+    my $binAxis = $value{"BINAX1"};
+    
+
+    if ($binAxis == 1)
+    {
+        
+        return $result;
+
+    }
+    my $windowX0      = $value{"WINDOWX0"};
+    my $windowY0      = $value{"WINDOWY0"};
+    my $windowDx      = $value{"WINDOWDX"};
+    my $windowDy      = $value{"WINDOWDX"};
+
+  
+
+
+
+    for(my $i = 0; $i < 5; $i++)
+    {
+        if( abs($windowX0  - $x0[$i]) <= 10  and
+            abs($windowDx  - $dx[$i]) <= 10  and
+            abs($windowY0  - $y0[$i]) <= 10 and
+            abs($windowDy  - $dy[$i]) <= 10 )
+	{
+	    $result = 'T';
+        }
+        
+    }    
+
+
+
+#  print("Line 4023 checking file $file reesult=$result\n");
+
+#    die();
+
+
+    return $result;
+
+  
+};
+
+
+#*******************************************************************
+#
+#
+# Checks to see if the FITS image is a Rudi-5 low resolution strip
+#
+#******************************************************************/
+sub IsRudi5LowResCentralImage()
+
+{
+
+
+    my ($file) = @_;
+ 
+
+#    print("isrudi5lowrescentralimage line 4049 checking $file\n");
+
+
+    my @attributes = ("BINAX1", "WINDOWX0", "WINDOWDX", "WINDOWY0", "WINDOWDY" );
+
+    my %value;
+    my $attribute;
+
+    foreach $attribute (@attributes)
+    {
+	$value{$attribute} = $attribute;
+    } 
+
+    %value = &getFitsAttributes($file, @attributes);
+
+    my $result = 'F';
+
+
+
+    my $binAxis = $value{"BINAX1"};
+    
+
+    if ($binAxis == 0)
+    {
+        
+        return $result;
+
+    }
+    my $windowX0      = $value{"WINDOWX0"};
+    my $windowY0      = $value{"WINDOWY0"};
+    my $windowDx      = $value{"WINDOWDX"};
+    my $windowDy      = $value{"WINDOWDX"};
+
+  
+
+    if( abs($windowX0  - 528) <= 10  and
+            abs($windowDx  - 976) <= 10  and
+            abs($windowY0  - 528) <= 10 and
+            abs($windowDy  - 976) <= 10 )
+    {
+        $result = 'T';
+    }
+        
+
+#print("result=$result\n");     
+    return $result;
+
+  
+};
+
+
+
+#*********************************************************
+#
+# Covert string from uppercase to lowercase with perl:
+#
+#********************************************************
+sub convertToLowerCase()
+{
+
+    my ($string) = @_; 
+    $string =~ tr/A-Z/a-z/;
+
+    return $string;
+
+}
+
+#*********************************************************
+#
+# Covert string from lowercase to uppercase with perl:
+#
+#********************************************************
+sub convertToUpperCase()
+{
+    my ($string) = @_;
+    $string =~ tr/a-z/A-Z/;
+
+    return $string;
+}
+
+
+#*********************************************************
+#
+# Lists the product-files that have been created
+#
+#********************************************************
+sub processingReport()
+{ 
+    my $filter;
+
+  
+    my $message = "********************************************************"; 
+    SAS::message($SAS::AppMsg, $SAS::SparseMsg, $message);
+    $message = "Product Files produced by omichain";
+    SAS::message($SAS::AppMsg, $SAS::SparseMsg, $message);
+    $message = "********************************************************"; 
+    SAS::message($SAS::AppMsg, $SAS::SparseMsg, $message);
+
+    $message = sprintf("%10s %35s ", "Type:", "Observation source-list file:");
+    SAS::message($SAS::AppMsg, $SAS::SparseMsg, $message);
+   
+    my $type;
+    my $file;
+    my $i = 0;
+    my $posCorrOkay = "NO";
+
+    foreach $type (keys(%observationSourceList))
+    {
+	#print("L4232 type=$type \n");
+
+        $file = $observationSourceList{$type};
+        $posCorrOkay = &getFitsAttribute( $file, "POSCOROK");
+
+
+        $file = substr($file, length($file) - 31, 32);
+
+        if( $posCorrOkay eq "T")
+        { 
+            $message = sprintf("%2d) %10s %33s %13s", $i + 1, $type, $file, "Asp.corr.: YES");
+        }
+        else
+        {
+             $message = sprintf("%2d) %10s %33s %13s", $i + 1, $type, $file, "Asp.corr.: NO");
+   
+
+        } 
+        SAS::message($SAS::AppMsg, $SAS::SparseMsg, $message);
+        ++$i;
+
+    }
+ 
+
+    #*****************************************************************
+    #
+    #
+    # The images, etc, for each exposure of each filter
+    #
+    #
+    #******************************************************************
+    $posCorrOkay = "NO";
+
+    foreach $filter (keys(%processedImageList))
+    {
+        $message = sprintf("Filter %s",  $filter);
+        SAS::message($SAS::AppMsg, $SAS::SparseMsg, $message);
+
+ 
+	my @fileList1 = &RetrieveList($filter, %processedImageList);  # Unrotated product images
+	my @fileList2 = &RetrieveList($filter, %processedSourceList); # Product source-list files
+
+
+	my @fileList3 = (); # For the mosaiced sky-images
+
+
+	my @fileList5 = (); # For the sky-images
+
+       
+
+        #*****************************************************************
+        # List the mosaiced sky-images and source-lists (if produced)
+        #
+        #****************************************************************
+
+        if( $omatt_rotateimage eq 'T' or $omatt_rotateimage eq 't')
+        {
+
+	    @fileList3 = &RetrieveList($filter, %processedMosaicedImageList ); # The mosaiced sky images         
+            @fileList5 = &RetrieveList($filter, %processedSkyImageList );      # The sky images         
+
+ 
+            my $num = @fileList3;
+
+	    
+
+	    if($num == 1)
+            {
+	       
+                my $imageFile = substr($fileList3[0], length($fileList3[0]) - 28, 32);
+
+                my @fileList4 = &RetrieveList($filter, %processedMosaicedSourceList ); # The source-lists from the mosaiced sky-images
+                my $num = @fileList4;
+		
+	    
+                if($num > 0)
+                {           
+                    my $sourceListFile = substr($fileList4[0], length($fileList4[0]) - 28, 32);
+                    $message = sprintf("Mosaiced sky-image=%s, source-list=%s",  $imageFile, $sourceListFile);
+                
+                }
+                else
+	        {
+       
+                     $message = sprintf("Mosaiced sky-image=%s",  $imageFile);
+	        }
+                SAS::message($SAS::AppMsg, $SAS::SparseMsg, $message);
+            }
+   
+
+        }
+   
+
+        #*********************************************************************************
+        #
+        # List the normal, sky and source-list product files
+        #
+        #**********************************************************************************     
+        $i = 0;
+
+        $message = sprintf("%23s%33s%33s", "Image file:", "Sky-image file:", 
+			   "Source-list file:");
+        SAS::message($SAS::AppMsg, $SAS::SparseMsg, $message);
+
+        foreach $file (@fileList1) # The unrotated image
+        { 
+            my $file3 = substr($file, length($file) - 31, 32);
+            my $file4 = "---";
+            if( $omatt_rotateimage eq 'T' or $omatt_rotateimage = 't')
+            {
+
+                 
+                $file = $fileList5[$i];
+              
+
+                $file4 = substr($file, length($file) - 31, 32);
+         
+
+	    }
+            my $file5= substr($fileList2[$i], length($fileList2[$i]) -31, 32);
+
+            
+     
+
+            if( $omatt_usecat eq "T")
+            {
+                $posCorrOkay = &getFitsAttribute($fileList2[$i], "POSCOROK");
+
+
+            }
+            
+
+
+            if( $posCorrOkay eq "T")
+            {
+	        $message = sprintf("%2d) %33s%33s%33s%15s", $i + 1, 
+				   $file3, $file4, $file5, "Asp.corr.: YES");
+            }
+            else
+            {
+	        $message = sprintf("%2d) %33s%33s%33s%15s", $i + 1, 
+				   $file3, $file4, $file5, "Asp.corr.: NO");
+            }
+            SAS::message($SAS::AppMsg, $SAS::SparseMsg, $message);
+
+	    ++$i;
+
+	}
+        
+    } 
+
+    #*****************************************************************
+    #
+    # Tracking-history plot files
+    #
+    #*****************************************************************
+    my $num = @TSHPLT1List;
+    if( $num > 0)
+    {
+
+        $message = sprintf("%35s%32s%32s", "Tracking-history time-series file:", "Tracking-history ps file:", "Tracking-history pdf file:" );
+
+        SAS::message($SAS::AppMsg, $SAS::SparseMsg, $message);
+        $i = 0;
+        foreach $file (@TSHPLT1List)
+        {
+
+            my $file1 = $TSTRTSList[$i];                        # The tracking-history time-series file
+            $file1 = substr($file1, length($file1) - 30, 32);   
+
+            my $file2 = substr($file, length($file) - 29, 32);  # The tracking-history ps plot file
+            my $file3 = $TSHPLT2List[$i];
+            $file3 = substr($file3, length($file3) - 30, 32);    # The tracking-history pdf plot file
+   
+            $message = sprintf("%2d) %35s%35s%35s", $i + 1, $file1, $file2, $file3);
+            SAS::message($SAS::AppMsg, $SAS::SparseMsg, $message);
+            ++$i;
+        }
+    }
+    else
+    {
+        SAS::message($SAS::AppMsg, $SAS::SparseMsg, "No tracking-history products have been produced");
+      
+    }
+
+}

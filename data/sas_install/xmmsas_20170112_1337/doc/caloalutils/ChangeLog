@@ -1,0 +1,703 @@
+ChangeLog for caloalutils
+=========================
+
+Open SOC-SPRs:
+	*none*
+
+Version 1.112.2 - 2016-10-06 (RDS)
+---------------
+	+ src/Ccf.h: ADded new CCF 'FWC'
+
+Version 1.112.1 -2016-09-09 (EO)
+---------------
+	+ src/PhysicalConstants.h: GNUC >= 6 since gcc 5.3.1 doesn ot use C++
+	  2011 by default.
+
+Version 1.112 - 2016-09-05 (RDS)
+---------------
+	+ src/PhysicalConstants.h: GCC 6 change from const -> constexpr
+				
+Version 1.111 - 2016-09-05 (RDS)
+---------------
+	Version for the delivery track - same as 1.110.1
+
+Version 1.110.1 - 2016-08-26 (EO)
+---------------
+	+ src/caloaldefs.f90: For NAG Fortran the inclusion of the -fpp in all
+	  compilations makes it more strict regarding formating. In this case
+	  the file caloaldefs.f90 was full of empty lines between continued
+	  statements (those ended with "&" signs), something that is
+	  considered a syntax error only when compiled with -fpp. Once these
+	  empty lines are suppressed, compilation works fine.
+
+Version 1.110 - 2016-06-29 (AI)
+---------------
+	+ src/CalOalUtility.h: gfortran compatibility change 
+	for Dope (array descriptor) structures 
+	
+Version 1.109.3 - 2014-11-13 (EO)
+---------------
+	+ src/xmm.h: stime.h replaced by stime_c.h after it has been renamed in 
+	  package utils.
+
+Version 1.109.2 - 2014-06-09 (EO)
+---------------
+	+ src/xmm_c.cc: By mistake this fchange was not done in previous version.
+	  made now.
+
+Version 1.109.1 - 2014-06-06 (EO)
+---------------
+	+ src/xmm_c.c: Moved up #include "xmm.h" to the first place 
+	  before any other include statement given that it includes
+	  recursively "common.h" and "stime.h" that are needed
+	  by later .h files, as "Xmm.h". Accordingly, removed 
+	  the first #include "common.h" as it results unnecessary.
+
+	  At difference with Linux, Mac OS X Mavericks with gcc 4.8.2 
+	  take strict consideration of the order the include statemnets 
+	  are placed in the code regardless of any "-I <include_dir>" 
+	  flags used to compile it.
+
+Version 1.109 - 2014-04-15 (AI)
+-------------
+	+ gcc4.8.2 portability changes.
+	
+Version 1.108 - 2013-08-22 (RDS)
+-------------
+    + src/Ccf.h           Added the CONTAMINATION CCF
+
+Version 1.107.2 - 2013-02-26 (RDS)
+-------------
+    + src/Ccf.h           Added the SAACorr CCF
+
+Version 1.107.1 - 2013-02-19 (AI)
+-------------
+	+ (src/PhysicalConstants.h) eV~Ang constant modified
+	
+Version 1.107 - 2012-12-05 (RDS)
+-------------
+    + src/Ccf.h           Added the TIMEJUMPTOL CCF
+
+Version 1.106.2 - 2012-04-10 (RDS)
+-------------
+    + src/Ccf.h           Added the TICLOSEDODI and BUCLOSEDODI CCFs
+
+Version 1.106.1 - 2011-02-16 (AI)
+-------------
+	+ (caloaldefs.f90) SPECTROSCOPY_SMALL_WINDOW added to CalOalDefs (instrument modes) data 
+
+Version 1.106 - 2010-11-16 (AI)
+-------------
+	+ (Xmm.h and Xmm.cc) New RGS Science mode (SPECTROSCOPY_SMALL_WINDOW) added 
+	to the Instrument modes. 
+	
+Version 1.105.2 - 2009-07-06 (AI)
+-------------
+	+ (CalOalUtility.h and PhysicalConstants.h) Definitions in these two files 
+	give errors in oal. gcc4 porting 
+	
+Version 1.105.1 - 2009-06-23 (AI)
+-------------
+	+ Modifications in several files to make code gcc 4.3 complaint.
+
+Version 1.105 - 2009-04-12 (RDS)
+-------------
+    + src/Ccf.cc               	Added the ScreenThresh and SpecQual CCFs
+
+Version 1.104.2 - 2007-08-29 (RDS)
+-------------
+    + src/Xmm.cc               	Remove unwanted debug line
+
+Version 1.104.1 - 2007-06-22 (RDS)
+-------------
+    + src/Xmm.cc               	Backwards compatibility for MODEPARAM CCFs
+								w.o MOS 3X3 mode data (SPR-2715)
+
+Version 1.104 - 2007-02-16 (RDS)
+-------------
+    + src/Xmm.cc/h               	Support for MOS 3x3 mode with any 
+      src/caloaldefs.f90			frame time (SCR-??)
+
+Version 1.103 - 2006-04-03 (RDS)
+-------------
+	+ src/Ccf.h                  Added in the CoolPix CCF type (SCR-109)
+
+Version 1.102 - 2006-02-22 (RDS)
+-------------
+	+ src/Ccf.h                  Moved EffAreaCorr, which replaced AreaCheby
+                                 to the end of the CalDataTypes definitions 
+
+Version 1.101 - 2006-02-22 (AI)
+-------------
+	+ CalDataTypes::EffAreaCorr added in Ccf.h
+	+ CalDataTypes::AreaCheby removed in Ccf.h
+
+Version 1.100 - 2006-02-21 (RDS)
+------------
+	+ src/Xmm.cc,h,
+      Caloaldefs.f90                - added OM filters GRISM10, GRISM20 
+                                      (SPR-2667)
+
+Version 1.99 - 2006-02-08 (RDS)
+------------
+	+ added in Ccf.h CalDataTypes::AreaCheby  (SPR-2658)
+
+Version 1.98 - 2005-07-11 (JSH)
+------------
+	+ Fix problems with HDI files (DATATYPE is 'INTEGER*2' not 'OFFSET.IM')
+	in FITS files
+
+Version 1.95.4 - 2005-06-30 (JSH)
+------------
+	+ Copy of 1.97 for the release track
+
+Version 1.97 - 2005-06-27 (JSH)
+------------
+	+ Add modes
+		- MOS Diag 1x1 RPP
+		- RGS Spectroscopy Baseline, Spectroscopy 1x1 and Readout Storage
+		Section
+		- PN Prime FF Low Gain, and FF Masked
+	+ RGS HTR Mode now defaults to MULTI
+	+ OM E2/E4 FW=Blocked mode recognition
+	+ OM E3/E7 mode recognition
+
+Version 1.96 - 2004-09-21 (RDS)
+------------
+	+ copy of 1.95.3 for the dev track.
+
+Version 1.95.3 - 2004-07-16 (RDS)
+------------
+	+ added support for RGS_TEMPLATEBCKGND files
+
+Version 1.95.2 - 2004-07-01 (RDS)
+------------
+	+ added support for TCX, reconstructed time correlation files
+
+Version 1.95.1 - 2004-06-29 (RDS)
+------------
+	+ added support for HDI files
+      OdfDesignators.cc,Xmm.h
+
+Version 1.95 - 2003-12-11 (RDS)
+------------
+	+ fixed bug in OdfDesignators.cc
+
+Version 1.94 - 2003-12-10 (RDS)
+------------
+	+ added in Xmm.h new file type SYSPEAK_DIAGNOSTIC
+
+Version 1.93 - 2003-11-25 (RDS)
+------------
+	+ added in Ccf.h CalDataTypes::Reject
+
+Version 1.92 - 2003-11-20 (JSH)
+------------
+    + modified Declination::toString() writes +ve Dec for small -ve Dec 
+	(i.e. -00:01:00.00) SPR2482
+
+Version 1.91 - 2003-10-21 (UL/RDS)
+------------
+	+ added in Ccf.h CalDataTypes::GrismData
+
+Version 1.90 - 2003-07-07 (UL)
+------------
+	+ src/Celstial.cc: fixed another minor problem with streams under Tru64 and
+	  added code to avoid atan2(0, 0)
+
+Version 1.89 - 2003-07-05 (UL)
+------------
+	+ first of the 1.88 changes did not compile under gcc-2.95.3
+	  (standard C++ compliance problem with 2.95.3) - implemented
+	  workaround that avoids the 'fixed' stream modifier
+
+Version 1.88 - 2003-07-03 (GV)
+------------
+	+ (Celestial.cc) Set the stringstream to have fixed format (s <<
+	  fixed) or the formatting of floats into strings goes wrong with
+	  gcc-3.3. Also put a try/catch block around the call to
+	  toNumber<double>.
+	+ (OdfDesignators.(cc|h) Move the method proposalId from the
+	  header file to the implementation file. This makes the test
+	  harness attitudeLocator go through on HP Tru64. This fix is
+	  empiricall because there is no reason why the previous version
+	  should have failed. The failure only apears on HP, whereas on
+	  Linux gcc-3.3 liked the previous implementation.
+	
+Version 1.87 - 2003-06-19 (GV)
+------------
+	+ (Xmm.cc) Disable the detection of MOS FullFrameNoBPMask
+	mode. Issue a warning when the keyword EMDH is 32767, but
+	otherwise continue with the mode identification. This would
+	normally lead to the exposures being identified as FullFrame.
+	
+Version 1.86 - 2003-06-13 (GV)
+------------
+	+ (testproxy.cc) Add include cassert.
+	
+Version 1.85 - 2003-05-23 (UL)
+------------
+	+ updated orbital TLE elements up to 2003-04-28 and added mean anomaly
+	+ few transparent changes to XmmOrbitSimulator
+	+ StateVariable.set() accepts boolean argument to suppress warnings
+	+ operator<<() for EulerAngles gives more precision
+	+ function to register CIF entries (RealCcf.cc) inspects new environment
+	  variable SAS_CCFFILES for list of CCF constituent replacements
+	  (described in CAL doc)
+
+Version 1.84 - 2003-04-03 (UL)
+------------
+	+ added XmmInstrument::timeResolution()
+
+Version 1.83 - 2003-03-13 (UL)
+------------
+	+ minor transparent I/F changes related to CCF access (needed by
+	  changes in CAL)
+
+Version 1.82 - 2003-03-13 (UL)
+------------
+	+ brought delarations of modes in caloaldefs.f90 back in line with 1.81
+	  changes
+
+Version 1.81 - 2003-03-12 (UL)
+------------
+	+ extended list of camera modes in Xmm.h - new are
+		MOS	: PRIME_FULL_NO_BPMASK
+		OM	: DARK_LOW, DARK_HIGH, FLAT_FIELD_LOW, FLAT_FIELD_HIGH
+	+ added DIAGNOSTIC_1X1, DIAGNOSTIC_3X3 to the list of possible MOS modes
+	+ extended mode detection logic to cover the above 7 modes and recognize
+	  INTENSIFIER_CHARACTERISTICS and CENTROIDING_DATA mode of OM
+	
+Version 1.80.1 - 2003-02-20 (UL)
+--------------
+	+ name change of private data member in EathPositionLocator class to
+	  avoid name clash on MacOSX
+
+Version 1.80 - 2003-02-19 (UL)
+------------
+	+ clarifications in comments to API of Celestial.h
+	+ C++ compliance fixes enforced by gcc-3.2.2
+
+Version 1.79 - 2003-01-29 (UL)
+------------
+	+ few tweaks to make make 1.78 changes work
+
+Version 1.78 - 2003-01-29 (UL)
+------------
+	+ Generic CCF related access methods moved from CAL to here as CCF access
+	  needed by oal>=3.95 [Ccf.cc/h/RealCcf.cc/h]
+
+Version 1.77 - 2002-02-17 (JBa)
+------------
+	+ (C++ files) prefixed with std::
+
+Version 1.76 - 2002-09-09 (UL)
+------------
+	+ added new 'New Norcia' GS data
+
+Version 1.75 - 2002-08-26 (UL)
+------------
+	+ added forgotten slatec to USEDLIBS in src/Makefile
+
+Version 1.74 - 2002-07-19 (UL)
+------------
+	+ more C++ standard compliance fixes (code is gcc-3.1-clean now)
+	
+Version 1.73 - 2002-07-17 (UL)
+------------
+	+ some transparent code tweaks in src/xmm_c.cc required by gcc-3.1/2.96
+
+Version 1.72 - 2002-07-12 (UL)
+------------
+	+ now depends on package sas
+
+Version 1.71 - 2002-06-28 (UL)
+------------
+	+ forgot one hidden 'strstream' in 1.70
+
+Version 1.70 - 2002-06-28 (UL)
+------------
+	+ replaced all occurences of 'strstream' with the standard-conformant
+	  'stringstream'
+
+Version 1.69 - 2002-06-18 (UL)
+------------
+	+ added CalOalUtility::mem_fun_bin_op()
+
+Version 1.68 - 2002-06-03 (UL)
+------------
+	+ a few minor changes in view of selectlib-4.51
+
+Version 1.67 - 2002-05-23 (UL)
+------------
+	+ fixed minor problem with include file in Celestial.h
+	+ few additions to CartesianVector class in view of selectlib-4.48 changes
+
+Version 1.66 - 2002-04-16 (UL)
+------------
+	+ updated GS propagation delays with latest data from Ed Serpell (should
+	  not have considerable impact on accuracy of time tags)
+	+ added Plane class to Celestial.h
+
+Version 1.65.1 - 2002-03-07 (UL)
+--------------
+	+ if needed EPNcam::toMode() now checks value of F1294 attribute (if
+	  present - see ODF-ICD DCP-140) to distinguish between FF/eFF
+	
+Version 1.65 - 2002-02-19 (UL)
+------------
+	+ added
+		o XmmInstrument::focusCcd()/isImaging()
+		o AttitudeMatrix::x/y/zRefAxis()
+
+Version 1.64 - 2002-02-12 (UL)
+------------
+	+ added src/Interpolator.h
+
+Version 1.63 - 2002-01-08 (UL)
+------------
+	+ made OdfDesignator functionality (see 1.61) available from f90
+
+Version 1.62 - 2001-12-10 (UL)
+------------
+	+ fixed compilation problem under Solaris8/Linux introduced with 1.61
+
+Version 1.61 - 2001-12-06 (UL)
+------------
+	+ added src/OdfDesignator.h + associated test harness
+
+Version 1.60 - 2001-12-05 (UL)
+------------
+	+ fixed minor problem in CalOalUtility.cc
+
+Version 1.59 - 2001-12-04 (UL)
+------------
+	+ brought in line with utils-1.82
+
+Version 1.58 - 2001-11-22 (UL)
+------------
+	+ Xmm::toInstrument()/Xmm::toString() can now also handle the short
+	  two-char instrument identifier
+
+Version 1.57.1 - 2001-10-30 (UL)
+--------------
+	+ couple of trivial changes to satisfy optimizer
+
+Version 1.57 - 2001-10-29 (UL)
+------------
+	+ EMOS/EPN/RGS/OMcal::toMode() re-written; now more robust in detecting
+	  engineering modes
+
+Version 1.56 - 2001-09-13 (UL)
+------------
+	+ added provision for optional numeric attribute in BadPixel class
+	+ added predicate classes to facilitate using BadPixelMaps in
+	  confunction with stdlib algorithms
+
+Version 1.55.1 - 2001-09-13 (UL)
+--------------
+	+ slightly modified test/teststringpool to work around sh bug under Tru64
+
+Version 1.55 - 2001-07-26 (UL)
+------------
+	+ added function ccdToHBR() in caloaldefs.f90
+
+Version 1.54 - 2001-07-16 (UL)
+------------
+	+ added Xmm::scienceEngineeringDataModes()
+	+ corrected wrong Xmm::missionStartTime value
+
+Version 1.53 - 2001-07-13 (UL)
+------------
+	+ redelivery of 1.52 with very minor tweaked 1.51 additions
+
+Version 1.52 - 2001-07-13 (UL)
+------------
+	+ tweaked EPN mode detection logic such that ExtendedFullFrame is
+	  also recognized if the FRAMETIME parameter (read from table attribute
+	  in science file) has a wrong value! This happens on a regular basis
+	  due to a not understood PMS/ODS problem.
+	+ associate EPN DiscardedLinesData with Diagnostic mode
+
+Version 1.51 - 2001-07-12 (UL)
+------------
+	+ new f90 module 'Xmm' with routines to access various constant
+	  mission related times as STime object
+	+ new test harness xmmf90.f90 for the above
+
+Version 1.50 - 2001-07-06 (UL)
+------------
+	+ instrument ERM was missing from XmmPayLoad class
+
+Version 1.49 - 2001-07-04 (UL)
+------------
+	+ added functionality to deal with WCS (project, unproject. etc)
+	+ added EquitorialDirection::apparentDirection()
+	+ consistent use of namespace std (should compile ok under gcc-3.0)
+
+Version 1.48 - 2001-04-09 (UL)
+------------
+	+ CalOalUtility::fillVector() can also read from variable-length vector
+	  columns
+	+ added test for EarthPositionLocator
+
+Version 1.47 - 2001-03-30 (UL)
+------------
+	+ added data mode RAW_ATTITUDE (RAF)
+
+Version 1.46 - 2001-03-22 (UL)
+------------
+	+ added EMOScam::toHBR(Ccd)
+	+ added BadPixelMap class (to be used from CAL+OAL)
+	+ <iostream.h> -> <iostream>
+
+Version 1.45 - 2001-03-12 (UL)
+------------
+	+ added PhysicalConstants::AU
+
+Version 1.44 - 2001-03-08 (UL)
+------------
+	+ new types in CalOalDefs:
+	    + SpacecraftAttitudeType (moved from OalTypes)
+	    + EquatorialDirectionType
+
+Version 1.43 - 2001-03-02 (UL)
+------------
+	+ moved a few utility classes from OalUtils to Celestial
+
+Version 1.42 - 2001-02-28 (UL)
+------------
+	+ added a couple of new utility classes to Xmm.h
+
+Version 1.41 - 2001-02-21 (UL)
+------------
+	+ added CalOalUtility::fillVector<short>
+
+Version 1.40 - 2001-02-19 (UL)
+------------
+	+ added Image::normalize()
+
+Version 1.39.1 - 2001-02-12 (UL)
+--------------
+	+ added CalOalUtility::fillVector<unsigned short>
+
+Version 1.39 - 2001-01-10 (UL)
+------------
+	+ added complete NASA/OIG TLE history covering period
+	  [1999-12-10, 2001-01-10] to XmmOrbitSimulator
+
+Version 1.38 - 2001-01-09 (UL)
+------------
+	+ bug fix in KeplerOrbitSimulator (caused argument of perigee to be
+	  off by 90 degrees)
+	+ internal changes to orbit simulator
+	+ XmmOrbitSimulator now uses interpolated TLE data from
+	  http://oig1.gsfc.nasa.gov/scripts/foxweb.exe/app01?
+
+Version 1.37 - 2000-11-22 (UL)
+------------
+	+ fixed problem with CalOalUtility::fillVector<string>
+	+ added CalOalUtility::fillMatrix() utility
+	+ renamed PhysicalConstants::eVperAo -> eVtimesAo
+
+Version 1.36.3 - 2000-11-17 (UL)
+------------
+	+ more functionality in CalOalUtility
+	+ changed Xmm::missionReferenceTime to 1997-12-31T23:58.816 UTC =
+	  1998-01-01T00:00:00 TT
+
+Version 1.36.2 - 2000-11-07 (UL)
+--------------
+	+ change in mode detection logic for EMOS to fix SPR 1819
+
+Version 1.36.1 - 2000-10-27 (UL)
+--------------
+	+ added config/caloalutils.info
+
+Version 1.36 - 2000-10-17 (UL)
+------------
+	+ added XmmInstrument::scienceDataModes()
+
+Version 1.35 - 2000-10-02 (UL)
+------------
+	+ small addition to doc/caloalcommon.tex
+	+ fixed typo in caloaldefs.f90
+
+Version 1.34 - 2000-09-29 (UL)
+------------
+	+ various Filter/Mode names changed in Xmm.h/caloaldefs.f90 (no more "Epn"
+	  prefix)
+	+ Xmm::toMode/toInstrument/toFilter/toDataMode() give better error
+	  messages when passed invalid strings
+	+ new test harness 'xmm' (comes from cal)
+	+ more robustness in StringPool class - can now tolerate "invalid"
+	  characters in keys
+
+Version 1.33 - 2000-09-27 (UL)
+------------
+	+ new common TeX include file in doc/caloalcommon.tex
+
+Version 1.32 - 2000-09-22 (UL)
+------------
+	+ various changes to mode determination routines in Xmm class
+	+ additional 'uncertainty' component in StateVariable
+	+ various extensions to Image class
+
+Version 1.31 - 2000-09-05 (UL)
+------------
+	+ forgot to update f90 data mode list with new RGS DPP HK modes (see 1.30)
+
+Version 1.30 - 2000-09-05 (UL)
+------------
+	+ split of RGS DPP Non-Periodic HK in two kinds (following corresponding
+	  change in ODF ICD); for backward compatibility old "DPH" will still
+	  be recognized
+
+Version 1.29 - 2000-08-03 (UL)
+------------
+	+ more precision in PhysicalConstants
+
+Version 1.28 - 2000-05-24 (UL)
+------------
+	+ EMOS/EPNcam::toMode() need additional argument (vector with core mode
+	  parameters)
+
+Version 1.27 - 2000-05-10 (UL)
+------------
+	+ closed SPR 1287 : Wrong use of error and warning macros in documentation
+	+ more constants in PhysicalConstants.h
+
+Version 1.26 - 2000-04-14 (UL)
+------------
+	+ brought several constant lists (e.g. data modes) in Xmm.h in line with
+	  issue 2.4 of ODF ICD
+
+Version 1.25 - 2000-04-10 (UL)
+------------
+	+ bug fix in EPNcam::toQuadrantColumnNumber (affects output of
+	  gain/CTI correction for PN)
+
+Version 1.24 - 2000-04-06 (UL)
+------------
+	+ added StateVaribable.h from cal
+
+Version 1.23 - 2000-04-04 (UL)
+------------
+	+ RGS mode detection logic brought in line with latest version (9.0) of
+	  RGS telemetry doc (usage of SCITYPE)
+
+Version 1.22 - 2000-03-31 (UL)
+------------
+	+ Celestial.cc: normalize R.A. in construction of EquatorialDirection from
+	  unit vector; needed by `strbs' in ccftools
+
+Version 1.21 - 2000-03-29 (UL)
+------------
+	+ added more constants to PhysicalConstants
+
+Version 1.20 - 2000-03-23 (UL)
+------------
+	+ added PhysicalConstants class
+
+Version 1.19 - 2000-03-21 (UL)
+------------
+	+ added another EquatorialDirection constructor in Celestial.h
+
+Version 1.18 - 2000-03-18 (UL)
+------------
+	+ added XmmInstrument::RGSinChain()
+
+Version 1.17 - 2000-03-09 (UL)
+------------
+	+ fix in Proxy class
+
+Version 1.16 - 2000-03-08 (UL)
+------------
+	+ added Proxy class
+
+Version 1.15 - 2000-01-26 (UL)
+------------
+	+ added explicit copy constructor to Image class
+
+Version 1.14.2 - 1999-12-15 (UL)
+--------------
+	+ minor bug fix in mode detection logic
+	+ fixed SPR 977 : DalUtils.cc broken with TRACE=yes
+
+Version 1.14.1 - 1999-11-17 (UL)
+--------------
+	+ logic off RGScam::toMode() brought in line with latest RGS telemetry
+	  document
+
+Version 1.14 - 1999-11-10 (UL)
+------------
+	+ embedded CalOalUtility in namespace with same name
+
+Version 1.13 - 1999-11-08 (UL)
+------------
+	+ EulerAngles in Celestial is now a class
+	+ added operator<<(ostream &, EulerAngles);
+
+Version 1.12 - 1999-11-04 (UL)
+------------
+	+ some CalOalUtility functions no longer inlined (lead to error in cal
+	  -> compiler bug?)
+
+Version 1.11 - 1999-10-21 (UL)
+------------
+	+ brought caloaldefs.f90 in line with ODF ICD 2.2
+
+Version 1.10 - 1999-10-20 (UL)
+------------
+	+ brough in line with ODF ICD issue 2.2 (added/removed data modes
+	  to Xmm.h)
+	+ new XmmInstrument::periodicHKmodes()
+
+Version 1.9 - 1999-10-12 (UL)
+-----------
+	+ use INTERFACE mechanism
+
+Version 1.8 - 1999-10-11 (UL)
+-----------
+	+ updated value of Xmm::missionStartTime (1999-12-08T14:37:00)
+
+Version 1.7 - 1999-09-22 (UL)
+-----------
+	+ Celestial.h: moved EulerType type into EulerAngles definition
+
+Version 1.6 - 1999-09-17 (UL)
+-----------
+	+ added M_SQRT_2/SQR/CUB to Celestial.h
+
+Version 1.5 - 1999-09-10 (UL)
+-----------
+	+ moved CubicHermiteInterpolant/CubicSpline classes into slatec package
+
+Version 1.4 - 1999-09-08 (UL)
+-----------
+	+ added CubicHermiteInterpolant/CubicSpline class
+
+Version 1.3 - 1999-08-05 (UL)
+-----------
+	+ StringPool class: removed input/output stream arguments in
+	  constructors
+	+ Celestial.cc:
+		o additions by JBa to handle 1-2-3 Euler angles
+		o removed some inline declarations as they were causing linkage
+		  problems under Digital Unix
+
+Version 1.2 - 1999-07-07 (UL)
+-----------
+	+ minor modifications to Celestial class methods (made some arguments
+	  const)
+
+Version 1.1 - 1999-06-24 (UL)
+-----------
+	+ changed initialization of global XmmPayLoad object to resolve problem
+	  with shared build
+
+Version 1.0 - 1999-06-23 (UL)
+-----------
+	+ contents of package was formerly part of the Cal (cal/caloalutils); this
+	  caused tasks which only use the Oal to depend on the Cal as well
+

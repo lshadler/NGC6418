@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Examples</TITLE>
+<META NAME="description" CONTENT="Examples">
+<META NAME="keywords" CONTENT="badpixfind">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="badpixfind.css">
+
+<LINK REL="next" HREF="node12.html">
+<LINK REL="previous" HREF="node10.html">
+<LINK REL="up" HREF="badpixfind.html">
+<LINK REL="next" HREF="node12.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+badpixfind (badpixfind-1.40) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node10.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Future developments"></A>
+<A HREF="badpixfind.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Bibliography"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="badpixfind.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000110000000000000000"></A>
+<A NAME="badpixfind:description:examples"></A>
+<BR>
+Examples
+</H1>
+
+<P>
+
+<UL>
+<LI><EM>badpixfind eventset=mosevents.dat</EM> (default automatic MOS PPS setting)
+
+<P>
+</LI>
+<LI><EM>badpixfind narrowerthanpsf=1.5 backgroundrate=0.0001 hithresh=0.0045
+hicolthresh=0.00105 withsearchbadcolumn=y loenergythresh=0.14 hienergythresh=10.0
+eventset=pnevents.dat</EM> (recommended automatic PN PPS setting)
+
+<P>
+</LI>
+<LI><EM>badpixfind eventset=mosevents.dat thresholdlabel=peak
+backgroundrate=-1 hithresh=90 flickertimesteps=5 flickerksthresh=0.52
+flickerchisqthresh=12</EM> (bad pixels brighter than 90% of the peak brightness
+are searched for, as are flickering pixels with variabilities in excess of the
+given flicker thresholds)
+
+<P>
+</LI>
+<LI><EM>badpixfind eventset=mosevents.dat searchbadpix=n userflagbadpix=y
+rawxlist="3 6"  rawylist="5 8" typelist="4 4" yextentlist="2 2"
+badpixset=bpxfmos.fits</EM> (just mode 2 (explicit user flagging) is used to create
+two entries in output file bpxfmos.fits)
+
+<P>
+</LI>
+<LI><EM>badpixfind eventset=pnevents.dat threshabovebackground=Y
+withbadpixmap=Y hithresh=0.00025 withsearchbadcolumn=y hicolthresh=0.00007
+backgroundrate=-1 loenergythresh=7.0 hienergythresh=15.0 narrowerthanpsf=0.0
+withfovmask=Y</EM> (detects bad pixels/columns and also sources in a hard energy
+band, the thresholds set according to a calculated background level, producing
+a background mask [badpixmap.fits] with the FOV masked out, usable (in
+<A NAME="1063"></A><A NAME="tex2html21"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>) to create a background spectrum/lightcurve etc)
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

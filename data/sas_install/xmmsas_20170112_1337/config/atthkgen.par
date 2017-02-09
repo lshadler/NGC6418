@@ -1,0 +1,49 @@
+<!-- converted from XPI formatted "atthkgen.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="atthkset" type="dataset" default="atthk.dat">
+   <DESCRIPTION>
+    Output attitude HK file 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="timestep" type="real" default="1">
+   <DESCRIPTION>
+    Time step (sec) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    timestep in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+
+<PARAM id="withtimeranges" type="bool" default="no">
+	<DESCRIPTION> Begin and end of an specific pointing </DESCRIPTION>
+	<CASE>
+		<ITEM value="no"> </ITEM>
+		<ITEM value="yes">
+		<PARAM id="timebegin" type="time" default="0" mandatory="yes">
+			<DESCRIPTION> Pointing start time </DESCRIPTION>
+		</PARAM>
+		<PARAM id="timeend" type="time" default="0" mandatory="yes">
+			<DESCRIPTION> Pointing end time </DESCRIPTION>
+		</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="withpreqgti" type="bool" default="no">
+	<DESCRIPTION> Calculate AHF (RA,Dec) for all pointings in the file and update the file </DESCRIPTION>
+</PARAM>
+
+<PARAM id="preqgtifile" type="file" default="pointings.fit">
+	<DESCRIPTION> GTI file with stable pointings </DESCRIPTION>
+</PARAM>
+
+ </CONFIG>
+</FILE>

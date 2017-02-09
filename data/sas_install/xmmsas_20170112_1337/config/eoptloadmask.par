@@ -1,0 +1,102 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="srclisttab" type="dataset" mandatory="yes" list="yes">
+   <DESCRIPTION>
+    Name of the input source dataset and table name of (bright) optical sources (eg., Catalogue.fits:SRCLIST).
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="maskset" type="dataset" default="optloadmask.ds">
+   <DESCRIPTION>
+    Name of the output dataset to which the mask image is written.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="templateset" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    Name of the template image dataset to give the frame information for the maskset.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="temporaryset" type="dataset" default="eoptloadmask_tmpimage.ds">
+   <DESCRIPTION>
+    Name of the temporary image dataset.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="radiusstyle" type="string" default="fixed">
+   <DESCRIPTION>
+    Input style of the radius (fixed|column).
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="fixed">
+     <PARAM id="radius" type="real" mandatory="yes">
+      <DESCRIPTION>
+       The radius in arcsecond of the optical-loading per event.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       radius in (0:)
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="column">
+     <PARAM id="colradius" type="string" default="RADIUS" list="yes">
+      <DESCRIPTION>
+       List of the column names for the radius of the optical-loading per event.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="colnamestyle" type="string" default="default">
+   <DESCRIPTION>
+    Style of the column names (default|user).
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="default">
+    </ITEM>
+
+    <ITEM value="user">
+     <PARAM id="colra" type="string" mandatory="yes" list="yes">
+      <DESCRIPTION>
+       The column names for RA (Right Ascension) in degree.  The equinox and epoch of the coordinates have to match those in the given source list (srclisttab).
+      </DESCRIPTION>
+     </PARAM>
+     <PARAM id="coldec" type="string" mandatory="yes" list="yes">
+      <DESCRIPTION>
+       The column names for DEC (Declination).
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withexpressions" type="bool" default="no">
+   <DESCRIPTION>
+    Whether specify selection expressions or not.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="expressions" type="string" default="" list="yes">
+      <DESCRIPTION>
+       List of the filter selection expressions for the catarogue rows, corresponding to each input source-list.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+    <ITEM value="no">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="isinverted" type="bool" default="yes">
+   <DESCRIPTION>
+    If true, the affected regions by pile-up in the output mask are zero; if not, one.
+   </DESCRIPTION>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

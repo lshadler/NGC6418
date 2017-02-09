@@ -1,0 +1,302 @@
+Change log for emenergy
+=======================
+
+Open SPRs:
+----------
+	None.
+
+Version 8.8 - 2016-09-08 (AI)
+-------------
+	+ (src/emenergy_mod.f90) Initialization to null of all pointers that 
+	are passed to C++ (Dope vectors). If we do not initizialize the 
+	pointers, we get seg fault at run-time with gcc-6.2.	
+
+Version 8.7 - 2015-05-13 (AI)
+-------------
+	+ Documentation updated. SOC-SPR-7226 fixed
+	
+Version 8.6.2 - 2009-06-08 (AI)
+-------------
+	+ test files events.ref and bkgmap.ref regenerated using the new EMOS 
+	LINCOORD version 18. Fixes SOC-SPR-6545
+
+Version 8.6.1 - 2009-05-13 (EO)
+-------------
+	+ Update DEPEND file for ssclib 4.8.
+
+Version 8.6 - 2007-06-25 (AI/JB)
+-----------
+	
+- New procedure "mostimingcorr" implemented (SSC-SPR-3688). This
+	procedure (that implements Darren's idl code) makes a spectral
+	redistribution on the pha energy space.
+- New parameter "ontimepha" (by default equals to "NO") created. This
+	parameter enable or disable the spectral timing correction.
+- New dependecy on ssclib. DEPEND file updated.
+- src/Makefile updated to include the new ssclin dependency.
+
+Version 8.5 - 2005-07-25 (JB)
+-----------
+- Write the XMMEA_SM keyword.
+
+Version 8.4 - 2005-02-08 (JB)
+-----------
+- Write the CCD background file only at the last call to CCDBKG.
+
+Version 8.3 - 2004-11-16 (JB)
+-----------
+- Add 3 sigma clipping on E4 for computing CCD background
+  (related to SPR 3414).
+
+Version 8.2 - 2004-11-09 (JB)
+-----------
+- Correct bug in estimating CCD background for small number of counts
+  (related to SPR 3414).
+
+Version 8.1.2 - 2004-07-23 (JB)
+-------------
+- Could not apply CTI correction and gain correction in successive calls.
+
+Version 8.1.1 - 2004-03-12 (JB)
+-------------
+- Parameter rejectbade3e4 was incorrectly called rejecte3e4 in doc.
+
+Version 8.1 - 2003-11-28 (JB)
+-----------
+- Set RAWY to SRC_RAWY when calling CAL_mosCtiCorrect in Timing mode.
+
+Version 8.0 - 2003-10-14 (JB)
+-----------
+- Old OFFSETS extension changed to OFFSETS0.
+- Makes use of new OFFSETS extension.
+
+Version 7.2 - 2003-08-19 (JB)
+-----------
+- Call to rejectE3E4 before ccdbkg to avoid contamination by wrong offsets.
+
+Version 7.1 - 2002-11-13 (JB)
+-----------
+- Use supertabular for ChangeLog section in doc.
+
+Version 7.0 - 2002-08-02 (JB)
+-----------
+- Remove the e3e4ellipse parameter (read from CAL).
+- Remove withmaskedccdset parameter from doc.
+- Use badpixutils_mod.
+
+Version 6.6 - 2002-06-25 (JB)
+-----------
+- Replace reference to event attributes description.
+
+Version 6.5 - 2002-05-27 (JB)
+-----------
+- Keep decimal part of dark frame background.
+- Clarify warnings in code and doc.
+
+Version 6.4 - 2002-05-07 (JB)
+-----------
+- Upgrade parameter file to param 2.0.
+
+Version 6.3.1 - 2002-02-11 (JB)
+-------------
+- Accept bad pixels at RAWX=0.
+
+Version 6.3 - 2001-12-07 (JB)
+-----------
+- Identical to 6.2.
+
+Version 6.2  -  2001-08-17 (JB)
+-----------
+- Change test harness to accommodate selectlib 4.44 and cal 3.117.
+
+Version 6.1.3  -  2001-06-18 (JB)
+-------------
+- Change message on PI thresholds to Sparse (src/emenergy_mod.f90).
+
+Version 6.1.2  -  2001-06-12 (JB)
+-------------
+- Downgrade warning about missing BADPIX to message (src/emenergy_mod.f90).
+
+Version 6.1.1  -  2001-04-24 (JB)
+-------------
+- Interface change to CAL_getMOSdarkFrameMap (src/emenergy_mod.f90).
+
+Version 6.1  -  2001-04-17 (JB)
+-----------
+- Allow estimating CCD background from E4 and CCF dark frame together.
+
+Version 6.0  -  2001-03-05 (JB)
+-----------
+- New fillccdbkg option to estimate CCD background where few events were found.
+- rejectbade3e4 and OUT_OF_FOV flagging moved to emenergy from emevents.
+
+Version 5.5  -  2000-12-19 (JB)
+-----------
+- Do not remove DATATYPE in output background map.
+
+Version 5.4  -  2000-08-09 (JB)
+-----------
+- Changed dependence to emsaplib 2.0 (DEPEND).	
+
+Version 5.3.1  -  2000-06-19 (JB)
+-------------
+- Removed blanks from error codes (doc/emenergy_description.tex
+  and src/emenergy_mod.f90).
+
+Version 5.3  -  2000-05-22 (JB)
+-----------
+- Upgraded to saslib 1.62.
+
+Version 5.2  -  2000-05-17 (JB)
+-----------
+- Uses specific CAL_mosGainCorrect.
+
+Version 5.1  -  2000-05-08 (JB)
+-----------
+- Adapt test harness to new event attribute codes.
+
+Version 5.0  -  2000-04-15 (JB)
+-----------
+- Reads ENERGYEi as integer columns.
+- Added parameter randomizeenergy (on by default).
+- Changed column names in E4 time-series output.
+
+Version 4.2  -  2000-04-12 (JB)
+-----------
+- Keep DATATYPE keyword in EXPOSURE extension.
+
+Version 4.1  -  2000-03-10 (JB)
+-----------
+- Keep original event coordinates when out of CCD.
+
+Version 4.0  -  1999-12-21 (JB)
+-----------
+- Removed the phacoefs parameter and calls calmosalgo.
+
+Version 3.8  -  24-11-1999
+-----------
+- Large (> 2 pixels) events are not used to build background map.
+- Set TLMAX for PHA/PI columns in Timing mode.
+
+Version 3.7  -  09-11-1999
+-----------
+- Allow to read/write CCD background map in the absence of offsets.
+- Uses new emsaplib library.
+
+Version 3.6  -  19-10-1999
+-----------
+- Change test harness to adapt to new gain values.
+- Includes DISTRIBUTION file.
+
+Version 3.5  -  07-10-1999
+-----------
+- Changes the way the 4th coefficient in phacoefs is used.
+- Adds an OFFSETS extension to the backgroundset file.
+- Doc updated to sas 1.155.
+
+Version 3.4  -  03-09-1999
+-----------
+- Writes proper time keywords in the time series associated with backgroundset.
+
+Version 3.3  -  08-07-1999
+-----------
+- Corrects the "1 event" bug.
+
+Version 3.2  -  09-06-1999
+-----------
+- Writes the XMMEA_nn keywords.
+- Upgraded to CAL 3.0.
+- Upgraded to saslib 1.35.
+
+Version 3.1  -  31-05-1999
+-----------
+- Supports all modes.
+- Simplified variable management by using parent function.
+- Includes a parameter layout file.
+
+Version 3.0  -  30-04-1999
+-----------
+- All parameter names changed to follow new guidelines
+- Upgraded to be compatible with emutils in emevents 3.0.
+- Uses the eventAttributes module.
+- Uses the new CAL_setState(block) facility.
+- Uses the new presentation for columns, keywords, ... in the doc.
+
+Version 2.7  -  22-03-1999
+-----------
+- ROWOFFST and COLOFFST exchanged in offset file after ODF ICD clarification.
+- PHA is now not corrected for CTI.
+- Only the main pixel is considered when flagging "next to ...".
+- Change background subtraction in MAKE_E.
+- Reject events at distance 1 from borders in CCDBKG.
+- Upgraded to be compatible with CAL 2.x
+- Upgraded to be compatible with emutils in emevents 2.8.
+
+Version 2.6  -  11-12-1998
+-----------
+- emutils_mod moved to emevents.
+- Output CCD map written to primary, not to extension.
+
+Version 2.5  -  27-11-1998
+-----------
+- Fixed SPR 335 (The function change_case is duplicated in other tasks).
+- BADPIXTYPE changed to TYPE in bad pixels extension to follow badpix.
+- Uses the new "layer" message interface.
+- Uses CAL_setStateFromScienceFile.
+- copyAttributes removed.
+- Generic routines taken from the specific module in emframes.
+- Now supports new output file when run on its own output.
+- The optional CCD map in diagfile is now read from the primary array.
+- Corrected various small bugs.
+
+Version 2.4  -  25-09-1998
+-----------
+- Changed output format for CCD background map and time series.
+- Offsets taken into account when using an external CCD background map.
+- Modified to adjust to param 1.10.
+- Added numerous checks against erroneous data.
+- Version number jumped to 2.4 to meet that of description.
+
+Version 2.1  -  30-07-1998
+-----------
+- Fixed SPR 507 (Subscript 2 of OPTBKG is out of range).
+  The task now uses int32 indices instead.
+- Fixed SPR 509 (Test harness fails under DEC OSF).
+  The reference output is now produced within the test harness.
+- Uses the message facility instead of the prlev parameter.
+
+Version 2.0  -  20-07-1998
+-----------
+- Fixed SPR 334 (Change on/off parameters from integer to boolean).
+  This interface change is the reason for the new major version.
+- Fixed SPR  93 (Should not check for existing file).
+  setExists used instead.
+- Fixed SPR  97 (Need generic mechanism for parsing list of parameters).
+  Calls the facilities provided with the param package.
+- Fixed SPR 331 (Merge README.emenergy into description).
+- Fixed SPR 332 (Remove ":" and "?" from parameter labels).
+- Fixed SPR 336 (Use unique error codes).
+- Fixed SPR 490 (Tests fail after DAL fixes).
+- Does not generate camera coordinates any longer (moved to emevents).
+
+Version 1.1  -  26-05-1998
+-----------
+- Fixed SPR  88 (Task would not compile).
+  Calls to nint(x,kind=int16) replaced by int(x+sign(0.5,x),kind=int16).
+- Fixed SPR  89 (Require .par instead of .prm).
+- Fixed SPR  90 (Writes diagnostic output to stdout).
+  No print * anymore.
+- Fixed SPR  96 (String buffer should not be used).
+  Use global variable errstr instead.
+- parse_string accepts values separated by several blanks.
+- Copy general keywords from the events extension to the primary header.
+- Write TCRPX keywords associated to the DETX/DETY columns to indicate
+  the DETX/DETY coordinates of the detector center.
+- focalLength replaced by -xmilli when computing DETX/DETY.
+- Write TLMIN/TLMAX keywords for DETX/DETY.
+- Coherent with CAL storage of patterns.
+- CTI correction plugged in.
+	
+Version 1.0  -  22-04-1998
+-----------
+- Initial version for SAS v1 integration.

@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Pixel dimensions</TITLE>
+<META NAME="description" CONTENT="Pixel dimensions">
+<META NAME="keywords" CONTENT="imrebin">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="imrebin.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+imrebin (tools-1.67) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Relation between input and"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="imrebin.html">Home Page</A> / <A  HREF="node2.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00021000000000000000">
+Pixel dimensions</A>
+</H2>
+
+<P>
+The ratio of output-to-input pixel dimensions are specified by the parameters <TT>binxsize</TT> and <TT>binysize</TT>; in addition, the starting row or column can be defined using parameters <TT>offsetx</TT> and <TT>offsety</TT>. At present, only integer values are allowed for these four parameters.
+
+<P>
+The working of these is perhaps best shown by some examples. I'll restrict myself to the x axis for the sake of simplicity; the working in the y dimension is of course identical in character.
+
+<P>
+All pixel indices are taken to start at 1 not 0.
+
+<P>
+
+<UL>
+<LI>Example 1: input is 44 pixels wide, <TT>binxsize</TT>=1, <TT>offsetx</TT>=0 (the default). In this case, as one might expect, the output image contains the same number of columns as the input.
+
+<P>
+</LI>
+<LI>Example 2: input is 51 pixels wide, <TT>binxsize</TT>=2, <TT>offsetx</TT>=0 (the default). In this case the output image is 26 pixels wide. The first column of the output image contains columns 1 and 2 of the input image, the second contains 3 and 4, and so forth. The last (26th) column of the output contains just column 51 of the input.
+
+<P>
+</LI>
+<LI>Example 3: input is 28 pixels wide, <TT>binxsize</TT>=5 (the present default), <TT>offsetx</TT>=3. 28 divided by 5, rounded to the next highest integer, equals 6. The <TT>offsetx</TT> value shifts the input image to the right so that the first output column contains not columns 1 to 5 of the input but only columns 1 and 2; columns 3 to 7 of the input go into column 2 of the output, columns 8 to 12 go into 3, and so forth. However now we see that 6 output columns are not sufficient, because column 6 of the output contains only columns 23 to 27 on the input, leaving the last input column unallocated. Hence the output in this case is broadened to 7 columns, the last containing just column 28 of the input.
+</LI>
+</UL>
+
+<P>
+As you can see, the dimensions of the output are adjusted in every case to be just large enough that no input columns (or rows) are omitted.
+
+<P>
+Offset values greater than or equal to the number of input pixel dimensions in the output pixels are not useful since in all cases the output with <TT>offsetx</TT>=<SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$N$"></SPAN> for example is the same as for <TT>offsetx</TT>=<SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$N$"></SPAN> modulo <TT>binxsize</TT>.
+
+<P>
+As seen in the second and third examples above, in cases in which there is not a perfect alignment between the old and new image boundaries, some `dummy' input pixels can become included in output pixels at the edges of the image: in example 3 for example there are 3 dummy input columns in the first output column and 4 in the last output column. These dummy pixels are not included when the output values are calculated (see section <A HREF="node4.html#imrebin:description:values">2.2</A>).
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Relation between input and"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

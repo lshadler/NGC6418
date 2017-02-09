@@ -1,0 +1,194 @@
+Cards
+#-----------------------
+  Page "Data Processing"
+#-----------------------
+    Enable selectccds
+      Row
+        Column
+          Parameter ccd1
+          Parameter ccd2
+          Parameter ccd3
+          Parameter ccd4
+          Parameter ccd5
+          Parameter ccd6
+        end
+        Column
+          Parameter ccd7
+          Parameter ccd8
+          Parameter ccd9
+          Parameter ccd10
+          Parameter ccd11
+          Parameter ccd12
+        end
+      end
+    end
+    Enable selectmodes
+      Parameter imaging
+      Enable timing
+        Parameter timingsrcposition
+        Enable withsrccoords
+          Parameter srcra
+          Parameter srcdec
+	end
+      end
+      Enable burst
+        Parameter timingsrcposition
+        Enable withsrccoords
+          Parameter srcra
+          Parameter srcdec
+	end
+      end
+    end
+    Enable withinstexpids
+      Parameter instexpids
+    end
+	Parameter withdefaultcal
+    Parameter removetemporaries
+    Parameter removeintermediategtis
+    Parameter removeintermediateeventlists
+    Parameter deleteexposurecolumns
+    Parameter pileuptempfile
+  end
+# --------------------------
+  Page "Good Time Intervals"
+# --------------------------
+    Enable runhkgtigen
+      Frame "Advanced Settings"
+        Enable withparameters
+          Parameter parameters
+        end
+        Parameter except
+        Enable withoverrideparameters
+          Parameter overrideparameters
+        end
+      end
+    end
+    Enable withgtiset
+      Parameter gtiset
+    end
+  end
+# -----------------------------------
+  Page "Attitude and sky coordinates"
+# -----------------------------------
+    Choice referencepointing
+      Page object
+      end
+      Page nominal
+      end
+      Page mean
+###        Parameter runatthkgen
+      end
+      Page median
+###        Parameter runatthkgen
+      end
+      Page user
+        Parameter ra
+        Parameter dec
+        Parameter posangle
+      end
+    end
+  end
+# -----------------------
+  Page "Filter and Merge"
+# -----------------------
+    Enable filterevents
+      Parameter filterexpression
+      Parameter flagfilteredevents
+    end
+    Parameter rungtimerge
+    Parameter applygti
+    Parameter runevlistcomb
+    Enable runepexposure 
+	Parameter randomizetime
+	Parameter spatialexposure
+    end
+  end
+# -----------------
+  Page "Bad Pixels"
+# -----------------
+    Enable searchforbadpixels
+      Parameter searchforbadcolumns
+##      Enable withbadpixgti
+##        Parameter badpixgti
+##      end
+      Frame "Advanced Settings"
+        Parameter thresholdlabel
+        Parameter lothresh
+        Parameter hithresh
+        Parameter columnsearchlabel
+        Parameter locolthresh
+        Parameter hicolthresh
+        Parameter flickertimesteps
+        Parameter flickerksthresh
+        Parameter flickerchisqthresh
+        Parameter backgroundrate
+        Parameter narrowerthanpsf
+        Parameter threshabovebackground
+        Parameter loenergythresh
+      end
+    end
+  end
+  Page "Frames and Events"
+    Frame epevents
+      Parameter randomizeposition
+      Parameter randomizeenergy
+      Parameter testenergywidth
+      Parameter gainctiaccuracy
+      Parameter reemissionthresh
+      Parameter withoutoftime
+      Parameter mappatterntype
+      Parameter withtempcorrection
+      Parameter patternanalysis
+      Parameter withframecti
+      Parameter withpatternoffset
+      Parameter withbackgroundgain
+      Parameter withrdpha
+      Parameter rdphatimebinsize
+      Parameter checksasmip
+      Parameter ctilongtermsoft
+    end
+    Frame epframes
+      Parameter wrongpixlimit
+      Parameter mipthreshold
+      Parameter mipmethod
+      Parameter mipdist
+      Parameter mipdiscard
+      Parameter setupbpx
+      Parameter lowerthreshold
+      Parameter guessdeltap
+    end
+end
+  Page details
+    Enable runepnoise
+      Parameter sigmacut
+      Parameter noisecut
+      Parameter savemasks
+    end
+
+    Enable runepreject
+	Parameter badcolumnset
+	Parameter sigma
+        Parameter withnoisehandling
+	Parameter noiseparameters
+	Parameter withoffsetmap
+        Parameter withxrlcorrection
+	Parameter withsoftflarescreening	
+	Parameter softflarethreshold1
+	Parameter softflarethreshold2
+	Parameter softflaresmooth
+	Parameter softflareenergyrange
+	Parameter softflaresmoothparams
+    end
+
+	
+	Enable runepxrlcorr
+	end
+	Enable runepfast
+	end
+
+    Frame SciSim
+      Parameter analyzingSciSimdata
+    end
+
+  end
+end  

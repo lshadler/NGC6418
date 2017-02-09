@@ -1,0 +1,1074 @@
+<FILE>
+    <CONFIG>
+
+        <PARAM id="eventsets" type="dataset" list="yes" mandatory="no" default="event.fits">
+            <DESCRIPTION>
+                Blank-separated name(s) of input event files, from which
+                images and masks are extracted.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="attitudesets" type="dataset" list="yes" mandatory="no" default="attitude.fits">
+            <DESCRIPTION>
+                Blank-separated name(s) of input attitude files, from which
+                the common coordinate system of the stacked observations is
+                derived.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="summarysets" type="dataset" list="yes" mandatory="no" default="summary.fits">
+            <DESCRIPTION>
+                Blank-separated name(s) of input odf summary files, as provided
+                by task odfingest. Same number as event sets.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="mlmin" type="real" list="no" mandatory="no" default="6.0">
+            <DESCRIPTION>
+                Task emldetect: Minimum detection likelihood to be reached in
+                total or in at least one pointing to transfer a source from the
+                intermediate to the final output list.
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                mlmin in [0.0:100.0]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="pimin" type="int" list="yes" mandatory="no" default="200 500 1000 2000 4500">
+            <DESCRIPTION>
+                Lower boundaries of energy bands in source detection in eV.
+            </DESCRIPTION>
+            <CONSTRAINTS>
+              pimin in [0:30000]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="pimax" type="int" list="yes" mandatory="no" default="500 1000 2000 4500 12000">
+            <DESCRIPTION>
+                Upper boundaries of energy bands in source detection in eV.
+            </DESCRIPTION>
+            <CONSTRAINTS>
+              pimax in [0:30000]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="ecf" type="real" list="yes" mandatory="no" default="0.0">
+            <DESCRIPTION>
+                Energy conversion factors, given in units of 1e11
+                cnts/cm2/erg, used to derive source fluxes. Automatically set
+                to the 3XMM values, if standard energy bands are used and
+                parameter ecf is not set explicitly.
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                ecf in [0.0:1000.0]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="srclistset" type="dataset" list="no" mandatory="no" default="srclist.fits">
+            <DESCRIPTION>
+                Name of output edetect_stack source list
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="minstage" type="string" list="no" mandatory="no" default="1">
+            <DESCRIPTION>
+                Index or name of stage at which edetect_stack should be
+                started. If set, it has priority over the 'run*' parameters.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="maxstage" type="string" list="no" mandatory="no" default="12">
+            <DESCRIPTION>
+                Index or name of stage at which edetect_stack should be
+                stopped. If set, it has priority over the 'run*' parameters.
+            </DESCRIPTION>
+        </PARAM>
+
+
+        <PARAM id="prefix" type="string" list="no" mandatory="no" default="">
+            <DESCRIPTION>
+                Prefix of all files for which the default name structure is used.
+            </DESCRIPTION>
+       </PARAM>
+
+       <PARAM id="informational" type="string" list="no" mandatory="no" default="default">
+            <DESCRIPTION>
+	       Write / omit informational output: sensitivity maps, mosaic
+               images (default: yes), cheesed background images and masks,
+               emldetect source images (default: no).
+           </DESCRIPTION>
+           <CASE>
+               <ITEM value="default">
+               </ITEM>
+               <ITEM value="all">
+               </ITEM>
+               <ITEM value="none">
+               </ITEM>
+           </CASE>
+       </PARAM>
+
+
+       <PARAM id="runattcalc" type="bool" list="no" mandatory="no" default="true">
+            <DESCRIPTION>
+                Run task attcalc to establish a common coordinate system. If
+                set to "false", this has to be done manually before starting
+                task edetect_stack.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="att_eventset" type="dataset" list="yes" mandatory="no" default="events">
+            <DESCRIPTION>
+                Task attcalc: Base name of event lists, expanded by
+                edetect_stack. Output files, if parameter runattcalc is set to
+                "true" (default), input files otherwise.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="with_att_nominalcoord" type="bool" list="no" mandatory="no" default="false">
+            <DESCRIPTION>
+                User input of parameters att_nominalra and att_nominaldec. If
+                'false': optimum values are derived by task edetect_stack from
+                the attitude files.
+            </DESCRIPTION>
+            <CASE>
+                <ITEM value="no">
+                </ITEM>
+                <ITEM value="yes">
+                    <PARAM id="att_nominalra" type="angle" list="no" mandatory="no" default="0.0">
+                    <DESCRIPTION>
+                            Task attcalc: Celestial right ascension coordinate
+                            of central reference point.
+                    </DESCRIPTION>
+                    <CONSTRAINTS>
+                            att_nominalra in [0.0:360.0]
+                        </CONSTRAINTS>
+                    </PARAM>
+            
+                    <PARAM id="att_nominaldec" type="angle" list="no" mandatory="no" default="0.0">
+                        <DESCRIPTION>
+                            Task attcalc: Celestial declination coordinate of
+                            central reference point.
+                        </DESCRIPTION>
+                        <CONSTRAINTS>
+                            att_nominaldec in [-90.0:90.0]
+                        </CONSTRAINTS>
+                    </PARAM>
+                    </ITEM>
+            </CASE>
+        </PARAM>
+
+        <PARAM id="with_att_imagesize" type="bool" list="no" mandatory="no" default="false">
+            <DESCRIPTION>
+                User input of parameters att_nominalra att_nominaldec. If
+                'false': optimum values are derived by edetect_stack from
+                the attitude files.
+            </DESCRIPTION>
+            <CASE>
+                <ITEM value="no">
+                </ITEM>
+                <ITEM value="yes">
+                    <PARAM id="att_imagesize" type="angle" list="no" mandatory="no" default="0.36">
+                        <DESCRIPTION>
+                            Task attcalc: Image half-size in degrees.
+                        </DESCRIPTION>
+                        <CONSTRAINTS>
+                            att_imagesize in [0.0:]
+                        </CONSTRAINTS>
+                    </PARAM>
+                </ITEM>
+            </CASE>
+        </PARAM>
+
+
+
+        <PARAM id="runevselectimages" type="bool" list="no" mandatory="no" default="true">
+            <DESCRIPTION>
+                Run task evselect to produce images. If set to 'false', the
+                files have to be provided as input.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="ev_imageset" type="dataset" list="yes" mandatory="no" default="iimage">
+            <DESCRIPTION>
+                Task evselect: Base name of image files, expanded by
+                edetect_stack. Output files, if parameter runevselectimages is
+                set to 'true' (default), input files otherwise.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="ev_xcolumn" type="string" list="no" mandatory="no" default="X">
+            <DESCRIPTION>
+                Task evselect: Name of column with spatial X coordinates for
+                image creation.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="ev_ycolumn" type="string" list="no" mandatory="no" default="Y">
+            <DESCRIPTION>
+                Task evselect: Name of column with spatial Y coordinates for
+                image creation.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="ev_ximagebinsize" type="real" list="no" mandatory="no" default="80.0">
+            <DESCRIPTION>
+                Task evselect: Binning factor for the X axis in image creation.
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                ev_ximagebinsize in [0:]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="ev_yimagebinsize" type="real" list="no" mandatory="no" default="80.0">
+            <DESCRIPTION>
+                Task evselect: Binning factor for the Y axis in image creation.
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                ev_yimagebinsize in [0:]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="ev_withxranges" type="bool" list="no" mandatory="no" default="false">
+            <DESCRIPTION>
+                Task evselect: Use ximagemin and ximagemax values for the X
+                coordinate ranges for image creation. If true, the parameter
+                ranges are used; if false, the ranges are determined from the
+                data.
+            </DESCRIPTION>
+            <CASE>
+                <ITEM value="no">
+                </ITEM>
+                <ITEM value="yes">
+                    <PARAM id="ev_ximagemin" type="real" list="no" mandatory="no" default="1.0">
+                        <DESCRIPTION>
+                            Task evselect: If set, the lower limit of the X
+                            coordinate for image creation.
+                        </DESCRIPTION>
+                    </PARAM>
+
+                    <PARAM id="ev_ximagemax" type="real" list="no" mandatory="no" default="1.0">
+                        <DESCRIPTION>
+                            Task evselect: If set, the upper limit of the X
+                            coordinate for image creation.
+                        </DESCRIPTION>
+                    </PARAM>
+                </ITEM>
+            </CASE>
+        </PARAM>
+
+
+        <PARAM id="ev_withyranges" type="bool" list="no" mandatory="no" default="false">
+            <DESCRIPTION>
+                Task evselect: Use yimagemin and yimagemax values for the Y
+                coordinate ranges for image creation. If true, the parameter
+                ranges are used; if false, the ranges are determined from the
+                data.
+            </DESCRIPTION>
+            <CASE>
+                <ITEM value="no">
+                </ITEM>
+                <ITEM value="yes">
+                    <PARAM id="ev_yimagemin" type="real" list="no" mandatory="no" default="1.0">
+                        <DESCRIPTION>
+                            Task evselect: If set, the lower limit of the Y
+                            coordinate for image creation.
+                        </DESCRIPTION>
+                    </PARAM>
+            
+                    <PARAM id="ev_yimagemax" type="real" list="no" mandatory="no" default="1.0">
+                        <DESCRIPTION>
+                            Task evselect: If set, the upper limit of the Y
+                            coordinate for image creation.
+                        </DESCRIPTION>
+                    </PARAM>
+                </ITEM>
+            </CASE>
+        </PARAM>
+
+        <PARAM id="ev_withimagedatatype" type="bool" default="true">
+        	<DESCRIPTION> Use imagedatatype to set the type of image created </DESCRIPTION>
+        	<CASE>
+        		<ITEM value="no"> </ITEM>
+        		<ITEM value="yes">
+        			<PARAM id="ev_imagedatatype" type="string" default="Int32">
+        				<DESCRIPTION> Task evselect: Data type of the image to be created. </DESCRIPTION>
+        				<CASE>
+        					<ITEM value="Int16"> </ITEM>
+        					<ITEM value="Int32"> </ITEM>
+        					<ITEM value="Int8"> </ITEM>
+        					<ITEM value="Real32"> </ITEM>
+        					<ITEM value="Real64"> </ITEM>
+        				</CASE>
+        			</PARAM>
+        		</ITEM>
+        	</CASE>
+        </PARAM>
+
+
+
+
+        <PARAM id="runeexpmap" type="bool" list="no" mandatory="no" default="true">
+            <DESCRIPTION>
+                Run task eexpmap to produce exposure maps. If set to 'false',
+                the files have to be provided as input.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="eexp_expimageset" type="dataset" list="yes" mandatory="no" default="expmap">
+            <DESCRIPTION>
+                Task eexpmap: Base name of unvignetted exposure image files,
+                expanded by edetect_stack. Output files, if parameter
+                runeexpmap is set to "true" (default), input files otherwise.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="eexp_attrebin" type="real" list="no" mandatory="no" default="2.0">
+            <DESCRIPTION>
+                Task eexpmap: Positional accuracy of attitude rebinning in
+                arcseconds. Changes in the attitude less than parameter
+                attrebin are ignored when rebinning the attitude data.  Set
+                attrebin=0.020626481 (i.e., 1e-7 rad) or smaller to ensure
+                that the output sky exposure map matches event lists.
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                eexp_attrebin in [0.0:60.0]
+            </CONSTRAINTS>
+        </PARAM>
+
+
+
+        <PARAM id="runemask" type="bool" list="no" mandatory="no" default="true">
+            <DESCRIPTION>
+                Run task emask to produce detection masks. If set to "false",
+                the files have to be provided as input.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="emask_detmaskset" type="dataset" list="yes" mandatory="no" default="detmsk">
+            <DESCRIPTION>
+                Task emask: Base name of detection mask files, expanded by
+                edetect_stack. Output files, if parameter runemask is set to
+                'true' (default), input files otherwise.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="emask_threshold1" type="real" list="no" mandatory="no" default="0.5">
+            <DESCRIPTION>
+                Task emask: Threshold parameter 1: fraction of maximum exposure.
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                emask_threshold1 in [0.0:1.0]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="emask_threshold2" type="real" list="no" mandatory="no" default="1.0">
+            <DESCRIPTION>
+                Task emask: Threshold parameter 2: threshold for gradient of
+                exposure.
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                emask_threshold2 in [0.0:10.0]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="emask_withregionset" type="bool" list="no" mandatory="no" default="false">
+            <DESCRIPTION>
+                Task emask: Read a fits region file and exclude circular/box
+                regions from the mask.
+            </DESCRIPTION>
+            <CASE>
+                <ITEM value="no">
+                </ITEM>
+                <ITEM value="yes">
+                    <PARAM id="emask_regionset" type="dataset" list="no" mandatory="no" default="emask.fits">
+                        <DESCRIPTION>
+                            Task emask: Name of the fits region file providing
+                            the regions to be excluded, if parameter
+                            emask_withregionset is set to true.
+                        </DESCRIPTION>
+                    </PARAM>
+                </ITEM>
+            </CASE>
+        </PARAM>
+
+
+
+
+        <PARAM id="runeboxdetectlocal" type="bool" list="no" mandatory="no" default="true">
+            <DESCRIPTION>
+                Run task eboxdetect to produce local-mode input source lists
+                per observation. If set to "false", the files have to be
+                provided as input.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="eboxl_boxlistset" type="dataset" list="yes" mandatory="no" default="loclst">
+            <DESCRIPTION>
+                Task eboxdetect: Base name of local-mode box list files,
+                expanded by edetect_stack. Output files, if parameter
+                runeboxdetectlocal is set to 'true' (default), input files
+                otherwise.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="eboxl_likemin" type="real" list="no" mandatory="no" default="5.0">
+            <DESCRIPTION>
+                Task eboxdetect: Minimum detection likelihood for including a
+                source in the output list.
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                eboxl_likemin in [1.0:50.0]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="eboxl_boxsize" type="int" list="no" mandatory="no" default="5">
+            <DESCRIPTION>
+                Task eboxdetect: Size of detection box (3x3 or 5x5 pixels).
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                eboxl_boxsize in [3:5]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="eboxl_nruns" type="int" list="no" mandatory="no" default="1">
+            <DESCRIPTION>
+                Task eboxdetect: Number of detection runs (detection box size
+                is doubled after each run).
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                eboxl_nruns in [1:4]
+            </CONSTRAINTS>
+        </PARAM>
+
+
+
+
+        <PARAM id="runesplinemap" type="bool" list="no" mandatory="no" default="true">
+            <DESCRIPTION>
+                Run task esplinemap to produce spline background maps. If set
+                to 'false', the files have to be provided as input.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="esp_bkgimageset" type="dataset" list="yes" mandatory="no" default="bkgmap">
+            <DESCRIPTION>
+                Task esplinemap: Base name of background map files, expanded
+                by edetect_stack. Output files, if parameter runesplinemap is
+                set to 'true' (default), input files otherwise.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="esp_scut" type="real" list="no" mandatory="no" default="0.002">
+            <DESCRIPTION>
+                Task esplinemap: Source cut-out flux level in [cnts/arcsec2].
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                esp_scut in [0.0:10.0]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="esp_mlmin" type="real" list="no" mandatory="no" default="1.0">
+            <DESCRIPTION>
+                Task esplinemap: Minimum single band detection likelihood for
+                sources to be cut out.
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                esp_mlmin in [0.0:1000.0]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="esp_fitmethod" type="string" list="no" mandatory="no" default="smooth">
+            <DESCRIPTION>
+                Task esplinemap: Background fitting method: spline fit or
+                2-component background model.
+            </DESCRIPTION>
+            <CASE>
+                <ITEM value="spline">
+                    <PARAM id="with_esp_nsplinenodes" type="bool" list="no" mandatory="no" default="false">
+                        <DESCRIPTION>
+                            User input of parameter esp_nsplinenodes. If 'false': A
+                            standard value of one node per 50 pixels is derived by 
+                            edetect_stack from the image size.
+                        </DESCRIPTION>
+                        <CASE>
+                            <ITEM value="no">
+                            </ITEM>
+                            <ITEM value="yes">
+            		    <PARAM id="esp_nsplinenodes" type="int" list="no" mandatory="no" default="13">
+            		        <DESCRIPTION>
+                                        Task esplinemap: Number of nodes in spline fit.
+                                    </DESCRIPTION>
+                                    <CONSTRAINTS>
+                                        esp_nsplinenodes in [10:40]
+                                    </CONSTRAINTS>
+                                </PARAM>
+                            </ITEM>
+                        </CASE>
+                    </PARAM>
+            
+                    <PARAM id="esp_excesssigma" type="real" list="no" mandatory="no" default="4.0">
+                        <DESCRIPTION>
+                            Task esplinemap: Threshold for sigma excesses with respect to
+                            background spline fit.
+                        </DESCRIPTION>
+                        <CONSTRAINTS>
+                            esp_excesssigma in [1.0:6.0]
+                        </CONSTRAINTS>
+                    </PARAM>
+            
+                    <PARAM id="esp_nfitrun" type="int" list="no" mandatory="no" default="4">
+                        <DESCRIPTION>
+                            Task esplinemap: Number of iterations for removal of
+                            excesses. nfitrun=1 means no removal.
+                        </DESCRIPTION>
+                        <CONSTRAINTS>
+                            esp_nfitrun in [1:5]
+                        </CONSTRAINTS>
+                    </PARAM>
+                </ITEM>
+                <ITEM value="smooth">
+                    <PARAM id="esp_snrmin" type="real" default="30.0">
+                        <DESCRIPTION>
+                            Task esplinemap, fitmethod smooth: Desired minimum
+                            signal to noise ratio during adaptive smoothing.
+                        </DESCRIPTION>
+			<CONSTRAINTS>
+	                    esp_snrmin in [1.0:1000.0]
+   			</CONSTRAINTS>
+                     </PARAM>
+                    <PARAM id="esp_smoothsigma" type="real" default="15">
+                        <DESCRIPTION>
+                            Task esplinemap, fitmethod smooth: Minimum width
+                            of Gaussian smoothing kernel in pixel.
+                        </DESCRIPTION>
+   			<CONSTRAINTS>
+    			    esp_smoothsigma in [0.0:100.0]
+   			</CONSTRAINTS>
+                    </PARAM>
+                </ITEM>
+                <ITEM value="model">
+                    <PARAM id="esp_expimagesetvig" type="dataset" list="yes" mandatory="no" default="expvig">
+                        <DESCRIPTION>
+                            Task esplinemap: Base name of vignetted exposure
+                            images for fitmethod=model, expanded by
+                            edetect_stack.
+                        </DESCRIPTION>
+                    </PARAM>
+
+                    <PARAM id="esp_withexpimage2" type="bool" mandatory="no"  default="false">
+                        <DESCRIPTION>
+                            Task esplinemap: Flag to use both vignetteda
+                            and unvignetted exposure map for
+                            fitmethod=model.
+                        </DESCRIPTION>
+                    </PARAM>
+                </ITEM>
+            </CASE>
+        </PARAM>
+
+        <PARAM id="esp_withcheeseimage" type="bool" list="no" mandatory="no" default="false">
+            <DESCRIPTION>
+                Task esplinemap: Optional output of 'cheesed' photon images
+                where sources have been masked out.
+            </DESCRIPTION>
+            <CASE>
+                <ITEM value="no">
+                </ITEM>
+                <ITEM value="yes">
+                    <PARAM id="esp_cheeseimageset" type="dataset" list="no" mandatory="no" default="cheese">
+                        <DESCRIPTION>
+                            Task esplinemap: Base name of diagnostic output
+                            cheesed image files, expanded by edetect_stack.
+                        </DESCRIPTION>
+                    </PARAM>
+                </ITEM>
+            </CASE>
+        </PARAM>
+
+        <PARAM id="esp_withcheesemask" type="bool" list="no" mandatory="no" default="false">
+            <DESCRIPTION>
+                Task esplinemap: Optional output of a cheese-mask
+                images. Values 0 stand for masked areas, 1 for valid image
+                areas.
+            </DESCRIPTION>
+            <CASE>
+                <ITEM value="no">
+                </ITEM>
+                <ITEM value="yes">
+                    <PARAM id="esp_cheesemaskset" type="dataset" list="no" mandatory="no" default="cheesemask">
+                        <DESCRIPTION>
+                            Task esplinemap: Base name of diagnostic output
+                            cheese mask image files, expanded by edetect_stack.
+                        </DESCRIPTION>
+                    </PARAM>
+                </ITEM>
+            </CASE>
+        </PARAM>
+
+
+
+       <PARAM id="runeboxdetectmap" type="bool" list="no" mandatory="no" default="true">
+            <DESCRIPTION>
+                Run task eboxdetect to produce map-mode input source lists
+                per observation. If set to 'false', the files have to be
+                provided as input.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="eboxm_boxlistset" type="dataset" list="yes" mandatory="no" default="boxlst">
+            <DESCRIPTION>
+                Task eboxdetect: Base name of map-mode box list files,
+                expanded by edetect_stack. Output files, if parameter
+                runeboxdetectmap is set to 'true' (default), input files
+                otherwise.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="eboxm_likemin" type="real" list="no" mandatory="no" default="5.0">
+            <DESCRIPTION>
+                Task eboxdetect: Minimum detection likelihood for including a
+                source in the output list.
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                eboxm_likemin in [1.0:50.0]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="eboxm_boxsize" type="int" list="no" mandatory="no" default="5">
+            <DESCRIPTION>
+                Task eboxdetect: Size of detection box (3x3 or 5x5 pixels).
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                eboxm_boxsize in [3:5]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="eboxm_nruns" type="int" list="no" mandatory="no" default="3">
+            <DESCRIPTION>
+                Task eboxdetect: Number of detection runs (detection box size
+                is doubled after each run).
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                eboxm_nruns in [1:4]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="eboxm_hrdef" type="string" list="no" mandatory="no" default="1 2 2 3 3 4">
+            <DESCRIPTION>
+                Task eboxdetect: Array of six integer numbers specifying the
+                upper and lower energy band for each of (up to) three hardness
+                ratios.
+            </DESCRIPTION>
+        </PARAM>
+
+
+
+
+        <PARAM id="runesensmap" type="bool" list="no" mandatory="no" default="true">
+            <DESCRIPTION>
+                Run task esensmap to produce sensitvity maps.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="esen_sensimageset" type="dataset" list="yes" mandatory="no" default="snsmap">
+            <DESCRIPTION>
+                Task esensmap: Base name of sensitivity image files, expanded
+                by edetect_stack.
+            </DESCRIPTION>
+        </PARAM>
+
+
+
+        <PARAM id="runemosaic" type="bool" list="no" mandatory="no" default="true">
+            <DESCRIPTION>
+                Run task emosaic to produce a mosaic image for illustrative
+                purposes.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="emos_mosaicedset" type="dataset" list="no" mandatory="no" default="mosaic">
+            <DESCRIPTION>
+                Task emosaic: Base name of illustrative mosaic images,
+                expanded by edetect_stack.
+            </DESCRIPTION>
+        </PARAM>
+
+
+
+        <PARAM id="runeboxdetectstack" type="bool" list="no" mandatory="no" default="true">
+            <DESCRIPTION>
+                Run task eboxdetect in map mode to produce stacked input
+                source lists. If set to 'false', the file has to be provided
+                as input.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="eboxs_boxlistset" type="dataset" list="no" mandatory="no" default="eboxlist.fits">
+            <DESCRIPTION>
+                Task eboxdetect: Name of stacked box source list. Output file,
+                if parameter runeboxdetectmap is set to 'true' (default),
+                input file otherwise.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="eboxs_likemin" type="real" list="no" mandatory="no" default="5.0">
+            <DESCRIPTION>
+                Task eboxdetect: Minimum detection likelihood for including a
+                source in the output list.
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                eboxs_likemin in [1.0:50.0]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="eboxs_boxsize" type="int" list="no" mandatory="no" default="5">
+            <DESCRIPTION>
+                Task eboxdetect: Size of detection box (3x3 or 5x5 pixels).
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                eboxs_boxsize in [3:5]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="eboxs_nruns" type="int" list="no" mandatory="no" default="3">
+            <DESCRIPTION>
+                Task eboxdetect: Number of detection runs (detection box size
+                is doubled after each run).
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                eboxs_nruns in [1:4]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="eboxs_hrdef" type="string" list="no" mandatory="no" default="1 2 2 3 3 4">
+            <DESCRIPTION>
+                Task eboxdetect: Array of six integer numbers specifying the
+                upper and lower energy band for each of (up to) three hardness
+                ratios.
+            </DESCRIPTION>
+        </PARAM>
+
+
+        <PARAM id="runemldetect" type="bool" list="no" mandatory="no" default="true">
+            <DESCRIPTION>
+                Run task emldetect to produce the stacked output source list.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="eml_mllistset" type="dataset" list="no" mandatory="no" default="emllist.fits">
+            <DESCRIPTION>
+                Task emldetect: Name of intermediate stacked source list.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="eml_psfmodel" type="string" list="no" mandatory="no" default="ellbeta">
+            <DESCRIPTION>
+                Task emldetect: Model PSF: fully 2d parameterized analytical
+                or medium-accuracy EPIC PSFs. Users are strongly encouraged to
+                use the new ellbeta PSF for which this task was designed.
+            </DESCRIPTION>
+            <CASE>
+                <ITEM value="ellbeta">
+                </ITEM>
+                <ITEM value="medium">
+                </ITEM>
+                <ITEM value="slew">
+                </ITEM>
+            </CASE>
+        </PARAM>
+
+        <PARAM id="eml_mlmin" type="real" list="no" mandatory="no" default="1e-3">
+            <DESCRIPTION>
+                Task emldetect: Minimum detection likelihood to include a
+                source in the intermediate source list.
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                eml_mlmin in [0.0:100.0]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="eml_dmlextmin" type="real" list="no" mandatory="no" default="4.0">
+            <DESCRIPTION>
+                Task emldetect: Minimum likelihood to regard a source as
+                extended.
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                eml_dmlextmin in [0.0:100.0]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="eml_fitextent" type="bool" list="no" mandatory="no" default="true">
+            <DESCRIPTION>
+                Task emldetect: Fit source extent.
+            </DESCRIPTION>
+            <CASE>
+                <ITEM value="no">
+                </ITEM>
+                <ITEM value="yes">
+                    <PARAM id="eml_minextent" type="real" list="no" mandatory="no" default="1.5">
+                        <DESCRIPTION>
+                            Task emldetect: Minimum allowed value for the extent
+                            parameter of an extent model in image pixels.
+                        </DESCRIPTION>
+                        <CONSTRAINTS>
+                            eml_minextent in [0.0:300.0]
+                        </CONSTRAINTS>
+                    </PARAM>
+
+                    <PARAM id="eml_maxextent" type="real" list="no" mandatory="no" default="20.0">
+                        <DESCRIPTION>
+                            Task emldetect: Maximum allowed value for the extent
+                            parameter of an extent model in image pixels.
+                        </DESCRIPTION>
+                        <CONSTRAINTS>
+                            eml_maxextent in [0.1:300.0]
+                        </CONSTRAINTS>
+                    </PARAM>
+                    
+                    <PARAM id="eml_extentmodel" type="string" list="no" mandatory="no" default="beta">
+                        <DESCRIPTION>
+                            Task emldetect: Model function for source extent, if
+                            parameter eml_fitextent is set to "true".
+                        </DESCRIPTION>
+                        <CASE>
+                            <ITEM value="beta">
+                            </ITEM>
+                            <ITEM value="gaussian">
+                            </ITEM>
+                        </CASE>
+                    </PARAM>
+                </ITEM>
+            </CASE>
+        </PARAM>
+
+        <PARAM id="eml_nmaxfit" type="int" list="no" mandatory="no" default="1">
+            <DESCRIPTION>
+                Task emldetect: Maximum number of neighbouring sources to be
+                fit simultaneously (parameter nmaxfit*parameter nmulsou
+                .le. 10).
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                eml_nmaxfit in [1:10]
+           </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="eml_nmulsou" type="int" list="no" mandatory="no" default="2">
+            <DESCRIPTION>
+                Task emldetect: Allow fit to split up one input source in
+                maximum nmulsou sources (parameter nmaxfit*parameter nmulsou
+                .le. 10.
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                eml_nmulsou in [1:3]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="eml_fitposition" type="bool" list="no" mandatory="no" default="true">
+            <DESCRIPTION>
+                Task emldetect: Fit source positions.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="eml_determineerrors" type="bool" list="no" mandatory="no" default="true">
+            <DESCRIPTION>
+                Task emldetect: Determine statistical errors.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="eml_ecut" type="real" list="no" mandatory="no" default="0.68">
+            <DESCRIPTION>
+                Task emldetect: Source cut-out radius for PSF-fitting. Values
+                lower than 1.0: cut-out radius expressed as fraction of the
+                normalized PSF. Values larger than 1.0 are interpreted as a
+                fixed event cut-out radius given in units of image pixels.
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                eml_ecut in [0.4:100.0]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="eml_scut" type="real" list="no" mandatory="no" default="0.9">
+            <DESCRIPTION>
+                Task emldetect: Source selection radius for multi-source
+                fitting. Values lower than 1.0: selection radius expressed as
+                fraction of the normalized PSF. Values larger than 1.0 are
+                interpreted as a fixed event cut-out radius given in units of
+                image pixels.
+            </DESCRIPTION>
+            <CONSTRAINTS>
+                eml_scut in [0.4:100.0]
+            </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="eml_withsourcemap" type="bool" list="no" mandatory="no" default="false">
+            <DESCRIPTION>
+                Task emldetect: Produce simulated source maps.
+            </DESCRIPTION>
+            <CASE>
+                <ITEM value="no">
+                </ITEM>
+                <ITEM value="yes">
+                    <PARAM id="eml_sourceimagesets" type="dataset" list="no" mandatory="no" default="srcmap">
+                        <DESCRIPTION>
+                            Task emldetect: Base name of output source map
+                            files, if parameter eml_withsourcemap is set to
+                            "true".
+                        </DESCRIPTION>
+                    </PARAM>
+                </ITEM>
+            </CASE>
+        </PARAM>
+
+
+        <PARAM id="eml_hrpndef" type="string" list="no" mandatory="no" default="1 2 2 3 3 4 4 5">
+            <DESCRIPTION>
+                Task emldetect: Array of up to eight indices (integer)
+                specifying the upper and lower energy band for each of the
+                hardness ratios for PN; i.e. two numbers per energy band.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="eml_hrm1def" type="string" list="no" mandatory="no" default="1 2 2 3 3 4 4 5">
+            <DESCRIPTION>
+                Task emldetect: Array of up to eight indices (integer)
+                specifying the upper and lower energy band for each of the
+                hardness ratios for MOS1; i.e. two numbers per energy band.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="eml_hrm2def" type="string" list="no" mandatory="no" default="1 2 2 3 3 4 4 5">
+            <DESCRIPTION>
+                Task emldetect: Array of up to eight indices (integer)
+                specifying the upper and lower energy band for each of the
+                hardness ratios for MOS2; i.e. two numbers per energy band.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="eml_withthreshold" type="bool" list="no" mandatory="no" default="false">
+            <DESCRIPTION>
+                Task emldetect: Allow splitting up into multi-PSF fitting only
+                for sources above threshold.
+            </DESCRIPTION>
+            <CASE>
+                <ITEM value="no">
+                </ITEM>
+                <ITEM value="yes">
+                    <PARAM id="eml_threshold" type="real" list="no" mandatory="no" default="10">
+                        <DESCRIPTION>
+                            Task emldetect: Value of threshold for multi-PSF
+                            fitting, if parameter eml_withthreshold is set to
+                            true.
+                        </DESCRIPTION>
+                        <CONSTRAINTS>
+                            eml_threshold in [0.0:]
+                        </CONSTRAINTS>
+                    </PARAM>
+            
+                    <PARAM id="eml_threshcolumn" type="string" list="no" mandatory="no" default="LIKE">
+                        <DESCRIPTION>
+                            Task emldetect: Column in input list on which
+                            parameter threshold will be applied, if parameter
+                            eml_withthreshold is set to true.
+                        </DESCRIPTION>
+                        <CASE>
+                          <ITEM value="LIKE">
+                          </ITEM>
+                          <ITEM value="RATE">
+                          </ITEM>
+                          <ITEM value="SCTS">
+                          </ITEM>
+                        </CASE>
+                    </PARAM>
+                </ITEM>
+            </CASE>
+        </PARAM>
+
+        <PARAM id="eml_withhotpixelfilter" type="bool" list="no" mandatory="no" default="false">
+            <DESCRIPTION>
+                task emldetect: If true, the likelihood contribution of the
+                brightest pixel will be ignored (i.e., detections relying on a
+                single pixel will be disregarded).
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="eml_withtwostage" type="bool" list="no" mandatory="no" default="true">
+            <DESCRIPTION>
+                Task emldetect: Use two-stage process for multi PSF
+                (nmulsou>1) fitting.
+            </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="eml_withxidband" type="bool" list="no" mandatory="no" default="false">
+            <DESCRIPTION>
+                Task emldetect: Write XID band output for the X-ray follow-up
+                and identification programme.
+            </DESCRIPTION>
+            <CASE>
+                <ITEM value="no">
+                </ITEM>
+                <ITEM value="yes">
+                    <PARAM id="eml_xidfixed" type="bool" list="no" mandatory="no" default="false">
+                        <DESCRIPTION>
+                            Task emldetect: Run task emldetect on XID-band
+                            image with positions and source extent fixed to
+                            input values.
+                        </DESCRIPTION>
+                        <CASE>
+                            <ITEM value="no">
+                            </ITEM>
+                            <ITEM value="yes">
+                            </ITEM>
+                        </CASE>
+                    </PARAM>
+            
+                    <PARAM id="eml_xidecf" type="string" list="no" mandatory="no" default="0.0">
+                        <DESCRIPTION>
+                            Task emldetect: XID-band energy conversion
+                            factors, given in units of 1e11 cnts/cm2/erg.
+                        </DESCRIPTION>
+                        <CONSTRAINTS>
+                            eml_xidecf in [0.0:1000.0]
+                        </CONSTRAINTS>
+                    </PARAM>
+            
+                    <PARAM id="eml_xidpndef" type="string" list="no" mandatory="no" default="2 3 4">
+                        <DESCRIPTION>
+                            Task emldetect: Index of the energy band(s) from
+                            which the images / start values for the XID band
+                            are taken for PN.
+                        </DESCRIPTION>
+                    </PARAM>
+            
+                    <PARAM id="eml_xidm1def" type="string" list="no" mandatory="no" default="2 3 4">
+                        <DESCRIPTION>
+                            Task emldetect: Index of the energy band(s) from
+                            which the images / start values for the XID band
+                            are taken for MOS1.
+                        </DESCRIPTION>
+                    </PARAM>
+            
+                    <PARAM id="eml_xidm2def" type="string" list="no" mandatory="no" default="2 3 4">
+                        <DESCRIPTION>
+                            Task emldetect: Index of the energy band(s) from
+                            which the images / start values for the XID band
+                            are taken for MOS2.
+                        </DESCRIPTION>
+                    </PARAM>
+                </ITEM>
+            </CASE>
+        </PARAM>
+
+
+
+
+        <PARAM id="finalize" type="bool" list="no" mandatory="no" default="true">
+            <DESCRIPTION>
+                Calculate the final stacked source list from the intermediate
+                emldetect source list.
+            </DESCRIPTION>
+        </PARAM>
+
+
+    </CONFIG>
+</FILE>
+

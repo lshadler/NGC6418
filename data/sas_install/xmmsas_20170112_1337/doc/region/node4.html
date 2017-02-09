@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Modes</TITLE>
+<META NAME="description" CONTENT="Modes">
+<META NAME="keywords" CONTENT="region">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="region.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+region (region-7.13) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Spatial coordinate system of"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="region.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000"></A>
+  <A NAME="region:description:Modes"></A>
+<BR>
+Modes
+</H2>
+
+<P>
+The three possible modes in which the task can work are set via the <TT>operationstyle</TT> parameter. These are described as follows:
+
+<P>
+
+<UL>
+<LI><TT>operationstyle</TT>=`single': in this mode, the task constructs just two regions: a source region and a local-background region, both for the same single source. The source region is stored in one file (specified via parameter <TT>regionset</TT>) and the background region in another (specified via parameter <TT>bkgregionset</TT>). The source is selected from the list of sources via the parameter <TT>usersrcid</TT>. This specifies the row number (beginning at 1) of the source as it occurs in the source list <SPAN  CLASS="textit">after</SPAN> the list is filtered via the selection expression provided in parameter <TT>expression</TT>. Because it can be difficult to identify a priori which row number a source will have in the filtered source list, it is not recommended to use the source-table filtering capability when <A NAME="612"></A><A NAME="tex2html2"
+  HREF="../region/index.html"><SPAN  CLASS="textbf">region</SPAN></A>
+is invoked in this mode.
+
+<P>
+</LI>
+<LI><TT>operationstyle</TT>=`batch': in this mode, a source region/local background region pair is constructed for each source in the (filtered) source list. The source regions are stored in one dataset (specified via parameter <TT>regionset</TT>) and the background regions in another (specified via parameter <TT>bkgregionset</TT>). Each region is stored in a different table in its respective dataset.
+
+<P>
+</LI>
+<LI><TT>operationstyle</TT>=`global': in this mode, a single region is constructed which is intended for filtering all but background events from the event list. This global background region is the logical negation of the logical OR of all source regions. This single region is stored in the dataset specified via parameter <TT>bkgregionset</TT>.
+</LI>
+</UL>
+
+<P>
+NOTE! In NO case does <A NAME="621"></A><A NAME="tex2html3"
+  HREF="../region/index.html"><SPAN  CLASS="textbf">region</SPAN></A>
+construct its output regions so as to exclude events on bad pixels or outside the instrument field of view. Such events must be independently rejected if this is desired.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Spatial coordinate system of"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

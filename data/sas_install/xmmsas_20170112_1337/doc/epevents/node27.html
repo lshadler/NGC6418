@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SAS coding via PATTERN and FLAG:</TITLE>
+<META NAME="description" CONTENT="SAS coding via PATTERN and FLAG:">
+<META NAME="keywords" CONTENT="epevents">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epevents.css">
+
+<LINK REL="previous" HREF="node26.html">
+<LINK REL="up" HREF="node17.html">
+<LINK REL="next" HREF="node28.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epevents (epevents-6.50.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node26.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Trailing Events:"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Classification of the patterns"></A>
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epevents.html">Home Page</A> / <A  HREF="node13.html">Output Files</A> / <A  HREF="node17.html">Classification of the patterns</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00074500000000000000"></A><A NAME="epevents:description:outputfiles:patterndetails:sas"></A>
+<BR>
+SAS coding via PATTERN and FLAG:
+</H3>
+
+<P>
+Any events that have obtained a negative charge sum <A NAME="1515"></A><TT>PI</TT> 
+(see above) and a <!-- MATH
+ $>0$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="66" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$\index{Columns!FLAG}{\tt FLAG}&gt;0$"></SPAN> get a positive total charge
+<A NAME="1519"></A><TT>PI</TT> assigned; if these have <!-- MATH
+ $=0$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="66" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.png"
+ ALT="$\index{Columns!FLAG}{\tt FLAG}=0$"></SPAN> then they
+get a positive total charge
+<A NAME="1523"></A><TT>PI</TT> assigned and the <A NAME="1525"></A><TT>INVALID_PATTERN</TT> bit set in the 
+FLAG column.
+
+<P>
+In the implementation of version 6.30.3 (and earlier) 
+single events close to edges or bad pixels
+do not get PATTERN=0 but get the
+<SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$8^{\rm th}$"></SPAN> bit set, too, and thus PATTERN=128 
+(Sect.<A HREF="node15.html#epevents:description:outputfiles:pattern">7.2</A>).
+All (apparent) singles at the CCD edges, readout window, or close to
+bad pixels get PATTERN=128. Additionally, they get the corresponding
+flag set, e.g. CLOSE_TO_READOUT_WINDOW. So there is a double-coding,
+the <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$8^{\rm th}$"></SPAN> PATTERN bit says <EM>that</EM> a FLAG bit is set and the FLAG says
+<EM>which</EM> one. If one is interested in ``safe" single events (as far
+as the location with respect to CCD edges, readout window, and bad
+pixels is concerned) then the selection expression ``<TT>PATTERN==0</TT>'' is
+already sufficient. This implys that one will not keep single-pixel
+photons with RAWX=1 or RAWX=64, so there will be larger gaps
+between the CCDs in such images. 
+If this is not desirable then
+select ``<TT>(PATTERN==0)||(PATTERN==128)</TT>''. 
+Then one has to keep in mind the effect of possible charge losses: 
+for broad-band imaging purposes this may be fine,
+however, accurate spectral modelling should use ``<TT>FLAG==0</TT>''.
+
+<P>
+The first example in 
+Sect.<A HREF="node21.html#epevents:description:outputfiles:patterndetails:edges">7.4.1.3</A>
+was considered as valid double (here PATTERN=4),
+the others not and therefore do not
+have PATTERN=1-4 but get PATTERN=205: next unused PATTERN, i.e. 13,
+plus the <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.png"
+ ALT="$7^{\rm th}$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$8^{\rm th}$"></SPAN> bit set. 
+Similarly, triples (and quadruples) with
+the main charge at the CCD egde, readout window, or bad pixel, do get
+PATTERN 14+64+128 = 206 (and 15+64+128 = 207, respectively), and the
+relevant FLAG setting.
+
+<P>
+The last invalid quadruple example in 
+Sect.<A HREF="node18.html#epevents:description:outputfiles:patterndetails:isolatedcase">7.4.1</A>
+where the mimimum charge is not opposite to the main charge, 
+is an invalid quadruple, so it gets a ``base'' pattern of 15 plus
+the <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.png"
+ ALT="$7^{\rm th}$"></SPAN> bit set, i.e. PATTERN=79.
+
+<P>
+Any very large pattern, with <SPAN CLASS="MATH"><IMG
+ WIDTH="43" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$n\geq 5$"></SPAN> pixels involved, gets a
+PATTERN = 64+32+(n-5) if no edges or bad pxiels are involved,
+and PATTERN = 128+64+32+(n-5) if an edge or bad pixel is touched by
+this event ensemble.
+
+<P>
+<B>Note:</B> as of version 6.30.4 PATTERN values of 128 have been changed to 0
+(i.e. <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$8^{\rm th}$"></SPAN> bit is not set anymore for singles), and PATTERN values 
+of 205 have been changed to 1-4 
+(i.e. <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.png"
+ ALT="$7^{\rm th}$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$8^{\rm th}$"></SPAN> bit are not set anymore for doubles).
+All the FLAG coding and all other PATTERN bit coding is unchanged.
+
+<P>
+<B>Note:</B> a keyword <A NAME="1527"></A><TT>SCR_88</TT>=``T'' in the <A NAME="1529"></A><TT>EXPOSURE</TT>
+(and <A NAME="1531"></A><TT>EVENTS</TT>) extension of the output file of <A NAME="1533"></A><A NAME="tex2html29"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>
+indicates that this new behaviour was used, 
+if the keyword is absent or contains ``F'' then
+the old behaviour (PATTERN=128 or PATTERN=205 for singles and doubles close
+to CCD edges or bad pxiels) is present.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node26.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Trailing Events:"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Classification of the patterns"></A>
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

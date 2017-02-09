@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>tcsfix: Time Correlation Spacecraft file FIXing task</TITLE>
+<META NAME="description" CONTENT="tcsfix: Time Correlation Spacecraft file FIXing task">
+<META NAME="keywords" CONTENT="tools">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="tools.css">
+
+<LINK REL="next" HREF="node11.html">
+<LINK REL="previous" HREF="node9.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+tools (tools-1.67) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="satvelsrc: SATellite VELocity in"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="xmmtrack: XMM orbit TRACKing"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="tools.html">Home Page</A> / <A  HREF="node2.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00028000000000000000"></A>
+<A NAME="tools:tcsfix"></A>
+<BR>
+tcsfix: Time Correlation Spacecraft file FIXing task
+</H2>
+
+<UL>
+<LI>SYNOPSIS
+<DIV><TT>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;tcsfix [clonetcs=yes|no] [rerun=yes|no]
+<BR></TT></DIV>
+</LI>
+<LI>DESCRIPTION
+<BR>
+This task fixes a number of distinct problems in ODF time correlation data:
+
+<OL>
+<LI>Due to wrong ground station and spacecraft time propagation delays
+hardcoded in XSCS<SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&lt;=$"></SPAN>v71 all time correlation files
+produced with these XSCS versions contains too small UTC values.
+The absolute error is - depending slightly on the GS ID - of the
+order of 60ms. In addition some of the early TCS files do not
+contain the ERTIMRAW column that hold the non-propagation delay
+corrected earth reception times. Also, some early TCS have bogus
+entries with UTCDAY=0 - those rows are removed from the table.
+</LI>
+<LI>During revolutions 384 - 394 (both inclusive) the Santiago
+ground station clock was running exactly one second ahead of
+ UTC. Consequently, the time correlation data show a corresponding
+discontinuity at the time of a station handover to Santiago (GSID==41).
+</LI>
+<LI>During several periods in 2002 timing data from the Kourou
+ground station showed various anomalies which manifests themselves
+as discontinuities at the time of a handover to/from this station.
+</LI>
+</OL>
+<TT>tcsfix</TT> does:
+<DL COMPACT>
+<DT>&nbsp;${}$</DT>
+<DD>remove rows where UTCDAY=0
+</DD>
+<DT>&nbsp;${}$</DT>
+<DD>add the ERTTIMRAW column to the TCS unless it exists already
+</DD>
+<DT>C1</DT>
+<DD>if (rev &lt; 207)
+
+<UL>
+<LI>undo the wrong propagation delays to all UTC fields
+  and applies the correct delays
+</LI>
+</UL>
+</DD>
+<DT>C2</DT>
+<DD>if (rev <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$&gt;=$"></SPAN> 384 &amp;&amp; rev <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&lt;=$"></SPAN> 394)
+
+<UL>
+<LI>subtract 1s to UTC data from Santiago station
+</LI>
+</UL>
+</DD>
+<DT>C3</DT>
+<DD>if (observation start/end time lies in a Kourou bad-time window)
+
+<UL>
+<LI>correct anomalies
+</LI>
+</UL>
+</DD>
+<DT>&nbsp;${}$</DT>
+<DD>adds attribues
+<BR><TT>TCSFIXED = T      // this TCS has been fixed</TT>
+<BR><TT>TCSFIXV  = M.m.p	// tcsfix version number</TT>
+<BR><TT>TCSFIXC  = id		// numerical code of applied corrections</TT>
+<BR></DD>
+</DL>
+C1 is only done if the revolution number is less than 207
+(XSCS-v72 was put online at the beginning of rev 207); C2 is only done for
+ODFs from revolutions <SPAN CLASS="MATH"><IMG
+ WIDTH="68" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$[384, 394]$"></SPAN>;
+C3 is only done if observation start/end time lies within affected
+time windows. C1/C2/C3 are not performed if the attribute
+<A NAME="456"></A><TT>TCSFIXC</TT> indicates that these corrections have been applied already
+in a previous run (to avoid double-correction through repeated
+invocations of <TT>tcsfix</TT>. Each set bit in <A NAME="459"></A><TT>TCSFIXC</TT> stands for one
+distinct applied correction, i.e. <TT>TCSFIXC=0</TT> indicates that the data has
+not been modified.
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="satvelsrc: SATellite VELocity in"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="xmmtrack: XMM orbit TRACKing"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

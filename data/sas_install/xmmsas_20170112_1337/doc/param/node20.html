@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>PCS mode</TITLE>
+<META NAME="description" CONTENT="PCS mode">
+<META NAME="keywords" CONTENT="param">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="param.css">
+
+<LINK REL="previous" HREF="node19.html">
+<LINK REL="up" HREF="node19.html">
+<LINK REL="next" HREF="node21.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+param (param-2.16.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node19.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Environment variables"></A>
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Environment variables"></A>
+<A HREF="node21.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Bibliography"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node22.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="param.html">Home Page</A> / <A  HREF="node19.html">Environment variables</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00071000000000000000"></A>
+<A NAME="param:pcsmode"></A>
+<BR>
+PCS mode
+</H2>
+
+<P>
+The parameter system includes support for an alternative command-line
+syntax, required by the PCS tools. This mode is selected using the following 
+environment variable:
+
+<P>
+<PRE>
+   setenv SAS_CLMODE PCS
+</PRE>
+
+<P>
+In this mode, only the parameter names CCF, SF, COEFF and ODF should
+be specified. These options should have a single minus sign and be
+followed by a space-separated list of arguments. Arguments before
+the first of these flags are assumed to be ODF items.
+
+<P>
+For example, the following PCS command line:
+
+<P>
+<PRE>
+   foo odf1 odf2 -COEFF co1 co2 -CCF ccf1 ccf2 -SP res
+</PRE>
+
+<P>
+is equivalent to the following SAS command line:
+
+<P>
+<PRE>
+   foo --ODF="odf1 odf2" --COEFF="co1 co2" --CCF="ccf1 ccf2" --SP=res
+</PRE>
+
+<P>
+PCS mode should not be used for normal SAS tools. PCS mode is a deprecated
+feature, which may disappear if later releases of the PCS tools use the normal
+SAS format.
+
+<P>
+
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

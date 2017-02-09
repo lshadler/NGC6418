@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Temporary Astrometric Correction</TITLE>
+<META NAME="description" CONTENT="Temporary Astrometric Correction">
+<META NAME="keywords" CONTENT="catcorr">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="catcorr.css">
+
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+catcorr (catcorr-0.9.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Reference catalogues"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="catcorr.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00033000000000000000">
+Temporary Astrometric Correction</A>
+</H2>
+
+<P>
+<B>The implementation of an astrometric correction in catcorr is a temporary measure designed to support the bulk reprocessing of data during 2012/3 to make the 3XMM catalogue.  It is expected that in due course this correction will be applied via an update to the calibration system.</B>
+
+<P>
+A recent analysis by Mike Watson and Andy Read (University of Leicester) has identified a small positional shift which is a function of off-axis angle.  The effect is of the order of 0.65 arc-seconds at off-axis angles of 15 arc-minutes, near the edge of the field, in the sense that the real position is closer to the axis than that originally measured by elmdetect.
+If the task parameter astcorr is set to yes (its default value is no), this correction is applied to the RA, DEC values in the OBSMLI file.  The empirical formula is:
+<PRE>
+yoff = c(0) + c(1) * r + c(2) * r**2 + c(3) * r**3sys
+</PRE>
+Where r is the off-axis angle from the pointing position in arc-minutes, and yoff is
+then the offset in arcseconds, which is subtracted from the original off-axis angle.  The current coefficients of the cubic are:
+<PRE>
+real :: c(0:3) = (/+0.0158736, -0.036454, +0.00942358, -0.000277756 /)
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Reference catalogues"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

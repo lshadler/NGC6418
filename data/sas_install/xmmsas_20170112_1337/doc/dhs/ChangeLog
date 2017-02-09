@@ -1,0 +1,2029 @@
+ChangeLog for dal
+=================
+
+Version 1.191.1 - 2016-12-02 (AI)
+-------------	
+	+ (src/common/dal_utilities.cc) There was a bug in the calculation of
+	the number of elements in a string array. In Mac OSX (gcc 6.2) a seg. 
+	fault was thrown (don't undestand why Linux could cope with this bug...)
+
+Version 1.191 - 2016-08-24 (RDS)
+-------------	
+	+ (src/dal_utilities.cc)     - Removed useless debug line
+
+Version 1.190 - 2016-08-23 (RDS)
+-------------	
+	+ (src/ExtDal.cc) 	      - Changed array to arrayB to avoid
+					problem with GCC 6
+	   src/FitsReaderWriter.cc,
+	   src/MemFitsReaderWriter.cc   Solved issues with logical expressions
+	   				which were identified in GCC 6 testing
+
+Version 1.189 - 2016-06-30 (AI)
+-------------	
+	+ (doc/reference/examples/stringcell.f90 setstringcell.f90)
+	Test cases upgraded to be compatible with gfortran compiler.
+	
+Version 1.188 - 2016-06-29 (AI)
+-------------	
+	+ Version 1.188 identical to 1.2
+	
+Version 1.2 - 2016-06-29 (AI)
+-------------	
+	+ (f90/dal_implementation.cc) - Dope (array descriptor) 
+	compatibility changes with gfortran compiler.
+	
+Version 1.187 - 2014-04-15 (AI)
+-------------	
+	+ gcc4.8.2 portability changes
+	
+Version 1.186 - 2012-09-05 (RDS)
+-------------	
+	+ (f90/dal_implementation.cc) - Ensured that the internal vector
+					used for fast read of srting columns
+				        is updated when setStringCell is
+					called (SCR-341)
+
+Version 1.185 - 2012-07-17 (RDS)
+-------------	
+	+ (f90/dal_implementation.cc) - A new technique for speeding up
+				        the reading of string columns.
+	+ interface/Dal.h               Now uses an internal vector of strings 
+					associated with a column 
+					object (SCR-341)
+
+Version 1.184 - 2012-05-23 (AI)
+-------------	
+	+ (src/FitsReaderWriter.cc) Bug regarding comment component searching fixed.
+	Before using the strcpy function to copy the comment component to a char*, now
+	we check that string find method returns a value within the string boundaries, 
+	so the strcpy can be used safely.
+	
+Version 1.183.2 - 2011-02-18 (RDS)
+-------------
+	+ cxxtest/testclobber         -  export SAS_CLOBBER and SAS_FORMAT
+	+ cxxtest/testformat          -  for SOLARIS fix
+
+Version 1.183.1 - 2011-02-15 (RDS)
+-------------
+	+ cxxtest/testclobber         -  SASCLOBBER to SAS_CLOBBER
+
+Version 1.183 - 2009-11-23 (AI)
+-------------
+	+ (DalAttribute.cc) The precision in the conversion to string in real attribute values 
+	has been increased from 6 to 16. SOC-SPR-6578 closed.
+
+Version 1.182.3 - 2009-06-30 (AI)
+-------------
+	+ (HiLowFitsDatabase.cc)  remove debug statement.
+	
+Version 1.182.2 - 2009-06-22 (AI, EO, RDS)
+-------------
+	+ Modifications is several source files to make dal gcc 4.3 compliant.
+	
+Version 1.182.1 - 2007-06-08 (RDS)
+-------------
+
+	+ doc/reference/examples/foreachblock.f90 - explicit intent for displayblock
+	+ test/sprtest/Makefile   -  adding extra test to avoid "_test" error.
+
+Version 1.182 - 2005-03-01 (JSH)
+-------------
+	+ SPR2491 - (MemFitsReaderWriter.cc) Verbosity level of "Optimal number of rows" message changes
+	+ SPR2417 - (dal_implementation.cc) F90 seek() rejects negative counts
+	+ SPR2523 - (dal_utilities.cc) Add TCROT to ColumnKeywords
+
+Version 1.181.1 - 2004-03-05 (JSH)
+-------------
+	+ SPR2478 - Fix spr2390_cfitsio test case for Tru64
+
+Version 1.181 - 2003-08-29 (GV)
+-------------
+	+ (MemFitsReaderWriter.cc) Get rid of the message about the
+	optimal number of rows cfitsio will read.
+	
+Version 1.180 - 2003-06-19 (GV)
+-------------
+	+ A few more include of cassert in the test harnesses.
+	
+Version 1.179 - 2003-06-16 (GV)
+-------------
+	+ Misc. fixes to make gcc-3.3 happy: include <cassert> and/or
+	proper initialization of base classes.
+
+Version 1.178 - 2003-06-13 (GV)
+-------------
+	+ Add include <cassert> in various places, to make gcc-3.3 happy.
+	
+Version 1.177 - 2003-05-06 (GV)
+-------------
+	+ Re-upload of 1.176 to fix permissions problem.
+	
+Version 1.176 - 2003-04-21 (GV)
+-------------
+	+ (dal_description.tex) fix inclusion of error/warning
+	documentation.
+	
+Version 1.175 - 2003-03-06 (GV)
+-------------
+	+ (SmartDalImplementation.cc) add a C-style int cast to make
+	gcc-2.95.3 happy. This should not be needed.
+	
+Version 1.174 - 2003-03-03 (GV)
+-------------
+	+ (SmartDal) tweak interface to open sets. Add utility functions
+	to read/write string rows.
+	
+Version 1.173 - 2003-02-26 (GV)
+-------------
+	+ (SmartDal) removed unused variables that triggered a warning ->
+	error.
+	
+
+Version 1.172 - 2003-02-25 (GV)
+-------------
+	+ (compoundnames.cc) adjust the position of the attributes,
+	because now there is an extra attribute (LONGSTR).
+	+ (SmartDal) fix specialization of operator() so that gcc-2.95.x
+	can swallow it. 
+
+Version 1.171 - 2003-01-29 (UL)
+-------------
+	+ closed SPR 2405: printing pointer value
+
+Version 1.170 - 2003-01-29 (GV)
+-------------
+	+ (DalAttribute.cc) remove debug statement.
+	+ DEPEND: it needs error 1.41 or later.
+
+Version 1.169 - 2003-01-28 (GV)
+-------------
+	+ (Dal.h) Add some doxygen documentation.
+	+ Documentation updated for new list of errors and warnings.
+
+Version 1.168 - 2003-01-27 (GV)
+-------------
+	+ (FitsReaderWriter.cc) message for warning duplicateTableName now
+	spells out the table names explicitly. SOC-SPR-2362.
+	+ (FitsReaderWriter.cc) Give some more information when a FITS
+	data type that cannot be converted to one of the types supported
+	by the DAL is encountered. Test harness added. SOC-SPR-2360.
+	+ (DalDataSertServer.cc) add LONGSTRN attribute if not present, so
+	that fverify does not complain. This also required changing the
+	list of reserved keywords in dal_utilities.cc. SOC-SPR-2217.
+	+ (DalAttribute.cc) When an attempt is made to set an attribute to
+	NaN, catch the condition, issue a warning, clear the attribute
+	value and keep going. SOC-SPR-2294.
+	
+	
+Version 1.167 - 2003-01-24 (GV)
+-------------
+	+ Reference documentation lists all of the internal errors and
+	warnings.
+	
+Version 1.166 - 2003-01-21 (GV)
+-------------
+	+ (MemFitsReaderWriter.cc) make message on number of rows appear
+	only when the verbosity is high. SOC-SPR-2397.
+	+ (SmartDal) memory model available on the open.
+	+ (daltypes.f90) make the data member of the custom types private,
+	so they cannot be tampered with from f90. This is a f95 feature.
+	
+
+Version 1.165 - 2002-01-07 (GV)
+-------------
+	+ (SmartDal) Added smart pointer implementation of Dal.h, without
+	need to use the dataSetServer or delete methods.
+	+ (test/smart) Tests for the above.
+	
+Version 1.164 - 2002-01-03 (GV)
+-------------
+	+ (HiLowFitsDatabase.cc:addEntry) use fits_create_tbl instead of
+	fits_insert_btlb when adding a new table. The latter requires a
+	priori knowledge of the size of the heap (PCOUNT) when the table
+	contains a variable length column. (SOC-SPR-2390)
+	+ (spr2338.cc) create the test dataset with cfitsio.
+
+Version 1.163 - 2002-01-02 (GV)
+-------------
+	+ (tests/sprtests/spr2390*cc) Show that the problem reported in
+	SOC-SPR-2390 is in the DAL and not in cfitsio.
+
+Version 1.162 - 2002-12-13 (GV)
+-------------
+	+ (Dal.h) Add declaration for osstream, and qualify std::ostream.
+
+Version 1.161 - 2002-11-28 (GV)
+-------------
+	+ Disable one test harness in test/misc as it was not ready
+	(required header files not yet part of DAL).
+
+Version 1.160 - 2002-11-26 (GV)
+-------------
+	+ (MemFitsReaderWriter.cc) re-implement the algorithm to
+	read/write tables to take advantage of cfitsio's buffering
+	capabilities. This makes the I/O about 3 times faster.
+	
+Version 1.159 - 2002-11-04 (GV)
+-------------
+	+ (FitsReaderWriter.cc:readTableInfo) make the buffer holding a
+	long string keyword value larger to avoid segfault as in
+	SOC-SPR-2358.
+	
+	
+Version 1.158 - 2002-09-09 (GV)
+-------------
+	+ (FitsReaderWriter.cc) Get rid of an assert that cause the seg
+	fault described in SOC-SPR-1883.
+	+ (FitsReaderWriter.cc) Ignore reserved keywords out of context
+	instead of terminating with an error. (SOC-SPR-2141, SOC-SPR-2338)
+	+ (DalTable.cc) It is now impossible to add a table with name
+	PRIMARY, as this name is reserved for the primary image
+	(SOC-SPR-2311).
+	
+Version 1.157 - 2002-09-06 (GV)
+-------------
+	+ The copyRows() implementation for variable length vector columns
+	was not always doing the right thing. It now works
+	(SOC-SPR-2343). Also, when asked to make a copy so that from ==
+	to, do nothing instead of uselessly copying. Test harness spr2343
+	added. 
+	
+Version 1.156 - 2002-09-01 (GV)
+-------------
+	+ Reorganize directories, remove dead code, make tests run one at
+	a time. No functional changes.
+	
+Version 1.155 - 2002-06-27 (JBa)
+------------
+	+ Preparation for GCC 3.1
+	+ Added virtual to otherwise dangerous destructors
+
+Version 1.154.3 - 2002-04-12 (GV)
+---------------
+	+ (dal_implementation.cc::settonullcolumn) When accessing an
+	element it should allow for the possibility of a seek having being
+	done on the table. Change row into row +
+	col->from(). SOC-SPR-2289. Corresponding test harness added under
+	sprtests. 
+	
+Version 1.154.2 - 2002-01-25 (GV)
+---------------
+	+ Misc. doc fixes (SOC-SPR-2224)
+	+ Enable unsigned variable length vector column test in spr2159.cc
+
+	
+Version 1.154 - 2002-01-24 (GV)
+-------------
+	+ (sprtests) activate test harnesses related to SOC-SPR-2159: spr2159,
+	spr2159f90, and vlcaddcolumns (this one related to SOC-SPR-2251).
+	
+Version 1.153 - 2002-01-21 (GV)
+-------------
+	+ (DalDataSetServer.cc) update history records in the open instead
+	of the close. This solves SOC-SPR-2253 (History records
+	duplicated). Test harness: spr2253.
+
+Version 1.152 - 2002-01-17 (GV)
+-------------
+	+ (DalTable.cc) remove extra check on number of elements of a
+	vector column, as it is ok to have an n dimensional vector columns
+	with 0 extent (SOC-SPR-2254).
+	
+Version 1.151 - 2002-01-14 (GV)
+-------------
+	+ (FitsReaderWriter.cc) It was incorrectly adding an empty
+	XPROC. The new cfitsio now writes out empty string keywords, and
+	this was causing the test harness process.cc to fail.
+	+ Activate a number of test harnesses that had highlighted cfitsio
+	problems. Most of them now pass.
+
+Version 1.150 - 2001-11-01 (GV)
+-------------
+	+ move templates back into Dal.h
+	+ DataSetServer::open: using an empty set name generates a
+	comprehensible error message.
+	
+Version 1.149 - 2001-10-30 (GV)
+-------------
+	+ template specialization (see 1.148) works also for bool8.
+	+ move actual specializations away from Dal.h in DalDal.cc.
+	
+Version 1.148 - 2001-10-25 (GV)
+-------------
+	+ Dal.h: add template<class T> T * Data::data() const; and
+	corresponding specializations. 
+	
+Version 1.147 - 2001-10-22 (GV)
+-------------
+	+ dal.f90: add i/f to dataSetServer::client
+	+ add std namespace qualifiers
+	+ dal_implementation.cc: change the behavior of stringcell, so
+	that f9x's trim function works as expected.
+	+ sprtests: add test harness for the above.
+	
+Version 1.146 - 2001-10-18 (GV)
+-------------
+	+ (sprtest/Makefile) add more tests for SPRs.
+	
+Version 1.145 - 2001-10-16 (GV)
+-------------
+	+ (HiLowColumn::insertRows()) now works in low mem (solves 1/3 of
+	SOC-SPR-2192).
+	+ (HiLowColumn::deleteRows()) now works in low mem (solves another
+	1/3 of the same SPR).
+	+ (HiLowColumn::copyRows)) as above, final 1/3 of SPR.
+	
+Version 1.144 - 2001-10-11 (GV)
+-------------
+	+ (DalDataSet::blockNumber()) clarify error message for some cases
+	of wrong compound syntax. SOC-SPR-2097 and SOC-SPR-2104.
+	
+Version 1.143 - 2001-10-11 (GV)
+-------------
+	+ (DalTable::deleteColumn()) release the data before deleting the
+	column. SOC-SPR-1962.
+	+ (DalDataSet::releaseBolck()) idem.
+	+ (DalTable::deleteColumn()) make sure column access mode is reset
+	when column is relased. SOC-SPR-2124.
+	
+Version 1.142 - 2001-10-05 (GV)
+-------------
+	+ (dal.f90) add numberOfelementsOfCell(column, row) to be used
+	with variable length vector columns. 
+	+ (dal_implementation.cc) implementation of the above,
+	(setvariablecolumn.f90) test harness adapted to new interface.
+	
+Version 1.141 - 2001-10-04 (GV)
+-------------
+	+ (MemColumn::insertRows()) now does variable length columns
+	correctly (SOC-SPR-2167: himem only).
+	+ Implement MemColumn::deleteRows() and MemColumn::copyRows() also
+	for variable length vector columns.
+	
+Version 1.140 - 2001-10-02 (GV)
+-------------
+	+ (spr2159.cc) comment out some of the code, as it rquires a cfitsio
+	version that is not yet available.
+	+ Now it stops cleanly when trying to insertRows on a variable
+	length vector column. t still does not work though.
+	
+Version 1.139 - 2001-10-02 (GV)
+-------------
+	+ Typo in DalTable.cc
+
+Version 1.138 - 2001-10-01 (GV)
+-------------
+	+ implement set->add(block) so that it also works with tables that
+	  contain variable length columns. SOC-SPR-2159.
+	  This boils down to implementing MemColumn::assignVariable and
+	  HiLowColumn::assignVariable. Add test harness.
+	
+	
+Version 1.137 - 2001-07-25 (UL)
+-------------
+	+ fixed minor compilation problem under -O in dalcom/dal_utilities.h
+	  (for details see SPR 2131: Fails to compile)
+
+Version 1.136 2001-05-31 (MT)
+------------------------
+- Fixed a suble problem with Table::seek(); it should now work
+  correctly with the high memory model.
+- Overhauled the implementation of the dataset server.
+- cxx: Implemented the following method
+
+	// *******************************************************************
+	// The client name to which which a dataset is to be associated 
+	// is set using the method DataSetServer::client( const string&
+	// clientName ). Whenever a dataset is opened it is always associated
+	// with the current clientName.
+	// The cleanupClient( const string& clientName ) method iterates
+	// through all open datasets and closes those (regardless of the
+	// reference count) datasets whose client name
+	// matches the given client name.
+	// *******************************************************************
+       /** Flush all the datasets associated with the named client back to
+       disk.
+       * @param clienName The name of the client. */
+	virtual void DataSetServer::cleanupClient( const string& clientName ) = 0;
+
+  ---------------> THIS METHOD MUST ONLY BE CALLED BY METAtASKS.
+
+- f90: Implemented the following subroutine (it has the same functionality as
+  described above)
+
+	subroutine cleanupClient( clientName )
+		character(len=*), intent(in) :: clientName
+
+		call error( "", errorMessage )
+
+	end subroutine cleanupClient
+
+  ---------------> THIS SUBROUTINE MUST ONLY BE CALLED BY METAtASKS.
+
+Version 1.135 2001-05-22 (MT)
+------------------------
+- Updated the FITS readerWriter to work with the latest cfitsio; i.e. the
+  proceesing of COMMENT and HISTORY no longer removes the two spaces
+  which older versions of cfitsio prepended to COMMENT and HISTORY
+  records.
+
+Version 1.134.5 2001-05-23 (MT)
+---------------
+- dalcomtests now run correctly; also rolled back version 1.135 (temporarily).
+
+Version 1.134.4 2001-05-22 (MT)
+---------------
+- Test harnesses now work in low memory mode again.
+
+Version 1.134.2 2001-05-08 (MT)
+---------------
+- Corrected a problem with dal/interface/dal.h; it now compiles with the
+  C compiler.
+- C: The following functions have been added to the C I/f in c/dal.h
+
+	void setBoolAttributeValue(
+		Attribute*	attribute,
+                bool8		value );
+
+	void setIntAttributeValue(
+		Attribute*	attribute,
+                int		value );
+
+	void setRealAttributeValue(
+		Attribute*	attribute,
+                double		value );
+
+	void setStringAttributeValue(
+		Attribute*	attribute,
+                const char*	value );
+
+
+Version 1.134.2 2001-05-07 (MT)
+---------------
+- C: The following functions have been added to the C I/f in c/dal.h
+
+	Attribute * addAttribute(
+		Attributable*	attributable,
+                const char*	name,
+		const char*	comment,
+                const char*	units );
+
+	Attribute * addIntAttribute(
+		Attributable*	attributable,
+                const char*	name,
+		int		value,
+		const char*	comment,
+                const char*	units );
+
+	Attribute * addRealAttribute(
+		Attributable*	attributable,
+                const char*	name,
+		double		value,
+		const char*	comment,
+                const char*	units );
+
+	Attribute * addStringAttribute(
+		Attributable*	attributable,
+                const char*	name,
+		const char*	value,
+		const char*	comment );
+
+	Attribute * addBoolAttribute(
+		Attributable*	attributable,
+                const char*	name,
+		bool		value,
+		const char*	comment );
+
+
+Version 1.134.1 2001-05-07 (MT)
+---------------
+- The dal test harness is no longer run in low memory mode; this is
+  now being done automatically by the system build procedure.
+
+Version 1.134 2001-04-23 (MT)
+-------------
+- Implemented a method
+  	ColumnData * Column::rowData(
+		unsigned long	rowNumber,
+		AccessMode	accessMode=AsParent )
+  which can be used to access either Fixed or Variable length column data.
+  + Implemented cxx test harness cxxtest/fixvarcolumn.cc which shows how an
+  example of how to use it.
+- Table::seek() now works correctly in high memory mode.
+- Optimsed the way in which the DAL checks the format of FITS files.
+- Implemented a c++ dal utility class TableSeeker:
+  + to use it do
+  	#include <dal_utilities.h>
+  + Implemented cxx test harness dalcomtest/tableseeker.cc, which shows an
+    example of how to use it.
+  + Implemented the f90 type:
+	type TableSeekerT
+		integer, pointer :: ptr
+	end type
+  + Implemented the following f90 dal modules/functions/subroutines:
+ 
+	! Functions/Subroutines related to the TableSeeker class
+	function newTableSeeker( table )
+		type(TableT), intent(in) :: table
+
+		type(TableSeekerT) :: newTableSeeker
+
+		call error( "", errorMessage )
+
+	end function newTableSeeker
+
+	subroutine releaseTableSeeker( tableSeeker ) ! accessible through release interface
+		type(TableSeekerT), intent(in) :: tableSeeker
+
+		call error( "", errorMessage )
+
+	end subroutine releaseTableSeeker
+
+	function tableSeekerNext( tableSeeker ) ! accessible through interface next
+		type(TableSeekerT), intent(in) :: tableSeeker
+		
+		logical :: tableSeekerNext
+
+		call error( "", errorMessage )
+
+	end function tableSeekerNext
+
+	function fromTableSeeker( tableSeeker ) ! accessible through interface from
+		type(TableSeekerT), intent(in) :: tableSeeker
+
+		integer :: fromTableSeeker
+
+		call error( "", errorMessage )
+
+	end function fromTableSeeker
+
+	function countTableSeeker( tableSeeker ) ! accessible through interface count
+		type(TableSeekerT), intent(in) :: tableSeeker
+
+		integer :: countTableSeeker
+
+		call error( "", errorMessage )
+
+	end function countTableSeeker
+
+	subroutine resetTableSeeker( tableSeeker ) ! accessible through interface reset
+		type(TableSeekerT), intent(in) :: tableSeeker
+
+		call error( "", errorMessage )
+
+	end subroutine resetTableSeeker
+
+  + Implemented fortran90 test harness f90test/tableseeker.f90, which shows an
+    example of how to use it.
+
+Version 1.133 2001-04-06 (GV/MT)
+-------------
+- The DAL now strips one of single quotes from each 'pair of single quotes'
+  from string attribute values.
+
+Version 1.132 - 2001-04-02 (GV)
+-------------
+	+ remove obsolete c++ headers.
+	
+Version 1.131 2001-03-12 (MT)
+-------------
+- Inhibit the message about file fomats being unrecognised.
+- Change the way in which the DataSetServer::exists() method works; it now
+  uses the fits::open() & fits::close() sequence to determine if the
+  given dataset is in fits format(). This should allow support for
+  a fits file in gzipped format.
+
+Version 1.130.3 2000-12-20 (MT)
+---------------
+- TDISP is now an allowed column attribute name.
+
+Version 1.130.2 2000-11-30 (MT)
+---------------
+- Added config/dal.info
+- Documentation now version 1.1
+
+Version 1.130.1 2000-11-09 (MT)
+---------------
+- Some small changes to the FitsReaderWriter class allowing special handling of
+  invalid columns and keywords.
+- Warning about unreleased data objects has been down graded to a message.
+
+Version 1.130 2000-10-31 (MT)
+-------------
+- c: Implement releaseArray() and releaseColumn() functions.
+- Fix several problems which only were only manifested when compiler
+  optimization was switched on.
+
+Version 1.129 2000-10-05 (MT)
+-------------
+- A subtle bug, which was introduced dal-1.127, causing occassional
+  segmentation faults, has ben fixed.
+
+Version 1.128 2000-09-27 (MT)
+-------------
+- Closed SPR-1754 : warning (unreleasedData)
+  The High Memory Fits Writer now correctly deletes the ColumnData objects
+  which it uses to access the data to be written to disk.
+
+Version 1.127 2000-09-26 (MT)
+-------------
+- The fully qualified name of unreleased data objects is now displayed
+  by the DAL. The message has also been upgraded to a warning.
+
+Version 1.126 2000-09-25 (MT)
+-------------
+- Closed SPR-1072 : Doc refers to "comment" function
+- Closed SPR-1707 : overflow not yet handled correctly in setData()
+  Also improved the error and warning messages produced by the setData()
+  funtion.
+- Closed SPR-1742 : verbosity of messages
+  Dal messages are now done with Msg::Core. Dataset access messages are
+  now Msg::Sparse. Other object access messages are now Msg::Noisy.
+
+Version 1.125 2000-08-01 (PV)
+-------------
+- added f90 interface to setData().
+   modified files:
+    M f90/dal_implementation.cc
+    M f90test/Makefile
+    M f90test/alltests
+    A f90test/setdata.f90
+    M interface/dal.f90
+
+Version 1.124 2000-07-20 (MT)
+-------------
+- f90 documentation now has function index.
+- Closed SPR-1267 : insertrow assert failure: memory corruption/lost after 14400 bytes !?
+- Closed SPR-1326 : cxxtest/columnrow SEGV with SAS_MEMORY_MODEL=high
+
+Version 1.123 2000-07-12 (MT)
+-------------
+- Redeliver 1.122 as 1.123
+
+Version 1.122 2000-07-12 (MT)
+-------------
+- cxx: void Nullable::deleteNullValue() method implemented.
+
+Version 1.121.3 2000-07-03 (MT)
+-------------
+- Fix cxxtest/insertrow.cc test harness.
+
+Version 1.121.2 2000-06-22 (MT)
+-------------
+- Re-organise the way in which table/columns are read, so that
+  dspurify/MemFITSReaderWriterX.cc can
+  easily ignore invalid columns, but read valid columns.
+- When opening a dataset the DAL now outputs a debug message indicating
+  the number of datasets currently in memory.
+- When opening/closing a file the DAL now outputs a debug message if the
+  operation gives rise to a change in the number of fits files currently open.
+- Improved log messages when opening/closing datasets.
+
+Version 1.121.1 2000-06-08 (MT)
+-------------
+- The DAL now writes some debug messages into a FITS file. THe keyword
+  XDAL has been reserved for this purpose.
+- The TDIM keyword is now only written for columns which have
+  dimension greater than 1.
+- Re-implemented a number of functions in the f90 DAL API, making
+  string passing between 90 and c++ more reliable.
+
+Version 1.121 2000-05-22 (MT)
+-------------
+- When a reserved keyword is found in a table extension, but has no purpose
+  e.g. DATE or CREATOR, a more descriptive error message is raised.
+
+Version 1.120 2000-05-19 (MT)
+-------------
+- Row-wise column writing is now the default. The enviroment
+  variable SAS_ROW_WISE has been renamed to SAS_COLUMN_WISE.
+  SAS_COLUMN_WISE should be defined in order to activate
+  column-wise writing.
+
+Version 1.119 2000-05-17 (MT)
+-------------
+- ExtDal: forEachSubTable no longer keeps its own list of columnData
+  objects, but lets the column's data clerk take care of this house-keeping.
+  Modified test harnesses appropriately.
+- f90: f90test/forEachSubTable.f90 test harness now releases columns (this
+  is now necessary because forEachSubTable no longer does this).
+- f90: after forEachSubTable has completed, the table's subrange (seek)
+  is reset to its default.
+- f90: implemented seek( from, count ), which has been overloaded from both
+  columns and tables.
+- XPROC records are no longer being duplicated in lowmem mode.
+- Insert/Delete Rows in himem mode is now more reliable.
+- Allow Creator/Date to set for individual datasets.
+  CREATE & DATE are now reserved keywords
+  The DataSetServer class has been extended with the following methods:
+  class DataSetServer {
+    ...
+    /** Get/Set Creator and Dat�
+      */
+		virtual void creator(
+				const DataSet*		dataSet,
+				const string&		creator ) = 0;
+
+		virtual const string& creator( const DataSet*	dataSet ) const = 0;
+
+		virtual void date(
+				const DataSet*		dataSet,
+				const string		date ) = 0;
+
+		virtual const string& date( const DataSet*	dataSet ) const = 0;
+
+    ...
+  };
+
+Version 1.118 2000-05-05 (MT)
+-------------
+- Closed SPR-1166 : copyBlock fails on empty arrays
+- Format of error message blockExists is not correct.
+
+Version 1.117 2000-05-04 (MT)
+-------------
+- Closed SPR-1222 : Dal arborts for empty input file
+- Closed SPR-1307 : Test harness fails with row-wise writing
+- Allow process history information to be set for individual datasets.
+  XPROCnnn is now a class reserved keywords.
+  The DataSetServer class has been extended with the following methods:
+  class DataSetServer {
+  ...
+
+    /** Register a description of the process that is going on.
+        When a dataset is closed processDescription is added to the
+	process history list.
+      */
+		virtual void process( const string& processDescription ) = 0;
+		virtual const string& process() const = 0;
+
+    /** This adds processDescription to the given dataset's
+        process history list.
+      */
+		virtual void process(
+				const DataSet*		dataSet,
+				const string&		processDescription ) = 0;
+
+		virtual const string& process(
+				const DataSet*		dataSet,
+				unsigned int		processNumber ) const = 0;
+
+		virtual unsigned int processes( const DataSet* dataSet ) const = 0;
+  ...
+  };
+
+Version 1.116 2000-04-20 (MT)
+-------------
+- DalChild.h is now exported with INTERFACE
+- Tidy up Slicer.cc
+
+Version 1.115 2000-04-12 (MT)
+-------------
+- lowmem: Prototype minimum-slice-sizes, which in some circumstances
+  might improve performance in lowmem mode; try it and see!
+  Activated with setenv SAS_MIN_SLICE_SIZE <int>
+- cxx: const string& DataSetServer::client() const method implemented.
+
+Version 1.114 2000-03-31 (MT)
+-------------
+- Extended functionality of CompounName class
+- DAL_ROWS renamed to SAS_ROWS
+
+Version 1.113 2000-03-28 (MT)
+-------------
+- Closed SPR-1185 : DAL clobber NOT default if undefined
+  Documentation was incorrect, which has now been updated; the
+  default behaviour is to clobber if the environment variable
+  SAS_CLOBBER is undefined.
+- Closed SPR-1241 : opening a data set containging nameless table
+- Closed SPR-1128 : Cannot read data sets containing multiple blocks with the
+                    same name
+
+Version 1.112 2000-03-22 (MT)
+-------------
+- Closed SPR-1216 Wrong last event in low memory mode
+- Deleting table rows is now more reliable in LMM
+- cxxtest/deleterow.cc test harness implemented
+- cxxtest/insertrow.cc test harness implemented
+
+Version 1.111 2000-03-21 (MT)
+-------------
+- Optimised the cleanup of data objects in a first-constructed-last-destroyed
+  manner.
+- cxxtest/columnrow.cc test harness implemented
+- f90test/columnrow.f90 test harness implemented
+- A message is now issued if a dataset is closed before releasing
+  all data.
+- f90: Accessing columns by row is now more reliable.
+
+Version 1.110 2000-03-17 (MT)
+-------------
+- The DAL is now able to read a FITS table which has
+  a very large number of columns, quickly and efficiently.
+  The environment variable SAS_NO_COLUMN_ATTRIBUTES now
+  has no effect.
+- Error message about attribute not found is now in correct format.
+
+Version 1.109 2000-03-14 (MT)
+-------------
+- Extended cxx deleteattribute.cc test harness to test with all object
+  attributes.
+- Deletion of attributes now works in Low mem mode.
+- XMMSEP is now a reserved attribute name.
+- In low mem mode, the history, comments and attributes are now
+  not modified (in fact, deleted) until the dataset is closed.
+- Additional test harness cxx/varlengthcolumn.cc
+- Implement a switch which skips the reading of the column attributes from a fits
+  file; this:
+  + IS A TEMPORARY FIX TO IMPROVE THE PERFORMANCE OF THE DAL WHEN READING
+    A FITS FILE WHICH CONTAINS A LARGE NUMBER OF COLUMNS. IT
+    WILL BE REPLACED LATER BY A MORE EFFICIENT ALGORITHM.
+  + is activated with setenv SAS_NO_COLUMN_ATTRIBUTES
+  + to be used only when it is known that the fits file contains no column attributes.
+- ExtDal.h: fixed a problem with block iteration.
+- dalcom/Model.h is now exported.
+
+Version 1.108 2000-03-07 (MT)
+-------------
+- Improvements for daltools package:
+  + Attribute output operator improved
+  + New dal_utilities class CompoundName
+  + Improved dumpObject utility function
+
+Version 1.107 2000-02-29 (MT)
+-------------
+- Implementation of DataSet::deleteBlock()
+- Accessing vectors columns by row now works in low memory mode
+- f90: Fixed a bug with string columns
+
+Version 1.106 2000-02-29 (MT)
+-------------
+- Prototype implementation of dataset cloning:
+  + cxx: DataSet* DataSetServer::clone( from, to, mode, model, readerWriter )
+    cxx test harness cxxtest/clone.cc
+  + f90: function clone( from, to, mode, model ) return type(DataSetT)
+- Warning about blank strings in fits files has been down-graded to a message.
+
+Version 1.105 2000-02-23 (MT)
+-------------
+- Attempt to improve the facility to write columns by row.
+- Allow a table to be created with zero rows:
+  setenv SAS_TABLE_ZERO_ROWS to activate
+- Error message for 'invalidCompoundName' improved.
+
+Version 1.104 2000-02-22 (MT)
+-------------
+- Closed SPR-1144 : DataSet::add(Block *) does not copy column attributes
+
+Version 1.103 2000-02-19 (MT)
+-------------
+- More reliable parsing of compound names.
+
+Version 1.102 2000-02-18 (MT)
+-------------
+- Closed SPR-0695 : DAL deleteColumn segfaults
+- Closed SPR-1197 : DAL requires column release before deleteColumn
+- Fixes to extended DAL.
+- Removal of DataClerk object from f90 layer; functionality now
+  transferred to core cxx DAL.
+
+Version 1.101 2000-02-17 (MT)
+-------------
+- Fits X Columns are now rejected with a graceful message.
+- Compound-name notation now of the form set:tab%att etc.
+- Depends on utils-1.63
+- Implement a switch which allows writing of columns by cell:
+  To activate: setenv SAS_ROW_WISE
+- Low Memory Dal improvements:
+  + Warnings are now generated for all unreleased data; this may be upgraded
+    to an error in the future.
+  + The memory management is more reliable
+- Closed SPR-1120 : copyBlock and low memory mode 2
+
+Version 1.100 2000-02-04 (MT)
+-------------
+- Update DEPEND to utils-1.62
+- The problem where the DAL incorrectly reported the sizeof
+  string and boolean types has now been fixed.
+- Re-instated support for the DAL file format in himem mode; this is
+  still only prototyped. No support for this format yet in low memory mode.
+- Completion of SPR-1072
+- Closed SPR-1119 : low mem dal crashes gtialign
+- The low memory DAL no longer writes the redundant TDIM '(1)' keywords.
+- Column::copyRows(), Column::insertRows(), Column::deleteRows() will
+  now work only if the column does not have read-only access.
+- Now run cxxtests for DAL file format (setenv SAS_FORMAT 2).
+
+Version 1.99 2000-01-27 (MT)
+------------
+- Closed SPR-0767 : Gui dataset browser cannot handle empty comment lines in FITS
+- Closed SCR-1093 : missing function to delete a dataset
+- Improved debug messages: in hilow memory mode, fits reading and writing
+  data messages are sent to Sas::message( Msg::Lib, Msg::Verbose )
+- Now depend on utils-1.62
+
+Version 1.98 2000-01-21 (MT)
+------------
+- The DAL now handles read-only objects a little more safely.
+  e.g. Attempting to copy rows on a read-only table will fail, and
+  an error will be raised.
+- Closed SPR-1081 : Error message needs quotes around filename
+- Closed SPR-1092 : wrong error message on on unrecognised file
+- Prototyped SCR-1093 : missing function to delete a dataset
+  cxx: DataSetServer::remove( const string& setName) implemented
+  f90: deleteDataSet( setName ) implemented
+  cxx: test harness deletedataset.cc implemented
+
+Version 1.97 2000-01-13 (MT)
+------------
+- Closed SPR-0707 : If SAS_CLOBBER=0, the error message should be more explicit
+- Closed SPR-0985 : DAL does not trap fitsio file open error
+- Closed SPR-1075 : DAL (himem) ends in error when zero-length images are read/written
+
+Version 1.96 2000-01-13 (MT)
+------------
+- Fix trivial problem with doc.
+
+Version 1.95 2000-01-12 (MT)
+------------
+- Closed SPR-0951 : arrays created in C++ have different dimensions in f90
+  Reference documentation updated.
+- Closed SPR-0966 : reference doc
+- Closed SPR-0974 : [PATCH] Buggy SAS_DEBUG statement im MemDal or temp() decl.
+- Closed SPR-0975 : [PATCH] Buggy SAS_DEBUG the third & fourth & ... no that's it :)
+- Closed SPR-1036 : SPR#974 MemDataSet.cc patch: ok with SAS_DEBUG defined but not without
+- Closed SPR-1055 : Mode parameter on columns does nothing in F90
+  Reference documentation updated.
+- Closed SPR-1009 : Temp and low memory mode
+  Rejected since an empty string is an invalid dataset name.
+  But, TEMP files in low memory mode are now deleted upon closure.
+- Closed SPR-1010 : Attributes and low memory mode
+- Closed SPR-0570 : Dal copying facility error behaviour
+- Closed SPR-1008 : copyBlock and low memory mode
+  Fixed by virtue of SPR-1009
+- Closed SPR-0749 : messages written to cerr
+- Closed SPR-0579 : Type conversion needed
+  Rejected
+- Closed SPR-0433 : DAL should not be case sensitive
+  Rejected
+- Closed SPR-0421 : Iteration example is unreadable
+- Closed SPR-0431 : DAL produces misleading error when column vector length set to zero
+- Closed SPR-0191 : accuracy of keyword values in dal (FITS) files does not mach F90 kinds
+  This was implemented on 1998-08-25
+- Closed SPR-1072 : Documentation is late
+
+Version 1.94 1999-12-15 (MT)
+------------
+- Closed SPR-0960 : f90 setStringCell does not work properly
+  The setcolumn.f90 test harness has been updated to test this
+  correctness of this implementation.
+- Fixes for LINUX
+  Fully qualifiy member functions to get address.
+- Closed SPR-0955 : [PATCH] SEGV in copyanddelete (SPR#666 and SPR#809)
+
+Version 1.93 1999-12-13 (MT)
+------------
+- Fixed another minor problem with setattributes.f90 test harness.
+
+Version 1.92 1999-12-13 (MT)
+------------
+- Fixed minor problem with setattributes.f90 test harness.
+
+Version 1.91 1999-12-09 (MT)
+------------
+- dal_description.tex no longer built by default
+- dal_reference_description renamed dal_description. Also edited for clarity.
+
+- Closed SPR-1020 : Mode parameter does nothing 2
+  The DAL mode parameter is regarded as a hint. It is a misuse of
+  the DAL to modify an object which has read-only access.
+  The DAL is able to protect against some misues e.g. an error is raised if
+  an attribute is added to a read-only attributable object.
+- Closed SPR-1019 : name should return trimmed strings
+  Reject: It is not possible to return a variable length string
+  from a fortran function.
+- Closed SPR-1021 : DataSet::add ends with error
+
+Version 1.90 1999-12-08 (MT)
+------------
+- Fix for gcc 2.95.1 on linux
+- Closed SPR-0973 : [PATCH] Buggy SAS_DEBUG statement
+- Closed SPR-0284 : Use private member functions?
+  Rejected
+
+Version 1.89 1999-12-07 (MT)
+------------
+- Fix trivial problem with multiline comments preventing compilation
+- Closed SPR-0967: copyBlock does not propagate attributes for arrays
+  f90 test harness copying.f90 extended to check that this SPR has been fixed.
+- Closed SPR-0990 : access of Array as Table and vice versa
+
+Version 1.88 1999-12-06 (MT)
+------------
+- f90: Removal of obsolete interfaces
+		columnUnits
+		copyAttributes
+		arrayUnits
+		attributeComment
+		attributeUnits
+
+Version 1.87 1999-12-01 (MT)
+------------
+- C API: Implementation of missing C functions.
+- f90 API: Support for unsigned int16 and int32 columns and arrays.
+  When accessing data with int16Data and int32Data a check is made to see if
+  the underlying data is unsigned, in which, case a warning message
+  is raised (which in the future may be upgraded to an error),
+  and a (signed) pointer is returned to the data.
+
+  The following additional interfaces are now implemented (if the
+  underlying data is not unsigned an error will be raised):
+
+	interface uint16Data		! Warning: returns signed data
+		module procedure uint16ColumnData
+		module procedure uint16ColumnDataElement
+		module procedure uint16ArrayData
+	end interface
+
+	interface uint32Data		! Warning: returns signed data
+		module procedure uint32ColumnData
+		module procedure uint32ColumnDataElement
+		module procedure uint32ArrayData
+	end interface
+
+	interface uint16VectorData		! Warning: returns signed data
+		module procedure uint16ColumnVectorData
+		module procedure uint16ColumnVectorDataElement
+		module procedure uint16ArrayVectorData
+	end interface
+
+	interface uint32VectorData		! Warning: returns signed data
+		module procedure uint32ColumnVectorData
+		module procedure uint32ColumnVectorDataElement
+		module procedure uint32ArrayVectorData
+	end interface
+
+	interface uint16Array2Data		! Warning: returns signed data
+		module procedure uint16ColumnArray2Data
+		module procedure uint16ColumnArray2DataElement
+		module procedure uint16ArrayArray2Data
+	end interface
+
+	interface uint32Array2Data		! Warning: returns signed data
+		module procedure uint32ColumnArray2Data
+		module procedure uint32ColumnArray2DataElement
+		module procedure uint32ArrayArray2Data
+	end interface
+
+	interface uint16Array3Data		! Warning: returns signed data
+		module procedure uint16ColumnArray3Data
+		module procedure uint16ColumnArray3DataElement
+		module procedure uint16ArrayArray3Data
+	end interface
+
+	interface uint32Array3Data		! Warning: returns signed data
+		module procedure uint32ColumnArray3Data
+		module procedure uint32ColumnArray3DataElement
+		module procedure uint32ArrayArray3Data
+	end interface
+
+	interface uint16Array4Data		! Warning: returns signed data
+		module procedure uint16ColumnArray4Data
+		module procedure uint16ColumnArray4DataElement
+	end interface
+
+	interface uint32Array4Data		! Warning: returns signed data
+		module procedure uint32ColumnArray4Data
+		module procedure uint32ColumnArray4DataElement
+	end interface
+
+- Closed SPR-0961 : f90 setAttribute does not set empty string attributes
+  Rejected
+
+Version 1.86 1999-11-16 (MT)
+------------
+- DataSets are now renamed correctly in the DataSetServer _keeps and _refs
+- COMBILIBS mechanism now employed.
+- INTERFACES mechanism now supported.
+- Closed SPR-0953 : [PATCH] Bug in logic in checkAndSet* broke most test on Digital Unix
+- Included some additional INTERFACES needed by daltools e.g. MemFitsReaderWriter.
+
+Version 1.85 1999-11-15 (MT)
+------------
+- Closed SPR-0901 : no support for FITS X-type columns
+  The FileReaderWriter is now detached from the DAL:
+  New directory dal/readerwriter created containing most of the relevant source
+  files (dal/Makefile modifed appropriately). Specialised reader/writers may be
+  created by deriving classes from the core Fits/DAL readerWriters.
+  cxx: A specialised ReaderWriter may now be specified in the open() method.
+  combi/Makefile modifed for new additional links to readerwriter headers and
+  library. These changes will tool e.g. dspurify to remove X columns from a
+  dataset.
+
+Version 1.84 1999-11-10 (MT)
+------------
+- cxx extended dal: block iteration implemented.
+  extdaltest/blockiteration.cc has a simple example.
+- Implemented const string& DataSetServer::process() const;
+
+Version 1.83 1999-11-09 (MT)
+------------
+- f90: Handle unsigned int16 and unsigned int32 data.
+  This is done, by returning unsigned data as signed.
+- convertType now works properly for columns.
+- Additional dal utilities for dumping table columns.
+- Improved diagnostic messages when opening/closing datasets.
+- f90: qualifiedNameOfObject() and nameOfO<object> now
+  return a string of length 256
+- Closed SPR-0711 : Dal error accessingAsWrongDataType made more descriptive
+- Closed SPR-0937 : clearer error message please
+
+Version 1.82 1999-11-04 (MT)
+------------
+- Implemented Dal utility functions to convert the datatype of columns and
+  arrays.
+
+Version 1.81 1999-11-03 (MT)
+------------
+- A few additional dal utility functions (DAL internal use only) in dal_utilities.h
+- Closed SPR-0831 : long string support in low mem generates 1000's of comments
+  The DAL no longer writes the 'ogip' long string convention message to the
+  FITS file.
+- Low Memory Mode: Delete primary header and dataset comments and history,
+  after they have been read in (but only for datasets with create/modify access.
+
+Version 1.80 1999-11-01 (MT)
+------------
+- cxx: Support for unsigned data types Uint16 and Unint32.
+       cxx test harness setcolumn.cc, checkcolumn.cc, setarray.cc
+       and checkarray.cc now test uint32 and uint16 data types.
+
+Version 1.79 1999-10-29 (MT)
+------------
+- Extended the compound notation to allow the first attribute, block or column
+  to be selected by omitting its name:
+  	e.g. "set::col" may be used to access the column with name "col" in the
+	first block in dataset with name "set".
+
+Version 1.78 1999-10-27 (MT)
+------------
+- cxx: Implemented additional method Block::blockNumber().
+- cxx: Fixed a bug with the dataset ref. counting; on subsequent 'opens'
+       the correct dataset pointer (i.e. one that is not null) is returned.
+
+Version 1.77 1999-10-26 (MT)
+------------
+- Closed SPR-0235 : DAL should support multiple access of a single data set
+- c: Implement the dataType functions to operate on attributes.
+- c: numberOfAttributesIn<object> implemented
+- c: dal.h does not compile on SUN WorkShop Compiler because this cc compiler
+     requires structs to have at least one field; introduce a type information
+     field called structType of type StructType.
+- cxx: additional methods implemented:
+       unsigned long Attribute::attributeNumber() const = 0;
+       unsigned long Attributable::attributeNumber( const string& attributeName ) const = 0;
+- Closed SPR-0809 : SPR#666 status implemented, but copyanddelete gives 'same' SEGV
+
+Version 1.76 1999-10-11 (MT)
+------------
+- f90: Extend the dataType interface to operate on attributes: the interface is
+  now as follows
+
+	interface dataType
+		module procedure columnDataType
+		module procedure arrayDataType
+		module procedure dataComponentDataType
+		module procedure attributeDataType
+		module procedure arrayAttributeDataTypeN        ! by name
+		module procedure arrayAttributeDataTypeR        ! by number
+		module procedure attributableAttributeDataTypeN ! by name
+		module procedure attributableAttributeDataTypeR ! by number
+		module procedure blockAttributeDataTypeN        ! by name
+		module procedure blockAttributeDataTypeR        ! by number
+		module procedure columnAttributeDataTypeN       ! by name
+		module procedure columnAttributeDataTypeR       ! by number
+		module procedure dataSetAttributeDataTypeN      ! by name
+		module procedure dataSetAttributeDataTypeR      ! by number
+		module procedure tableAttributeDataTypeN        ! by name
+		module procedure tableAttributeDataTypeR        ! by number
+	end interface
+
+Version 1.75 1999-10-11 (MT)
+------------
+- Fixed bug with DalAttributable::addAttributes()
+- Fixed bug with TEMP mode in High Memory Mode.
+
+Version 1.74 1999-10-06 (MT)
+------------
+- Closed SPR-0890 - qualifiedName truncates at 32 characters ?
+  Maximum qualified name length increased to 128
+- Fix problem with compilation order.
+- Closed SPR-0891 - setToNull() on int column without setNullValue() should
+  report error.
+
+Version 1.73 1999-10-06 (MT)
+------------
+- Closed SPR-0758 : Gui data browser cannot display files when files are readonly.
+- Closed SPR-0390 : mode parameter does nothing
+  Prototype implementation of the access mode parameter:
+  cxx: attribute access now has an additional parameter specifying access mode.
+  cxx: addTable, addArray only possible on datasets which are not read only.
+  cxx: addAttribute only possible on Datasets, arrays, tables, columns
+       which are not read only.
+  cxx: addColumn only possible on tables which are not read only.
+  cxx: extended accessModes.cc test harness.
+- Merging of high and low memory models.
+  Some common functionality merged in directory dalcom.
+- Closed SPR-0845 : Null values for Reals
+  cxx: class Nullable modified e.g. enum NullType, function nullType()
+  f90: interface nullType implemented
+  f90: Reference documentation updated.
+- Rejected SPR-0846 : Null values for Reals 2
+  Fixed in dal-1.71/utils-1.48
+- c: Implemented test harness
+- c: Introduce strong typedef typing e.g. typedef struct {} Array
+- c: Implemented additional functions and typedefs
+  function arrayToBlock
+  function tableToBlock
+  typedef Name
+  typedef Label
+  typedef Units
+- c: Implemented null values:
+  enum NullType
+  typedef Nullable
+  function setToNullArray
+  function setToNullCell
+  function setToNullColumn
+  function setNullValueArray
+  function setNullValueColumn
+  function setNullValueDataComponent
+  function setNullValueNullable
+  function intNullValueArray
+  function intNullValueColumn
+  function intNullValueDataComponent
+  function intNullValueNullable
+  function hasNullsArray
+  function hasNullsColumn
+  function columnToNullable
+  function arrayToNullable
+  function dataComponentToNullable
+  function nullDefinedArray
+  function nullDefinedColumn
+  function nullDefinedDataComponent
+  function nullDefinedNullable
+  function isNullArray
+  function isNullCell
+  function isNullColumn
+  function nullTypeArray
+  function nullTypeColumn
+  function nullTypeDataComponent
+  function nullTypeNullable
+
+Version 1.72 1999-09-27 (MT)
+------------
+- Re-coded SPR-0699 to fix subtle problem with 'temp' files.
+
+Version 1.71 1999-09-24 (MT)
+------------
+- Informational messages are now generated when datasets are opened/closed.
+- Closed SPR-0699 : Non-FITS files are not rejected as such
+- General updates to reference documentation.
+  Short section on environment variables.
+- cxx: Improved test harnesses for null values.
+- Dal now depends on utils-1.48
+- Closed SPR-0835 : The documentation of null values is strange
+- Implementation improvements: merging of High and Low Memry DALs.
+- f90: Test harness for name(), rename(), label() and relabel() subroutines
+- c: clobber() implemented.
+- c: nameOfAttributable() implemented.
+- c: <object>ToAttributable() class conversion functions implemented.
+- c: setInt32AttributableAttribute() implemented.
+- c: release<object> no longer deletes object.
+- c: attributableAttributeWithName() implemented.
+- c: int32AttributableAttribute() implemented.
+- f90: test harness for setExists added.
+- f90: improve nullvalues.f90 test harness to test the nullDefined() function.
+- f90: Ensure that logicals are implemented (in dal_implementation.cc) as ints.
+
+Version 1.70 1999-09-13 (MT)
+------------
+- General updates to reference documentation.
+- Closed SPR-0233 : High-mem DAL should keep output sets in memory even if released
+  f90: keepDataSet() and discardDataSet() subroutine implemented.
+  cxx: DataSetServer::keep() and DataSetServer()::discard() methods implemented.
+  c: keepDataSet() and discardDataSet() functions implemented.
+  Reference documentation updated appropriately.
+- Closed SPR-0817 : Problem with SAS_MEMORY_MODEL=highlow
+  Rejected
+
+Version 1.69 1999-09-10 (GV)
+------------
+- fix Makefile in doc/examples
+- commit to repository
+
+Version 1.68 ( 10 September 1999 - MT )
+------------
+- Updated f90 Reference Documentation for clobber() function.
+- Closed SPR-0589 : incorrect treatment of FITS B-type
+
+Version 1.67 ( 9 September 1999 - MT )
+------------
+- Change doc reference to dal-reference.
+- Updated dal reference documentation for long strings, and null values.
+- Fixed missing destructor in class Nullable.
+
+Version 1.66 ( 8 September 1999 - MT )
+------------
+- Implemented Null Values for arrays.
+- Closed SPR-0614 : long string convention
+- Closed SPR-0741 : dal can create datasets it cannot read back
+  The DAL now handles fits long strings transparently.
+  Dataset and primary array attributes may now have the same name.
+- DAL now depends on utils 1.47
+- Closed SPR-0792 : ieeefp.h does not exist on linux
+- Closed SPR-0782 : DalData.h: ieeefp.h does not exists on Digital Unix
+
+Version 1,65 (6 September 1999 - MT )
+------------
+- DAL now depends on utils 1.46
+- Implemented f90 API for null values.
+  The following interfaces are now implemented:
+
+	interface setNullValue
+		module procedure setNullValueArray
+		module procedure setNullValueColumn
+		module procedure setNullValueDataComponent
+		module procedure setNullValueNullable
+	end interface
+
+	interface isNull
+		module procedure isNullArray
+		module procedure isNullCell
+		module procedure isNullColumn
+	end interface
+
+	interface setToNull
+		module procedure setToNullArray
+		module procedure setToNullCell
+		module procedure setToNullColumn
+	end interface
+
+	interface intNullValue
+		module procedure intNullValueArray
+		module procedure intNullValueColumn
+		module procedure intNullValueDataComponent
+		module procedure intNullValueNullable
+	end interface
+
+	interface nullDefined
+		module procedure nullDefinedArray
+		module procedure nullDefinedColumn
+		module procedure nullDefinedDataComponent
+		module procedure nullDefinedNullable
+	end interface
+
+	interface hasNulls
+		module procedure hasNullsArray
+		module procedure hasNullsColumn
+	end interface
+
+  The following interface is defined but not implemented:
+
+	interface isNotNull
+		module procedure isNotNullArray
+		module procedure isNotNullColumn
+	end interface
+
+  A new derived type NullableT has been introduced, with conversions from
+  its derived classes Column, Array and DataComponent available with
+  the interface:
+	interface nullable
+		module procedure arrayNullable
+		module procedure columnNullable
+		module procedure dataComponentNullable
+	end interface
+
+  Basic f90 test harness implemented.
+- Closed SPR-0727
+  f90: New logical function clobber() implemented.
+
+Version 1,64 (6 September 1999 - MT )
+------------
+- Cxx (prototype) implementation of null values.
+  Introduce additional class called Nullable and derive DataComponent
+  from this class:
+
+  /** Nullable allows the values in a data component to have a designated
+    * null (or undefined) value.
+    */
+  class Nullable {
+    public :
+    /** Set/Get Null value */
+    virtual void nullValue( long value ) = 0;
+    virtual long intNullValue() const = 0;
+    virtual bool nullDefined() const = 0;
+  };
+
+  class DataComponent : public virtual Nullable ....
+
+  class Column : public virtual DataComponent ...
+
+  class Array : public virtual DataComponent ...
+ 
+  The following methods are now implemented:
+
+  class Data {
+  public :
+    /** isNull() : Determine if value is null.
+      * setToNull() : Set value to null
+      * hasNulls() : Determine if object has any nulls.
+      */
+    virtual bool isNull( unsigned long pos ) const = 0;
+    virtual void setToNull( unsigned long pos ) const = 0;
+    virtual bool hasNulls() const = 0;
+  };
+
+  Uses the same implementation for High and HighLow models.
+  Implementated basic test harness.
+- Closed SPR-0042 : indices start at zero
+  Closed in dal 1.62 with release of documentation.
+- Closed SPR-0056 : Additional array access functions needed
+  The required functions have been available for some time.
+- Closed SPR-0272 : Need symbolic link to dal.f90
+  Closed in dal-1.44
+- Closed SPR-0275 : No documentation for C++ API and extended DAL
+  Closed in dal-1.62
+- Closed SPR-0277 : Missing file headers
+  Closed in dal-1.62
+- Closed SPR-0288 : Low-memory implementation is unfinished
+  The Low Memory Implemention is now sufficiently advanced that specific SPRs
+  will cater for unfinished/deficient features.
+- Closed SPR-0303 : Incorporate included documents directly into the
+  documentation.
+  Rejected 
+- Closed SPR-0412 : Adding 'PRIMARY' to a fits file is position sensitive.
+  Rejected
+- Closed SPR-0488 : make test ends in error
+  Rejected
+- Closed SPR-0565 : DAL f90 documentation does not list all interface functions.
+  Closed with dal-1.62
+- Closed SPR-0605 : boolArray2Data
+  Rejected.
+- Closed SPR-0666 : dal: SEGV on return of dal_utilities.cc:copyRow
+  in copyanddelete.cc
+- Closed SPR-0671 : Name missing in attributeNotFound error message
+  The qualified name of the attributable is output.
+- Closed SPR-0710 : Still no documentation for C++.
+  Closed in dal-1.62
+- Closed SPR-0410 : DAL seg faults when can't allocate memory
+  Rejected
+- Closed SPR-0679 : Does the low-memory DAL release columns ?
+  Rejected
+- Closed SPR-0486 : DeleteColumn() gives segfault in rgsenergy
+  Rejected
+- Closed SPR-0283 : Put class Value in a separate file
+  Rejected
+- Closed SPR-0285 : Put class Converter in separate file
+  Rejected
+
+Version 1.63 (27 July 1999 - MT)
+------------
+- f90: The seek range of a table (and all its columns) is now reset correctly
+  following an insertRows() or deleteRows() - all test harnesses pass.
+
+Version 1.62 (26 July 1999 - MT)
+------------
+- Column Data and Row Data may now be handled simultaneously
+  in the Low Memory Model (multdimcolumn.cc now passes in Low Memory Mode).
+- Run dal tests in both high and low memory modes.
+- Accessing a column by cell now works properly in low memory model.
+- Attribute units may now be modified from f90 API
+- DalDataComponent replaces MemDataComponent and HiLowDataComponent.
+- dal.f90: blockType now works.
+- dal.f90: blockType extended to interface
+- f90test/blocktype.f90 test harness implemented.
+- dal.f90: attributeUnits is now obsolete; use units. module procedure
+  attributeUnits has been renamed to unitsOfAttribute to accommodate
+  this change.
+- attributeComment is now obsolete: use label
+- f90: Implemented some missing boolean column access functions e.g.
+  boolArray2Data.
+- f90: Corrected interface boolArray4Data and int8Array4Data
+- f90: interface dataType implemented, which supercedes columnDataType and
+  arrayDataType. Also works with DataComponent.
+- f90: units now works with DataComponent.
+- All: Array units now work correctly.
+- Correct function name of deleteAttribAttributableWithName in
+  dal_implementation.f90
+- f90: extended interface deleteAttribute to allow attributes to be deleted by
+  number as well as by name.
+- ExtDal.cc: change DAL_MEMORY_MODEL to SAS_MEMORY_MODEL, DAL_ROWS to SAS_ROWS
+- f90: Changed iterating function parameter type to TableT, in forEachRow
+- f90: Corrected iterating function parameter type from TableT to ColumnT, in
+  forEachColumn.
+- C: copyRows(), deleteRows, insertRows() implemented for PEDAL
+- First draft for DAL Reference Documentation, including library of f90
+  examples.
+- f90: numberOfRows now works on columns and tables.
+- All: deleteColumn now works in HiLow mode.
+- Array comment and units are now written to FITS file in correct order.
+- f90: Implemented new interfaces count and from. Also implemented an example.
+- f90: Fixed a subtle bug in column data access functions which did not work
+  reliably in Low Memory Mode. Extended the foreachsubtable test harness to
+  confirm the robustness of this fix.
+- All: Fix several bugs in High Memory Mode: ensure that new columns and
+  copied-columns have default seek range of [0, rows].
+- f90: Fixed bug in several f90 test harness; the first row in a column must be
+  accessed with index zero.
+- Closed SPR-0279 : Functions should be private member functions
+- Closed SPR-0281 : Implement constructor outside header
+
+Version 1.61 (15 June 1999 - MT)
+------------
+- Closed SPR-0687 : crash in reading of vector columns
+- Removed redundant functions booleanColumnData() and
+  booleanColumnDataElement() from dal.f90 and dal_implementation.cc
+- Ensure that dataSetServer is created as a 'singleton'.
+- Additional f90 test harness deletecolumn.f90
+- Additonal f90 test harness multdimcolumn.f90
+
+Version 1.60 (MT)
+------------
+- Variable Length String Columns now work reliably.
+- New cxx test harness multidimcolumn.cc, for testing multi-dimensional
+  columns.
+- Closed SPR-0680 - DataSetServer::copy does not recognize set:block syntax
+- Additional f90 functions, for accessing base type LabelledT
+
+Version 1.59 (MT)
+------------
+- Closed SPR-671 : Name missing in attributeNotFound error message
+- New method qualifiedName() in Dal.h, and new interface
+  qualifiedName in dal.f90 which returns the qualified name
+  of the object.
+
+Version 1.58 (MT)
+------------
+- interface parent added to dal.f90, which return the parent object
+  of the given object.
+- added additional functions to interface attribute in dal.f90, which
+  allows attributes to be accessed by number
+- added f90 test harness parent.f90
+
+Version 1.57 (MT)
+------------
+- Additional cxx test harnesses.
+- Performace Improvements in LMM
+- Some memory leaks removed.
+
+Version 1.56 (MB)
+------------
+- Updates for new error symbols.
+
+Version 1.55 (MT)
+------------
+- Closed SPR-? : copy block doesn't work with string columns
+- cxxtest/copyblock.cc testharness improved to test columns of
+  all types.
+
+Version 1.54 (MT)
+-----------------
+- Update obsolete message calls in files:
+  dal/hilow/HiLowDataSet.cc
+  dal/f90/dal_implementation.cc
+  dal/cxxtest/setarray.cc
+- Added typedefs for Labelled and DataComponent to C API
+- Added data values to the C API:
+  High, Low, HighLow, UseEnvironment, scalar
+- The following functions have been added to the C API
+  function                        dal/interface/dal.h  dal/c/dal_c.cc
+  ----------------------------------------------------------
+  int8CellData                    yes                  yes
+  int16CellData                   yes                  yes
+  int32CellData                   yes                  yes
+  real32CellData                  yes                  yes
+  real64CellData                  yes                  yes
+  stringCellData                  yes                  yes
+  boolCellData                    yes                  yes
+  dataSetToAttributble            yes                  no
+  arrayToAttributable             yes                  no
+  columnToAttributable            yes                  no
+  blockToAttributable             yes                  no
+  tableToAttributable             yes                  no
+  numberOfCommentsOfAttributable  yes                  no
+  numberOfCommentsOfBlock         yes                  no
+  numberOfCommentsOfColumn        yes                  no
+  commentOfAttributable           yes                  no
+  commentOfBlock                  yes                  no
+  commentOfColumn                 yes                  no
+  addCommentToAttributable        yes                  no
+  addCommentToHistory             yes                  no
+  setCellSize                     yes                  yes
+  cellSize                        yes                  yes
+
+
+Version 1.53 (MT)
+-----------------
+- Use of macros and templates in dal_implementation.cc to reduce code size.
+- Closed SPR-611 : copyBlock does not work on vector columns
+  * a known feature (not necessarily a bug) of copyBlock is that any
+    exisiting data pointers (e.g. coldata = int32ColumnData( col ), where
+    col is contained in either the destination set or the source table ) 
+    relating to either the source or destination
+    objects will become stale; the test harness f90test/copyblock.f90
+    illustrates this behaviour.
+  * New test harness (f90test/copyblock.f90) for copyblock.
+  * copyBlock now works on arrays
+  * a known bug still exisitng with copyBlock is that it does not yet
+    work on variable length columns.
+- Closed SPR-612 : intnnAttribute is wrong for AttributableT arguments
+- Closed SPR-613 : AttributableT is not public
+  * All the f90 derived types (from daltypes.f90) are now public
+    in dal.f90 (including AttributableT).
+
+
+Version 1.52 (MT)
+-----------------
+- Closed SPR-607 : Could setAttribute ... operate on AttributableT arguments ?
+  The following fortran dal functions/subroutines now work with AttributableT:
+	  	hasAttribute
+		addHistory
+		addComment
+		int8Attribute
+		int16Attribute
+		int32Attribute
+		real32Attribute
+		real64Attribute
+		stringAttribute
+		booleanAttribute
+		setAttribute - many new subroutines added to this interface
+		attribute
+		deleteAttribute
+		attributeUnits
+		attributeComment
+		label
+		relabel
+		rename
+		name
+		labelled
+- Use of macros and templates in dal_implementation.cc to reduce code size.
+- Additional function in F90 API for numberOfAttributes, which returns the
+  number of attributes in the specified Attributable.
+
+
+Version 1.51 (MT)
+-----------------
+- Do dot delete attributes in call to addAttributes().
+
+
+Version 1.50 (MT)
+-----------------
+- Ensure that all column (both fixed and variable ) strings
+  are null terminated on reading/writing from/to the fits file.
+- Modifications for Linux.
+
+
+Version 1.49 (MT)
+-----------------
+- Implementation of variable length columns in Low Memory DAL
+- SAS_CLOBBER mechanism now works.
+- All test harnesses now pass.
+
+
+Version 1.48 (MT)
+-----------------
+- Implementation of CellType cellType() in C API (file dal_c.cc).
+- Implementation of renaming objects in LMM
+
+
+Version 1.47 (MT)
+------------
+- Block renaming now works.
+- Added C++ test harness for renaming
+
+
+Version 1.46 (MT)
+------------
+- Improved c++ testharness
+- More reliable low memory implementation; especially releasing of data
+- Fixed bug in f90 test harness for copyattribute.f90
+- Modifications for compilation with Tracer turned off (TRACER=no)
+- Some work towards an implementation of variable length column in Low Memory
+  Model; but still not fully implemented yet.
+- Parsing of attribute names e.g. set:table:column:attribute etc.
+
+
+Version 1.45 (MT)
+------------
+- Reduce memory leakage
+- Fix subtle bug with data() method in Low Memory Implementation
+- Closed SPR 590 : Memory leak in High-Memory Dal
+- Closed SPR 414 : Unitialized attribute causes seg fault
+
+
+Version 1.44 (MT)
+------------
+- Modifications for cfitsio v2.0
+- SASCLOBBER replaced with SAS_CLOBBER
+- SASFORMAT replaced with SAS_FORMAT
+- DAL_MEMORY_MODEL replaced with SAS_MEMORY_MODEL
+- Memory model can now be specified when opening a dataset.
+- Merge HiLowDataSetServer and MemDataSetServer into DalDataSetServer
+- Merge MemBlock and HiLowBlock into DalBlock
+- Closed 484 : Seg fault when overwriting with setAttribute
+- Closed 572 : copyBlock segfaults
+- Closed 581 : copyBlock still core dumps.
+- Parsing of string names which have the form set:block:column
+- Many small improvements and bug fixes in Low Memory Model
+- It is now possible to seek a range which is a proper subset
+  of an existing seek range.
+
+
+Version 1.43
+------------
+- Fixed problem with string column data.
+- Improved Low Memory Implementation.
+
+
+Version 1.42
+------------
+- Closed SPR 538: XMMSEP and the FTOOLS
+- Merge many files from the low/hi memory implementations
+
+	
+Version 1.41
+------------
+
+- Fixed problem with deleteAttribute (MT)
+- Fixed problem with column and array scaling, which occurred when
+  datasets are opened for Modify (MT)
+
+
+Version 1.40
+------------
+
+- fixed problem with foreachsubtable foreachrow subtableiter: crashed when
+  DAL_MEMORY_MODEL was not defined.
+  The test deleteattribute is still disabled. (MB)
+
+Version 1.39
+------------
+
+- fixes for egcs-1.1.1 (MT)
+- various improvements in low-mem dal (MT)
+- temporarily removed the tests foreachsubtable, foreachrow, subtableiter
+  and deleteattribute from f90test/Makefile (MB)
+
+Version 1.38
+------------
+
+- added support for variable-length columns (SPR402). (MT)
+- extended copying.f90 test harness. (MB)
+- fixed: comments in dal.h (SPR496) (MB)
+- fixed: releaseBlock (SPR483) (MB)
+- improved doc (SPR539,459)
+
+Version 1.37 (MB)
+------------
+
+- fixed: missing src in SUBDIRS.
+- fixed: missing dalext and dalf90 in libdal.a.
+
+Version 1.36 (MB)
+------------
+
+- fixed: links are not created in directory combi during make depend.
+
+Version 1.35 (MB)
+------------
+
+- Moved DataSetServer to its own directory. The directory combi now
+  contains only the combination of libraries.
+
+Version 1.34 (MB)
+------------
+
+- Removed nagware specific f90_unix, f90_kind etc
+
+Version 1.33 (MB)
+------------
+
+- fixed SPR272: needs links to dal.f90 and daltypes.f90
+
+Version 1.32 (MB)
+------------
+
+- now uses FMODS variable to compile Fortran modules that are not part
+  of a library of executable.
+
+Version 1.31 (MB)
+------------
+
+- fixed need for dalif
+
+Version 1.30 (MB)
+------------
+
+- fixed message levels
+- fixed SPRs 472 481
+- removed libdalif for shared lib support
+
+Version 1.29 (GV)
+------------
+
+- updated C interface for the pedal.
+
+Version 1.28
+------------
+
+- fixed several problems picked up by gcc 2.8.1
+
+Version 1.27 (MB)
+------------
+
+- Added test harness for different access modes.
+- Fixed delete on uninitialised _fileReaderWriter in MemDataSet destructor
+  which caused a bus error in omlcbuild.
+
+Version 1.26 (MB)
+------------
+
+- Removed spurious const_cast's.
+- Added errors for accessing by number.
+
+Version 1.25 (MB)
+------------
+
+- Removed dependency on package param.
+
+Version 1.24 (MB)
+------------
+
+- Fixed typo in dal_implementation.cc.
+
+Version 1.23 (MB)
+------------
+
+- Removed dal from USEDLIBS in f90/Makefile, since the dal package is not
+  yet available at that time.
+- Reintroduced obsolete copyAttributes(col,col)
+
+Version 1.22
+------------
+
+- Provided backwards compatibility for copyAttributes (MB)
+- Fixed problem with from=zero, count=zero argument in seek (MB) 
+- Updated C++ interface for low-mem DAL; should have no impact on
+  users. (MT)
+
+Version 1.21 (MB)
+------------
+
+ - fixed SPRs 117 161 231 276 298 384 427 434 439
+ - extended copyattributes test.
+ - improved copy constructors and assignment operators (C++).
+ - implemented units() in MemDataComponent instead of in derived classes
+ - changes in the F90 interface to copy components:
+   o added base class types (AttributableT, LabelledT, DataComponentT)
+   o added type conversions from a derived class to a base class
+   o changed copyAttributes into setAttributes and addAttributes
+     which now operate on a type(AttributableT)
+   o changed copyAttribute into setAttribute
+
+Version 1.20 (MB)
+------------
+
+ - upgraded to utils-1.11
+ - C interface now in interface directory
+
+Version 1.19 (MB)
+------------
+
+ - implemented clobber including test harness
+ - removed interpreter from configuration
+ - the output file format can specify output file format
+ - fixed SPRs 229 286 300 301
+
+Version 1.18
+------------
+
+ - improved error message.
+ - improved test harnesses.
+ - implemented SPR236: F90 access to string columns.
+
+Version 1.17
+------------
+
+ - no changes to the code. Just fix the dependencies.
+
+Version 1.16
+------------
+
+ - small change to machine_specific_types.h to help deceit/pedal.
+
+
+Version 1.15
+------------
+
+ - removed dal.tex and dhs.tex
+ - fixed problems that occurred with egcs compiler
+
+Version 1.14
+------------
+
+ - fixed SPR 388 (problem with insertRows and deleteRows)
+
+Version 1.13
+------------
+
+ - some more fixes for DEC alpha
+
+Version 1.12
+------------
+
+ - fixed a bug in F90 interface to multi-dimensional columns
+ - added F90 test harness for vector columns.
+
+Version 1.11
+------------
+
+ - fixed reading and writing comments and units of FITS keywords; added to the
+   test harness.
+
+Version 1.10
+------------
+
+ - fixed problem in dal_implementation.cc
+
+Version 1.9
+-----------
+
+  - fixed problem in test harness
+
+Version 1.8
+-----------
+
+ - made interface backwards compatible.
+
+Version 1.7
+-----------
+
+ - fixed problem with test harness (columnnumber.f90).
+
+Version 1.6
+-----------
+
+ - changed order of addArray arguments; addArray interface is
+   backwards compatible.
+
+Version 1.5
+-----------
+
+ - coding rules (dal.f90)
+ - fixed problems with test harness (addArray interface changed)
+
+Version 1.4
+-----------
+
+ - reversed units and comments in addColumn and addArray calls.
+ - fixed long/int conflict for DEC alpha.
+
+Version 1.3
+-----------
+
+ - fixed a documentation problem in src2 directory.
+
+Version 1.2
+-----------
+
+  - fixed incompatibility of verbatim with moreverb.
+
+Version 1.1 (MT)
+----------- 
+
+  closed SPR 039 : FITS sanity checks by the DAL
+  closed SPR 069 : units in binary table columns
+  closed SPR 115 : copyAttribute for a single attribute
+  closed SPR 169 : arrays can have units
+  closed SPR 173 : interpreting.cc
+  closed SPR 177 : Mutiple `copywrite' comments in FITS files
+  closed SPR 182 : Blank input filename
+  closed SPR 190 : hasColumn() requires trim
+  closed SPR 195 : File existence
+  closed SPR 202 : Column comment is not written to Fits file.
+  closed SPR 203 : The CREATOR keyword is not overwritten if it already exists.
+  closed SPR 206 : Comment on column definition
+  closed SPR 232 : Columns should be attributable
+  closed SPR 234 : DAL should support images in primary array
+  closed SPR 249 : delete attribute
+  closed SPR 262 : copyAttributes erases previous attributes
+  - additional functions for renaing and relabelling DAL objects.
+  - added acces function for starting position of a subtable in C++ interface.
+  - fixed portability problems with mixing TLONG and integers in cfitsio calls.
+
+Version 1.0  -  14-05-98 (MT)
+-----------
+
+Initial version for SAS v1 integration
+

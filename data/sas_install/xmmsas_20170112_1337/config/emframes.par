@@ -1,0 +1,221 @@
+<!-- converted from XPI formatted "emframes.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="auxiliaryset" type="dataset" mandatory="yes" default="">
+   <DESCRIPTION>
+    Input frames file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="newframeset" type="bool" default="yes">
+   <DESCRIPTION>
+    Create output frames file (no for overwriting input)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="frameset" type="dataset" default="frames.out">
+      <DESCRIPTION>
+       Output frames file
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="checkframes" type="bool" default="yes">
+   <DESCRIPTION>
+    Use frames sub_task
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="withcountingset" type="bool" default="no">	
+      <DESCRIPTION>
+       Use counting mode file information to better define missing frames
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+        <PARAM id="countingset" type="dataset" mandatory="yes" default="">
+         <DESCRIPTION>
+          CCX counting mode file
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          true
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="withsrccoords" type="bool" default="no">
+      <DESCRIPTION>
+       Provide source coordinates (Timing only)
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+        <PARAM id="srcra" type="angle" mandatory="yes" default="0">
+         <DESCRIPTION>
+          Source right ascension (J2000)
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          true
+         </CONSTRAINTS>
+        </PARAM>
+        <PARAM id="srcdec" type="angle" mandatory="yes" default="0">
+         <DESCRIPTION>
+          Source declination (J2000)
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          true
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="flagbadtimes" type="bool" default="no">
+   <DESCRIPTION>
+    Use flag_hk sub_task
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="ingtiset" type="dataset" mandatory="yes" default="">
+      <DESCRIPTION>
+       Input GTI file
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="flagfifooverflow" type="bool" default="yes">
+   <DESCRIPTION>
+    Use fifo sub_task
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="writegtiset" type="bool" default="no">
+   <DESCRIPTION>
+    Write output GTI file
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="outgtiset" type="dataset" default="ccdgti.out">
+      <DESCRIPTION>
+       Output GTI file
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="setgatti" type="bool" default="yes">
+   <DESCRIPTION>
+    Use put_gatti sub_task
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withodfeventset" type="bool" default="no">
+   <DESCRIPTION>
+    Need input events file
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="odfeventset" type="dataset" mandatory="yes" default="">
+      <DESCRIPTION>
+       Input events file
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="neweventset" type="bool" default="no">
+      <DESCRIPTION>
+       Create output events file (no for overwriting input)
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+        <PARAM id="outeventset" type="dataset" default="events.out">
+         <DESCRIPTION>
+          Output events file
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          true
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="checknvalid" type="bool" default="yes">
+      <DESCRIPTION>
+       Use valid sub_task
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="setdeadtime" type="bool" default="yes">
+      <DESCRIPTION>
+       Use cr_dead sub_task
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+
+
+ </CONFIG>
+</FILE>

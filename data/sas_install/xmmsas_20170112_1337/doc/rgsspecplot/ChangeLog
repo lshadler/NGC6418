@@ -1,0 +1,333 @@
+ChangeLog for rgsspecplot
+===============================
+
+
+Version 2.21 - 2011-07-05 (NW)
+	-------------------------------
+
+	Ensured that the correction made in version 2.20 is also applied 
+	to the second order spectrum and modified the precision on 
+	the right ascension and declination that is displayed on the 
+	plot, as previously the number of decimal places given resulted 
+	in a truncation of the text to be displayed.
+
+	
+Version 2.20 - 2011-05-26 (NW)
+	-------------------------------
+
+	Added 6 lines to the source code to ensure that if there are 
+	insufficient counts in the spectrum and therefore no rebinning 
+	occurs although requested by the user, the x-axis scale is 
+	still correctly display
+
+	
+Version 2.19.1 - 2010-03-03 (EO on behalf of NW)
+	-------------------------------
+
+	-src/Makefile: In USEDLIBS removed mssplot and mssl libraries. 
+	 They produced a lot of errors of the form "duplicated symbol" 
+	 when used together with ssc library on Mac OS X buildings.
+	-doc/rgsspecplot_description.tex: Removed extra "}" around line 128,
+         which was breaking the processing of the documentation.
+	-Cleaned of temporary build.tmp_ files.
+	-Removed unnecessary bin/devel and lib/... empty subdirectories. 
+
+
+Version 2.19 - 2010-02-25 (NW)
+        -------------------------------
+
+        Modified the code to accept spectra given in wavelength space.
+	The counts/channel is plotted against wavelength (Angstroms) in
+	this case (SCR 287).
+	
+
+Version 2.18.4 - 2006-09-06 (NW)
+        -------------------------------
+  
+	Moved the part of the code that determines the first spectrum channel 
+	to before the place where binning can be carried out if the user 
+	requires it, as it was taking the minimum channel as the first channel 
+        in the binned spectrum when rebinning was required, so the wavelength 
+        scale was wrong (SSC-SPR-3628)
+
+        
+
+
+Version 2.18.3 - 2005-11-28 (NW)
+        -------------------------------
+  
+        Added a third type of  spectrumtype to the labels (SRC+BKG) at 
+	the request of IMS and have also added a further label to the 
+	plot with information about the source.
+
+
+Version 2.18.2 - 2005-11-21 (NW)
+        -------------------------------
+  
+        Changed the limit of the number of sources allowed to 999 (from 100) 
+	in the rgsspecplot.par file as the new pipeline was falling over 
+	with such a low limit.
+
+
+Version 2.18.1 - 2002-07-25 (NW)
+        -------------------------------
+  
+        Only uses poissonian errors if there is no STAT_ERR column
+
+
+Version 2.18 - 2002-07-25 (NW)
+        -------------------------------
+  
+        Update the DEPEND file and now includes a dependence on sas.
+
+
+Version 2.17.2 - 2002-07-25 (NW)
+        -------------------------------
+  
+        Removed the dependency on the STAT_ERR column, now use the square
+ 	root of the counts as the error, to close the SPR 2949, `Task
+ 	unable to plot total spectrum'.  Revised documentation.
+
+
+Version 2.17.1 - 2002-07-01 (NW)
+        -------------------------------
+ 
+        The way that the binned up data is presented has been changed.
+  	The errors are now the square root of the binned up counts, which
+ 	solves the problem of `plots from empty fields are negative on
+ 	average', SSC-SPR-2898.  This also solves the problem SSC-SPR-2903
+ 	`Wrong wavelength and energy scales'.  The x-axis has also been
+ 	extended to show the whole of the first and last bin
+
+
+Version 2.17 - 2002-06-03 (NW)
+        -------------------------------
+ 
+        This version contains the changes for the new version of
+        param.
+        
+                              
+Version 2.16.11 - 2002-06-03 (NW)
+        -------------------------------
+ 
+        This version does not contain the changes for the new version of
+        param, only the new documentation.                                      
+
+Version 2.16.10 - 2002-06-03 (NW)
+        ------------------------------- 
+
+        Made the necessary changes for the new version of param and
+ 	updated the documentation to describe how the binning is done.
+
+	
+Version 2.16.9 - 2002-05-16 (NW)
+        ------------------------------- 
+
+        Extended the y-scale for the case of a spectral plot which has
+ 	maximum counts less than the maximum error, so that the error
+ 	values (which are always positive) can be viewed.  
+	
+Version 2.16.8 - 2002-05-09 (NW)
+        ------------------------------- 
+
+        The data is now plotted as a histogram, as requested in SPR 2860
+ 	(histogram-style please).  Documentation has been updated.
+
+	
+Version 2.16.7 - 2002-04-25 (NW)
+        ------------------------------- 
+
+        Extended the y-scale for the case of a spectral plot which has
+ 	only negative values, so that the error values (which are always
+ 	positive) can be viewed.
+
+	
+	
+Version 2.16.6 - 2002-03-15 (NW)
+        ------------------------------- 
+
+	 Added the missing error label names as requested for Version 5.3
+	 in the documentation.
+
+	
+Version 2.16.5 - 2002-03-06 (NW)
+        ------------------------------- 
+
+        Changed the way in which the errors are presented, by plotting a
+	grey histogram of the errors on each plot.  The obs id and the exp
+	idstr have replaced the exp id and if the data were rebinned, the
+	binning factor, for each plot, is displayed.  However, the header
+	information is only displayed once on the plot.  The x-axis of
+	both plots is now always the same as the first plot.  The energy
+	scale has also been extended.
+	
+
+
+Version 2.16.4 - 2002-02-26 (NW)
+        ------------------------------- 
+
+        Added if-clause with warning to stop the program entering an
+	infinite loop if the minimum counts per bin are negative, as
+	noticed in SSC-SPR-2767, infinite loop.
+
+
+Version 2.16.3 - 2002-02-20 (NW)
+        ------------------------------- 
+
+        Added two if-clauses with warnings (warnings documented in
+	documentation) to stop the program terminating with a fatal error,
+	when there are very few counts in the spectrum and the minimum
+	counts per bin requested is larger than than the number of counts
+	in the spectrum, as noticed in SSC-SPR-2767, subscript out of
+	range in rgsspecplot.
+
+
+Version 2.16.2 - 2002-02-11 (NW)
+        ------------------------------- 
+
+        Changed the mode `a' to `h' in the rgsspecplot.par, as rgsspecplot
+        failed distribution check on linux build.
+
+
+Version 2.16.1 - 2002-02-7 (NW)
+	------------------------------- 
+
+	Rgsspecplot now plots the weighted mean, when the user requests
+	that the counts are rebinned to a minimum value per bin.
+
+
+Version 2.16 - 2002-01-17 (NW)
+	------------------------------- 
+
+	Rgsspecplot now plots the negative values. The object, exposure
+	time, ra and dec of the object, aswell as version number of
+	rgsspecplot have all been added to the output plot.  
+	
+
+	
+Version 2.15 - 2002-01-14 (NW)
+	------------------------------- 
+
+	Rgsspecplot now reads both COUNTS or RATE and also rebins the
+	spectra, if requested, to a minimum value, specified by the user.
+
+	
+Version 2.14 - 2001-20-11 (CB)
+-------------------------------
+	Nothin changed - uploaded on request because of some RGS problems.
+ 
+Version 2.13.2 - 2001-24-10 (CB)
+-------------------------------
+	Ammended code to use spectra produced by latest version
+	of rgsspecrtrum  (fixes SPR 2606)
+        
+	
+
+Version 2.13.1 - 2001-05-10 (CB)
+-------------------------------
+	Ammended code to use source-list file produced by latest version
+	of rgssource (fixes SPR 2378)
+        Changed config file permissions to 644 (fixes SPR 2325)
+	
+
+Version 2.13 - 2001-04-05 (CB)
+-------------------------------
+        Program modified to use the new keywords replacing BETA_REF and
+	BETA_WId  (SPR-2320).
+	
+Version 2.12 - 2000-11-28 (CB)
+-------------------------------
+        Diagram made clearer- no error bars drawn but a single error bar
+	showing the maximum error in the counts (SPR-2034).
+	
+Version 2.11.1 - 2000-10-16 (CB)
+-------------------------------
+        Modified program to run on spectrum files produced by rgsspectrum (SPR-1977). 
+
+Version 2.11 - 2000-09-27 (CB)
+-------------------------------
+        Ammended configuration file (SPR-1967). 
+
+
+===============================
+Version 2.10 - 2000-09-21 (CB)
+-------------------------------
+        Removed empty layout file. 
+
+===============================
+Version 2.9 - 2000-07-20 (CB)
+-------------------------------
+	Corrected error in dependency check.
+	
+===============================
+Version 2.8 - 2000-06-30 (CB)
+-------------------------------
+	+ (src/rgsspecplot_mod.f90) Now checks that the number of
+	spectrum files is either 1 or 2. (SSC-SPR-1536)
+        Task does not now propmpt the user for a filename if the user
+	requires a hardcopy (SSC-SPR-1533)
+	Removed several bugs and tidied up software.
+	Updated task to read parameters BETA_REF and BETA_WID
+	from SPECTRUM header of spectrum files (SSC-SPR-1813, 1534 & others).
+	Rectified error with wavelength scale on graph.
+        Graph layout changed slightly.
+	Check added to prevent plot file overwriting an existing one if
+	NO_CLOBBER set.
+	+ (doc/rgspecplot_description_tex) format for errors and
+	documentation changed. (SSC-SPR-1668).
+	Mandatory parameter "sourcelistset" added (SSC-SPR-1421)
+	Parameter description changed.
+	Updated plot shown in document.
+	+(config/rgsspecplot.par) 
+	Parameterspectrumsets made mandatory (SSC-SPR-1535). 
+	
+	
+Version 2.7 3rd may 2000
+	ammended documentation form error and warning messaging
+	
+Version 2.6 30th March 2000
+
+updated task to conform to new evselect procedure for spectrum output
+format: does not use GROUPING column
+	reads DETCHANS, SPECVAL, SPECPIX and SPECDELT
+
+Version 2.5 25th January 2000
+
+- Get keywords from PRIMARY header in spectrum file 
+- Added check for empty spectrum file
+- updated task description	
+	
+Version 2.4: 21st January 2000
+
+Updated task description
+Updated test harness	
+	
+Version 2.3: 6th January 2000
+
+Updated task to comply with rgsregion 2.8 and rgsproc 0.33	
+Fixed energy scale offset problem.
+	
+Version 2.2: 2nd December 1999
+
+Added DISTRIBUTION (world) file	
+	
+Version <next version>
+----------------------
+
+Remarks about this version.
+
+Open SPRs:
+
+ - 1234
+
+Version 2.1
+
+updated Depend file	
+
+	
+Version 2.0
+	
+----------------------------
+
+- Directory structure created by pkgmaker.
+

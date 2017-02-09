@@ -1,0 +1,92 @@
+#! /usr/bin/perl -w
+#
+#				makehtml
+#
+# This makes a web page with thumbnails of the images output by colimplot.
+#
+#------------------------------------------------------------------------
+
+require 5.005;
+
+use English;
+#use strict;
+
+  my ($line);
+
+  my $testflag = 0;
+
+  my $taskname = 'makehtml';
+  my $write_log = 0;
+  my $log_name = '';
+  my $linkslist_file = 'links.lis';
+  my $html_file = 'colimages.html';
+  my $small_dir = 'thumbnails';
+&quit("Thumbnail write directory not found.", -2) if (!-e $small_dir);
+
+  open(HTML, ">$html_file");
+    # print header info:
+    print HTML "<HTML>\n";
+    print HTML "<HEAD>\n";
+    print HTML "<TITLE>XMM Colour Images</TITLE>\n";
+    print HTML "</HEAD>\n";
+    print HTML "<BODY>\n";
+    print HTML "<CENTER><H1>XMM Colour Images:</H1>\n";
+    print HTML "<H3>Click on a small image to see it larger.</H3></CENTER>\n";
+    print HTML "<HR><BR>\n";
+
+    open(LIS, "$linkslist_file");
+      while(defined($line = <LIS>)) {
+        chomp($line);
+        ($big_path, $small_path) = split('\s+', $line);
+        print HTML "<a href='$big_path'><IMG SRC='$small_path' border=0>"
+                  ."</a>$big_path<P>\n";
+      }
+    close(LIS);
+
+    print HTML "<HR>\n";
+    print HTML "</BODY>\n";
+    print HTML "</HTML>\n";
+  close(HTML);
+
+exit 0;
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub tell {
+  open(LOG, ">> $log_name") if ($write_log);
+  foreach (@_) {
+    print "$taskname:- $_\n\n";
+    print LOG "$taskname:- $_\n\n" if ($write_log);
+  }
+  close(LOG) if ($write_log);
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub warn {
+  open(LOG, ">> $log_name") if ($write_log);
+  foreach (@_) {
+    print "** $taskname: warning, $_\n\n";
+    print LOG "** $taskname: warning, $_\n\n" if ($write_log);
+  }
+  close(LOG) if ($write_log);
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub quit {
+  my ($message, $status) = @_;
+
+#  my @end_times = times;
+#  my $proc_time_sec = $end_times[2] - $start_times[2] + $end_times[3]
+#  - $start_times[3];
+
+#  &tell("Execution time: $proc_time_sec seconds.");
+
+  open(LOG, ">> $log_name") if ($write_log);
+  print "** $taskname: ERROR! $message\n\n";
+    print LOG "** $taskname: ERROR! $message\n\n" if ($write_log);
+  close(LOG) if ($write_log);
+
+exit $status;
+}

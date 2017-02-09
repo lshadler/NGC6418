@@ -1,0 +1,107 @@
+ChangeLog for emosaic
+===============================
+
+Open SPRs:
+----------
+Nil
+
+Version 1.17 - 2016-03-16 (JVP)
+--------------
+	+ Update documentation typo: \task{DAL}-supported by \task{dal}-supported ( SPR-7262  )
+
+Version 1.16 - 2011-04-26 (RDS)
+--------------
+	+ src/emosaic_mod.f90	
+
+- Made compatible with image and mask files. It uses the PRIMARY array if
+found, otherwise it uses the MASK array or throws an error.
+					(SCR-314)
+
+Version 1.15.2 - 2011-01-24 (MAS/LUX)
+--------------
+- Fixed the failure in retesting (due to attempting to overwrite a file).
+
+Version 1.15.1 - 2009-05-13 (EO)
+--------------
+	+ Up to ssclib 4.8 update in DEPEND file.
+
+Version 1.15 - 2008-06-26 (MAS/LUX)
+----------------------
+- Now the (output) datatype refers to --exposuresets as well as --imagesets if --withexposure is set, in response to SOC-SPR-6475, which will be closed.
+	
+Version 1.14 - 2005-11-23 (IMS/LUX)
+----------------------
+- Added a new parameter --forceuniformkwds in order to close SPR 3546. Default is 'no' so default behaviour of the task is unchanged.
+- Made now explicit type conversions when writing from working image (4-byte real) to file.
+
+Version 1.13 - 2005-10-31 (IMS/LUX)
+----------------------
+- I rejigged subroutines calculateOutputSize and addImage in an attempt to solve spr 2906, 3424, 3457 and 3458.
+- DEPEND of ssclib upgraded to 3.27.
+- Directory string is now truncated to leave the bare file name written to keywords EMCSFnnn. This should close spr 3068.
+
+Version 1.12 - 2004-08-04 (IMS/LUX)
+----------------------
+- Test harness now fails if test data not found.
+
+Version 1.11 - 2004-05-20 (IMS/LUX)
+----------------------
+- Removed the change introduced in version 1.5 (the consensus is that it is not necessary to have emosaic write the source of attitude): namely the dependency on the OAL and the necessity to have the envar SAS_ODF set. Fixes SPR 2960.
+
+Version 1.10 - 2004-04-05 (IMS/LUX)
+----------------------
+- Now uses test data in package testprods.
+
+Version 1.9 - 2003-11-24 (IMS/LUX)
+----------------------
+- Removed old code.
+
+Version 1.8 - 2003-11-07 (IMS/LUX)
+----------------------
+- Temp_ssclib modules now merged into ssclib-3.0.
+- SAS_ODF now set (to testodf/scisimngc2516 directory) in test harness.
+
+Version 1.7 - 2003-11-03 (DJF/LUX)
+----------------------
+- Reorder Makefile USEDLIBS for static builds.
+
+Version 1.6 - 2002-08-12 (DJF/LUX)
+----------------------
+- Now depends on sas.
+
+Version 1.5 - 2002-06-12 (DJF/LUX)
+----------------------
+- Add OAL_addCommonAttributes
+
+Version 1.4 - 2002-05-17 (IMS/LUX)
+----------------------
+- Uses param-2.0.
+
+Version 1.3 - 23 Jan 2002 (IMS/LUX)
+----------------------
+- Updated DEPEND.
+
+Version 1.2 - 29 Oct 2001 (IMS/LUX)
+----------------------
+- RA_PNT, DEC_PNT and PA_PNT kwds now copied to output.
+- If, for any keyword, all the input images have the same value, the original keyword name is retained (with the common value) in the output file.
+- If the data types of all input images are the same (int8, 16, 32, or real32 or 64), the output image is given that data type.
+- Keyword-reading routine can now read them from either the dataset or primary array headers.
+
+Version 1.1.1
+-------------
+	- Distribution changed to WORLD
+
+Version 1.1
+-----------
+	- Added new keywords (EMSC A-K)
+	
+Version 1.0
+-----------
+	- updated parameter file
+	
+Version 0.1 - 26 May 2000
+-------------------------
+	- first delivery
+
+

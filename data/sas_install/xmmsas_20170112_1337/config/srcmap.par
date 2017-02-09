@@ -1,0 +1,204 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="srclisttab" type="table" mandatory="yes" default="src_list.fits:SRCLIST">
+   <DESCRIPTION>
+    Name of the source list dataset+table.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withmaskset" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to load a mask.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="maskset" type="dataset" mandatory="yes" default="mask.fits">
+      <DESCRIPTION>
+       Name of the input mask dataset.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="templateset" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    Name of the image dataset which is the source of image size info.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="outset" type="dataset" default="src_image.ds">
+   <DESCRIPTION>
+    Name of the output image dataset.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="tempimageset" type="dataset" default="temp_image.ds">
+   <DESCRIPTION>
+    Name of a temporary image dataset.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="tempsrclistset" type="dataset" default="temp_srclist.ds">
+   <DESCRIPTION>
+    Name of a temporary source list dataset.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="expression" type="string" default="">
+   <DESCRIPTION>
+    Source selection expression.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="fluxscale" type="real" default="1.0">
+   <DESCRIPTION>
+    Source fluxes are multiplied by this value.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="patchhalfsize" type="int" default="10">
+   <DESCRIPTION>
+    Half-size in pixels of the PSF patch.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    patchhalfsize in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+     <PARAM id="racol" type="string" default="RA">
+      <DESCRIPTION>
+       Name of the column containing the source RA in decimal degrees.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="deccol" type="string" default="DEC">
+      <DESCRIPTION>
+       Name of the column containing the source dec in decimal degrees.
+      </DESCRIPTION>
+     </PARAM>
+
+  <PARAM id="ratecol" type="string" default="FLUX">
+   <DESCRIPTION>
+    Name of the column containing the source brightness.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="psfstyle" type="string" default="uniform">
+   <DESCRIPTION>
+    Whether to approximate the gaussian.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="uniform">
+     <PARAM id="gausswidth" type="real" default="1.2">
+      <DESCRIPTION>
+       Width in arcsec of the gaussian part of the PSF.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       gausswidth in [0.0:]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="gaussfrac" type="real" default="0.02">
+      <DESCRIPTION>
+       Amplitude fraction occupied by the gaussian part of the PSF.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       gaussfrac in [0.0:1.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="r0" type="real" default="5.0">
+      <DESCRIPTION>
+       Width in arcsec of the King-function part of the PSF.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       r0 in (0.0:]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="alpha" type="real" default="1.5">
+      <DESCRIPTION>
+       Power of the King-function part of the PSF.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       alpha in (1.0:]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="withapprox" type="bool" default="no">
+      <DESCRIPTION>
+       Whether to approximate the gaussian.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="yes">
+        <PARAM id="approxstyle" type="string" default="subpixels">
+         <DESCRIPTION>
+          How to approximate the gaussian.
+         </DESCRIPTION>
+         <CASE>
+          <ITEM value="interpolate">
+          </ITEM>
+
+          <ITEM value="subpixels">
+           <PARAM id="nsubpixels" type="int" mandatory="yes" default="10">
+            <DESCRIPTION>
+             Number of sub-pixels.
+               </DESCRIPTION>
+            <CONSTRAINTS>
+             nsubpixels in [1:]
+            </CONSTRAINTS>
+           </PARAM>
+          </ITEM>
+         </CASE>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="column">
+     <PARAM id="widthcol" type="string" default="WIDTH">
+      <DESCRIPTION>
+       Name of the column which contains gaussian widths.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withboresightfudge" type="bool" default="yes">
+   <DESCRIPTION>
+    Flip the sign of the boresight euler%psi. This parameter should be removed after the boresight is fixed. 
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="normalize" type="bool" default="yes">
+   <DESCRIPTION>
+    Whether to normalize the PSF. 
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="vignet" type="bool" default="yes">
+   <DESCRIPTION>
+    Whether to vignet the PSF. 
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withfluxoffset" type="bool" default="no">
+   <DESCRIPTION>
+    If 'yes', the specified flux per square arcsec is added to the image.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="fluxoffset" type="real" default="0.0">
+      <DESCRIPTION>
+       Flux (in the same band as the sim sources), in cgs per square arcsec, to be added to the image.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+ </CONFIG>
+</FILE>

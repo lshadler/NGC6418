@@ -1,0 +1,94 @@
+ChangeLog for attcalc2
+===============================
+
+Open SPRs:
+----------
+Nil
+
+Version 1.3.3 - 2012-04-23 (MAS/LUX)
+-------------
++ Changed DISTRIBUTION into world (as ebkgmap package [public] uses this).
+
+Version 1.3.2 - 2009-05-12 (EO)
+-------------
+	+ Fixed DEPEND file.
+
+Version 1.3.1 - 2007-06-21 (MAS/LUX)
+------------------------------
+- Fixed SPR-3674 (thanks to Richard Saxton); the test harness used to fail in SUSE 7.3 for evproject.
+	
+Version 1.3 - 2007-03-19 (MAS/LUX)
+------------------------------
+- Fixed SPR-3651; now, attbin sorts the input columns in order of time before processing, where it used to raise error when the bins in the event file are not sorted, which is in fact the default behaviour in the pipeline at present, due to randomisation.  For sorting, ssclib/sort_mod is newly used.
+- Write the History section in the documentation.
+
+Version 1.2.1 - 2006-05-07 (IMS/JBO)
+------------------------------
+- Filled in some error messages in the code.
+- Slight updating of documentation.
+
+Version 1.2 - 2005-11-16 (IMS/LUX)
+------------------------------
+- Made some changes to binned_att:{read/write}BinnedAttitude to accommodate a WEIGHT column.
+
+Version 1.1 - 2005-11-07 (IMS/LUX)
+------------------------------
+- Changed the convention for describing binned attitudes, with flow-on changes to many of the binned_att subroutine internals and interfaces. This would break lots of things if lots of things used the routines; but no-one does, so I guess it is ok.
+- Binned-attitude tables can now have any name - they're no longer constrained to be called ATT_BINS.
+- Removed some obsolete code.
+- Updated ssclib DEPENDency to 3.27.
+
+Version 1.0 - 2005-04-01 (IMS/LUX)
+------------------------------
+- Uploaded as 1.0 rather than 0.10 because the package now seems mature enough to get out of '0.*' diapers...
+
+Version 0.9 - 2005-02-21 (IMS/LUX)
+------------------------------
+- noEvents error of evproject changed to a warning (for easier running in scripts).
+- Changed printEvery in attbin to sprintEvery.
+- Removed a print statement from attbin.
+
+Version 0.8 - 2004-11-29 (IMS/LUX)
+------------------------------
+- Corrected mistake in which pixel size in arcsec was multiplied rather than divided by 3600 to get the size in deg.
+- evproject now no longer copies the DETX/Y TCDLT keyword values to the X/Y TCDLT values: instead the task uses the 'hard-wired' value of 0.05 arcsec.
+
+Version 0.7 - 2004-11-01 (IMS/LUX)
+------------------------------
+- Fixed SPR 3413 on evproject. X/Y values are now being written to file.
+
+Version 0.6 - 2004-10-12 (IMS/LUX)
+------------------------------
+- Fixed SPR 3411 - in binned_att.f90:sampleBinnedAttitude, array endsUnbounded was being accessed with the wrong variable as index.
+
+Version 0.5 - 2004-09-15 (IMS/LUX)
+------------------------------
+- Fixed problem with 'percent' prints.
+
+Version 0.4 - 2004-09-15 (IMS/LUX)
+------------------------------
+- 'Percent' prints are now done through the sas message call.
+
+Version 0.3 - 2004-09-06 (IMS/LUX)
+------------------------------
+- Module binned_att: added routine initializeBinnedAtt, also initialized values in the attBinType structure definition.
+- Module binned_att: added routine calcBinnedAttGtis, meant eventually to replace gtiWeightBinnedAttitude.
+- ssclib dependency increased to 3.16 (now gets gtiVecType from ssclib/intervals_aux.f90 rather than eimchip2sky/cube_aux.f90).
+- Test odf data has been moved to package testodf (see SCR 174). testodf-0.45 added to DEPEND.
+
+Version 0.2 - 2004-07-26 (IMS/LUX)
+------------------------------
+- Incorrect variable name (attIsGoodVec instead of attIsGood) used in attbin.
+- A number of other small teething troubles corrected - angles in deg where radians assumed, etc.
+- New routine openGtiWeightBinnedAtt added to binned_att.f90.
+- Added to attbin parameters --usertimestyle, --datestrstart and --datestrstop.
+
+Version 0.1 - 2004-07-26 (IMS/LUX)
+------------------------------
+- Copied from attcalc-4.32.
+- All home-grown references to pi or multiples thereof removed and replaced by 'use constants'.
+- (Possibly) erroneous det-to-sky transform replaced by calls to ssclib/coordinate.
+- slatec removed from DEPEND.
+- Algorithm to bin up attitude data moved to a library 'binnedatt'.
+- Task now optionally reads and/or writes the binned attitude to a table (new parameters --readbinnedatt, inbinnedatttab, --writebinnedatt and --outbinnedatttab).
+

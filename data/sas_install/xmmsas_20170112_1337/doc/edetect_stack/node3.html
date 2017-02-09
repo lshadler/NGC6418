@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="edetect_stack">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="edetect_stack.css">
+
+<LINK REL="next" HREF="node11.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="edetect_stack.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+edetect_stack (edetect_stack-0.1.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="edetect_stack.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="General structure"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="edetect_stack.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="edetect_stack:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+The meta-task <A NAME="2256"></A><A NAME="tex2html3"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>
+performs standardized EPIC source
+  detection on overlapping fields of observations, taken at different epochs
+  or / and in Mosaic Mode. Starting from the filtered event lists, it runs all
+  steps of source detection, produces the necessary input files (images,
+  exposure maps, ...), calls the task <A NAME="2260"></A><A NAME="tex2html4"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+for all input images
+  simultaneously, and creates the final stacked source list from its output.
+  Input pointings are considered overlapping if the distance between their
+  centers is <SPAN  CLASS="textbf">less than 2<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\times$"></SPAN>12.0arcmin</SPAN>.
+
+<P>
+The handling of <A NAME="2264"></A><A NAME="tex2html5"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>
+and its application to a data set are
+  described in Traulsen et al. 2016 <SPAN  CLASS="textit">(in prep.)</SPAN>. For a concise
+  description of the XMM-Newton source detection, you may consult the 2XMM
+  Catalogue User
+  Guide  <A NAME="tex2html6"
+  HREF="http://xmmssc-www.star.le.ac.uk/Catalogue/2XMM/UserGuide_xmmcat.html#SrcDet">http://xmmssc-www.star.le.ac.uk/Catalogue/2XMM/UserGuide_xmmcat.html#SrcDet</A>. Details
+
+on the individual tasks are given in their respective documentations (linked
+  below).
+
+<P>
+Standard input to <A NAME="2268"></A><A NAME="tex2html7"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>
+are: one attitude file per
+  observation identifier, one ODF summary file per observation identifier, and
+  all event lists, i.e. up to three event lists per OBS_ID keyword. Attitude
+  and summary files are automatically sorted by OBS_ID. In order to
+  use <A NAME="2272"></A><A NAME="tex2html8"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>
+with data taken <SPAN  CLASS="textbf">in mosaic mode</SPAN> or on
+  observations which have several event lists for one instrument for any
+  reason, <SPAN  CLASS="textbf">it is <SPAN  CLASS="textit">mandatory</SPAN> to run the task <A NAME="2276"></A><A NAME="tex2html2"
+  HREF="../emosaic_prep/index.html"><SPAN  CLASS="textbf">emosaic_prep</SPAN></A>
+on the event lists first in order to introduce a pseudo-exposure
+  ID</SPAN>. Otherwise, input files may be confused.
+
+<P>
+<A NAME="2280"></A><A NAME="tex2html9"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>
+comprises twelve stages, which are run subsequently. The
+  task can be stopped and (re-)started at every stage, provided that all input
+  files to the stage are available. Program flow and input parameters are
+  described in more detail in the following subsections.
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html372"
+  HREF="node4.html">General structure</A>
+<LI><A NAME="tex2html373"
+  HREF="node5.html">Input parameters</A>
+<LI><A NAME="tex2html374"
+  HREF="node6.html">Tasks called by <SPAN  CLASS="textbf">edetect_stack</SPAN></A>
+<LI><A NAME="tex2html375"
+  HREF="node7.html">Input / output file names</A>
+<LI><A NAME="tex2html376"
+  HREF="node8.html">Stacked output source list</A>
+<LI><A NAME="tex2html377"
+  HREF="node9.html">Usage hints</A>
+<LI><A NAME="tex2html378"
+  HREF="node10.html">Examples</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="edetect_stack.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="General structure"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

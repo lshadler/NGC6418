@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Overview on detection chain constituent tasks</TITLE>
+<META NAME="description" CONTENT="Overview on detection chain constituent tasks">
+<META NAME="keywords" CONTENT="edetect_chain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="edetect_chain.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+edetect_chain (edetect_chain-3.15) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Use of edetect_chain"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="edetect_chain.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+Overview on detection chain constituent tasks</A>
+</H2>
+
+<P>
+<A NAME="736"></A><A NAME="tex2html15"
+  HREF="../eexpmap/index.html"><SPAN  CLASS="textbf">eexpmap</SPAN></A>:
+
+<P>
+The task  <A NAME="740"></A><A NAME="tex2html16"
+  HREF="../eexpmap/index.html"><SPAN  CLASS="textbf">eexpmap</SPAN></A>
+uses the attitude file, the CAL vignetting information, and the exposure 
+and bad pixel extensions of the photon event files to calculate an exposure map corresponding
+to the input image.
+
+<P>
+<A NAME="744"></A><A NAME="tex2html17"
+  HREF="../emask/index.html"><SPAN  CLASS="textbf">emask</SPAN></A>:
+
+<P>
+Creates a detector mask (values 0 or 1) based on exposure or exposure-gradient cutoff values.
+The detection tasks optionally use the mask to limit the detection to areas where the mask is 1.
+
+<P>
+<A NAME="748"></A><A NAME="tex2html18"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+(local mode):
+
+<P>
+In local mode, (parameter <TT>usemap</TT>=''no''),
+<A NAME="753"></A><A NAME="tex2html19"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+uses a 5x5 (or 3x3) pixel box and a surrounding (+2 pixels) 
+background area to search for significant sources simultaneously in all input images. 
+
+<P>
+<A NAME="757"></A><A NAME="tex2html20"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>:
+
+<P>
+<A NAME="761"></A><A NAME="tex2html21"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>
+uses the source list from <A NAME="765"></A><A NAME="tex2html22"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+(local mode) to remove sources
+from the input images and creates smooth background maps by fitting a 2-D spline to the 
+images. The parameter <TT>nsplinenodes</TT> determines the number of nodes per dimension. 
+With <TT>nsplinenodes</TT>=16, <A NAME="771"></A><A NAME="tex2html23"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>
+is able to  model the approximate shape
+of large extended objects. This is necessary for the reliable detection of point sources. 
+For the detection of extended objects (e.g. clusters of galaxies), it is recommended to use
+a smoother background map (<TT>nsplinenodes</TT>=<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$10-12$"></SPAN>).  
+
+<P>
+From version 3.2 on, <A NAME="776"></A><A NAME="tex2html24"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>
+can read an EPIC PN event set and calculate the background 
+caused by out-of-time events (visible as streaks on both sides of bright sources in readout 
+directions). This works only (and is only necessary) for PN images. This feature is switched 
+on with the  <A NAME="780"></A><A NAME="tex2html25"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>
+parameter <TT>withootset</TT>=yes, parameter <TT>ooteventset</TT>
+specifies the name of the event set. The event set should have the same selections in <A NAME="786"></A><TT>TIME</TT> 
+and <A NAME="788"></A><TT>FLAG</TT> as the  <A NAME="790"></A><A NAME="tex2html26"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>
+input image.
+
+<P>
+<A NAME="794"></A><A NAME="tex2html27"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+(map mode):
+
+<P>
+In map mode, (parameter <TT>usemap</TT>=''yes''),
+<A NAME="799"></A><A NAME="tex2html28"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+uses a 5x5 (or 3x3) pixel box and the values from the 
+background map to search for significant sources simultaneously in all input images. 
+
+<P>
+<A NAME="803"></A><A NAME="tex2html29"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>:
+
+<P>
+This task uses the output list from <A NAME="807"></A><A NAME="tex2html30"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+and determines parameters
+for each input source by means of a maximum likelihood fit to the input images.
+The fit is performed on a subimage around the source with the radius defined by <TT>eml_ecut</TT>.
+
+<P>
+Several source parameters can be set to define the source model:
+
+<P>
+- <TT>eml_fitextent</TT> determines whether a point source or an extent model
+   (<TT>eml_extentmodel</TT>) convolved with the PSF is modelled.
+
+<P>
+- <TT>eml_nmulsou</TT> determines the maximum number of sources used to fit one input source.
+
+<P>
+- <TT>eml_nmaxfit</TT> is the maximum number of input sources which can be fitted simultaneously,
+   if their positions are within a circle defined by <TT>eml_scut</TT>.
+
+<P>
+Since the fitting of extent models and multiple source models are CPU intensive,
+the following parameters can be used to limit the computation time:
+
+<P>
+-  If flag <TT>eml_withtwostage</TT> is set and <TT>eml_nmulsou</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$&gt;1$"></SPAN> , the fitting is 
+    performed in two stages:
+    In the first run only one source model is fitted to the image. Only if this source is
+    significantly extended, a second fit with <TT>eml_nmulsou</TT> sources is performed. 
+
+<P>
+- If flag <TT>eml_withthreshold</TT> is set, a threshold defined by
+    <TT>eml_threshold</TT> is applied to the values in input column  <TT>eml_threshcolumn</TT>.
+    Only sources above the threshold are fitted with a multiple source model 
+    (maximum  number <TT>eml_nmulsou</TT>).
+
+<P>
+From the likelihood of the best fit and the likelihood of the NULL model (source count rate zero)
+a detection likelihood is calculated (see the documentation of <A NAME="824"></A><A NAME="tex2html31"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+for details).
+If the detection likelihood exceeds the threshold set by <TT>likemin</TT>, the source is written to
+the final source list (<TT>eml_list</TT>).   
+
+<P>
+<A NAME="830"></A><A NAME="tex2html32"
+  HREF="../esensmap/index.html"><SPAN  CLASS="textbf">esensmap</SPAN></A>:
+
+<P>
+For each input image <A NAME="834"></A><A NAME="tex2html33"
+  HREF="../esensmap/index.html"><SPAN  CLASS="textbf">esensmap</SPAN></A>
+calculates a sensitivity map in units of 
+counts/sec for a likelihood threshold given by the parameter <TT>esen_mlmin</TT>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Use of edetect_chain"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

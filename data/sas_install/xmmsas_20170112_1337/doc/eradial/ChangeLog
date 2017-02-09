@@ -1,0 +1,589 @@
+ChangeLog for especget
+======================
+
+Version 1.44.2 - 2016-03-11 (RDS)
+-----------
+	+ doc/eupper_description.tex          - Better description of upper
+	  doc/eregionanalyse_description.tex	limit calculation
+
+Version 1.44.1 - 2016-01-12 (RDS)
+-----------
+	+ src/ecoordconv.cc             - Added option, pos2eqpos, which 
+	  config/ecoordconv.par		  just performs the x/y->ra/dec
+					  conversion, avoiding problems where
+					  the help point is >90 degs away from
+					  the image centre (SPR-7334)
+
+Version 1.44 - 2015-11-27 (RDS)
+-----------
+	+ src/especget.cc		- Added the source position params
+	  src/RmfMaker.cc/h		  sourcex, sourcey etc. (SPR-7276)
+	  doc/especget_description.tex
+
+Version 1.43 - 2015-11-18 (RDS)
+-----------
+	+ src/ImageRegion.cc/h          - Support for lower case region
+					  filenames (SPR-7266)
+	+ test/ecoordcvtest_mos,
+	      /coordcomp		- Runs on Ubuntu (SPR-7323)
+
+Version 1.42 - 2015-07-22 (RDS)
+-----------
+	+ src/Eupper.cc/h               - Added new task - eupper
+					  to provide a fast calculation of 
+					  an upper limit. This uses the
+					  astrometry routines from ssclib.
+
+	+ src/EregionAnalyse.cc	        - Improved the speed of the calculation
+					  of the optimum radius (SPR-7302)
+					  
+	+ config/eregionanalyse.par	- Added a parameter to control whether 
+					  the source should be centroided 
+					  or not (SCR-7292)
+
+	+ src/ecoordconv.cc		- Uses ssclib coordinate transforms
+					  for compatibility with F90 tasks.
+					  (SCR-7265)
+
+Version 1.41 - 2014-12-12 (RDS)
+-----------
+	+ src/especget.cc		- Added parameter - a0removefiles -
+					  to control whether files are
+					  removed if ARF<=0 (SPR-7218)
+
+Version 1.40 - 2014-12-02 (RDS)
+-----------
+	+ src/especget.cc		- Solved problem with #XMMEA macro
+	+ src/etimeget.cc		  selection (SPR-7258)
+
+Version 1.39.2 - 2014-10-16 (RDS)
+--------------
+	+ src/FindBestRmfName.h         - Finds rmf name using the epoch
+					  dependence of EPIC-pn
+						(SPR-7241)
+
+Version 1.39.1 - 2014-09-16 (RDS)
+-----------
+	+ src/especget.cc		- Passes extra parameters to arfgen
+	+ src/Arfmaker.cc,h		- sourcecoords, sourcex, sourcey
+					- withsourcecoords, withdetbins
+						(SPR-7214)
+
+Version 1.39 - 2014-07-29 (RDS)
+-----------
+	+ src/ecoordconv.cc             - Added output parameters for RA/DEC
+	  config/ecoordconv.par
+
+Version 1.38 - 2014-07-15 (RDS)
+-----------
+	+ src/ImageRegion.cc/h          - Support added for RAW coordinate input
+	  src/ecoordconv.cc
+
+	+ doc/ecordconv_description.tex - Updated doco for RAW coords
+						(SPR-7212)
+
+Version 1.37 - 2014-07-07 (RDS)
+-----------
+	+ src/ImageRegion.cc/h          - Adding a method to return the
+					  size of the input image
+
+	+ doc/ecordconv_description.tex - Improved parameter description
+
+Version 1.36 - 2014-04-21 (AI&RDS)
+-----------
+	+ gcc4.8.2 portability changes
+	+ doc updated
+	
+Version 1.35.2 - 2013-11-28 (RDS)
+-----------
+	+ doc/echeckregion_description.tex - Modified doco to clearly state
+					  that area outside a CCD returns a
+					  TRUE status (SPR-6993)
+
+Version 1.35.1 - 2013-10-21 (RDS)
+-----------
+	+ src/SpectrumMaker.cc		- Change of MOS spectral binning
+	+ test/mosevents.ds		  from 15 to 5 eV per bin
+	+ test/espectest_mos	 	  NB this means that canned matrices
+					  will need to be recreated (SCR-7136) 
+
+Version 1.35 - 2013-09-12 (RDS)
+-----------
+	+ src/especget.cc		- Now calls arfgen with RMF set 
+					  unless rmfset="" specified
+						(SPR-7131)
+
+Version 1.34.4 - 2013-06-04 (RDS)
+-----------
+	+ src/especget.cc,h		- Sets bad status parameter and deletes 
+	+ src/ARF.cc,h			- files if output ARF is full of zeros.
+	+ src/EnergySpectrum.cc,h	-    (SPR-7113)
+	+ config/especget.par
+
+Version 1.34.3 - 2013-04-09 (AI)
+-----------
+	+ Parameters energymin, energymax and nenergybins added 
+	+ rmfgen is now run before arfgen
+	+ doc updated
+	
+Version 1.34.2 - 2013-04-02 (AI)
+-----------
+	+ New parameter withmultiEPICspec that allows users to combine EPIC 
+	spectra with epicspeccombine task
+	
+Version 1.34.1 - 2013-02-19 (RDS)
+-----------
+
+	+ DEPEND		 - Updated to rmfgen v 2.0
+
+Version 1.34 - 2013-01-25 (RDS)
+-----------
+
+        config/ecoordconv.par    - Set output values as parameters
+	src/ecoordconv.cc        
+
+Version 1.33 - 2012-10-17 (RDS)
+-----------
+
+        config/eregionalyse.par  - Introduced a new keyword psfmodel which
+	src/Eregionanalyse.cc/h  - allows the user to choose the PSF mode
+				 - they prefer. Default is ELLBETA.
+				   (SPR-6762)
+	doc/EregionAnalyse.doc
+
+	Also added an extra output line 
+	to give the background centre region
+	in X/Y coords
+
+	Backgnd centre X: nnnnn Y: nnnnn
+
+Version 1.32 - 2012-07-31 (RDS)
+-----------
+
+        config/eradial.par       - Default -> ELLBETA (SPR-6757)
+
+Version 1.31.4 - 2012-04-27 (RDS)
+-----------
+
+        src/ImageRegion.cc       - Limit image array to extent of image
+					(SPR-6717)
+
+Version 1.31.3 - 2012-04-11 (EO)
+--------------
+	+ Fixed for extra qualification unnecessary in following class
+	definitions:
+	- src/SpectrumMaker.h
+	- src/FindBestRmfName.h
+	- src/ImageRegion.h
+	- src/CalSetter.h
+	- src/EregionAnalyse.h
+	- src/UpperLimitSolver.h
+	- src/Eradial.h
+
+Version 1.31.2 - 2011-02-02 (RDS)
+-----------
+
+        src/FindBestRmfName.cc   - Use the new MOS, epoch and position 
+				   dependent RMF filenames (SCR-269)
+
+Version 1.31.1 - 2010-12-20 (RDS)
+-----------
+
+	small fix to documentation
+		(not released yet)
+
+        
+Version 1.31 - 2010-05-28 (RDS)
+-----------
+
+        src/ImageRegion.cc       - Check that image array bounds are respected
+	src/EregionAnalyse.cc    - Check for exposure time = 0.0
+					(SPR-6616)
+
+Version 1.30 - 2010-05-18 (RDS)
+-----------
+
+        src/ImageRegion.cc       - Made pixel indices integer rather than 
+				   unsigned to avoid cases where the value can 
+				   go negative. (SPR-6614)
+
+Version 1.29.1 - 2010-03-22 (RDS)
+-----------
+
+        src/EregionAnalyse.cc    - Reinstated reference to the ELLBETA model
+        src/Erdaial.cc           - Reinstated reference to the ELLBETA model
+        doc/Eradial_description.tex  - Reinstated reference to the ELLBETA model
+
+Version 1.29   - 2009-07-21 (RDS)
+-----------
+
+	src/EregionAnalyse.cc    - Fixed problem with RA=360 degs (SPR-6551)
+
+Version 1.28.8 - 2009-07-13 (RDS)
+-----------
+
+	src/EregionAnalyse.cc    - Added option to output to a text file
+	config/eregionAnalyse.par
+
+Version 1.28.7 - 2009-06-12 (RDS)
+-----------
+
+	src/EregionAnalyse.cc    - Removed reference to the ELLBETA model
+	src/Erdaial.cc           - Removed reference to the ELLBETA model
+	doc/Eradial_description.tex  - Removed reference to the ELLBETA model
+
+Version 1.28.6 - 2009-01-21 (RDS)
+-----------
+	src/EregionAnalyse.cc    - Added ulsig, upper-limit significance
+	config/EregionAnalyse.par  parameter (SCR-6513)
+
+Version 1.28.5 - 2008-11-26 (RDS)
+-----------
+	src/ecoordconv           - Added support for X/Y regions
+
+Version 1.28.4 - 2008-11-13 (RDS)
+-----------
+	New task ecoordconv added
+
+Version 1.28.3 - 2008-11-03 (RDS)
+-----------
+	src/EregionAnalyse.cc    - Added code to output which CCDs
+	src/ImageRegion.cc/h	   lie within a given region (SPR-6511)
+
+	src/Eradial.cc/h	 - New parameter maxradius which limits
+				   the PSF fit to a certain radius (SPR-6512)
+
+Version 1.28.2 - 2008-10-24 (RDS)
+-----------
+        copy to move back into the release track 
+
+Version 1.27.7 - 2008-10-24 (RDS)
+-----------
+        config/eradial.lyt       - Added in all parameters
+
+Version 1.28.1 - 2008-10-17 (RDS)
+-----------
+        src/eradial.cc           - Fixed problem with DETXY images.
+				 - Improved documentation
+
+Version 1.28 - 2008-10-08 (RDS)
+-----------
+        New task eradial added
+
+Version 1.27.6 - 2008-06-25 (RDS)
+-----------
+        doc/especget_description.tex  - Documentation update
+
+Version 1.27.5 - 2008-06-16 (RDS)
+-----------
+        src/EregionAnalyse.cc   -  Supresses warning related to missing
+				   ELLBETA parameters in PSF CCF
+					(SPR-6467)
+
+Version 1.27.4 - 2008-06-05 (RDS)
+-----------
+        src/EregionAnalyse.cc   -  Constrained the bayesian upplim calculation
+				   to cases where source counts < 80.
+				   Otherwise seg faults (SPR-6467)
+
+Version 1.27.3 - 2008-05-29 (RDS)
+-----------
+      + src/ImageRegion.cc/h -     Made REGION output work for X/Y regions
+        src/EregionAnalyse.cc          (SPR-6467)
+
+Version 1.27.2 - 2008-05-23 (RDS)
+-----------
+      + src/ImageRegion.cc -     Solved problem with ellipse orientation in 
+				 X/Y images
+
+      + src/EregionAnalyse.cc -  Added explicit REGION output for SAS use
+					(SPR-6467)
+
+Version 1.27.1 - 2008-04-28 (RDS)
+-----------
+      + src/EregionAnalyse.cc -  Fixed error in ellipticity calculation
+
+Version 1.27 - 2008-04-17 (RDS)
+-----------
+      + src/EregionAnalyse.cc -  Added calculation of an optimum
+				 elliptical extraction region.
+
+				 Also added in bayesian calculation for the
+				 upper limit for low numbers of counts.
+
+Version 1.26.1 - 2007-09-28 (RDS)
+-----------
+      + src/ImageRegion.cc -  Removed srand call which was causing the 
+				filenames to be non-unique
+      + src/EregionAnalyse.cc -  Added "c/s" string after Statistical upp limit
+
+Version 1.26 - 2007-05-10 (RDS)
+-----------
+      + src/EregionAnalyse.cc - Fix of error when closing temp file
+
+Version 1.25 - 2007-05-09 (RDS)
+-----------
+      + src/EregionAnalyse.cc - Copies CTYPE1 style WCS keywords
+								between the main header and array headers
+								if necessary.
+
+Version 1.24 - 2007-05-04 (RDS)
+-----------
+      + src/EregionAnalyse.cc - Better algorithm to make 
+      + src/ImageRegion.cc    - temp files unique
+
+Version 1.23 - 2007-03-21 (RDS)
+-----------
+      + src/EregionAnalyse.cc - Copies REF keywords from image to 
+                                exposure file if not present so that 
+                                coord transforms work properly
+
+                                Also makes the temporary files "unique"
+                                by adding the time in millisec to the name.
+
+Version 1.22.2 - 2007-01-23 (RDS)
+-----------
+      + src/EregionAnalyse.cc - Internally converts RA, DEC specified
+								circular or annular regions to sky (X/Y)
+								coords so that they remain circular and
+								keep the expected size (SPR-2701)
+
+Version 1.20.6 - 2006-09-19 (RDS)
+-----------
+      + src/echeckregion.cc - Turned off FOV checking to allow sources
+                              in chip gaps to be treated as GOOD.
+
+Version 1.20.5 - 2006-09-14 (RDS)
+-----------
+      + Copy of 1.22.1 for the Pipeline track
+
+Version 1.22.1 - 2006-09-14 (RDS)
+-----------
+      + src/echeckregion.cc - Sets status to 0 (bad) for source regions
+                              on the central CCD of a MOS Timing, Burst or 
+                              W6 obs.  (SPR-2693)
+
+Version 1.22 - 2006-07-20 (AI)
+-----------
+      + src/EregionAnalyse.cc - To solve problems in MacOSX, variables used 
+				in output statement have been 	
+				recoded (SOC-SPR-2687)				
+	
+Version 1.21.3 - 2006-04-11 (RDS)
+-----------
+      + src/echeckregion.cc       - add an option to output check
+        config/echeckregion.par     result to a text file
+
+Version 1.21.2 - 2006-03-23 (RDS)
+-----------
+      + src/echeckregion.cc       - fix a problem with PN small window mode 
+                                    (SPR-2673)
+
+Version 1.21.1 - 2006-03-10 (RDS)
+-----------
+      + src/FindBestRmfName.cc    - solves a problem where the RESPFILE
+                                    keyword was not set at all when a
+                                    suitable canned matrix filename couldn't 
+                                    be found. Now it is set to 
+                                    NoCannedMatrixForThisSpectrum (SPR-2670)
+
+Version 1.21 - 2006-02-21 (RDS)
+-----------
+      + src/RmfMaker.cc,h         - passes the extendedsource and detmaptype
+            especget.cc             parameters to rmfgen (SPR-2668)              
+
+Version 1.20.1 - 2006-02-14 (RDS)
+-----------
+      + src/FindBestRmfName.cc         - uses generic canned matrix names 
+                                         without version unmbers to avoid
+                                         confusing the user when they try 
+                                         and find the corresponding matrix.
+                                         The web-site will handle this with
+                                         soft links (SPR-2666)
+
+Version 1.20 - 2006-02-14 (RDS)
+-----------
+      + echeckregion                   - new task added to determine whether
+                                         an input rgion lies on an exposed
+                                         part of the detector (SPR-2665)
+
+Version 1.19.1 - 2006-02-10 (RDS)
+-----------
+      + src/LightCurveMaker.cc         - fixed problem with the timerange
+                                         paremeters not being passed correctly
+                                         to evselect (SPR-2659)
+
+Version 1.19 - 2005-06-15 (RDS)
+-----------
+      + src/FindBestRmfName.cc         - updated to use new rmfgen 
+                                         calling interface
+
+Version 1.18.1 - 2005-02-08 (RDS)
+-----------
+      + src/FindBestRmfName.cc         - updated to use latest MOS and PN
+                                         naming conventions
+      + src/Imageregion.cc             - Ensures that RA is between +-90
+                                         in celestialCoords()
+
+Version 1.18 - 2004-10-07 (EO)
+------------
+        + Copy of 1.16.2 that will continue in release track builds.
+ 
+Version 1.17 - 2004-10-07 (EO)
+------------
+        + Copy of 1.15.6 that will go into public release of SAS 6.1.0
+ 
+Version 1.16.2 - 2004-09-13 (RDS)
+-----------
+      + src/etimeget.cc              - now calls evselect with energycolumn=PI
+                                       (SSC-SPR-3279)
+
+Version 1.16.1 - 2004-09-02 (RDS)
+-----------
+      + src/FindBestRmfName.cc              - fixed MOS canned rmf name
+                                              problem (SSC-SPR-3315)
+        src/ImageRegion.cc
+        config/eregionanalyse.par/lyt
+        docs/eregionanalyse_description.tex
+
+      + Added support for RA, DEC Source and background regions 
+
+      + Allows optional background image from which to take background
+      + Option provided for exposure map to give accurate exposure time
+        at centre of source region.
+
+Version 1.16 - 2004-06-28 (RDS)
+-----------
+      + src/ArfMaker.cc          - add detxbins,detybins params (SPR-2540)
+        src/especget.cc
+
+Version 1.15.7 - 2004-03-17 (RDS)
+-----------
+      + src/LightCurveMaker.cc          - add time range parameters to 
+        config/etimeget.par/lyt           evselect call (SCR-SPR-3268)
+
+Version 1.15.6 - 2004-02-16 (RDS)
+-----------
+      + config/especget.lyt      - improved the gui layout for the
+                                   filename parameters 
+
+Version 1.15.5 - 2004-02-11 (RDS)
+-----------
+      + src/especget.cc          - removes temporary ARF file to avoid
+                                   problem with open dataset (SPR-2505)
+
+Version 1.15.4 - 2004-02-04 (RDS)
+-----------
+      + doc/etimeget_description.tex - changed timebin to timebinwidth param
+
+Version 1.15.3 - 2004-01-21 (RDS)
+-----------
+      + src/FindBestRmfName.cc   - finds the name of the canned matrix 
+                                   relevant to the observation (SCR-125)
+
+Version 1.15.2 - 2004-01-20 (RDS)
+-----------
+      + src/Eregionanalyse.cc    - removes seg fault on Timing data (SPR-2496)
+
+Version 1.15.1 - 2003-12-10 (RDS)
+-----------
+      + src/etimeget.cc,         - stops the use of the introduced RMF
+        src/especget.cc            in arfgen (SCR-125).
+        config/etimget.par/lyt     Added extra params to give the name
+        config/especget.par/lyt    of each file individually (SPR-2471)
+        src/FindBestRmfName.cc/h   Finds name of relevant canned
+                                   matrix (dummy at the moment)
+
+Version 1.15 - 2003-11-20 (RDS)
+-----------
+      + src/LightcurveMaker.cc,  - call evselect with keepfilteroutput=no
+            SpectrumMaker.cc       to avoid adding filter information to
+                                   event files.
+
+Version 1.14 - 2003-11-14 (RDS)
+-----------
+      + test/mosevents.ds     event file got corrupted in test harness.
+                              Now uses another.
+
+Version 1.13 - 2003-10-29 (RDS)
+-----------
+      + src/etimeget.cc       now creates the background timeseries.
+
+Version 1.12 - 2003-10-28 (RDS)
+-----------
+      changed order of USEDLIBS in Makefile for static builds
+
+Version 1.11 - 2003-07-16 (RDS)
+-----------
+      eregionanalyse: solved problem with DATE-END not set +
+                      calculates the source-bckgnd count rate (w/o vignetting)
+
+Version 1.10 - 2003-07-11 (RDS)
+-----------
+      Includes new etimeget task
+
+Version 1.9 - 2003-01-22 (UL)
+----------
+        + now DEPENDs on dsslib-5.0
+        + a couple of stdc++ compliance fixes enforced by gcc-3.2
+
+Version 1.7.1 - 2002-12-18 (RDS)
+-----------
+      Documentation improvements (SPR-2366, 2385)
+
+Version 1.7 - 2002-11-06 (RDS)
+-----------
+      Renamed version 1.6 for release track
+
+Version 1.6 - 2002-27-09 (RDS)
+-----------
+    + eregionanalyse: handles images with X and Y inverted
+    + especget: includes witharfset an option which avoids running arfgen
+
+Version 1.5 - 2002-26-09 (RDS)
+-----------
+    + eregionanalyse: fixed a half pixel shift in the centroiding and 
+      changed the radius parameter to return values in the image units 
+      rather than arcsecs.
+
+Version 1.4 - 2002-09-09 (RDS)
+-----------
+    + improved the performance
+
+Version 1.3 - 2002-08-19 (UL)
+-----------
+    + a few transparent changes to improve C++ standard compliance
+        
+Version 1.2 - 2002-07-17 (RDS)
+-----------
+  Added new task eregionanalyse
+
+Version 1.1 - 2002-07-8 (RDS)
+-----------
+  Upgraded to par 2.0
+
+Version 1.0 (RDS)
+-----------
+  Documentation update and proper use of table parameter.
+
+Version 0.3.2 (RDS)
+-----------
+  Documentation update
+
+Version 0.3.1 (RDS)
+-----------
+  Documentation update
+
+Version 0.3 (RDS)
+-----------
+  Name change to especget
+
+Version 0.2 (RDS)
+-----------
+  Included test harness
+
+Version 0.1 (RDS)
+-----------
+  Development version
+
+

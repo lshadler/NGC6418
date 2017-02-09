@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<TITLE>SAS Packages</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF">
+
+<H1>
+<FONT COLOR="#FF0000">pkgmaker</FONT>
+<HR></H1>
+
+The SAS package maker (<i>pkgmaker</i>), is a perl script that creates
+a complete directory structure for a new SAS task. The task directory
+structure is created under the current directory.<p>
+
+In order to make use of the <i>pkgmaker</i> you must first install the
+core SAS distribution. When this is done, the <i>pkgmaker</i> will be
+available in your executable path.<p>
+
+A new directory structure can be created anywhere by simply typing
+<code>pkgmaker</code> and answering the questions asked.<p> The
+remainder of this document decribes the workings of the
+<i>pkgmaker</i>. Please refer to the top level SAS documentation, or
+the developer's guide for details about the contents of a package
+directory.
+
+<ul>
+  <li>To the top level <a href="../README.html">SAS documentation</a>.
+  <li>To the  <a href="devel/index.html">developer's documentaion</a>.
+</ul>
+
+<h2><i>pkgmaker</i></h2>
+
+<i>pkgmaker</i> is a perl script. It
+requires perl version 5 or higher. It makes use of the
+external perl module <a
+href="http://www.perl.com/">Text::Boilerplate</a>, that is
+distributed with the SAS.<p>
+
+When a new task directory structure is created, all the files in the
+subdirectory <code>pkgmaker/template</code> under the main SAS package
+directory are copied to the new directory tree. In the process a
+number of tags (specified in the associative array
+<code>PKGTAGS</code> are replaced with the values entered by the user,
+so that almost no modifications are needed to start coding and
+compiling with the SAS libraries.
+<p>
+<h3>How to modify the template</h3>
+You can add/remove/modify files in the template subdirectory, and the
+next time the <i>pkgmaker</i> runs the modified template will be
+created. New tags can be added by modifying the <code>PKGTAGS</code>
+array.<p>
+A tag in a file is specified like so:<p>
+<code>[* 'TAG NAME' *]</code>
+
+
+<hr>
+<address><em>Giuseppe Vacanti</em></address>
+<!-- hhmts start -->
+<em>Updated on: September 27, 1999</em>
+<!-- hhmts end -->
+</body> </html>

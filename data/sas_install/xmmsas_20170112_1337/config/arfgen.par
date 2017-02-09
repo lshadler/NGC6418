@@ -1,0 +1,438 @@
+<!-- converted from XPI formatted "arfgen.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="spectrumset" type="dataset" mandatory="yes" default="spectrum.ds">
+   <DESCRIPTION>
+    Name of input spectrum
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withrmfset" type="bool" default="no">
+   <DESCRIPTION>
+    Get ebins from response set
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+      <PARAM id="rmfset" type="dataset" default="response.ds">
+       <DESCRIPTION>
+        Name of input response set
+       </DESCRIPTION>
+       <CONSTRAINTS>
+        true
+       </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="arfset" type="dataset" default="ancillary.ds">
+   <DESCRIPTION>
+    Name of output ancillary response set
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="detmaptype" type="string" default="flat">
+   <DESCRIPTION>
+    Specify the detector map origin
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="dataset">
+    </ITEM>
+    <ITEM value="flat">
+    </ITEM>
+    <ITEM value="psf">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="detmaparray" type="array" default="detmapfile.ds:">
+   <DESCRIPTION>
+    Name of input detector map array
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withdetbounds" type="bool" default="no">
+   <DESCRIPTION>
+    Specify bounds for psf/flat detector maps explicitly
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+	 <PARAM id="detxoffset" type="real" default="1200">
+ 	  <DESCRIPTION>
+  	    Upper/lower bounds of psf/flat detmap along x-dirn, wrt source posn
+   	  </DESCRIPTION>
+  	  <CONSTRAINTS>
+   	    detxoffset in [0:30000]
+      </CONSTRAINTS>
+  	 </PARAM>
+
+ 	 <PARAM id="detyoffset" type="real" default="1200">
+  	  <DESCRIPTION>
+  	   Upper/lower bounds of psf/flat detmap along x-dirn, wrt source posn
+      </DESCRIPTION>
+      <CONSTRAINTS>
+    	detyoffset in [0:30000]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withdetbins" type="bool" default="no">
+   <DESCRIPTION>
+       Specify the number of bins for psf/flat detector maps explicitly
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+       <PARAM id="detxbins" type="int" default="5">
+        <DESCRIPTION>
+           Number of bins along x-dirn in psf or flat detector map
+        </DESCRIPTION>
+        <CONSTRAINTS>
+           detxbins in [1:]
+        </CONSTRAINTS>
+       </PARAM>
+
+       <PARAM id="detybins" type="int" default="5">
+        <DESCRIPTION>
+           Number of bins along y-dirn in psf or flat detector map
+        </DESCRIPTION>
+        <CONSTRAINTS>
+           detybins in [1:]
+        </CONSTRAINTS>
+       </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="psfenergy" type="real" default="2">
+   <DESCRIPTION>
+    Energy at which to compute PSF in psf detector map
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    psfenergy in [0:30]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="filterdss" type="bool" default="yes">
+   <DESCRIPTION>
+    Filter the input detector map
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withfilteredset" type="bool" default="no">
+   <DESCRIPTION>
+    Write out the detmap filtered pixel list
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+	  <PARAM id="filteredset" type="dataset" default="filteredpixellist.ds">
+   		<DESCRIPTION>
+ 		   Name of detmap filtered pixel list
+	    </DESCRIPTION>
+	    <CONSTRAINTS>
+ 		   true
+  	    </CONSTRAINTS>
+  	  </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withsourcepos" type="bool" default="no">
+   <DESCRIPTION>
+    Source position specified
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+
+	  <PARAM id="sourcecoords" type="string" mandatory="yes" default="eqpos">
+	   <DESCRIPTION>
+    	Coordinate system for which source position is specified
+   	   </DESCRIPTION>
+	   <CASE>
+    	<ITEM value="det">
+    	</ITEM>
+ 	    <ITEM value="eqpos">
+	    </ITEM>
+    	<ITEM value="pos">
+	    </ITEM>
+    	<ITEM value="tel">
+	    </ITEM>
+   	   </CASE>
+  	 </PARAM>
+
+	  <PARAM id="sourcex" type="real" mandatory="yes" default="0">
+	   <DESCRIPTION>
+    	X position of source
+   	   </DESCRIPTION>
+	   <CONSTRAINTS>
+    	true
+	   </CONSTRAINTS>
+	  </PARAM>
+
+	  <PARAM id="sourcey" type="real" mandatory="yes" default="0">
+	   <DESCRIPTION>
+    	Y position of source
+	   </DESCRIPTION>
+	   <CONSTRAINTS>
+    	true
+	   </CONSTRAINTS>
+	  </PARAM>
+
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="extendedsource" type="bool" default="no">
+   <DESCRIPTION>
+    Source is extended
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="modeleffarea" type="bool" default="yes">
+   <DESCRIPTION>
+    Model Effective Area
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="modelquantumeff" type="bool" default="yes">
+   <DESCRIPTION>
+    Model Quantum Efficiency
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="modelfiltertrans" type="bool" default="yes">
+   <DESCRIPTION>
+    Model Filter Transmission
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="modelcontamination" type="bool" default="yes">
+   <DESCRIPTION>
+    Model contamination 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="modelee" type="bool" default="yes">
+   <DESCRIPTION>
+    Model Encircled Energy
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="modelootcorr" type="bool" default="yes">
+   <DESCRIPTION>
+    Model out-of-time factor
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="applyxcaladjustment" type="bool" default="no">
+   <DESCRIPTION>
+    Apply the effective area correction stored in CORRAREA ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="eegridfactor" type="int" default="100">
+   <DESCRIPTION>
+    Energy grid oversampling factor
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    eegridfactor in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withbadpixcorr" type="bool" default="yes">
+   <DESCRIPTION>
+    Correct for bad pixels in source box
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="badpixlocation" type="dataset" default="notSpecified">
+   <DESCRIPTION>
+    File containing bad pixel extensions
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="psfmodel" type="string" default="ELLBETA">
+   <DESCRIPTION>
+    The model to use for the instrument point spread function
+   </DESCRIPTION>
+   <CASE>
+    	<ITEM value="HIGH">
+    	</ITEM>
+ 	<ITEM value="EXTENDED">
+	</ITEM>
+ 	<ITEM value="ELLBETA">
+	</ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withbadpixres" type="bool" default="no">
+   <DESCRIPTION>
+    Bad pixel resolution set
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+       <PARAM id="badpixelresolution" type="real" default="2">
+        <DESCRIPTION>
+     	The resolution to use to check for bad pixels of all types and to 
+calculate the PSF correction
+        </DESCRIPTION>
+        <CONSTRAINTS>
+          true
+        </CONSTRAINTS>
+       </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="setbackscale" type="bool" default="no">
+   <DESCRIPTION>
+    Set the BACKSCAL value in input spectrum
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="keeparfset" type="bool" default="yes">
+   <DESCRIPTION>
+    Whether to keep the generated ARF file
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="useodfatt" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to use ODF attitude file
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="ignoreoutoffov" type="bool" default="yes">
+   <DESCRIPTION>
+    Whether area outside the field-of-view should be excluded from calculations
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="crossregionarf" type="bool" default="no">
+   <DESCRIPTION>
+     Whether to calculate the ARF due to flux from a different region
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+      <PARAM id="crossreg_spectrumset" type="dataset" mandatory="yes">
+         <DESCRIPTION>
+            Name of file containing the region where the flux originally falls
+         </DESCRIPTION>
+      </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+ </CONFIG>
+</FILE>

@@ -1,0 +1,27 @@
+<FILE>
+  <CONFIG>
+    <PARAM id="eventset" type="table" mandatory="yes">
+      <DESCRIPTION>;
+	FITS MOS event list to be analysed and tagged for anomalous state.
+      </DESCRIPTION>
+    </PARAM>
+    <PARAM id="filterbadccds" type="bool" default="no">
+      <DESCRIPTION>;
+	If yes, filter the input eventset to remove all events at CCDs
+	tagged as in the anomalous state.  The filtered DataSet is written
+	to the file specified by the filteredset parameter.
+      </DESCRIPTION>
+      <CASE>
+	<ITEM value="yes">
+	  <PARAM id="filteredset" type="table" default="filtered.fits">
+	    <DESCRIPTION>;
+	Name of the output file to contain the filtered event list
+	with all events at noisy CCDs removed.
+	Explicitly setting this parameter automatically sets filterbadccds=yes.
+	    </DESCRIPTION>
+	  </PARAM>
+	</ITEM>
+      </CASE>
+    </PARAM>
+  </CONFIG>
+</FILE>

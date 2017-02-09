@@ -1,0 +1,185 @@
+<!-- converted from XPI formatted "bkgoptrate.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="tssettabname" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    Name of the input background time-series to evaluate (FILE.ds:TABLENAME).
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="xcol" type="string" mandatory="no" default="TIME">
+   <DESCRIPTION>
+    Column name of X-axis.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="ycol" type="string" mandatory="no" default="default">
+   <DESCRIPTION>
+    Column name of Y-axis.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="fracexpcol" type="string" mandatory="no" default="FRACEXP">
+   <DESCRIPTION>
+    Column name of FRACEXP.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="tsstyle" type="string" mandatory="no" default="auto">
+   <DESCRIPTION>
+    Style of the input time-series.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="auto">
+    </ITEM>
+    <ITEM value="rate">
+    </ITEM>
+    <ITEM value="count">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="gtistyle" type="string" mandatory="no" default="auto">
+   <DESCRIPTION>
+    Style of the GTI (currently unsupported).
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="auto">
+    </ITEM>
+    <ITEM value="column">
+    </ITEM>
+    <ITEM value="gti">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withstarttime" type="bool" default="no">
+   <DESCRIPTION>
+    Whether start time is specified (Default: No).
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="starttime" type="real" mandatory="yes">
+      <DESCRIPTION>
+       Start time to evaluate.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+    <ITEM value="no">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withendtime" type="bool" default="no">
+   <DESCRIPTION>
+    Whether end time is specified (Default: No).
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="endtime" type="real" mandatory="yes">
+      <DESCRIPTION>
+       End time to evaluate.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+    <ITEM value="no">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="fracexpstyle" type="string" mandatory="no" default="auto">
+   <DESCRIPTION>
+    Style of handling method of FRACEXP.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="auto">
+    </ITEM>
+    <ITEM value="calc">
+    </ITEM>
+    <ITEM value="threshold">
+     <PARAM id="fracexplower" type="real" mandatory="yes">
+      <DESCRIPTION>
+       Lower threshold for FRACEXP to be used in the calculation.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       fracexplower in [0.0:1.0]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+    <ITEM value="none">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withlowercutoffcount" type="bool" default="no">
+   <DESCRIPTION>
+    Whether the lower cutoff count (or rate) is specified (Default: No).
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="lowercutoffcount" type="real" mandatory="yes">
+      <DESCRIPTION>
+       The lower threshold count or ratio in search for the optimum value, that is, any bin having the count (or ratio) smaller than this value is not taken into account in the search.  This value has to be either zero or positive.  The default (when withlowercutoffcount=no) is 0.0.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+        lowercutoffcount in [0.0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+    <ITEM value="no">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withmintimeratio" type="bool" default="no">
+   <DESCRIPTION>
+    Whether the minimum time ratio is specified (Default: No).
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="mintimeratio" type="real" mandatory="yes" default="0.05">
+      <DESCRIPTION>
+       The ratio of the acceptable minimum number of (time) bins (or row numbers in the FITS table) to the initial number of bins after other filtering is applied, during the search for the optimum value.  If the search does not find the optimum threshold with larger number of bins, then the task raises an error and exits.  The default (when withmintimeratio=no) is 0.05.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+        mintimeratio in [0.0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+    <ITEM value="no">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="ignorelowcnttail" type="bool" default="no">
+   <DESCRIPTION>
+    Whether ignoring the lowest-count (rate) bins with unusually high signal-to-noise ratio (Default: No).  This option matters only when the input time-series shows the tendency that lower the count is (but above mintimeratio, if specified), larger signal-to-noise it shows.  Even then, if the lowest-count bin occupies more than the third of the entire number of bins, this option is ignored and the lowest-count bin is regarded as the appropriate bin.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="doinsertkwds" type="bool" default="no">
+   <DESCRIPTION>
+    Whether inserting the header attributes in the input time-series dataset (Default: No).
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="dooutputsntab" type="bool" default="no">
+   <DESCRIPTION>
+    Whether outputting the table of signal-to-noise ratio to the cutoff rate/count.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="snsettabname" type="dataset" default="sntobkgcut.ds:SN_TO_BKGCUT">
+      <DESCRIPTION>
+       Name of the output table of signal-to-noise ratio to the cutoff rate/count (FILE.ds:TABLENAME).
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+    <ITEM value="no">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

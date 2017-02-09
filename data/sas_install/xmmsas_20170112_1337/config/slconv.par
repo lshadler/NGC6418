@@ -1,0 +1,215 @@
+<!-- converted from XPI formatted "slconv.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="srclisttab" type="table" mandatory="yes" default="srclist.ds:SRCLIST">
+   <DESCRIPTION>
+    Name of source list dataset:table.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="racolumn" type="string" default="RA">
+   <DESCRIPTION>
+    Name of column from which to get RA.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="deccolumn" type="string" default="DEC">
+   <DESCRIPTION>
+    Name of column from which to get declination.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="radecunits" type="string" default="decimaldeg">
+   <DESCRIPTION>
+    Units of the RA and dec columns.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="decimaldeg">
+    </ITEM>
+    <ITEM value="hdms">
+    </ITEM>
+    <ITEM value="radians">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="expression" type="string" default="">
+   <DESCRIPTION>
+    Source selection expression.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withncut" type="bool" default="no">
+   <DESCRIPTION>
+    Yes =&#62; truncate number of sources to --ncut.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="ncutsortexpression" type="string" default="RATE" mandatory="yes">
+      <DESCRIPTION>
+       Expression controlling how the source list is sorted before truncation.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="ncut" type="int" default="30">
+      <DESCRIPTION>
+       Maximum number of sources.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       ncut in [0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="radiusexpression" type="string" default="RATE" mandatory="yes">
+   <DESCRIPTION>
+    Expression that determines the radius of the source circle.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="radiusstyle" type="string" default="raw">
+   <DESCRIPTION>
+    Style of calculating source circle radii.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="auto">
+    </ITEM>
+    <ITEM value="raw">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withlabels" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to add source labels.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="labelstyle" type="string" default="expr">
+      <DESCRIPTION>
+       Style for setting source labels.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="sortedint">
+        <PARAM id="labelsortstyle" type="string" default="expr">
+         <DESCRIPTION>
+          Method of sorting to derive integer source labels.
+         </DESCRIPTION>
+         <CASE>
+          <ITEM value="radius">
+          </ITEM>
+
+          <ITEM value="rownumber">
+          </ITEM>
+
+          <ITEM value="expr">
+           <PARAM id="sortexpression" type="string" default="ML_ID_SRC" mandatory="yes">
+            <DESCRIPTION>
+             Column expression to use for ordering source label integers.
+            </DESCRIPTION>
+           </PARAM>
+          </ITEM>
+         </CASE>
+        </PARAM>
+       </ITEM>
+
+       <ITEM value="expr">
+        <PARAM id="labelexpression" type="string" default="ML_ID_SRC" mandatory="yes">
+         <DESCRIPTION>
+          Column (expression) to use for source labels.
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="colour" type="string" default="green">
+   <DESCRIPTION>
+    Colour to plot source circles and labels.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="black">
+    </ITEM>
+    <ITEM value="blue">
+    </ITEM>
+    <ITEM value="cyan">
+    </ITEM>
+    <ITEM value="green">
+    </ITEM>
+    <ITEM value="purple">
+    </ITEM>
+    <ITEM value="red">
+    </ITEM>
+    <ITEM value="white">
+    </ITEM>
+    <ITEM value="yellow">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="shape" type="string" default="circle">
+   <DESCRIPTION>
+    Shape to plot source regions.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="circle">
+    </ITEM>
+    <ITEM value="box">
+    </ITEM>
+    <ITEM value="diamond">
+    </ITEM>
+    <ITEM value="boxcircle">
+    </ITEM>
+    <ITEM value="ellipse">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="outputstyle" type="string" default="ds9">
+   <DESCRIPTION>
+    Output mode.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="ds9">
+    </ITEM>
+    <ITEM value="gaia">
+     <PARAM id="extragaiacolumns" type="string" list="yes" default="RADEC_ERR RATE">
+      <DESCRIPTION>
+       Names of extra columns to add to gaia files.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="outfilestyle" type="string" default="prefix">
+   <DESCRIPTION>
+    Whether to specify just the filename prefix or the whole filename.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="prefix">
+     <PARAM id="outfileprefix" type="string" default="region">
+      <DESCRIPTION>
+       First part of the name of the output text file.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="whole">
+     <PARAM id="outfile" type="string" default="region.txt">
+      <DESCRIPTION>
+       Name of the output text file.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

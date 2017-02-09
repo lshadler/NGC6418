@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="epexposure">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epexposure.css">
+
+<LINK REL="next" HREF="node11.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="epexposure.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epexposure (epexposure-0.14) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="epexposure.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Basic Idea"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epexposure.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="epexposure:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+There is a need to calculate the fractional exposure <A NAME="353"></A><TT>FRACEXP</TT>
+column entries in the CCD specific exposure extensions 
+(see [<A
+ HREF="node18.html#ct:SSCPROICD">2</A>] and SSC_LUX_TN_0038) per frame 
+which will be addressed by higher level SAS 
+tasks for the computation of exposure times or exposure maps. 
+In addition one needs to create GTIs for timing analysis, 
+e.g. light-curves or for determination of absolute quantities like fluxes.
+
+<P>
+The plan is to use the counter and discarded line info stored within the EPIC 
+pn Auxiliary (AUX) File ([<A
+ HREF="node18.html#ct:SOCODFICD">1</A>], p.50) to check if and how many 
+events have been lost during the on-board processing and telemetry or have 
+been flagged as bad in <A NAME="355"></A><A NAME="tex2html2"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>.
+
+<P>
+A problem arises when comparing these counters with the number of events in 
+the actual CCD specific events list: counters are given every <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$m$"></SPAN> CYCLEs and 
+they come <EM>per quadrant, i.e. not per CCD</EM>. Here <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$m$"></SPAN> gives the number of 
+cycles which have been integrated prior to the creation of the counter 
+information. It is a programmable parameter defaulted to 20 to reduce the 
+housekeeping telemetry and needs to be extracted from the periodic housekeeping 
+data (PMH) (parameter name is <A NAME="359"></A><TT>An_MAXFRC</TT>, for quadrant <SPAN CLASS="MATH"><IMG
+ WIDTH="59" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$n=0..3$"></SPAN>, see
+Table 1).For a description of all HK-parameters see [<A
+ HREF="node18.html#ct:EPICPNELEC">3</A>]. 
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER"><A NAME="175"></A>
+<TABLE>
+<CAPTION><STRONG>Table 1:</STRONG>
+Counters used for livetime computation</CAPTION>
+<TR><TD><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">
+<DIV ALIGN="CENTER">
+
+</DIV>
+HK Parameter</TD>
+<TD ALIGN="LEFT">Storage</TD>
+<TD ALIGN="CENTER">Values</TD>
+<TD ALIGN="LEFT">Meaning</TD>
+</TR>
+<TR><TD ALIGN="LEFT">An_MAXFRC</TD>
+<TD ALIGN="LEFT">PMH</TD>
+<TD ALIGN="CENTER">0 - 255, def. 20</TD>
+<TD ALIGN="LEFT">number of cycles after which 
+                                         count info is sent</TD>
+</TR>
+<TR><TD ALIGN="LEFT">An_CCD0SWISTAT</TD>
+<TD ALIGN="LEFT">PMH</TD>
+<TD ALIGN="CENTER">ON/OFF</TD>
+<TD ALIGN="LEFT">status of CCD0 of this quadrant</TD>
+</TR>
+<TR><TD ALIGN="LEFT">An_CCD1SWISTAT</TD>
+<TD ALIGN="LEFT">PMH</TD>
+<TD ALIGN="CENTER">ON/OFF</TD>
+<TD ALIGN="LEFT">status of CCD1 of this quadrant</TD>
+</TR>
+<TR><TD ALIGN="LEFT">An_CCD2SWISTAT</TD>
+<TD ALIGN="LEFT">PMH</TD>
+<TD ALIGN="CENTER">ON/OFF</TD>
+<TD ALIGN="LEFT">status of CCD2 of this quadrant</TD>
+</TR>
+<TR><TD ALIGN="LEFT">An_CHOP</TD>
+<TD ALIGN="LEFT">PMH</TD>
+<TD ALIGN="CENTER">0 - 31</TD>
+<TD ALIGN="LEFT">number of frames excluded from the onboard</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">processing after one was included</TD>
+</TR>
+<TR><TD ALIGN="LEFT">NDISCLIN</TD>
+<TD ALIGN="LEFT">AUX</TD>
+<TD ALIGN="CENTER">0 - 16383</TD>
+<TD ALIGN="LEFT">number of discarded columns</TD>
+</TR>
+<TR><TD ALIGN="LEFT">NEPDH</TD>
+<TD ALIGN="LEFT">AUX</TD>
+<TD ALIGN="CENTER">0 - 65535</TD>
+<TD ALIGN="LEFT">number of events which have been transmitted</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">from Event Analyser 
+to Data Handling Unit </TD>
+</TR>
+</TABLE>
+<A NAME="epexposure:Tab:counters"></A></TD></TR>
+</TABLE>
+</DIV><P></P>
+<BR>
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html78"
+  HREF="node4.html">Basic Idea</A>
+<UL>
+<LI><A NAME="tex2html79"
+  HREF="node5.html">Mode dependent livetime factor FC0</A>
+<LI><A NAME="tex2html80"
+  HREF="node6.html">MIP dependent quadrant livetime factor FC1</A>
+<LI><A NAME="tex2html81"
+  HREF="node7.html">MIP dependent frames livetime factor FC2</A>
+<LI><A NAME="tex2html82"
+  HREF="node8.html">Chopper dependent livetime factor FC3</A>
+<LI><A NAME="tex2html83"
+  HREF="node9.html">CCD specific frame quality dependent livetime</A>
+<LI><A NAME="tex2html84"
+  HREF="node10.html">Quadrant specific frame quality dependent livetime</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="epexposure.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Basic Idea"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

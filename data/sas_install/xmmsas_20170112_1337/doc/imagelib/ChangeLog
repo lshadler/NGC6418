@@ -1,0 +1,84 @@
+ChangeLog for imagelib
+===============================
+
+Version 3.3.3 - 2010-11-30 (EO)
+-------------
+	+ test/maketestdata.f90: In the intrinsic function random_seed, the
+	  dimension of seed is adjusted by the function itself, therefore a first
+	  call to random_seed with "size" as an integer parameter is required, before
+	  calling random_seed(put=seed). The "size" value given back
+	  is used to define the dimension of the allocatable vector
+	  seed. The usage of random_seed with seed set to a fixed dimension is
+	  not permitted.
+
+Version 3.3.2 - 2007-06-15 (CG)
+-----------
+	+ src/imagesdal.f90             - use a pointer within the GetImages
+									  routine but call it with a 'target'
+									  to avoid a problem with the test harness.
+
+Version 3.3.1 - 2007-06-11 (RDS)
+-----------
+	+ src/imagesdal.f90             - returns a target from GetImages and
+    + test/imconversiontest_mod.f90 - createImages rather than a pointer
+									  directly (SPR-2710)
+
+Version 3.3 - 2002-05-13 (GV)
+-----------
+	+ Updated for param-2.0
+	+ (test/Makefile) imconversiontest is now a DEVTASK.
+	
+Version 3.2 - 2000-09-07 (GV)
+-----------
+	+ (imconversiontest.info) contained wrong GROUPS.
+	
+Version 3.1.1 2000-6-23 (PV)
+---------------------- 
++ .info file added (fixes SPR 1517)
+
+Version 3.1 2000-5-17 (PV)
+---------------------- 
++ fixes for low memory DAL forEachSubtable in tablestat.f90:processSubTable
+ (requires DAL 1.119)
+	
+Version 3.0 1999-12-16 (MBe)
+----------------------
++ updated parameter interface
++ new lower bound = 0 (pixellowleft = 0 in imagesdal.f90 addImage2eventTable)
+
+Version 2.5  15-12-99 (PV)
+----------------------------
++ DISTRIBUTION file added.
+
+Version 2.4  08-04-99 (PV)
+----------------------------
++ 'use filter' changed to 'use datafilter' for selectlib 4.0
+
+Version 2.3  08-04-99 (PV)
+----------------------------
++ message for zoom window limits restricted by original imagebounds 
+  (obj_images:imageWindow)
+
+Version 2.2  08-04-99 (PV)
+----------------------------
++ warning for center finding zero valued image
+	
+Version 2.1  07-04-99 (PV)
+----------------------------
+- updated some of the messaging
+
+Version 2.0  09-02-99 (PV)
+----------------------------
+- parameter names changed in imagesDAL.f90.
+- state of the art messaging		
+		
+Version 1.1  16-11-98 (PV)
+----------------------------
+- comment removed from DEPEND file.		
+	
+Version 1.0   13-11-98 (PV)
+----------------------------
+
+- First version as seperate package.
+  This library used to be par of the radial package. (upto radial v2.5) 
+  See radial Changelog for history before this version.

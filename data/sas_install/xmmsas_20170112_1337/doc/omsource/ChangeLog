@@ -1,0 +1,447 @@
+ChangeLog for omsource
+======================
+
+Version 1.26 - 2016-07-19 (AI)
+-------------	
+	+ (src/DopeVector.h) gfortran array descritor definition added
+	+ (src/omsource_old.f90) subroutines added as public 
+	setESourcePhotometryMethod and setweightingmethod added as public
+
+Version 1.25.1 - 2016-01-12 (AI)
+-------------	
+	+ (src/omsource_old.f90) use modules reordering to avoid error  
+	        with NAG fortran compiler 6.2
+
+Version 1.25 - 2014-05-22 (AI)
+-------------
+	+ (src/OmSourceParameters.h) c++ struct refractoring to avoid seg 
+	faults in 64bit platforms
+	+ (src/OmSourcePhotometryDlg.cc) Utilization of QString vector instead of
+	QString array to avoid 64bit crashes.
+	
+Version 1.24.1 - 2013-11-06 (VNY)
+-------------
+	+src/omsource_old.f90 adjusted to the the changes made in 
+	mssllib-2.66.3 fixing the problem report SSC-SPR-7153.
+Version 1.24 - 2012-10-13 (VNY)
+-------------
+	+src/OmSourcePhotometryDlg.cc, omsource_old.f90 
+	Removed intermediate test messages; the displayed corrected source and 
+	background count rates are made consistent with the photometry 
+	region size; clarifying labels about the photometry region size
+	are introduced.
+Version 1.23 - 2012-06-24 (VNY)
+-------------
+	+ src/OmSourcePhotometryDlg.cc Corrected the computation of
+	the coincidence-loss corrected source, background and total
+	count rates (fixed SSC-SPR-6744)
+	
+Version 1.22.2 - 2012-04-09 (EO)
+-------------	
+	+ src/DopeVector.h: offset and addr must be type dope_Offset 
+	(long long 0n 64-bit, int on 32-bit)
+
+Version 1.22.1 - 2012-03-28 (EO)
+--------------
+	+ src/Makefile: Added pgplot to EXTERNALS so as to get rid of missing pgplot 
+	  references. 
+
+Version 1.22 - 2010-09-29 (VNY)
+------------------------------
+    +src/OmSourceBrowser.cc The code responsible for the opening 
+	of the initial file selection dialog is modified to allow working 
+	with input images that do not contain a MODES extension 
+	(fixing SSC-SPR-6632).	
+	
+Version 1.21.17 -  2009-09-24 (CB)
+--------------------------------		
+    +src/OmPhotometryDlg.cc- set AB
+    mag and fluxes to zero when count-rates
+    are zero.	
+	
+Version 1.21.16 -  2009-09-18 (CB)
+--------------------------------		
+   +src/OmPhotometryDlg.cc and omsource_old.f90,
+    Further minor change to prevent
+    problem passing c++ struct to fortran subroutine
+    on some machines (SPR 6557)	
+
+Version 1.21.15 -  2009-09-18 (CB)
+--------------------------------		
+   +src/OmPhotometryDlg.cc and omsource_old.f90,
+    Further minor changes to prevent
+    problem passing c++ struct to fortran subroutine
+    on some machines (SPR 6557)	
+
+	
+Version 1.21.14 -  2009-09-16 (CB)
+--------------------------------		
+    +src/OmPhotometryDlg.cc and omsource_old.f90,
+    made a couple of minor changes to prevent
+    problem passing c++ struct to fortran subroutine
+    on some machines (fixes SPR 6557)	
+
+Version 1.21.13 -  2009-08-07 (CB)
+--------------------------------
+    Continuing amendments for gcc 4 build failure.		
+    +src/OmSourceAddSourcesDlg.cc - line 1022 added .c_str()
+    to fix error "no matching function call to QString..."	
+
+Version 1.21.12 -  2009-08-06 (CB)
+--------------------------------
+    Continuing amendments for gcc 4 build failure.		
+    +src/OmSourceAddSourcesDlg.cc - line 1023 modified to fix 
+    error "no matching function call to QString..."	
+
+Version 1.21.11 -  2009-08-03 (CB)
+--------------------------------
+    Continuing amendments for gcc 4 build failure.		
+    +src/OmSourceBackgroundDlg.cc - line 572 modified test string
+    to fix error "no matching function call to QString..."	
+
+Version 1.21.10 -  2009-07-29 (CB)
+--------------------------------
+    Continuing amendments for gcc 4 build failure.		
+    +src/OmSourceBackgroundDlg.h - line 571 modified test string
+    to fix error "no matching function call to QString..."	
+
+Version 1.21.9 -  2009-07-28 (CB)
+--------------------------------
+    Continuing amendments for gcc 4 build failure.		
+    +src/OmSourceProcessDlg.h - Fixed all compiler warnings
+    "deprecated use of default parameter.." by deleting
+     default value.
+    +src OmSourceBrowser.cc line 100 fixed error "multiple
+     parameters named JD2" by changing to JD3.	
+  
+Version 1.21.8 -  2009-07-27 (CB)
+--------------------------------
+    Continuing amendments for gcc 4 build failure.		
+    +src/OmSpinBox.cc - line 31 changed to
+    "return (QString)_stringList[v - 1].c_str()" to fix
+    error "error : conversion from std::basic_string<char ..
+    to type QString requested"	
+
+Version 1.21.7 -  2009-07-24 (CB)
+--------------------------------
+    Continuing amendments for gcc 4 build failure.		
+    +src/OmSourceTableDlg.cc - added cmath header file
+     to fix error "sqrt was not declared in this scope"	
+ 
+Version 1.21.6 -  2009-07-23 (CB)
+--------------------------------
+    Continuing amendments for gcc 4 build failure.		
+    +src/OmSourceRegions.h Deleted line 46 containing
+    exit function (was used for testing purposes) to fix
+    error "exit was not declared in this scope"	
+  
+
+Version 1.21.5 -  2009-07-22 (CB)
+--------------------------------
+    Continuing amendments for gcc 4 build failure.		
+    +src/DopeVector.h Modified struct DopeVector
+    so that it is not derived from struct Dope,
+    to fix "error dim was not declared in this scope", etc,  errors.	
+    	
+ 
+
+Version 1.21.4 -  2009-07-21 (CB)
+--------------------------------
+    Further amendments for gcc 4 build failure		
+    +src OmImageDipslay.cc - added cmath header file
+    + src DopeVector.h Copied code for struct Dope
+    from /utils/src/f90cxx.h to it and renamed the
+    struct Dope10. Added "public" to struct Dope
+    and changed struct DopeVector so that it is
+    derived from Dope10. This is to fix "error
+    dim was not declared in this scope", etc,  errors.	
+    	
+	
+Version 1.21.3 -  2009-07-20 (CB)
+--------------------------------
+    +src Added cstdlib to OmSourceUtility.cc
+    to fix gcc 4 build failure	
+ 
+Version 1.21.2 -  2009-05-21 (CB)
+--------------------------------
+    +src Ammended some code in offastphotometrydlg.cc
+    to ensure correct stars are used in psf photometry
+    fits (fixes SPR 6536)
+
+Version 1.21.1 -  2009-05-15 (CB)
+--------------------------------
+    +src Added code in omsource_old.f90
+    to load the EXPOSURE image in mosaiced sky-image
+    files, for use with the photometry	
+    (fixes SPR 6531)
+
+Version 1.21 -  2009-05-07 (CB)
+--------------------------------
+    +src Ammended code in OmSourceDetectDialog.cc
+    that loads a source-list file after
+    omdetect has run to prevent possible crash.
+    Ammended window size in OmSourceBackgroundDlg.cc
+    to prevent window obscuring ds9 image.	
+	
+Version 1.20 -  2009-04-08 (CB)
+--------------------------------
+    Removed some test write statements
+	
+Version 1.19 -  2009-04-06 (CB)
+--------------------------------
+       Changed qualityimage from logical to
+        logical(boolean) to fix build problem on some
+	machines
+	
+Version 1.18 -  2009-02-12 (CB)
+--------------------------------
+	Deleted some test code  to fix Mac build failure at Villspa
+        
+
+	
+Version 1.17 -  2009-02-11 (CB)
+--------------------------------
+	Re-uploaded to fix Mac build failure at Villspa
+        (May have done something silly yesterday)
+
+
+Version 1.16 -  2009-02-10 (CB)
+--------------------------------
+	Made a couple of minor corrections
+	to fix Mac build failure at Vilspa
+
+
+	
+Version 1.15.5 -  2007-06-27 (CB)
+--------------------------------
+	Made further documentation ammendment to fix
+	SPR 3690. 
+
+	
+Version 1.15.4 -  2007-06-26 (CB)
+--------------------------------
+	Made further documentation ammendment to fix
+	SPR 3690. 
+	
+Version 1.15.3 -  2007-06-26 (CB)
+--------------------------------
+	Ammended documentation to fix
+	SPR 3690. 
+
+
+Version 1.15.2 -  2007-06-22 (CB)
+--------------------------------
+	Removed figures from documenation
+	and ammended test harness
+	(SPR 3669). 
+
+
+
+Version 1.15.1 -  2007-06-20 (CB)
+--------------------------------
+	Updated documentation for
+	SPR 3669. Made a couple of
+	minor changes to fastphotometrydlg.cc
+	to make it compatible with ommphotom
+
+	
+Version 1.15 -  2007-05-23 (CB)
+--------------------------------
+	Added a new window for doing
+	photometry on FAST data.
+
+	
+Version 1.14 -  2005-03-30 (CB)
+--------------------------------
+	Improved run-time help informatio.
+
+Version 1.13 -  2005-03-09 (CB)
+--------------------------------
+        Uploaded to be compatible with latest version
+	of mssllib in which quality flag has become a
+	16 bit integer.
+
+Version 1.12 -  2006-05-30 (CB)
+--------------------------------
+        Small mods made to region interface to ds9 (SPR 3583).
+	A number of other small improvements have been made.
+
+	
+Version 1.11 -  2005-09-14 (CB)
+--------------------------------
+        Small correction made to raw-count rates corrections factors
+	in OmPhotometryDlg.cc.
+
+	
+Version 1.10 -  2005-09-14 (CB)
+--------------------------------
+        Updated to use mssllib code to draw regions, to be consistent 
+	with omdetect. Updated OmPhotometryDlg.cc to list new
+	raw-rate correction factors.
+	
+Version 1.9.11 -  2005-08-05 (CB)
+--------------------------------
+        Replaced code that uses class "Info" in OmSourceBrowser.cc to run
+	omdetect and ommag with a call to "system" and removed "try" and "catch" blocks
+	to fix SPR 3486. 
+
+Version 1.9.10 -  2005-05-23 (CB)
+--------------------------------
+        Ammended DEPEND file (changed omdetect 4.0 to omdetect 5.0) to fix build        problem.
+
+Version 1.9.9 -  2005-05-19 (CB)
+--------------------------------
+        Ammended to compute and display the OM sensitivity degradation
+	(fixes SPR 3451)
+Version 1.9.8 -  2004-09-28 (CB)
+--------------------------------
+        Ammended OmSourceBrowser.cc to remove leading blank
+	characters from image file name (fixes SPR 3393)
+	
+Version 1.9.7 -  2004-05-28 (CB)
+--------------------------------
+	Moved header file qapplication.h in OmSourceRegions.cc
+	to top of file to remove Point name-clash with Regions.h
+	to fix build mac build failure.
+Version 1.9.6 -  2004-05-26 (CB)
+--------------------------------
+	Modified OmSourcePhotometryDlg.cc to use correct
+	background selection mode (fixes SPR 3326).
+Version 1.9.5 -  2004-01-27 (CB)
+--------------------------------
+        Ammended code so that the logger list is cleared when
+	delete list button clicked. (fixes SPR 3230).
+Version 1.9.4 -  2004-01-22 (CB)
+--------------------------------
+        Modified observation information display dialogue to show
+	dates as a MJD.
+	(fixes SPR 3226).
+	
+
+Version 1.9.3 -  2004-01-21 (CB)
+--------------------------------
+        Modified to compute psf2 correction properly for binned UV data.
+	(fixes SPR 3225).
+	
+
+Version 1.9.2 -  2004-01-07 (CB)
+--------------------------------
+        Modified so that only one temporary region file is used
+	for communicating with ds9.
+	(fixes SPR 3195).
+	
+Version 1.9.1 -  2003-12-18 (CB)
+--------------------------------
+        Fixed bug in centroiding algorithm which caused crash when
+	selecting a source near an image edge
+	(fixes SPR 3186).
+	
+Version 1.9 -  2003-12-03 (CB)
+--------------------
+	Documentation improved for SPR 3166.
+	
+Version 1.8 -  2003-11-26 (CB)
+--------------------
+	Makefile in src directory ammended to fix static-build failure.
+	
+Version 1.7 -  2003-11-21 (CB)
+--------------------
+	DEPEND file ammended for ssclib 3.0
+	
+Version 1.6 -  2003-10-22 (CB)
+--------------------
+       Documentation updated.
+	
+Version 1.5 -  2003-07-22 (CB)
+--------------------
+        Build problem on Solaris 2.8 fixed.
+	
+Version 1.4 -  2003-07-21 (CB)
+--------------------
+        Modified to make use of latest version of mssllib. 
+	Gui improved.
+	
+Version 1.3 -  2003-04-28 (CB)
+--------------------
+        Modified test program in exp directory to fix build problem.
+        DEPEND file ammended.
+Version 1.2 -  2003-04-17 (CB)
+--------------------
+        Updated to use QT 3.0. Information & help
+	windows added. Photometry stuff moved to 
+	separate window. Modified so that the user 
+	can reload image/source-list  files without
+	having to stop/start program. Made easier
+	to use.
+	
+Version 1.1.11 -  2003-01-10 (CB)
+--------------------
+        Ammended configuration file.
+	
+Version 1.1.10 -  2003-01-09 (CB)
+--------------------
+        Improved documentation & some 
+	other minor improvements.
+
+Version 1.1.9 -  2002-12-10 (CB)
+--------------------
+        Improved documentation & some 
+	other minor improvements.
+
+#Version 1.1.8 -  2002-12-05 (CB)
+--------------------
+        Fixed some minor bugs.
+	
+Version 1.1.7 -  2002-12-01 (CB)
+--------------------
+        Fixed some minor bugs.
+	
+Version 1.1.6 -  2002-11-19 (CB)
+--------------------
+        Fixed minor bug.
+	
+Version 1.1.5 -  2002-11-09 (CB)
+--------------------
+        Fixed minor bug.
+
+Version 1.1.4 -  2002-11-05 (CB)
+--------------------
+        Imprved interface.
+
+Version 1.1.3 -  2002-10-25 (CB)
+--------------------
+        Improved interface.
+
+Version 1.1.2 -  2002-10-20 (CB)
+--------------------
+        Fixed bug..
+
+Version 1.1.1 -  2002-10-15 (CB)
+--------------------
+        Improved interface.
+	
+	
+Version 1.1 -  2002-11-15 (CB)
+------------
+         Fixed a few bugs and ammended to be consistent
+	 with latest om software. Improved user interface.
+	
+Version 1.0 -  2002-10-08 (JBa)
+------------
+	+ revised the computing code completely
+	+ GUI front-end is now Qt-based, and uses Ds9\
+	+ more information in:
+	  README.txt
+	  README-TODO.txt
+	  README-modifications.txt
+	  html/howto-code.html
+	  the source code itself
+
+Version 0.2   2002-05-27 (CB)
+----------------------------
+       Improved user interface. Ability to change aperture radius
+       and to do automatic source detection on an image, added.	
+
+Version 0.1   2002-05-17 (CB)
+----------------------------
+       First uploaded version.

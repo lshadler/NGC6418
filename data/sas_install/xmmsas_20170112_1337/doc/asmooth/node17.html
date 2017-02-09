@@ -1,0 +1,397 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="asmooth">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="asmooth.css">
+
+<LINK REL="next" HREF="node18.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="asmooth.html">
+<LINK REL="next" HREF="node18.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+asmooth (asmooth-2.30) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node16.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Smoothing of mosaics"></A>
+<A HREF="asmooth.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="asmooth.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="asmooth:description:parameters"></A>
+<A NAME="1168"></A>
+<tr valign=top bgcolor='silver'><td><b>inset</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The image dataset to be smoothed.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1175"></A>
+<tr valign=top bgcolor='silver'><td><b>outset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>outimage.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The resulting smoothed data set.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1182"></A>
+<tr valign=top bgcolor='silver'><td><b>tempset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>tempimage.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Name for a temporary dataset (only important if one is running several parallel asmooths).
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1189"></A>
+<tr valign=top bgcolor='silver'><td><b>smoothstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>adaptive</td><td>simple|adaptive|withset|template</td></tr>
+
+<tr valign=top><td colspan=5>
+    The type of smoothing desired.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1196"></A>
+<tr valign=top bgcolor='silver'><td><b>convolverstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>gaussian</td><td>gaussian|tophat|squarebox</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>smoothstyle</TT>=`simple' is chosen and prescribes the shape or type of convolver to use to smooth the image.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1205"></A>
+<tr valign=top bgcolor='silver'><td><b>width</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>5.0 pixels</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img53.png"
+ ALT="$0.0 \le$"></SPAN> <TT>width</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="57" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img54.png"
+ ALT="$\le 100.0$"></SPAN> pixels</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>smoothstyle</TT>=`simple' is chosen. It governs the width of the various types of simple convolver. See section <A HREF="node6.html#asmooth:description:convolvers">3.3</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1217"></A>
+<tr valign=top bgcolor='silver'><td><b>normalize</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>smoothstyle</TT>=`simple' is chosen. If set, the convolver is divided by its array sum before use. See section <A HREF="node6.html#asmooth:description:convolvers">3.3</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1227"></A>
+<tr valign=top bgcolor='silver'><td><b>withuserwidths</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>smoothstyle</TT>=`adaptive' is chosen. If set, the task reads a list of gaussian-convolver sigma values from the <TT>userwidths</TT> parameter. See section <A HREF="node11.html#asmooth:description:adaptive">3.3.5</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1239"></A>
+<tr valign=top bgcolor='silver'><td><b>userwidths</b></td><td>yes</td><td><A HREF=../param/node3.html>real list</A></td><td>&nbsp;</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img53.png"
+ ALT="$0.0 \le$"></SPAN> <TT>userwidths</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="57" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img54.png"
+ ALT="$\le 100.0$"></SPAN> pixels</td></tr>
+
+<tr valign=top><td colspan=5>
+    The list of gaussian-convolver sigma values read when <TT>withuserwidths</TT>=`yes'. The values must occurr in a monotonically increasing sequence. See section <A HREF="node11.html#asmooth:description:adaptive">3.3.5</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1251"></A>
+<tr valign=top bgcolor='silver'><td><b>nconvolvers</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>20</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img55.png"
+ ALT="$2 \le$"></SPAN> <TT>nconvolvers</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img56.png"
+ ALT="$\le 126$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>smoothstyle</TT>='adaptive' is chosen but <TT>withuserwidths</TT>=`no', the task constructs a library of <TT>nconvolvers</TT> gaussian convolvers. See section <A HREF="node11.html#asmooth:description:adaptive">3.3.5</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1267"></A>
+<tr valign=top bgcolor='silver'><td><b>minwidth</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>0.0 pixels</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img53.png"
+ ALT="$0.0 \le$"></SPAN> <TT>minwidth</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="57" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img54.png"
+ ALT="$\le 100.0$"></SPAN> pixels</td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>smoothstyle</TT>='adaptive' is chosen but <TT>withuserwidths</TT>=`no', the task constructs a library of gaussian convolvers which have sigma values ranging from <TT>minwidth</TT> to <TT>maxwidth</TT>. See section <A HREF="node11.html#asmooth:description:adaptive">3.3.5</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1285"></A>
+<tr valign=top bgcolor='silver'><td><b>maxwidth</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>10.0 pixels</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img53.png"
+ ALT="$0.0 \le$"></SPAN> <TT>maxwidth</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="57" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img54.png"
+ ALT="$\le 100.0$"></SPAN> pixels</td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>smoothstyle</TT>='adaptive' is chosen but <TT>withuserwidths</TT>=`no', the task constructs a library of gaussian convolvers which have sigma values ranging from <TT>minwidth</TT> to <TT>maxwidth</TT>. See section <A HREF="node11.html#asmooth:description:adaptive">3.3.5</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1303"></A>
+<tr valign=top bgcolor='silver'><td><b>widthliststyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>linear</td><td>linear|log|sqrt</td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>smoothstyle</TT>='adaptive' is chosen but <TT>withuserwidths</TT>=`no', the task constructs a library of gaussian convolvers. The sigma values of successive gaussians are spaced according to <TT>widthliststyle</TT>. See section <A HREF="node11.html#asmooth:description:adaptive">3.3.5</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1317"></A>
+<tr valign=top bgcolor='silver'><td><b>desiredsnr</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>10.0</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img57.png"
+ ALT="$0.0 &lt;$"></SPAN> <TT>desiredsnr</TT></td></tr>
+
+<tr valign=top><td colspan=5>
+    Desired signal-to-noise ratio in an adaptively-smoothed image.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1326"></A>
+<tr valign=top bgcolor='silver'><td><b>writetemplateset</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    After completion of (adaptive) smoothing, save an image of the convolver widths to a file name specified by <TT>outtemplateset</TT>. See section <A HREF="node12.html#asmooth:description:template">3.3.6</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1336"></A>
+<tr valign=top bgcolor='silver'><td><b>outtemplateset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>template.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Name of the template image to be written when <TT>writetemplateset</TT>=`yes'. See section <A HREF="node12.html#asmooth:description:template">3.3.6</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1346"></A>
+<tr valign=top bgcolor='silver'><td><b>writeconvolvers</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    After completion of (adaptive) smoothing, save details of the convolvers used to files named in parameters <TT>outconvolversset</TT> and <TT>outindeximageset</TT>. See section <A HREF="node10.html#asmooth:description:multi">3.3.4</A> for a description of how these files can be used.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1358"></A>
+<tr valign=top bgcolor='silver'><td><b>outconvolversset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>outconvolvers.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>writeconvolvers</TT>=`yes', the task writes images of all the convolvers to this dataset. It is recommended that <TT>outindeximageset</TT> and <TT>outconvolversset</TT> be the same dataset. See section <A HREF="node10.html#asmooth:description:multi">3.3.4</A> for a description of how this file can be used.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1372"></A>
+<tr valign=top bgcolor='silver'><td><b>outindeximageset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>outindeximage.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>writeconvolvers</TT>=`yes', the task writes an index image to this dataset. It is recommended that <TT>outindeximageset</TT> and <TT>outconvolversset</TT> be the same dataset. See section <A HREF="node10.html#asmooth:description:multi">3.3.4</A> for a description of how this file can be used.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1386"></A>
+<tr valign=top bgcolor='silver'><td><b>inconvolversarray</b></td><td>no</td><td><A HREF=../param/node3.html>array</A></td><td>inconvolvers.ds:CONV_000</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>smoothstyle</TT>=`withset'. <TT>inconvolversarray</TT> is the name of a dataset + array which contains images of all the convolvers to be used. An index image specified in parameter <TT>inindeximagearray</TT> is also needed. See section <A HREF="node10.html#asmooth:description:multi">3.3.4</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1400"></A>
+<tr valign=top bgcolor='silver'><td><b>withindeximagearray</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>smoothstyle</TT>=`withset'. It specifies whether to also look for an index image dataset+array.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1409"></A>
+<tr valign=top bgcolor='silver'><td><b>inindeximagearray</b></td><td>no</td><td><A HREF=../param/node3.html>array</A></td><td>inindeximage.ds:INDEXIMG</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>smoothstyle</TT>=`withset' and <TT>withindeximagearray</TT>=`yes'. <TT>inindeximagearray</TT> is the name of a dataset + array which contains an index image, which shows which convolver should be used to smooth which part of the input image in <TT>inset</TT>. Images of the convolvers are read from parameter <TT>inconvolversarray</TT>. See section <A HREF="node10.html#asmooth:description:multi">3.3.4</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1427"></A>
+<tr valign=top bgcolor='silver'><td><b>normalizeset</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>smoothstyle</TT>=`withset'. If set, the convolvers read from parameter <TT>inconvolversarray</TT> are divided by their array sums before use.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1438"></A>
+<tr valign=top bgcolor='silver'><td><b>intemplateset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>template.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>smoothstyle</TT>=`template' and contains the name of the template image to be read. See section <A HREF="node12.html#asmooth:description:template">3.3.6</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1448"></A>
+<tr valign=top bgcolor='silver'><td><b>nopslimit</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="52" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img58.png"
+ ALT="$500000$"></SPAN></td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img59.png"
+ ALT="$&gt;0$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    See developers' notes.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1455"></A>
+<tr valign=top bgcolor='silver'><td><b>forcecalctype</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Force the use of either all direct processing or all Fourier-domain (see developers' notes).
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1462"></A>
+<tr valign=top bgcolor='silver'><td><b>calcbyfft</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>forcecalctype</TT> is set, this parameter controls which of the two methods to use for the whole image: FFT convolution if true, direct convolution otherwise (see developers' notes).
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1471"></A>
+<tr valign=top bgcolor='silver'><td><b>readvarianceset</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If set, the task reads from parameter <TT>invarianceset</TT> an image of the variances (squares of the standard deviations) of the input image values.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1480"></A>
+<tr valign=top bgcolor='silver'><td><b>invarianceset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>invariance.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the dataset which contains an image of the variances (squares of the standard deviations) of the input image values.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1487"></A>
+<tr valign=top bgcolor='silver'><td><b>writevarianceset</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If set, the task writes to parameter <TT>outvarianceset</TT> an image of the variances (squares of the standard deviations) of the output image values.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1496"></A>
+<tr valign=top bgcolor='silver'><td><b>outvarianceset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>outvariance.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the dataset to contain an image of the variances (squares of the standard deviations) of the output image values.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1503"></A>
+<tr valign=top bgcolor='silver'><td><b>withweightset</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If this is set, the task reads an image of weights from parameter <TT>weightset</TT>. See section <A HREF="node13.html#asmooth:description:weights">3.4</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1513"></A>
+<tr valign=top bgcolor='silver'><td><b>weightset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>weight.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The image of weights read by the task if <TT>withweightset</TT>=`yes'. See section <A HREF="node13.html#asmooth:description:weights">3.4</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1523"></A>
+<tr valign=top bgcolor='silver'><td><b>withoutmaskset</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If this is set, the task reads a mask image from parameter <TT>outmaskset</TT>. See section <A HREF="node13.html#asmooth:description:weights">3.4</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1533"></A>
+<tr valign=top bgcolor='silver'><td><b>outmaskset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>outmask.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The mask image read by the task if <TT>withoutmaskset</TT>=`yes'. All pixels of <TT>inset</TT> for which the mask is FALSE are left unchanged. <TT>outmaskset</TT> may be of any numeric data type: values <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img59.png"
+ ALT="$&gt;0$"></SPAN> translate to TRUE, the rest FALSE. See section <A HREF="node13.html#asmooth:description:weights">3.4</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1547"></A>
+<tr valign=top bgcolor='silver'><td><b>writebadmaskset</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If this is set, the task writes to parameter <TT>badmaskset</TT> a logical-valued image which flags those pixels for which the weighted convolution could not be performed. See section <A HREF="node13.html#asmooth:description:weights">3.4</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1557"></A>
+<tr valign=top bgcolor='silver'><td><b>badmaskset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>badmask.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The image of bad-result flags which is written by the task if <TT>writebadmaskset</TT>=`yes'. See section <A HREF="node13.html#asmooth:description:weights">3.4</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1567"></A>
+<tr valign=top bgcolor='silver'><td><b>withexpimageset</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If this is set, the task reads an exposure map from parameter <TT>expimageset</TT>. See section <A HREF="node14.html#asmooth:description:expmaps">3.5</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1577"></A>
+<tr valign=top bgcolor='silver'><td><b>expimageset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>expmap.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The exposure map read by the task if <TT>withexpimageset</TT>=`yes'. See section <A HREF="node14.html#asmooth:description:expmaps">3.5</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1587"></A>
+<tr valign=top bgcolor='silver'><td><b>expmapuse</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>samesnr</td><td>samesize|samesnr</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>withexpimageset</TT>=`yes'. It governs the treatment of variance when adpative smoothing is desired. See section <A HREF="node14.html#asmooth:description:expmaps">3.5</A> for further details.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1597"></A>
+<tr valign=top bgcolor='silver'><td><b>remultiply</b></td><td>yes</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>withexpimageset</TT>=`yes'. If <TT>remultiply</TT>=`yes', the output image is remultiplied by <TT>expimageset</TT> before it is saved to file; otherwise not. See section <A HREF="node14.html#asmooth:description:expmaps">3.5</A> for further details.<br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node16.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Smoothing of mosaics"></A>
+<A HREF="asmooth.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

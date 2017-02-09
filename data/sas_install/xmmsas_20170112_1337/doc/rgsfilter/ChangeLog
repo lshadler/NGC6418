@@ -1,0 +1,133 @@
+ChangeLog for rgsfilter
+===============================
+
+Version 1.18.3 - 2016-10-31 (AI)
+--------------
+	+ ON_NODE_INTERFACE flag is automatically disabled in case RGS is 
+	working	in singlereadout mode. SOC-SPR-6757 closed
+	
+Version 1.18.2 - 2013-11-05 (AI)
+--------------
+	+ Call to ExposureMapper (rgslib) to calculate the exposure map taking into account the
+	sun aspect angle and heliocentric correction, in case they were enabled in rgsangles.
+	
+Version 1.18.1 - 2013-02-19 (AI)
+--------------
+	+ Debug lines removed.
+	
+Version 1.18 - 2012-12-17 (AI)
+--------------
+        + New calculation of exposure maps in lambda space. This new functionality has 
+	required changes in rgslib too.
+	+ New "spectrumbinning" parameter to create exposure maps in lambda space.
+	+ doc updated
+	
+Version 1.17.1 - 2006-05-30 (AI)
+--------------
+	+ (SOC-SCR-215) New keyword ONTIME added to the EVENTS table of the
+	rgsfilter output (src/rgsfilter.cc).
+	+ New item added to the "rejflags"  parameter.
+	
+Version 1.17 - 2002-08-19 (UL)
+------------
+	+ now DEPENDs on package sas
+	+ a few transparent changes to improve C++ standard compliance
+
+Version 1.16 - 2002-05-29 (JDR)
+------------
+- requires rgslib-1.29
+- added ON_NODE_INTERFACE to --rejflags parameter default
+- replaced NEXT_TO_CCD_BORDER with ON_WINDOW_BORDER
+- propagates EXPIDSTR from input to output, if present
+
+Version 1.15 - 2002-05-09 (JDR)
+------------
+- requires param-2.0
+
+Version 1.14 - 2002-03-21 (JDR)
+------------
+- task description revised for rgslib-1.28
+
+Version 1.13 - 2002-02-28 (JDR)
+------------
+- made backward compatible with event lists lacking proper SUBMODE keyword
+
+Version 1.12 - 2002-02-25 (JDR)
+------------
+- task description revised for rgslib-1.27
+
+Version 1.11.1 - 2002-02-01 (JDR)
+--------------
+- updated the task description
+
+Version 1.11 - 2002-01-22 (JDR)
+------------
+- requires rgslib-1.25
+- suppresses round-off errors in pixels with no exposure
+
+Version 1.10 - 2002-01-16 (JDR)
+------------
+- requires rgslib-1.24
+- HTR mode: now capable of constructing exposure maps
+
+Version 1.9 - 2001-12-17 (JDR)
+-----------
+- fixed bug: combined exposure map not produced when requested
+
+Version 1.8 - 2001-12-11 (JDR)
+-----------
+- HTR mode: REJPIX tables are not filtered (they don't exist)
+
+Version 1.7 - 2001-10-10 (JDR)
+-----------
+- auxiliary GTI are automatically frame-aligned before the merge
+- changed parameter name --set to --mergedset and --filteredset to --evlist
+
+Version 1.6 - 2001-09-28 (JDR)
+-----------
+- removed redundant parameter --withauxgti
+- updated runtime default output filenames
+
+Version 1.5 - 2001-09-21 (JDR)
+-----------
+- fixed potential bug in combined exposure map WCS
+- changed parameter auxgtitable from scalar to list
+- updates event list GTI to filter out frames with null attitude
+- added std namespace qualifiers
+
+Version 1.4 - 2001-07-11 (JDR)
+-----------
+- fixed another crash caused by missing GTI tables
+
+Version 1.3 - 2001-06-20 (JDR)
+-----------
+- fixed crash caused by missing GTI tables
+
+Version 1.2 - 2001-06-18 (JDR)
+-----------
+- requires rgslib-1.13
+- added parameter --driftbinsize
+- added BELOW_ACCEPTANCE as option to --rejflags parameter
+- default output filenames now inferred from --set parameter
+- always deletes old exposure maps
+- handles unexposed chips gracefully
+- requires BADPIX:BADFLAG
+- renamed parameter --gtitable to --auxgtitable
+- handles CCD-specific STDGTI tables
+
+Version 1.1 - 2001-05-31 (JDR)
+-----------
+- experimental status removed, minor revisions to task description
+
+Version 0.2.1 - 2001-05-18 (JDR)
+-------------
+- task description is ready for design review
+
+Version 0.2 - 2001-03-23 (JDR)
+-----------
+- fixed a memory-management bug, removed some deprecated keywords
+
+Version 0.1 - 2001-03-09 (JDR)
+-----------
+- working draft, not yet ready for design review; no documentation
+- directory structure created by pkgmaker

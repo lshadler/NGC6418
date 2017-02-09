@@ -1,0 +1,361 @@
+<!-- converted from XPI formatted "epevents.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="eventset" type="dataset" mandatory="yes" default="">
+   <DESCRIPTION>
+    Name of input EPIC PN raw events file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="randomizeposition" type="bool" default="yes">
+   <DESCRIPTION>
+    Randomize DETX/DETY within one CCD pixel
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="randomizeenergy" type="bool" default="yes">
+   <DESCRIPTION>
+    Randomize PHA within one ADU bin
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="testenergywidth" type="bool" default="yes">
+   <DESCRIPTION>
+    Use non-standard energy bin width for calibration tests
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="outset" type="dataset" mandatory="yes" default="events.dat">
+   <DESCRIPTION>
+    Name of EPIC PN events file with calibrated and corrected PI channels
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="gainctiaccuracy" type="int" default="2">
+   <DESCRIPTION>
+    Accuracy of gain/cti correction
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    gainctiaccuracy in [0:2]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="reemissionthresh" type="int" default="0">
+   <DESCRIPTION>
+    Re-emission trigger threshold
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="patternanalysis" type="bool" default="yes">
+   <DESCRIPTION>
+    Perform pattern analysis
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withoutoftime" type="bool" default="no">
+   <DESCRIPTION>
+    Perform out-of-time events analysis instead (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withctisrcpos" type="bool" default="no">
+   <DESCRIPTION>
+    Apply CTI corrections as if all events were from RAWY = SRCPOS (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withgaintiming" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply special gain if TIMING mode (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withgainburst" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply special gain if BURST mode (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withgaineff" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply special gain if eFF mode (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withgainff" type="bool" default="no">
+   <DESCRIPTION>
+    Apply special gain if FF mode (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withphagaincolumn" type="bool" default="no">
+   <DESCRIPTION>
+    Create column PHA_GAIN (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="lowgainenergyscale" type="bool" default="no">
+   <DESCRIPTION>
+    Apply correct energy scale if low-gain mode (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withctilongterm" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply long-term CTI increase corrections (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="ctilongtermsoft" type="bool" default="yes">
+   <DESCRIPTION>
+    ... special soft energy function (Y/N), discouraged
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="ctilongtermy" type="bool" default="yes">
+   <DESCRIPTION>
+    ... special Y dependence (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withbackgroundgain" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply quiescent background gain corrections (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withpatternoffset" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply pattern energy offset corrections (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withccdoffsets" type="bool" default="no">
+   <DESCRIPTION>
+    Apply CCD offset corrections (Y/N), discouraged
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withtempcorrection" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply temperature correction (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withframecti" type="bool" default="no">
+   <DESCRIPTION>
+    Supply time-converted FRAME numbers to CTI correction routine for non-IMAGING modes (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withrdpha" type="bool" default="no">
+   <DESCRIPTION>
+    Apply rate-dependent PHA correction for TI+BU modes (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="rdphatimebinsize" type="real" default="100">
+   <DESCRIPTION>
+    Time-bin size for rate-dependent PHA correction for TI+BU modes (seconds)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="checksasmip" type="bool" default="no">
+   <DESCRIPTION>
+    Check results of MIP rejection within SAS, meaningful only for SW TI BU modes (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withphotonmap" type="bool" default="no">
+   <DESCRIPTION>
+    Create several photon CCD maps ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="lothresh" type="real" list="yes" default="0 200 500 0">
+      <DESCRIPTION>
+       lower band limits [eV] for photon maps
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="hithresh" type="real" list="yes" default="200 500 2000 32000">
+      <DESCRIPTION>
+       upper band limits [eV] for photon maps
+      </DESCRIPTION>
+      <CONSTRAINTS>
+        true
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="photonmapset" type="file" default="photonmap.dat">
+   <DESCRIPTION>
+    Name of output photon CCD map file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="mappatterntype" type="string" default="sssn">
+   <DESCRIPTION>
+    pattern types of the bands for photon maps
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

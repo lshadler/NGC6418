@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Subexpressions in table attributes</TITLE>
+<META NAME="description" CONTENT="Subexpressions in table attributes">
+<META NAME="keywords" CONTENT="selectlib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="selectlib.css">
+
+<LINK REL="next" HREF="node14.html">
+<LINK REL="previous" HREF="node12.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node14.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+selectlib (selectlib-4.74.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node12.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Table column names"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Bitwise operators"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node30.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="selectlib.html">Home Page</A> / <A  HREF="node2.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00028000000000000000">
+Subexpressions in table attributes</A>
+</H2>
+Table attributes being referred to in the selection expression via
+their names preceded by a hash mark ('<TT>#</TT>')
+are actually not restricted to contain numeric constants only.
+In fact the values interpreted as strings can contain anything (including
+references to other attributes), for instance, to define convenient
+abbreviations for frequently used constructs. All table attributes
+will get replaced by their respective values which must yield
+a valid boolean selection expression. Otherwise a fatal error condition
+will be raised. Example: If a table contains the attributes:
+<DIV><TT>
+<BR>&nbsp;&nbsp;&nbsp;RAWXSQ&nbsp;&nbsp;= '(RAWX-1)**2'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/ RAWX squared
+<BR>&nbsp;&nbsp;&nbsp;RAWYSQ&nbsp;&nbsp;= '(RAWY-1)**2'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/ RAWY squared
+<BR>&nbsp;&nbsp;&nbsp;DIST&nbsp;&nbsp;&nbsp;&nbsp;= 'sqrt(#RAWXSQ + #RAWYSQ)' / distance from center
+<BR>&nbsp;&nbsp;&nbsp;DISTSEL = '#DIST &lt;= 128'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/ select events in circle r=128
+<BR></TT></DIV>
+the selection expression
+<DIV><TT>
+<BR>&nbsp;&nbsp;&nbsp;#DISTSEL
+<BR></TT></DIV>
+can be used as an alternative to the full form
+<DIV><TT>
+<BR>&nbsp;&nbsp;&nbsp;sqrt((RAWX-1)**2 + (RAWY-1)**2) &lt;= 128
+<BR></TT></DIV>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

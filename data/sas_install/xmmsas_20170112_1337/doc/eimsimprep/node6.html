@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Sky coverage of the source list</TITLE>
+<META NAME="description" CONTENT="Sky coverage of the source list">
+<META NAME="keywords" CONTENT="eimsimprep">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eimsimprep.css">
+
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eimsimprep (eimsim-2.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Sky masks for individual"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Make sky masks"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Make non-vignetted exposure maps"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eimsimprep.html">Home Page</A> / <A  HREF="node2.html">Description</A> / <A  HREF="node4.html">Make sky masks</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00022200000000000000">
+Sky coverage of the source list</A>
+</H3>
+
+<P>
+One often wants to detect sources in parallel in several variously-aligned images, made perhaps using several EPIC cameras, or observed at different times. If the images are not spatially aligned, a mask created for one exposure map will not necessarily be adequate for another. However, one naturally wants each simulated image in the set to draw from the same population of source positions and fluxes. For this reason, a super-region is created which is at least as large as the intersection of all the masks created in the previous section. The most convenient way to do this is to calculate the direction and width of that cone which just encompasses the set of masks.
+
+<P>
+The algorithm first calculates the position and radius of the cone which is just large enough to include the pointing directions of all the exposures; then adds 15 arcmin to the cone radius to account for the approximate radius of the EPIC fields; and finally adds a final radius pad of size specified via parameter <TT>padsizearcsec</TT>.
+
+<P>
+The RA and dec of the cone central ray, and the cone half-width or angle, are written to the <A NAME="670"></A><TT>SRCSPECS</TT> extension of the source template set (parameter <TT>srcspecset</TT>) in the keywords <A NAME="673"></A><TT>CONE_RA</TT>, <A NAME="675"></A><TT>CONE_DEC</TT> (both in decimal degrees) and <A NAME="677"></A><TT>CONE_RAD</TT> (arcsec). The angular area in deg<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$^2$"></SPAN> of the cone is also given in the keyword <A NAME="679"></A><TT>CONEAREA</TT>. This last is done just for convenience - this keyword is not required in any later stage of <A NAME="681"></A><A NAME="tex2html32"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>.
+
+<P>
+It is proposed at some later stage to add other alternative shapes of boundary region, to cater for mosaics which are extended in one direction for example.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Sky masks for individual"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Make sky masks"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Make non-vignetted exposure maps"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

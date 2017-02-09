@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Out-of-time events</TITLE>
+<META NAME="description" CONTENT="Out-of-time events">
+<META NAME="keywords" CONTENT="epchain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epchain.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epchain (epchain-8.76) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="General"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Incomplete ODFs"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epchain.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000"></A><A NAME="epchain:description:description:outoftime"></A>
+<BR>
+Out-of-time events
+</H2>
+
+<P>
+Depending on the observation mode a certain fraction of the events recorded
+are due to out-of-time events, i.e. are registered during readout of a
+CCD and thus will be assigned an incorrect position in <A NAME="1606"></A><TT>RAWY</TT>
+and consequently an incorrect CTI correction. Typical values are
+6.3% for full frame mode, and 2.3% for extended full frame mode
+(with frame time parameter 3).
+
+<P>
+If <TT>withoutoftime</TT>=Y the task <A NAME="1609"></A><A NAME="tex2html45"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>
+does not create the ``normal''
+events file but uses the output of <A NAME="1613"></A><A NAME="tex2html46"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>
+instead to create an event file 
+where all events are treated as out-of-time events. 
+After the pattern recognition for the same
+<A NAME="1617"></A><TT>TIME</TT>, <A NAME="1619"></A><TT>PHA</TT>, and <A NAME="1621"></A><TT>RAWX</TT> a new <A NAME="1623"></A><TT>RAWY</TT>
+is simulated by randomly shifting the pattern along the RAWY axis
+and performing the gain and CTI correction afterwards.
+
+<P>
+This out-of-time events file has the same temporal variations and
+pattern distribution as the ``normal'' event file. 
+All events have an energy correction corresponding to the
+(randomly distributed) RAWY column.
+You can apply 
+a selection on both the ``normal'' and ``out-of-time'' event file,
+scale with a mode-dependent factor and subtract the ``out-of-time''
+contribution from the other. You can create ``out-of-time''-corrected
+spectra and images for an arbitrary time and energy range.
+
+<P>
+<B>Note:</B> When using <A NAME="1625"></A><A NAME="tex2html47"
+  HREF="../epchain/index.html"><SPAN  CLASS="textbf">epchain</SPAN></A>
+with parameter <TT>withoutoftime</TT>=Y 
+it is highly recommended to follow the order as illustrated in the
+examples section (see Sect.<A HREF="node10.html#Sect_epchain_examples">3.7</A>): 
+first with parameter setting 
+<BR>   <TT>withoutoftime</TT>=Y keepintermediate=raw 
+<BR>
+and then second with 
+<BR>   <TT>withoutoftime</TT>=N (is default and can thus be omitted)
+<BR>
+making use of intermediate files.
+
+<P>
+The current (experimental) implementation does not automatically detect the 
+instrument and bad pixel setting.
+The <A NAME="1632"></A><TT>RAWY</TT> range to distribute the out-of-time events is instead 
+derived from the <A NAME="1634"></A><TT>RAWY</TT> range of the actual events in the data.
+The mode-dependent conversion factor has thus to be applied manually
+and is about 95% of the out-of-time event fraction (e.g. 0.060 for
+full frame mode) due to setting the top 10
+rows to ``bad''. This will we improved in later versions.
+
+<P>
+A different approach is done via the setting <TT>withctisrcpos</TT>=Y:
+all event energy corrections do not use the actual RAWY coordinate but
+the corresponding RAWY location of the source (<A NAME="1637"></A><TT>SRCPOS</TT>)
+as determined by the
+task <A NAME="1639"></A><A NAME="tex2html48"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>
+(either automatically or via setting
+<TT>withsrccoords</TT>=Y). So all events are assumed to originate from
+the source position. Events that really occur at a RAWY different from
+<A NAME="1644"></A><TT>SRCPOS</TT> get a wrong (usually too high) CTI correction instead.
+(Note, that this procedure is the correct handling for TIMING and BURST
+mode - where it is performed automatically). A spatial selection
+should be applied in the final event analysis to deal only with detector
+portions dominated by Out-of-Time events. <A NAME="1646"></A><A NAME="tex2html49"
+  HREF="../epchain/index.html"><SPAN  CLASS="textbf">epchain</SPAN></A>
+may be
+used with the setting <TT>ccds</TT>=4 <TT>withctisrcpos</TT>=Y
+to process only the CCD 4 where
+usually the bright source is located that causes the Out-of-Time events.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="General"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Incomplete ODFs"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,2 @@
+files=`\ls *.gif | sed 's%\.gif%%'`
+for n in $files ; do giftopnm < $n.gif | pnmtops -noturn > $n.ps ; ps2epsi $n.ps; rm $n.ps ; done

@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="rgsenergy">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsenergy.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="rgsenergy.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsenergy (rgsenergy-2.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="rgsenergy.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsenergy.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="rgsenergy:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+This task calibrates the telemetered RGS pixel energies.  It operates
+ on a CCD-specific raw event list created by task <A NAME="345"></A><A NAME="tex2html2"
+  HREF="../rgsframes/index.html"><SPAN  CLASS="textbf">rgsframes</SPAN></A>
+and
+ adds the <A NAME="349"></A><TT>PI</TT> column to the <A NAME="351"></A><TT>PIXELS</TT> table.  The
+ calibration consists of three corrective procedures performed in
+ sequence: offset correction, gain correction, and CTI correction.
+ The CAL Handbook describes each procedure in detail.  The
+ offset correction can use static calibration data from the CCF (one value per
+ CCD and node by each RGS), but also
+ dynamic offset data derived from the diagnostic images can be used for
+ subtraction. There are two methods available: 
+ 
+<UL>
+<LI>Using averaged diagnostic images derived from 
+ three consecutive orbits, including the one corresponding
+ to the data (parameter <TT>withdiagoffset</TT>). In this case the subtraction is
+ performed pixel by pixel. This is the method considered as most accurate, due
+ to the offset modulations observed with time within a CCD and node.  
+</LI>
+<LI>Using any diagnostic data for derivation of one value per CCD and node 
+ (parameter <TT>withoffset</TT>).  
+ 
+</LI>
+</UL>
+ The method used for offset correction is flagged in the keyword "OFFSCORR" in 
+ each EXPOSURE extension of the events file (either as "CCDNODE" or "PIX2PIX",
+ corresponding to the one value or pixel by pixel subtraction, respectively).
+
+<P>
+For diagnostic purposes the gain and CTI corrections can be disabled
+ independently (parameters <TT>withgain</TT> and <TT>withcti</TT>).
+
+<P>
+Throughout this document a <IMG
+ WIDTH="8" HEIGHT="27" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="\dag"> marks items that do not apply to HTR
+ mode data and a <IMG
+ WIDTH="8" HEIGHT="27" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="\ddag"> marks items that apply only to HTR mode data.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="rgsenergy.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

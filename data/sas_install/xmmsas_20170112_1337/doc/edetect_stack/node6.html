@@ -1,0 +1,379 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Tasks called by edetect_stack</TITLE>
+<META NAME="description" CONTENT="Tasks called by edetect_stack">
+<META NAME="keywords" CONTENT="edetect_stack">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="edetect_stack.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+edetect_stack (edetect_stack-0.1.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input parameters"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Input / output file"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="edetect_stack.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00033000000000000000"></A><A NAME="2377"></A>
+<A NAME="edetect_stack:description:description:tasks"></A>
+<BR>
+Tasks called by <A NAME="tex2html27"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>
+</H2>
+
+<P>
+<A NAME="2381"></A><A NAME="tex2html30"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>
+consists of twelve subsequent stages during which ten
+  SAS tasks are called to perform the source detection. While running the
+  meta-task, information on the program flow will be shown
+  if <A NAME="2385"></A><TT>SAS_VERBOSITY</TT> or the argument of the option '-V' is set to 5 or
+  higher.
+
+<P>
+Figure&nbsp;<A HREF="#edetect_stack:description:fig:tasks">2</A> illustrates the flow of
+  standard processing: tasks and products, and indicates how often each task
+  is called.
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="edetect_stack:description:fig:tasks"></A><A NAME="1980"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 2:</STRONG>
+Structure of <A NAME="2439"></A><A NAME="tex2html28"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>.</CAPTION>
+<TR><TD><IMG
+ WIDTH="723" HEIGHT="681" BORDER="0"
+ SRC="img6.png"
+ ALT="\begin{figure}\begin{picture}(350,420)
+\setlength \unitlength{1mm}
+\thinline...
+...$~energy band}}}
+%
+\put(0,-5){\makebox(.1,.1){.}}
+\end{picture}
+\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+<SPAN  CLASS="textbf">Notes on the individual task calls.</SPAN>
+  
+<OL>
+<LI><A NAME="2443"></A><A NAME="tex2html31"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>
+<BR>
+<A NAME="2447"></A><TT>SAS_ODF</TT> is set for each attitude file according to the input
+  parameter <TT>summarysets</TT> and the observation identifier in the
+  files. The analysis area can be chosen by the user via the parameters
+  <TT>att_nominalra</TT>,
+  <TT>att_nominaldec</TT>, and <TT>att_imagesize</TT> which are
+  forwarded to <A NAME="2453"></A><A NAME="tex2html32"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>
+and activated by
+  <TT>with_att_nominalcoord</TT>=yes and / or
+  <TT>with_att_imagesize</TT>=yes.
+
+<P>
+When automatically determining the image area, ``notOnChip'' warnings may be
+  sent by <A NAME="2459"></A><A NAME="tex2html33"
+  HREF="../esky2det/index.html"><SPAN  CLASS="textbf">esky2det</SPAN></A>. They can be ignored. <A NAME="2463"></A><A NAME="tex2html34"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>
+informs
+
+the user via an extra warning in case an input pointing does not overlap
+  with the chosen analysis area.
+
+<P>
+</LI>
+<LI><A NAME="2467"></A><A NAME="tex2html35"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+<BR>
+By default, EPIC images are filtered with the FLAG
+
+and pattern expressions that were used for the 2XMM and 3XMM catalogues
+  (<A NAME="tex2html36"
+  HREF="http://xmmssc-www.star.le.ac.uk/Catalogue/2XMM/UserGuide_xmmcat.html#ImageCreat">described in the 2XMM Catalogue User
+  Guide</A>).
+
+Neither explicit gti filtering nor additional pattern filtering of the input
+  event lists are directly supported by <A NAME="2471"></A><A NAME="tex2html37"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>. If users want
+
+to apply their own filtering expressions, they need to filter the event
+  lists before running <A NAME="2475"></A><A NAME="tex2html38"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>
+and/or create their own input
+  images.
+
+<P>
+<A NAME="2479"></A><A NAME="tex2html39"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>
+checks whether output images are empty. Instruments /
+  observations for which no image contains any event are ignored in the
+  following.
+
+<P>
+</LI>
+<LI><A NAME="2483"></A><A NAME="tex2html40"
+  HREF="../eexpmap/index.html"><SPAN  CLASS="textbf">eexpmap</SPAN></A>
+<BR>
+Exposure maps are created
+   with <A HREF=../eexpmap/node5.html><TT>withvignetting</TT></A>=no. Vignetted
+   exposure maps are produced in addition, if <TT>esp_fitmethod</TT> is set to
+   ``model (see notes on the call to <A NAME="2489"></A><A NAME="tex2html41"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>).
+
+<P>
+</LI>
+<LI><A NAME="2493"></A><A NAME="tex2html42"
+  HREF="../emask/index.html"><SPAN  CLASS="textbf">emask</SPAN></A>
+<BR>
+Users are advised to check the automatically created detector masks and to
+  adjust the <A NAME="2497"></A><A NAME="tex2html43"
+  HREF="../emask/index.html"><SPAN  CLASS="textbf">emask</SPAN></A>
+thresholds <TT>emask_threshold1</TT>, <TT>emask_threshold1</TT> if, for
+  example, too large regions are masked.
+
+<P>
+</LI>
+<LI><A NAME="2503"></A><A NAME="tex2html44"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+(local mode)
+<BR>
+Within <A NAME="2507"></A><A NAME="tex2html45"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>, <A NAME="2511"></A><A NAME="tex2html46"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+is generally called with
+
+exposure maps and detection masks, i.e. the
+  parameters <A HREF=../eboxdetect/node4.html><TT>withexpimage</TT></A>
+  and <A HREF=../eboxdetect/node4.html><TT>withdetmask</TT></A>
+  are set to ``yes'' (<A NAME="2517"></A><A NAME="tex2html47"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+default: ``no'').
+
+<P>
+</LI>
+<LI><A NAME="2521"></A><A NAME="tex2html48"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>
+<BR><A NAME="2525"></A><A NAME="tex2html49"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>
+supports all fit methods
+
+of <A NAME="2529"></A><A NAME="tex2html50"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>, which are explained in the <A HREF=../esplinemap/node3.html>task
+
+description</A>:
+
+<P>
+<TT>esp_fitmethod</TT>=smooth (default of <A NAME="2534"></A><A NAME="tex2html51"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>): produce
+
+background maps via adaptive smoothing of the cheesed image.
+
+<P>
+<TT>esp_fitmethod</TT>=spline: Use a spline fit to produce the background
+  maps.   The number of spline nodes is derived from the image size in pixels, per
+  default, as square root of the longest side divided by two. Users can change
+  the number of nodes by changing the value of the
+  parameter <TT>esp_nsplinenodes</TT> and
+  setting <TT>with_esp_nsplinenodes</TT>=true.
+
+<P>
+<TT>esp_fitmethod</TT>=model: pass vignetted exposure maps
+  to <A NAME="2542"></A><A NAME="tex2html52"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>
+via the <A NAME="2546"></A><A NAME="tex2html53"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>
+parameter <A HREF=../esplinemap/node4.html><TT>expimageset</TT></A>.
+<BR>
+If, additionally, <TT>esp_withexpimageset2</TT>=true: pass unvignetted
+  exposure maps to <A NAME="2552"></A><A NAME="tex2html54"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>
+via the <A NAME="2556"></A><A NAME="tex2html55"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>
+parameter <A HREF=../esplinemap/node4.html><TT>expimageset2</TT></A>.
+
+<P>
+Users are advised to check the background maps for fit artefacts like very
+  bright regions and to adjust the fit parameters (<TT>esp_nsplinenodes</TT>
+  or <TT>esp_snrmin</TT>, <TT>esp_smoothsigma</TT>) when indicated.
+
+<P>
+</LI>
+<LI><A NAME="2564"></A><A NAME="tex2html56"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+(map mode)
+<BR>
+The map-mode box source lists per
+  pointing are used as input to the stacked <A NAME="2568"></A><A NAME="tex2html57"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+run.
+
+<P>
+</LI>
+<LI><A NAME="2572"></A><A NAME="tex2html58"
+  HREF="../esensmap/index.html"><SPAN  CLASS="textbf">esensmap</SPAN></A>
+<BR>
+The creation of sensitivity maps is not mandatory to
+
+run the source detection tasks, but recommended for informational
+  purposes. The likelihood
+  threshold <A HREF=../esensmap/node4.html><TT>mlmin</TT></A>
+  of <A NAME="2577"></A><A NAME="tex2html59"
+  HREF="../esensmap/index.html"><SPAN  CLASS="textbf">esensmap</SPAN></A>, for which the upper limit of source counts is
+
+calculated, is set to the minimum detection likelihood
+  of <A NAME="2581"></A><A NAME="tex2html60"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>
+(as given via the
+  parameter <TT>mlmin</TT>), <SPAN  CLASS="textbf">but not below 1.0</SPAN>.
+
+<P>
+</LI>
+<LI><A NAME="2586"></A><A NAME="tex2html61"
+  HREF="../emosaic/index.html"><SPAN  CLASS="textbf">emosaic</SPAN></A>
+<BR>
+The energy-resolved mosaic images are created for
+
+informational purposes only.
+
+<P>
+</LI>
+<LI><A NAME="2590"></A><A NAME="tex2html62"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+(stacked, map mode) with <A NAME="2594"></A><A NAME="tex2html63"
+  HREF="../emosaic/index.html"><SPAN  CLASS="textbf">emosaic</SPAN></A>
+and <A NAME="2598"></A><A NAME="tex2html64"
+  HREF="../srcmatch/index.html"><SPAN  CLASS="textbf">srcmatch</SPAN></A>
+<OL>
+<LI><A NAME="2602"></A><A NAME="tex2html65"
+  HREF="../emosaic/index.html"><SPAN  CLASS="textbf">emosaic</SPAN></A>
+is called to create mosaicked images, background
+      maps, exposure maps, and detection masks of all pointings per instrument
+      and energy band.
+
+<P>
+</LI>
+<LI><A NAME="2606"></A><A NAME="tex2html66"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+in map mode is run on the <SPAN  CLASS="textit">mosaicked</SPAN>
+      images, i.e. on the same number of input images as in standard source
+      detection, to create a preliminary box source list. Its name derived
+      from the parameter <TT>eboxs_boxlistset</TT> with an inserted
+      ``_intermediate''.
+
+<P>
+Within <A NAME="2611"></A><A NAME="tex2html67"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>, <A NAME="2615"></A><A NAME="tex2html68"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+is generally called with
+
+exposure maps and detection masks, i.e. the
+      parameters <TT>withexpimage</TT>
+      and <A HREF=../eboxdetect/node4.html><TT>withdetmask</TT></A>
+      are set to ``yes'' (<A NAME="2621"></A><A NAME="tex2html69"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+default: ``no'').
+
+<P>
+</LI>
+<LI><A NAME="2625"></A><A NAME="tex2html70"
+  HREF="../srcmatch/index.html"><SPAN  CLASS="textbf">srcmatch</SPAN></A>
+combines the intermediate stacked box source list
+      with the map-mode box source lists of the individual pointings (if
+      created in stage 7). The output source list is
+      named <TT>eboxs_boxlistset</TT>.
+
+<P>
+The matching radius is determined by <A NAME="2630"></A><A NAME="tex2html71"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>
+from the
+      image binning. If users would like to test different matching radii,
+      they may stop <A NAME="2634"></A><A NAME="tex2html72"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>, adjust the value of the parameter
+
+<TT>maxerr</TT> of <A NAME="2639"></A><A NAME="tex2html73"
+  HREF="../srcmatch/index.html"><SPAN  CLASS="textbf">srcmatch</SPAN></A>
+and repeat the matching, before
+      restarting <A NAME="2643"></A><A NAME="tex2html74"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>
+with <TT>minstage</TT>=11 and the
+      adjusted input list.
+
+<P>
+</LI>
+</OL>
+
+<P>
+Please note that all the <A NAME="2648"></A><A NAME="tex2html75"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+source lists that are produced
+  by <A NAME="2652"></A><A NAME="tex2html76"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>
+serve as input to other tasks and are not suitable
+  for a quantitative analysis.
+
+<P>
+</LI>
+<LI><A NAME="2656"></A><A NAME="tex2html77"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+<BR>
+Within <A NAME="2660"></A><A NAME="tex2html78"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>, the <A NAME="2664"></A><A NAME="tex2html79"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+source list is an intermediate product, from which the final stacked source
+  list is created. It is produced
+  with <A HREF=../emldetect/node5.html><TT>withrawrows</TT></A>=yes
+  and, by default, with a lower minimum detection likelihood than the final
+  source list.
+
+<P>
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input parameters"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Input / output file"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

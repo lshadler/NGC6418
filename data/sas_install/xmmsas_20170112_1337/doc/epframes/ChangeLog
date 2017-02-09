@@ -1,0 +1,1409 @@
+ChangeLog for epframes
+===============================
+open SPRs:
+- none
+
+Version 8.109.1 - 2016-10-09 (MJF)
+----------------------------------
+- (src/epframes_mod.f90): disable dummy HK extensions at compile time
+
+Version 8.109 - 2016-09-06 (AI)
+---------------
+- (src/epframes_mod.f90) Initialization to null of all pointers that are passed 
+  to C++ (Dope vectors). If we do not initizialize the pointers, 
+  we get seg fault at run-time with gcc-6.2.	
+
+Version 8.108.1 - 2016-08-26 (EO)
+---------------
+	+ src/epframes_mod.f90: Due to the introduction in the SAS configure
+	  of the "-cpp" option for Fortran code preprocessing, the compiler is
+	  more strict with syntax rules. 
+	  The line 6066 is a comment line but contains a "\" at the end of the
+	  line. When this code is fed to the gfortran compiler with the -cpp
+	  option, the preprocessor interprets it as a continuation sign, hence, 
+	  the following line, which is an "if ... then" statement, is not taken as
+	  such. The consequence is that the "endif" at 6660 is interpreted 
+	  as orphan and a syntax error is issued. By removing the "\",
+	  everything is fine. 
+
+Version 8.108 - 2016-07-20 (MJF)
+--------------------------------
+- (src/epframes_mod.f90): remove obsolete statement "use f90_unix_env"
+- (src/epframes_mod.f90): added dummy HK extensions output for interface
+  development of intra-exposure corrections based on HK (SCR-7312)
+
+Version 8.107 - 2016-07-19 (MJF)
+--------------------------------
+- (src/epframes_mod.f90): check E_Cx_IVDDA (related to NCR-138)
+- (src/epframes_mod.f90): gfortran compatibility change related to environment
+  variable SAS_JUMP_TOLERANCE: getenv() -> get_environment_variable()
+- (src/epframes_mod.f90): compare CAL and enviroment JUMP_TOLERANCE values
+
+Version 8.106 - 2015-10-14 (RDS)
+--------------------------------
+- (doc/epframes_description.tex): improved description of JUMP tolerance
+					(SPR-7056)
+
+Version 8.105 - 2015-05-28 (MJF)
+--------------------------------
+- (src/epframes_mod.f90): write not only SRCRAWX, SRCRAWY, but also the
+  corresponding CCDSRC to FITS header (need not always to be central CCD 4)
+
+Version 8.104 - 2014-06-02 (MJF)
+--------------------------------
+- (src/epframes_mod.f90): read also column FD130 from PNPMH1 file (FILTER),
+  and write it to keyword "derived filter" FD130
+
+Version 8.103 - 2014-05-27 (MJF)
+--------------------------------
+- (src/epframes_mod.f90): correct FILTER keyword a posteriori according to a
+  list if obviously wrong "Closed/CalClosed". This makes the final event file
+  to contain the proper FILTER, but can not correct SUM file (etc.).
+  Write a warning "FILTERwrong" in this case.
+- (doc/epframes_description.tex): as above
+
+Version 8.102 - 2013-11-06 (MJF)
+--------------------------------
+- (src/epframes_mod.f90): made SAS MIP rate determination more robust against
+   counting mode or other exposure losses (otherwise rate too low)
+- (src/epframes_mod.f90): increased MFEXTRA from 500 to 2500 due to problems
+   with Q3 in mosaic pseudo-ODF 2266_0411780834_PNS001 
+
+Version 8.101 - 2013-07-04 (MJF)
+--------------------------------
+- (src/epframes_mod.f90): obtain real-valued CCD coordinates for source
+   position and write to header keywords SRCPOSX and SRCPOSY
+- (DEPEND): needs "epmpelib-0.6" which needs "cal-3.216"
+
+Version 8.100 - 2013-05-31 (MJF)
+--------------------------------
+- (src/epframes_mod.f90): further informational messages concerning multiple
+   FIFO resets and related count rate reduction
+
+Version 8.99 - 2013-05-28 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): check for multiple FIFO resets that would cause
+   an underestimated deadtime due to FIFO losses and resets
+
+Version 8.98 - 2013-05-14 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): read a few more HK values related to NCR-138
+
+Version 8.97.4 - 2013-04-29 (MJF)
+---------------------------------
+- (test/epframes_test_*): make these files executable again (had
+   been accidentally set to "rw" but not to "rwx" in last version)
+
+Version 8.97.3 - 2013-04-24 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): added warning "FreqShiftLarge" if estimated
+  frequency shift exceeds corresponding SAS_JUMP_TOLERANCE or CCF values
+- (doc/epframes_description.tex): as above
+
+Version 8.97.2 - 2013-03-20 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): prevent call to OAL time routine before
+  SAS_JUMP_TOLERANCE is set/read from CCF or environment
+
+Version 8.97.1 - 2013-03-08 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): fixed typo in estimated shift
+
+Version 8.97 - 2013-02-18 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): added new parameter "guessdeltap" (default NO),
+  estimates the PN oscillator frequency shift in [Hz] from HK data,
+  this accounts only for temperature and ageing effects, not for time
+  correlation problems.
+- (config/epframes.*): as above
+- (doc/epframes_description.tex): as above
+- (DEPEND): needs "cal-3.213"
+
+Version 8.96 - 2013-02-14 (MJF)
+-------------------------------
+- (test/epframes_test_no): do not set SAS_JUMP_TOLERANCE but use CAL
+- (test/epframes_test_IM): do not set SAS_JUMP_TOLERANCE but use CAL,
+- (test/epframes_test_TI): set SAS_JUMP_TOLERANCE=22
+- (test/epframes_test_BU): do not set SAS_JUMP_TOLERANCE but use CAL
+- (test/epframes_test_SW): set SAS_JUMP_TOLERANCE=10.2
+- (DEPEND): needs "testccf-1.117" (EPN_TIMJUMPTOL CCF)
+
+Version 8.95 - 2013-01-23 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): if SAS_JUMP_TOLERANCE is undefined then
+   call CAL_timeJumpTol(revolution) and 
+   call OAL_setState(timeJumpThreshold = timeJumpThresh)
+- (DEPEND): needs "oal-3.121" and "cal-3.211"
+
+Version 8.94 - 2012-12-03 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): call OAL_getPosition() to get orbital phase
+- (src/epframes_mod.f90): extract further HK information on temperatures
+- (doc/epframes_description.tex): extended subsection on time jumps
+
+Version 8.93 - 2012-08-21 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): propagate further info on MIP analysis like
+   3rd and 4th momen of DLI to event file header keywords (SOC-SPR-6760)
+- (DEPEND): needs "epmpelib-0.5"
+
+Version 8.92.5 - 2012-08-13 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): propagate further info on MIP analysis like
+   mean and median of DLI to event file header keywords (SOC-SPR-6760)
+
+Version 8.92.4 - 2012-08-08 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): evaluate discarded line counter during counting
+   mode intervals and write result to event file header keyword, may be
+   useful for task "epexposure" (SOC-SPR-6760)
+
+Version 8.92.3 - 2012-07-18 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): make SAS_JUMP_TOLERANCE internally real-valued
+   and thus handling more robust (SOC-SPR-6751)
+- (doc/epframes_description.tex): as the SAS environment variable
+   SAS_JUMP_TOLERANCE is not documented anywhere, a short description
+   has been added, which could remain after a more detailed documentation
+   has been added to OAL (SOC-SPR-6752)
+- (test/epframes_test_SW): SAS_JUMP_TOLERANCE=10.2 (robustness test only)
+
+Version 8.92.2 - 2012-04-03 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): write OTFILTER keyword always - not only if 
+   different from FILTER, see v.8.61 (SOC-SCR-331)
+- (doc/epframes_description.tex): as above
+
+Version 8.92.1 - 2012-04-01 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): look explicitely also for HBR_OFFSET_DATA files,
+   not only for OFFSET_DATA (just for informational purposes, not used here)
+
+Version 8.92 - 2012-03-27 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): changed variable TIME to EVTTIME in the main part
+   and TIME to XTIME in subroutine as the NAG compiler claims the name TIME
+- (src/epframes_mod.f90): use f90_unix_env
+- (src/Makefile): added "NAGSUPMODS = yes"
+- (test/epframes_test_SW): sets SAS_JUMP_TOLERANCE to 10
+
+Version 8.91 - 2012-03-21 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): subroutine for frequency shift detection
+- (test/epframes_test_SW): changed call of "set" parameter
+
+Version 8.90 - 2012-03-17 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): read/write more temperature related HK values
+- (src/epframes_mod.f90): read SAS_JUMP_TOLERANCE via intrinsic getenv()
+- (src/epframes_mod.f90): write SAS_JUMP_TOLERANCE to header keyword
+
+Version 8.89 - 2011-08-22 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): tuned FIFO reset related messages and warning
+- (src/epframes_mod.f90): changed type of few MIP related keywords from
+   INTEGER to REAL due to future requirements in task "epexposure"
+
+Version 8.88 - 2011-04-29 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): more/better time information for debugging purposes
+- (src/epframes_mod.f90): reduce memory usage in TI mode
+closed SPR:
+- SSC-SPR-3654: memory allocation problem for 1183_0406430201_PNS003
+
+Version 8.87.2 - 2010-12-20 (AI)
+--------------------------------
+- (src/epframes_mod.f90). If all the frames are rejected we can have a
+  problem with arrExpTime array. So before we use it, we check that the
+  memory was previously allocated.
+
+Version 8.87.1 - 2007-06-26 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): write FIFO info not only into EXPOSUnn headers
+  but also into FRACEXP column (similar to the MIPs, same interface).
+  No extra memory allocated, instead fill existing arrays which are not
+  used yet or anymore ("aux2Mcommode" is renamed).
+closed SPR:
+- SSC-SPR-3692: no time resolution for FIFO info
+
+Version 8.87 - 2007-05-24 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): read FIFO reset deadtime values from MISCDATA CCF
+  (i.e. FIFO_DEADTIME_## present in XMM_MISCDATA_0022, and later)
+
+Version 8.86 - 2006-06-09 (AI)
+-------------------------------
+- (src/epframes_mod.f90): Check for NaNs in "all good AUX1 entries" loop.
+
+Version 8.85 - 2006-05-01 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): check also the other occurences of "InvalidObtValue" 
+  warnings and write OBT_WARN correspondingly
+additional fix to SPR:
+- SSC-SPR-3594: Add LOGICAL keyword OBT_WARN to EXPOSURE extension
+
+Version 8.84 - 2006-04-05 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): updated quantities for non-standard BU mode exposures
+- (src/epframes_mod.f90): added logical keyword OBT_WARN to EXPOSURE extension
+  to indicate whether the "InvalidObtValue" feature has occured or not
+- (src/epframes_mod.f90): added new parameter "withallobtgti" (default YES,
+  preserves current behaviour); setting "withallobtgti=NO" will create a GTI
+  file that stops at the first occurence of the "InvalidObtValue" warning,
+  i.e. later times are set to BAD.
+- (config/epframes.*): as above
+- (doc/epframes_description.tex): as above
+closed SPR:
+- SSC-SPR-3594: Add LOGICAL keyword OBT_WARN to EXPOSURE extension
+
+Version 8.83 - 2006-01-14 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): write proper threshold and CMCORR related keywords
+  to EVENTS, EXPOSURE, and GTI extensions, so that subsequent tasks could
+  make use of this information (e.g. for pattern fractions, response functions)
+- (test/checkoutput_OBT.f90): further diagnostic messages
+
+Version 8.82 - 2006-01-11 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): turned obsolete CMCORR related warning into a message
+- (test/checkoutput_OBT.f90): further diagnostic messages
+
+Version 8.81 - 2006-01-10 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): determine proper energies from comparison of
+  CMCORR_DB and CMCORR_HK
+
+Version 8.80 - 2006-01-09 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): read and evaluate CMCORR related IPPVs
+- (test/epframes_OBT): test of platform (compiler, library, ...) dependent
+  issues, re-enable test of version 8.74 (i.e. intentional verbose failure
+  of just the test harness)
+
+Version 8.79 - 2005-10-20 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): updated the list of FF masked mode observations
+  that will escape automatic detection due to lack of HK telemetry coding
+
+Version 8.78 - 2005-06-24 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): changed value of offset for 0026_0116160601_PNU002
+  in black-list: CMCORR is 0, ODF generation had incorrectly used 512 now.
+- (src/epframes_mod.f90): check if non-constant filter values for "Unknown"
+  filter IPPV by `odfingest', in such a case try to diagnose real filter
+  and give proper message. Such a feature usually occurs when the onboard
+  watchdog function moves the filter wheel to CLOSED after longer loss of
+  connection to XMM.
+closed SPR:
+- SSC-SPR-3484: Onboard watchdog function causes non-constant filter values
+
+Version 8.77 - 2005-06-07 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): allowed larger number of wrong OAL frames per
+  exposure (internal parameter "mfextra" set to 500)
+closed SPR:
+- SSC-SPR-3428: Subscript 1 of ARREXPTIME (value 1285780) is out of range
+  (0:1285779) [0624_0148170101_PNS016]
+
+Version 8.76 - 2005-01-20 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): check of SubscriptOutOfRange to prevent F90 error.
+  Instead exit via SAS error "InconsistentTimeInfo" plus diagnostic messages.
+- (doc/epframes_description.tex): added error "InconsistentTimeInfo"
+
+Version 8.75 - 2005-01-19 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): check for NULL attitude values in ProposalInfo
+- (src/epframes_mod.f90): adjusted the internal "late-time-reset" parameter
+  from 4 to 5 for LW mode (due to problems with 0596_9059600003_PNS003)
+- (test/Makefile): disable epframes_test_OBT
+
+Version 8.74 - 2004-10-18 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): new parameter "withinvalidobt" that controls handling
+  of frames with "InvalidObtValue" warning of OAL. Default = Y reproduces old
+  behaviour [should not be changed]. Consequences apparently depend on platform.
+- (config/epframes.*): as above
+- (doc/epframes_description.tex): as above
+- (test/epframes_test_OBT): run with both values of "withinvalidobt", the
+  "success condition" is to have identical results with MPE (which is not
+  fulfilled and thus the test harness fails and gives diagnostics)
+- (test/checkoutput_OBT.f90): further diagnostic messages
+
+Version 8.73 - 2004-10-17 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): changed "intent" of data variables in routine
+  "determineWindow" from "out" to "inout" [as in version 8.71.4]
+- (test/checkoutput_OBT.f90): further diagnostic messages
+
+Version 8.72 - 2004-10-15 (MJF)
+-------------------------------
+- (test/epframes_test_OBT): processing of CCD6 of "testodf/epodf_OBT/":
+   this contains a time anomaly entry leading to the warning
+   ** epframes: warning (InvalidObtValue), OBT vector element #6188 is invalid (-100)
+   which might have platform dependent effects depending on SAS infrastructure
+- (test/checkoutput_OBT.f90): checks for number of EVENTS and EXPOSURE entries
+- (DEPEND): needs "eptestdata-0.8"
+
+Version 8.71.3 - 2004-10-15 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): added a few messages (NOISY level) to enable tracing
+  of platform dependent features
+- (test/epframes_test_IM): changed VERBOSITY from 5 to 6
+
+Version 8.71.2 - 2004-10-14 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): read masked mode related quantities from XMM_MISCDATA
+- (src/epframes_mod.f90): special treatment of 4 non-standard BU mode exposures
+- (src/epframes_mod.f90): updated black-list of ODFs with wrong CMCORR
+- (config/epframes.par): changed default of "lowerthreshold" from 20 to 0 [adu]
+- (doc/epframes_description.tex): as above
+
+Version 8.71.1 - 2004-01-28 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): ensure that COUNTMOD is always properly initialized
+closed SPR:
+- SSC-SPR-3231: apparent illegal value of COUNTMOD keyword
+
+Version 8.71 - 2003-12-11 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): determine CCD temperature at time of offset map
+  calculation
+
+Version 8.70 - 2003-12-10 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): determine probability for empty quadrant frame
+
+Version 8.69 - 2003-12-08 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): check whether ODI files exist
+
+Version 8.68 - 2003-12-07 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): read FIFO quantities also from PNPMH1 table
+
+Version 8.67 - 2003-12-06 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): read FIFO quantities from PNAUX2 table
+
+Version 8.66 - 2003-12-05 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): moved some code to "epmpelib"
+- (src/Makefile): added "eputils"
+- (DEPEND): needs "epmpelib-0.2"
+
+Version 8.65 - 2003-12-04 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): prepare for FIFO GTI search
+- (config/epframes.*): added new parameter "fifogtithresh" (in preparation)
+- (DEPEND): added "sas" as required by new infrastructure (sas-1.302)
+
+Version 8.64 - 2003-11-17 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): added a few additional diagnostic keywords/messages
+  and adjusted several verbosity levels
+- (config/epframes.*): added new parameter "withfifogti" (in preparation)
+- (doc/epframes_description.tex): corrected a few typos
+
+Version 8.63 - 2003-08-27 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): adjust filter wheel position sensor ranges for
+  the various filters and make sure that data drop-outs do not influence
+  the determination of the filter
+
+Version 8.62 - 2003-07-14 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): check whether offset map computation interval
+  is included in HK period and immediately before current exposure
+- (doc/epframes_description.tex): added missing warning "HKoffsetmap"
+
+Version 8.61 - 2003-07-08 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): modified a few messages
+- (src/epframes_mod.f90): issue new warning "OffsetMap" if filter during
+  offset map calculation interval is different during science exposure,
+  write keyword OTFILTER with corresponding filter name in this case
+- (doc/epframes_description.tex): added new warning "OffsetMap"
+
+Version 8.60 - 2003-05-08 (HB)
+-------------------------------
+- (config/epframes.par): modified to enable param-2.0 functionality	
+		
+Version 8.59 - 2003-05-06 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): fix a compiler problem on linux
+
+Version 8.58 - 2003-05-05 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): corrected spatial DLIMAP inhomogeneities due to
+  incomplete "whole frame MIP rejection" accumulation
+- (src/epframes_mod.f90): adjusted the internal "late-time-reset" parameter
+  to 4 for FF and eFF modes (due to problems with 0608_0145840201_PNU014)
+closed SPRs:
+- SSC-SPR-3104: Whole frame MIP rejection not fully accounted for
+- SSC-SPR-3121: Subscript 1 of ARRFRACEXP (value 8645) is out of range [0608_0145840201_PNU014 Q2]
+
+Version 8.57 - 2003-03-10 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): adjusted the internal "late-time-reset" parameter
+  from 11 to 100 for SW mode (due to problems with 0583_0137750201_PNU003)
+- (src/epframes_mod.f90): check against rejection of all time entries, in
+  this case create empty output file
+closed SPRs:
+- SSC-SPR-3095: too late time reset in 0583_0137750201_PNU003
+- SSC-SPR-3091: Crash if all time entries are rejected
+
+Version 8.56 - 2003-02-14 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): new parameter "lowerthreshold" to disregard low-energy
+  events (with amplitudes < lowerthreshold [adu]) already at this stage, 
+  default "lowerthreshold=0" preserves recommended (old) behaviour. This
+  may be useful to compare early mission data with recent observations
+  as the setup was different (lowertreshold=23 instead of 20 now)
+- (src/epframes_mod.f90): updated list of "nom" values for offset columns
+- (config/epframes.*): added new parameter "lowerthreshold"
+- (doc/epframes_description.tex): added new parameter "lowerthreshold"
+closed SPRs:
+- SSC-SPR-2981: Subscript 1 of ARREXPTIME is out of range [0482_0111290601_PNS003 Q2]
+- SSC-SPR-3000: Subscript 1 of ARREXPTIME is out of range [0103 0111020201_PNS003 Q1]
+
+Version 8.55 - 2003-01-15 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): if "withfinetime=N" then call CAL_correctTime()
+  with the source Y position instead of the RAWY position for TI+BU modes
+
+Version 8.54 - 2003-01-14 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): new parameter "withfinetime" to switch off the fine
+  time correction for TI+BU modes for easier identification of time jumps,
+  default "withfinetime=Y" preserves recommended (old) behaviour. 
+- (config/epframes.*): added new parameter "withfinetime"
+- (doc/epframes_description.tex): added new parameter "withfinetime"
+
+Version 8.53 - 2003-01-13 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): access F1828,1829,F1830 and F1628,1629,1630 columns
+  instead of F1528,1529,1530 to identify the uploaded BadPixelTable code,
+  this automatically enables the identification of masked mode flavours
+  [as in 'epframes-8.46.12' for the RT]
+closed SPRs:
+- SSC-SPR-2417: Inconsistent time related keywords
+- SSC-SPR-3064: BadPixelTable coding accesses wrong HK columns
+
+Version 8.52 - 2002-10-09 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): added 0045_0120300101_PNS005 to black-list
+
+Version 8.51 - 2002-10-03 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): removed CATEGORY keyword from event list
+- (doc/epchain_description.tex): changed \subsection{} to \taskparametersnote{}
+  in the parameters section, however, the new sub-parts now do not have an
+  automatic number anymore due to infrastructure definition
+closed SPRs:
+- SSC-SPR-2989: please remove CATEGORY keyword
+- SSC-SPR-2962: HTML parameter documentation broken
+
+Version 8.50  - 2002-08-29 (MJF)
+--------------------------------
+- (src/epframes_mod.f90): extract DLI rate also from PMH file as this quantity
+   is not affected by counting mode (unlike the AUX2 derived values)
+
+Version 8.49  - 2002-08-12 (MJF)
+--------------------------------
+- merged all fixes of releasetrack until `epframes-8.46.8', such as:
+- (src/epframes_mod.f90): initialize variables at run time instead of during
+  variable declaration so that metatask usage does not fail [SSC-SPR-2819]
+- (src/epframes_mod.f90): enable analysis of DLI files (preliminary version)
+  Note: starting with `oal-3.92' and `caloalutils-1.72' this is not a dummy
+  anymore, so the same code does now really do something and is more than
+  just "preliminary" as in the releasetrack
+- (src/epframes_mod.f90): add warning in case of "MIP CORREC.1"
+- (doc/epframes_description.tex): as above
+- (src/epframes_mod.f90): adjusted the internal "late-time-reset" parameter
+  from 1 to 2 for FF and eFF modes [SSC-SPR-2815], this fixes also problems
+  that occured for 0032_0117500201_PNS011 (CCD 10) and 0042_0119100201_PNU003
+  (CCDs 4-9), increased this parameter from 16 to 100 for TI and BU modes to
+  solve a similar problem with 0411_0153750301_PNS001 (CCD 4). No changes
+  for SW and LW modes (no problems known).
+closed SPRs:
+- SSC-SPR-2815: Event time computation fails for 2 ODFs [0193_9019300003_PNS003, 0224_0093620801_PNU003]
+- SSC-SPR-2819: Implicitly saved variables cause epproc to fail
+
+Version 8.48  - 2002-05-23 (MJF)
+--------------------------------
+- (config/epframes.par): updated for `param-2.0'
+- (DEPEND): needs `param-2.0', updated all other entries to latest
+
+Version 8.47 - 2002-03-20 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): restrict warning "tooLongExposure" to cases where
+   the time elapsed between the first and last photon exceeds the exposure
+   duration (DATE-OBS, DATE-END) by more than 10s [SSC-SPR-2816]
+- (src/epframes_mod.f90): internal "late reset parameter" for TI and BU modes
+   raised from 11 to 16 to be more robust [SSC-SPR-2776]
+closed SPRs:
+- SSC-SPR-2776: ARRFRACEXP out of range [0044_0119710201_PNS001]
+- SSC-SPR-2816: Too many warnings in uncritical cases
+
+Version 8.46.4 - 2002-03-08 (MJF+UL)
+------------------------------------
+- (src/epframes_mod.f90): resolved exposure confusion case (e.g. S003 and U003
+   in ODF like 0238_0029340101, SSC-SPR-2628)
+- (src/epframes_mod.f90): write warning "tooLongExposure" if the observation
+   duration (DATE_END - DATE_OBS) is shorter than the elapsed time of this
+   exposure (derived via TSTOP - TSTART)
+- (doc/epframes_description.tex): added warning "tooLongExposure"
+- (doc/epframes_description.tex): completed sections "OAL usage" and "CAL usage"
+- (test/*_SW.*): added check for RA/DEC to RAWX/RAWY conversion
+
+Version 8.46.3 - 2002-02-21 (MJF)
+---------------------------------
+- (test/*_SW*): added basic run for SW mode
+- (src/epframes_mod.f90): made MIP rejection even more robust [SSC-SPR-2779]
+- (src/epframes_mod.f90): added 0044_0119710201 (all 4 exposures) to black-list
+   of incorrectly produced data sets (wrong energy scale) [SSC-SPR-2776]
+closed SPR:
+- SSC-SPR-2779: MIP rejection not robust against meaningless HK parameters
+
+Version 8.46.2 - 2002-02-20 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): slight modifications for messages in high verbosity
+   levels to ease debugging of memory problems
+- (src/epframes_mod.f90): made MIP rejection robust against meaningless HK
+   values by using then default FF mode values [SSC-SPR-2779]
+- (src/epframes_mod.f90): implemented call "OAL_addCommonAttributes()" [SCR-84]
+- (DEPEND): needs `oal-3.87'
+
+Version 8.46.1 - 2002-02-06 (MJF+UL)
+------------------------------------
+- (src/epframes_mod.f90): minor changes related to "OBT=-1" values [SOC-SPR-2231]
+- (doc/epframes_description.tex): added error "NoGoodObtValues"
+
+Version 8.46 - 2002-01-23 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): minor changes related to messages
+- (doc/epframes_description.tex): added a warning about the use of the default
+   parameter setting "withsrcrawy=N withsrccoords=N" in the case of non-default
+   pointings (source put intentionally off-axis); the occurence of this case
+   cannot be determined by the software, so it is in the user's responsiblity.
+   For TIMING and BURST modes offset pointings (or boresight changes) will lead
+   to incorrect absolute timing and wrong energy corrections if the proper
+   source coordinates are not supplied. This is irrelevant for all other modes.
+
+Version 8.45 - 2002-01-22 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): allow input of source position (decimal RA,DEC) and
+   output of corresponding RAWX,RAWY for all modes (if "withsrccoords=Y"), used
+   for time and energy corrections only for TIMING and BURST modes (as before)
+- (src/epframes_mod.f90): new parameter `withsrcrawy' to enable switch-on of
+   TIMING and BURST source position parameter `srcposition' in cases when there
+   is no reliable attitude available but one knows where the source should be.
+   The default setting is "withsrccoords=N" and "withsrcrawy=N" which means
+   that the source pixel position shall be derived from RA_OBJ DEC_OBJ values
+- (config/epframes.*): added new parameter "withsrcrawy"
+- (doc/epframes_description.tex): extended and re-ordered parameter section,
+   details about the various HK-related messages and keywords
+
+Version 8.44 - 2002-01-18 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): reorganized a few messages and warnings, write several
+   additional keywords to exposure extension, obtain offset map parameters in a
+   more robust way
+
+Version 8.43 - 2002-01-14 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): warning 'singleBoresightBurst' if unusual RAWY range
+   occurs for BURST mode, warning 'doubleWindowTiming' if unusual RAWX range
+   occurs for TIMING mode. The window parameters may then be incorrect in ODF
+   and/or CCF, and consequently associated event flags. This is added to be
+   prepared for a change in the window sizes during the next SAS period
+- (doc/epframes_description.tex): see above
+
+Version 8.42 - 2002-01-11 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): a few minor changes to make the MPE optimizer happy
+- (src/epframes_mod.f90): initialize EXPOSURE extension columns (e.g. FRAMELIM)
+   before filling them to avoid memory corruption
+closed SPRs:
+- SSC-SPR-2566: FRAMELIM value incorrect [0140_0112230101_PNU014, low-gain mode, CCD 3]
+- SSC-SPR-2577: FRAMELIM value incorrect [0219_0087940101_PNU002, short 26s, CCD 7]
+
+Version 8.41 - 2001-12-21 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): new parameter `showve' to show valid events in the
+   loops where the optimizer has problems to ease the debugging on the various
+   platforms, will be removed once it is obsolete (hopefully soon)
+- (doc/epframes_description.tex): see above
+- (config/epframes.*): see above
+
+Version 8.40 - 2001-12-19 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): write keyword EXPIDSTR to primary FITS header
+- (src/epframes_mod.f90): write keywords REVOLUT and BPT_CODE to EVENTS header
+- (src/epframes_mod.f90): moved CCD temperature parameter from task `epevents'
+  to epframes, only active when no HK file (PMH) found
+- (doc/epframes_description.tex): added new parameter `hcettmpfpf' (well, that
+  IS the housekeeping parameter name) that is only active if PMH file is absent
+- (config/epframes.*): see above
+
+Version 8.39 - 2001-12-14 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): implemented BadPixelTable coding, compare BPT code 
+  from PAH file with ADUCONV.CCF for revolutions 293 and later (first implem.)
+  and if different issue new warning (BPTcode)
+- (doc/epframes_description.tex): added new warning (BPTcode)
+- (test/epframes_test_IM): use in-orbit data of Rev.146 for FF mode
+- (DEPEND): needs `cal-3.129' and `eptestdata-0.3'
+
+Version 8.38 - 2001-11-21 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): adapt to new OAL state interface
+- (DEPEND): needs `oal-3.81' (probably some older version were sufficient)
+
+Version 8.37 - 2001-11-21 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): if "automode=Y" then try to determine the nominal 
+  frametime, the frame time parameter (F1294), and the chopper value (An_CHOP)
+  from the data itself which may be useful if no PMH or PAH file is available
+  (PMSFITS), default "N"
+- (src/epframes_mod.f90): write bad-pixel-table related HK values as keyword
+  BPT_CODE into the events file (prepare for comparison with CCF)
+- (src/epframes_mod.f90): rename OFFSETCO extension and its PHA column to
+  OFFSETS and OFFSETX (prepare for `evlistcomb-4.17')
+- (doc/epframes_description.tex): rename offset column extension
+
+Version 8.36 - 2001-09-14 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): new warning (invalidODF) if (DATE-OBS == DATE-END)
+  or (DATE-END > last HK entry) as an attempt to avoid ODF SPRs on pn tasks
+  that are due to false ODFs, but e.g. the CAL may nevertheless crash later
+- (doc/epframes_description.tex): added new warning "invalidODF" and a 
+  subsection how to deal with those ODFs that should not have been delivered 
+  in this form
+closed SPR:
+- SSC-SPR-2554: Problems with ODF in Rev 185 (ODS 10.2.3)
+
+Version 8.35 - 2001-09-01 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): write correct FRMTIME value (as integer), this avoids
+  repeated CAL warnings in subsequent tasks
+- (src/epframes_mod.f90): stop with error if FRAME_TIME_PARAMETER is outside
+  valid range [0..15] instead of just giving a warning (see epframes-8.31)
+- (doc/epframes_description.tex): added new error message "illegalIPPVvalue"
+- (config/epframes.par): add parameter "automode" (not active yet)
+
+Version 8.34 - 2001-08-17 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): issue (new) warning "CCDlowGain" if a CCD has a
+  GAINCAME value of "LOW" instead of "HIGH"
+- (src/epframes_mod.f90): check eFF/FF modes for consistency (if not issue 
+  new warning "changedMode" and continue with correct value)
+- (doc/epframes_description.tex): added new warnings
+
+Version 8.33 - 2001-08-08 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): removed obsolete section related to "maxwrong"
+- (src/epframes_mod.f90): added 0026_0116160601_PNU002 to black-list
+closed SPR:
+- SSC-SPR-2504: error (maxwrong), More wrong events than maxwrong allows
+
+Version 8.32 - 2001-07-17 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): identify position of Low Gain Mode HK entries
+- (src/epframes_mod.f90): if time reset at start of AUX1 file do not reject
+  the following entries anymore (only relevant for `releasetrack')
+- (test/check_output_*.f90): issue better error messages for OPTIMIZATION=yes
+
+Version 8.31 - 2001-06-14 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): give warning if the IPPV "FRAME_TIME_PARAMETER"
+  has illegal values (the task may still crash as a consequence later)
+- (src/epframes_mod.f90): give number of computed counting mode cycles as
+  real value instead of integer to better indicate incorrect cycle times
+closed SPR:
+- SSC-SPR-2423: Frame time mismatch
+
+Version 8.30 - 2001-06-11 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): make sure that too short PNAUX2 files cannot cause
+   out-of-range indices
+
+Version 8.29 - 2001-06-08 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): synchronize PNAUX2 NDISCLIN column with event file
+   EXPOSURE extension
+
+Version 8.28 - 2001-06-08 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): extract offset map HK parameters for later reference
+- (src/epframes_mod.f90): correct TIMEDEL keyword for imaging modes: 
+                          FRMTIME_SECONDS*fc0 -> PSFTIME*1.E-3 [SSC-SPR-2417]
+
+Version 8.27.2 - 2001-05-28 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): do not release non-existing HK columns (PMS data)
+- (test/epframes_test_*): call with setting "hkok=Y"
+
+Version 8.27.1 - 2001-05-14 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): write map description into output event map files
+- (src/epframes_mod.f90): write offset columns to extension OFFSETCO
+- (src/epframes_mod.f90): write specific warnings and error messages if
+   AUX file contains garbage values [SSC-SPR-2379]
+- (doc/epframes_description.tex): updated warnings
+closed SPR:
+- SSC-SPR-2379: frame not found
+
+Version 8.27 - 2001-04-10 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): corrected column offset for CCD5/Col10 for "ccfok=N"
+- (src/epframes_mod.f90): removed obsolete debug statement
+- (test/*): split the test harness for the various instrument modes
+- (epodf/*): files moved to new package `eptestdata'
+- (DEPEND): depend on `eptestdata-0.2'
+
+Version 8.26 - 2001-03-30 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): explicit "default" in all "select case" clauses
+- (src/epframes_mod.f90): new optional parameters `eventmapset' `witheventmap'
+   that will supersede the old optional `crmap' parameter [SSC-SPR-1723]
+- (doc/epframes_description.tex): updated examples and parameters
+
+Version 8.25.13 - 2001-03-15 (MJF)
+----------------------------------
+- (src/epframes_mod.f90): write number of time resets if more than one
+- (doc/epframes_description.tex): added examples section
+
+Version 8.25.12 - 2001-03-12 (MJF)
+----------------------------------
+- (src/epframes_mod.f90): write keyword FROFFMAP (number of frames used in
+   calculation of offset map, might be useful later in CTI correction)
+- (doc/epframes_description.tex): completed warnings section
+closed SPR:
+- SSC-SPR-2278: Subscript of ARREXPTIME wrong [SPR already fixed in 8.25.9]
+
+Version 8.25.11 - 2001-03-09 (MJF)
+----------------------------------
+- (src/epframes_mod.f90): write keyword GAINCAME (gain mode LOW or HIGH)
+- (src/epframes_mod.f90): check whether last PNAUX2 entry has valid PNAUX1 time,
+   remove error PNAUX2cycleException as this case is not exceptional in pn data
+closed SPR:
+- SSC-SPR-2197: PNAUX2cycleException error
+
+Version 8.25.10 - 2001-03-02 (MJF)
+----------------------------------
+- (src/epframes_mod.f90): new optional (temporary) parameter `ecntempqb1' to 
+   mimick the HK parameter E_Cn_TEMPQB1 (ignored if "real" HK file found), 
+   interface needed to prepare gain-temperature-corrections in `epevents',
+   default behaviour unchanged
+- (src/epframes_mod.f90): corrected units in a few header keywords
+- (doc/epframes_description.tex): added parameter `ecntempqb1'
+- (config/epframes.*): added parameter `ecntempqb1'
+- (test/epframes_test): one call with `ecntempqb1=19.115'
+
+Version 8.25.9 - 2001-02-27 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): activate ON_OFFSET_COLUMN and NEXT_TO_OFFSET_COLUMN
+                          event attributes for default task calling sequence
+- (src/epframes_mod.f90): made estimation of number of empty frames more robust
+                          to prevent out-of-range failures [SSC-SPR-2230]
+- (doc/epframes_description.tex): added a few missing CAL and OAL calls
+- (doc/epframes_description.tex): moved event attributes to output section
+closed SPRs:
+- SSC-SPR-2104: out of memory problem
+- SSC-SPR-2230: error within epchain [ARREXPTIME subscript out of range]
+- SSC-SPR-2222: Subscript out of range for one CCD
+
+Version 8.25.8 - 2000-12-13 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): update keyword LIVETIME as required by task badpixfind
+                          in epchain (do not subtract counting mode twice),
+                          also update of call to CAL_offsetCorrect() to have
+                          correct amplitudes for bright column search in 
+                          epchain [SSC-SPR-2147]
+- (src/epframes_mod.f90): decrease use of memory (deallocate arrays earlier,
+                          release columns earlier) [not sufficient to solve
+                          SSC-SPR-2104 but works now for other problematic 
+                          cases]
+closed SPR:
+- SSC-SPR-2147: [epchain] New recommended parameter values for task badpixfind
+
+Version 8.25.7 - 2000-11-23 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): add call OAL_setState(), call OAL_selectFile() 
+                          before computing event times to reset OAL
+closed SPR:
+- SSC-SPR-2117: Event times shifted for long exposures
+
+Version 8.25.6 - 2000-11-22 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): improve time system related attribute comments
+closed SPR:
+- SSC-SPR-2102: better MJDREF attribute comment
+
+Version 8.25.5 - 2000-11-17 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): fix shift of GTIs and EXPOSUnn times [SSC-SPR-2044]
+
+Version 8.25.4 - 2000-11-11 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): handle exception if PNAUX2 extension is too small
+closed SPR:
+- SSC-SPR-2044: Strange behaviour of PN rate curve
+
+Version 8.25.3 - 2000-11-09 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): changed warning `wrongEvents' to plain message
+- (src/epframes_mod.f90): fill `empty frames' into EXPOSURE extension
+- (src/epframes_mod.f90): handle GTIs with help of AUX files
+closed SPRs: 
+- SSC-SPR-1998: `wrongEvents' should not be a warning but just a message
+- SSC-SPR-2000: Handling of `empty frames'
+- SSC-SPR-2002: empty gti if no events
+
+Version 8.25.2 - 2000-10-13 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): removed "illegal character"
+closed SPR: 
+- SSC-SPR-1984: compiler error due to "illegal character"
+
+Version 8.25.1 - 2000-10-12 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): check LOWER_THRESHOLD_Q*_CCD* consistency
+closed SPR:
+- SSC-SPR-1983: wrong IPPV for lower threshold
+
+Version 8.25 - 2000-10-11 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): change order of CAL_setstate() and output file access
+
+Version 8.24 - 2000-10-10 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): read correct FILTER IPPV
+
+Version 8.23 - 2000-10-02 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): adapt to new `caloaldefs.f90'
+
+Version 8.22 - 2000-09-30 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): adapt to new `caloaldefs.f90' [caloalutils-1.34]
+
+Version 8.21 - 2000-09-29 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): add warning if IPPV not found
+- (doc/epframes_description.tex): added new warning "missingIPPV"
+
+Version 8.20 - 2000-09-26 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): read IPPVs from ODF summary file
+
+Version 8.19 - 2000-09-12 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): change TIMEDEL from column to keyword in EXPOSUnn
+- (test/checkoutput.f90): update TIMEDEL existence check
+
+Version 8.18 - 2000-09-10 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): updated "setupbpx=nom3"
+
+Version 8.17 - 2000-07-25 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): change access of housekeeping files
+- (epodf/): remove PEH files, update SUM file
+
+Version 8.16 - 2000-07-21 (MJF)
+-------------------------------
+- (src/epframes_mod.f90): initialize FRACEXP, update TIMING fine-time correction
+
+Version 8.15.8 - 2000-07-11 (GV/SOC)
+--------------
+	+ (src/epframes_mod.f90) modified the way the summary file name is
+	inquired, as otherwise the state of the OAL is undefined. 
+
+Version 8.15.7 - 2000-07-05 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): ensure initialization of "alloc"-variables
+
+Version 8.15.6 - 2000-06-30 (MJF)
+---------------------------------
+- (doc/epframes_description.tex): corrected typo in \block{}
+
+closed SPR:
+- SSC-SPR-1897: wrong \block in doc
+
+Version 8.15.5 - 2000-06-26 (MJF)
+---------------------------------
+- (doc/epframes_description.tex): \param{} -> \tt{} for outdated parameters etc.
+
+Version 8.15.4 - 2000-06-19 (MJF)
+---------------------------------
+- (src/epframes_mod.f90): change determination of lengths of file names
+
+Version 8.15.3 - 2000-06-10 (MJF)
+---------------------------------
+- clarified time related attributes in code, now compliant with ICDs,
+  added more user friendly keywords EXPSTART,EXPSTOP,OBSSTART,OBSSTOP,
+  added TIMEREF, TASSIGN, CLOCKAPP to primary header
+- added `SSC-SPR-' to all SPR numbers in `ChangeLog'
+
+closed SPR:
+- SSC-SPR-1718: Output has DATE_OBS, DATE_END, DATE-OBS, DATE-END keyword 
+                (and the values differ)
+
+Version 8.15.2 - 2000-06-08 (MJF)
+---------------------------------
+- check whether the required extensions are in the relevant file if this file
+  exists (cf. SPR-1716)
+- corrected a couple of typos in the documentation
+- make all time attributes the same in all extensions (required by SPR-1718),
+  corresponding names still under discussion
+
+closed SPR:
+- SSC-SPR-1722: showpah parameter not found in task description:
+  was included but contained typo (`showpmh', therefore not `grep'ped)
+
+Version 8.15.1 - 2000-06-02 (MJF)
+---------------------------------
+- check existence of CCX, AUX, PMH, and PAH files via new OAL function
+  `OAL_hasAssociatedSet()' before trying to access the files
+
+closed SPR:
+- SSC-SPR-1716: task fails if CCX file belongs to different exposure:
+  use new function `OAL_hasAssociatedSet()' to check existence of file
+
+Version 8.15 - 2000-05-27 (MJF)
+-------------------------------
+- warning if no PNAUX2 extension in AUX file
+- separate handling of PNAUX1 and PNAUX2 completely
+- change initializations of several variables
+- write keyword TRESET (reset time to be added to PN times)
+- reduce Change History in LaTeX file
+
+Version 8.14 - 2000-05-25 (MJF)
+-------------------------------
+- updated documentation: section input/output files
+- updated list of ODFs with erroneous PHA values
+- extended check for backjump vs. time reset
+- changed default for parameter `F1294' from 3 to 0, use for `eFF' processing
+- introduce again temporary EXPOSURE keyword (cf version 8.12)
+- extended handling for parameter `crmap=1' or `crmap=2'
+- new optional parameters to control verbosity of AUX, CCX, HK file handling
+
+Version 8.13 - 2000-05-09 (MJF)
+-------------------------------
+- check for small backjumps in FTCOARSE/FTFINE and FRAME/CYCLE
+- deallocate array AUX2CYCLE
+- updated `epframes.info'
+
+Version 8.12 - 2000-05-08 (MJF)
+-------------------------------
+- write keyword `ONTIME', remove temporary EXPOSURE keyword (cf version 8.7)
+- subtract sum of `Counting Mode intervals' and write keyword LIVETIME
+- change event attribute `REJECTED_BY_GATTI' to `MIP_ASSOCIATED'
+- take care of erroneous PHA values in some ODFs
+- updated DEPEND file
+
+Version 8.11.2 - 2000-04-25 (GV/SOC)
+--------------
++ change column names (ftcoarse/ftfine) in the testodf (PMH).
++ (epframes_test): change ODF(...) to OAL(...)
++ (DEPEND) updated
+
+Version 8.11.1 - 2000-04-17 (GV/SOC)
+--------------
++ change column names (ftcoarse/ftfine) in the testodf (PEH).
+
+Version 8.10.1 - 2000-04-14 (UL)
+--------------------------------
+- brought in line with oal-3.50 (also updated DEPEND)
+- in epof/*PEH*|*PMH*: replaced FTCOARSE/FTFINE with real column names
+  F1030/FU036
+- in test/epframes_test: changed all 'odf(...)' to 'oal(...)'
+
+Version 8.11 - 2000-04-13 (MJF)
+-------------------------------
+- changed default for parameter `mipmethod' (com -> onboard)
+- changed default for parameter `aneamipsel' (1 -> 2)
+- extend `mipmethod=onboard' for `aneamipsel>32'
+- extended `epframes.lyt', updated documentation about MIP rejection
+
+Version 8.10 - 2000-04-13 (MJF)
+-------------------------------
+- added `epframes.info' to `config' subdirectory and Makefile
+- moved offset correction vector after frame processing
+- several new temporary HK parameters/switches (not for general use)
+- improved/reduced use of message/warning/error
+- added `ONBOARD' mip rejection mode
+
+closed SPRs:
+- SSC-SPR-1415: Timing mode behaviour:
+- SSC-SPR-1416: srcposition parameter:
+  implemented TIMING formula according to EPIC-EST-OP-002 Sect.8.3.1 (Sep.'99)
+  implemented BURST formula according to EPIC-EST-OP-002 Sect.8.3.2 (Sep.'99)
+- SSC-SPR-1632: 'Subscript out of range' with SAS_VERBOSITY = 10:
+  corrected loop index
+
+Version 8.9.1 - 2000-03-31 (MJF)
+--------------------------------
+- included check for FTCOARSE = FFFF and simultaneous error in FRAME number
+
+Version 8.9  - 2000-03-31 (MJF)
+-------------------------------
+- prepare task to deal with HK data
+- new optional parameters f1294, f1052, anchop (fake missing HK information)
+- discarded frames with FTCOARSE = FFFF in PNAUX1 extension of auxiliary file
+- change order of subroutine calls, e.g. create output file after frame loop
+- warning if event times are unreasonable
+- included event fine time correction for TIMING and BURST modi 
+  according to EPIC-EST-OP-002 Sects.8.3.1 and 8.3.2 instead of CAL call
+
+Version 8.8  - 2000-03-22 (MJF)
+-------------------------------
+closed SPRs:
+- SSC-SPR-1594: Inappropriate CONTENT keyword:
+  added words `INTERMEDIATE' and `SINGLE CCD' to previous CONTENT values
+- SSC-SPR-1595: Missing rejection flag (XMMEA_EP):
+  XMMEA_EP is now set via `call setEpnRejectionMask(outccd)'
+
+Version 8.7  - 2000-03-10 (MJF)
+-------------------------------
+- write preliminary EXPOSURE keyword (will be removed again in later version)
+- write also DATE_OBS (DATE-OBS is sometimes not liked by non-SAS utils)
+- adopt new ChangeLog header line style
+
+Version 8.6 (07.03.00)
+-----------------------
+- new optional parameter "mipdist" for cosmic ray analysis
+- write several attributes also in case of empty extensions
+
+Version 8.5 (23.02.00)
+-----------------------
+- replace explicit use of EPN mode numbers by `caloaldefs'
+- new parameter "crmap" for cosmic ray CCD map
+- fixed config-Makefile
+
+Version 8.4 (18.02.00)
+-----------------------
+- added CCD-submode attribute (CCDSMODE) to exposure extension
+- corrected burst mode window nominal value for NYDIM (200 -> 199 -> 179)
+- empty EXPOSURE extension: check for any events
+
+Version 8.3 (17.02.00)
+-----------------------
+- added window size check against nominal values
+
+Version 8.2 (16.02.00)
+-----------------------
+- fixed "no events case" for EXPOSURE extension
+
+Version 8.1 (15.02.00)
+-----------------------
+- new parameter "mipthreshold", updated EXPOSURE extension
+
+Version 8.0 (02.02.00)
+-----------------------
+- reduced allocation of memory to handle large data sets
+- changed WINDOWX0/Y0/DX/DY keywords to account for different modes
+  (and e.g. bottom left corner at (1,2) for full frame IMAGING)
+- created a new attribute 'SRCPOS' to propagate srcposition parameter
+  on to e.g. epevents
+- creates additional exposure extension columns NDSCLIN# (#1..4)  
+  to store per frame info on columns containing MIPs
+
+closed SPRs:
+- SSC-SPR-1444: Keywords not written:
+  set TLMIN=0 and TLMAX=4095 for PHA column
+
+Version 7.0 (17.01.00)
+-----------------------
+- updated epodf test ODF for unsigned columns
+- removed setting of attribute DETNAM as this is not applicable for EPN
+- changed 'bad' to 'wrong' in documentation and code to avoid confusion
+  with bad pixels 
+- therefore also renaming of parameter 'badpixlimit' to 'wrongpixlimit'  
+- removed EXPOSURE and added TELAPSE = TSTOP - TSTART attributes (following 
+  proposal by JOB, 17.12.99)
+- added reference to paper by M. Kuster which describes the conversion
+  from FRAME to event times 
+
+closed SPRs:
+- SSC-SPR-1403: Bit code for flags
+  has been removed from the documentation
+- SSC-SPR-1404: Test ODF directory:
+  now has different CCD/exposure numbers for imaging, timing and burst mode data
+- SSC-SPR-1405: badpixlimit is mandatory:
+  changed to optional in the epframes.par file
+- SSC-SPR-1406: Timing keywords in GTI file:
+  added TIMESYS, TIMEUNIT and MJDREF to STDGTI extension and event list
+  extension
+- SSC-SPR-1407: RAWX is not read as unsigned:
+  RAWX is now read as unsigned
+- SSC-SPR-1408: TSTART and TSTOP:
+  computation has been changed to pick up start time of first frame
+  and stop time of last frame
+- SSC-SPR-1409: epframes takes too long:
+  placed vector assignments outside of the 'per frame' loop 
+- SSC-SPR-1413: Warnings depend on verbosity level:
+  this has been fixed
+- SSC-SPR-1414: FRMTIME has no unit:
+  changed description of FRMTIME attributes in epodf example ODF
+- SSC-SPR-1417: srcposition in Burst mode:
+  a warning is given if srcposition < 181 for BURST mode data
+
+Version 6.1 (20.12.99) - UL
+----------------------
+- in `epodf/0001_0000000000_PNS00101IME.FIT' changed values of attributes
+  QUADRANT/CCDID to 0/0 to make it consistent with CCDID in set name
+
+Version 6.0 (30.11.99)
+-----------------------
+- new parameter srcposition to specify source position for TIMING/BURST mode
+- included CAL_correctTime for mode dependent fine time correction 
+- updated creation of exposure extension 
+- changed setting of EXP_ID attribute from 3 to 13 digits (including OBS_ID) 
+  to be in agreement with ODF-ICD
+- introduced new attribute DATASUBMODE to describe different readout submodes
+- changed SAS_ODFDIR to SAS_ODF in test harness
+
+Version 5.9 (12.10.99)
+-----------------------
+closed SPRs:
+- SSC-SPR-1276: noEvents warning should be message
+- SSC-SPR-1252: test harness fails on linux
+
+Version 5.8 (24.09.99)
+-----------------------
+- minor changes in test/checkoutput.f90
+- fixed test harness exit status
+
+Version 5.7 (18.09.99)
+-----------------------
+- doc updated for new LaTeX macros
+
+Version 5.6 (06.09.99)
+-----------------------
+- creates TSTART, TSTOP, TIMEUNIT and TIMESYS attributes
+  (adopting the convention proposed by Dean Hinshaw, namely that TSTART and 
+   TSTOP are the smallest and largest times of the TIME column of the event 
+   list, respectively)
+- writes TLMIN, TLMAX attributes for RAWX/Y columns
+
+Version 5.5 (01.09.99)
+-----------------------
+- uses the OAL to inquire the number of exposures for a particular mode
+
+closed SPR:
+- SSC-SPR-1195: Problem with ODF_DIR unset
+
+Version 5.4 (23.08.99)
+-----------------------
+- new epodf test directory:
+  now contains TIMING and BURST mode data with bad events
+  all ODF constituents have been removed which are not needed for PN tests
+- now fills in TIME, TIMEDEL and FRACEXP columns in exposure extension
+- changed the fine time calculation in case of TIMING and BURST mode data 
+
+closed SPR:
+- SSC-SPR-1194: BadPixLim: the task does not do a usefull job 
+
+Version 5.3 (10.08.99)
+-----------------------
+- new test harness includes event file with no events
+- event attributes stored as keywords
+
+closed SPRs:
+- SSC-SPR-1173: cannot handle event file with no event
+- SSC-SPR-1174: wrong use of fatal
+
+Version 5.2 (03.08.99)
+-----------------------
+- now adds RA_NOM and DEC_NOM attributes
+
+closed SPR:
+- SSC-SPR-1151: Does not populate (RA/DEC)_NOM from ODF
+
+Version 5.1 (02.08.99)
+-----------------------
+- changed warning messages, added statistics about bad events
+
+closed SPR:
+- SSC-SPR-1138: Epchain gives repeated warnings...
+
+Version 5.0 (08.06.99)
+-----------------------
+- makes use of event attributes (GV/XMM/1999-01)
+- brought in line with cal v3.0
+- removed offsetfile parameter and offset FITS file
+
+closed SPR:
+- SSC-SPR-0990: ad hoc calibration file
+
+Version 4.6 (31.05.99)
+-----------------------
+- fixed a bug related to SAS_VERBOSITY setting
+
+Version 4.5 (28.05.99)
+-----------------------
+- fixed OBS_ID attribute in primary and extension header
+
+Version 4.4 (25.05.99)
+-----------------------
+closed SPRs:
+- SSC-SPR-0995: cannot handle event file in other directory 
+
+open SPRs:
+- SSC-SPR-0990: ad hoc calibration file
+
+Version 4.3 (06.05.99)
+-----------------------
+- changed place of 'use oal' command to fix segmentation fault under solaris
+- use sas provided latex commands
+
+Version 4.2 (03.05.99)
+-----------------------
+- updated for processing of TIMING and BURST mode ODF data sets
+- comes with a new (epodf4) ODF example file which includes
+  IMAGING and TIMING mode data
+
+Version 4.1 (28.04.99)
+-----------------------
+- increased loop index to allow for processing of testodf/scisimlong
+
+Version 4.0 (20.04.99)
+-----------------------
+- changed parameter names according to GV/XMM/1992-02
+- changed subroutine 'offset' to 'corr_offset' to avoid redeclaration error
+	
+Version 3.3 (23.03.99)
+-----------------------
+- fixes a bug in the testing and writing of the RAWY column
+
+Version 3.2 (22.03.99)
+-----------------------
+- fixes a bug in the writing of the OBS_ID keyword
+- fatal error if input events list is empty
+
+Version 3.1 (19.03.99)
+-----------------------
+- updated creation of mandatory keywords for PPS products
+- now deallocates ixx d_rawYCol iyy for epproc
+
+Version 3.0 (5.03.99)
+-----------------------
+- removed odfdir parameter (covered by taskmain functionality)
+- new odf example data set in epodf subdirectory
+- introduced string parameter 'offsetfile'
+  It points towards a data set listing onboard PHA offsets per CCD
+  and column. Offsets are needed to reconstruct the original raw energie 
+  values and should become part of the CCF 
+- Changed CCDID column to CCDNR column (see DCP for SSC Data Products ICD)
+- FLAG column changed from Int16 to Int32
+- new check if events are ordered by FRAME, RAWY, RAWX (TBC)
+- changed GTI extension name to STDGTIxx where xx is the overall CCD number
+  (01 - 12)
+- CCD modes extension created - as part of the EXPOSURE extension (TBC)
+- GUI layout file config/epframes.lyt created
+
+Version 2.0 (23.11.98)
+-----------------------
+removed redundant parameters datamode, expnr, ccdnr
+
+closed SPRs:
+- SSC-SPR-0875: Task requires CCD & exposure number as parameter 
+- SSC-SPR-0866: should not write messages with (*,*)
+- SSC-SPR-0714: Reaction to wrong input files - see SPR 477 on oal v2.2
+- SSC-SPR-0700: The parameter datamode seems redundant
+
+Version 1.9 (30.10.98)
+----------------------
+- epframes now adds 1 to the X and Y raw coordinates from the ODF
+  to create RAWX and RAWY for the PPS in the range 1-64 and 1-200
+- overall CCD numbering is now in agreement with CAL/SciSim standard
+- the ODF summary file has been updated to be in agreement with oal-2.3
+- new use of datamode parameter: 1=Imaging, 2=Timing, 3=Burst
+- new input parameter 'badlimit' to trigger warning if too many
+  events are bad
+
+closed SPRs:
+
+- SSC-SPR-0698: documentation error for RAWX and RAWY
+- SSC-SPR-0699: Error "too many bad events" - handled by 'badlimit' parameter
+- SSC-SPR-0701: fault on parameters missing
+- SSC-SPR-0704: Problem with the interval between frames
+ 
+open SPRs:
+
+- SSC-SPR-0700: The parameter datamode seems redundant
+- SSC-SPR-0714: Reaction to wrong input files 
+
+Version 1.8
+----------------------
+- Code updated to be in agreement with F90 coding standards
+- odf example now includes AUX and PMH Files in correct format
+- copyAttribute replaced by setAttributes
+- in agreement with new error interface v1.9
+- uses new OAL_proposalInfo to add more standard primary header keywords
+
+closed SPRs:
+
+- SSC-SPR-0574: CAL/OAL error messages - epframes now in agreement with oal v2.2
+
+Version 1.7
+----------------------
+- parameter file fixes
+
+Version 1.6
+----------------------
+- new version to account for OAL v2.0 routine/type name changes
+- prlev parameter replaced by global VERBOSITY variable
+
+Version 1.5
+----------------------
+closed SPRs:
+
+- SSC-SPR-0506: mssllib is missing from DEPEND
+
+Version 1.4
+----------------------
+added new parameters:
+'datamode', 'expnr' -  to allow for selection of different readout modes (up 
+           to now only Imaging mode is supported) and exposures
+'prlev'  - to switch between different levels of task verbosity
+'infile' - to make use of the new oal/cal v1.2 functionality to get a valid
+           ODF file name
+
+Change in GTI calculation: startTime is outtimeCol(i) - halfdt
+                           stopTime  is outtimeCol(j) + halfdt
+                           where halfdt = 0.5 * FRMTIME
+
+Closed SPRs:
+
+- SSC-SPR-0353: use type f for file names
+- SSC-SPR-0354: remove memdal from USEDLIBS
+- SSC-SPR-0355: do not use goto and labels
+- SSC-SPR-0142: Test harnesses are base tests
+- SSC-SPR-0012: GTI output
+- SSC-SPR-0011: Behaviour for wrong CCD number
+
+	
+Version 1.3
+----------------------
+
+ChangeLog added
+DEPEND edited
+
+Closed SPRs:
+ 
+- SSC-SPR-0140: file permissions fixed
+- SSC-SPR-0141: config/epframes.msg and reference in config/Makefile removed
+- SSC-SPR-0143: call error now used instead of 'stop'
+- SSC-SPR-0144: source code improved (to implement nested loops)
+- SSC-SPR-0145: epframes.par file fixed
+- SSC-SPR-0146: make test passed on SSC system (ermintrude)
+
+Version 1.2
+----------------------------
+
+- Original version submitted to the SOC

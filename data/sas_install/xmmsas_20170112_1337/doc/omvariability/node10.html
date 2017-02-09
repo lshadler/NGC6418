@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="omvariability">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omvariability.css">
+
+<LINK REL="next" HREF="node12.html">
+<LINK REL="previous" HREF="node9.html">
+<LINK REL="up" HREF="omvariability.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omvariability (omvariability-1.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="omvariability.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Variability statistics"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omvariability.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00090000000000000000">
+Algorithm</A>
+</H1>
+
+<P>
+<A NAME="omvariability:description:algorithm"></A>
+<P>
+<SPAN  CLASS="textbf">omvariability</SPAN> is a <SPAN  CLASS="textbf">c++</SPAN> program and works as follows:
+
+<P>
+
+<UL>
+<LI>For each <SPAN  CLASS="textbf">SWS</SPAN> file given in the list for the parameter
+<SPAN  CLASS="textbf">srclistsets</SPAN>-
+
+<P>
+
+<UL>
+<LI>Read in the <SPAN  CLASS="textbf">Right-Ascension</SPAN>, <SPAN  CLASS="textbf">Declination</SPAN>,
+<SPAN  CLASS="textbf">corrected count-rate</SPAN> and <SPAN  CLASS="textbf">corrected count-rate error</SPAN>,
+<SPAN  CLASS="textbf">instrumental magnitude</SPAN> and <SPAN  CLASS="textbf">instrumental magnitude error</SPAN>,
+<SPAN  CLASS="textbf">extension flag</SPAN>, <SPAN  CLASS="textbf">confusion flag</SPAN> and <SPAN  CLASS="textbf">quality flag</SPAN>
+and <SPAN  CLASS="textbf">Source ID</SPAN>. Note that the last quantity identifies which
+unique source in an observation source-list file the source is a counterpart of.
+A <SPAN  CLASS="textbf">map</SPAN> is used in which the <SPAN  CLASS="textbf">key</SPAN> is a source <SPAN  CLASS="textbf">ID</SPAN> and the
+<SPAN  CLASS="textbf">value</SPAN> another map having its  key as the <SPAN  CLASS="textbf">OM filter</SPAN> and its value as a <SPAN  CLASS="textbf">c++ vector</SPAN> 
+that stores the parameters of the source from each <SPAN  CLASS="textbf">SWS</SPAN> file. 
+
+<P>
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI>Iterate through the <SPAN  CLASS="textbf">source IDs</SPAN> stored in the source map and for each one:
+
+<P>
+
+<UL>
+<LI>Iterate through the list of <SPAN  CLASS="textbf">OM</SPAN> filters for that source and
+
+<P>
+
+<UL>
+<LI>If the list contains at least the number of sources specfied by the <SPAN  CLASS="textbf">parameter minnumsources</SPAN>,
+compute variability parameters and store the parameters in another map <SPAN  CLASS="textbf">MAP 1</SPAN> that the <SPAN  CLASS="textbf">OM filter</SPAN> as its key
+and the variability parameters as its value (stored in a structure).
+</LI>
+</UL>   
+
+<P>
+</LI>
+<LI>If the user has specified that a variability plot should be produced, iterate through the computed 
+variability parameters for each <SPAN  CLASS="textbf">filter</SPAN> for the source <SPAN  CLASS="textbf">ID</SPAN>
+and if the minimum deviation of the corrected count-rate of any source from the median value is at least equal to the value set by 
+the input <SPAN  CLASS="textbf">parameter minnstd</SPAN>, plot the source details.
+
+<P>
+</LI>
+</UL>
+</LI>
+<LI>Iterate through the filters in <SPAN  CLASS="textbf">MAP 1</SPAN> and add the variability columns to the output file specified by the parameter <SPAN  CLASS="textbf">outset</SPAN>.
+
+<P>
+</LI>
+</UL> 
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html141"
+  HREF="node11.html">Variability statistics</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="omvariability.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Variability statistics"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

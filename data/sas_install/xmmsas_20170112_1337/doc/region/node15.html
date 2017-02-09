@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="region">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="region.css">
+
+<LINK REL="next" HREF="node16.html">
+<LINK REL="previous" HREF="node14.html">
+<LINK REL="up" HREF="region.html">
+<LINK REL="next" HREF="node16.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+region (region-7.13) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node14.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="region.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="region.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="region:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+   module region_mod
+
+     subroutine region
+
+       Get parameters;
+
+       Read instrument, exposure time etc from event list and set up cal;
+
+       if (--outunit eq 'xy') {read WCS kwds from X and Y columns;}
+
+       Filter source list and load the result into memory;
+
+       if (--radiusstyle ne 'userfixed') {calculate source mean energies;}
+
+       Calculate the position of each source in both DETXY and TELCOORD;
+
+       if (--outunit eq 'xy') {
+         Calculate the position of each source in the XY scheme;
+       }
+
+       # Calculate the shapes and sizes of the source regions:
+
+       if (--radiusstyle eq 'contour') {
+         if (--bkgratestyle eq 'col') {
+           get bkg_rates from BG_MAP column of source list;
+
+         } elsif(--bkgratestyle eq 'user') {
+           set all bkg_rates to --bkgrateuser;
+         }
+
+         Calculate elliptical cutouts (uses ssclib/source_cutouts routine);
+
+         if (--nosrcellipse) {change ellipses to circles of r = l;}
+
+       } elsif(--radiusstyle eq 'userfixed') {
+
+         Calculate region radius by changing --fixedradius to the appropriate
+           coordinate system (either detxy or xy);
+
+       } elsif(--radiusstyle eq 'enfrac') {
+
+         Calculate (using cal call) the radius of a circle which encloses
+           --energyfraction of the flux of the PSF;
+
+         Convert this radius to the appropriate coordinate system (either
+           detxy or xy);
+       }
+
+       if ((--radiusstyle ne 'contour' || --nosrcellipse)
+         &amp;&amp; --operationstyle ne 'global' &amp;&amp; --shrinkconfused) {
+
+         Find sets of confused sources (uses a routine in ssclib/confusion);
+
+         Shrink radii of confused regions until they don't overlap;
+       }
+
+       if (--operationstyle ne 'global') {
+       # Construct the background annuli:
+
+#### fill in some details??
+       }
+
+       Construct the region specifications and save them to file.
+
+     end subroutine region
+
+   end module region_mod
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

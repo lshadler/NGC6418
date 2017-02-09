@@ -1,0 +1,261 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="ebkgreg">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ebkgreg.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="ebkgreg.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ebkgreg (ebkgreg-0.7.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="ebkgreg.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Input"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ebkgreg.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="ebkgreg:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+The task <A NAME="449"></A><A NAME="tex2html3"
+  HREF="../ebkgreg/index.html"><SPAN  CLASS="textbf">ebkgreg</SPAN></A>
+searchs for the most suitable position of a
+region to get the background estimation of any source in an EPIC image (PN or MOS).
+
+<P>
+This task has two processing modes: multiple sources from an input
+source list file or single-source from command-line arguments.
+
+<P>
+In the multiple sources case the input source list has to contain the following
+basic parameters for each source: celestial coordinates (<A NAME="453"></A><TT>RA</TT>, <A NAME="455"></A><TT>DEC</TT>),
+EPIC-pn counts (<A NAME="457"></A><TT>PN_CTS</TT>) and EPIC-pn offaxis information (<A NAME="459"></A><TT>PN_OFFAX</TT>).
+The extraction region radius for each source is obtained from a tabulated table and it
+depends on the counts and the off-axis values of the source.
+All of that mandatory information is included in the 'EPIC summary source list'
+from the standard distribution of the pipe-line processing. Additionally that source list
+can be created from <A NAME="461"></A><A NAME="tex2html4"
+  HREF="../srcmatch/index.html"><SPAN  CLASS="textbf">srcmatch</SPAN></A>
+(follow the link for further information).
+
+<P>
+Alternatively the extraction region radius for each source can be present in the input 
+source list as <A NAME="465"></A><TT>SRC_RAD</TT>. In this case this is the mandatory column in the input,
+but not <A NAME="467"></A><TT>PN_CTS</TT> and <A NAME="469"></A><TT>PN_OFFAX</TT>.
+
+<P>
+Only in the single-source mode the source basic information can be given via the command-line arguments,
+<TT>x</TT>, <TT>y</TT> and <TT>r</TT>, where x,y are the celestial coordinates of the source and
+r is the source extraction radius for source products in arcsec. Depending on the <TT>coordtype</TT> the 
+source position could be RA,Dec or X,Y Sky coord.
+
+<P>
+The algorithm will search for a circular background region in the same CCD where the source is located, except for the source in the central CCD of a 
+MOS observation in SmallWindow mode (<A NAME="475"></A><TT>PrimePartialW2/3</TT>). In that case the background is estimated from an annulus
+(inner radius = 5.5 arcmin, outer radius = 11 arcmin) centered in the center of the image. Thus the background is estimated from the peripheral CCDs
+and the central CCD is completely excluded.
+For EPIC-pn sources the algorithm avoids the same RAWY column of the source in order to exclude out-of-time events from the background estimate.
+
+<P>
+It is very important to notice that the algorithm search for the best background region (position and size) only based on geometrical criteria, but not 
+looking for a source-free region in the image. The algorithm assumes that some contaminating sources could be contained in the background region.
+It is the user's responsability to exclude those contaminating sources from the background estimate calculation. That is very critical for some crowded sky regions.
+
+<P>
+Contaminating sources could be found by the source detection task <A NAME="477"></A><A NAME="tex2html5"
+  HREF="../edetect_chain/index.html"><SPAN  CLASS="textbf">edetect_chain</SPAN></A>
+and then the FITS Region file created by the task <A NAME="481"></A><A NAME="tex2html6"
+  HREF="../region/index.html"><SPAN  CLASS="textbf">region</SPAN></A>.
+
+<P>
+Any SAS task which accepts an input FITS Region file allows also to specify exclusion regions (e.g.: <A NAME="485"></A><A NAME="tex2html7"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>, <A NAME="489"></A><A NAME="tex2html8"
+  HREF="../especget/index.html"><SPAN  CLASS="textbf">especget</SPAN></A>). Those exclusion regions are
+identified by an exclamation mark "!" before the region shape (e.g.: !CIRCLE) and they must appear in the next rows after the including region in the Region file
+(see Table&nbsp;<A HREF="#regfile:description">1</A>). 
+
+<P>
+Example: evselect expression=region(FITSRegionFile.fits,X,Y) ...
+
+<P>
+<BR>
+<DIV ALIGN="CENTER">
+<A NAME="regfile:description"></A><A NAME="416"></A>
+<TABLE CELLPADDING=3 BORDER="1" ALIGN="CENTER">
+<CAPTION><STRONG>Table 1:</STRONG>
+<B>FITS Region file structure</B></CAPTION>
+<TR><TD ALIGN="LEFT">SHAPE</TD>
+<TD ALIGN="CENTER">X</TD>
+<TD ALIGN="CENTER">Y</TD>
+<TD ALIGN="CENTER">R</TD>
+<TD ALIGN="LEFT">Comment</TD>
+</TR>
+<TR><TD ALIGN="LEFT">CIRCLE</TD>
+<TD ALIGN="CENTER">include_X</TD>
+<TD ALIGN="CENTER">include_Y</TD>
+<TD ALIGN="CENTER">include_R</TD>
+<TD ALIGN="LEFT">Included region</TD>
+</TR>
+<TR><TD ALIGN="LEFT">!CIRCLE</TD>
+<TD ALIGN="CENTER">exclude_X1</TD>
+<TD ALIGN="CENTER">exclude_Y1</TD>
+<TD ALIGN="CENTER">exclude_R1</TD>
+<TD ALIGN="LEFT">Excluded region</TD>
+</TR>
+<TR><TD ALIGN="LEFT">!CIRCLE</TD>
+<TD ALIGN="CENTER">exclude_X2</TD>
+<TD ALIGN="CENTER">exclude_Y2</TD>
+<TD ALIGN="CENTER">exclude_R2</TD>
+<TD ALIGN="LEFT">Excluded region</TD>
+</TR>
+<TR><TD ALIGN="LEFT">...</TD>
+<TD ALIGN="CENTER">...</TD>
+<TD ALIGN="CENTER">...</TD>
+<TD ALIGN="CENTER">...</TD>
+<TD ALIGN="LEFT">...</TD>
+</TR>
+</TABLE>
+</DIV>
+<BR>
+
+<P>
+The XMM Pipeline is able to exclude any contaminating source from the selected background region in an automatic process. That excluding process is based
+on the knowledge of the brightness and position of all of the sources in the image.
+
+<P>
+The background extraction region always have a radius larger than 3 pixels, otherwise no background is calculated.
+
+<P>
+<BR>
+<DIV ALIGN="CENTER">
+<BR>
+<A NAME="417"></A>
+<TABLE CELLPADDING=3 BORDER="1" ALIGN="CENTER">
+<CAPTION><STRONG>Table 2:</STRONG>
+<B>Input and Output quantities</B></CAPTION>
+<TR><TD ALIGN="LEFT">Value</TD>
+<TD ALIGN="LEFT">Description</TD>
+<TD ALIGN="CENTER">Units</TD>
+</TR>
+<TR><TD ALIGN="LEFT">x</TD>
+<TD ALIGN="LEFT">Source RA or X Sky coord</TD>
+<TD ALIGN="CENTER">deg. or 0.05 arcsec pixel</TD>
+</TR>
+<TR><TD ALIGN="LEFT">y</TD>
+<TD ALIGN="LEFT">Source Dec or Y Sky coord</TD>
+<TD ALIGN="CENTER">deg. or 0.05 arcsec pixel</TD>
+</TR>
+<TR><TD ALIGN="LEFT">r</TD>
+<TD ALIGN="LEFT">Source extraction radius</TD>
+<TD ALIGN="CENTER">arcsec</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">bkg_ra_out</TD>
+<TD ALIGN="LEFT">Background region center RA</TD>
+<TD ALIGN="CENTER">deg.</TD>
+</TR>
+<TR><TD ALIGN="LEFT">bkg_dec_out</TD>
+<TD ALIGN="LEFT">Background region center Dec</TD>
+<TD ALIGN="CENTER">deg.</TD>
+</TR>
+<TR><TD ALIGN="LEFT">bkg_rad1_arcsec_out</TD>
+<TD ALIGN="LEFT">Background region: circle or inner annulus radius</TD>
+<TD ALIGN="CENTER">arcsec</TD>
+</TR>
+<TR><TD ALIGN="LEFT">bkg_rad2_arcsec_out</TD>
+<TD ALIGN="LEFT">Background region: outer annulus radius</TD>
+<TD ALIGN="CENTER">arcsec</TD>
+</TR>
+<TR><TD ALIGN="LEFT">bkg_x_out</TD>
+<TD ALIGN="LEFT">Background region center X sky coord</TD>
+<TD ALIGN="CENTER">0.05 arcsec pixel</TD>
+</TR>
+<TR><TD ALIGN="LEFT">bkg_y_out</TD>
+<TD ALIGN="LEFT">Background region center Y sky coord</TD>
+<TD ALIGN="CENTER">0.05 arcsec pixel</TD>
+</TR>
+<TR><TD ALIGN="LEFT">bkg_rad1_phys_out</TD>
+<TD ALIGN="LEFT">Background region: circle or inner annulus radius</TD>
+<TD ALIGN="CENTER">0.05 arcsec pixel</TD>
+</TR>
+<TR><TD ALIGN="LEFT">bkg_rad2_phys_out</TD>
+<TD ALIGN="LEFT">Background region: outer annulus radius</TD>
+<TD ALIGN="CENTER">0.05 arcsec pixel</TD>
+</TR>
+</TABLE>
+</DIV>
+<BR>
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html72"
+  HREF="node4.html">Input</A>
+<UL>
+<LI><A NAME="tex2html73"
+  HREF="node5.html">Image</A>
+<LI><A NAME="tex2html74"
+  HREF="node6.html">Source list</A>
+<LI><A NAME="tex2html75"
+  HREF="node7.html">Source position</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html76"
+  HREF="node8.html">Output</A>
+<LI><A NAME="tex2html77"
+  HREF="node9.html">Task requirements</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="ebkgreg.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Input"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

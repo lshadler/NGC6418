@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Example2: create one PSF</TITLE>
+<META NAME="description" CONTENT="Example2: create one PSF">
+<META NAME="keywords" CONTENT="psfgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="psfgen.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+psfgen (psfgen-1.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Example1: coordinate converter"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Usage and Examples"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Example3: create multiple PSFs"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="psfgen.html">Home Page</A> / <A  HREF="node4.html">Usage and Examples</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00042000000000000000"></A>
+<A NAME="psfgen:description:examples:example2"></A>
+<BR>
+Example2: create one PSF
+</H2>
+When a output file name is given in parameter <TT>output</TT>, psfgen will create a PSF and save it to the named file (overwrite). User should specify the requied energy band (<TT>energy</TT>) and accuracy level (<TT>level</TT>). The geometry parameters should be supplied as demostrated in Example1 <A HREF="node5.html#psfgen:description:examples:example1">4.1</A>. For example,
+
+<P>
+<TT>psfgen region='(DETX, DETY) IN box(-12962,-579,1400,1600)' instrument=M2 output=m2psf.fits level=ELLBETA energy=4500
+</TT>
+
+<P>
+will create the PSF for 4500eV energy level on EMOS2 centred at TEL(648.114, 2.51136) with accuracy level ELLBETA and save it to 'm2psf.fits'.
+
+<P>
+All the setting parameters have default values (see Parameters section <A HREF="node9.html#psfgen:description:parameters">6</A>). So
+
+<P>
+<TT>psfgen output=psf.fits
+</TT>
+
+<P>
+works and 'psf.fits' is a PSF for 3000eV energy level on EMOS1 centred at TEL(0, 0) with accuracy level MEDIUM.
+
+<P>
+If the user is interested in the PSF of a particular source in MEDIUM level with energy level 6000eV. The easiest way is to select and save the source image to a fits file (e.g. 'source.fits') using <A NAME="589"></A><A NAME="tex2html7"
+  HREF="../xmmselect/index.html"><SPAN  CLASS="textbf">xmmselect</SPAN></A>/<A NAME="593"></A><A NAME="tex2html8"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>. And then use the following command:
+
+<P>
+<TT>psfgen image=source.fits output=source_psf.fits energy=6000
+</TT>
+
+<P>
+The file 'source_psf.fits' is the required PSF with the same size as 'source.fits' with the PSF centre in the middle. Therefore, when selecting the source, the centre of the source should be in the middle of the source image as well.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Example1: coordinate converter"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Usage and Examples"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Example3: create multiple PSFs"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

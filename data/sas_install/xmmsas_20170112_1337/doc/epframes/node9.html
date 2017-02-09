@@ -1,0 +1,441 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="epframes">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epframes.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="epframes.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epframes (epframes-8.109.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Examples"></A>
+<A HREF="epframes.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epframes.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="epframes:description:parameters"></A>
+
+<tr valign=top><td colspan=5>&nbsp;<br><B>General parameters</B>&nbsp;</td></tr>
+
+  <A NAME="epframes:description:parameters:general"></A>
+<A NAME="1101"></A>
+<tr valign=top bgcolor='silver'><td><b>set</b></td><td>yes</td><td><A HREF=../param/node3.html>data-set</A></td><td>odfset</td></tr>
+
+<tr valign=top><td colspan=5>input EPIC PN ODF (actual or
+    symbolic) data-set name<br>&nbsp;</td></tr>
+
+<A NAME="1108"></A>
+<tr valign=top bgcolor='silver'><td><b>eventset</b></td><td>yes</td><td><A HREF=../param/node3.html>data-set</A></td><td>rawevents.dat</td></tr>
+
+<tr valign=top><td colspan=5>output EPIC PN raw events 
+    data-set<br>&nbsp;</td></tr>
+
+<A NAME="1115"></A>
+<tr valign=top bgcolor='silver'><td><b>gtiset</b></td><td>yes</td><td><A HREF=../param/node3.html>data-set</A></td><td>gti.dat</td></tr>
+
+<tr valign=top><td colspan=5>output GTI data-set name<br>&nbsp;</td></tr>
+
+<A NAME="1122"></A>
+<tr valign=top bgcolor='silver'><td><b>withsrccoords</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>whether to use user-supplied values
+    for RA and DEC for TIMING and BURST modes, default is N. 
+    If <TT>withsrccoords</TT>=Y then <TT>withsrcrawy</TT> and 
+    <TT>srcposition</TT> are ignored. If both
+    <TT>withsrccoords</TT>=N and <TT>withsrcrawy</TT>=N then the RA_OBJ and
+    DEC_OBJ from the ProposalInfo are used as input position. 
+<BR>    <B>Warning:</B> For an offset pointing (there may be scientific reasons
+    for this) the values RA_OBJ and DEC_OBJ do <EM>not</EM>
+    represent the desired source position but just the pointing position,
+    you <EM>have</EM> to set <TT>withsrccoords</TT>=Y for this case and 
+    supply the proper source coordinates via <TT>srcra</TT> and <TT>srcdec</TT>
+    or to provide the pixel position via <TT>withsrcrawy</TT>=Y and 
+    <TT>srcposition</TT>, otherwise
+    the absolute timing and the energy corrections will be incorrect.
+    There <EM>is no other way</EM> to handle this offset case, 
+    you have been warned. This is irrelevant for all IMAGING modes.<br>&nbsp;</td></tr>
+
+<A NAME="1153"></A>
+<tr valign=top bgcolor='silver'><td><b>srcra</b></td><td>no</td><td><A HREF=../param/node3.html>angle</A></td><td>0.0</td><td>0 .. 360</td></tr>
+
+<tr valign=top><td colspan=5>
+source right ascension (J2000) for <TT>withsrccoords</TT>=Y<br>&nbsp;</td></tr>
+
+<A NAME="1162"></A>
+<tr valign=top bgcolor='silver'><td><b>srcdec</b></td><td>no</td><td><A HREF=../param/node3.html>angle</A></td><td>0.0</td><td>-90 .. +90</td></tr>
+
+<tr valign=top><td colspan=5>
+source right ascension (J2000) for <TT>withsrccoords</TT>=Y<br>&nbsp;</td></tr>
+
+<A NAME="1171"></A>
+<tr valign=top bgcolor='silver'><td><b>withsrcrawy</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>whether to use user-supplied value
+    for source RAWY position for TIMING and BURST modes, default is N, if both
+    <TT>withsrccoords</TT>=N and <TT>withsrcrawy</TT>=N then the RA_OBJ and
+    DEC_OBJ from the ProposalInfo are used. See the <B>warning</B> at 
+    <TT>withsrccoords</TT>!<br>&nbsp;</td></tr>
+
+<A NAME="1185"></A>
+<tr valign=top bgcolor='silver'><td><b>srcposition</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>190</td><td>1-200; 181-200 should be used for BURST
+    mode</td></tr>
+
+<tr valign=top><td colspan=5>source position for TIMING and BURST mode (in RAWY pixel coordinates)<br>&nbsp;</td></tr>
+
+<A NAME="1192"></A>
+<tr valign=top bgcolor='silver'><td><b>withfinetime</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>whether to apply fine time correction
+    for TIMING and BURST modes by using source RAWY position, default is Y<br>&nbsp;</td></tr>
+
+<A NAME="1199"></A>
+<tr valign=top bgcolor='silver'><td><b>lowerthreshold</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>&nbsp;</td><td>0-4095</td></tr>
+
+<tr valign=top><td colspan=5>disregard low-energy
+  events (with amplitudes <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$&lt;$"></SPAN> lowerthreshold [adu]) already at this stage, 
+  default <TT>lowerthreshold</TT>=0 (or 20) preserves recommended (old) behaviour. 
+  This may be useful when comparing early mission data with recent observations
+  as the setup was different (<TT>lowerthreshold</TT>=23 instead of 20 now)<br>&nbsp;</td></tr>
+
+<A NAME="1210"></A>
+<tr valign=top bgcolor='silver'><td><b>guessdeltap</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>whether to estimate the shift of the
+     PN oscillator frequency due to temperature and ageing effects from HK data,
+     could be used to estimate <A NAME="1218"></A><TT>SAS_JUMP_TOLERANCE</TT> (divide by 6).<br>&nbsp;</td></tr>
+
+<A NAME="1220"></A>
+<tr valign=top bgcolor='silver'><td><b>withfifogti</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>whether to search for short duration 
+     FIFO overflow data gaps (in preparation)<br>&nbsp;</td></tr>
+
+<A NAME="1227"></A>
+<tr valign=top bgcolor='silver'><td><b>fifogtithresh</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>76.0</td><td>0-4095</td></tr>
+
+<tr valign=top><td colspan=5>
+     threshold for FIFI GTI search (in preparation)<br>&nbsp;</td></tr>
+
+<A NAME="1234"></A>
+<tr valign=top bgcolor='silver'><td><b>witheventmap</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>Create several event CCD maps ?
+     These may be useful as they visualize the raw data without any corrections.<br>&nbsp;</td></tr>
+
+<A NAME="1241"></A>
+<tr valign=top bgcolor='silver'><td><b>eventmapset</b></td><td>no</td><td><A HREF=../param/node3.html>data-set</A></td><td>eventmap.dat</td></tr>
+
+<tr valign=top><td colspan=5>
+Name of output event CCD map fileoutput GTI data-set name<br>&nbsp;</td></tr>
+
+<A NAME="1248"></A>
+<tr valign=top bgcolor='silver'><td><b>nomipthresholdlow</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>40</td><td>0-4095</td></tr>
+
+<tr valign=top><td colspan=5>
+minimum PHA value for non-MIP events
+     to be included in <A NAME="1257"></A><TT>NOMIPMAP</TT>, cf. <TT>witheventmap</TT><br>&nbsp;</td></tr>
+
+<A NAME="1260"></A>
+<tr valign=top bgcolor='silver'><td><b>nomipthresholdhigh</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>1600</td><td>0-4095</td></tr>
+
+<tr valign=top><td colspan=5>
+maximum PHA value for non-MIP events
+     to be included in <A NAME="1269"></A><TT>NOMIPMAP</TT>, cf. <TT>witheventmap</TT><br>&nbsp;</td></tr>
+
+<A NAME="1272"></A>
+<tr valign=top bgcolor='silver'><td><b>softthresholdlow</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>20</td><td>0-4095</td></tr>
+
+<tr valign=top><td colspan=5>
+minimum PHA value for non-MIP events
+     to be included in <A NAME="1281"></A><TT>SOFTMAP</TT>, cf. <TT>witheventmap</TT><br>&nbsp;</td></tr>
+
+<A NAME="1284"></A>
+<tr valign=top bgcolor='silver'><td><b>softthresholdhigh</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>30</td><td>0-4095</td></tr>
+
+<tr valign=top><td colspan=5>
+maximum PHA value for non-MIP events
+     to be included in <A NAME="1293"></A><TT>SOFTMAP</TT>, cf. <TT>witheventmap</TT><br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><B>Diagnostic and debug parameters</B>&nbsp;</td></tr>
+
+<A NAME="1298"></A>
+<tr valign=top bgcolor='silver'><td><b>wrongpixlimit</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>10</td><td>0-100</td></tr>
+
+<tr valign=top><td colspan=5>allowed percentage of wrong events 
+    before stopping to send detailed messages<br>&nbsp;</td></tr>
+
+<A NAME="1305"></A>
+<tr valign=top bgcolor='silver'><td><b>showccx</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>whether to internally increase
+    the verbosity for CCX related information<br>&nbsp;</td></tr>
+
+<A NAME="1312"></A>
+<tr valign=top bgcolor='silver'><td><b>showaux</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>whether to internally increase
+    the verbosity for AUX related information<br>&nbsp;</td></tr>
+
+<A NAME="1319"></A>
+<tr valign=top bgcolor='silver'><td><b>showpmh</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>whether to internally increase
+    the verbosity for PMH related information<br>&nbsp;</td></tr>
+
+<A NAME="1326"></A>
+<tr valign=top bgcolor='silver'><td><b>showpah</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>whether to internally increase
+    the verbosity for PAH related information<br>&nbsp;</td></tr>
+
+<A NAME="1333"></A>
+<tr valign=top bgcolor='silver'><td><b>showve</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>whether to internally increase
+    the verbosity for subroutine ValidEvents related information, 
+    optimization critical<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><B>MIP rejection (commissioning phase)</B>&nbsp;</td></tr>
+
+<A NAME="1342"></A>
+<tr valign=top bgcolor='silver'><td><b>mipthreshold</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>3000</td><td>0-4095</td></tr>
+
+<tr valign=top><td colspan=5>maximum PHA value for non-MIP events 
+    (mainly for commissioning phase and calibration)<br>&nbsp;</td></tr>
+
+<A NAME="1349"></A>
+<tr valign=top bgcolor='silver'><td><b>mipmethod</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>onboard</td><td>none onboard sas com</td></tr>
+
+<tr valign=top><td colspan=5>method to flag MIPs in raw data:
+     none = flag only events but not discarded column, sas = flag events and discarded 
+     column, com = flag events and discarded column and neighbouring column, 
+     onboard = similar to `com' but without full frames rejection 
+    (mainly for commissioning phase and calibration)<br>&nbsp;</td></tr>
+
+<A NAME="1356"></A>
+<tr valign=top bgcolor='silver'><td><b>mipdiscard</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>whether to discard flagged MIP
+     events from the output list (for check of fast instrument modes or 
+     in case of no onboard rejection, <EM>not active yet</EM>)<br>&nbsp;</td></tr>
+
+<A NAME="1364"></A>
+<tr valign=top bgcolor='silver'><td><b>qualmax</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>&nbsp;</td><td>0-2100000000</td></tr>
+
+<tr valign=top><td colspan=5>maximum value of quality flag to include event in 
+     output list 
+    (mainly for commissioning phase and calibration).
+    <EM>This parameter will be removed, use <TT>mipdiscard</TT> then.</EM><br>&nbsp;</td></tr>
+
+<A NAME="1374"></A>
+<tr valign=top bgcolor='silver'><td><b>mipdist</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>whether to create columns 
+     <A NAME="1385"></A><TT>MIPDISTR</TT> and <A NAME="1387"></A><TT>MIPDISTL</TT> 
+     in <A NAME="1389"></A><TT>EVENTS</TT> extension and histogram extension <A NAME="1391"></A><TT>MIPDHIST</TT> 
+    (mainly for commissioning phase and calibration)<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><B>PMSFITS parameters (not relevant for GO phase)</B>&nbsp;</td></tr>
+
+  <A NAME="epframes:description:parameters:pmsfits"></A>
+<A NAME="1395"></A>
+<tr valign=top bgcolor='silver'><td><b>f1294</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>&nbsp;</td><td>0-15</td></tr>
+
+<tr valign=top><td colspan=5>Quadrant wait states [F1294],
+    defines the length of the Extended Full Frame Mode frame time,
+    typical values are 0 (for all modes except eFF), 3, or 5
+    (will be removed once complete PAH and PMH files in ODF available)<br>&nbsp;</td></tr>
+
+<A NAME="1402"></A>
+<tr valign=top bgcolor='silver'><td><b>f1052</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>32400</td><td>0-32767</td></tr>
+
+<tr valign=top><td colspan=5>HK value of DTIMAUTRSTPREVAL [F1052],
+    (will be removed once complete PAH and PMH files in ODF available)<br>&nbsp;</td></tr>
+
+<A NAME="1409"></A>
+<tr valign=top bgcolor='silver'><td><b>f1118</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>UNKNOWN</td><td>UNKNOWN Closed Thin1 Thin2 Medium Thick Open 
+     CalClosed CalThin1 CalThin2 CalMedium CalThick CalOpen</td></tr>
+
+<tr valign=top><td colspan=5>HK value of filter wheel [F1118],
+    (will be removed once complete PAH and PMH files in ODF available)<br>&nbsp;</td></tr>
+
+<A NAME="1416"></A>
+<tr valign=top bgcolor='silver'><td><b>anchop</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>&nbsp;</td><td>0-255</td></tr>
+
+<tr valign=top><td colspan=5>An_CHOP [F1534 F1634 F1734 F1834],
+    (will be removed once complete PAH and PMH files in ODF available)<br>&nbsp;</td></tr>
+
+<A NAME="1423"></A>
+<tr valign=top bgcolor='silver'><td><b>ancmloth</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>532</td><td>0-4095</td></tr>
+
+<tr valign=top><td colspan=5>An_CMLOTH [F1515 F1516 F1517 F1615 F1616 
+     F1617 F1715 F1716 F1717 F1815 F1816 F1817],
+    (will be removed once complete PAH and PMH files in ODF available)<br>&nbsp;</td></tr>
+
+<A NAME="1430"></A>
+<tr valign=top bgcolor='silver'><td><b>ancmcorr</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>512</td><td>0-4095</td></tr>
+
+<tr valign=top><td colspan=5>An_CMCORR [F1525 F1625 F1725 F1825], 
+    (will be removed once complete PAH and PMH files in ODF available)<br>&nbsp;</td></tr>
+
+<A NAME="1437"></A>
+<tr valign=top bgcolor='silver'><td><b>aneamipsel</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>1</td><td>0-63</td></tr>
+
+<tr valign=top><td colspan=5>An_EAMIPSEL [F1536 F1636 F1736 F1836], 
+    (will be removed once complete PAH and PMH files in ODF available)<br>&nbsp;</td></tr>
+
+<A NAME="1444"></A>
+<tr valign=top bgcolor='silver'><td><b>anmaxmip</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>63</td><td>0-4095</td></tr>
+
+<tr valign=top><td colspan=5>An_MAXMIP [F1527 F1627 F1727 F1827], 
+    (will be removed once complete PAH and PMH files in ODF available)<br>&nbsp;</td></tr>
+
+<A NAME="1451"></A>
+<tr valign=top bgcolor='silver'><td><b>anmip</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>3512</td><td>0-4095</td></tr>
+
+<tr valign=top><td colspan=5>An_MIP [F1526 F1626 F1726 F1826], 
+    (will be removed once complete PAH and PMH files in ODF available)<br>&nbsp;</td></tr>
+
+<A NAME="1458"></A>
+<tr valign=top bgcolor='silver'><td><b>anmaxfrc</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>20</td><td>0-63</td></tr>
+
+<tr valign=top><td colspan=5>An_MAXFRC [F1538 F1638 F1738 F1838], 
+    (will be removed once complete PAH and PMH files in ODF available)<br>&nbsp;</td></tr>
+
+<A NAME="1465"></A>
+<tr valign=top bgcolor='silver'><td><b>ansendmode</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>MIP CORREC.2</td><td>``NO MIP CORR.'' ``MIP CORREC.1'' ``MIP CORREC.2''</td></tr>
+
+<tr valign=top><td colspan=5>An_SENDMODE [F1535 F1635 F1735 F1835], 
+    (will be removed once complete PAH and PMH files in ODF available)<br>&nbsp;</td></tr>
+
+<A NAME="1472"></A>
+<tr valign=top bgcolor='silver'><td><b>ecntempqb1</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>-9999.9</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>quadrant box temperature [<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^\circ$"></SPAN>C]: 
+    E_Cn_TEMPQB1 [F1576 F1676 F1776 F1876], 
+    (will be removed once complete PAH and PMH files in ODF available)<br>&nbsp;</td></tr>
+
+<A NAME="1479"></A>
+<tr valign=top bgcolor='silver'><td><b>hcettmpfpf</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>-90</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>CCD fine temperature [<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^\circ$"></SPAN>C]: 
+     H_CE_TTMPFPFE [F1128], only active in absence of real PMH files
+    (will be removed once complete PAH and PMH files in ODF available)<br>&nbsp;</td></tr>
+
+<A NAME="1486"></A>
+<tr valign=top bgcolor='silver'><td><b>automode</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>
+try to determine mode from the data itself<br>&nbsp;</td></tr>
+
+<A NAME="1493"></A>
+<tr valign=top bgcolor='silver'><td><b>autofilter</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>
+try to determine filter from the HK files itself<br>&nbsp;</td></tr>
+
+<A NAME="1500"></A>
+<tr valign=top bgcolor='silver'><td><b>odfok</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>Is ODF/SDF correct/nominal (yes/no) 
+    (for PMSFITS data setting ``N" prevents some warnings)<br>&nbsp;</td></tr>
+
+<A NAME="1507"></A>
+<tr valign=top bgcolor='silver'><td><b>hkok</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>Is PMH/PAH correct/nominal (yes/no) 
+    (for PMSFITS data setting ``N" prevents some warnings)<br>&nbsp;</td></tr>
+
+<A NAME="1514"></A>
+<tr valign=top bgcolor='silver'><td><b>ccfok</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>Is CAL/CCF correct/nominal (yes/no) 
+    (for commissioning phase setting ``N" enables hard-coded offset shifts as there
+    are no correct CCFs yet for this period;
+    <TT>setupbpx</TT> <EM>must</EM> (!) then be correctly set)<br>&nbsp;</td></tr>
+
+<A NAME="1524"></A>
+<tr valign=top bgcolor='silver'><td><b>setupbpx</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>nom3</td><td>none nom0 nom1 nom2 nom3 nom4 cal4 nom5 nom6</td></tr>
+
+<tr valign=top><td colspan=5>
+setup for badpix/offset correction vector, activated by <TT>ccfok</TT>=N(will be removed once complete PAH and PMH and CCF files in ODF available)<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><B>Data check parameters</B>&nbsp;</td></tr>
+
+<A NAME="1535"></A>
+<tr valign=top bgcolor='silver'><td><b>withallobtgti</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>whether to use also frames for the
+    GTI file after the first occurence of the warning ``invalidObtValue''.
+    If set to ``N'' then all events after that time will be lost for this CCD.
+    Has no effect if the warning does not occur.<br>&nbsp;</td></tr>
+
+<A NAME="1542"></A>
+<tr valign=top bgcolor='silver'><td><b>withinvalidobt</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>whether to use also
+    frames as input to OAL routine that lead to warning ``invalidObtValue''.
+    This is for data checks only and should not be changed for processing.<br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Examples"></A>
+<A HREF="epframes.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

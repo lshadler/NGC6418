@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Source non-overlap algorithm</TITLE>
+<META NAME="description" CONTENT="Source non-overlap algorithm">
+<META NAME="keywords" CONTENT="region">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="region.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+region (region-7.13) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="The contour method of"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Local-background region shapes and"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="region.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00035000000000000000"></A>
+  <A NAME="region:description:shrink"></A>
+<BR>
+Source non-overlap algorithm
+</H2>
+
+<P>
+Sources which lie close to each other may generate event-extraction regions which overlap. It is obviously undesirable to include in a subset of events associated with one source events which are also associated with another. <A NAME="693"></A><A NAME="tex2html9"
+  HREF="../region/index.html"><SPAN  CLASS="textbf">region</SPAN></A>
+provides a mechanism for avoiding this overlap. If the user selects <TT>shrinkconfused</TT>=`yes', and provided that the source region shape is circular not elliptical (true if <TT>radiusstyle</TT> is not equal to `contour', or if <TT>radiusstyle</TT>=`contour' but <TT>nosrcellipse</TT>=`yes'), the task will reduce the radii of pairs of overlapping source regions until they no longer overlap. Each source of the pair suffers the same fractional reduction.
+
+<P>
+Elliptical regions are not at present shrunk because the complexity of the geometry required does not seem to be compensated by the advantage gained.
+
+<P>
+Note that, in general, a source has a non-zero chance of being contaminated by events from every other source in the field of view (FOV). It is only possible to correct for this cross-contamination on a statistical basis, and even this is difficult to do without introducing systematic errors greater than the contamination one is attempting to remove. The shrinkage of extraction regions performed by <A NAME="701"></A><A NAME="tex2html10"
+  HREF="../region/index.html"><SPAN  CLASS="textbf">region</SPAN></A>
+must be considered only a very coarse first step towards such correction.
+
+<P>
+Note that source-region cutouts from background regions are not shrunk.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="The contour method of"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Local-background region shapes and"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

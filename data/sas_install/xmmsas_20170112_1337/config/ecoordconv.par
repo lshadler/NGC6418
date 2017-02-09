@@ -1,0 +1,183 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="imageset" type="dataset" mandatory="yes" default="image">
+   <DESCRIPTION>
+    Name of input image dataset
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="srcexp" type="string" mandatory="no">
+   <DESCRIPTION>
+    selection expression for source region
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withcoords" type="bool" default="no">
+   <DESCRIPTION>
+    Enter the source position as a single coordinate ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+
+    <ITEM value="yes">
+
+     <PARAM id="x" type="real" mandatory="yes">
+      <DESCRIPTION>
+         X coordinate of the point to convert
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="y" type="real" mandatory="yes">
+      <DESCRIPTION>
+         Y coordinate of the point to convert
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="coordtype" type="string" mandatory="yes">
+      <DESCRIPTION>
+         Coordinate type of point to convert
+      </DESCRIPTION>
+      <CASE>
+        <ITEM value="DET">
+        </ITEM>
+        <ITEM value="POS">
+          <PARAM id="pos2eqpos" type="bool" default="no">
+            <DESCRIPTION>
+             Just return the x/y to RA/DEC conversion ?
+            </DESCRIPTION>
+          </PARAM>
+        </ITEM>
+        <ITEM value="EQPOS">
+        </ITEM>
+        <ITEM value="RAW">
+        </ITEM>      
+        <ITEM value="pos">
+        </ITEM>
+        <ITEM value="eqpos">
+        </ITEM>
+        <ITEM value="raw">
+        </ITEM>
+        <ITEM value="det">
+        </ITEM>
+      </CASE>
+     </PARAM>
+
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withccd" type="bool" default="no">
+   <DESCRIPTION>
+    Enter a CCD entered ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="ccdno" type="int" mandatory="yes">
+      <DESCRIPTION>
+         ccd number. Mandatory if region given in RAW coordinates.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+  
+  <PARAM id="theta_out" type="real" default="0">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="phi_out" type="real" default="0">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="posx_out" type="real" default="0">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="posy_out" type="real" default="0">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="detx_out" type="real" default="0">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="dety_out" type="real" default="0">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="rawx_out" type="real" default="0">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="rawy_out" type="real" default="0">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="ra_out" type="real" default="0">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="dec_out" type="real" default="0">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="ccd_out" type="int" default="0">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

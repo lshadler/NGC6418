@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>saveDetImage(): Save DETX/DETY images</TITLE>
+<META NAME="description" CONTENT="saveDetImage(): Save DETX/DETY images">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node178.html">
+<LINK REL="previous" HREF="node175.html">
+<LINK REL="up" HREF="node175.html">
+<LINK REL="next" HREF="node177.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node175.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Short cuts to saving"></A>
+<A HREF="node175.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Short cuts to saving"></A>
+<A HREF="node177.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node175.html">Short cuts to saving</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000291000000000000000"></A>
+<A NAME="ssclib:description:save_image:saveDetImage"></A>
+<BR>
+saveDetImage(): Save DETX/DETY images
+</H2>
+
+<P>
+Subroutine to save a DETX/DETY image from a given 2-dimensional array.
+
+<P>
+<PRE>
+  interface saveImage
+    subroutine saveDetImageDouble(detImage, detImageSetName \&amp;
+       , detImageEdgesInfo, templateFitsSetName, wcsExtended, detWcs \&amp;
+       , strTelescop, strInstrum)
+      real(double), intent(in)           :: detImage(:,:)
+      character(*), intent(in)           :: detImageSetName
+      type(aryEdgesInfoT), intent(in), optional :: detImageEdgesInfo
+      character(*), intent(in), optional :: templateFitsSetName, strTelescop, strInstrum
+      type(WcsAxesExtendedT), intent(in), optional :: wcsExtended
+      type(WcsT),   intent(in), optional :: detWcs
+    end subroutine saveDetImageDouble
+
+    subroutine saveDetImageSingle()
+      real(single), intent(in)           :: detImage(:,:)
+    end subroutine saveDetImageSingle
+    subroutine saveDetImageInt32()
+    end subroutine saveDetImageInt32
+    subroutine saveDetImageInt16()
+    end subroutine saveDetImageInt16
+    subroutine saveDetImageInt8()
+    end subroutine saveDetImageInt8
+  end interface
+</PRE>
+
+<P>
+As for the input array (<TT>detImage</TT>), all the Real and Integer types
+are allowed, and that is the only difference in the interface.
+
+<P>
+<TT>detImageSetName</TT> is the output FITS filename.
+<TT>clobber</TT> is taken into account.
+
+<P>
+<TT>detImageEdgesInfo</TT> (optional) is the frame information of the input array.
+(The type is defined in <TT>array_utils</TT>).
+If not given, it is calculated via <TT>getDetImageEdgesInfo()</TT>.
+
+<P>
+<TT>wcsExtended</TT> can be given instead of, or in addition to, 
+<TT>detImageEdgesInfo</TT> in order to directly control the coordinate information
+in the output header attributes.  In that case, make sure
+<BR>  <TT>wcsExtended%withPhysical == .true.</TT>
+<BR>
+if you want to add the PHYSICAL coordinates information in the output file.
+If both <TT>wcsExtended</TT> and <TT>detWcs</TT> are given, the WCS information
+is overwritten, where possible, according to <TT>detWcs</TT> at the end.
+Obviously <TT>detWcs</TT> can not include any PHYSICAL coordinate information.
+
+<P>
+If <TT>templateFitsSetName</TT> is given, all the primary header attributes
+except for those for DSS and WCS are copied to the output file.
+
+<P>
+TELESCOP attribute can be directly specified via <TT>strTelescop</TT>;
+otherwise, unless <TT>templateFitsSetName</TT> is given and has the attribute,
+the default `<TT>XMM</TT>' is written in the output file.
+
+<P>
+INSTRUME attribute can be directly specified via <TT>strInstrum</TT> (string),
+such as (EMOS1|EMOS1|EPN); in default this routine does nothing about it.
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html2513"
+  HREF="node177.html">Examples</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node175.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Short cuts to saving"></A>
+<A HREF="node175.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Short cuts to saving"></A>
+<A HREF="node177.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

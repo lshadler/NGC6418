@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="atthkgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="atthkgen.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="atthkgen.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+atthkgen (atthkgen-1.21) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="atthkgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="atthkgen.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="atthkgen:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+We need to be able to make use of OM and AOCS attitude information to create
+GTIs. These GTIs may be based upon the presence of AOCS or OM data, 
+the quality of these data, offsets of
+the attitude data from the average pointing, or differences between the AHF
+and OM data.
+
+<P>
+The task <A NAME="392"></A><A NAME="tex2html2"
+  HREF="../atthkgen/index.html"><SPAN  CLASS="textbf">atthkgen</SPAN></A>
+produces a FITS file with a single bintable
+extension containing the entire attitude information for a complete
+observation, by accessing the particular ODF in question. The 
+task <A NAME="396"></A><A NAME="tex2html3"
+  HREF="../tabgtigen/index.html"><SPAN  CLASS="textbf">tabgtigen</SPAN></A>
+can then be used to create GTIs from this
+file.
+
+<P>
+Once the whereabouts of the particular ODF in question are known, (set
+via the environment variable $SAS_ODF) the observation start and end
+times are read in by <A NAME="400"></A><A NAME="tex2html4"
+  HREF="../atthkgen/index.html"><SPAN  CLASS="textbf">atthkgen</SPAN></A>
+via an OAL call. The task
+<A NAME="404"></A><A NAME="tex2html5"
+  HREF="../atthkgen/index.html"><SPAN  CLASS="textbf">atthkgen</SPAN></A>
+then loops through every second, say (or whatever the
+user defines via the parameter <TT>timestep</TT>), of the observation,
+obtaining the attitude information and quality for this time.  The
+task accesses the attitude data from both the Attitude History File
+(AHF) and from the OM Tracking History Data files (THF). 
+
+<P>
+The attitude information at the requested point in time is computed by
+an OAL call. If the closest AHF or OM THF points lie further than 20
+seconds away from the requested point in time, the attitude quality is
+deemed bad and the RA, Dec and position angle are set by the OAL call
+to bad.
+
+<P>
+The file will contain (per second, say) the following columns:
+firstly, along with the time (column name <A NAME="409"></A><TT>TIME</TT>), the AHF and OM
+attitude information (i.e. RA, Dec, position angle - <A NAME="411"></A><TT>AHFRA</TT>,
+<A NAME="413"></A><TT>AHFDEC</TT>, <A NAME="415"></A><TT>AHFPA</TT>, and <A NAME="417"></A><TT>OMRA</TT>, <A NAME="419"></A><TT>OMDEC</TT>,
+<A NAME="421"></A><TT>OMPA</TT>). Here, NULL values (i.e. `INDEF' in field) in all three 
+fields will indicate that the quality is bad, hence quality
+filtering can be done by <A NAME="423"></A><A NAME="tex2html6"
+  HREF="../tabgtigen/index.html"><SPAN  CLASS="textbf">tabgtigen</SPAN></A>
+(by searching for these 
+NULL values) to create attitude quality GTI files. If the
+attitude quality is good, then the absolute pointing difference between the
+AHF instantaneous star-tracker pointing and the previously calculated median 
+value of the star-tracker pointing is given as <A NAME="427"></A><TT>DAHFPNT</TT>. Similarly 
+the OM equivalent (<A NAME="429"></A><TT>DOMPNT</TT>) is given and the difference between 
+the AHF and OM pointings
+(<A NAME="431"></A><TT>DAHFOM</TT>) (in the cases where the quality is bad,
+NULL values (`INDEF') are given).
+
+<P>
+Also included as attributes in the primary header will be the mean and median
+values of the nine tabulated attitude columns. These will be named
+<A NAME="433"></A><TT>AAHFRA</TT>, <A NAME="435"></A><TT>AAHFDEC</TT> etc (the `A' indicating average [i.e. mean]) and
+<A NAME="437"></A><TT>MAHFRA</TT>, <A NAME="439"></A><TT>MAHFDEC</TT> etc (the `M' indicating median). These values can be
+accessed by the task <A NAME="441"></A><A NAME="tex2html7"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="atthkgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,277 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Introduction.</TITLE>
+<META NAME="description" CONTENT="Introduction.">
+<META NAME="keywords" CONTENT="colsmooth">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="colsmooth.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+colsmooth (colsmooth-1.7.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Convolver."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="colsmooth.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+Introduction.</A>
+</H2>
+
+<P>
+The task convolves a specified column of a fits file by a user-specified convolving function. This can be used to smooth the values in the column. Specifically, for input vector <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$x$"></SPAN> defined from <SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$i=1$"></SPAN> to <SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$i=N$"></SPAN> and convolver <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"></SPAN> defined from <SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$-M$"></SPAN> to <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$M$"></SPAN>, <A NAME="542"></A><A NAME="tex2html1"
+  HREF="../colsmooth/index.html"><SPAN  CLASS="textbf">colsmooth</SPAN></A>
+performs the following transformation:
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+y_{i} = \frac{\sum_{j=-M}^{M} F_{i,j}}{\sum_{j=-M}^{M} G_{i,j}}
+\end{equation}
+ -->
+<A NAME="convolution"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="convolution"></A><IMG
+ WIDTH="123" HEIGHT="56" BORDER="0"
+ SRC="img7.png"
+ ALT="\begin{displaymath}
+y_{i} = \frac{\sum_{j=-M}^{M} F_{i,j}}{\sum_{j=-M}^{M} G_{i,j}}
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">1</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+where
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+F_{i,j} = \left\{
+  \begin{array}{ll}
+    c_{j} \ x_{i-j}	& \textrm{if $i-j \in [1,N]$}\\
+    0			& \textrm{else}\\
+  \end{array}
+\right.
+\end{equation}
+ -->
+<A NAME="F"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="F"></A><IMG
+ WIDTH="234" HEIGHT="45" BORDER="0"
+ SRC="img8.png"
+ ALT="\begin{displaymath}
+F_{i,j} = \left\{
+\begin{array}{ll}
+c_{j} \ x_{i-j} &amp; \tex...
+... $i-j \in [1,N]$}\\
+0 &amp; \textrm{else}\\
+\end{array}\right.
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">2</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+and the weight term <SPAN CLASS="MATH"><IMG
+ WIDTH="31" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$G_{i,j}$"></SPAN> is given by
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+G_{i,j} = \left\{
+  \begin{array}{ll}
+    c_{j}		& \textrm{if $i-j \in [1,N]$}\\
+    0			& \textrm{else}\\
+  \end{array}
+\right.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="200" HEIGHT="45" BORDER="0"
+ SRC="img10.png"
+ ALT="\begin{displaymath}
+G_{i,j} = \left\{
+\begin{array}{ll}
+c_{j} &amp; \textrm{if $i-j \in [1,N]$}\\
+0 &amp; \textrm{else}\\
+\end{array}\right.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+These formulae automatically normalise the convolver <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$c$"></SPAN>. If this is not desired (indicated by setting the parameter <TT>normalise</TT> to `no'), the <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$y$"></SPAN> values are multiplied by <!-- MATH
+ $\sum_{j=-M}^{M} c_{j}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="77" HEIGHT="41" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$\sum_{j=-M}^{M} c_{j}$"></SPAN> in addition to the above.
+
+<P>
+The user may also specify an uncertainty column. The values of this column, which we denote by <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="$u$"></SPAN>, are transformed as follows:
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+v_{i} = \frac{\sqrt{\sum_{j=-M}^{M} H_{i,j}}}{\sum_{j=-M}^{M} G_{i,j}}
+\end{equation}
+ -->
+<A NAME="unc"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="unc"></A><IMG
+ WIDTH="140" HEIGHT="63" BORDER="0"
+ SRC="img14.png"
+ ALT="\begin{displaymath}
+v_{i} = \frac{\sqrt{\sum_{j=-M}^{M} H_{i,j}}}{\sum_{j=-M}^{M} G_{i,j}}
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">3</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+The vector <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.png"
+ ALT="$v$"></SPAN> here represents the transformed uncertainty values. The quantity <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.png"
+ ALT="$H$"></SPAN> is given by
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+H_{i,j} = \left\{
+  \begin{array}{ll}
+    c_{j}^{2} \ u_{i-j}^{2}	& \textrm{if $i-j \in [1,N]$}\\
+    0				& \textrm{else}\\
+  \end{array}
+\right.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="237" HEIGHT="45" BORDER="0"
+ SRC="img17.png"
+ ALT="\begin{displaymath}
+H_{i,j} = \left\{
+\begin{array}{ll}
+c_{j}^{2} \ u_{i-j}^{2...
+... $i-j \in [1,N]$}\\
+0 &amp; \textrm{else}\\
+\end{array}\right.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+and <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$G$"></SPAN> is as given above. The <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.png"
+ ALT="$v$"></SPAN> values can be `unnormalised' in the same way as <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$y$"></SPAN> above.
+
+<P>
+It is probably as well to remind users that the benefits of smoothing are almost entirely cosmetic. The fundamental amount of information in the column cannot of course be increased by such processing. In fact use of a low-pass filter may be deceptive: the amount of noise may not have decreased very much although the graph looks much better because of the suppression of the more visible high-frequency end of the noise spectrum.
+
+<P>
+This task is not XMM-specific.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Convolver."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

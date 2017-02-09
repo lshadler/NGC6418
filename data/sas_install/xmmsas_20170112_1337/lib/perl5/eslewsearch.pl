@@ -1,0 +1,559 @@
+#! /usr/bin/perl -w
+#
+# eslewsearch 
+#
+# Purpose: Searches a slew for sources in three energy bands
+#
+# Author: Richard Saxton (richard.saxton@sciops.esa.int)
+#
+# Description:
+# 
+# This SAS task runs the source detection software on each of the
+# subimages produced during the processing of a slew.
+# Searches are conducted independently in the soft, hard and total
+# energy bands
+#
+# Needs:
+#
+# The current directory must contain images and exposure maps
+# produced by running the task eslewchain.
+#
+use POSIX qw(ceil floor);
+use SAS;
+use strict;
+
+# Define task
+my $TASK_NAME="eslewsearch";   #
+my $TASK_VERSION="0.1";   #
+#
+# Global variables
+my $coldesc = "cols.desc";
+
+# Check a few things
+#my $del=convDec(-0.2);
+#print "TEST: -0.2 $del\n";
+
+# Handle command line params -v, -p -,h
+#if ( grep /^--?v/, @ARGV) { getVersion() ; exit; } ;
+#if ( grep /^--?p/, @ARGV) { showSyntax() ; exit; } ;
+#if ( grep /^--?h/, @ARGV) { showSyntax() ; exit; } ;
+#
+# Define status variable
+my $status=0;
+
+# Start of task
+sub eslewsearch
+{
+
+# Set the name of the global column description file 
+$coldesc = "cols.desc";
+
+# Make an array of the b8 exposure maps in the current directory
+ my @expmaps;
+ opendir(CDIR,".");
+
+ while ( my $fname = readdir(CDIR) ) {
+    if ( $fname =~ /EXPMAP8/ ) {
+         push @expmaps, $fname;
+    }
+ }
+ if ( scalar @expmaps <= 0 )
+    { SAS::error("NoExpmap", "No exposure maps found in current directory")};
+
+# Produce column descriptor file
+ open(my $fh, '>', $coldesc) or die "Could not open file '$coldesc' $!";
+ print $fh "DSSNAME 40A\n";
+ print $fh "SRCNAME 40A\n";
+ print $fh "XIMNAME 40A\n";
+ close $fh;
+ 
+# Sort maps alphabetically
+ @expmaps = sort @expmaps;
+
+ #print "MAPS: $expmaps[0] $expmaps[1]\n";
+
+# Loop over each map
+ foreach my $expmap (@expmaps) {
+
+#  Loop over each band
+    foreach my $b ('6','7','8') {
+
+      # Generate filenames
+       my $expin = substr($expmap,0,23) . $b . substr($expmap,24,6);
+       my $imin = substr($expmap,0,17) . 'IMAGE_' . $b . substr($expmap,24,6);
+       my $srclst = substr($expmap,0,17) . 'SRCLST' . $b . substr($expmap,24,6);
+
+       #print "$b $expmap $expin $imin $srclst\n";
+
+      # Set the energy conversion factor for this band
+       my $ecf = getECF($b);
+ 
+      # Source search this slew
+       eslewsearch_guts($imin, $expin, $srclst, $ecf);
+
+    } # End of bands loop
+ } # End of subimages loop
+
+# Merge lists with fmerge
+ my $b6list = substr($expmaps[0],0,17) . 'OMSRLI6000.FIT';
+ my $b7list = substr($expmaps[0],0,17) . 'OMSRLI7000.FIT';
+ my $b8list = substr($expmaps[0],0,17) . 'OMSRLI8000.FIT';
+
+ system("ls *SRCLST6* > temp_slist")  == 0 or
+         SAS::error("NoList","Failed to make list of band 6 sourcelists");
+ system("fmerge infiles=\@temp_slist outfile=$b6list columns=- clobber=yes")  == 0 or
+         SAS::error("NoMerge","Failed to merge band 6 lists");
+ system("ls *SRCLST7* > temp_slist")  == 0 or
+         SAS::error("NoList","Failed to make list of band 7 sourcelists");
+ system("fmerge infiles=\@temp_slist outfile=$b7list columns=- clobber=yes")  == 0 or
+         SAS::error("NoMerge","Failed to merge band 7 lists");
+ system("ls *SRCLST8* > temp_slist")  == 0 or
+         SAS::error("NoList","Failed to make list of band 8 sourcelists");
+ system("fmerge infiles=\@temp_slist outfile=$b8list columns=- clobber=yes")  == 0 or
+         SAS::error("NoMerge","Failed to merge band 8 lists");
+
+# Clean up
+ system("rm *SRCLST* temp_slist $coldesc")  == 0 or
+         SAS::error("NoClean","Failed to remove temporary files");
+
+# Append the different band lists into a single list (no source merging)
+ createSingleList($b6list, $b7list, $b8list);
+ 
+# End of main program
+}
+
+#
+# =============================================================
+# eslewsearch_guts : does the source search on a single image
+# =============================================================
+#
+sub eslewsearch_guts {
+
+# Set the input/output filenames
+my $image=$_[0];
+my $expmap=$_[1];
+my $mlist=$_[2];
+my $ecf=$_[3];
+
+# Set constants and thresholds
+my $pimin=1499; # USe 1.5 keV for the PSF in all energy-band images!!
+my $pimax=1501;
+my $eboxlthr=8;
+my $eboxmthr=10;
+my $emlthr=8;
+my $mask='detmask.fits';
+my $boxlist_l='boxlist_l.ds';
+my $boxlist_m='boxlist_m.ds';
+#my $mergedlist='mergedlist.ds';
+my $bckgnd='splinemap.ds';
+
+# Run emask
+ system("emask expimageset=$expmap detmaskset=$mask threshold1=1e-5 threshold2=0.5") ==0 or SAS::error("NoMask","Failed to produce mask for $expmap");
+
+# Run eboxdetect (local mode)
+ system("eboxdetect boxlistset=$boxlist_l boxsize=5 expimagesets=$expmap imagesets=$image likemin=$eboxlthr nruns=3 pimax=$pimax pimin=$pimin usemap=no usematchedfilter=no withdetmask=yes detmasksets=$mask withexpimage=yes withoffsets=no obsmode='slew'") == 0 or
+         SAS::error("BoxlFail","Failure in eboxdetect (local) on $image");
+
+# Create background map
+ system("esplinemap bkgimageset=$bckgnd boxlistset=$boxlist_l withcheese=no withdetmask=yes detmaskset=$mask excesssigma=3 idband=1 imageset=$image mlmin=1 nfitrun=3 nsplinenodes=10 scut=0.005 withexpimage=no") ==0 or 
+         SAS::error("BckgndFail","Failure in esplinemap on $image");
+
+# Run eboxdetect (map mode)
+ system("eboxdetect bkgimagesets=$bckgnd boxlistset=$boxlist_m boxsize=5 withexpimage=yes expimagesets=$expmap imagesets=$image likemin=$eboxmthr nruns=3 pimax=$pimax pimin=$pimin usemap=yes usematchedfilter=no withdetmask=yes detmasksets=$mask withoffsets=no obsmode='slew'") == 0 or
+         SAS::error("BoxmFail","Failure in eboxdetect (map) on $image");
+
+# Run emldetect
+ system("emldetect bkgimagesets=$bckgnd boxlistset=$boxlist_m determineerrors=yes dmlextmin=2 ecf=$ecf ecut=36 withexpimage=yes expimagesets=$expmap fitcounts=yes fitextent=yes fitposition=yes imagesets=$image mllistset=$mlist mlmin=$emlthr pimax=$pimax pimin=$pimin scut=0.9 usecalpsf=yes useevents=no withhotpixelfilter=no withoffsets=no withxidband=no nmaxfit=1 nmulsou=1 psfmodel='slew'") == 0 or
+         SAS::error("emlFail","Failure in emldetect on $image");
+
+#print "File: $mlist\n";
+
+# If source list created, add in the dssname, srcname and ximname
+ if (-f $mlist) {addNameCols($mlist, $image)};
+ 
+# Remove intermediate files
+ system("rm $mask $boxlist_l $boxlist_m $bckgnd")  == 0 or
+         SAS::error("NoClean","Failed to remove temporary files");
+ 
+ 
+}
+
+#
+#==============================================================================
+# addNameCols : adds a column into the source list for the dssname, srcname
+#               and original image name
+#
+sub addNameCols {
+
+ my $mlist=$_[0];
+ my $image=$_[1];
+
+ # Create array of strings to contain sexagecimal coordinates
+ my @coordString = makeCoordStrings($mlist);
+
+ #print "coord: $coordString[0]\n";
+
+ # Make filename strings
+ my @fstrings = makeFileStrings($image, \@coordString);
+
+ # Write strings to data file
+ my $temp_col_fits = 'temp_col_data.fits';
+ my $coldata = 'cols_input.txt';
+ open(my $fh, '>', $coldata) or die "Could not open file '$coldata' $!";
+ foreach my $fstring (@fstrings) 
+    {print $fh "$fstring\n";}
+ close $fh;
+
+ # Convert name strings into FITS format
+ system("fcreate $coldesc $coldata $temp_col_fits clobber=yes") ==0 or SAS::error("NoTempCols","Failed to make a temp column file for $mlist");
+
+ # Add name strings onto source list
+ system("faddcol infile=$mlist colfile=$temp_col_fits colname=-") ==0 or SAS::error("NoCols","Failed to add name columns into $mlist");
+
+ # Close and clean
+ system("rm $temp_col_fits $coldata")  == 0 or
+         SAS::error("NoClean","Failed to remove temporary files");
+}
+
+#
+#==============================================================================
+# makeFileStrings : creates strings to be imported into FITS file
+#
+sub makeFileStrings{
+
+ my $image=$_[0];
+ my @coords=@{$_[1]};
+
+ my @fstrings;
+
+ my $obsid=substr($image,1,10);
+ my $rev=substr($image,2,4);
+
+ #print "IM: $image $obsid $rev\n";
+
+ # Loop over each coordinate string and create a string for import
+ foreach my $coord (@coords) {
+
+    my $dsstring = "'ds" . $obsid . "_" . $coord . ".ds'";
+    my $srcname = "'xs" . $rev . "_" . $obsid . "_" . $coord . "'";
+    my $fstring = $dsstring . " " . $srcname . " '" . $image . "'";
+
+    push @fstrings, $fstring; 
+
+    #print "Fstring: $fstring\n"; 
+ }
+ return @fstrings;
+}
+  
+#
+#==============================================================================
+# makeCoordStrings : reads coords from file and converts to HMS,dms
+#
+sub makeCoordStrings{
+
+ my $mlist=$_[0];
+
+ my $tempfile='temp.dat';
+ my @coordString;
+
+ # Dump coords from FITS into text
+ 
+ #print "Dumping $mlist\n";
+
+ system("fdump infile=$mlist outfile=$tempfile columns='RA DEC' rows=- showrow=no showcol=no showunit=no prhead=no clobber=yes") ==0 or SAS::error("NoDump","Failed to dump RA/DEC from $mlist"); 
+
+ # Convert coords into hms
+ open(my $fh, '<', $tempfile) or die "Could not open file '$tempfile' $!";
+ while (my $line = <$fh>) {
+
+     my (@list) = split " ", $line;
+     #print "List: $list[0] $list[1]\n";
+
+     # check for two words on this line 
+     if ( 2 == @list) {
+      # Convert RA
+      my $hms=convRA($list[0]);
+      # Convert DEC
+      my $deg=convDec($list[1]);
+      #
+      push @coordString, $hms . $deg;
+     }
+ }
+
+ system("rm $tempfile")  == 0 or
+         SAS::error("NoClean","Failed to remove temporary files");
+
+ return @coordString;
+}
+
+#
+#==============================================================================
+sub convRA{
+  my $ra=$_[0];
+
+  my $hrs = int($ra/15.0);
+  my $mins = int( ($ra - $hrs*15.0) * 60.0 / 15.0);
+  my $secs = ($ra - ($hrs*15.0 + $mins * 15.0 / 60.0)) * 3600.0 / 15.0;
+
+  # Sort out ranges
+  if ($secs > 59.95) {
+     $secs=0.0;
+     $mins=$mins+1;
+  }
+  if ($mins == 60) {
+     $mins=0.0;
+     $hrs=$hrs+1;
+  }
+  if ($hrs == 24) {
+     $hrs=0;
+  }
+  my $hms =  sprintf '%02d:%02d:%04.1f', $hrs,$mins,$secs;
+
+  #print "$ra $hms\n";
+
+  return $hms;
+}
+
+#
+#==============================================================================
+sub convDec{
+  my $dec=$_[0];
+
+  my $deg=int($dec);
+  my $mins=int(($dec - $deg) * 60.0); 
+  my $secs=int(abs($dec - ($deg + $mins/60.0)) * 3600.0 + 0.5);
+  my $amins=abs($mins);
+
+  # Sign
+  my $sign="+";
+  if ($dec < 0.0) {
+     $sign="-";
+  }
+
+  # Sort out ranges
+  if ($secs > 59.95) {
+     $secs=0.0;
+     $amins=$amins+1;
+  }
+  if ($amins == 60) {
+     $amins=0.0;
+     if ($dec<0.0) 
+        {$deg=$deg-1;}
+     else
+        {$deg=$deg+1;}        
+  }
+     
+  my $degstring = sprintf '%s%02d:%02d:%02d', $sign,abs($deg),$amins,$secs;
+     
+  #print "$dec $degstring\n";
+
+  return $degstring;
+}
+     
+#
+#==============================================================================
+# getECF : Sets the energy conversion factor for the given band 
+#          Taken from spectrum of NH=3E20, Slope=1.7
+#
+sub getECF {
+
+ my $band=$_[0];
+
+ my $ecf=1.0;
+
+ if ($band==6)
+    {$ecf=1.436} # Soft band (0.2-2 keV)
+ elsif ($band==7) 
+    {$ecf=9.144} # Hard band (2-12 keV)
+ elsif ($band==8)
+    {$ecf=3.159}; # Total band (0.2-12 keV)
+
+ $ecf=10.0/$ecf; # Put in format for EMLDETECT
+
+ return $ecf;
+}
+
+#
+#==============================================================================
+# createSingleList : appends the individual band lists into one list
+#
+sub createSingleList {
+
+   my $b6list=$_[0];
+   my $b7list=$_[1];
+   my $b8list=$_[2];
+   
+   my $b6temp='temp_b6.dat'; my $b7temp='temp_b7.dat'; my $b8temp='temp_b8.dat';
+   my $tempmerge='temp_merged.dat'; 
+   my $mergedlist=substr($b8list,0,19) . 'SSLI0000.FIT';
+
+# Dump files into ascii
+   system("ftlist infile=$b6list option='T' outfile=$b6temp columns='SRCNAME,RA, DEC,RADEC_ERR,SCTS,SCTS_ERR,EXT,EXT_ERR,DET_ML,BG_MAP,RATE,RATE_ERR,FLUX,FLUX_ERR,XIMNAME,ID_INST' rownum=no clobber=yes") ==0 or SAS::error("NoDump","Failed to dump $b6list into text file");
+
+   system("ftlist infile=$b7list option='T' outfile=$b7temp columns='SRCNAME,RA, DEC,RADEC_ERR,SCTS,SCTS_ERR,EXT,EXT_ERR,DET_ML,BG_MAP,RATE,RATE_ERR,FLUX,FLUX_ERR,XIMNAME,ID_INST' rownum=no clobber=yes") ==0 or SAS::error("NoDump","Failed to dump $b7list into text file");
+
+   system("ftlist infile=$b8list option='T' outfile=$b8temp columns='SRCNAME,RA, DEC,RADEC_ERR,SCTS,SCTS_ERR,EXT,EXT_ERR,DET_ML,BG_MAP,RATE,RATE_ERR,FLUX,FLUX_ERR,XIMNAME,ID_INST' rownum=no clobber=yes") ==0 or SAS::error("NoDump","Failed to dump $b8list into text file");
+
+# Combine into a single test file with separate columns for each band
+    open(my $out, '>', $tempmerge) or die "Could not open '$tempmerge' $!";
+
+# b6
+    open(my $fh, '<', $b6temp) or die "Could not open file '$b6temp' $!";
+    while (my $line = <$fh>) {
+    
+       my (@list) = split " ", $line;
+       #print "List: $list[0] $list[1]\n";
+
+      # Add useful records (non-titles and with inst!=0) to output text file 
+       if ( ($list[0] =~ /xs/) && ($list[15]!=0) ) {
+     
+        # Convert source name to XMMSL format
+          my $cname=convName($list[0]);
+
+        # Write output record
+          my $fstring = $cname . " " . $list[1] . " " . $list[2] . " " .
+             $list[3]." ".$list[4]." ".$list[5]. " INDEF INDEF INDEF INDEF ".
+             $list[6]." ".$list[7]. " INDEF INDEF INDEF INDEF ".$list[8].
+             " INDEF INDEF ".$list[9]. " INDEF INDEF ".$list[10]." ".$list[11].
+             " INDEF INDEF INDEF INDEF ".$list[12]." ".$list[13].
+             " INDEF INDEF INDEF INDEF ".$list[14];
+
+          print $out "$fstring\n";
+       }
+    }
+    close $fh;
+
+# b7
+    open($fh, '<', $b7temp) or die "Could not open file '$b7temp' $!";
+    while (my $line = <$fh>) {
+    
+       my (@list) = split " ", $line;
+       #print "List: $list[0] $list[1]\n";
+
+      # Add useful records to output text file 
+       if ( ($list[0] =~ /xs/) && ($list[15]!=0) ) {
+     
+        # Convert source name to XMMSL format
+          my $cname=convName($list[0]);
+
+        # Write output record
+          my $fstring = $cname . " " . $list[1] . " " . $list[2] . " " .
+             $list[3]." INDEF INDEF ".$list[4]." ".$list[5]. 
+             " INDEF INDEF INDEF INDEF ". $list[6]." ".$list[7]. 
+             " INDEF INDEF INDEF ".$list[8].
+             " INDEF INDEF ".$list[9]. " INDEF INDEF INDEF ".$list[10]." ".$list[11].
+             " INDEF INDEF INDEF INDEF ".$list[12]." ".$list[13].
+             " INDEF INDEF ".$list[14];
+          {print $out "$fstring\n";}
+       }
+    }
+    close $fh;
+
+# b8
+    open($fh, '<', $b8temp) or die "Could not open file '$b8temp' $!";
+    while (my $line = <$fh>) {
+    
+       my (@list) = split " ", $line;
+       #print "List: $list[0] $list[1]\n";
+
+      # Add useful records to output text file 
+       if ( ($list[0] =~ /xs/) && ($list[15]!=0) ) {
+     
+        # Convert source name to XMMSL format
+          my $cname=convName($list[0]);
+
+        # Write output record
+          my $fstring = $cname . " " . $list[1] . " " . $list[2] . " " .
+             $list[3]." INDEF INDEF INDEF INDEF ".$list[4]." ".$list[5]. 
+             " INDEF INDEF INDEF INDEF ". $list[6]." ".$list[7]. " INDEF INDEF ".
+             $list[8]. " INDEF INDEF ".$list[9]. " INDEF INDEF INDEF INDEF ".
+             $list[10]." ".$list[11].
+             " INDEF INDEF INDEF INDEF ".$list[12]." ".$list[13]. " " .$list[14];
+          {print $out "$fstring\n";}
+       }
+    }
+    close $fh;
+    close $out;
+
+# Write the merged text file into a FITS file
+    my $cdfile='cols_final.desc';
+    makeFinalCols($cdfile);
+
+    system("fcreate cdfile=$cdfile datafile=$tempmerge outfile=$mergedlist extname=SRCLIST clobber=yes") ==0 or SAS::error("NoMerge","Failed to make $mergedlist");
+
+# Finally sort the list on RA
+    system("fsort infile=$mergedlist columns='RA' method='heap'")  ==0 or SAS::error("NoSort","Failed to sort $mergedlist");
+
+# Clean up
+    system("rm $b6temp $b7temp $b8temp $tempmerge $cdfile")  == 0 or
+         SAS::error("NoClean","Failed to remove temporary files");
+
+
+}
+
+#
+#==============================================================================
+# createSingleList : appends the individual band lists into one list
+#
+sub convName{
+
+   my $srcin=$_[0];
+
+   my $srcout="XMMSL_J" . substr($srcin,18,2).substr($srcin,21,2).substr($srcin,24,4).substr($srcin,28,3).substr($srcin,32,2).substr($srcin,35,2);
+
+   #print "$srcin $srcout\n";
+
+   return $srcout;
+}
+
+#
+#==============================================================================
+# makeFinalCols: writes a column descriptors file
+#
+sub makeFinalCols{
+
+   my $colfile=$_[0];
+
+   open(my $fh, '>', $colfile) or die "Could not open file '$colfile' $!";
+
+   print $fh "SRCNAME 40A\n";
+   print $fh "RA D degrees\n";
+   print $fh "DEC D degrees\n";
+   print $fh "RADEC_ERR D arcseconds\n";
+   print $fh "SCTS_B6 E \n";
+   print $fh "SCTS_B6_ERR E\n";
+   print $fh "SCTS_B7 E \n";
+   print $fh "SCTS_B7_ERR E \n";
+   print $fh "SCTS_B8 E \n";
+   print $fh "SCTS_B8_ERR E \n";
+   print $fh "EXT_B6 E pixels \n";
+   print $fh "EXT_B6_ERR E pixels\n";
+   print $fh "EXT_B7 E pixels\n";
+   print $fh "EXT_B7_ERR E pixels\n";
+   print $fh "EXT_B8 E pixels\n";
+   print $fh "EXT_B8_ERR E pixels\n";
+   print $fh "DET_ML_B6 E \n";
+   print $fh "DET_ML_B7 E \n";
+   print $fh "DET_ML_B8 E \n";
+   print $fh "BG_MAP_B6 E counts/pixel\n";
+   print $fh "BG_MAP_B7 E counts/pixel\n";
+   print $fh "BG_MAP_B8 E counts/pixel\n";
+   print $fh "RATE_B6 E c/s\n";
+   print $fh "RATE_B6_ERR E c/s\n";
+   print $fh "RATE_B7 E c/s\n";
+   print $fh "RATE_B7_ERR E c/s\n";
+   print $fh "RATE_B8 E c/s\n";
+   print $fh "RATE_B8_ERR E c/s\n";
+   print $fh "FLUX_B6 E ergs/s/cm2\n";
+   print $fh "FLUX_B6_ERR E ergs/s/cm2\n";
+   print $fh "FLUX_B7 E ergs/s/cm2\n";
+   print $fh "FLUX_B7_ERR E ergs/s/cm2\n";
+   print $fh "FLUX_B8 E ergs/s/cm2\n";
+   print $fh "FLUX_B8_ERR E ergs/s/cm2\n";
+   print $fh "XIMNAME 40A\n";
+
+   close $fh;
+}
+
+exit
+#

@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>The implemented version for the screening:</TITLE>
+<META NAME="description" CONTENT="The implemented version for the screening:">
+<META NAME="keywords" CONTENT="eprejectti">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eprejectti.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eprejectti (eprejectti-0.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Background: motivation for developing"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Soft flare rejection for"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Caveats: things to take"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eprejectti.html">Home Page</A> / <A  HREF="node3.html">Description</A> / <A  HREF="node4.html">Soft flare rejection for</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00031200000000000000">
+The implemented version for the screening:</A>
+</H3>
+
+<P>
+In this version of <A NAME="381"></A><A NAME="tex2html3"
+  HREF="../eprejectti/index.html"><SPAN  CLASS="textbf">eprejectti</SPAN></A>
+only the boxcar method for screening the soft flares has 
+been implemented. This method has been proven to be very robust. 
+In order to perform the soft flare event selection the program generates a 
+lightcurve in 0.1 sec bins in the specified PHA range using the rawevents 
+obtained from the epframes procedure. This lightcurve is then smoothed with
+a boxcar function. The width of the boxcar can be given as parameter <TT>softflaresmoothparams</TT>
+by the 
+user. This smoothed lightcurve is then used to help perform the soft flare event selection.
+Here each photon is checked to see whether it has a PHA value in the user
+given PHA range (default: 40-50 adu) and the lightcurve is above the user given 
+softflarethreshold1 (this absolute count per 0.1 sec bin value has to be optimized for each 
+observation as the contribution of the source photons in the given PHA range
+varies a lot from observation to observation). 
+The criteria above keep events above the upper PHA threshold 
+during the softflare events as good events.
+A flag column labeled <A NAME="386"></A><TT>FLARE</TT> is added to the rawevents file. 
+A ''1`` in the column denotes that is has been flagged as a soft flare event.
+This column can the be used to screen the data.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Background: motivation for developing"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Soft flare rejection for"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Caveats: things to take"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,268 @@
+<FILE>
+ <CONFIG>
+
+
+<PARAM id="withcheckinput" type="bool" default="yes">
+ <DESCRIPTION>
+  Whether to check the individual input images for consistency.
+ </DESCRIPTION>
+	<CASE>
+		<ITEM value="no"> </ITEM>
+		<ITEM value="yes"> </ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="maskindividual" type="bool" default="no">
+ <DESCRIPTION>
+  Whether to mask individual exposures, if a corresponding mask is present (optional).
+ </DESCRIPTION>
+	<CASE>
+		<ITEM value="no"> </ITEM>
+		<ITEM value="yes"> </ITEM>
+	</CASE>
+</PARAM>
+
+
+<PARAM id="withaddimages" type="bool" default="yes">
+ <DESCRIPTION>
+  Whether to add the images of individual exposures.
+ </DESCRIPTION>
+	<CASE>
+		<ITEM value="no"> </ITEM>
+		<ITEM value="yes"> </ITEM>
+	</CASE>
+</PARAM>
+
+
+
+
+<PARAM id="withcombineimages" type="bool" default="yes">
+ <DESCRIPTION>
+  Whether to combine the individual EPIC instruments.
+ </DESCRIPTION>
+	<CASE>
+		<ITEM value="no"> </ITEM>
+		<ITEM value="yes">
+
+            		<PARAM id="ecut" type="real" default="1000.0">
+			 <DESCRIPTION>  Minimum exposure (in sec) for the combined images.  </DESCRIPTION>
+			 <CONSTRAINTS>
+			  ecut &gt; 0.0
+			 </CONSTRAINTS>
+			</PARAM>
+
+            		<PARAM id="exposureband" type="int" mandatory="no" default="">
+            		 <DESCRIPTION>
+            		  Energy band of the exposure map that will be used to create the mask.
+            		 </DESCRIPTION>
+            		</PARAM>
+
+            		<PARAM id="epn_weight" type="real" list="yes" default="">
+            		 <DESCRIPTION>
+            		  List of weights for the EPIC-pn exposure maps.
+            		 </DESCRIPTION>
+            		 <CONSTRAINTS>
+            		  epn_weight &gt; 0.0
+            		 </CONSTRAINTS>
+            		</PARAM>
+
+            		<PARAM id="em1_weight" type="real" list="yes" default="">
+            		 <DESCRIPTION>
+            		  List of weights for the EPIC-MOS1 exposure maps.
+            		 </DESCRIPTION>
+            		 <CONSTRAINTS>
+            		  em1_weight &gt; 0.0
+            		 </CONSTRAINTS>
+            		</PARAM>
+
+            		<PARAM id="em2_weight" type="real" list="yes" default="">
+            		 <DESCRIPTION>
+            		  List of weights for the EPIC-MOS2 exposure maps.
+            		 </DESCRIPTION>
+            		 <CONSTRAINTS>
+            		  em2_weight &gt; 0.0
+            		 </CONSTRAINTS>
+            		</PARAM>
+
+	        </ITEM>
+	</CASE>
+</PARAM>
+
+
+
+
+
+
+
+
+
+<PARAM id="n_parallel" type="int" mandatory="no" default="1">
+ <DESCRIPTION>
+  Experimental tuning parameter defining the number of parallel executed processes.
+ </DESCRIPTION>
+ <CONSTRAINTS>
+  n_parallel in [1:1024]
+ </CONSTRAINTS>
+</PARAM>
+
+<PARAM id="keepinterstage" type="bool" default="yes">
+ <DESCRIPTION>
+  Whether to keep interstage products.
+ </DESCRIPTION>
+</PARAM>
+
+<PARAM id="prefix" type="string" default="MERGED_">
+ <DESCRIPTION> 
+  Output file name prefix. 
+ </DESCRIPTION>
+</PARAM>
+
+
+
+
+
+
+
+
+
+<!-- asmooth  -->
+
+<PARAM id="withasmooth" type="bool" default="yes">
+ <DESCRIPTION>
+  Whether to create the smoothed and corrected images.
+ </DESCRIPTION>
+	<CASE>
+		<ITEM value="no"> </ITEM>
+		<ITEM value="yes">
+
+  <PARAM id="smoothstyle" type="string" default="simple">
+   <DESCRIPTION>     Smoothing type.     </DESCRIPTION>
+
+    <CASE>
+    <ITEM value="simple">
+     <PARAM id="convolverstyle" type="string" default="gaussian">
+      <DESCRIPTION>
+       Convolver type.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="gaussian">
+       </ITEM>
+
+       <ITEM value="tophat">
+       </ITEM>
+
+       <ITEM value="squarebox">
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="width" type="real" default="5.0">
+      <DESCRIPTION>
+       Characteristic width of the convolver.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       width in [0.0:100.0]
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="normalize" type="bool" default="yes">
+      <DESCRIPTION>
+       Whether to normalize the convolver.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+
+    <ITEM value="adaptive">
+
+     <PARAM id="templatebands" type="int" list="yes" mandatory="no" default="">
+      <DESCRIPTION>
+       List of energy bands that will be used to estimate the signal to noise for the smoothing template.
+        If left empty, all energy bands will be used.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       templatebands in [0:999]
+      </CONSTRAINTS>
+     </PARAM>
+
+
+
+     <PARAM id="withuserwidths" type="bool" default="no">
+      <DESCRIPTION>
+       Whether to look for a user-supplied list of convolver widths.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="yes">
+        <PARAM id="userwidths" type="real" list="yes" default="0.0">
+         <DESCRIPTION>
+          List of convolver widths.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          userwidths in [0.0:100.0]
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+
+       <ITEM value="no">
+        <PARAM id="nconvolvers" type="int" default="20">
+         <DESCRIPTION>
+          Number of convolvers in the list.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          nconvolvers in [2:126]
+         </CONSTRAINTS>
+        </PARAM>
+        <PARAM id="minwidth" type="real" default="0.0">
+         <DESCRIPTION>
+          Width of the smallest convolver in the list.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          minwidth in [0.0:100.0]
+         </CONSTRAINTS>
+        </PARAM>
+        <PARAM id="maxwidth" type="real" default="10.0">
+         <DESCRIPTION>
+          Width of the largest convolver in the list.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          maxwidth in [0.0:100.0]
+         </CONSTRAINTS>
+        </PARAM>
+        <PARAM id="widthliststyle" type="string" default="linear">
+         <DESCRIPTION>
+          Style of spacing in the list of convolver widths.
+         </DESCRIPTION>
+         <CASE>
+          <ITEM value="linear">
+          </ITEM>
+          <ITEM value="log">
+          </ITEM>
+          <ITEM value="sqrt">
+          </ITEM>
+         </CASE>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+
+     <PARAM id="desiredsnr" type="real" default="10.0">
+      <DESCRIPTION>
+       Desired signal-to-noise ratio in the adaptively-smoothed image.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       desiredsnr &gt; 0.0
+      </CONSTRAINTS>
+     </PARAM>
+
+ 
+    </ITEM>
+    </CASE>
+  </PARAM>
+
+	        </ITEM>
+	</CASE>
+</PARAM>
+
+
+
+
+ </CONFIG>
+</FILE>

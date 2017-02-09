@@ -1,0 +1,310 @@
+#! /usr/bin/perl -w
+
+  print "   \n";
+  $task="pn-filter";
+  $version="4.00";
+  $date="2009-05-08";
+  $author="S. L. Snowden, based on code from K. D. Kuntz";
+  print "Task: $task\n";
+  print "Version: $version\n";
+  print "Date: $date\n";
+  print "Author: $author\n";
+
+  $good=substep();
+
+# Here is the first level subroutine (a bit of handle, redux, and flare)
+
+  sub substep{
+    {
+
+# Find which event lists were produced by epchain
+
+      $new_name="P??????????PNS???PIEVLI????.FIT";
+      system "ls $new_name > temp.list";
+      $new_name="P??????????PNU???PIEVLI????.FIT";
+      system "ls $new_name >> temp.list";
+      system "cat temp.list";
+
+      $new_name="P??????????PNS???OOEVLI????.FIT";
+      system "ls $new_name > tempoot.list";
+      $new_name="P??????????PNU???OOEVLI????.FIT";
+      system "ls $new_name >> tempoot.list";
+      system "cat tempoot.list";
+
+      open (LIST_HNDL,"temp.list");
+      @file_list=<LIST_HNDL>;
+      close(LIST_HNDL);
+      $file_numb=@file_list;
+
+      open (LIST_HNDL,"tempoot.list");
+      @file_listoot=<LIST_HNDL>;
+      close(LIST_HNDL);
+      $file_numboot=@file_listoot;
+
+# Loop over the event lists
+
+      if($file_numboot == 0){
+        print "No PN OOT observation segments\n";
+      } else {
+
+        $subo=0;
+        foreach $subo_name (@file_listoot) {
+          chomp($subo_name);
+          print "$subo $subo_name\n";
+
+# Extract root names for the new files
+
+          $rot_name=substr($subo_name,13,4);
+          system "mv $subo_name pn".$rot_name."-oot.fits";
+
+# Check for CalClosed observations
+
+          system "fkeypar pn".$rot_name."-oot.fits FILTER";
+          $filt=`pget fkeypar value`;
+          chomp($filt);
+          print "Filter: $filt \n";
+
+          if($filt eq "'CalClosed'"){
+            print "CalClosed observation - Do Not Process \n";
+            system "mv pn".$rot_name."-oot.fits pn".$rot_name."-cc-oot.fits";
+          } else {
+
+            $comm="espfilt eventset=pn".$rot_name."-oot.fits";
+            print "$comm\n";
+            print "   \n";
+            system "$comm\n";
+
+# Rename a few files
+
+            $rotall_name=substr($subo_name,0,17);
+            $comm="mv ".$rotall_name."-objevlifilt.FIT pn".$rot_name."-clean-oot.fits";
+            print "$comm\n";
+            system "$comm\n";
+            $comm="mv ".$rotall_name."-objlc.FIT pn".$rot_name."-rate-oot.fits";
+            print "$comm\n";
+            system "$comm\n";
+            $comm="mv ".$rotall_name."-corlc.FIT pn".$rot_name."-ratec-oot.fits";
+            print "$comm\n";
+            system "$comm\n";
+            $comm="mv ".$rotall_name."-gti.FIT pn".$rot_name."-gti-oot.fits";
+            print "$comm\n";
+            system "$comm\n";
+            $comm="mv ".$rotall_name."-gti.txt pn".$rot_name."-gti-oot.txt";
+            print "$comm\n";
+            system "$comm\n";
+            $comm="mv ".$rotall_name."-hist.qdp pn".$rot_name."-hist-oot.qdp";
+            print "$comm\n";
+            system "$comm\n";
+          }
+        }
+      }
+
+# Loop over the event lists
+
+      if($file_numb == 0){
+        print "No PN observation segments\n";
+      } else {
+
+        $subo=0;
+        open(CATF_HNDL,">>../../catalogue");
+        foreach $subo_name (@file_list) {
+          chomp($subo_name);
+          print "$subo $subo_name\n";
+
+# Extract root names for the new files
+
+          $rot_name=substr($subo_name,13,4);
+          print "$rot_name \n";
+          system "mv $subo_name pn".$rot_name.".fits";
+
+# Check for a CalClosed observation
+
+          system "fkeypar pn".$rot_name.".fits FILTER";
+          $filt=`pget fkeypar value`;
+          chomp($filt);
+          print "Filter: $filt \n";
+
+          if($filt eq "'CalClosed'"){
+            print "CalClosed observation - Do Not Process \n";
+            system "mv pn".$rot_name.".fits pn".$rot_name."-cc-ori.fits" ;
+          } else {
+
+            $comm="espfilt eventset=pn".$rot_name.".fits" ;
+            print "$comm\n";
+            print "   \n";
+            system "$comm\n";
+
+# Rename a few files
+
+            $rotall_name=substr($subo_name,0,17);
+            $comm="mv ".$rotall_name."-objevlifilt.FIT pn".$rot_name."-clean.fits";
+            print "$comm\n";
+            system "$comm\n";
+            $comm="mv ".$rotall_name."-objlc.FIT pn".$rot_name."-rate.fits";
+            print "$comm\n";
+            system "$comm\n";
+            $comm="mv ".$rotall_name."-corlc.FIT pn".$rot_name."-ratec.fits";
+            print "$comm\n";
+            system "$comm\n";
+            $comm="mv ".$rotall_name."-gti.FIT pn".$rot_name."-gti.fits";
+            print "$comm\n";
+            system "$comm\n";
+            $comm="mv ".$rotall_name."-gti.txt pn".$rot_name."-gti.txt";
+            print "$comm\n";
+            system "$comm\n";
+            $comm="mv ".$rotall_name."-hist.qdp pn".$rot_name."-hist.qdp";
+            print "$comm\n";
+            system "$comm\n";
+
+# Get some diagnostic information
+
+            system "fkeypar pn".$rot_name.".fits REVOLUT";
+            $revl=`pget fkeypar value`;
+            system "fkeypar pn".$rot_name.".fits DATE-OBS";
+            $date=`pget fkeypar value`;
+            system "fkeypar pn".$rot_name.".fits FILTER";
+            $filt=`pget fkeypar value`;
+            system "fkeypar pn".$rot_name.".fits SUBMODE";
+            $mode=`pget fkeypar value`;
+            system "fkeypar pn".$rot_name.".fits ONTIME01";
+            $ontimei=`pget fkeypar value`;
+            print "Revolution: $revl \n";
+            print "Observation Date: $date \n";
+            print "Filter: $filt \n";
+            print "Observation Mode: $mode \n";
+            print "On Time: $ontimei \n";
+
+# Create some diagnostic images          
+
+            $comm="evselect table=pn".$rot_name.".fits withimageset=yes ".
+              "imageset=pn".$rot_name."-obj-image-det-unfilt.fits xcolumn='DETX' ximagesize=780 ".
+              "ximagemax=19500 ximagemin=-19499 ycolumn='DETY' yimagesize=780 ".
+              "expression='(PI in [300:12000])&&(PATTERN <= 4)&&((FLAG & 0xcfa097c) == 0)' ".
+              "filtertype=expression ignorelegallimits=yes ".
+              "yimagemax=19500 yimagemin=-19499 imagebinning=imageSize";
+            print "$comm\n";
+            print "   \n";
+            system "$comm\n";
+            $comm="evselect table=pn".$rot_name."-oot.fits withimageset=yes ".
+              "imageset=pn".$rot_name."-obj-image-det-unfilt-oot.fits xcolumn='DETX' ximagesize=780 ".
+              "ximagemax=19500 ximagemin=-19499 ycolumn='DETY' yimagesize=780 ".
+              "expression='(PI in [300:12000])&&(PATTERN <= 4)&&((FLAG & 0xcfa097c) == 0)' ".
+              "filtertype=expression ignorelegallimits=yes ".
+              "yimagemax=19500 yimagemin=-19499 imagebinning=imageSize";
+            print "$comm\n";
+            print "   \n";
+            system "$comm\n";
+
+            $comm="evselect table=pn".$rot_name."-clean.fits withimageset=yes ".
+              "imageset=pn".$rot_name."-obj-image-det.fits xcolumn='DETX' ximagesize=780 ".
+              "ximagemax=19500 ximagemin=-19499 ycolumn='DETY' yimagesize=780 ".
+              "expression='(PI in [300:12000])&&(PATTERN <= 4)&&((FLAG & 0xcfa097c) == 0)' ".
+              "filtertype=expression ignorelegallimits=yes ".
+              "yimagemax=19500 yimagemin=-19499 imagebinning=imageSize";
+            print "$comm\n";
+            print "   \n";
+            system "$comm\n";
+            $comm="evselect table=pn".$rot_name."-clean-oot.fits withimageset=yes ".
+              "imageset=pn".$rot_name."-obj-image-det-oot.fits xcolumn='DETX' ximagesize=780 ".
+              "ximagemax=19500 ximagemin=-19499 ycolumn='DETY' yimagesize=780 ".
+              "expression='(PI in [300:12000])&&(PATTERN <= 4)&&((FLAG & 0xcfa097c) == 0)' ".
+              "filtertype=expression ignorelegallimits=yes ".
+              "yimagemax=19500 yimagemin=-19499 imagebinning=imageSize";
+            print "$comm\n";
+            print "   \n";
+            system "$comm\n";
+
+            $comm="evselect table=pn".$rot_name."-clean.fits withimageset=yes ".
+              "imageset=pn".$rot_name."-obj-image-sky.fits ".
+              "squarepixels=yes ignorelegallimits=yes ".
+              "withxranges=yes withyranges=yes xcolumn='X' ximagesize=900 ximagemax=48400 ".
+              "expression='(PI in [300:12000])&&(PATTERN <= 4)&&((FLAG & 0xcfa097c) == 0)' ".
+              "filtertype=expression ".
+              "ximagemin=3401 ycolumn='Y' yimagesize=900 yimagemax=48400 ".
+              "yimagemin=3401 updateexposure=yes filterexposure=yes";
+            print "$comm\n";
+            print "   \n";
+            system "$comm\n";
+            $comm="evselect table=pn".$rot_name."-clean-oot.fits withimageset=yes ".
+              "imageset=pn".$rot_name."-obj-image-sky-oot.fits squarepixels=yes ".
+              "ignorelegallimits=yes ".
+              "withxranges=yes withyranges=yes xcolumn='X' ximagesize=900 ximagemax=48400 ".
+              "expression='(PI in [300:12000])&&(PATTERN <= 4)&&((FLAG & 0xcfa097c) == 0)' ".
+              "filtertype=expression ".
+              "ximagemin=3401 ycolumn='Y' yimagesize=900 yimagemax=48400 ".
+              "yimagemin=3401 updateexposure=yes filterexposure=yes";
+            print "$comm\n";
+            print "   \n";
+            system "$comm\n";
+
+# This section of code is ignored as it could lead to some inconsistencies
+# with the actions of pn-spectra.  Leaving it out means that no corner 
+# images or event lists are created.  The event lists will be created
+# in pn-spectra.
+
+            $cornproc=0;
+            if($cornproc eq 1){
+              $corndef="&&!((DETX,DETY) IN circle(-2200,-1110,18200))";
+
+# Create the corner-only events files
+
+              $comm="evselect table=pn".$rot_name."-clean.fits:EVENTS withfilteredset=yes ".
+                "expression='(PATTERN<=4)&&((FLAG & 0xcfa097c) == 0)".$corndef.
+                "' filteredset=pn".$rot_name."-corn.fits filtertype=expression ".
+                "keepfilteroutput=yes updateexposure=yes filterexposure=yes";
+              print "$comm\n";
+              print "   \n";
+              system "$comm\n";
+
+              $comm="evselect table=pn".$rot_name."-clean-oot.fits:EVENTS withfilteredset=yes ".
+                "expression='(PATTERN<=4)&&((FLAG & 0xcfa097c) == 0)".$corndef.
+                "' filteredset=pn".$rot_name."-corn-oot.fits filtertype=expression ".
+                "keepfilteroutput=yes updateexposure=yes filterexposure=yes";
+              print "$comm\n";
+              print "   \n";
+              system "$comm\n";
+
+# Create the image of the corner-only events
+
+              $comm="evselect table=pn".$rot_name."-corn.fits withimageset=yes ".
+                "imageset=pn".$rot_name."-corn-image.fits xcolumn=DETX ycolumn=DETY ".
+                "ximagemax=19500 ximagemin=-19499 yimagemax=19500 yimagemin=-19499 ".
+                "ignorelegallimits=yes ".
+                "imagebinning=imageSize ximagesize=780 yimagesize=780";
+
+              print "$comm\n";
+              print "   \n";
+              system "$comm\n";
+
+              $comm="evselect table=pn".$rot_name."-corn-oot.fits withimageset=yes ".
+                "imageset=pn".$rot_name."-corn-image-oot.fits xcolumn=DETX ycolumn=DETY ".
+                "ximagemax=19500 ximagemin=-19499 yimagemax=19500 yimagemin=-19499 ".
+                "ignorelegallimits=yes ".
+                "imagebinning=imageSize ximagesize=780 yimagesize=780";
+              print "$comm\n";
+              print "   \n";
+              system "$comm\n";
+            }
+
+# Rename the original file
+
+            system "mv pn".$rot_name.".fits pn".$rot_name."-ori.fits" ;
+
+            $subo=$subo+1;
+          }
+        }
+        close(CATF_HNDL);
+
+# (PI in [200:12000])&&(PATTERN <= 4)&&((FLAG & 0xcfb097c) == 0)
+# Do some cleanup
+
+        system "rm temp.list tempoot.list";
+      }
+
+# End of the local environment
+
+    }
+  return $good;
+
+# End of the subroutine
+  }

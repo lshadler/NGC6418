@@ -1,0 +1,149 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="eventset" type="dataset" mandatory="yes" default="rawevents.dat">
+   <DESCRIPTION>
+    Name of input EPIC PN raw events file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="badcolumnset" type="string" mandatory="no" default="badcolumns.tab">
+   <DESCRIPTION>
+    Bad column file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="sigma" type="real" mandatory="no" default="4.0">
+   <DESCRIPTION>
+    Sigma threshold for offset correction ?
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withnoisehandling" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    Apply noise reduction scheme according to epreject?
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS> 
+  </PARAM>
+
+  <PARAM id="noiseparameters" type="real" list="yes" mandatory="no" default="0.98 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0">
+   <DESCRIPTION>
+    Noise fraction parameters
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS> 
+  </PARAM>
+
+  <PARAM id="withoffsetmap" type="bool" mandatory="no" default="yes">
+   <DESCRIPTION>
+    use offsetmap to derive offset correction values ?
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="set" type="dataset" mandatory="no" default="odfset">
+   <DESCRIPTION>
+    Name of input EPIC PN ODF/SDF file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withoffsetlist" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    use file list of offsetmaps to derive offset correction values ?
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="odilist" type="dataset" mandatory="no" default="odilist.asc">
+   <DESCRIPTION>
+    Name of input file with ODI files for the CCDs to be used
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withxrlcorrection" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    turns on X-ray loading correction code for TI+BU modes
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withsoftflarescreening" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    turns on flare screening code
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="softflarethreshold1" type="real" mandatory="no" default="10.0">
+   <DESCRIPTION>
+    threshold for flare screening in units of counts/0.1 s
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="softflarethreshold2" type="real" mandatory="no" default="1.0">
+   <DESCRIPTION>
+    threshold for flare screening
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="softflaresmooth" type="string" mandatory="no" default="BOX">
+   <DESCRIPTION>
+    smoothing method for flare screening (on of BOX, GAUSS, or FLARE)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="softflareenergyrange" type="int" list="yes" default="40 50">
+   <DESCRIPTION>
+    energy range for flare screening (in ADU)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="softflaresmoothparams" type="real" list="yes" default="2.0 0.0 0.0">
+   <DESCRIPTION>
+    smoothing parameters
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

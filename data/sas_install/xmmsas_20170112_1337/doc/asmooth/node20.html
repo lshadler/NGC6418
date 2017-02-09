@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Output Files</TITLE>
+<META NAME="description" CONTENT="Output Files">
+<META NAME="keywords" CONTENT="asmooth">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="asmooth.css">
+
+<LINK REL="next" HREF="node21.html">
+<LINK REL="previous" HREF="node19.html">
+<LINK REL="up" HREF="asmooth.html">
+<LINK REL="next" HREF="node21.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+asmooth (asmooth-2.30) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node19.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input Files"></A>
+<A HREF="asmooth.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node21.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="asmooth.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00070000000000000000"></A>
+<A NAME="asmooth:description:outputfiles"></A>
+<BR>
+Output Files
+</H1>
+
+<P>
+All outputs are arrays in FITS datasets.
+
+<P>
+
+<OL>
+<LI><TT>outset</TT>: The smoothed image. This has data type REAL32. Attributes (and DSS, if present) are copied from the input image.
+
+<P>
+</LI>
+<LI>(Optional) <TT>outtemplateset</TT>: this is only available from <TT>smoothstyle</TT>=`adaptive'. The array has data type REAL32. The value of a given pixel of <TT>outtemplateset</TT> is the characteristic width (sigma value) of the gaussian convolver which was used to smooth the corresponding pixel of <TT>inset</TT>. This facility doesn't offer any advantages over the <TT>smoothstyle</TT>=`withset' and I will eventually delete it.
+
+<P>
+</LI>
+<LI>(Optional) <TT>outconvolversset</TT>: this is only available from <TT>smoothstyle</TT>=`adaptive' and is written in conjunction with <TT>outindeximageset</TT>. The sequence of convolver images used in the adaptive smoothing is written to a cube or 3-dimensional array of REAL32 data type, named <A NAME="1891"></A><TT>CONV_000</TT>. (It is recommended that <TT>outindeximageset</TT> and <TT>outconvolversset</TT> be the same dataset.) Convolver arrays which are smaller than the largest convolver array are padded to the maximum size with zeros. The first two dimensions of the cube record the now common <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$y$"></SPAN> dimensions of these arrays; the third dimension records their position in the sequence.
+
+<P>
+</LI>
+<LI>(Optional) <TT>outindeximageset</TT>: this is only available from <TT>smoothstyle</TT>=`adaptive' and is written in conjunction with <TT>outconvolversset</TT>. The index image is written to a 2-dimensional array, of INTEGER32 data type, named <A NAME="1898"></A><TT>INDEXIMG</TT>. (It is recommended that <TT>outindeximageset</TT> and <TT>outconvolversset</TT> be the same dataset.) Its values correspond to the sequence position of the corresponding convolver: the <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img60.png"
+ ALT="$i$"></SPAN>th convolver in the sequence stored in <TT>outconvolversset</TT> was used to smooth those portions of the image for which the <TT>outindeximageset</TT> value is also <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img60.png"
+ ALT="$i$"></SPAN>.
+
+<P>
+</LI>
+<LI>(Optional) <TT>outvarianceset</TT>: this records the variances (squares of standard deviations) in the smoothed image. Equation <A HREF="node5.html#variance">2</A> shows how these values are calculated. The array has data type REAL32.
+
+<P>
+</LI>
+<LI>(Optional) <TT>badmaskset</TT>: this ought to be a boolean array but the best I can manage at the moment is INTEGER8. Non-zero values are taken to indicate TRUE. Values are set TRUE where the task was unable to evaluate the fraction in equation <A HREF="node13.html#masked">4</A> because the denominator was close to zero.
+
+<P>
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node19.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input Files"></A>
+<A HREF="asmooth.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node21.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Absolute Corrections</TITLE>
+<META NAME="description" CONTENT="Absolute Corrections">
+<META NAME="keywords" CONTENT="epiclccorr">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epiclccorr.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epiclccorr (epiclccorr-1.21.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Extraction region over more"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Relative Corrections"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epiclccorr.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000">
+Absolute Corrections</A>
+</H2>
+
+<P>
+The first version of <B>epiclccorr</B> will be optimised to correct
+time series extracted from <B>point sources</B>. The <B>Absolute
+Correction</B> will be finally applied to the corrected source TS
+background substracted. 
+<BR>
+<P>
+A coarse spectrum (50 eV bins) will be produced by <A NAME="485"></A><A NAME="tex2html14"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+from
+the source region, over the energy range used in the constructions of
+the TS. This will be used with <A NAME="489"></A><A NAME="tex2html15"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+to find the effective area
+array for the source as a function of photon energy.
+<BR>
+<P>
+<A NAME="493"></A><A NAME="tex2html16"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+will be executed twice; The fist call with the spectrum
+in the real position (off-axis) and with the standard default
+parameters.
+<BR>
+<P>
+A second call to <A NAME="497"></A><A NAME="tex2html17"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+using the parameters (<I>withsourcepos=yes sourcecoords="tel" sourcex=0 sourcey=0 filterdss=no
+withdetbounds=yes withbadpixcorr=N modelee=N detmaptype=flat
+detxbins=1 detybins=1</I>) will calculate the ideal effective area of
+this camera/filter combination with no losses.
+<BR>
+<P>
+By dividing the effective area, returned by <A NAME="501"></A><A NAME="tex2html18"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+for an
+infinite on-axis extraction region by the effective area returned from
+the actual extraction region, we will obtain an array of absolute
+corrected factors (Fig.<A HREF="#epiclccorr:area:figure">see figure</A>:). These will be weighted by the
+source spectrum to find a single absolute correction factor.
+<BR>
+<P>
+<DIV ALIGN="CENTER">
+<A NAME="epiclccorr:area:figure"></A><!-- MATH
+ $\epsfig{file=area_ratio.epsi,width=.9\textwidth}$
+ -->
+<IMG
+ WIDTH="628" HEIGHT="512" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="\epsfig{file=area_ratio.epsi,width=.9\textwidth}">
+</DIV>
+<DIV CLASS="centerline" ID="par1055" ALIGN="CENTER">
+<DIV ALIGN="CENTER">
+<SMALL CLASS="FOOTNOTESIZE"> we show the ratio of an off-axis (aprox. 10
+arcmin) vs. on-axis ARF values with respect to the energy. The ratio
+remains almost constant up to 4 keV.</SMALL></DIV></DIV>
+<DIV ALIGN="CENTER">
+</DIV>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Extraction region over more"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Relative Corrections"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

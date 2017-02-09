@@ -1,0 +1,137 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="ratethreshold" type="real" default="0.008">
+   <DESCRIPTION>
+    Mask pixels are set true(=1) if the corrected count/frame is less than ratethreshold.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    ratethreshold in (0:1)
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="maskset" type="dataset" default="maskset.ds">
+   <DESCRIPTION>
+    Name of the dataset to which the mask image/cube is written.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="inputstyle" type="string" default="evlist">
+   <DESCRIPTION>
+    Input style, either evlist or image.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="evlist">
+     <PARAM id="eventset" type="dataset" mandatory="yes">
+      <DESCRIPTION>
+       Name of the input event list dataset.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="image">
+     <PARAM id="imageset" type="dataset" mandatory="yes">
+      <DESCRIPTION>
+       Name of the input image dataset.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="evlo" type="real" default="0.3">
+      <DESCRIPTION>
+       Lower energy boundary for the input image in keV.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       evlo in (0:)
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="evhi" type="real" default="12.0">
+      <DESCRIPTION>
+       Upper energy boundary for the input image in keV.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       evhi in (0:)
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="issingleeventonly" type="bool" default="no">
+      <DESCRIPTION>
+       True if the input image consists of single-pixel events only.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="outputstyle" type="string" default="raw">
+   <DESCRIPTION>
+    Output style, either sky or raw.  If raw, the output format is FITS cube.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="raw">
+    </ITEM>
+
+    <ITEM value="sky">
+     <PARAM id="templateset" type="dataset" default="DEFAULT">
+      <DESCRIPTION>
+       Template image set for output.  If inputstyle=image, the file specified by imageset is used, regardless of the user-specified value of templateset.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="attstyle" type="string" default="binnedset">
+      <DESCRIPTION>
+       Attitude style: either binnedset or template.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="binnedset">
+        <PARAM id="binnedattset" type="string" mandatory="yes">
+         <DESCRIPTION>
+          Binned attitude set name.
+         </DESCRIPTION>
+        </PARAM>
+        <PARAM id="avcnttoprocess" type="real" default="7.0">
+         <DESCRIPTION>
+          Minimum averaged count of the threshold to process a frame.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          avcnttoprocess in (0:)
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+       <ITEM value="template">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withrateimage" type="bool" default="no">
+   <DESCRIPTION>
+    True if the count/frame image is also output.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="ratesetroot" type="dataset" default="rateset">
+      <DESCRIPTION>
+       Name of the dataset to which the rate/frame image/cube is written.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withapproxpatfrac" type="bool" default="yes">
+   <DESCRIPTION>
+    True if the approximate form of the pattern fraction parameters is used.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withboresightfudge" type="bool" default="yes">
+   <DESCRIPTION>
+    Flip the sign of the boresight euler%psi. This parameter should be removed after the boresight is fixed. 
+   </DESCRIPTION>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

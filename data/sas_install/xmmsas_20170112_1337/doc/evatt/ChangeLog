@@ -1,0 +1,450 @@
+ChangeLog for saslib
+====================
+
+Version 1.87.1 - 2016-11-30 (RDS)
+------------
+	+ (lib/saslib/md5global.h)  Define UINT4 properly for 64-bit machines
+					(SPR-7410)
+
+Version 1.87 - 2012-01-17 (AI)
+------------
+	+ (lib/saslib/md5global.h)  Fix the MD5 error in 64-bit platforms.
+	 In 64-bit, longs are 64-bit, not 32-bit. The definition of UINT4 
+	has to change depending on the platform.
+
+Version 1.86.1 - 2009-06-29 (AI)
+------------
+	+ Modifications in several files to make code gcc 4.3 complaint.
+	
+Version 1.86 - 2007-03-28 (RDS)
+------------
+	+ SCR 220 - Add BELOW_THRESH and LOEN_NOISE event flags to 
+			    EPN_REJECTION_MASK
+
+Version 1.85 - 2005-07-06 (JSH)
+------------
+	+ SCR 198 - Add MOS_SPECTRAL_MASK and supporting functions
+
+Version 1.84.1 - 2004-02-05 (JSH)
+------------
+        + SCR 127 - Add documentation for ON_BADOFFSET Event Attribute
+
+Version 1.84 - 2003-11-13 (JSH)
+------------
+	+ SCR 127 - Add ON_BADOFFSET Event Attribute and include in
+	MOS Rejection Mask
+
+Version 1.83 - 2003-08-29 (GV)
+------------
+	+ (Directory.cc) Modifies the condition that leads to the warning
+	(directoryGlob). SOC-SPR-2462
+	
+Version 1.82 - 2003-05-13 (GV)
+------------
+	+ (test/Makefile) adjust USEDLIBS to make static Mac OS X build
+	work.
+	
+Version 1.81 - 2003-05-12 (GV)
+------------
+	+ Re-upload of 1.80 to fix another permission problem.
+	
+Version 1.80 - 2003-05-07 (GV)
+------------
+	+ (evatt_description.tex) Update description for ON_BADROW,
+	BAD_E3E4, UNDERSHOOT.
+	+ Disable html-only documentation that was a partial duplicate of
+	the above. The files are still available in the doc directory.
+	
+Version 1.79 - 2003-05-06 (GV)
+------------
+	+ Re-upload of 1.78 to fix permissions problem.
+	
+Version 1.78 - 2003-03-24 (GV)
+------------
+	+ Add FLICKERING event attributes to c++/f90. Test harnesses
+	updated.
+	+ Documentation updated.
+	
+Version 1.77 - 2003-02-28 (GV)
+------------
+	+ (Directory.cc) rewrite loop around glob to avoid using some
+	return values that are apparently not defined on Mac OS X.
+	
+Version 1.76 - 2002-11-21 (GV)
+------------
+	+ DEPEND: add selectlib (needed for test harness at version 1.75).
+
+Version 1.75 - 2002-11-18 (GV)
+------------
+	+ Add evatt.pref: event attribute preferences for xmmselect.
+	+ EventAttributes.h: expose more of the internals in order to make
+	it possible to write the preference file.
+	+ (testevattcc) now makes use of selectlib to test that the
+	correct bits are actually turned on.
+
+Version 1.74 - 2002-09-11 (JBa)
+------------
+        + Changes in source files in order to comply with ANSI C++ [Prepared
+          for compilation by GCC 3.1]
+
+Version 1.73 - 2002-07-11 (GV)
+------------
+	+ DEPEND on sas.
+
+Version 1.72 - 2002-04-09 (GV)
+------------
+        + Move the RGS flags again, to make sure rejection flags are in
+	the last 16 bits. Update doc.
+	+ (testevatt.f90) now write out the rejection masks as seen from
+	fortran as integer attributes.
+	+ (evatt_cxx_checks_f90.cc) read the attributes set in
+	testevatt.f90, and compare them with the values seen in c++.
+
+Version 1.71 - 2002-04-05 (GV)
+------------
+        + Move the RGS flags defined at 1.68 to another position, doc update.
+	
+Version 1.70 - 2002-04-05 (GV)
+------------
+	+ (test_DigitalSignature.cc) remove obsolete c++ header.
+
+Version 1.69 - 2002-04-05 (GV)
+------------
+	+ Introduce event attribute: ON_WINDOW_BORDER and
+	CLOSE_TO_NODE_BOUNDARY for RGS. 
+
+Version 1.68 - 2002-01-21 (GV)
+------------
+	+ (EventAttributes.h) Add INVALID_PATTERN flag for PN. *evatt*
+	test harnesses updated, documentation updated.
+	
+Version 1.67 - 2001-03-06 (GV)
+------------
+	+ SAS-SCR-0047:
+	  - (EventAttributes.h) create new attribute UNDERSHOOT, add to
+	  MOS rejection mask.
+	  - (eventattributes.f90) idem.
+	  - (test/testevatt*) make aware of new attribute.
+	
+Version 1.66 - 2001-02-02 (GV)
+------------
+	+ SAS-SCR-0046:
+	  - (EventAttributes.h) remove OUT_OF_FOV from
+	  EPN_REJECTION_MASK.
+	  - (eventattributes.f90) idem.
+	  
+Version 1.65.1 - 2000-10-16 (GV)
+--------------
+	+ (EventAttributes.cc) add ON_OFFSET_COLUMN to the map of
+	instrument/flag pairs (SOC-SPR-1782).
+	
+Version 1.65 - 2000-09-08 (GV)
+------------
+	+ (EventAttributes.{h,cc}) add optional mask parameter to the
+	setxxxRejectionMask functions. 
+	
+Version 1.64.1 - 2000-06-23 (GV)
+--------------
+	+ (DirEntryImplementation.h) make members protected instead of
+	private. This part of the solution to SOC-SPR-840.
+	
+Version 1.64 - 2000-05-25 (GV)
+------------
+	+ (eventattributes.f90) adjust MOS rejection mask in f90 as well.
+
+Version 1.63 - 2000-05-24 (GV)
+------------
+	+ (EventAttributes.h) add ON_BADROW and BAD_E3E4 to MOS rejection mask (SPR-1350)
+	
+Version 1.62 - 2000-05-19 (GV)
+------------
+	+ (EventAttributes.cc) fix bug in eventAttributeIsSet: (v & n) was
+	not testing at all whether a certain bit is set (reported by DR).
+	+ (EventAttributes.cc) add local function r_evatt_map that returns
+	the name of an event attrbute given the instrument. This is used
+	to set an appropriate comment string when the XMMEA_xx attributes
+	are set.
+	+ (testevattcc.cc) add INSTRUME = EMOS1 to dataset, to see if the
+	comments above are written out.
+	+ (EventAttributes.{h.cc}) string nameOfEventAttribute(const Table *table, const EvAtt n);
+	added.
+	
+Version 1.61 - 2000-05-03 (GV)
+------------
+	+ New implementation of event attributes based on recent
+	discussions on sas-devel. MIP renamed MIP_ASSOCIATED;
+	ON_OFFSET_COLUMN, NEXT_TO_OFFSET_COLUMN, and NEXT_TO_FLICKERINGPIX
+	added. Event attributes with a different name can share the same
+	bit number: they belomng to different instruments.
+	+ (EvehtAttributes.h) 
+
+	  vector<string> eventAttributes();
+	  string eventAttributeName(EvAtt n);
+
+	removed as now there is no one-to-one mapping between names and
+	bits.
+
+	  const vector<string> names();
+	  const EvAtt lookup(const string & name);
+
+	added.
+	
+	+ test harnesses udated as required.
+	+ new documentation with the new names.
+	+ rejection masks (XMMEA_RG etc) were redefined so that now it is
+	possible to select the good events with #XMMEA_RG.
+	+ improved test harness: evatt_cxx_checks_f90 checks that the
+	values set through f9o are the same as those set through f90.
+	
+Version 1.60 - 2000-04-25 (GV)
+------------
+	+ (EventAttributes.{h,cc} eventattributes.f90) remove
+	EVATT_MIXED_NODE (no longer needed), add EVATT_ON_BADOW and
+	EVATT_BAD_E3E4.
+		
+Version 1.59 - 2000-04-07 (GV)
+------------
+	+ (sasdal/SasDalUtils) added finalize(DataSet *set), with f90
+	implementation. It does nothing at the moment.
+	+ test harnesses for the above.
+	+ (EventAttributes.{h,cc} eventattributes.f90) added
+	MIP/EVATT_MIP. This attribute added to the PN rejection mask.
+	
+Version 1.58 - 2000-02-23 <peter@videler.nl>
+------------
+	+ updated tableSort. New interface !
+	(lib/sasdal/tablesort_mod.f90)
+
+Version 1.57 2000-02-18 (GV)
+------------
+	+ updated RGS rejection masks => add  IN_BAD_FRAME and OUTSIDE_GTI 
+	
+Version 1.56 2000-02-17 <peter@videler.nl>
+------------
+	+ added routines CorrectWrapAround() to be used by rgsframes and fixauxtable
+          (saslib/generalstuff_mod.f90)
+
+Version 1.55 2000-02-10 <peter@videler.nl>
+------------
+	+ added routines copySomeAttributes() and moveSomeAttributes()
+	  (saslib/lib/sasdal/dalutilities_mod.f90)
+
+Version 1.54 2000-02-06 <peter@videler.nl>
+------------
+	+ order of USEDLIBS changed (saslib/test/Makefile)
+
+Version 1.53 2000-02-04 (GV)
+------------
+	+ (addtables.f90) change two read to modify, or dal-1.100 will complain about modifications of read-only objects.
+
+Version 1.52 2000-02-02 <peter@videler.nl>
+------------
+	+ slatec added to DEPEND file
+
+Version 1.51 2000-02-01 <peter@videler.nl>
+------------
+	+ added subroutine tableSort() (sasdal/tablesort_mod.f90)
+        + added function monotonicIncreasing() (saslib/generalstuff_mod.f90)
+	
+Version 1.50 1999-12-06 (PV)
+------------
+	+ added moveAllAttributes and copyAllAttributes  (sasdal/dalutilities_mod.f90)
+
+Version 1.49 1999-11-25 (PV)
+------------
+	+ added moveAttribute and copyAttribute to (sasdal/dalutilities_mod.f90)
+
+Version 1.48 1999-11-12 (GV)
+------------
+	+ another fix make files to export all of the f90/c++ modules/headers.
+
+Version 1.47 1999-11-12 (GV)
+------------
+	+ fix make files to export all of the f90/c++ modules/headers.
+
+Version 1.46 1999-11-11 (GV)
+------------
+	+ (sasdal.h) removed.
+	+ (sasdalutils.{cc,h}) renamed SasDalUtils.{cc,h}.
+	+ Introduce name space around SasDalUtils to work around a
+	possible compiler/dal bug that caused the dal to invoke asReal64
+	on string columns.
+	+ (EventaAttributes.{h,cc}) add OUTSIDE_GTI
+	+ (eventattributes.f90) idem.
+
+Version 1.45 1999-11-04 (GV)
+------------
+	+ (Directory.cc) fix bug that made it impossible to recursively
+	list the contents of a directory when a filtering pattern other
+	than * was specified.
+	+ (DirEntry.cc) removed as long obsolete.
+
+Version 1.44 1999-10-04 (PV)
+------------
+	+ (sasdal/addtables.f90) replaced hardcoded datatypes with sybolic names (DAL 1.76)
+
+Version 1.43 1999-09-02 (GV)
+------------
+	+ (EventAttributes.cc) add functions to write rejection masks attributes
+	+ (eventattributes.f90) same
+	+ (eventattributes_implementation.cc) same
+	+ updated doc, use DOCDIRS.
+
+Version 1.42 1999-09-02 (GV)
+------------
+	+ (EventAttributes.cc) verbosity class is Msg::Lib (SPR 762)
+	+ (        "         ) new flags for RGS: ON_NODE0 ON_NODE1
+
+Version 1.41 1999-08-06 (GV)
+------------
+	+ fix for Linux (selcted_int_kind(10) in eventattributes.f90 removed)
+
+Version 1.40 1999-08-03 (GV)
+------------
+	+ introduced sasdal.h, sasdalutils.{h,cc}: C++/DAL utilities.
+	+ Directory: add possibility to recursively list subdirectories.
+	+ HTML documentation and test harnesses updated.
+	+ make DirEntry abstract, introduce DirEntryFactory
+
+Version 1.39 1999-07-28 (GV)
+------------
+	+ DirEntry: remove string kludge due to bug in g++ 2.7.2
+	+ DirEntry: add operator==,!=,<<
+	+ Directory: add operator<<
+	+ improve test harnesses for the above two classes.
+
+Version 1.38 1999-07-20 (GV)
+------------
+	+ Added NEXT_TO_CCD_BORDER, BELOW_ACCEPTANCE, MIXED_NODE to event
+	attributes. Documentation not updated pending attribute names
+	review. 
+	
+Version 1.37 1999-06-11 (GV)
+------------
+	+ changed RGStable names in odfnames
+
+Version 1.36 1999-06-11 (GV)
+------------
+	+ add three more RGS attributes (Issue 1.4 of the event attributes
+	convention). 
+
+Version 1.35 1999-06-09 (GV)
+------------
+	+ change intent to in for table in   subroutine
+	copyEventAttributes(fromtable, totable). Closes SPR 688.
+
+Version 1.34 1999-06-03 (GV)
+------------
+	+ implements (f90) Issue 1.3 of the event attributes convention.
+	+ C++ implementation of the above (EventAttributes.h)
+	+ functional interface (f90/C++) to set/propagate the event attribute
+	selection flags as table attributes containing an expression.
+	+ improved test harness (f90/C++)
+	+ HTML documentation od the above.
+	 
+Version 1.33 1999-05-13 (MB)
+------------
+	+ fixed invalid string replacement (strerror->strSas::error)
+
+Version 1.32 1999-05-13 (GV)
+------------
+	+ bring in line with new error.
+	
+Version 1.31 1999-04-01 (GV)
+------------
+	+ implements Issue 1.2 of event attributes convention.
+
+Version 1.30 1999-04-01 (PV)
+------------
+	+ Split into saslib and sasdal
+        + renamed saslibdal.f90 in sasdal.f90 (breaks RGS tasks use statement)
+	
+Version 1.20 1999-03-31 (GV)
+------------
+	+ fix make file in src: SPR 606.
+	
+Version 1.19 1999-03-15 (GV)
+------------
+	+ add multiple filter patterns to Directory.cc. filter("*.cc|*.h") is now possible.
+
+Version 1.18 1999-03-15 (GV)
+------------
+	+ added one type cast to Directory.cc to make it compile on Linux.
+	
+Version 1.17 1999-03-08 (MB)
+------------
+	+ added rule to generate libsaslib.so
+
+Version 1.16 1999-03-01 (PV)
+------------
+	+ moved DAL dependend routines into module saslibdal
+          (addcolumnoverwirte addtables)
+	
+Version 1.15 1999-02-26 (PV)
+------------
+	+ added dummy attribute to event attribute module
+
+Version 1.14 1999-02-25 (PV)
+------------
+	+ add f90 odfNames module. (for column names in rgs pipeline)
+	+ add f90 addColumnOverwrite module. 
+
+Version 1.13 1999-02-23 (GV)
+------------
+	+ add f90 event attribute module.
+	+ add minimal documentation in HTML.
+	
+Version 1.12 1999-01-29 (GV)
+------------
+        + fix virtual destructor problem.
+
+Version 1.11 12-01-1990 (PV)
+------------
+        + added f90/transform_mod.f90 for 4x4 transformation used by rgswavelength
+
+Version 1.10 08-12-1998 (GV)
+------------
+        + fix src/Makefile so that MD5 code is absorbed in main library
+
+Version 1.9 02-12-1998 (GV)
+-----------
+	+ change design
+	+ add md5 code from RFC 1321
+	+ DirEntry can now digitally sign itself
+
+Version 1.8 30-11-1998 (GV)
+-----------
+	+ remove PosixDir and replace it with Directory
+	
+Version 1.7  13-11-98 (PV)
+-----------
+- added addtables.f90
+- added dal to DEPEND
+	
+Version 1.6 (JB)
+-----------
+
+- Disbled 'make depend' on symbolic links in 'src' directory
+
+Version 1.5 (GV)
+-----------
+
+- fix missing symlinks
+
+Version 1.4 - 06-11-98 (PV)
+-----------
+- changed integer type in NotNear integer array comparison.
+	
+Version 1.3 - 21-10-98 (GV)
+-----------
+
+- added C++ subdirectory.
+- added PosixDir class.
+
+Version 1.1 - 16-07-98 (PV)
+-----------
+- typo in DEPEND file fixed
+
+Version 1.0 - 15-07-98 (PV)
+-----------
+- initial package release

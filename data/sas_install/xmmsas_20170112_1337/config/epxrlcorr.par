@@ -1,0 +1,75 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="eventset" type="dataset" mandatory="yes" default="events.ds">
+   <DESCRIPTION>
+    Name of raw PN event file to correct
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withoutset" type="bool" default="no">
+   <DESCRIPTION>
+    Write to a new output file
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="outset" type="dataset" mandatory="no" default="eventsxrd.ds">
+      <DESCRIPTION>
+         Name of output PN event file after X-ray loading correction
+      </DESCRIPTION>
+      <CONSTRAINTS>
+        true
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withoffsetmap" type="bool" default="no">
+   <DESCRIPTION>
+    Give the name of the OFFSET map directly ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+      <PARAM id="offsetmap" type="dataset" mandatory="no" default="odi.ds">
+       <DESCRIPTION>
+         Name of a PN offset map
+       </DESCRIPTION>
+       <CONSTRAINTS>
+         true
+       </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withxrlimage" type="bool" default="no">
+   <DESCRIPTION>
+    Create a file containing the X-ray loading image ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+      <PARAM id="xrlimage" type="dataset" mandatory="no" default="xrlimage.ds">
+       <DESCRIPTION>
+         Name of an output file containing the X-ray loading image
+       </DESCRIPTION>
+       <CONSTRAINTS>
+         true
+       </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>
+

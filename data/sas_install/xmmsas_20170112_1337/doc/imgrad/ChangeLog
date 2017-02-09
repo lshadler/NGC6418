@@ -1,0 +1,381 @@
+ChangeLog for tools
+===================
+
+Open SPRs/SCRs: *none*
+
+Version 1.67 - 2015-09-24 (AI)
+------------
+	+ src/xmmtimeconv: Bug fixed in the time conversion from MRT to MJD. 
+	SOC-SPR-7308 closed
+	
+Version 1.66 - 2014-08-27 (AI)
+------------
+	+ src/Mafiles updated to include xmmtimeconv
+	
+Version 1.65 - 2013-09-06 (RDS)
+------------
+        + src/xmmtimeconv  - a new tool to return a time in different formats
+
+Version 1.64.2 - 2009-09-04 (AI)
+----------------------
+	+ Fixes to make tools gcc-4.3 compliant.
+	
+Version 1.64.1 - 2009-06-10 (MAS/LUX)
+----------------------
+        + Fixed a bug that the default value of the command-line option --colstyle in imageutils/imsample is not recognised.
+	
+Version 1.64 - 2006-10-19 (IMS/JBO)
+----------------------
+        + The followings were originally developed by IMS/JBO on 2006-10-19.
+        + Upgraded ssclib dependency to 4.0.
+        + All logical(bool) types changed to logical in imcrop, immedian, imweightadd.
+        + Constraints removed from the 'weights' parameter of imweightadd.
+	+ imcrop now also copies dataset header keywords to output dataset.
+
+Version 1.63 - 2005-11-07 (IMS/LUX)
+------------
+        + Added inadvertently missed out imweightadd files in imageutils/config, imageutils/test and imageutils/doc.
+        + The imageutils test harness now looks for test files in testprods. Thus testprods-1.8 added to DEPEND.
+
+Version 1.62 - 2005-11-02 (IMS/LUX)
+------------
+        + Added parameters to imcrop as follows: --cropstyle with options 'fraction' (the default) plus 'pixel'; --xlo, --xhi, --ylo and --yhi. This change is to enable the user to define the cropping region by pixels as well as by fractions.
+        + Added imageutils tasks immedian, impoissprob and imweightadd (the last was formerly in edetect).
+	+ imageutils/imrebin no longer needs l_wcs_aux module.
+	+ Changed test harness slightly so that imsample is no longer modifying test/infiles/srclist.ds.
+
+Version 1.61.1 - 2005-06-08 (IMS/LUX)
+------------
+        + Put in a work-around for SSC SPR 3467: the offending calls to isNull and setToNull in imgrad have been commented out for the time being. imgrad therefore does not at the moment deal in a sensible fashion with images containing nulls.
+
+Version 1.61 - 2004-10-20 (IMS/LUX)
+------------
+        + Fixed (SOC) SPR 2555
+
+Version 1.60 - 2004-04-02 (IMS/LUX)
+------------
+        + Added tasks in subdirectory imageutils.
+
+Version 1.59 - 2004-04-02 (IMS/LUX)
+------------
+	+ Upload of patches to devtrack.
+
+Version 1.58.1 - 2004-03-05 (JSH)
+------------
+        + SPR2479 Increase precision of timecalc
+
+Version 1.58 - 2003-05-14 (UL)
+------------
+	+ added tcsadd task; may be merged with tcsfix at a later stage
+
+Version 1.57 - 2003-04-01 (UL) - the April's fools day version
+------------
+	+ fixed minor problem with test harness being sensitive to verbosity
+	  level (used odfexpand output in test-operator)
+
+Version 1.56 - 2003-02-10 (JB)
+------------
+	+ Attempt to fix SPR 2351 on regionmask by duplicating the array
+	  incarnation of GridSpan (from rgslib/rgsPixelsLib.cc) into
+	  regionmask.cc and editing it to access the CRPIXnL, CRVALnL
+	  and CDELTnL keywords first.
+
+Version 1.55 - 2003-01-31 (UL)
+------------
+	+ Attempt to fix minor problem with sh-syntax error in test/toolstest
+
+Version 1.54 - 2003-01-21 (UL)
+------------
+	+ redelivery of 1.53
+
+Version 1.53 - 2003-01-21 (UL)
+------------
+	+ fixed static build problem (caloalutils missing from src/clex/Makefile)
+	+ minor stdc++ compliance fixes enforced by gcc-3.2
+
+Version 1.52 - 2002-12-12 (UL)
+------------
+	+ re-upload of 1.51
+
+Version 1.51 - 2002-12-12 (UL)
+------------
+	+ fixed minor version with broken link in doc
+
+Version 1.50 - 2002-12-11 (UL)
+------------
+	+ updated tcsfix to also handle 2002-Kourou timing anomalies
+
+Version 1.49 - 2002-07-29 (UL)
+------------
+	+ tcsfix now adds TCSFIXC attribute to TCS file to indicate kind of applied
+	  correction
+
+Version 1.48 - 2002-06-14 (UL)
+------------
+	+ added documentation for tcsfix
+	+ added new tool orbitdump
+
+Version 1.47 - 2002-06-04 (UL)
+------------
+	+ brought in line with selectlib-4.51
+
+Version 1.46 - 2002-05-14 (GV)
+------------
+	+ updated for param-2.0
+
+Version 1.45.2 - 2002-04-25 (UL)
+--------------
+	+ made tcsfix more verbose
+
+Version 1.45.1 - 2002-04-23 (UL)
+--------------
+	+ extended tcsfix to also handle Santiago-clock 1s problem
+
+Version 1.45 - 2002-04-19 (UL)
+------------
+	+ fixed another problem with regionsmaks's layout file
+
+Version 1.44.2 - 2002-04-19 (UL)
+--------------
+	+ fixed problem with invalid regionmask parameter file
+
+Version 1.44.1 - 2002-04-19 (UL)
+--------------
+	+ brought in line with oal-3.91
+
+Version 1.44 - 2002-03-25 (UL)
+------------
+	+ fixed minor problem in regionmask's layout file
+
+Version 1.43 - 2002-03-25 (UL)
+------------
+	+ added tool 'satvelsrc'
+
+Version 1.42.3 - 2002-02-12 (GV)
+--------------
+	+ Config files for regionmask moved to subdirectory config.
+
+Version 1.42.2 - 2002-02-10 (GV)
+--------------
+	+ Fix problem with regionmask.lyt, sync CVS version @ SOC.
+	+ remove duplicate obt2met.cc
+
+Version 1.42.1 - 2002-02-07 (JDR)
+--------------
+	+ added new tool regionmask
+
+Version 1.42 - 2001-12-04 (UL)
+------------
+	+ brought in line with utils-1.82
+
+Version 1.41.2 - 2001-05-31 (UL)
+--------------
+	+ implemented addendum to SPR 2075: broken links in HTML doc
+
+Version 1.41.1 - 2001-05-31 (UL)
+--------------
+	+ made robust against bogus UTCDAY==0 entries in TCS
+	  (e.g. in ODF 0078_0124100101)
+	+ fixed minor internal problem with uncaught exception that could
+	  propagate up the calling stack
+	+ implemented SPR 2075: broken links in HTML doc
+
+Version 1.41 - 2001-04-19 (UL)
+------------
+	+ now DEPENDs on barycen
+
+Version 1.40 - 2001-04-04 (UL)
+------------
+	+ cleaned DEPEND (removed obsolete packages)
+
+Version 1.39 - 2001-04-02 (UL)
+------------
+	+ added task tcsfix to package
+
+Version 1.38 - 2001-04-02 (UL)
+------------
+	+ bought in line with oal-3.65
+	+ changed obsolete old-style include statements
+
+Version 1.37 - 2001-03-02 (UL)
+------------
+	+ brought in line with caloalutils-1.43
+
+Version 1.36 - 2001-01-09 (UL)
+------------
+	+ added task: xmmtrack
+
+Version 1.35.1 - 2000-11-14 (UL)
+--------------
+	+ removed redundant cal-dependencies from several Makefiles
+
+Version 1.35 - 2000-09-13 (UL)
+------------
+	+ added parameter 'bstoolsout' to `whatatt' task to support constructs
+	  like
+		  insbs `whatatt t=2000-09-10 bstoolsout=yes`
+	  possible
+
+Version 1.34.2 - 2000-07-06 (UL)
+--------------
+	+ brought in line with selectlib-4.35
+
+Version 1.34.1 - 2000-06-20 (UL)
+--------------
+	+ fixed SPR 1510: task info file missing
+	+ fixed SPR 1562: DOC::broken links
+
+Version 1.34 - 2000-05-26 (GV)
+------------
+	+ updated DEPEND.
+
+Version 1.33 - 2000-05-25 (UL)
+------------
+	+ moved gtimerge into separate package
+	+ a few minor tweaks to documentation
+	+ showdetect stuff removed (now in new package srcdisplay)
+
+Version 1.32 - 2000-05-22 (GV)
+------------
+	+ (test/in?.ds) remove DATE and CREATOR from table extensions, as
+	  the dal nw enforces those attributes being reserved.
+	+ update DEPEND.
+	
+Version 1.31 - 2000-05-12 (HS)
+------------
+	+ Added new parameters to showdetect: withregionfile and regionfile.
+	  These allow a DS9 region file to be generated corresponding to the
+	  detected sources.
+	+ Added .info files for each tool
+
+Version 1.30 - 2000-05-03 (UL)
+------------
+	+ minor fix in showdetect
+
+Version 1.29 - 2000-03-15 (UL)
+------------
+	+ improve portability of shell script test/toolstest
+
+Version 1.28 - 2000-03-08 (UL)
+------------
+	+ fixed problem with static build (dsslib was not in USEDLIBS of
+	  showdetect)
+
+Version 1.27 - 2000-02-28 (UL)
+------------
+	+ brought in line with oal-3.47
+
+Version 1.26 - 2000-02-17 (UL)
+------------
+	+ fixed problem with order of libraries in static build
+
+Version 1.25 - 2000-02-16 (UL)
+------------
+	+ added 'gtimerge' (replacement of FTOOL mgtime)
+	+ updated documentation
+
+Version 1.24 - 2000-02-04 (UL)
+------------
+	+ now depends on eboxdetect-3.0
+
+Version 1.23 - 2000-01-06 (UL)
+------------
+	+ fixed SPR 1048 : Task fails to build (static link)
+
+Version 1.22 - 1999-12-17 (UL)
+------------
+	+ brought in line with selectlib-4.23
+
+Version 1.21.1 - 1999-12-16 (UL)
+--------------
+	+ fixed DEPEND file (several packages were missing)
+
+Version 1.21 - 1999-11-15 (UL)
+------------
+	+ added showdetect tools + various utilities to deal with SourceLists
+
+Version 1.20 - 1999-11-30 (UL)
+------------
+	+ fixed SPR 981: test fails because deprecated SAS_ODFDIR is used
+
+Version 1.19 - 1999-11-22 (GV)
+------------
+	+ in line with new DAL interface.
+
+Version 1.18 - 1999-08-20 (UL)
+------------
+	+ brought in line with oal-3.28
+	+ updated documentation
+
+Version 1.17 - 1999-07-12 (MB)
+------------
+	+ added dsconv (MB)
+
+Version 1.16 - 1999-06-16 (GV)
+------------
+	+ update DEPEND
+	
+Version 1.15 - 1999-05-11 (UL)
+------------
+	+ brought in line with error-1.18
+
+Version 1.14 - 1999-04-27 (UL)
+------------
+	+ added tools: `lsodf' to list contents of ODF
+
+Version 1.13 - 1999-04-20 (UL)
+------------
+	+ added missing config/whatatt.par to package
+
+Version 1.12 - 1999-04-19 (GV)
+------------
+	+ updated DEPEND (selectlib-4.0)
+
+Version 1.11 - 1999-03-19 (UL)
+------------
+	+ added new tool 'whatatt' to inquire attitude for a point in time
+
+Version 1.10 - 1999-02-15 (UL)
+------------
+	+ now dependent on Cal-2.0/Oal-3.0
+
+Version 1.9 - 1999-02-11 (UL)
+-----------
+	+ added include statements in sources enforced by taskmain v1.17
+
+Version 1.8 - 1999-02-04 (UL)
+-----------
+	+ merged 'odffile' and 'odfexpand' into new 'odfexpand'
+
+Version 1.7 - 1998-11-25 (MB)
+-----------
+	+ added task 'timecalc'
+
+Version 1.6 - 1998-11-20 (UL)
+-----------
+	+ changes to test harness following OAL-2.5->2.6 upgrade
+
+Version 1.5 - 1998-11-19 (GV)
+-----------
+	+ odffile now proper SAS task
+
+Version 1.4 - 1998-10-06 (UL)
+-----------
+	+ added #include <iomanip.h> in clex.cc/tagc.cc
+
+Version 1.3 - 1998-08-19 (UL)
+-----------
+	+ added tool 'oddfile'; test harness + documentation updated
+
+Version 1.2 - 1998-07-30 (UL)
+-----------
+	+ made it work with latest selectlib (3.5)
+
+Version 1.1 - 1998-07-14 (UL)
+-----------
+	+ fixed SOC-SPR 385: Remove tools.tex
+
+Version 1.0 - 1998-05-27 (UL)
+-----------
+	+ intial version containing `clex' and `ttag'
+

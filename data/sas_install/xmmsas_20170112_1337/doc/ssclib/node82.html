@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>readArrayData</TITLE>
+<META NAME="description" CONTENT="readArrayData">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node83.html">
+<LINK REL="previous" HREF="node81.html">
+<LINK REL="up" HREF="node80.html">
+<LINK REL="next" HREF="node83.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node81.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="splitSetTabName"></A>
+<A HREF="node80.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="An additional layer over"></A>
+<A HREF="node83.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="addOrOpenColumn"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node80.html">An additional layer over</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00072000000000000000"></A>
+    <A NAME="ssclib:description:readArrayData"></A>
+<BR>
+readArrayData
+</H2>
+
+<P>
+It is often useful to be able to read an array of any data type into a fortran array of a single data type. The following interface covers just about every combination I could think of.
+
+<P>
+<PRE>
+  interface readArrayData
+    subroutine readArrayDataName1dReal32(imageSetName, vector)
+      character(*), intent(in) :: imageSetName
+      real(single), pointer    :: vector(:)
+    end subroutine readArrayDataName1dReal32
+
+    subroutine readArrayDataName2dReal32(imageSetName, image)
+      character(*), intent(in) :: imageSetName
+      real(single), pointer    :: image(:,:)
+    end subroutine readArrayDataName2dReal32
+
+    subroutine readArrayDataName3dReal32(imageSetName, cube)
+      character(*), intent(in) :: imageSetName
+      real(single), pointer    :: cube(:,:,:)
+    end subroutine readArrayDataName3dReal32
+
+    subroutine readArrayDataName1dReal64(imageSetName, vector)
+      character(*), intent(in) :: imageSetName
+      real(double), pointer    :: vector(:)
+    end subroutine readArrayDataName1dReal64
+
+    subroutine readArrayDataName2dReal64(imageSetName, image)
+      character(*), intent(in) :: imageSetName
+      real(double), pointer    :: image(:,:)
+    end subroutine readArrayDataName2dReal64
+
+    subroutine readArrayDataName3dReal64(imageSetName, cube)
+      character(*), intent(in) :: imageSetName
+      real(double), pointer    :: cube(:,:,:)
+    end subroutine readArrayDataName3dReal64
+
+    subroutine readArrayDataName2dBool(imageSetName, image)
+      character(*), intent(in) :: imageSetName
+      logical(bool), pointer    :: image(:,:)
+    end subroutine readArrayDataName2dBool
+
+    subroutine readArrayDataName2dInt16(imageSetName, image)
+      character(*),   intent(in) :: imageSetName
+      integer(int16), pointer    :: image(:,:)
+    end subroutine readArrayDataName2dInt16
+
+    subroutine readArrayDataName2dInt32(imageSetName, image)
+      character(*),   intent(in) :: imageSetName
+      integer(int32), pointer    :: image(:,:)
+    end subroutine readArrayDataName2dInt32
+
+    subroutine readArrayDataArray1dReal32(inArray, vector)
+      type(ArrayT), intent(in) :: inArray
+      real(single), pointer    :: vector(:)
+    end subroutine readArrayDataArray1dReal32
+
+    subroutine readArrayDataArray2dReal32(inArray, image)
+      type(ArrayT), intent(in) :: inArray
+      real(single), pointer    :: image(:,:)
+    end subroutine readArrayDataArray2dReal32
+
+    subroutine readArrayDataArray3dReal32(inArray, cube)
+      type(ArrayT), intent(in) :: inArray
+      real(single), pointer    :: cube(:,:,:)
+    end subroutine readArrayDataArray3dReal32
+
+    subroutine readArrayDataArray1dReal64(inArray, vector)
+      type(ArrayT), intent(in) :: inArray
+      real(double), pointer    :: vector(:)
+    end subroutine readArrayDataArray1dReal64
+
+    subroutine readArrayDataArray2dReal64(inArray, image)
+      type(ArrayT), intent(in) :: inArray
+      real(double), dimension(:,:), pointer :: image
+    end subroutine readArrayDataArray2dReal64
+
+    subroutine readArrayDataArray3dReal64(inArray, cube)
+      type(ArrayT), intent(in) :: inArray
+      real(double), dimension(:,:,:), pointer :: cube
+    end subroutine readArrayDataArray3dReal64
+
+    subroutine readArrayDataArray2dBool(inArray, image)
+      type(ArrayT), intent(in) :: inArray
+      logical(bool), dimension(:,:), pointer :: image
+    end subroutine readArrayDataArray2dBool
+
+    subroutine readArrayDataArray2dInt16(inArray, image)
+      type(ArrayT), intent(in) :: inArray
+      integer(int16), dimension(:,:), pointer :: image
+    end subroutine readArrayDataArray2dInt16
+
+    subroutine readArrayDataArray2dInt32(inArray, image)
+      type(ArrayT), intent(in) :: inArray
+      integer(int32), dimension(:,:), pointer :: image
+    end subroutine readArrayDataArray2dInt32
+  end interface
+</PRE>
+
+<P>
+Boolean values are converted to real or integer 0s and 1s; real or integer are converted to boolean TRUE if &gt; 0, FALSE otherwise.
+
+<P>
+Where the dimensions of the dataset array don't match those of the to-be-returned pointer array, it is eventually intended to convert these as follows:
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=28>Dims:</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>Out 1</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>Out2</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>Out 3</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=28>In 1</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>simple</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>-&gt;image(1,:)</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>-&gt;cube(1,1,:)</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=28>In 2</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>take 1st row</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>simple</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>-&gt; cube(1,:,:)</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=28>In 3</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>take 1st row, 1st plane</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>take 1st plane</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>simple</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=28>In &gt;3</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>not supported</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>not supported</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>not supported</TD>
+</TR>
+</TABLE>
+
+<P>
+First rows or planes are always aligned with the biggest dimension(s).
+
+<P>
+However most of the inter-dimensional functionality is not yet in place.
+
+<P>
+Note that the returned pointer is not associated with any pointer allocated by a <A NAME="1631"></A><A NAME="tex2html28"
+  HREF="../dal/index.html"><SPAN  CLASS="textbf">dal</SPAN></A>
+call such as, for example:
+
+<P>
+<PRE>
+arrayDataReal32 =&gt; real32Array2Data(inArray)
+</PRE>
+
+<P>
+Where readArrayData is called with the name of image dataset, the dataset is released within the subroutine, and all such dataset pointers are at that time deallocated; if readArrayData is called instead with the pointer inArray specified, the dataset and its array remain open, all dataset pointers which were allocated within the subroutine also remain allocated, but deallocate in the normal way at the time the calling routine releases the dataset (or its array). In either case, the returned pointer argument `vector', `image', or `cube' REMAINS ALLOCATED and therefore should be expressely deallocated in the calling routine via the fortran `deallocate' statement.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node81.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="splitSetTabName"></A>
+<A HREF="node80.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="An additional layer over"></A>
+<A HREF="node83.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="addOrOpenColumn"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

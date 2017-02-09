@@ -1,0 +1,622 @@
+ChangeLog for rmfgen
+=================
+
+Outstanding SPRs: 
+
+Version 2.5.1 - 2016-09-09 (EO)
+-------------
+	+ src/DummyResponse.h: GNUC >=6 required since g++ 5.3.1 does not
+	  use C++ 2011 by default.
+
+Version 2.5 - 2016-09-07 (RDS)
+------------
+	+ (src/PiledUpResponseCorrector.cc/h - changes to the pile-up
+	                                       correction method.
+					    . Only use events within region
+					    . Use events, not charges for 
+					      normalisation and Include 
+					      one-photon frames
+					    . Weight events with no. of good
+					      events in frame before creating RMF
+
+Version 2.4 - 2016-09-06 (RDS)
+------------
+        + (src/DummyResponse.h)             - gcc-6.X portability changes. 
+	                                              (constexpr added to "static 
+						      const" statements)
+
+Version 2.3 - 2016-07-15 (RDS)
+------------
+	+ (config/rmfgen.par)             - Add parameter acceptchanrange
+	+ (src/Rmfgen.cc)		    Exit with error if spectrum has
+					    non-standard channel range
+						(SPR-7363)
+
+Version 2.2.1 - 2014-09-17 (RDS)
+------------
+        + (config/rmfgen.par)             - Change the parameter name from
+                                            applymirroradjustment to
+                                            applyxcaladjustment
+					    Add parameter withdetbins
+						(SPR-7219)
+
+Version 2.2 - 2014-04-24 (RDS)
+------------
+	+ (DEPEND)			  - needs to use changes in CAL and
+					    an arfgen class to access the
+					    time dependent EPIC-pn redist.
+					    parameters (SCR-7196)
+
+Version 2.1 - 2014-04-21 (AI)
+------------
+	+ gcc4.8.2 portability change
+	
+Version 2.0.6 - 2013-09-04 (RDS)
+------------
+	+ (config/rmfgen.par)             - added modelcontamination parameter
+					    needed by arfdataserver call
+
+Version 2.0.5 - 2013-04-19 (RDS)
+------------
+	+ (src/DetectorMap.cc,             - fixed bug in defining the source 
+	   src/PiledUpResponseCorrector.cc   centre to the nearest RAW pixel.
+					     Removed debug from pile-up corr.
+
+Version 2.0.4 - 2013-04-17 (RDS)
+------------
+	+ (doc/rmfgen_description.tex) - improved documentation on pile-up 
+
+Version 2.0.3 - 2013-04-04 (RDS)
+------------
+	+ (src/PiledUpResponseCorrector.cc/h) - solved some problems 
+						with pile-up correction
+						(SCR-297)
+
+Version 2.0.2 - 2013-03-12 (RDS)
+------------
+	+ (src/PiledUpResponseCorrector.cc/h) - solved pattern 0 issue
+						with pile-up correction
+						(SCR-297)
+
+Version 2.0.1 - 2013-03-05 (RDS)
+------------
+	+ (src/PiledUpResponseCorrector.cc/h) - changes related to the
+						pile-up correction
+						(SCR-297)
+
+Version 2.0 - 2013-02-15 (RDS)
+------------
+        + (src/PiledUpResponseCorrector.cc/h,
+	   src/PsfImage.cc/h,
+	   src/PattFracs.cc/h,
+	   src/NullResponseCorrector.h....)
+
+	Introduction of a pile-up correction based
+	on an added event method (SCR-297)
+
+Version 1.57.1 - 2012-05-04 (RDS)
+------------
+        + (src/CorePosData.cc)    - changed MOS timing and Burst mode spectra
+				    to generate RMFs using the pattern=0 
+				    parameterisation (SPR-6721)
+
+Version 1.57 - 2011-03-24 (RDS)
+------------
+        + (src/DetectorMap.cc)    - fixed problem with regions outside the
+				    chip gap area which result in the error:
+				    "NOISE (value 20001) is out of range"
+					(SPR-6553)
+
+Version 1.56.1 - 2011-02-02 (RDS)
+------------
+        + (src/CorePosData.cc/h)    - added method to allow CCD of region
+				      centre to be accessed.
+					(SCR-269)
+
+Version 1.56 - 2010-10-25 (RDS)
+------------
+        + (config/rmfgen.par)       - added psfmodel parameter to
+                                      allow use of arfgen class
+
+Version 1.55.2 - 2009-09-03 (AI)
+------------
+		+ Fixes to make rmfgen gcc-4.3 complaint.
+		
+Version 1.55.1 - 2007-06-02 (RDS)
+------------
+        + (config/rmfgen.par)       - added crossarfregion parameter to
+                                      allow use of arfgen class
+
+Version 1.55   - 2005-11-09 (RDS)
+------------
+        + (config/rmfgen.par)       - Changed detxbins, detybins defaults
+                                      from 20 to 160.
+
+Version 1.53.5   - 2005-08-05 (RDS)
+------------
+        Documentation update
+
+Version 1.53.4   - 2005-08-04 (RDS)
+------------
+        + (config/rmfgen.par)       - Changed detxbins, detybins defaults
+                                      from 5 to 20.
+
+                                    - Updated documentation and added in 
+                                      changes from 1.54 
+
+Version 1.54   - 2005-08-03 (RDS)
+------------
+        + (config/rmfgen.par)       - Changed default for withbadpixcorr to no
+                                      to avoid a spurious warning
+
+Version 1.53.3   - 2005-07-19 (RDS)
+------------
+        + (config/rmfgen.par)       - Changed default for detmaptype parameter
+                                      to 'psf'
+
+Version 1.53.2   - 2005-07-05 (RDS)
+------------
+        + (config/rmfgen.par)       - Added new parameter ignoreoutoffov
+
+Version 1.53.1   - 2005-06-17 (RDS)
+------------
+        + (src/Rmfgen.cc,rmfgen,cc) - Removed symbol definition for
+                                      arfDataServer
+
+Version 1.53   - 2005-05-30 (RDS)
+------------
+        + (src/Detmap.cc/h,         - Produces an RMF which is spatially 
+           src/Rmfgen.cc/h,           averaged. This uses the filtered 
+           src/CalMOSResponse.cc/h,   detector map concept of arfgen
+           src/CalPNResponse.cc/h,    and uses ConcreteArfDataServer directly
+           src/CalResponse.cc/h,      (SPR-2515)
+           test/mosspectrum.ds)
+                                      
+Version 1.52.7   - 2005-02-25 (RDS)
+------------
+        + (src/CorePosData.cc/h)    - Uses the DatafileAttributes object
+          (src/Rmfgen.cc/h)           from arfgen to simplify code and
+                                      solve SPR-2601.
+
+Version 1.52.6   - 2005-01-14 (RDS)
+------------
+        + (src/CorePosData.cc)      - Added a fix for source areas where
+                                      the pnline number can appear to be
+                                      greater than 199 (SPR-2591)
+ 
+Version 1.52.5   - 2004-12-21 (RDS)
+------------
+        + (DEPEND)            - Added selectlib,attcalc,oal,emsaplib,
+                                datautils,rgslib to DEPEND (SPR-2572)
+ 
+Version 1.52.4   - 2004-10-03 (RDS)
+------------
+        + (src/CorePosData.cc) - Added support for image masks (cf SPR-2090)
+ 
+Version 1.52.3   - 2004-08-03 (RDS)
+------------
+        + (src/ResponseRow.cc) - Added extra code to avoid MAC out
+                                 of bounds problem.
+ 
+Version 1.52.2   - 2004-01-20 (RDS)
+------------
+        + (test/runrmfgen) - change in fverify output (SPR-2492)
+ 
+Version 1.52.1   - 2004-01-05 (RDS)
+------------
+        + (src/Rmfgen.cc) - Added TMLIN, TLMAX keywords to EBOUNDS (SPR-2414)
+ 
+Version 1.52   - 2003-11-12 (RDS)
+------------
+        + (src/Makefile)      - reordered USELIBS for static build
+
+Version 1.51   - 2003-07-10 (RDS)
+------------
+        + (src/ResponseRow.h) - Small changes for devtrack
+
+Version 1.48.7 - 2003-07-07 (RDS)
+------------
+        + (src/CorePosData.cc) Changes for PositionUtils change
+
+Version 1.48.6 - 2003-04-25 (RDS)
+------------
+        + (src/CorePosData.cc/h) Changes for gcc 3.2 compatibility
+
+Version 1.48.5 - 2003-01-02 (RDS)
+------------
+        + (src/Rmfgen.cc) Opens and closes the RMF before writing the 
+                          Ebounds extension to fix a problem which occurs
+                          in low memory mode.
+
+Version 1.48.4 - 2002-12-20 (RDS)
+------------
+        included a 'var' format run in the test harness
+
+Version 1.48.3 - 2002-12-18 (RDS)
+------------
+        documentation update
+
+Version 1.48.2 - 2002-12-10 (RDS)
+------------
+        + (src/CorePosData.cc) A fix for MOS timing mode to use
+                               single+double pixels to form the RMF
+
+Version 1.48.1 - 2002-12-05 (RDS)
+------------
+        + (src/ResponseRow.cc) Zeroes the N_CHAN and F_CHAN values (SPR-2363)
+
+Version 1.48 - 2002-11-20 (RDS)
+------------
+        + (src/Rmfgen.cc, CorePos.cc) Sets artifical DETX/Y region
+                                      for Timing mode (SPR-2348)
+
+Version 1.47 - 2002-09-13 (RDS)
+------------
+	+ (src/Rmfgen/cc) Addition of OGIP standard HDUVERS keywords (SPR-2336)
+
+Version 1.46 - 2002-08-19 (UL)
+------------
+	+ a few transparent changes to improve standard C++ compliance
+
+Version 1.45 2002-05-15 (RDS)
+------------
++ (config/rmfgen.par)     Changed to new parameter file format.
+
+Version 1.44.6 2002-05-15 (RDS)
+------------
++ (src/CorePosData.cc)    Fixed problem with source centre falling in a
+                          chip gap (SPR-2298)
+
+Version 1.44.5 2002-04-11 (RDS)
+------------
+Documentation update to explain which modes are supported in this
+release.
+
+Version 1.44.4 2002-03-14 (RDS)
+------------
++ (config/rmfgen.par/lyt,
+   test/runrmfgen)        pnline parameter removed (SPR-2281)
+
+Version 1.44.3 2002-02-26 (RDS)
+------------
++ (src/ConcreteRmf.cc,    Implemented variable length rows (SPR-1809)
+   src/ResponseRow.cc,    and set as default.
+   config/rmfgen.par)           
+  (src/CalPnResponse.cc/h, ConcreteRmfServer.cc) - use rmf->at(chipx, chipy)
+  (src/Rmfgen.cc)         Added an error message if too many channels
+   test/mosspectrum.ds)   Reduced the number of channels
+
+Version 1.44.2 2002-02-08 (RDS)
+------------
++ (config/rmfgen.par) Changed q -> h (optional) for rmfset.
+  (src/CalResponse.cc)  Removed some debug
+
+Version 1.44.1 2002-01-28 (RDS)
+------------
++ (config/rmfgen.par) Changed a -> q.
+  (src/CorePosData.h) - make datasubspace non-constant 
+
+Version 1.44 2001-12-20 (RDS)
+------------
++ (DEPEND) Now links with the arfgen library
+ (src/Makefile)
+ (src/Rmfgen.cc, src/CorePosData.cc/h,
+  src/CalPNResponse.cc, src/CalMOSResponse.cc/h,
+  src/ConcreteRmfDataServer.cc)                  (SPR-2043, get the PN line 
+                                                 number from the spectrum)
+
++ (src/Rmfgen.cc, src/CorePosData.cc/h) Pass the eventGrades to the Cal (SCR-72)
+   ConcreteRmfDataServer.cc/h,
+   src/CalPNResponse.cc, src/CalMOSResponse.cc/h,
+   CalResponse.cc/h)                   
+
+ (src/CalResponse.cc, DummyResponse.cc,
+      ResponseRow.cc, RmfTableIterator.cc) (SPR-2047 - remove asserts)
+
+Version 1.43.4 2001-05-21 (RDS)
+------------
++ (doc/rmfgen_description.doc) - documentation update
+
+Version 1.43.3 2001-05-09 (RDS)
+------------
++ (src/CalResponse.cc) - set elements less then 30 eV to zero (SPR-2024)
+
+Version 1.43.2 2001-05-03 (RDS)
+------------
++ (src/CalResponse.cc) speed-up by calc of matrix once (SPR-2019)
+
+Version 1.43.1 2001-04-23 (RDS)
+------------
++ (src/CalResponse.cc) Get channel energies from the CAL (SPR-1993)
++ (srcRmfgen.cc/h, ConcreteRmfDataServer.cc/h) set the window mode in CAL
+        (SPR-1991)
+
+Version 1.43 2001-04-05 (RDS)
+------------
++ (src/ResponseRow.cc/h, RmfTableIterator.cc) changed F_CHAN by one
+channel (SPR-1983)
+	
+Version 1.42 2001-02-21 (UL)
+------------
++ brought in line with cal-3.99
+	
+Version 1.41.3 2000-11-14 (HS)
+--------------
+
++ Bug in test harness fixed (SOC-SPR-1842).
+	
+Version 1.41.2 2000-11-08 (HS)
+--------------
+
++ INTERFACE CHANGE: Removed redundant parameters --responseset, --photondistset --modelpileup (SOC-SPR-1781).
+	
+	
+Version 1.41.1 2000-11-01 (HS)
+--------------
+
++ INTERFACE CHANGE: Added new parameter --pnline to enable user to generate a PN RMF for a specific CCD line (SOC-SPR-1780).
+	
+Version 1.41 2000-10-06 (HS)
+------------
++ (src/CalMOSResponse.cc): MOS response generation performance improved by taking grade probability calculation outside the energy loop.
+
++ INTERFACE CHANGE: renamed param --responseset to --rmfset. Now consistent with naming convention used for arfgen.
+
+Version 1.40 2000-09-21 (HS)
+------------
++ (src dir) PN support added.
++ (config src dirs) INTERFACE CHANGE: replaced --withenergyranges
+	with --withenergybins.
++ (test dir) cleaned up.
+	
+Version 1.39 2000-08-14 (HS)
+------------
++ (config/rmfgen.info): corrected entries following failure under
+	new chkdist.
+
+Version 1.38 2000-08-04 (HS)
+------------
++ (src/Makefile ./DEPEND): added datautils package.
+	
+Version 1.37.2 2000-06-15 (HS)
+------------
++ (doc/rmfgen_description.tex): Cleaned up latex macro usage (SOC-SPR-1567: use separate latex macros for lists).
+
+Version 1.37.1 2000-06-15 (HS)
+------------
++ (config/Makefile): Added rmfgen.info file to CONFIGFILES (SOC-SPR-1527:task info file missing).
++ (config/Makefile): Replaced rmfgen.prm by rmfgen.par in CONFIGFILES list (SOC-SPR-1565 : config/Makefile has erroneous 'rmfgen.prm' entry)
+	
+Version 1.37 29 May 2000 (HS)
+------------
++ Fixed SOC-SPR-1361 : rmfgen supports PHA spectra, not PI spectra
+
+Version 1.36 23 May 2000 (HS)
+------------
++ DEPEND file now includes param-1.54 instead of param 1.55 (which
+	was removed)
+	
+Version 1.35 22 May 2000 (HS)
+------------
++ New CAL MOS response model VERY slow - speeded up test harness
+	temporarily by reducing number of rows in o/p RMF.
+	
+Version 1.34 19 May 2000 (HS)
+------------
++ INTERFACE CHANGES
++ rebinned spectra supported
++ doc in sync with code
+	
+Version 1.33 22 Feb 2000 (HS)
+------------
++ Fixed bug in the Rmfgen class that lead to lowmem dal failure and long executin times
+	
+Version 1.32 1999-12-17 (HS)
+------------
++ Fixed dummy response data such that it starts at channel=0 instead of channel=1
+
++ Default value for --spectrumset is now spectrum.ds
+	
+Version 1.31 1999-10-29 (HS)
+------------
+- Fixed SPR 924 : Strange values for channel numbers in rmf
+	rmfgen now pads out column entries of rows with no data with zeroes.
+
+- Minor updates to documentation.
+
+Version 1.30 1999-10-29 (HS)
+------------
+- Compatible with cal-3.31
+- Fixed SPR 908 : Inconsistency between XMMSLECT spectra and RMFGEN
+- Fixed SPR 918 : pad missing rows with 0s
+- Fixed SPR SPR 923 : Channel number mismatch
+
+- Modified interface: removed --instrument and --nchannels parameters, and added a new parameter, --spectrumset. This version is therefore NOT backwards compatible.
+
+Version 1.29 1999-09-23 (HS)
+------------
+- Fixed SPR-838 : Parameter useall should be replaced by withenergyranges
+   (this means a change to the parameter i/f, so this version is NOT backwards
+	compatible)
+	
+- Added .lyt file 
+	
+Version 1.28 1999-09-15 (HS)
+------------
+- Fixed SPR-812: Make rmfgen documentation more 'user-friendly'
+
+Version 1.27 1999-09-15 (HS)
+------------
+- Fixed test harness. Mandatory parameter instrument now specified in script.
+
+Version 1.26 1999-09-15 (HS/UL)
+------------
+- brought in line with cal-3.21
+
+Version 1.25 1999-09-06 (HS)
+------------
+- Removed local latex commands in documentation
+
+Version 1.24 1999-06-24 (HS)
+------------
+- Renamed parameters according to SAS convention (GV).
+
+- Rmfgen no longer requires a dataset corresponding to the value of the 
+	photondistset parameter, if pile-up is switched off.
+	
+Version 1.23 1999-06-08 (HS)
+------------
+- CLOSED SPR-683: rmfgen.cc doesn't compile: wrong semantics results in multiple copies ** PENDING CONFIRMATION ***
+
+	
+Version 1.22 1999-06-07 (HS)
+------------
+- Now compatible with cal-3.0 (ie modified DEPEND file)
+
+Version 1.21 1999-05-28 (HS)
+------------
+- removed lengthy debug messages
+
+- fixed HUGE_VAL error raised by Achim Bohnet
+
+- The photon dist file is no longer accessed if pile-up (default) is not selected
+	(it is not used in this mode anyway). This means that a photon dist file does not need to be created in the default mode.
+
+Version 1.20 1999-05-20 (HS)
+------------
+- made compatible with error-1.18
+
+Version 1.19 1999-04-27 (HS)
+------------
+- made compatible with CAL 2.19
+	
+Version 1.18 1999-04-13 (HS)
+------------
+- user interface now accepts energy ranges in keV, whereas the internal units are in eV.
+
+Version 1.17 1999-04-11 (MB)
+------------
+- changed assertion for zero normalization (HS)
+- fixed eV - keV conflict (HS)
+	
+Version 1.16 1999-03-23 (MB)
+------------
+- upgraded to cal-2.10 (new interface for rmf redistribution vector)
+- added missing test file.
+
+Version 1.15 1999-03-15 (MB)
+------------
+- contains pre-assembled test files, no longer needs deceit to run
+
+Version 1.14 1999-03-15 (MB)
+------------
+- fixed problem with tracer off.
+- no longer uses dalif.
+
+Version 1.13  -  22-02-1999
+------------
+
+- Code now compatible with cal-2.4 and dal-1.43
+	
+
+Version 1.12  -  05-02-1999
+------------
+
+- Code now compatible with CAL-1.21
+
+- Problems when using DAL SubTableProcessor class - no longer inherit from
+	this class as subtable iteration not utilised for time being.
+
+Version 1.11  -  04-02-1999
+------------	
+
+- Using more flexible RmfDataServer instead of RmfSettings class
+
+- Rmfgen takes as input a photon distribution model file instead of a
+	counts spectrum
+
+- Changed test harness to generate a photon distribution model using deceit
+	instead of a counts spectrum generation executable.
+	
+	
+	
+Version 1.10  -  29-01-1999
+-----------
+
+- Fixed unsigned int/int classin rectangularSpec.cc
+
+
+Version 1.9  -  11-11-98
+-----------
+
+- Corrected test harness: added a ./ in front of rectangularSpec call.
+	
+
+Version 1.8  -  10-11-98
+-----------
+
+- Removed spurious files (TODO etc) from release.
+	
+Version 1.7  -  09-11-98
+-----------
+
+- New framework from which to implement features such as pile-up correction,
+	"dummy" matrix generation etc has been added. Test script has been
+	modified to test rmfgen with input spectrum.
+
+	NOTE: Documentation is not currently in line with code.
+
+	
+Version 1.6 - 2-10-1998 (MB)
+-----------
+
+- resolved conflict with new DAL addAttributes.
+
+
+Version 1.5  -  17-08-98
+-----------
+
+- Keywords TLMIN4 and TLMAX4 are now added in terms of COLMUN ATTRIBUTES (of F_CHAN) instead of explicitly adding them to the dataset.
+	
+Version 1.4  -  30-06-98
+-----------
+
+- C++ executable modified to become an SAS task proper (top-level fn now called void rmfgen() instead of int main(...) )
+	
+Version 1.3  -  18-06-98
+-----------
+
+- Refined test script to exit with an error on the failure of any ftool test,
+	and added an additional ftool test using dmprmf.
+
+- Added a mechanism to group data above a specified threshold; this will reduce the size of the output rmf file.
+
+- closed SOC-SPR-270: F90 file names should be lower-case: the library filledColumnFns and associated f90 source files are no longer used.
+
+- Ported rmfgen to C++
+
+	
+Version 1.2  -  03-06-98
+-----------
+
+- Declared variables row, nchannel and nenergy as standard integers. 
+  This corrects for a NAGACE compiler problem raised by J Ballet (2 Jun 1998)
+
+- Separated call to CAL_getRedistribution to two lines (minor).
+
+	
+Version 1.1  -  20-05-98
+-----------
+
+- Fixed bug related to the number of detector channels assigned to output file.
+
+- closed SOC-SPR-218: do not check SAS_DIR and/or source sas-setup.csh (test/testrmfgen)
+
+- The following SPRs have been closed as a consequence of changes made for the package sas-1.1: 
+
+	SOC-SPR-217 : remove config/rmfgen.prm
+
+Version 1.0  -  04-05-98
+-----------
+
+Initial version for SAS v1 integration

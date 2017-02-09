@@ -1,0 +1,147 @@
+<!-- converted from XPI formatted "evalcorr.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="input" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    Input source list to be evaluated with optional table name.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="output" type="dataset">
+   <DESCRIPTION>
+    Name of new output dataset.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="mode" type="string" default="CLONE">
+   <DESCRIPTION>
+    Amend input source list or clone a new one.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="MODIFY">
+    </ITEM>
+    <ITEM value="CLONE">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="corrsyserrcc" type="real" default="0.35">
+   <DESCRIPTION>
+    Value of SYSERRCC when correlated
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="uncorrsyserrcc" type="real" default="1.0">
+   <DESCRIPTION>
+    Value of POSCOROK when uncorrelated
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="radiusthreshold" type="real" default="6">
+   <DESCRIPTION>
+    Good correlation radius threshold
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="likhoodthreshold" type="real" default="5">
+   <DESCRIPTION>
+    Good correlation likeyhood theshold
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="gradient" type="real" default="2">
+   <DESCRIPTION>
+    X in LIK_HOOD LIK_NULL * X + Y
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="intercept" type="real" default="5">
+   <DESCRIPTION>
+    Y in LIK_HOOD LIK_NULL * X + Y
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="expression" type="string" default="2XMM">
+   <DESCRIPTION>
+    1XMM  
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+<PARAM id="setsyserrcc" type="bool" default="yes">
+        <DESCRIPTION> Write SYSERRCC attribute to output.
+	</DESCRIPTION>
+        <CASE>
+                <ITEM value="no">
+		</ITEM>
+                <ITEM value="yes">
+		</ITEM>
+	</CASE>
+
+	   <CONSTRAINTS>
+	    true
+	   </CONSTRAINTS>
+  </PARAM>
+
+<PARAM id="setlikhdcmp" type="bool" default="yes">
+        <DESCRIPTION> Write LIKHDCMP attribute to output.
+	</DESCRIPTION>
+        <CASE>
+                <ITEM value="no">
+		</ITEM>
+                <ITEM value="yes">
+		</ITEM>
+	</CASE>
+
+	   <CONSTRAINTS>
+	    true
+	   </CONSTRAINTS>
+  </PARAM>
+
+<PARAM id="recordresult" type="bool" default="no">
+        <DESCRIPTION> Record the result of each test as attributes.
+	</DESCRIPTION>
+        <CASE>
+                <ITEM value="no">
+		</ITEM>
+                <ITEM value="yes">
+		</ITEM>
+	</CASE>
+
+	   <CONSTRAINTS>
+	    true
+	   </CONSTRAINTS>
+  </PARAM>
+
+	
+
+
+ </CONFIG>
+</FILE>

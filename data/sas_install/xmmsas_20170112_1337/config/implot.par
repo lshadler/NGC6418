@@ -1,0 +1,405 @@
+<!-- converted from XPI formatted "implot.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="set" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    Name of the image file to plot.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="device" type="string" default="/xs">
+   <DESCRIPTION>
+    Device for PGPLOT output, e.g. /PS /CPS /XW
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="gridstyle" type="string" default="ticks">
+   <DESCRIPTION>
+    Type of grid overlay.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="grid">
+    </ITEM>
+    <ITEM value="none">
+    </ITEM>
+    <ITEM value="ticks">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="imagestyle" type="string" default="image">
+   <DESCRIPTION>
+    Type of plot to do.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="image">
+     <PARAM id="zscaletype" type="string" default="linear">
+      <DESCRIPTION>
+       Image transfer function.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="linear">
+       </ITEM>
+       <ITEM value="log">
+       </ITEM>
+       <ITEM value="sqrt">
+       </ITEM>
+      </CASE>
+     </PARAM>
+
+     <PARAM id="colourmap" type="int" default="7">
+      <DESCRIPTION>
+       Colour map: -1=invert_grey,1=grey,2=rainbw,3=heat,4=IRAF,5=AIPS,6=TJP,7=CGP
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       (colourmap in [-2:-1]) || (colourmap in [1:7])
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="contour">
+     <PARAM id="contourstyle" type="string" default="number">
+      <DESCRIPTION>
+       The way that contour spacing is specified.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="number">
+        <PARAM id="ncontours" type="int" default="5">
+         <DESCRIPTION>
+          Number of contours to draw.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          ncontours &gt; 0
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+
+       <ITEM value="separation">
+        <PARAM id="contourseparation" type="real" default="0.2">
+         <DESCRIPTION>
+          Separation between contours as a fraction of image z range.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          contourseparation in (0.0:1.0]
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withzclip" type="bool" default="yes">
+   <DESCRIPTION>
+    Whether to truncate the image brightness (z) values.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="zhistolo" type="real" default="0">
+      <DESCRIPTION>
+       The point on the brightness (z) frequency histogram at which to set the lower brightness truncation level.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       zhistolo in [0.0:1.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="zhistohi" type="real" default="0.999">
+      <DESCRIPTION>
+       The point on the brightness (z) frequency histogram at which to set the upper brightness truncation level.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       zhistohi in [0.0:1.0]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="trimborder" type="bool" default="yes">
+   <DESCRIPTION>
+    Whether to clip blank space from the edges of the displayed image.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withframe" type="bool" default="yes">
+   <DESCRIPTION>
+    Whether to include a frame + text around the image.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withxyclip" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to clip the image extent.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="xfraclo" type="real" default="0">
+      <DESCRIPTION>
+       Fraction of original width at which to start the LH edge of the displayed image.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       xfraclo in [0.0:1.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="xfrachi" type="real" default="1">
+      <DESCRIPTION>
+       Fraction of original width at which to start the RH edge of the displayed image.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       xfrachi in [0.0:1.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="yfraclo" type="real" default="0">
+      <DESCRIPTION>
+       Fraction of original height at which to start the bottom edge of the displayed image.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       yfraclo in [0.0:1.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="yfrachi" type="real" default="1">
+      <DESCRIPTION>
+       Fraction of original height at which to start the top edge of the displayed image.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       yfrachi in [0.0:1.0]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withsrclisttab" type="bool" default="no">
+   <DESCRIPTION>
+    Plot circles around source positions?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="srclisttab" type="table" default="srclist.ds:SRCLIST">
+      <DESCRIPTION>
+       Name of source list table.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="expression" type="string" default="">
+      <DESCRIPTION>
+       Source selection expression.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="thickness" type="int" default="1">
+      <DESCRIPTION>
+       Line thickness for circles/source numbers (in pixels).
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       thickness in [1:5]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="srccolour" type="int" default="7">
+      <DESCRIPTION>
+       Colour index of label text and source circles.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       srccolour in [0:7]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="tempset" type="string" default="tempset.ds">
+      <DESCRIPTION>
+       Name of a temporary cloned source list.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="withncut" type="bool" default="no">
+      <DESCRIPTION>
+       Whether to plot only up to a certain number of sources.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="yes">
+        <PARAM id="ncut" type="int" default="30">
+         <DESCRIPTION>
+          Maximum number of sources to plot.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          ncut in [0:]
+         </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="ncutsortstyle" type="string" default="expr" mandatory="yes">
+         <DESCRIPTION>
+          Style for sorting the sources prior to truncation of their number.
+         </DESCRIPTION>
+         <CASE>
+          <ITEM value="expr">
+           <PARAM id="ncutsortexpression" type="string" mandatory="yes">
+            <DESCRIPTION>
+             Expression controlling subset of sources to be plotted.
+            </DESCRIPTION>
+           </PARAM>
+          </ITEM>
+
+          <ITEM value="radiusup">
+          </ITEM>
+
+          <ITEM value="radiusdown">
+          </ITEM>
+
+          <ITEM value="rownumber">
+          </ITEM>
+         </CASE>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+
+     <PARAM id="radiusstyle" type="string" default="user">
+      <DESCRIPTION>
+       Style for setting source circle radius.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="user">
+        <PARAM id="userradius" type="real" default="5.0">
+         <DESCRIPTION>
+          Source circle radius determining expression.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          userradius in (0:]
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+
+       <ITEM value="expr">
+        <PARAM id="radiusexpression" type="string" mandatory="yes">
+         <DESCRIPTION>
+          Source circle radius determining expression.
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+
+       <ITEM value="psf">
+        <PARAM id="withellipse" type="bool" default="no">
+         <DESCRIPTION>
+          Whether to plot psf-type locii as ellipses or circles.
+         </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="bkgfraction" type="real" default="1.0">
+         <DESCRIPTION>
+          Controls size of psf ellipse.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          bkgfraction in (0.0:]
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+
+     <PARAM id="maxradius" type="real" default="15">
+      <DESCRIPTION>
+       Max source circle radius (pixels).
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       maxradius in [1.0:100.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="withlabels" type="bool" default="no">
+      <DESCRIPTION>
+       Whether to add labels to sources.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="yes">
+        <PARAM id="labelsize" type="real" default="1">
+         <DESCRIPTION>
+          Relative size of label text.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          labelsize in (0.0:]
+         </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="labelstyle" type="string" default="expr" mandatory="yes">
+         <DESCRIPTION>
+          Style for creating source labels.
+         </DESCRIPTION>
+         <CASE>
+          <ITEM value="expr">
+           <PARAM id="labelexpression" type="string" mandatory="yes">
+            <DESCRIPTION>
+             Column-expression to use for source labels.
+            </DESCRIPTION>
+            <CONSTRAINTS>
+             true
+            </CONSTRAINTS>
+           </PARAM>
+          </ITEM>
+
+          <ITEM value="radiusup">
+          </ITEM>
+
+          <ITEM value="radiusdown">
+          </ITEM>
+
+          <ITEM value="rownumber">
+          </ITEM>
+         </CASE>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+
+     <PARAM id="addusersources" type="bool" default="no">
+      <DESCRIPTION>
+       Whether to add some extra source markers from positions given on the command line.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="yes">
+        <PARAM id="userras" type="angle" list="yes" mandatory="yes">
+         <DESCRIPTION>
+          List of RAs for user-added source markers.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          userras in [0.0:360.0]
+         </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="userdecs" type="angle" list="yes" mandatory="yes">
+         <DESCRIPTION>
+          List of decs for user-added source markers.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          userdecs in [-90.0:90.0]
+         </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="userlabels" type="string" list="yes">
+         <DESCRIPTION>
+          List of labels for user-added source markers.
+         </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="usercolours" type="int" list="yes" default="2">
+         <DESCRIPTION>
+          Colour index of user-added sources.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          usercolours in [0:7]
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

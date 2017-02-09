@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Output Files</TITLE>
+<META NAME="description" CONTENT="Output Files">
+<META NAME="keywords" CONTENT="epchain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epchain.css">
+
+<LINK REL="next" HREF="node15.html">
+<LINK REL="previous" HREF="node13.html">
+<LINK REL="up" HREF="epchain.html">
+<LINK REL="next" HREF="node15.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epchain (epchain-8.76) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node13.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input Files"></A>
+<A HREF="epchain.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Intermediate Files"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epchain.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00070000000000000000"></A>
+<A NAME="epchain:description:outputfiles"></A>
+<BR>
+Output Files
+</H1>
+
+<P>
+In the case of <TT>usenanonicalnames</TT>=N the output files have fixed
+names or can be given via parameter settings. If <TT>usenanonicalnames</TT>=Y
+then the task creates the file names automatically according to the ODF,
+where <TT>oooooooooo</TT> denotes the 10-digit observation identifier
+and <TT>PNxnnn</TT> is the exposure identifier with <TT>x</TT> being the
+schedule flag (<TT>S</TT> or <TT>U</TT>) and <TT>nnn</TT> the 3-digit exposure number.
+
+<P>
+
+<OL>
+<LI>merged and calibrated event list file (one per exposure, <A NAME="3404"></A><TT>EVENTS</TT>),
+      as defined in the Data Products ICD ([<A
+ HREF="node19.html#ct:SSCPROICD">1</A>])<A NAME="tex2html153"
+  HREF="footnode.html#foot1405"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A>      with CCD specific bad pixel (<A NAME="3410"></A><TT>BADPIXnn</TT>), 
+      exposure (<A NAME="3412"></A><TT>EXPOSUnn</TT>), 
+      GTI extensions (<A NAME="3414"></A><TT>STDGTInn</TT>), as well as
+      <A NAME="3416"></A><TT>OFFSETS</TT> with all columns with a non-zero offset and
+      <A NAME="3418"></A><TT>CALINDEX</TT> with all relevant CCF entries (EPN, XRT3, XMM).
+<BR>
+If <TT>usenanonicalnames</TT>=Y: depending on the setting of 
+      <TT>withoutoftime</TT> and <TT>withctisrcpos</TT>:
+<BR>
+NN: PooooooooooPNxnnnPIEVLI0000.FIT 
+      (imaging modes, i.e. FF, eFF, LW, SW) or 
+      PooooooooooPNxnnnTIEVLI0000.FIT (fast modes, i.e. TI, BU)
+<BR>
+YN: PooooooooooPNxnnnOOEVLI0000.FIT
+<BR>
+NY: PooooooooooPNxnnnPSEVLI0000.FIT
+<BR>
+YY: PooooooooooPNxnnnOSEVLI0000.FIT
+      (note that this setting is possible but not very meaningful ;-)
+<BR>
+<P>
+</LI>
+<LI>atthk.dat: output file from <A NAME="3423"></A><A NAME="tex2html154"
+  HREF="../atthkgen/index.html"><SPAN  CLASS="textbf">atthkgen</SPAN></A>
+containing the entire 
+      attitude information (<A NAME="3427"></A><TT>ATTHK</TT>).
+<BR>
+If <TT>usenanonicalnames</TT>=Y: PooooooooooOBX000ATTTSR0000.FIT
+</LI>
+<LI>gti##.dat (with ## replaced by CCD number): 
+      CCD specific GTI files (<A NAME="3430"></A><TT>STDGTInn</TT>)
+</LI>
+<LI>mask_##.fits: CCD specific (source-free) background masks 
+      with ## replaced by CCD number (created by <A NAME="3432"></A><A NAME="tex2html155"
+  HREF="../badpixfind/index.html"><SPAN  CLASS="textbf">badpixfind</SPAN></A>
+if <TT>runbackground</TT> set to ``true").
+<BR>
+If <TT>usenanonicalnames</TT>=Y: PooooooooooPNxnnnBPFMSK00##.FIT
+</LI>
+<LI>bpxf_##.fits: CCD specific bad pixel list 
+      with ## replaced by CCD number (created by <A NAME="3438"></A><A NAME="tex2html156"
+  HREF="../badpixfind/index.html"><SPAN  CLASS="textbf">badpixfind</SPAN></A>
+if <TT>runbadpixfind</TT> set to ``true").
+<BR>
+If <TT>usenanonicalnames</TT>=Y: PooooooooooPNxnnnBPXFLI00##.FIT
+</LI>
+<LI>eventmap##.dat (with ## replaced by CCD number):
+      CCD event intensity maps (if <TT>witheventmap</TT>=Y),
+      for details see <A NAME="3445"></A><A NAME="tex2html157"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>
+</LI>
+<LI>photonmap##.dat (with ## replaced by CCD number):
+      CCD photon intensity maps (if <TT>withphotonmap</TT>=Y),
+      for details see <A NAME="3450"></A><A NAME="tex2html158"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>
+</LI>
+<LI>flag0_map_##.dat (with ## replaced by CCD number):
+      CCD maps with regions <A NAME="3454"></A><TT>FLAG</TT>=0 set to 1
+      (if <TT>withpatplot</TT>=Y), for details see <A NAME="3457"></A><A NAME="tex2html159"
+  HREF="../epatplot/index.html"><SPAN  CLASS="textbf">epatplot</SPAN></A>.
+<BR>
+If <TT>usenanonicalnames</TT>=Y: PooooooooooPNxnnnFLGMSK00##.FIT
+</LI>
+<LI>value of parameter <TT>rateset</TT>: 
+      background lightcurve using source masks with columns
+      <A NAME="3463"></A><TT>COUNTS</TT> and <A NAME="3465"></A><TT>RATE</TT> 
+      where the latter is scaled by <TT>timebinsize</TT> and
+      the sum of all non-masked pixels, in units of cts/ks/arcmin<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$^2$"></SPAN>.
+      There is also a GTI file created with name <TT>bkg_GTI.fits</TT>.
+<BR>
+If <TT>usenanonicalnames</TT>=Y: PooooooooooPNxnnnFBKTSR0000.FIT
+      for the lightcurve and
+      PooooooooooPNxnnnFBKGTI0000.FIT for the GTI file. 
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node13.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input Files"></A>
+<A HREF="epchain.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Intermediate Files"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

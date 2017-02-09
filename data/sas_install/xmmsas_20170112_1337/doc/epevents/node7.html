@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Analysis of extended sources or in the vicinity of moderately bright sources</TITLE>
+<META NAME="description" CONTENT="Analysis of extended sources or in the vicinity of moderately bright sources">
+<META NAME="keywords" CONTENT="epevents">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epevents.css">
+
+<LINK REL="next" HREF="node8.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node5.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epevents (epevents-6.50.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="General"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Out-of-time events"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Analysis of very bright"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epevents.html">Home Page</A> / <A  HREF="node3.html">Description</A> / <A  HREF="node5.html">Out-of-time events</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00032200000000000000">
+Analysis of extended sources or 
+in the vicinity of moderately bright sources</A>
+</H3>
+
+<P>
+If <TT>withoutoftime</TT>=y the task does <EM>not</EM> create the ``normal''
+events file but uses the input file instead to create an event file 
+where all events are <EM>treated</EM> as out-of-time events. 
+After the pattern recognition for the same
+<A NAME="907"></A><TT>TIME</TT>, <A NAME="909"></A><TT>PHA</TT>, and <A NAME="911"></A><TT>RAWX</TT> a new <A NAME="913"></A><TT>RAWY</TT>
+is simulated by randomly shifting the pattern along the RAWY axis
+and performing the gain and CTI correction afterwards.
+<P>
+This out-of-time events file has the same temporal variations and
+pattern distribution as the ``normal'' event file. 
+All events have an energy correction corresponding to the
+(randomly distributed) RAWY column.
+You can apply 
+the same selection on both the ``normal'' and ``out-of-time'' event file,
+scale with a mode-dependent factor and subtract the ``out-of-time''
+contribution from the other. You can create ``out-of-time''-corrected
+spectra and images for an arbitrary time and energy range by subtracting
+the scaled product derived from the out-of-time events file from the
+product created from the ``normal'' events file.
+
+<P>
+The current (experimental) implementation does not automatically detect the 
+instrument and bad pixel setting.
+The <A NAME="915"></A><TT>RAWY</TT> range to distribute the out-of-time events is instead 
+derived from the <A NAME="917"></A><TT>RAWY</TT> range of the actual events in the data.
+The mode-dependent conversion factor has thus to be applied manually
+and is about 95% of the out-of-time event fraction (e.g. 0.060 for
+full frame mode) due to setting the top 10
+rows to ``bad''. This will we improved in later versions.
+
+<P>
+For an example how to use the current implementation of
+out-of-time event handling in an event file processing, 
+consult the documentation of <A NAME="919"></A><A NAME="tex2html14"
+  HREF="../epchain/index.html"><SPAN  CLASS="textbf">epchain</SPAN></A>. 
+
+<P>
+<B>Note</B> that this parameter is only meaningful for IMAGING modes.
+Moreover, in the <EM>Large Window</EM> and <EM>Small Window</EM> modes
+out-of-time events can be introduced by sources that are outside
+the readout-window. 
+These cannot be accounted for. 
+Similarly, for <EM>Full Frame</EM> and <EM>Extended Full Frame</EM> modes
+(currently) the 11 rows closest to the CAMEX are set bad onboard
+but sources in these rows may also cause unrecognized out-of-time
+events. Finally, if a source is highly affected by pile-up this
+feature is projected onto the distribution of out-of-time events as well,
+however, the actual recorded out-of-time events do not suffer
+from this and thus residual effects remain. 
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="General"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Out-of-time events"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Analysis of very bright"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="merge">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="merge.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="merge.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+merge (merge-0.14) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="merge.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="merge.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="merge:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+Two files from two exposures (even from different 
+instruments) are taken as
+input. These may be EPIC event lists or two other additional
+files (attitude files, orbit files etc [see comments]). 
+The files are checked via their extension names (<A NAME="484"></A><TT>EVENTS</TT>, <A NAME="486"></A><TT>ATTHK</TT>, 
+<A NAME="488"></A><TT>ORBIT</TT>) for their type, and depending on the type, 
+certain attributes are checked to see whether the files are
+compatible with each other. In the attitude and orbit cases, any files 
+can be merged together (so long as they are both attitude or both orbit 
+files), whereas in the events case, some care should be 
+taken. For instance  event files from different modes should not be merged, 
+though perhaps event files from different instruments can (see comments). 
+Warnings are given when the event files are deemed not entirely compatible 
+(i.e. their <A NAME="490"></A><TT>INSTRUME</TT> or <A NAME="492"></A><TT>FILTER</TT> keywords are different). Here it is 
+up to the user to interpret the output files sensibly. 
+
+<P>
+Also, in the event files case, the two pointings need to be close to each
+other; the accuracy of the reprojection degrades with the offset between the
+two pointings, and warnings will be given when this offset becomes
+significantly large. Only if the input files pass all the checks does the
+merging proceed and an output file (event list, attitude file, orbit file) is
+produced. The individual blocks (e.g. <A NAME="494"></A><TT>EVENTS</TT>) are merged in time
+order, as are the other relevant extensions (e.g. <A NAME="496"></A><TT>EXPOSUnn</TT>,
+<A NAME="498"></A><TT>STDGTI</TT>, <A NAME="500"></A><TT>GTI</TT>, etc [see comments]). In the event files case, the sky
+coordinates are deprojected and reprojected again onto a common sky position
+(given either by the user, via the parameters <TT>withradec</TT>,
+<TT>ra</TT> and <TT>dec</TT>, or as, by default, the mean of the two input
+pointings), and new WCS attributes are calculated (the size of the WCS `image'
+is given by the parameter <TT>imagesize</TT>). It is possible also to adjust 
+the individual event file sky coordinates prior to merging. This is useful 
+when one sees offsets between sources in two datasets. Changes to RA, Dec and 
+position angle can be given for each of the input event files (see examples).
+
+<P>
+Given here is a summary of the current conditions whereby event files (or
+parts thereof [blocks/columns etc]) are or are not merged. In each condition, 
+the necessary warning/error messages are given. 
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">Condition</TD>
+<TD ALIGN="LEFT">Action</TD>
+</TR>
+<TR><TD ALIGN="LEFT">Different <A NAME="506"></A><TT>INSTRUME</TT></TD>
+<TD ALIGN="LEFT">continue (warning)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">Different <A NAME="508"></A><TT>INSTRUME</TT></TD>
+<TD ALIGN="LEFT"><A NAME="510"></A><TT>EXPOSUnn</TT> extensions not merged (warning)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">Different <A NAME="512"></A><TT>INSTRUME</TT></TD>
+<TD ALIGN="LEFT"><A NAME="514"></A><TT>STDGTI</TT>* extensions not merged (warning)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">Different <A NAME="516"></A><TT>FILTER</TT></TD>
+<TD ALIGN="LEFT">continue (warning)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">Different <A NAME="518"></A><TT>DATAMODE</TT></TD>
+<TD ALIGN="LEFT">stop (error)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">No block (extension) in one/both file(s)</TD>
+<TD ALIGN="LEFT">extensions not merged (warning)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">No column in one/both extension(s)</TD>
+<TD ALIGN="LEFT">columns not merged (warning)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="520"></A><TT>TIME</TT> column missing in one/both file(s)</TD>
+<TD ALIGN="LEFT">extensions merged in input order (warning)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">No <A NAME="522"></A><TT>X</TT>/<A NAME="524"></A><TT>Y</TT> columns in one/both extension(s)</TD>
+<TD ALIGN="LEFT"><A NAME="526"></A><TT>X</TT>/<A NAME="528"></A><TT>Y</TT> columns not reprojected (warning)</TD>
+</TR>
+</TABLE>
+
+<P>
+It is strongly recommended not to merge event files from different observations
+because of the difficulty of accurately using the merged file in downstream software.
+By default, an error is issued and the task aborted, if two input files with different 
+observation numbers are used. However, expert users may override this behaviour by 
+setting the command line parameter <TT>mergedifferentobs</TT>="yes".
+
+<P>
+If present, the following event file columns will be merged: <A NAME="531"></A><TT>TIME</TT>, 
+<A NAME="533"></A><TT>RAWX</TT>, <A NAME="535"></A><TT>RAWY</TT>, <A NAME="537"></A><TT>DETX</TT>, <A NAME="539"></A><TT>DETY</TT>, <A NAME="541"></A><TT>X</TT>, 
+<A NAME="543"></A><TT>Y</TT>, <A NAME="545"></A><TT>PHA</TT>, <A NAME="547"></A><TT>PI</TT>, <A NAME="549"></A><TT>FLAG</TT>, <A NAME="551"></A><TT>PATTERN</TT>, 
+<A NAME="553"></A><TT>PAT_ID</TT>, <A NAME="555"></A><TT>PAT_SEQ</TT>, <A NAME="557"></A><TT>PAY_TYP</TT>, <A NAME="559"></A><TT>PAT_IND</TT>, 
+<A NAME="561"></A><TT>PAT_ORG</TT>, <A NAME="563"></A><TT>CCDNR</TT>, <A NAME="565"></A><TT>WEIGHT</TT>. Up to 12 additional 
+columns may be specified by command line parameter.
+
+<P>
+The output files can be used by <A NAME="567"></A><A NAME="tex2html2"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+and the higher 
+level detection and time analysis tasks. See the caveats and  limitations listed
+in the comments section.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="merge.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

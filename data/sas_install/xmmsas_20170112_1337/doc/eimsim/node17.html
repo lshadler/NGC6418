@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Make a counts/pixel/sec image</TITLE>
+<META NAME="description" CONTENT="Make a counts/pixel/sec image">
+<META NAME="keywords" CONTENT="eimsim">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eimsim.css">
+
+<LINK REL="next" HREF="node18.html">
+<LINK REL="previous" HREF="node16.html">
+<LINK REL="up" HREF="node14.html">
+<LINK REL="next" HREF="node18.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eimsim (eimsim-2.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node16.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Flag those sources outside"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="The task eimsim"></A>
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Make a counts/pixel expectation-value"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node29.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eimsim.html">Home Page</A> / <A  HREF="node4.html">Description</A> / <A  HREF="node14.html">The task eimsim</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00043300000000000000"></A>
+<A NAME="eimsim:description:makerateimg"></A>
+<BR>
+Make a counts/pixel/sec image
+</H3>
+
+<P>
+This function may be performed alone by calling the script with <TT>entrystage</TT> and <TT>finalstage</TT>=`makerateimg'.
+
+<P>
+The process of converting the list of source positions and fluxes into a realistic XMM-Newton image consists of three stages:
+
+<P>
+
+<OL>
+<LI>For each EPIC instrument, and within each band, make an ideal count-rate image (in theory of the whole sky, though in practice we don't bother with most of it). The units of this are (expected) counts per image pixel per second.
+</LI>
+<LI>Multiply this by the exposure map to create an ideal event-count image. In other words, what this creates is a map of the expectation value for the event counts at each pixel.
+</LI>
+<LI>Convert the expectation values to random, Poisson-distributed integer event counts.
+</LI>
+</OL>
+
+<P>
+The present function performs the first of these stages. Essentially this is done by adding an appropriate Point Spread Function (PSF) to the image for each sky location in the input source list. Ideally this would be done by reading a PSF from the XMM-Newton calibration data (the CCF). However in practice one finds that accessing this data is rather slow. Since there may be tens of thousands of simulated sources in the list, it is desirable to find some better procedure. For this reason it has been decided to use the CCF PSF only for those sources which are brighter than a user-settable flux level. For sources fainter than this level, the following axially-symmetric King function is used:
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+S(x-x_0,y-y_0) = S_0 \ \left( 1+\frac{[x-x_0]^2 + [y-y_0]^2}{\rho^2} \right)^{-\alpha}.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="382" HEIGHT="48" BORDER="0"
+ SRC="img31.png"
+ ALT="\begin{displaymath}
+S(x-x_0,y-y_0) = S_0 \ \left( 1+\frac{[x-x_0]^2 + [y-y_0]^2}{\rho^2} \right)^{-\alpha}.\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+The parameters <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$\rho$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img33.png"
+ ALT="$\alpha$"></SPAN> are also settable by the user, but the default values, which are taken from values fitted to the on-axis PSF for the MOS camera (********** ref to RDS cal document XMM-SOC-CAL-TN-0018), should be perfectly adequate.
+
+<P>
+As said, the flux cutoff is a free parameter <TT>fluxcutoff</TT> of the <A NAME="1388"></A><A NAME="tex2html71"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+script; the user is however advised to choose a value such that the proper, CCF PSF is used for all sources bright enough to be detectable. A few preliminary runs of <A NAME="1392"></A><A NAME="tex2html72"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+may be required to determine a safe value.
+
+<P>
+Another point to consider is the size of the PSF `patches' which are added to the image. There are two related issues:
+
+<P>
+
+<OL>
+<LI>How large should one make the patch array? `Twice the size of the image' is the ideal answer from a theoretical standpoint, so that there would always be complete overlap between the patch and the image, no matter where on the image the centre of the PSF was located. On the other hand, practical issues to do with memory and computing time argue for as small an array as possible. Another consideration is the detection procedure - if a PSF fitting algorithm is employed as part of this, for example as in the sas task <A NAME="1396"></A><A NAME="tex2html73"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>, then it is clear that the PSF patch used here within <A NAME="1400"></A><A NAME="tex2html74"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+must be at least as large as that used within the fitting procedure. Failure to do this will result in bias in the fitted flux values, as seems to have been the case in previous versions of <A NAME="1404"></A><A NAME="tex2html75"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>.
+
+<P>
+</LI>
+<LI>Should one vignet or `feather' the PSF patch in order to avoid an abrupt drop to zero at the edges of the patch? This becomes particularly important if a small patch size is chosen. On the other hand, an unwise choice of feathering function will give rise to flux biases in any fitting procedure employed in the source detection (see above). 
+</LI>
+</OL>
+
+<P>
+The PSF array size in <A NAME="1408"></A><A NAME="tex2html76"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+is at present `hard-wired' to the value of 21 by 21 pixels. The PSF parameters used for the faint sources result in a PSF which drops to about 9% of its central value at these array edges.
+
+<P>
+The feathering function chosen, let's call it <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$y$"></SPAN>, is a piecewise inverted parabola, viz:
+<SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img34.png"
+ ALT="$y=1$"></SPAN> for <!-- MATH
+ $\vert x \vert < fs$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="60" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.png"
+ ALT="$\vert x \vert &lt; fs$"></SPAN>,
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+y = 1 - \left( \frac{\vert x \vert - fs}{s(1-f)} \right)^2
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="147" HEIGHT="48" BORDER="0"
+ SRC="img36.png"
+ ALT="\begin{displaymath}
+y = 1 - \left( \frac{\vert x \vert - fs}{s(1-f)} \right)^2
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+for <!-- MATH
+ $fs \le \vert x \vert < s$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="89" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img37.png"
+ ALT="$fs \le \vert x \vert &lt; s$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$y=0$"></SPAN> else. Here <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$x$"></SPAN> is the distance from the centre of the array, <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img39.png"
+ ALT="$s$"></SPAN> is the array half size (=10 in the present case) and <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img40.png"
+ ALT="$f$"></SPAN> (which should be between 0 and 1) is set somewhat arbitrarily to 0.7.
+
+<P>
+The effect of the feathering on the PSF is illustrated schematically in figures <A HREF="node18.html#fig:eimsim:description:psfraw">1</A> to <A HREF="node18.html#fig:eimsim:description:psfvig">3</A>.
+
+<P>
+The bright sources are applied by use of the (XMM-specific) task <A NAME="1412"></A><A NAME="tex2html77"
+  HREF="../esrcmap/index.html"><SPAN  CLASS="textbf">esrcmap</SPAN></A>. This task obtains the PSF from the XMM calibration data via the <A NAME="1416"></A><A NAME="tex2html78"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>
+library interface call CAL_getPSF, with the <A NAME="1420"></A><A NAME="tex2html79"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>
+state variable accuracyLevel set to ACCURACY_MEDIUM. This returns a PSF which is interpolated from samples generated via a ray-tracing method. 
+The source-detection task <A NAME="1424"></A><A NAME="tex2html80"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+uses the same PSF by default.
+
+<P>
+The faint sources are added to the image by use of the non-XMM-specific equivalent task <A NAME="1428"></A><A NAME="tex2html81"
+  HREF="../srcmap/index.html"><SPAN  CLASS="textbf">srcmap</SPAN></A>. This task uses the same PSF for each source, namely a King function. The relevant scale values are settable via <A NAME="1432"></A><A NAME="tex2html82"
+  HREF="../srcmap/index.html"><SPAN  CLASS="textbf">srcmap</SPAN></A>, but not <A NAME="1436"></A><A NAME="tex2html83"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>, parameters.
+
+<P>
+In order to preserve something close to realistic statistics in the background, it is usual to include, in the list of simulated sources, a large fraction which are too faint to be detected. This carpet of faint, confused sources supplies the desired `lumpiness', but at the cost of raising the average level of vignetted background. The approximate amount of the added background (in terms of flux in the simulated source energy band per unit sky area) can be estimated either from the first plot created by <A NAME="1440"></A><A NAME="tex2html84"
+  HREF="../eimsimcompleteness/index.html"><SPAN  CLASS="textbf">eimsimcompleteness</SPAN></A>, or by use of <A NAME="1444"></A><A NAME="tex2html85"
+  HREF="../faintbackcalc/index.html"><SPAN  CLASS="textbf">faintbackcalc</SPAN></A>. Once the added flux per square arcsec is known, it can be subtracted from the source images by use of <TT>eimsim</TT> (and <A NAME="1449"></A><A NAME="tex2html86"
+  HREF="../srcmap/index.html"><SPAN  CLASS="textbf">srcmap</SPAN></A>) parameters <TT>withfluxoffset</TT> and <TT>fluxoffset</TT>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node16.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Flag those sources outside"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="The task eimsim"></A>
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Make a counts/pixel expectation-value"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node29.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

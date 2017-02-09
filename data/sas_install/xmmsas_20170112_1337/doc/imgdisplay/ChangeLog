@@ -1,0 +1,328 @@
+ChangeLog for imgdisplay
+========================
+
+Version 1.50 - 2014-12-04 (AI)
+------------
+	+ Fixed a problem related to the region property (SOURCE or BACKGROUND /
+	INCLUDE or EXCLUDED) that Ds9.cc sent to ds9 through xpa connectivity.
+	SOC-SRP-7257 fixed
+
+Version 1.49 - 2014-11-20 (AI)
+------------
+	+ (Ds9.h) Wrong initialization of a bool variable with a string. 
+	SOC-SPR-7255 fixed
+
+Version 1.48.2 - 2009-04-02 (AI)
+------------
+	+ (Ds9.cc) fk5 coordinate system added to be used with multixmmselect
+	
+Version 1.48.1 - 2009-08-31 (AI)
+------------
+	+  Modifications is several source files to make imgdisplay gcc 4.3 compliant.
+	
+Version 1.48 - 2008-02-15 (AI)
+------------
+	+ (Ds9.cc) Re-opened SOC-SPR-2548. The ds9 excluded regions are now 
+	properly flagged in the fits file with an "!" mark. 
+	
+Version 1.47 - 2006-12-12 (AI)
+------------
+	+ (Ds9.cc) ANNULUS shape supported. SOC-SPR-2618 fixed
+
+Version 1.46 - 2006-03-01 (AI)
+------------
+	+ (Ds9.cc) switchSignalHandlers function removed. 
+	
+Version 1.45.3 - 2005-08-04 (AI)
+--------------
+	+ (Ds9.cc) The excluded regions cannot be managed from Ds9.cc. It 
+	is not possible to distinguish between background region and an 
+	excluded regions. Back to the original behavior.
+	
+Version 1.45.2 - 2005-06-20 (AI)
+--------------
+	+ (Ds9.cc) Bug fixed on Mac OSX.
+
+Version 1.45.1 - 2005-05-27 (AI)
+--------------
+	+ (DS9.cc) DS9::toRegion() check if a region has to be excluded.
+	  Closed SOC-SPR-2548
+
+Version 1.45 - 2003-06-13 (GV)
+------------
+	+ (Ds9.cc SAOtng.cc) replace SIGCLD with SIGCHLD. SOC-SPR-2454.
+	
+Version 1.44 - 2003-05-03 (UL)
+------------
+	+ brought in line with selectlib-4.65
+
+Version 1.43 - 2003-03-13 (UL)
+------------
+	+ some transparent gcc-2.95.3 backward-compatibility changes
+
+Version 1.42 - 2003-03-05 (UL)
+------------
+	+ closed SPR 2403: How to change the ds9 that xmmselect uses
+	  Ds9 constructur (used by xmmselect) now makes use of SAS_IMAGEVIEWER
+	  environment variable that can also contain an absolute path the ds9
+	  executable
+
+Version 1.41.1 - 2003-02-21 (UL)
+--------------
+	+ fixed bug in Ds9::toRegion() which caused region text attributes
+	  not to get recognized
+
+Version 1.41 - 2003-01-21 (UL)
+------------
+	+ a couple of more fixes to improve stdc++ compliance (needed by gcc-3.2)
+
+Version 1.40 - 2003-01-08 (UL)
+------------
+	+ support for new elliptical annulus syntax on ds9>=2.3b1
+	+ fixed bug related to single-import of multiple ellipses from ds9
+
+Version 1.39 - 2002-12-05 (UL)
+------------
+	+ fixed DEPEND problem
+
+Version 1.38 - 2002-12-03 (UL)
+------------
+	+ closed SPR 2322: missing parameters
+	+ closed SPR 2335: Separate cxctods9/ds9tocxc description
+
+Version 1.37 - 2002-11-26 (UL)
+------------
+	+ modifications in Ds9::toRegion() to support recognition of ds9
+	  background regions
+
+Version 1.35 - 2002-11-13 (UL)
+------------
+	+ various additions to Ds9 class needed for especget/eregionanlyse
+	  integration in xmmselect
+	+ reverted parameter file back to param-1.x format
+
+Version 1.34 - 2002-09-18 (UL)
+------------
+	+ closed SPR 2334: ds9 window removal
+	+ various additions to Ds9 class (needed to realize especget/eregionanlyse
+	  support in xmmselect)
+
+Version 1.33 - 2002-09-16 (GV)
+------------
+	+ Misc code/header adjustments for gcc-3.1.
+	
+Version 1.32 - 2002-07-11 (UL)
+------------
+	+ Ds9::toRegion: return region with two Components (included + globally
+	  excluded)
+
+Version 1.31 - 2002-05-27 (UL)
+------------
+	+ made param-2.0 compliant
+
+Version 1.30.3 - 2002-03-13 (UL)
+--------------
+	+ fixed couple of minor doc problems
+
+Version 1.30.2 - 2002-02-19 (UL)
+--------------
+	+ minor ds9-2.1b5 adjustment
+
+Version 1.30.1 - 2002-01-30 (UL)
+--------------
+	+ brought in line w.r.t changed annulus region format in ds9 2.1b4
+
+Version 1.30 - 2002-01-28 (UL)
+------------
+	+ Ds9::toRegion(): added support for elliptical annuli
+
+Version 1.29.1 - 2001-08-17 (UL)
+--------------
+	+ fixed problem inadvertently introduced in 1.29 (caused invalid
+	  ds9 region file to be written)
+
+Version 1.29 - 2001-08-13 (UL)
+------------
+	+ added converter task cxctods9/ds9tocxc
+	+ brought in line with selectlib-4.43
+	+ consistent use of namespace std
+
+Version 1.28 - 2000-12-22 (UL)
+------------
+	+ trivial change to make optimizer happy
+
+Version 1.27.2 - 2000-11-13 (UL)
+--------------
+	+ fixed SPR 1832: 'annulus' region marker not supported
+
+Version 1.27.1 - 2000-10-27 (UL)
+--------------
+	+ now in GROUPS 'plot'
+
+Version 1.27 - 2000-10-09 (UL)
+------------
+	+ 1.25 changes broke backwards compatibility; restored pre-1.25 behavior
+
+Version 1.26 - 2000-10-06 (UL)
+------------
+	+ fixed SPR 1651: improve reference to ASC region document
+
+Version 1.25 - 2000-08-14 (HS)
+------------
+	+ (src/Ds9): Added support for the FK5 coordinate system.
+	  replaced method bool pixelCoordinates() with enum coordType()
+	
+Version 1.24 - 2000-07-21 (UL)
+------------
+	+ closed small memory leak
+
+Version 1.23 - 2000-07-20 (UL)
+------------
+	+ fixed SCR 1448: selective import of regions
+	  (in ds9 there is no way to temporarily deactivate defined region
+	   markers; we use the marker color to achieve this: all *red* markers
+	   will not be imported)
+	+ support Ds9 region file format v3.0; support for v1.0 is dropped
+	  as it has disappeared as of ds9-1.9.6
+	+ SAS_IMAGEVIEWER or `viewer' parameter can now contain the name
+	  (possibly with the full path) of the viewer to launch
+	+ added utils to DEPEND (was missing)
+
+Version 1.22.1 - 2000-06-20 (UL)
+--------------
+	+ fixed SPR 1551: DOC::broken links
+
+Version 1.22 - 2000-05-25 (UL)
+------------
+	+ added taskinfo + layout file
+
+Version 1.21 - 2000-05-09 (GV)
+------------
+	+(doc/imgdisplay_description.tex) fix macro usage.
+	
+Version 1.20 - 2000-04-25 (GV)
+------------
+	+ (doc/imgdisplay_description.tex) fix macro usage.
+	
+Version 1.19 - 2000-03-14 (UL)
+------------
+	+ loading new region markers does no longer clear all previously loaded
+	  ones
+
+Version 1.18 - 2000-02-02 (UL)
+------------
+	+ 1.17 change lead to undesired side effect: when writing Ds9 ASCII
+	  region file the keyword "linear" must only be written if the
+	  coordinates of the marker points are in WCS
+
+Version 1.17 - 2000-01-19 (UL)
+------------
+	+ added functionality to overlay region marker on top of displayed
+	  images; controlled by two new task parameters
+		withregiontable/regiontable
+	
+
+Version 1.16 - 2000-01-05 (UL) - the Millenium imgdisplay!
+------------
+	+ fixed SPR 797 : broken links in documentation
+	+ closed SPR 986: imgdisplay as an interactive task does not work i.e
+                      does not display any image.
+	+ fixed SPR 1034 : should not reset ds9 settings)
+
+
+Version 1.15 - 1999-12-17 (UL)
+------------
+	+ brought in line with selectlib-4.23
+
+Version 1.14 - 1999-12-16 (MBe)
+------------
+	+ removed INTERFACES from src/Makefile so that imgdisplay.h is also
+	  exported.
+
+Version 1.13 - 1999-12-15 (UL)
+------------
+	+ new functionality in Ds9 class to
+		* convert ds9 region file string into selectlib Region object
+		* write region to ostream in Ds9 region file format
+
+Version 1.12.2 - 1999-10-28 (UL)
+--------------
+	+ fixed SPR 922: xmmselect exits on second invocation
+	  (xmgr interferes with xmmselect-ds9 pipe communication)
+
+Version 1.12.1 - 1999-10-27 (UL)
+------------
+	+ communication with SAOtng now works with pre-2.0 XPA tools
+
+Version 1.12 - 1999-10-27 (UL)
+------------
+	+ adapted to ds9-1.8.6.9
+
+Version 1.11 - 1999-10-21 (UL)
+------------
+	+ fixed SPR 917: Cannot call saotng
+	  was due to bug in imgdisplay's receive command (did not affect
+	  communication with ds9 though)
+
+Version 1.10 - 1999-09-20 (UL)
+------------
+	+ added DISTRIBUTION files
+	+ fixed portability problem in spawning of image viewer
+	  (fixes SPR 778 : xmmselect crashes when using 2-D regions)
+	+ fixed SPR 742 : invalid coordinates with special image modes
+
+Version 1.9 - 1999-08-17 (UL)
+-----------
+	+ bug fix in Ds9::regionSelection()
+
+Version 1.8 - 1999-05-19 (UL)
+-----------
+	+ support for ds9-1.8.2 beta
+	+ reading of region marker data now uses WCS
+
+Version 1.7 - 1999-05-11 (UL)
+-----------
+	+ brought in line with error-1.18
+
+Version 1.6 - 1999-05-10 (UL)
+-----------
+	+ ENV is now accepted as value for the `viewer' parameter
+
+Version 1.5 - 1999-05-06 (UL)
+-----------
+	+ added support for Ds9
+	+ the used image viewer can now be specified via the new task parameter
+	  `viewer' or an environment variable `SAS_IMAGEVIEWER' - the former
+	  has precedence over the latter
+
+Version 1.4 - 1999-04-15 (UL)
+-----------
+	+ parameter names changed to be in line with new SAS parameter naming
+	  conventions
+
+Version 1.3 - 1999-03-01 (UL)
+-----------
+	+ updated documentation (incorporated Julian's/Jean's comments on
+	  initial task description)
+
+Version 1.2 - 1999-02-19 (UL)
+-----------
+	+ src/SAOtng.cc: skip comments in regions specs from SAOtng
+
+Version 1.1 - 1999-02-19 (UL)
+-----------
+	+ src/SAOtng.cc: implemented workaround for using imgdisplay in conjunction
+	  with grace;
+
+Version 1.0 - 1999-02-11 (UL)
+-----------
+	+ first approved version
+	+ src/imgdisplay.c: added include statement enforced by taskmain >v1.17
+
+Version 0.2 - 1999-01-29 (UL)
+-----------
+	+ minor fixes to make it build under egcs
+
+Version 0.1 - 1998-11-13 (UL)
+-----------
+	+ first usable, embryonic version; needs more SAOtng control features

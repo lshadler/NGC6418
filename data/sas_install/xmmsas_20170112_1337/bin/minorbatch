@@ -1,0 +1,380 @@
+#! /usr/bin/perl -w
+#
+#				minorbatch (was imbatch)
+#
+# This task calls colimchain to process _all_ the exposures for _all_
+# the instruments in the directory given via the parameter --prodsdir.
+#
+# TODO:
+#	- feed colimchain the obs and exp ids instead of the indices? This will prevent it having to make a hash tree itself.
+#------------------------------------------------------------------------
+
+require 5.005;
+
+use English;
+#use strict;
+
+  my (%obs_list, $obsindex, $obs, $ins_list_name, $ins, $exp_list_name, $expindex, $exp_type_num, $band_list_name, @available_bands);
+  my ($is_band_8, $req_band, $file_not_found, $available_band, $i);
+  my ($instrument_lc, $opfile, $command, $status);
+
+  my $taskname = 'minorbatch';
+  my $log_name = 'log';
+
+  my $testflag = 0;
+  my $status = 0;
+
+  my %params = &getParams;
+
+#  my $clobber = &boolTranslate($params{clobber});
+  my $write_log = &boolTranslate($params{writelog});
+  my $prodsdir = $params{prodsdir};
+  my $bandlist = $params{bandlist};
+
+# Only if $clobber_log!!
+#  if ($write_log && -e "$log_name") {
+#    unlink($log_name);
+#    system("touch $log_name");
+#  }
+
+  my $ccf_path = $params{ccfpath};
+  if (!defined($ccf_path) || $ccf_path eq '') {
+    if (!defined($ENV{'SAS_CCF'})) {
+&quit("You must set SAS_CCF before running colimchain.", 1);
+    } else {
+      $ccf_path = $ENV{'SAS_CCF'};
+    }
+  } else {
+    $ENV{'SAS_CCF'} = $ccf_path;
+  }
+
+  $bandlist =~ s/^\s+//;
+  $bandlist =~ s/\s+$//;
+  my @req_bands = sort(split(/\s+/, $params{bandlist}));
+
+#........................................................................
+# Main processing:
+
+  &makeHashTree($prodsdir); # gets a tree of hashes that contains, in
+  # its outermost leaves, the names of all the product fits image files
+  # in $prodsdir.
+
+  # Now go through all these files and make a colour image from each exposure:
+  my $num_valid_exposures = 0;
+  my @obss = keys(%obs_list);
+  foreach $obsindex (0 .. $#obss) {
+    $obs = $obss[$obsindex];
+    $ins_list_name = $obs_list{"$obs"};
+    foreach $ins (keys(%{"$ins_list_name"})) {
+    next if ($ins eq 'OM');
+      $exp_list_name = ${${"$ins_list_name"}{"$ins"}};
+my @exps = keys(%{"$exp_list_name"});
+#      foreach $exp_type_num (keys(%{"$exp_list_name"})) {
+      foreach $expindex (0 .. $#exps) {
+$exp_type_num = $exps[$expindex];
+        $band_list_name = ${${"$exp_list_name"}{"$exp_type_num"}};
+        @available_bands = sort(keys(%{$band_list_name}));
+
+        # Make sure there are enough image bands (not counting band 8):
+        $is_band_8 = 0;
+        foreach (@available_bands) {
+          if ($_ == 8) {
+            $is_band_8 = 1;
+        last;
+          }
+        }
+      next if (@available_bands < 2 || (@available_bands < 3 && $is_band_8));
+
+        # Check to see that all the bands requested (via the parameter
+        # --bandlist) are in fact present:
+        BAND: foreach $req_band (@req_bands) {
+          $file_not_found = 1;
+          foreach $available_band (@available_bands) {
+            if ($req_band == $available_band) {
+              $file_not_found = 0;
+        last BAND;
+            }
+          }
+        } # next $req_band
+        if ($file_not_found) {
+          &warn("There are enough bands to make a colour image, but not "
+          ."all of the requested set of bands are represented. The image "
+          ."will be made using the lowest 3 (or 2 if there are only that "
+          ."many) bands.");
+
+          @req_bands = ();
+          $i = 0;
+          while ($i < @available_bands && @req_bands < 4) {
+            if ($available_bands[$i] != 8) {
+              push @req_bands, $available_bands[$i]
+            }
+            ++$i;
+          }
+&quit("BUG!!", 2) if (@req_bands < 2 || @req_bands > 3);
+          $bandlist = "$req_bands[0]";
+          foreach $i (1 .. $#req_bands) {
+            $bandlist .= " $req_bands[$i]";
+          }
+        } # end if any requested image file not found.
+
+        $instrument_lc = lc($ins);
+        $opfile = "P$obs$ins$exp_type_num"."IMGCLR000.PNG";
+        $pgdev = "/png";
+
+        ++$num_valid_exposures;
+
+        $command = "colimchain "
+        .     "ccfpath='' "
+        .    "prodsdir=$prodsdir "
+        ."clobbertemps=$params{'clobbertemps'} "
+        ."clobberprods=$params{'clobberprods'} "
+        .    "writelog=$params{'writelog'} "
+        .      "astest=$params{'astest'} "
+        ."withthumbnails=$params{'withthumbnails'} "
+        ."thumbnaildir=$params{'thumbnaildir'} "
+
+        .  "instrument=$instrument_lc "
+        .    "obsindex=$obsindex "
+        .    "expindex=$expindex "
+
+        .    "bandlist='$bandlist' "
+        .      "smooth=$params{'smooth'} "
+
+        .    "maxsigma=$params{'maxsigma'} "
+        .  "desiredsnr=$params{'desiredsnr'} "
+        .      "ngauss=$params{'ngauss'} "
+
+        .  "rebinimage=$params{'rebinimage'} "
+        .   "newnxbins=$params{'newnxbins'} "
+        .   "newnybins=$params{'newnybins'} "
+        .   "weirdness=$params{'weirdness'} "
+        .        "heat=$params{'heat'} "
+        .  "heatspread=$params{'heatspread'} "
+        .      "cutoff=$params{'cutoff'} "
+        .   "gainstyle=$params{'gainstyle'} "
+        .        "gain=$params{'gain'} "
+        .       "pgdev=$pgdev "
+#        .   "thumbnail=$params{thumbnail} "
+        ."expandtomask=$params{'expandtomask'} "
+        .    "plotfile=$opfile "
+        .   "withframe=$params{'withframe'} "
+        ;
+
+        &tell("invoke $command");
+#        if (!$testflag) {$status = system($command);}
+        if (!$testflag) {$status = (system($command) >> 8);}
+&quit("Couldn't run colimchain.", 3) if (&bad($status));
+
+      } # next $exp_type_num
+    } # next $ins
+  } # next $obs
+
+&quit("No valid exposure in $prodsdir.", 0) if ($num_valid_exposures == 0);
+
+exit 0;
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub getParams {
+# This routine is shared with rgsprods. Should therefore be in a separate module.
+
+  my ($possible_key, $actual_key, $value, $no_match_found, $unmatched_pars_found);
+
+  my %params = &getParamDefaults;
+
+#  # Look for '-v':
+#  foreach (@ARGV) {
+#    if ($_ eq '-v') {
+#&getVersionThenQuit();
+#    }
+#  }
+
+  $unmatched_pars_found = 0;
+  foreach (@ARGV) {
+    if ($_ =~ /^(\w+)(=+)/) {
+      $actual_key = $1;
+      $value = $';
+      $no_match_found = 1;
+      foreach $possible_key (keys(%params)) {
+        if ($possible_key eq $actual_key) {
+          $params{$possible_key} = $value;
+          $no_match_found = 0;
+      last;
+        }
+      }
+      if ($no_match_found) {
+        $unmatched_pars_found = 1;
+        &warn("Unrecognised parameter: $actual_key");
+      }
+    }
+  }
+&quit("Unmatched parameters found.", -1) if ($unmatched_pars_found);
+
+return %params;
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub getParamDefaults {
+# Loading default parameter values:
+
+  my %params = (
+    ccfpath        => '',
+    prodsdir       => '.',
+    clobbertemps   => 'yes',
+    clobberprods   => 'no',
+    writelog       => 'no',
+    astest         => 'no',
+    withthumbnails => 'no',
+    thumbnaildir   => './thumbnails',
+
+    bandlist     => "2 3 4",
+    smooth       => 'yes',
+
+    maxsigma     => 15.0,
+    desiredsnr   => 7.0,
+    ngauss       => 30,
+
+    rebinimage   => 'no',
+    newnxbins    => 250,
+    newnybins    => 250,
+    weirdness    => -0.7,
+    heat         => 0.0,
+    heatspread   => 0.3,
+    cutoff       => 0.05,
+    gainstyle    => 'auto',
+    gain         => 8.0,
+#    pgdev        => '/ppm',
+#    thumbnail    => 'no',
+    expandtomask => 'yes',
+#    plotfile     => 'temp.ppm',
+      withframe    => 'no',
+  );
+
+return %params;
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub boolTranslate {
+  my ($inStr) = @_;
+  my $out;
+
+  if ($inStr =~ /^\w+$/) {
+    $inStr = lc($inStr);
+    if ($inStr eq 'y' || $inStr eq 'yes' || $inStr eq 't'
+    || $inStr eq 'true') {
+      $out = 1;
+    } elsif ($inStr eq 'n' || $inStr eq 'no' || $inStr eq 'f'
+    || $inStr eq 'false') {
+      $out = 0;
+    } else {
+&quit("Non-boolean variable $inStr treated as boolean.", -2);
+    }
+  } elsif ($inStr ne '0' && $inStr ne '1') {
+&quit("Non-boolean variable $inStr treated as boolean.", -3);
+  }
+
+return($out);
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub makeHashTree {
+
+# Construct a hash tree of revolution, observation, exposure, instrument,
+# ccd, in which each hash value is a name of the next hash down. The easiest
+# way to compose unambiguous hash names is to use the rev, obs etc numbers
+# themselves.
+
+  my ($filename, $obs, $ins, $typ, $exp, $img);
+  my ($prodsdir) = @_;
+
+  my @filenames = `ls -1 $prodsdir`;
+
+  my $total_matching_files = 0;
+  foreach $filename (@filenames) {
+    chomp($filename);
+    if ($filename =~ /^P(\d{10})(\w\w)(S|U)(\d{3})IMAGE_(\d)000.FIT/i) {
+
+      ++$total_matching_files;
+
+      $obs = $1;
+      $ins = $2;
+      $typ = $3;
+      $exp = $4;
+      $img = $5;
+#print "$obs  $ins  $typ  $exp  $img\n";
+      chomp($filename);
+
+      # Observation list:
+      $obs_list{$obs} = "$obs";
+
+      # Instrument list for each observation:
+      ${${$obs}{$ins}} = "$obs$ins";
+
+      # Exposure list for each instrument:
+      ${${"$obs$ins"}{"$typ$exp"}} = "$obs$ins$typ$exp";
+
+      # No more hash levels below this, so it is convenient to store the
+      # filename in the hash value instead:
+      ${${"$obs$ins$typ$exp"}{"$img"}} = "$filename";
+    }
+  }
+
+  if ($total_matching_files == 0) {
+&quit("No matching files in $prodsdir.", 0);
+  }
+}
+
+  #---------------------------------------------------------------------
+  sub bad {
+  #---------------------------------------------------------------------
+  # Tests to see if colimchain status return represents a fatal error.
+
+    my ($status) = @_;
+
+    my @bad_statuses = qw(1 2 4 5 6 8 11 12 13 14 15 16 17 18 19 20);
+    foreach(@bad_statuses) {
+  return 1 if ($status==$_);
+    }
+  return 1 if ($status<0);
+
+  return 0;
+
+  }
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub tell {
+  open(LOG, ">> $log_name") if ($write_log);
+  foreach (@_) {
+    print "$taskname:- $_\n\n";
+    print LOG "$taskname:- $_\n\n" if ($write_log);
+  }
+  close(LOG) if ($write_log);
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub warn {
+  open(LOG, ">> $log_name") if ($write_log);
+  foreach (@_) {
+    print "** $taskname: warning, $_\n\n";
+    print LOG "** $taskname: warning, $_\n\n" if ($write_log);
+  }
+  close(LOG) if ($write_log);
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub quit {
+  my ($message, $status) = @_;
+
+  open(LOG, ">> $log_name") if ($write_log);
+  print "** $taskname: ERROR! $message\n\n";
+  print LOG "** $taskname: ERROR! $message\n\n" if ($write_log);
+  close(LOG) if ($write_log);
+
+exit $status;
+}

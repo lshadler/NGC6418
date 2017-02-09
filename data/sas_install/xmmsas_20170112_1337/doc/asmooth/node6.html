@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Ways of specifying the convolvers</TITLE>
+<META NAME="description" CONTENT="Ways of specifying the convolvers">
+<META NAME="keywords" CONTENT="asmooth">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="asmooth.css">
+
+<LINK REL="next" HREF="node13.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+asmooth (asmooth-2.30) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Variance images"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Single gaussian convolver"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="asmooth.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00033000000000000000"></A>
+  <A NAME="asmooth:description:convolvers"></A>
+<BR>
+Ways of specifying the convolvers
+</H2>
+
+<P>
+In all the following descriptions, the convolving function is designated by <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$c_{x,y}$"></SPAN>, where <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$y$"></SPAN> are integer pixel numbers. Convolvers must necessarily be of finite extent, hence are only defined over a rectangular array.
+
+<P>
+It is necessary to have some way to determine the `phase' of any convolver: ie, which pixel of the convolver array should be taken to have row and column indices <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$y$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$"></SPAN> equal to zero. The rule applied by <A NAME="1073"></A><A NAME="tex2html5"
+  HREF="../asmooth/index.html"><SPAN  CLASS="textbf">asmooth</SPAN></A>
+is as follows. If the convolver has for example <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$N$"></SPAN> rows, then row 1 plus the integer<A NAME="tex2html4"
+  HREF="footnode.html#foot248"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A> part of<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$N/2$"></SPAN> is taken as the zeroth row. This means that if <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$N$"></SPAN> is odd, the central row is the zeroth row, ie the row indices are taken to extend from <SPAN CLASS="MATH"><IMG
+ WIDTH="86" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$-(N-1)/2$"></SPAN> to <SPAN CLASS="MATH"><IMG
+ WIDTH="74" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="$(N-1)/2$"></SPAN>; if <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$N$"></SPAN> is even, the row indices run from <SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$-N/2$"></SPAN> to <SPAN CLASS="MATH"><IMG
+ WIDTH="60" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$N/2-1$"></SPAN>. The same rule is applied to the columns.
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html127"
+  HREF="node7.html">Single gaussian convolver</A>
+<LI><A NAME="tex2html128"
+  HREF="node8.html">Single top-hat convolver</A>
+<LI><A NAME="tex2html129"
+  HREF="node9.html">Single square-box convolver</A>
+<LI><A NAME="tex2html130"
+  HREF="node10.html">Multi-convolver smoothing</A>
+<LI><A NAME="tex2html131"
+  HREF="node11.html">Adaptive smoothing</A>
+<LI><A NAME="tex2html132"
+  HREF="node12.html">Smoothing from an adaptive template</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Variance images"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Single gaussian convolver"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,283 @@
+<!-- converted from XPI formatted "badpixfind.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="eventset" type="dataset" mandatory="yes" default="">
+   <DESCRIPTION>
+    Input events set (from frames task) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="searchbadpix" type="bool" default="yes">
+   <DESCRIPTION>
+    Mode1- Automatic search for bad pixels 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+      <PARAM id="lothresh" type="real" default="0">
+        <DESCRIPTION>
+         Low threshold to search for dead pixels 
+        </DESCRIPTION>
+        <CONSTRAINTS>
+         lothresh in [0.0:]
+        </CONSTRAINTS>
+      </PARAM>
+      <PARAM id="hithresh" type="real" default="0.005">
+        <DESCRIPTION>
+         High threshold to search for hot pixels 
+        </DESCRIPTION>
+        <CONSTRAINTS>
+         hithresh in [0.0:]
+        </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withsearchbadcolumn" type="bool" default="no">
+   <DESCRIPTION>
+    Mode1 - Automatic search for bad total columns 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+      <PARAM id="columnsearchlabel" type="string" default="median">
+         <DESCRIPTION>
+          Columnsearch thresholds choice - refer to TOTAL column value or MEDIAN column value
+         </DESCRIPTION>
+         <CASE>
+           <ITEM value="median">
+           </ITEM>
+           <ITEM value="total">
+           </ITEM>
+         </CASE>
+      </PARAM>
+      <PARAM id="locolthresh" type="real" default="0">
+         <DESCRIPTION>
+          Low threshold to search for dead columns 
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          locolthresh in [0.0:]
+         </CONSTRAINTS>
+      </PARAM>
+      <PARAM id="hicolthresh" type="real" default="0.002">
+         <DESCRIPTION>
+          High threshold to search for hot columns 
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          hicolthresh in [0.0:]
+         </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="userflagbadpix" type="bool" default="no">
+   <DESCRIPTION>
+    Mode2- User-flagging of bad pixels 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+      <PARAM id="rawxlist" type="int" list="yes" default="">
+         <DESCRIPTION>
+          List of user-flagged RAWX values 
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          rawxlist in [1:600]
+         </CONSTRAINTS>
+      </PARAM>
+      <PARAM id="rawylist" type="int" list="yes" default="">
+         <DESCRIPTION>
+          List of user-flagged RAWY values 
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          rawylist in [1:600]
+         </CONSTRAINTS>
+      </PARAM>
+      <PARAM id="typelist" type="int" list="yes" default="">
+         <DESCRIPTION>
+          List of user-flagged TYPE values 
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          typelist in [1:5]
+         </CONSTRAINTS>
+      </PARAM>
+      <PARAM id="yextentlist" type="int" list="yes" default="">
+         <DESCRIPTION>
+          List of user-flagged YEXTENT values 
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          yextentlist in [1:600]
+         </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="thresholdlabel" type="string" default="rate">
+   <DESCRIPTION>
+    Thresholds choice - as percentage of PEAK, as count RATE or pure COUNTS
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="counts">
+    </ITEM>
+    <ITEM value="peak">
+    </ITEM>
+    <ITEM value="rate">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="flickertimesteps" type="int" default="1">
+   <DESCRIPTION>
+    Number of timesteps to search for flickering pixels 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    flickertimesteps in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="flickerksthresh" type="real" default="0.55">
+   <DESCRIPTION>
+    K-S threshold for low count flickering pixels 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    flickerksthresh in [0:1]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="flickerchisqthresh" type="real" default="15">
+   <DESCRIPTION>
+    Reduced Chi-sq threshold for high count flickering pixels 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    flickerchisqthresh in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="cellsize" type="int" default="2">
+   <DESCRIPTION>
+    Cell size for PSF comparison (total width: 1 + 2xcellsize ) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    cellsize in [1:10]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="backgroundrate" type="real" default="1e-05">
+   <DESCRIPTION>
+    Background rate (ct/s/pix) - if negative, mean over entire field assumed 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="narrowerthanpsf" type="real" default="3">
+   <DESCRIPTION>
+    PSF-pixel(s) comparison - 1:equal to PSF, &#62;1:more compact 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    narrowerthanpsf in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="badpixset" type="dataset" default="badpixfind.fits">
+   <DESCRIPTION>
+    Output file name 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withbadpixmap" type="bool" default="no">
+   <DESCRIPTION>
+    Create bad pixel image map 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+      <PARAM id="badpixmap" type="dataset" default="badpixmap.fits">
+        <DESCRIPTION>
+         Bad pixel image map file name 
+        </DESCRIPTION>
+        <CONSTRAINTS>
+         true
+        </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withfovmask" type="bool" default="no">
+   <DESCRIPTION>
+    Mask out FOV in bad pixel image map 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="threshabovebackground" type="bool" default="no">
+   <DESCRIPTION>
+    High thresholds as values above background 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="mappixcellsize" type="int" default="1">
+   <DESCRIPTION>
+    Bad cell surrounding bad pixel in map (total width: 1 + 2xmappixcellsize ) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    mappixcellsize in [0:10]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="loenergythresh" type="real" default="0">
+   <DESCRIPTION>
+    Low energy threshold for searching (keV) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    loenergythresh in [0:30.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="hienergythresh" type="real" default="30">
+   <DESCRIPTION>
+    Hi energy threshold for searching (keV) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    hienergythresh in [0:30.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="ccd" type="int" default="-1">
+   <DESCRIPTION>
+    Chip selected for bad pixel searching 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

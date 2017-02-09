@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Examples</TITLE>
+<META NAME="description" CONTENT="Examples">
+<META NAME="keywords" CONTENT="ebadpixupdate">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ebadpixupdate.css">
+
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ebadpixupdate (ebadpixupdate-1.10) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Replacing bad pixels instead"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ebadpixupdate.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00036000000000000000">
+Examples</A>
+</H2>
+
+<P>
+
+<UL>
+<LI>Standard run (get bad pixels from the CCF) over all CCDs:
+      <PRE>
+      ebadpixupdate eventset=P0123700101PNS003PIEVLI0000.FIT
+</PRE>
+</LI>
+<LI>Look for bright pixels in the low energy band and apply them
+      (MOS, sh syntax):
+      <PRE>
+      evselect table=P0123700101M1S001MIEVLI0000.FIT keepfilteroutput=Y \
+               withfilteredset=Y filteredset=events.lowenergy           \
+        expression="(PI&lt;500) &amp;&amp; (TIME in GTI(P0123700101M1S001FBKGTI0000.FIT))"
+      for CCD in 01 02 03 04 05 06 07
+      do
+         emeventsproj eventset=events.lowenergy mergedeventlist=Y \
+                      ccdnr=$CCD evimageset=evmap.in
+         fmedian evmap.in medmap.in 5 5 boundary=reflect clobber=Y
+         embadpixfind evimageset=evmap.in medianset=medmap.in \
+                      badpixset=badpix$CCD.out
+      done
+      ebadpixupdate eventset=P0123700101M1S001MIEVLI0000.FIT fromccf=N \
+         badpixtables='badpix01.out badpix02.out badpix03.out badpix04.out  \
+                       badpix05.out badpix06.out badpix07.out'
+</PRE>
+</LI>
+<LI>Take additional bad pixels from another event list and the CCF,
+      for CCDs 2 and 3:
+      <PRE>
+      ebadpixupdate eventset=P0123700101M2S002MIEVLI0000.FIT ccds='2 3' \
+         badpixtables='P0111090301M2S002MIEVLI0000.FIT:BADPIX02  \
+                       P0111090301M2S002MIEVLI0000.FIT:BADPIX03'
+</PRE>
+</LI>
+</UL>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,291 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="imgdisplay">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="imgdisplay.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="imgdisplay.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+imgdisplay (imgdisplay-1.50) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="imgdisplay.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="imgdisplay.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="imgdisplay:description:parameters"></A>
+<A NAME="426"></A>
+<tr valign=top bgcolor='silver'><td><b>startviewer</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>true</td><td>false<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\vert$"></SPAN>true</td></tr>
+
+<tr valign=top><td colspan=5>
+If <TT>startviewer</TT> is set to <TT>true</TT> <A NAME="455"></A><A NAME="tex2html19"
+  HREF="../imgdisplay/index.html"><SPAN  CLASS="textbf">imgdisplay</SPAN></A> attempts to
+establish a communication link between itself and an active
+<A NAME="tex2html20"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A>/<A NAME="tex2html21"
+  HREF="http://hea-www.harvard.edu/RD/saotng/index.html">SAOtng</A> process upon invocation. If a <A NAME="tex2html22"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A>/<A NAME="tex2html23"
+  HREF="http://hea-www.harvard.edu/RD/saotng/index.html">SAOtng</A> is active already,
+either started manually or through a previous invocation
+of <A NAME="467"></A><A NAME="tex2html24"
+  HREF="../imgdisplay/index.html"><SPAN  CLASS="textbf">imgdisplay</SPAN></A> with <TT>stopviewer</TT>=false, its main window must
+have the title<A NAME="tex2html16"
+
+HREF="footnode.html#foot438"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A><TT>ds9</TT> or <TT>ds9-<TT>username</TT></TT> for <A NAME="478"></A><A NAME="tex2html25"
+  HREF="../imgdisplay/index.html"><SPAN  CLASS="textbf">imgdisplay</SPAN></A> to
+be able to connect to it. <TT>username</TT> is the value of the
+environment variable <A NAME="483"></A><TT>LOGNAME</TT> which is usually the user's
+login name. If no running <A NAME="tex2html26"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A>/<A NAME="tex2html27"
+  HREF="http://hea-www.harvard.edu/RD/saotng/index.html">SAOtng</A> could be found <A NAME="489"></A><A NAME="tex2html28"
+  HREF="../imgdisplay/index.html"><SPAN  CLASS="textbf">imgdisplay</SPAN></A> spawns
+one with the window title <TT>SAOtng-<TT>username</TT></TT> such
+that subsequent task invocations can find and connect to this process.
+Please note: <A NAME="tex2html29"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A>/<A NAME="tex2html30"
+  HREF="http://hea-www.harvard.edu/RD/saotng/index.html">SAOtng</A> are big programs, even on modern workstations
+is can take up to several seconds before the main window appears
+on the screen.
+
+<TT>startviewer</TT>=<TT>true</TT> is a prerequisite that any given additional
+commands can succeed. If set to ``false'' the task exits immediately --
+all following commands are ignored in this case.
+<br>&nbsp;</td></tr>
+
+<A NAME="500"></A>
+<tr valign=top bgcolor='silver'><td><b>withimagefile</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>false<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\vert$"></SPAN>true</td></tr>
+
+<tr valign=top><td colspan=5>
+A boolean switch determining whether a new image should be loaded
+into <A NAME="tex2html31"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A>/<A NAME="tex2html32"
+  HREF="http://hea-www.harvard.edu/RD/saotng/index.html">SAOtng</A>. If set to ``true'' the name of the image data set
+must be given via the parameter <TT>imagefile</TT>. When a new image
+is loaded any previously displayed one is lost.
+<br>&nbsp;</td></tr>
+
+<A NAME="513"></A>
+<tr valign=top bgcolor='silver'><td><b>imagefile</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>name of existing image data set</td></tr>
+
+<tr valign=top><td colspan=5>
+The name of the image data set to load into <A NAME="tex2html33"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A>/<A NAME="tex2html34"
+  HREF="http://hea-www.harvard.edu/RD/saotng/index.html">SAOtng</A> when
+<TT>withimagefile</TT> is set to ``true''.
+<br>&nbsp;</td></tr>
+
+<A NAME="526"></A>
+<tr valign=top bgcolor='silver'><td><b>withregion</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>false<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\vert$"></SPAN>true</td></tr>
+
+<tr valign=top><td colspan=5>
+A boolean switch determining whether region specifications should be
+read from <A NAME="tex2html35"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A>/<A NAME="tex2html36"
+  HREF="http://hea-www.harvard.edu/RD/saotng/index.html">SAOtng</A> and stored in the <TT>regions</TT> parameter. Not
+applicable to interactive usage.
+<br>&nbsp;</td></tr>
+
+<A NAME="539"></A>
+<tr valign=top bgcolor='silver'><td><b>regions</b></td><td>no</td><td><A HREF=../param/node3.html>string list</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+This serves as an output parameter to hold region specifications read
+from <A NAME="tex2html37"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A>/<A NAME="tex2html38"
+  HREF="http://hea-www.harvard.edu/RD/saotng/index.html">SAOtng</A> when requested with. Not applicable to interactive usage.
+<TT>withregion</TT>=true.
+<br>&nbsp;</td></tr>
+
+<A NAME="552"></A>
+<tr valign=top bgcolor='silver'><td><b>withregiontable</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>false<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\vert$"></SPAN>true</td></tr>
+
+<tr valign=top><td colspan=5>
+A boolean switch determining whether the contents of an
+<A
+ HREF="node8.html#ct:ASCregion">CXC-region file</A> should be displayed in the form of
+markers on top of the currently displayed image. If set to <TT>true</TT>,
+the below parameter <TT>regiontable</TT> must be given the name of the region
+table.
+<br>&nbsp;</td></tr>
+
+<A NAME="570"></A>
+<tr valign=top bgcolor='silver'><td><b>regiontable</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>name of existing CXC-region table</td></tr>
+
+<tr valign=top><td colspan=5>
+The name of the <A
+ HREF="node8.html#ct:ASCregion">CXC-region table</A> to
+be visualized.
+<br>&nbsp;</td></tr>
+
+<A NAME="584"></A>
+<tr valign=top bgcolor='silver'><td><b>flipx</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>false<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\vert$"></SPAN>true</td></tr>
+
+<tr valign=top><td colspan=5>
+A boolean switch determining whether the image currently displayed
+in <A NAME="tex2html39"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A>/<A NAME="tex2html40"
+  HREF="http://hea-www.harvard.edu/RD/saotng/index.html">SAOtng</A> should be flipped around the X-axis.
+<br>&nbsp;</td></tr>
+
+<A NAME="595"></A>
+<tr valign=top bgcolor='silver'><td><b>flipy</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>false<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\vert$"></SPAN>true</td></tr>
+
+<tr valign=top><td colspan=5>
+A boolean switch determining whether the image currently displayed
+in <A NAME="tex2html41"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A>/<A NAME="tex2html42"
+  HREF="http://hea-www.harvard.edu/RD/saotng/index.html">SAOtng</A> should be flipped around the Y-axis.
+<br>&nbsp;</td></tr>
+
+<A NAME="606"></A>
+<tr valign=top bgcolor='silver'><td><b>viewer</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td><TT>ENV</TT> or name of viewer executable</td></tr>
+
+<tr valign=top><td colspan=5>
+A string determining which image viewer shall be used:
+<A NAME="tex2html43"
+  HREF="http://hea-www.harvard.edu/RD/saotng/index.html">SAOtng</A> or <A NAME="tex2html44"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A>. <TT>viewer</TT> can also be assigned the
+value <TT>ENV</TT> in which case the environment variable
+<DIV><TT>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;SAS_IMAGEVIEWER
+<BR></TT></DIV>
+must specify either of the two supported programs. Please note: If
+<TT>viewer</TT> is just given the name of the viewer executable it must
+be reachable via the <TT>PATH</TT> environment variable. However, <TT>viewer</TT>
+may also contain the full path to the executable, e.g.
+<TT>/usr/local/bin/ds9</TT>.
+<br>&nbsp;</td></tr>
+
+<A NAME="633"></A>
+<tr valign=top bgcolor='silver'><td><b>stopviewer</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>false<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\vert$"></SPAN>true</td></tr>
+
+<tr valign=top><td colspan=5>
+A boolean switch determining whether a running <A NAME="tex2html45"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A>/<A NAME="tex2html46"
+  HREF="http://hea-www.harvard.edu/RD/saotng/index.html">SAOtng</A> process
+should be terminated.
+<br>&nbsp;</td></tr>
+
+<A NAME="644"></A>
+<tr valign=top bgcolor='silver'><td><b>withcommands</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>false<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\vert$"></SPAN>true</td></tr>
+
+<tr valign=top><td colspan=5>
+Controlling boolean switch for <TT>commands</TT> parameter.<br>&nbsp;</td></tr>
+
+<A NAME="653"></A>
+<tr valign=top bgcolor='silver'><td><b>commands</b></td><td>no</td><td><A HREF=../param/node3.html>list of strings</A></td><td>&nbsp;</td><td>list of valid <A NAME="tex2html47"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A>/<A NAME="tex2html48"
+  HREF="http://hea-www.harvard.edu/RD/saotng/index.html">SAOtng</A> commands</td></tr>
+
+<tr valign=top><td colspan=5>
+If <TT>withcommands</TT> is set to <TT>true</TT> the value is supposed
+to be list of <A NAME="tex2html49"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A>/<A NAME="tex2html50"
+  HREF="http://hea-www.harvard.edu/RD/saotng/index.html">SAOtng</A> commands that are to be send to an already
+spawned image displayer. E.g. <TT>withcommands=true</TT>
+<TT>commands="zoom to 2"</TT> will set the zoom factor in the currently
+displayed image to 2.
+<br>&nbsp;</td></tr>
+
+<A NAME="676"></A>
+<tr valign=top bgcolor='silver'><td><b>withreceive</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>false<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\vert$"></SPAN>true</td></tr>
+
+<tr valign=top><td colspan=5>
+Controlling boolean switch for <TT>receive</TT> parameter.<br>&nbsp;</td></tr>
+
+<A NAME="685"></A>
+<tr valign=top bgcolor='silver'><td><b>receive</b></td><td>no</td><td><A HREF=../param/node3.html>list of strings</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+This is an output parameter which is only useful in the context of
+metatask programming. If <TT>withreceive</TT> is set to <TT>true</TT>
+output from a running <A NAME="tex2html51"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A>/<A NAME="tex2html52"
+  HREF="http://hea-www.harvard.edu/RD/saotng/index.html">SAOtng</A> process (resulting from a preceding
+execution of commands via <TT>withcommands</TT>/<TT>commands</TT>) shall
+be collected in this parameter as a list of strings. The parameter
+is not accessible as part of <A NAME="705"></A><A NAME="tex2html53"
+  HREF="../imgdisplay/index.html"><SPAN  CLASS="textbf">imgdisplay</SPAN></A>'s parameter dialog.
+<br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="imgdisplay.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

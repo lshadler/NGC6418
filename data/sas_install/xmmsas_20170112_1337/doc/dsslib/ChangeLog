@@ -1,0 +1,475 @@
+ChangeLog for dsslib
+====================
+
+Version 5.10 - 2015-02-13 (AI)
+-----------	
+	+ New timestamps for DssLexer.l and DssParser.y files
+	
+Version 5.9 - 2014-12-04 (AI)
+-----------	
+	+ Doc modified to include "_" simbol in latex.
+	
+Version 5.8 - 2014-04-15 (AI)
+-----------	
+	+ gcc4.8.2 portability changes.
+	
+Version 5.7.3 - 2013-11-12 (AI)
+-----------	
+	+ New DssParser.h file (generated with bison 2.3)
+	
+Version 5.7.2 - 2013-11-11 (AI)
+-----------	
+	+ replaced 'unsigned long' types with 'uint32_t' to preserve bit flag 
+	conversion between 32 and 64. At least, we found an error
+	converting the bit flag '#XMMEA_SM' in 64bit platforms. 
+	
+Version 5.7.1 - 2012-03-29 (AI)
+-----------	
+	+ (DScomp.cc) Bug in block extension numbering fixed. SOC-SPR-6490 
+	
+Version 5.7 - 2011-03-14 (AI)
+-----------
+      + (f90.cc) Replacement of the "sprintf" call by a better treatment of
+         character string memory allocation.	
+
+Version 5.6.6 - 2010-02-19 (EO)
+-------------
+	+ Since the previous change did not work at all on Mac OS X, I am now checking
+	  the option to remove any direct inclussion of Gti.h. Therefore, I did remove
+	  #include <Gti.h> from DScomp.cc and DSgtiBlock.cc and keep it out as well in
+	  DataSubspace.h. Such removal has passed successfully under Mac OS X and Linux.
+
+Version 5.6.5 - 2010-02-18 (EO)
+-------------
+	+ Attempt to get rid of error message in Mac OS X about undefined symbol 
+	  Gti::ETERNITY (defined in selectlib/src/utils/Gti.h), in libdss.dylib
+	  due to flat_namespace: 
+	  - Including explicitly #include <Gti.h> where needed:
+	    * src/dsscore/DScomp.cc
+	    * src/dsscore/DSgtiBlock.cc
+	  - Removing #include <Gti.h> from src/dsscore/DataSubspace.h.
+
+Version 5.6.4 - 2010-02-03 (EO)
+-------------
+	+ src/dsscore/Makefile: dss.h removed from INTERFACES to avoid creation of 
+	  a fake soft link in $SAS_DIR/include when processed by Make.include.
+
+Version 5.6.3 - 2009-07-06 (AI)
+-------------	
+	+ Modifications is several source files to make dal gcc 4.3 compliant. 
+
+Version 5.6.2 - 2009-05-19 (AI)
+-------------
+	+(DScomp.cc) CCDID keyword added to the GTI tables.
+	SOC-SPR-6507 changes removed.
+
+Version 5.6.1 - 2009-05-18 (AI)
+-------------
+	+(DScomp.cc) Limit on the GTI extesion changed.
+	
+Version 5.6 - 2008-10-09 (AI)
+-------------
+	+(DScomp.cc) Added the CCD number to the GTI extensions name. 
+	Closes SOC-SPR-6507.
+	
+Version 5.5.7 - 2008-06-26 (AI)
+-------------
+	+(dssutil.f90) pointers variables in dssRanges interface have been changed 
+	to allocatable variables. SOC-SPR-6457 fixed.	
+	
+Version 5.5.6 - 2005-08-04 (AI)
+-------------
+	+ (DSgtiBlock.cc) level warning message changed. 
+
+Version 5.5.5 - 2005-06-09 (AI)
+-------------
+	+ (DataSubspace.cc) Removed some auxiliary variables.
+
+Version 5.5.4 - 2005-05-31 (AI)
+-----------
+	+ (DataSubspace.cc) Fix a bug in Data subspace keywords (MTYPE).
+	   Closes SOC-SPR-2613.
+	
+Version 5.5.3 - 2005-05-26 (AI)
+-----------
+	+ (DataSubspace.cc) Check that the DSS component vector has
+	  at least one component. Closes SOC-SPR-2583
+
+Version 5.5.2 - 2004-11-17 (AI)
+-----------
+	+ (DSgtiBlock.cc) Identical STDGTI extensions are now written to the 
+	  final event file (SPR-2578). A warning message appears if two or more
+	  STDGTI are identical.
+
+Version 5.5.1 - 2004-08-20 (RDS/AI)
+-----------
+        + (src/DataSubspace.cc/h,          added new routine realextent so that 
+           DScomp.cc, DSfilter.cc,         the extent of RA/DEC dss selections
+           DSrange.cc, DSregionBlock.cc,   can be returned (SPR-2547)
+           DSregion.cc, DSrangeBlock.cc) 
+
+Version 5.5 - 2003-12-05 (AI)
+-----------
+        + test/testDss.cc file modified.
+
+Version 5.4 - 2003-03-13 (GV/SOC)
+-----------
+	+ Add param to depend file, or build fails on Mac where dsslib sorts
+ahead of param.
+
+Version 5.3 - 2003-02-28 (GV/SOC)
+-----------
+	+ (DssLexer.cc,l,DssParser.cc,y) remove inclusion of values.h, add
+	include <cfloat>. This makes it compile on Mac OS X.
+	
+Version 5.2 - 2003-01-30 (DH)
+-----------
+	+ Package now tracks range filters which can never select anything, and does 
+	  not propogate or write out dss components containing such filters.  Closes
+	  SSC-SPR-3014.
+	+ Range filters of TIME now get converted (at least in most cases) to GTI 
+	  filters, which should be subsequently merged with the other TIME GTI filters.
+
+Version 5.1 - 2003-01-21 (DH)
+-----------
+	+ Fix bug in test harness which was still referencing the old style include
+	  file.
+
+Version 5.0 - 2003-01-07 (DH)
+-----------
+	+ Change version number to reflect fact that 4.0 was delivered without the
+	  changes to the bit mask format.
+
+Version 4.1 - 2002-09-30 (DH)
+-----------
+	+ Change directory name src/dssbuild src/build.
+	+ Get rid of dss.h in favor of DataSubspace.h. Maintaining two
+	  redundant header files really wasn't accomplishing anything.
+	+ New format for storing bit mask values in DSVALn keywords, in order
+	  to conform with the agreed XMM and Chandra datasubspace conventions.
+	+ Replace dynamic_cast test with a switch statement on Shape::type() in
+	  the DSregionFilter constructor.
+	+ Check for and eliminate redudant GTI extensions when writing the 
+	  data subspace to a fits file.  Closes SSC-SPR-2934.
+	+ Add dssprint task to test harness.
+	
+Version 4.0 - 2002-08-08 (DH)
+-----------
+	+ Change f90 interface for dssRanges function to avoid name clash
+	  and make the interface more convenient.  Closes SSC-SPR-2156.
+	+ Add support for parsing and ingesting of region filters which
+	  specify only the region file.  Closes SSC-SPR-2929.
+	+ Fix bug in the operator&() method of the Range class, which 
+	  was not properly considering Unbounded ranges in some cases.
+	  Also properly adjust max value for Ranges when changing types.
+	  Closes SSC-SPR-2954.
+	
+Version 3.17 - 2002-07-23 (GV/SOC)
+------------
+	+ Re-upload of 3.16.8 in the development track.
+	
+Version 3.16.8 - 2002-07-22 (JBa)
+--------------
+	+ changes in implementation files in order to comply with ANSI C++
+
+Version 3.16.7 - 2002-07-01 (UL)
+--------------
+	+ changes in various source files to render usage of 'stringstream'
+	  standard compliant
+
+Version 3.16.6 - 2002-05-14 (DH)
+--------------
+	+ Fix bugs in combining of data subspace ranges.  Closes SPR 2865.
+
+Version 3.16.5 - 2002-02-25 (DH)
+--------------
+	+ Remove debugging message that had inadvertenly been left in.
+
+Version 3.16.4 - 2002-02-04 (DH)
+--------------
+	+ Fix bug in copying of block filters that use temporary files.
+
+Version 3.16.3 - 2002-02-04 (DH)
+--------------
+	+ Fix problem with copying of Rhombus shape, which was getting turned
+	  into a Box.
+
+Version 3.16.2 - 2002-01-28 (DH)
+--------------
+	+ Fix bug in 3.16.1 with writing of selection expressions for 
+	  box functions.  Also modify the extent() method so it returns
+	  sensible values for the box function as well.
+
+Version 3.16.1 - 2002-01-28 (DH)
+--------------
+	+ Bug fix for box functions in dss parser was not complete.  Now makes
+	  adjustment for full width to half width when writing out a selection
+	  expression as well.
+
+Version 3.16 - 2002-01-18 (DH)
+------------
+	+ Fix bug in the explicit copy of DSregionFilter objects.  Rotated shapes
+	  were not being recognized as such in the copy process.
+	+ Replace <climits> with <cfloat> in Range.cc as the preferred place to obtain
+	  the DBL_MAX macro.  This should work on linux.
+	+ Write MTYPE and MFORM keywords to event files specfying the components of
+	  2-d filters used in the dss.
+	+ Modify cleanDss funtion so that it takes into account ranges with a value of 
+	  [Inf] in an efficient way.
+
+Version 3.15 - 2002-01-18 (DH)
+------------
+	+ Change DSblockFilter class so that in only opens the associated block when
+	  really necessary by storing the block name and the parent name in the class.
+	  Greatly reduces the number of times the block has to be opened (in one test,
+	  from over 300 to 15).
+	+ Fix bug in dss parser which was not passing the proper argument values to
+	  the box and rectangle functions.
+
+Version 3.14 - 2001-11-21 (DH)
+------------
+	+ Generate unique block names for new gti extensions when combining gti's in
+	  DScomp::compressRegions().  Gets rid of some annoying warning messages.
+	+ DScomp::compressRegions() now compresses range filters, as well as gti
+	  and region filters.  Implement & operator for range lists inorder to
+	  facilitate this.
+	+ Real ranges are now written to keywords and in selection expressions in
+	  exponetial format.
+
+Version 3.13 - 2001-10-16 (DH)
+------------
+	+ Change dss parser so that it will except 'true' in filtering expressions.
+	  A DSS component with no filters is considered to be 'true'.  Also modify 
+	  the writing of data subspace info in DataSubspace.cc to deal with this.
+	+ Fix geoExtent function, which in some cases was not making a box big enough
+	  to contain some rotated shapes.
+        + Update documentation for the extent method, to try and make the description
+          more clear.
+	
+Version 3.12 - 2001-10-11 (DH)
+------------
+        + Fix f90 test harness, which had been replaced with a temporary file
+	  (which had a bug!).  Sorry, Giuseppe.
+	
+Version 3.11 - 2001-09-24 (DH)
+------------
+	+ Changed all standard containers to use the explicit std:: scope operator.
+	+ Fix initialization bug in DScomp.cc which was upsetting the optimizer.
+	
+Version 3.10 - 2001-09-19 (DH)
+-----------
+	+ Add new hasFilter method to the DataSubspace class.
+	+ Add clear() method to the DssBuilder class, to delete dss objects
+	  and free memory.  Called at the end of the getDss method.
+	+ Add contains() method to the Range class.
+
+Version 3.9 - 2001-09-03 (DH)
+-----------
+	+ Implement negation of DataSuspaces. The '!' operator works for the
+	  DataSubspace class, and is implemented for all filter types except
+	  bit masks and region masks.
+	+ Add support for logical not to the dss parser and builder.  Logical
+	  not's should no longer need to be propogated thru an expression by
+	  hand.  Closes SCR-50.
+	+ Add include statement for cstdio to DScomp.cc .
+	
+Version 3.8 - 2001-08-13 (DH)
+-----------
+	+ Change system and compiler include statements to conform to standard.
+	+ Dss parser now handles the '+' and '[]' conventions for specifying fits
+	  file extensions.  Closes SSC-SPR-2082.
+	+ Make the DSfilter::region() method work with region block filters.  Using
+	  this functionality, modify DScomp::compressRegions() method to work with
+	  block filters.  Closes SCR 51.
+	+ Add attribute to the DataSubspace class which indicates whether an error
+	  occurred when building the dss from the parser.  Closes SSC-SPR-2029.
+	+ Trap case where data subspace is so large its indexes exceed fits keyword
+	  name size.  Issue a warning message.
+	+ Rationalize code for renaming blocks with duplicate names.
+	+ Modify DScomp::compressRegions() so that it will combine GTIs as well as
+	  regions.
+	
+Version 3.7 - 2001-08-06 (DH)
+-----------
+	+ Include values.h in DssParser and DssLexer.  May fix some compile
+	  problems on Debian linux.
+	+ Fix SSC-SPR-2465, which is basically a follow on from SSC-SPR-2023.
+	+ Fix SSC-SPR-2388 and (probably) SSC-SPR-2190.  Datasubspace info was
+	  not getting properly deleted from a Block.
+
+Version 3.6.1 - 2001-05-25 (DH)
+-------------
+	+ Fix SSC-SPR-2023.  If the dss writer finds a block name clash, it now renames
+	  the new block to something else.
+
+Version 3.6 - 2001-04-19 (DH)
+-----------
+	+ Add new DataSubspace and DScomp method, called compressRegions.
+	  Tries to combine GeoRegions from the filters in a component into
+	  fewer filters.
+	+ Parser no longer tries to distinguish different axes and combine expressions
+	  for region filters in a component.  This was just causing headaches.  Instead
+	  regions are combined after parsing using the new compressRegions method.  This
+	  closes SSC-SPR-2266.
+
+Version 3.5 - 2000-12-22 (UL)
+-----------
+	+ a couple of trivial changes to make the optimizer happy
+	
+Version 3.4.3 - 2000-11-14 (DH)
+-------------
+	+ Fix SSC-SPR-2071, Cannot negate region in paratheses.
+	
+Version 3.4.2 - 2000-10-31 (DH)
+-------------
+	+ Add info file.
+
+Version 3.4.1 - 2000-10-12 (DH)
+-------------
+	+ Parser now excepts parentheses around axis names.  Closes SSC-SPR-1949.
+	+ Parser now excepts numbers of the form 1E2, as well as 1.E2.
+	+ Change to new convention for representing octal numbers (now 
+	  preceded by an 'o').
+	+ Accept real-valued ranges for integer-valued columns. Reals are truncated
+ 	  to integers, with a warning message.
+	+ Change software for detecting block filter types to be more robust,
+	  with a clearer error message in case of failure.
+	
+Version 3.4 - 2000-10-02 (DH)
+-----------
+	+ Error catching for the parser now done in DssBuilder:getDss method.
+
+Version 3.3 - 2000-09-25 (DH)
+-----------
+	+ Fix bug in Range::maxRange method which was causing crashes on DEC.  Could
+	  also be have been causing some of the 'out of memory' problems.
+
+Version 3.2 - 2000-07-27 (DH)
+-----------
+	+ Add missing '#include <cstdio>' to DSregion.cc
+
+Version 3.1 - 2000-07-19 (DH)
+-----------
+	+ Incorporates changes up to version 3.0.6 .
+	+ Change projection of axes in selectExpression, so that if both the components
+	  of a 2D axis are listed, then the axis is included in the expression.
+ 	+ Add method 'extent' to the DataSubspace, DScomp, and DSfilter methods.  Update
+	  documentation to correspond.
+	+ Implement volume calculation for Region and RegionBlock type filters.
+	+ Add support in parser for mask filters which do not use the 'in' operator.
+	  Closes SPR 1916.
+	
+Version 3.0.6 - 2000-06-29 (DH)
+-------------
+	+ Rework parser to handle logical combination of filters in simpler, 
+	  better fashion.  Some of the constraints on the parser have been removed.
+
+Version 3.0.5 - 2000-06-26 (DH)
+-------------
+	+ Fix bug with clearing of list in DSS builder.  Fixes SOC SPR 1540.
+
+Version 3.0.4 - 2000-06-22 (DH)
+-------------
+	+ Add isGlobal method to DataSubspace class.  Update C++ API documentation.
+
+Version 3.0.3 - 2000-06-15 (DH)
+-------------
+	+ Add support for parsing region function filters of the form 
+	  <regiontype>(...,X,Y) .  Closes evselect SPR 1775.
+
+Version 3.0.2 - 2000-06-15 (DH)
+-------------
+	+ Enhanced error message for DSS parsing, in response to evselect SPR 1775.
+	+ Prevent checking of unitialized values in Range objects.  Closes evselect
+	  SPR 1778.
+	+ Increase accuracy of ranges stored in keywords to 15 digits.  Store integer
+	  valued ranges as integer 32 instead of interger 16.  Closes evselect SPR
+	  1814.
+
+Version 3.0.1 - 2000-06-01 (DH)
+-------------
+	+ Fix SPR 1698, dsslib chokes on 'bad' gti files
+	+ Fix evselect SPR 1692, GTI filter set not released
+	+ Fix evselect SPR 1697, task fails if selected time interval has no events
+
+Version 3.0 - 2000-05-24 (DH)
+-----------
+	+ Fix parsing of bit mask filters, so that the paser recongizes the form
+	  required for selectlib (closes evselect SPR 1637).
+	+ Adjust DSS to account for the change in sense of bit mask filters (this
+	  change is not backward compatible).
+	+ Add code in parser to give 2d region filters reasonable names, based on
+	  the value of their components.
+
+Version 2.8 - 2000-03-08 (DH)
+-----------
+	+ selectExpression() method was producing range specifictions which could
+	  not be parsed by selectlib. Fixed.
+
+Version 2.7 - 2000-02-29 (DH)
+-----------
+	+ Add cleanDSS utility function to the library.
+	+ Change format for writing axis components to be compatible with Chandra.
+	+ Fix intialization problem which was causing problems when trying to use
+	  the dss within evselect within xmmselect.
+
+Version 2.6 - 2000-02-18 (DH)
+-----------
+	+ Change method arguments 'DSS::FilterType &' to 'const DSS::FilterType &'
+	  in the API.
+
+Version 2.5 - 2000-02-08 (DH)
+-----------
+	+ Fix SPR 1455 "[PATCH] fix for fix of SPR-148{8,9} (unresolved symbols)"
+
+Version 2.4 - 2000-02-25 (DH)
+-----------
+	+ Additional expilicit template instantiation declarations needed for Dunix.
+
+Version 2.3 - 2000-01-31 (DH)
+-----------
+	+ Accidentally delivered old version of ddslib in 2.2.  Delivered updated version.
+
+Version 2.2 - 2000-01-28 (DH)
+-----------
+	+ Iron out several bugs in dsscore.
+	+ Add support data subspace merging in dsscore.
+	+ Change block filters so that instead of initializing with a block pointer, they are
+	  initialized with a Dal type block specification ("FileName:Block").
+	+ Expand parser to allow the use of >,<,>=,!= and == in filter expressions.
+	+ Change parser to associate filter names with table columns where appopriate.
+	+ Use DSS merging to expand parser to allow more complex nesting of filters.
+	+ Do not clobber files made by bison and flex, so most sites do not need these utilities.
+
+Version 2.1 - 1999-12-17 (UL)
+-----------
+	+ minor modification in src/dscore/DSregion.cc to avoid compiler warning
+	+ reconciled with selectlib-4.23
+
+Version 2.0 - 1999-11-18 (UL)
+-----------
+	+ added functionality to convert a selectlib expression into a
+	  DataSubspace object
+	+ added test harness to test DSS conversion
+	+ changes directory structure (src dir now consists of two subdirs:
+	  dsscore + dssconstr)
+
+Version 1.3 - 1999-09-13 (DH)
+-----------
+    + Updates to documentation macros, error messages and references.
+    + Fix bug which caused faulty generation of temporary file names
+      on DEC - closes SOC SPR 803.
+
+Version 1.2 - 1999-06-15 (DH)
+-----------
+    + Fix SPR 1006 - Wrong type for string::size() caused
+      problems on Digital Unix.
+
+Version 1.1 (DH)
+-----------
+    + Fix DEPEND file.
+
+Version 1.0 - 1999-05-19 (DH)
+-----------
+    + First release.  Some functionality missing
+      (see Implementation Status and TODO sections of the documentation).

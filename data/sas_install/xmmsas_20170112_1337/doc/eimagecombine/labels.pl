@@ -1,0 +1,49 @@
+# LaTeX2HTML 2016 (1.71)
+# Associate labels original text with physical files.
+
+
+$key = q/eimagecombine:description:instruments/;
+$external_labels{$key} = "$URL/" . q|node1.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/eimagecombine:description:inputfiles/;
+$external_labels{$key} = "$URL/" . q|node9.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/eimagecombine:description:outputfiles/;
+$external_labels{$key} = "$URL/" . q|node10.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/eimagecombine:description:description/;
+$external_labels{$key} = "$URL/" . q|node3.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/eimagecombine:description:errorconditions/;
+$external_labels{$key} = "$URL/" . q|node8.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/eimagecombine:description:parameters/;
+$external_labels{$key} = "$URL/" . q|node7.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/eimagecombine:description:use/;
+$external_labels{$key} = "$URL/" . q|node2.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/eimagecombine:description:description:examples/;
+$external_labels{$key} = "$URL/" . q|node4.html|; 
+$noresave{$key} = "$nosave";
+
+$key = q/eimagecombine:description:algorithm/;
+$external_labels{$key} = "$URL/" . q|node11.html|; 
+$noresave{$key} = "$nosave";
+
+1;
+
+
+# LaTeX2HTML 2016 (1.71)
+# labels from external_latex_labels array.
+
+
+1;
+

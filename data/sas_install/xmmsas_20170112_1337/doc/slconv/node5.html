@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Source selection.</TITLE>
+<META NAME="description" CONTENT="Source selection.">
+<META NAME="keywords" CONTENT="slconv">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="slconv.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+slconv (slconv-2.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Introduction."></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Maximum number of sources."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="slconv.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000">
+Source selection.</A>
+</H2>
+
+<P>
+This is accomplished via the parameter <TT>expression</TT>. The user can supply a boolean selection expression to this parameter, involving (for example) names of columns in the source table. The full grammar of such expressions is described in the <A NAME="620"></A><A NAME="tex2html3"
+  HREF="../selectlib/index.html"><SPAN  CLASS="textbf">selectlib</SPAN></A>
+library.
+
+<P>
+An example of a situation in which some selection may be desirable is in the case in which the source list is the standard XMM <A NAME="624"></A><A NAME="tex2html4"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+pipeline product. These lists contain many rows corresponding to the same source position but with different values of the <A NAME="628"></A><TT>ID_BAND</TT> column. Inclusion of all the rows in the table will lead to plots which have many concentric source circles at each position. It is better to use a selection expression such as
+
+<P>
+<PRE>
+  expression='(ID_BAND==0)'
+</PRE>
+
+<P>
+to limit the sources plotted to those with <A NAME="630"></A><TT>ID_BAND</TT> = 0 (or whatever other band number is desired).
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

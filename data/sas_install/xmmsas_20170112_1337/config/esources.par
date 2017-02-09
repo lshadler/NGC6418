@@ -1,0 +1,70 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="eventsets" list="yes" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    List of event list datasets (used to get largest time range).
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="srctab" type="table" default="srctab.ds:SRCLIST" mandatory="yes">
+   <DESCRIPTION>
+    Name of the input source list dataset:table.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="outsrcset" type="dataset" default="outsrcset.ds">
+   <DESCRIPTION>
+    The output source list dataset.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="mintotalcts" type="real" default="500">
+   <DESCRIPTION>
+    Minimum total (ie epic) counts for a source to generate products.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    mintotalcts in (0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="mindetml" type="real" default="15">
+   <DESCRIPTION>
+    Minimum DET_ML value for a source to generate products.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    mindetml in (0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="minmaskfrac" type="real" default="0.5">
+   <DESCRIPTION>
+    Minimum mask fraction for a source to generate products.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    minmaskfrac in (0.0:1.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="numhexchar" type="int" default="3">
+   <DESCRIPTION>
+    Number of characters to use for hexadecimal source number.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    numhexchar in [1:7]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="instweights" list="yes" type="real" default="3.5 1.0 1.0">
+   <DESCRIPTION>
+    Epic count rates are averaged according to these weight values.  The order is in PN/M1/M2.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="setflags" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to set the SPECTRA and TSERIES flag columns in the input source list.
+   </DESCRIPTION>
+  </PARAM>
+ </CONFIG>
+</FILE>

@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Setting quality-image pixels (Program mode 1)</TITLE>
+<META NAME="description" CONTENT="Setting quality-image pixels (Program mode 1)">
+<META NAME="keywords" CONTENT="omqualitymap">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omqualitymap.css">
+
+<LINK REL="next" HREF="node13.html">
+<LINK REL="previous" HREF="node11.html">
+<LINK REL="up" HREF="node11.html">
+<LINK REL="next" HREF="node13.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omqualitymap (omqualitymap-1.4) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node11.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithm"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Algorithm"></A>
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Setting of bit 1"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node27.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omqualitymap.html">Home Page</A> / <A  HREF="node11.html">Algorithm</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00081000000000000000">
+Setting quality-image pixels (Program mode 1)</A>
+</H2>
+
+<P>
+When the parameter <SPAN  CLASS="textbf">mode</SPAN> is set to <SPAN  CLASS="textbf">setqualityimage)</SPAN> or <SPAN  CLASS="textbf">SETQUALITYIMAGE</SPAN>,
+the program works as follows:
+
+<P>
+
+<OL>
+<LI>Load the image from the <SPAN  CLASS="textbf">Primary fits file extension</SPAN> in the input image file (<SPAN  CLASS="textbf">parameter imageset</SPAN>).
+</LI>
+<LI>Load the 16-bit 2-d quality-array from the <SPAN  CLASS="textbf">QUALITY fits file extension</SPAN> in the input image file.
+</LI>
+<LI>Load the x and y image coordinates (<SPAN  CLASS="textbf">XPOS and YPOS columns</SPAN>), the raw-count rates (<SPAN  CLASS="textbf">RATE column</SPAN>) 
+and the source quality-flags (<SPAN  CLASS="textbf">QFLAG column</SPAN>) from the input source-list file (parameter <SPAN  CLASS="textbf">srclistset</SPAN>). 
+
+<P>
+</LI>
+<LI>Set bit number 5 of all the pixels in the quality-image that lie within the central-enhancement region (see section <A HREF="node17.html#BIT5">8.6</A>). 
+
+<P>
+</LI>
+<LI>Set bit number 7 of all the pixels in the quality-image that lie close to an image edge or corner of the OM detector (see section <A HREF="node18.html#BIT7">8.7</A>). 
+
+<P>
+</LI>
+<LI>Loop through the list of sources and for any one that has a raw count-rate of at least 60 counts/sec
+
+<P>
+
+<UL>
+<LI>Loop through the list of sources and for each one
+</LI>
+<LI>Check raw count-rate and if it is at least the minimum value, or if its quality-bit 4 is set -
+
+<UL>
+<LI>Set bit number 1 of all the pixels on the quality-image in a column of specified width centred on the source (see section <A HREF="node13.html#BIT1">8.2</A>)..
+
+<P>
+</LI>
+<LI>Set bit number 2 of all the pixels on the quality-image that lie within a circle of given radius centred at the predicted
+position of its associated smoke-ring (see section <A HREF="node14.html#BIT2">8.3</A>)
+
+<P>
+</LI>
+<LI>If the raw count-rate is at least 70 counts/sec, check for a diffraction-spike and, if found, set bit 3 of the pixels (see section <A HREF="node15.html#BIT3">8.4</A>)
+
+<P>
+</LI>
+<LI>Check for a mod-8 pattern and, if one found, set bit 4 of the pixels (see section <A HREF="node16.html#BIT4">8.5</A>)
+
+<P>
+</LI>
+</UL>
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI>Create the output file (<SPAN  CLASS="textbf">parameter outset</SPAN> that will store the modified image (the output file can have the same
+name as the input file).
+
+<P>
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node11.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithm"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Algorithm"></A>
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Setting of bit 1"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node27.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

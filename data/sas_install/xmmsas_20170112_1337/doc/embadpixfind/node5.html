@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Basic algorithm</TITLE>
+<META NAME="description" CONTENT="Basic algorithm">
+<META NAME="keywords" CONTENT="embadpixfind">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="embadpixfind.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+embadpixfind (embadpixfind-2.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Preparatory work"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Columns and rows"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="embadpixfind.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000">
+Basic algorithm</A>
+</H2>
+
+<P>
+<A NAME="488"></A><A NAME="tex2html7"
+  HREF="../embadpixfind/index.html"><SPAN  CLASS="textbf">embadpixfind</SPAN></A>
+estimates the local statistical average <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\mu$"></SPAN> 
+in a running window around each
+pixel by taking the smallest of the average or the median + 1 
+(1 is added to take care of the case when the median is 0, the median
+allows to remove the effect of other bad pixels in the vicinity). 
+Then it builds a significance map via the Li and Ma criterion
+(Li &amp; Ma 1983, ApJ 272, 317):
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+S \; = \; \sqrt{2} \: \sqrt{N_{\rm on} \, ln \frac{N_{\rm on}}{\mu_{\rm tot}}
+     + N_{\rm off} \, ln \frac{\mu}{\mu_{\rm tot}}}
+\end{equation}
+ -->
+<A NAME="lima"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="lima"></A><IMG
+ WIDTH="252" HEIGHT="55" BORDER="0"
+ SRC="img2.png"
+ ALT="\begin{displaymath}
+S \; = \; \sqrt{2} \: \sqrt{N_{\rm on} \, ln \frac{N_{\rm on}}{\mu_{\rm tot}}
++ N_{\rm off} \, ln \frac{\mu}{\mu_{\rm tot}}}
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">1</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+where <SPAN CLASS="MATH"><IMG
+ WIDTH="31" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$N_{\rm on}$"></SPAN> is the number of counts in the current pixel,
+<!-- MATH
+ $N_{\rm off} = N_{\rm pix} \, \mu$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="97" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$N_{\rm off} = N_{\rm pix} \, \mu$"></SPAN> is the number of reference counts,
+<SPAN CLASS="MATH"><IMG
+ WIDTH="35" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$N_{\rm pix}$"></SPAN> is the number of pixels used to compute the local average
+((2 <TT>halfwidth2d</TT> + 1)<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$^2$"></SPAN> - 1, if none of the pixels in the window
+has been rejected already),
+<!-- MATH
+ $N_{\rm tot} = N_{\rm on} + N_{\rm off}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="130" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$N_{\rm tot} = N_{\rm on} + N_{\rm off}$"></SPAN> is the total
+number of counts in the window, and
+<!-- MATH
+ $\mu_{\rm tot} = N_{\rm tot} / (N_{\rm pix}+1)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="160" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$\mu_{\rm tot} = N_{\rm tot} / (N_{\rm pix}+1)$"></SPAN> is the average
+number of counts per pixel in the window.
+
+<P>
+This significance map is then used to locate the most promising
+candidate bad pixels. They are examined in turn, in decreasing order.
+The exact probability that the current excess is a statistical anomaly
+of a flat distribution is computed from the cumulative binomial law:
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+P(k \ge N_{\rm on}) \; = \; \sum_{k=N_{\rm on}}^{N_{\rm tot}}
+                            p_B(k,N_{\rm tot},q)
+                    \; = \; I_q(N_{\rm on},N_{\rm off}+1)
+\end{equation}
+ -->
+<A NAME="binom"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="binom"></A><IMG
+ WIDTH="390" HEIGHT="58" BORDER="0"
+ SRC="img9.png"
+ ALT="\begin{displaymath}
+P(k \ge N_{\rm on}) \; = \; \sum_{k=N_{\rm on}}^{N_{\rm tot}}
+p_B(k,N_{\rm tot},q)
+\; = \; I_q(N_{\rm on},N_{\rm off}+1)
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">2</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+where <!-- MATH
+ $q = 1/(N_{\rm pix}+1)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="119" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$q = 1/(N_{\rm pix}+1)$"></SPAN> is the probability that a random count fall
+in the central pixel, and <SPAN CLASS="MATH"><IMG
+ WIDTH="54" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$I_x(a,b)$"></SPAN> is the incomplete beta function.
+This is significantly different from the probability estimated from
+Eq.(<A HREF="#lima">1</A>) for small numbers (Eq.<A HREF="node8.html#binom">3</A> gives a larger probability).
+If that probability is smaller than <TT>probathreshold</TT>,
+the pixel is flagged as bright, the average is recomputed around
+the bad pixel ignoring it, and the loop goes on. 
+The loop stops when the next largest excess is smaller than 
+the significance corresponding to <TT>probathreshold</TT>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Preparatory work"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Columns and rows"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

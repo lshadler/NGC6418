@@ -1,0 +1,427 @@
+ChangeLog for omlcbuild
+===============================
+Version 1.40 -2014-06-01 (vny) +(src/omlcbuild_mod.f90):
+	fixing the bug reported in SPR-0007207, namely, 
+	applying the binning factor the imaging-mode window
+	size; also a bug resulting in smaller output 
+	count rates for the last time bin is fixed (the 
+	size of the time bin was almost twice of what it
+	should be)
+Version 1.39.1 -2013-02-27 (vny) +(src/omlcbuild_mod.f90):
+	Protected against possible subscript when using the
+	imaging data to evaluate the background 
+Version 1.39 -2012-11-12 (vny) +(src/omlcbuild_mod.f90):
+	Protected against possible cycling in the subroutine
+	SORT in the case of having NaN values in its input
+Version 1.38 -2012-10-21 (vny) +(src/omlcbuild_mod.f90):
+	The calculation of the background when using the imaging-mode
+	window is made with the same photometry subroutines as
+	in the task omdetect, the background map is created by 
+	smoothing the imaging mode data
+Version 1.37.4 -2011-02-19 (vny) +(src/omlcbuild_mod.f90).
+ 	The 0.5-pixel correction was modified once again as
+	the previous modification was not complete.
+Version 1.37.3 -2011-02-18 (vny) +(src/omlcbuild_mod.f90). 
+	For some unknown reason the correction corresponding to 
+	the SSC-SPR-6602 was switched off (commented). This was 
+	causing a slight unusual variability of the source when
+	its image was approaching to the lower Fast-windoe edge.
+	The 0.5-pixel correction of the PSF position was restored
+	(fixing the problem described in SSC-SPR-6650).
+Version 1.37.2 -2010-03-26 (vny): documentation updated.
+Version 1.37.1 -2010-03-16 (vny) +(src/omlcbuild_mod.f90). A subtle
+	mistake of 0.5-pixels miscalculation of the source PSF position
+	with respect to the edge of the Fast window is fixed. This mistake
+	was causing about 10% variability of the source count rates when
+	the source was touching the edge of the window and slightly changing
+	its position with respect to this edge (by about 1 or 2 pixels), 
+	SSC-SPR-6602.
+Version 1.37 -2010-02-20 (VNY) +(src/omlcbuild_mod.f90) Fixed a bug 
+	related to the calculation of wrong background level when using
+	the option bkgfromimage=yes  	
+Version 1.36 -2010-01-31 (VNY)  +(src/omlcbuild_mod.f90)  Protected against 
+	the crash because of the possibility of the missing block OMIMI1 
+	in the accompanying imaging data file.
+Version 1.35 -2010-01-26 (VNY) +(config/omlcbuild.par, src/omlcbuild_mod.f90)
+	introducing two new input parameters: mod8corrupted 
+	indicating that the Fast image is affected by the modulo-8 
+	noise, and imageset giving the name of the auxiliary imaging
+	data set to determine the background (this task version is
+	not yet uploaded)
+Version 1.34 -2009-09-08 (VNY) +(src/random_mod.f90, ommagnitude_mod.f90)
+	The modules random_mod.f90 and ommagnitude_mod.f90 are
+	removed as obsolete. The rest of the code remained unchanged.
+Version 1.33.3 -2009-05-28 (VNY) +(src/omlcbuild_mod.f90) restoring 
+	the limit of 2000 detected source after which the task does
+	not produces light curves: SSC-SPR-6538. This limet
+	is needed to avoid crashes due to lack of memory in difficlut
+	cases.
+Version 1.33.2 -2009-05-18 (VNY) +(src/omlcbuild_mod.f90)  A warning
+	message is introduced for the case of finding too many 
+	sources in the Fast window (SSC-SPR-6534)
+Version 1.33.1 -2009-05-14 (VNY)  +(src/omlcbuild_mod.f90) Cleaned
+	from the debugging test remained from the previous upload
+	(SSC-SPR-6530).
+Version 1.33 -2009-04-30 (VNY) +(src/omlcbuild_mod.f90) A bug
+	reported in SSC-SPR-6525 is fixed (trying do deallocate a
+	pointer that was not allocated)
+Version 1.32 -2009-03-13 (VNY) +(src/omlcbuild_mod.f90)	The Chi**2
+	and Kolmogorov-Smirnov variability tests of the light 
+	curve are introduced (passed from lcplot) in order to
+	store the variability data in the source list product
+	(SSC SCR-278).
+Version 1.31.1 -2008-06-05 (VNY) +(src/omlcbuild_mod.f90) The values 
+	in the RATE and BACKGROUND_RATE columns of the source-list
+	table produced by omdetect are substituted by the corresponding
+	raw count rates computed by omlcbuild in order to make these 
+	values consistent with the corrected count rates computed 
+	by the omlcbuild task (SSC-SPR-6474).
+Version 1.31 - 2008-04-25 (VNY) +(src/omlcbuild_mod.f90) The use of the 
+	theoretical calibration curve for coincidence-loss correction 
+        is replaced with the use of the empirical polynomial coefficients 
+	(i.e. the CAL routine CAL_omPhotoNatural is now called with the 
+	logical parameter "empirical" set to troue instead of false). 
+	Currently, the difference between the theoretial calibration 
+	curve and the polynomial function is small but in the future the 
+	calibration files might change (SSC-SPR-6456).	
+Version 1.30 - 2008-02-13 (VNY) +(src/omlcbuild_mod.f90) Using the CAL 
+	routine for computing the time-dependent sensitivity correction 
+	factor (SSC-SPR-3706) instead of the internal routine.	
+Version 1.29.1 - 2007-06-07 (VNY) +(src/omlcbuild_mod.f90) Suppressing the 
+	background subtraction for mod-8 corrupted images (to fix SSC-SPR-3144)
+	because the bright corrupted sources occupy practically the whole 
+	Fast window.	
+Version 1.29 - 2007-03-08 (VNY) +(src/omlcbuild_mod.f90) A switch
+	between int*8 and int*18 data type is introduced for the
+	quality flag in the source list table (produced by omdetect)
+	in order to protect the task from crashing when working with
+	the newer versions of omdetect (SSC-SPR-3650)
+Version 1.28 - 2006-02-21 (VNY) +(src/omlcbuild_mod.f90) In the 
+	computation of the average magnitude the negative counts 
+	are taken into account, thus, removing a possible small
+	bias in the magnitude (SSC-SPR-3587)
+Version 1.27 - 2006-02-10 (VNY) +(src/omlcbuild_mod.f90) The computed time-
+	dependent sensitivity correction factor is shown in the 
+	header of the output file (SSC-SPR-3580)
+Version 1.26 - 2006-02-10 (VNY) +(src/omlcbuild_mod.f90) Introduced 
+        the time-dependent sensitivity correction (SSC-SPR-3580)
+Version 1.25 - 2005-09-09 (VNY) +(src/omlcbuild_mod.f90) Protected 
+	against the possible crash when using the extractions 
+	region radius expressed in FWHM-units (SSC-SPR-3507)
+Version 1.24.3 - 2004-05-15 (VNY) +(/src/omlcbuild_mod.f90) introduced 
+	a rigorous algorithm for computing error bars for count rates
+	(subroutine by S.Rosen) - fixed SSC-SPR-3337
+Version 1.24.2 - 2004-04-28 (VNY) Protected against the possibility
+	of crushing when dealing with negative count rates
+	in cases when the image is badly affected by 
+	coincidence losses and modulo-8 noise (SSC-SPR-3304).
+Version 1.24.1 - 2004-03-01 (VNY) Protected against multiple 
+	warning messages produced by CAL_omPhotoNatural in the 
+	cases of bright sources, when the count rates exceed
+	the permitted value defined by the frame time. Now,
+	the task generates a single warning message indicating
+	the percentage of the points with coincidence-loss 
+	incorregeable count rates. Similar warning is placed into 
+	the header of the output file (in the form of a comment
+	line), SSC-SPR-3259
+Version 1.24 - 2003-11-21 (VNY) DEPEND file updated to match the new
+	version (3.0) of ssclib
+Version 1.23 - 2003-06-16 (VNY) A small bug has been found (and fixed), 
+	which might provoke a subscript error for some of the
+	background timeseries (SSC-SPR-3131).
+	
+Version 1.22 - 2003-04-09 (VNY) 
+	(+ /scr/omlcbuild_mod.f90) A small incorrectness in the
+	interpolation of the last two poits of the background 
+	light-curve is fixed (SSC-SPR-3103), which resulted in 
+	underestimation of rates for these two points.
+	
+Version 1.21 - 2002-10-29 (VNY)
+	(+ /scr/omlcbuild_mod.f90) Protection against the absence of
+	the COINCLOSS_CORR column is introduced (SPR-3007)
+	
+Version 1.20 - 2002-10-25 (VNY)
+	(+ /src/omlcbuild_mod.f90) Corrected a bug, which was introduced
+	at the end of September and which resulted in the impossibility
+	to find the CORR_RATE_ERR column in the source list file
+	(SSC-SPR-3004)
+	
+Version 1.19 - 2002-10-08 (VNY)
+-------------------------------
+	Additional check to improve robustness of the task has been
+	added: the presence of the CORR_BACKGROUND_RATE column is checked
+	before adding new columns after it to the file SWSRCLI (in order
+	to avoid error messages in case on absence of this column).
+
+
+Version 1.18 - 2002-09-26 (VNY) 
+-------------------------------
+	Updated to work with the modified format of SRCLIST-file
+	(omdetect now doesn't produce the MAG-column; thus, omlcbuild 
+	picks up this column only if it exists).
+        Calculation of averaged instrumental magnitude of the source 
+	has been modified: now first the count rates are averaged, and
+	then the magnitude is calculated. Missed descriptions of 
+	the columns in the RATE table are added.
+	Source list table file is rearraged to have the same format as 
+	that produced by OMICHAIN. 
+
+Version 1.17 - 2002-05-23 (VNY) RA and DEC keywords in the TIMESR fits-file
+	have been replaced with RA_OBJ and DEC_OBJ in order to make
+	it easier to run BARYCEN on the light curve data	
+	
+Version 1.16 13.05.2002 (VNY) DEPEND and +/config/omlcbuild.par files 
+	have been updated in order to work with PARAM-2.0
+	
+Version 1.15.6 09.05.2002 (VNY) A small shift to the psf-map is
+        applied when calculating the scaling areas and coefficients. 
+	This makes the psf-map coinsiding with the CCD-grid. The scaling
+	factors are calculated more rogorousely.
+	A bug, which restricted the timebinsize parameter, 
+	has been fixed (SSC-SPR-2864)  
+	
+Version 1.15.5 24.04.2002 (VNY)
+	(+ /src/omlcbuild_mod.f90)  Further improvement of the
+	source/background scaling factors: the algorithm for 
+	estimation of the source extraction area is made consistent
+	with that used in evselect (SSC-SPR-2826).
+        The source counts error bars are protected against possible
+	negative values of the errors appearing in the CAL_omPhotonatural
+	function.
+	
+Version 1.15.4 18.04.2002 (VNY) 
+	(+ /src/omlcbuild_mod.f90) Source and background scaling factors are
+	corrected in order to solve a problem where counts rates for faint
+	sources were overestimated (SSC-SPR-2826). Count rate error
+	estimation has been improved.
+	
+Version 1.15.3 30.03.2002 (VNY) 
+	(+ /src/omlcbuild_mod.f90) Check of the sourse
+	rates table length is introduced (SSC-SPR-2814)
+	
+Version 1.15.2 29.03.2002 (VNY)
+	(+ /src/omlcbuild_mod.f90) default integer type of nSource
+	variable replaced with int32-type in order to protect it from
+	getting arbitrary values in  low memory mode (SSC-SPR-2814)
+
+Version 1.15.1 28.03.2002 (VNY) 
+	(+ /src/omlcbuild_mod.f90) A bug accidentally introduced 
+	on 22.03.2002 is removed
+	
+Version 1.15 28.03.2002 (VNY)
+	VERSION changed for new SAS release
+	
+Version 1.14.11 28.03.2002 (VNY) 
+	(+ /src/omlcbuild_mod.f90) Additional protection against
+	zero-sized input source rate table (SSC-SPR-2814)
+	
+Version 1.14.10 27.03.2002 (VNY)
+	(+ /src/omlcbuild_mod.f90) Protection against zero-sized
+	input source rate table is introduced (SSC-SPR-2814)
+	
+Version 1.14.9 26.03.2002 (VNY) 
+	(+DISTRIBUTION) Distribution has been changed from ssc to world
+
+Version 1.14.8 22.03.2002 (VNY)
+	(+ /src/omlcbuild_mod.f90) Memory allocation/deallocation 
+	has been corrected (SSC-SPR-2814)
+	
+Version 1.14.7 13.02.2002 (VNY)
+	(+ /src/omlcbuild_mod.f90) Background calculation has been
+	improved: the fraction of PSF within the background extraction
+	area has been taken into account. Background counts are corrected
+	for this PSF fraction before subtracting background from the
+	source counts. This could be essential for small source extraction
+	radii (SSC-SPR-2745).
+	
+Version 1.14.6 08.02.2002 (VNY) 
+	(+ /doc/omlcbuild_mod.f90)  Negative background counts are zeroed.
+	These could appear as the result of interpolation between input 
+	and output time bins when there are only a few background counts
+	in the input data (SSC-SPR-2738). In this case the error bars for
+	the zeroed counts are deduced from the background median.
+	
+Version 1.14.5 05.02.2002 (VNY)
+	(+ /doc/omlcbuild_description.tex) Error section of the 
+	description document file has been updated (SSC-SPR-2730)
+	
+Version 1.14.4 28.01.2002 (VNY)
+	(+ /config/omlcbuild.par) Parameter type specifications have 
+	been updated for obligatory parameters. 
+	
+Version 1.14.3 25.01.2002 (VNY)
+	(+ /src/omlcbuild_mod.f90) Scaling background counts to the source
+	area has been improved. The source area is not circular for the
+	sources near the OSW edge. Now the real shape and size of this 
+	area is taken into account before scaling and subtracting
+	background from the source counts (SSC-SPR-2715).
+
+Version 1.13.2 23.01.2002 (VNY) 
+	Same as V1.14.2 but for SAS-5.2.2 (ssclib has lower version)
+	
+Version 1.14.2 23.01.2002 (VNY)
+	(+ /src/omlcbuild_mod.f90) allocation of timeBack and timeSource
+	arrays has been changed to satisfy dlocate routine:
+	in dlocate these arrays are supposed to be starting from 1,
+	but a 0 value is also read by it, that caused a subscript crash
+	when the array has only one component (SSC-SPR-2702).
+
+Version 1.14.1 17.01.2002 (VNY)
+	(+ DEPEND) The same as V1.13.2, but ssclib is 2.0 in the dependencies
+
+Version 1.13.2 17.01.2002 (VNY)
+	(+ /src/omlcbuild_mod.f90) protected against the absence of data
+	in the background RATES file (SSC-SPR-2702)
+	
+Version 1.14: 07.01.2002 (SRR, VNY) 
+	(+ /src/omlcbuild_mod.f90) (changed TIMEZERO value to 0.d0 in order
+	to get values of time in the TIME column referred directly to
+	MJDREF (SSC SPR-2680)). Dependencies have been updated.
+	
+Version 1.13.1: 08.01.2002 (VNY) changed TIMEZERO to 0.d0	
+
+Version 1.13: 17.12.2001 (VNY)
+	( DEPEND) dependencies file has been updated: mssllib V1.16
+	replaced with V1.17 (SSC SPR-2675). TIME column has been added 
+	to the output lightcurve FITS-file.
+	
+Version 1.12: 11.12.2001 (VNY) 
+	(+ /src/omlcbuild_mod.f90) fine agjustment of the PSF fraction
+	calculation has been made: avoiding circles  from the neighbour
+	sources are taken into account in accordance with recent changes
+	in the OMREGION task. 	
+	
+Version 1.11: 10.12.2001 (VNY)
+	(+ /src/omlcbuild_mod.f90) scaling background counts has been improved
+	in order to get uniform lightcurve level for different lightcurve
+	extraction areas (fixing SSC-SPR-2668).
+	New parameter (binBpe) has been added to the call for the
+	getFrameTime routine, in accordance with changes made by CB in
+	this routine.
+	VIGNET keyword in the output file header is set to 1.0 (no
+	vignetting) in order to permit the proper use of this file by LCURVE.
+	
+Version 1.10.8: 19.11.2001
+	(+ /src/omlcbuild_mod.f90)  3 additional keywords have been
+	added to the output binary table extension (SRRADIUS, CLRADIUS
+        and PHRADIUS, the source extraction radius, the coincidence loss
+	correction radius and the photometry radius). 
+	Also the parameter VIGNET has been replaced with PSF_FRAC keyword,
+	because vignetting is defined in OGIP as a geometrical parameter
+	(fraction of the area), but the task calculates the fraction of
+	the PSF, not of the area. Respectively, PSF_CAPP keyword has been
+	added, which means the correction for PSF_FRAC  was applied.
+
+Version 1.10.7: 15.11.2001 
+	(+ /src/omlcbuild_mod.f90) fixing SPR-2629: background is being
+	removed from the source counts before applying the PSF fraction 
+	correction. Then it is restored in order to calculate correctly
+	the Coincidence Lost Correction. And after that, the background is 
+	subtracted again, but at this time from the area defined
+	by CAL_Aperture_Radius. New keyword parameters have been added
+	to the binary table header of the output FITS-file.
+
+Version 1.10.6: 01.11.2001 
+	(+ /src/omlcbuild_mod.f90)  rectified count rates for the case of
+	missed COINCIDENCE table in OM_PHOTONAT_XXXX.CCF to avoid the
+	Illegal Count Rate message
+
+Version 1.10.5: 31.10.2001
+	(+ /src/omlcbuild_mod.f90) rectified the calculation of
+	rateSourceErrOutArray and of the corrections for the PSF fraction
+	which lies outside of the OSW.
+	
+Version 1.10.4: 29.10.2001
+	(+ /src/omlcbuild_mod.f90) initialisation of countRateErrorMinus
+	and countrateErrorPlus parameters has been introduced
+	to the CorrectedCountRate function in order to rectify
+	possible problems with high rate values.	
+
+Version 1.10.3: 25.10.2001 initialisation of background rate error arrays
+ was introduced (SPR-2611, high values for count rate errors) 
+
+Version 1.10.2: 18.10.2001 make library dependencies updated to rectify 
+ 	static build
+
+Version 1.10.1: 09.10.2001 Ammended DEPEND file to rectify a SOC build
+ failure. Directories cleared out.	
+
+Version 1.10: 24.09.2001
+ Average magnitude of the source is added to the header of the
+ output data set file. PSF_FRAC output parameter has been added
+ to the attributes of the output light curve table (it means the source image fraction
+ which is inside the OSW.  This parameter indicates whether or not the extracted
+ light curve is affected by the source proximity to the edge of the field of view);
+ checking and filtering the background and source counts for excessively high values.
+ 
+Version 1.9.2: 08.08.2001
+ Correction of the counts detected within the source radius is made
+ now taking into account possible lost of photons at the edge of the OSW
+ and using CAL_omGetPSFmap routine 
+
+Version 1.9.1: 27.07.2001
+   Two additional parameteres (sourcelistset & wdxset) have been mentioned in DOC
+   
+Version 1.9:   6.07.2001
+
+ TimeStart parameter was corrected (TIMEZERO replaced with TSTART).
+ The output table title has been changed from RATES to RATE (necessary for lcplot programme). 
+ wdxSet input parameter is added (necessary for count rates correction ).
+ sourceList input parameter is added (for count rates correction).
+ Correction for count losses has been introduced.
+ CorrectedCountRate function has been changed.
+ Corrected the background estimation.
+	
+Version 1.8 2.10.2000 - No changes
+	
+ Open SPRs
+
+ SPR 685: more tests required in test harness
+
+Version 1.7.1:21 June 2000
+
+ patch to add info file for SPR 1801
+
+Version 1.7: 21 March 2000
+
+ Corrected copyallattributes syntax.
+	
+Version 1.6: 2nd December 1999
+
+ Added DISTRIBUTION (world) file	
+	
+Version 1.5: 8th June 1999
+
+ Updated Dependencies for V3 delivery.
+	
+Version 1.4: 27th May 1999
+
+ Changed input parameters to conform to standard.	
+ Changed documentation and test harness wrt input parameters.
+ Updated DEPEND file for selectlib.
+ Added newline to makefiles
+	
+Version 1.3: 10th December 1998
+
+ updated Dependancy file re: mssllib	
+	
+Version 1.2: 28th Oct 1998
+
+ SPR 554 closed: task source conforms with coding standards
+ SPR 684 closed: timing bug fixed
+ SPR 680 closed: timezero used as start time
+ SPR 687 closed: blank filenames checked for
+ SPR 686 closed: parameter modes set to 'q'
+ SPR 688 closed: error checks implemented	
+Version 1.1: 28 Sep 1998
+
+ SPR 538 closed: DEPEND file updated
+	
+Version 1.0: 10 Sep 1998
+----------------------
+
+ First version
+	
+Version 0.1
+----------------------------
+- Directory structure created by pkgmaker.

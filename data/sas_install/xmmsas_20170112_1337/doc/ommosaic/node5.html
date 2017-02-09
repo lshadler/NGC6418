@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="ommosaic">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ommosaic.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="ommosaic.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ommosaic (ommosaic-2.8.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Sky-images- Astrometry"></A>
+<A HREF="ommosaic.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Usage"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ommosaic.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="ommosaic:description:parameters"></A>
+<A NAME="614"></A>
+<tr valign=top bgcolor='silver'><td><b>imagesets</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>none</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    List of input image datasets to be mosaiced
+    <br>&nbsp;</td></tr>
+
+<A NAME="621"></A>
+<tr valign=top bgcolor='silver'><td><b>mosaicedset</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>none</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Name of output mosaiced image dataset
+    <br>&nbsp;</td></tr>
+
+<A NAME="628"></A>
+<tr valign=top bgcolor='silver'><td><b>correlset</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>none</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Name of output correlation file dataset
+<br>&nbsp;</td></tr>
+
+<A NAME="635"></A>
+<tr valign=top bgcolor='silver'><td><b>binaxis</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>0 : 2</td></tr>
+
+<tr valign=top><td colspan=5>
+     Image binning factor. 0 means take the largest
+     binning factor of all the input images and compute
+     the output image using this value.
+     1 means that the output image will be a high-resolution image, 2 a low-resoloution one.
+    <br>&nbsp;</td></tr>
+
+<A NAME="642"></A>
+<tr valign=top bgcolor='silver'><td><b>mincorr</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>-1 to +1</td></tr>
+
+<tr valign=top><td colspan=5>
+    Minimum acceptable correlation successful image alignment
+    If 0 then no alignment attempted.
+    If &lt; 0 then images stacked even if the correlation is less than abs(mincorr) 
+<br>&nbsp;</td></tr>
+
+<SPAN  CLASS="textbf">The following parameters are for use in the image-alignment algorithm- the default
+           values have been set by trial and error- changing any of them may significantly increase
+           the cpu time without improving anything.</SPAN>
+
+<A NAME="649"></A>
+<tr valign=top bgcolor='silver'><td><b>nsigma</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>2</td><td>0.5 :</td></tr>
+
+<tr valign=top><td colspan=5>
+     Image pixel used in cross-correlation if the pixel value 
+     is at least background + max(1.0, nsigma * sqrt(background) ),
+     where background is the computed background level at the pixel
+    <br>&nbsp;</td></tr>
+
+<A NAME="656"></A>
+<tr valign=top bgcolor='silver'><td><b>minfraction</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>0.5</td><td>0.05 : 1</td></tr>
+
+<tr valign=top><td colspan=5>
+    Minimum acceptable area overlap of 2 images before
+    alignment is attempted 
+<br>&nbsp;</td></tr>
+
+<A NAME="663"></A>
+<tr valign=top bgcolor='silver'><td><b>maxdx</b></td><td>no</td><td><A HREF=../param/node3.html>int</A></td><td>5</td><td>1 : 50</td></tr>
+
+<tr valign=top><td colspan=5>
+    Maximum x and y offsets (in image pixels) between 2 images refereence pixels to
+    be used in cross-correlation
+<br>&nbsp;</td></tr>
+
+<A NAME="670"></A>
+<tr valign=top bgcolor='silver'><td><b>numintervals</b></td><td>no</td><td><A HREF=../param/node3.html>int</A></td><td>2</td><td>1 : 100</td></tr>
+
+<tr valign=top><td colspan=5>
+     The number of intervals to split an x or y offset value into.  Ie the
+     total number of x or y offsets to be used to compute the initial correlation
+     coefficients will be (2xdx+1)*numintervals and (2xdy+1)*numintervals,respectively.
+<br>&nbsp;</td></tr>
+
+<A NAME="677"></A>
+<tr valign=top bgcolor='silver'><td><b>di</b></td><td>no</td><td><A HREF=../param/node3.html>int</A></td><td>10</td><td>5 to 100</td></tr>
+
+<tr valign=top><td colspan=5>
+     The correlation image will be 2*di+1 pixels square. 
+<br>&nbsp;</td></tr>
+
+<A NAME="684"></A>
+<tr valign=top bgcolor='silver'><td><b>minnumpixels</b></td><td>no</td><td><A HREF=../param/node3.html>int</A></td><td>100</td><td> 20 :</td></tr>
+
+<tr valign=top><td colspan=5>
+     The minimum number of image pixels that lie above the background than can be used 
+     in the cross-correlation.  
+    <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Sky-images- Astrometry"></A>
+<A HREF="ommosaic.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Usage"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

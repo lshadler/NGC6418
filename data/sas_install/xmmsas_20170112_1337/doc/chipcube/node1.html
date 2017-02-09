@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="chipcube">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="chipcube.css">
+
+<LINK REL="next" HREF="node2.html">
+<LINK REL="previous" HREF="chipcube.html">
+<LINK REL="up" HREF="chipcube.html">
+<LINK REL="next" HREF="node2.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+chipcube (eimchip2sky-2.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="chipcube.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Home Page"></A>
+<A HREF="chipcube.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Library routines"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="chipcube.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00010000000000000000"></A>
+<A NAME="chipcube:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+This library defines the chip cube, which is a way of storing CCD images in FITS files; the library also provides some routines for manipulating these files. A CCD image in the XMM-Newton context is a 2-dimensional image which has the same dimensions as a CCD of one of the EPIC x-ray cameras, and which usually records some quantity explicitly or implicitly related to the x-ray flux detected by the CCD. Because all the CCDs from any given EPIC camera have the same dimensions, their images can be stored as slices of a cube (3-dimensional array). This compact and convenient representation is the format used by the present library. The chip cube is stored in the primary data array of the FITS file.
+
+<P>
+When I wrote this library, I chose the 1st index (of both the fortran and FITS array representations) to be the CCD index, and the 2nd and 3rd as the CCD x and y coordinates respectively. Now it seems obvious to me that a representation in which the CCD index was the 3rd index would be far more natural. Since it seems unlikely that the present library will ever be widely used I feel reasonably sanguine about changing this order at some future date.
+
+<P>
+For most quantities measured on EPIC CCDs, an association with a set of Good Time Intervals (GTIs) is important. In the original x-ray event list created as part of the XMM product set, a separate series of GTIs is provided per CCD. Thus in the FITS format for storing chip cubes, an series of binary table extensions for storing GTIs, one per CCD, is an option.
+
+<P>
+Finally, for maximum generality, a key table is prescribed for the FITS file, for the purpose of relating the CCD number to the relevant plane of the chip cube and also to the GTI extension name which should apply to that CCD. This key table is a mandatory binary table extension with the name <A NAME="259"></A><TT>KEY2IMGS</TT>. The table should have as many rows as there are CCD planes in the chip cube, and must have the following columns:
+
+<P>
+
+<OL>
+<LI><A NAME="261"></A><TT>CCDNR</TT> (8-bit integer)
+</LI>
+<LI><A NAME="263"></A><TT>NODE_NR</TT> (8-bit integer)
+</LI>
+<LI><A NAME="265"></A><TT>GTI_NAME</TT> (8-character string). If this is blank or empty, it is assumed that no GTI table is attached for that CCD.
+</LI>
+</OL>
+
+<P>
+I may some time in the future add the following:
+
+<OL>
+<LI>a string-valued column <A NAME="267"></A><TT>SUBMODE</TT> to specify the data mode of the CCD.
+</LI>
+<LI><A NAME="269"></A><TT>WINDOWX0</TT>, <A NAME="271"></A><TT>WINDOWY0</TT>, <A NAME="273"></A><TT>WINDOWDX</TT> and <A NAME="275"></A><TT>WINDOWDY</TT> columns to delineate data windows on the CCD.
+</LI>
+</OL>
+
+<P>
+There is a corresponding F90 data type defined:
+<PRE>
+  type, public :: keyInfoType
+    integer(int8) :: ccdNum=0, nodeNum=0
+    character(8)  :: gtiTableName=''
+  end type keyInfoType
+</PRE>
+
+<P>
+Row <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$i$"></SPAN> of the table refers to plane array(i,:,:) (assuming both series start at 0).
+
+<P>
+The dataset header should contain <A NAME="277"></A><TT>INSTRUME</TT> and <A NAME="279"></A><TT>DATE-OBS</TT> keywords.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="chipcube.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Home Page"></A>
+<A HREF="chipcube.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Library routines"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

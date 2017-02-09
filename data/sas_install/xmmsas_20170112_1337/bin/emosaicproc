@@ -1,0 +1,1669 @@
+#! /usr/bin/perl -w
+use warnings;
+use SAS;
+use Getopt::Long;
+use Math::Trig;
+use Switch;
+ 
+require "obsid_structure.pl";
+require "mosaic_structure.pl";
+
+#.. Summary of analysis tasks to reproduce the thread.  
+#.. Needed:
+#..    1- EPIC event files 
+#..    2- EPIC GTI files 
+#..    3- EPIC Attitude files
+#..    4- SUM.SAS files
+#.. The following directory structure is assumed (directories have to exist):
+#..
+
+#..   [Master_Analysis_path]/prep_mosaic/             # final results will go here
+#..   [Master_Analysis_path]/prep_mosaicP[pointingid] # Pointing folders
+#..
+
+use vars qw( 
+	     $Master_Analysis_path
+	     $Analysis_path
+	     $global_mosaic_path
+	     $pn_path
+	     $mos_path
+	     $gti_path  
+	     $mosaic_path
+	     $ccf_file
+	     $sumsas_file 
+	     @pnevlist
+	     @mos1evlist
+	     @mos2evlist
+	     @e_band    
+	     @pn_pmin   
+	     @pn_pmax   
+	     @mos1_pmin  
+	     @mos1_pmax   
+	     @mos2_pmin  
+	     @mos2_pmax
+	     $gtifile
+	     $outdir
+	     $debug
+	     $master_obs
+	     $meanRA
+	     $meanDEC
+	     $checkMemory
+	    );
+
+#.. Init Program Parameters
+    &parameters_init(@ARGV);	
+   
+
+
+#.. Check that the user has introduced any event file
+
+if (!@pnevlist && !@mos1evlist && !@mos2evlist) { &error_code(101); }   
+ 
+#.. Debug Flag
+$debug = 1;        # 1: True; 0: False
+
+
+#.. Set Paths
+chomp(my $Master_Analysis_path = `pwd`) ;
+
+$Master_Analysis_path = $Master_Analysis_path."/";
+
+$global_mosaic_path=$Master_Analysis_path.$outdir."/";
+#... Init value to check eboxdetect memory allocation 
+$checkMemory = 1;
+
+&build_dir_structure($Master_Analysis_path,$global_mosaic_path);
+my $Analysis_path = $Master_Analysis_path;
+my $attHkFlag = 1;
+
+@instr_arr = ("EPN","EMOS1","EMOS2");
+
+foreach (@instr_arr) {
+	$instr = $_;
+	my $counter = 0;
+	if ($instr eq "EPN") {@list = @pnevlist;}
+    if ($instr eq "EMOS1") {@list = @mos1evlist;}
+    if ($instr eq "EMOS2") {@list = @mos2evlist;}
+	
+	foreach (@list) {
+		$filename = $_;
+    	
+		my $dir = &dirname($filename,$Analysis_path);
+		
+
+		my $file = &basename($filename);		 
+
+		$Analysis_path = $dir;
+
+		&fill_structure($dir,$instr,"EvtFile",$file); 		
+		
+		##Attitude file with proc's nomenclature
+		$tmp = &getFile($Analysis_path,"AttHk");
+		
+		##Attitude file with pipeline nomenclature
+		if ($tmp eq "No File" ) {
+			$tmp = &getFile($Analysis_path,"ATTTSR");							
+		}
+		
+		if ($tmp eq "No File") { &error_code(105);}
+
+		if ($attHkFlag == 1 ) {
+		   $ra  = &get_nomra($tmp,0);
+		   $dec = &get_nomdec($tmp,0);
+		}
+		&fill_structure($dir,$instr,"AttFile",$tmp);
+
+		$tmp = &getFile($Analysis_path,"SUM.SAS");
+		
+		$ccfcif_file = $ENV{'SAS_CCF'};
+		
+		##Name of the file with the START and STOP times of each stable pointing 
+		my $gtiFile = "gti_pointing_position.ds";
+
+		&fill_structure($dir,$instr,"gti_position",$gtiFile);
+		
+		&fill_mosaic($dir,$instr,0,"CCFFile",$dir.&getFile($dir,&basename($ccfcif_file)));		
+		
+		&fill_mosaic($dir,$instr,0,"SUMSASFile",$dir.&getFile($dir,"SUM.SAS"));
+				
+		if ($gtifile )
+		{			 
+			&fill_structure($dir,$instr,"GTIFile",$Master_Analysis_path.$gtifile);			
+		}
+		else
+		{
+			if ($debug) {print ">> DEBUG: No global GTI file used...\n";}
+			&fill_structure($dir,$instr,"GTIFile","");		
+		}
+		
+		$counter = $counter + 1;
+		$Analysis_path = $Master_Analysis_path;
+	}
+
+}
+
+#.. Set energy Bands. The first energy band defined should cover the full
+#.. energy range and the ECF values for the whole band set to 1.
+$counter = 0;
+
+foreach (@pn_pmin) {
+	
+	push(@e_band, $counter);
+	$counter = $counter + 1;
+}
+
+
+
+@pn_ecf_open   = (0.99999,0.99999,0.99999);
+@pn_ecf_thick  = (0.99999,0.99999,0.99999);
+@pn_ecf_med    = (0.99999,0.99999,0.99999);
+@pn_ecf_thin   = (0.99999,0.99999,0.99999);
+
+@mos1_ecf_open = (0.99999,0.99999,0.99999);
+@mos1_ecf_thick= (0.99999,0.99999,0.99999);
+@mos1_ecf_med  = (0.99999,0.99999,0.99999);
+@mos1_ecf_thin = (0.99999,0.99999,0.99999);
+
+@mos2_ecf_open = (0.99999,0.99999,0.99999);
+@mos2_ecf_thick= (0.99999,0.99999,0.99999);
+@mos2_ecf_med  = (0.99999,0.99999,0.99999);
+@mos2_ecf_thin = (0.99999,0.99999,0.99999);
+
+##########################################################################
+############# DON NOT MODIFY BELOW THIS LINE #############################
+##########################################################################
+
+for $obs ( keys %obsid_instruments) {
+    for $instr ( keys %{ $obsid_instruments{$obs}} ) {
+	foreach (@e_band) {
+	    $ebin_low  = "S".$_;
+	    $ebin_high = "E".$_;
+	    if ($instr eq "EPN") {$ene_low = $pn_pmin[$_];}
+	    if ($instr eq "EMOS1") {$ene_low = $mos1_pmin[$_];}  
+	    if ($instr eq "EMOS2") {$ene_low = $mos2_pmin[$_];}
+	    if ($instr eq "EPN") {$ene_high = $pn_pmax[$_];}  
+	    if ($instr eq "EMOS1") {$ene_high = $mos1_pmax[$_];}  
+	    if ($instr eq "EMOS2") {$ene_high = $mos2_pmax[$_];}
+	    if ($instr eq "EPN") {$ecf_open = $pn_ecf_open[$_]; 
+				 $ecf_thick = $pn_ecf_thick[$_]; 
+				 $ecf_med = $pn_ecf_med[$_];  
+				 $ecf_thin = $pn_ecf_thin[$_];}    
+	    if ($instr eq "EMOS2") {$ecf_open = $mos1_ecf_open[$_]; 
+				 $ecf_thick = $mos1_ecf_thick[$_]; 
+				 $ecf_med = $mos1_ecf_med[$_];  
+				 $ecf_thin = $mos1_ecf_thin[$_];}    
+	    if ($instr eq "EMOS1") {$ecf_open = $mos2_ecf_open[$_]; 
+				 $ecf_thick = $mos2_ecf_thick[$_]; 
+				 $ecf_med = $mos2_ecf_med[$_];  
+				 $ecf_thin = $mos2_ecf_thin[$_];}  
+
+ 	    &fill_mosaic($obs,$instr,$_,$ebin_low,$ene_low);
+	    &fill_mosaic($obs,$instr,$_,$ebin_high,$ene_high);
+	    &fill_mosaic($obs,$instr,$_,"ECFOpen",$ecf_open);
+	    &fill_mosaic($obs,$instr,$_,"ECFThick",$ecf_thick);
+	    &fill_mosaic($obs,$instr,$_,"ECFMed",$ecf_med);
+	    &fill_mosaic($obs,$instr,$_,"ECFThin",$ecf_thin);
+	    $src_image_name   = "srcimage_".$instr."_e".$_.".fits";
+	    $image_name       = "image_".$instr."_e".$_.".fits";
+	    $fil_evtfile_name = "filtered_evli_".$instr."_e".$_.".fits";
+	    $exp_map_name     = "exposure_".$instr."_e".$_.".fits";
+	    $mask_name        = "mask_".$instr."_e".$_.".fits"; 
+	    $bkg_map_name     = "image_".$instr."_e".$_."_bkg.fits";
+	    &fill_mosaic($obs,$instr,$_,"Image",$image_name); 
+	    &fill_mosaic($obs,$instr,$_,"SRCImage",$src_image_name); 
+	    &fill_mosaic($obs,$instr,$_,"FEvtFile",$fil_evtfile_name); 
+	    &fill_mosaic($obs,$instr,$_,"ExMap",$exp_map_name);
+	    &fill_mosaic($obs,$instr,$_,"Mask",$mask_name);  
+	    &fill_mosaic($obs,$instr,$_,"BKGMap",$bkg_map_name); 
+	}
+    }
+}
+
+
+#.. Get the START and STOP time from GTIs
+
+my $tcounter = 0;
+my $attitude = 0;
+for $obs ( keys %obsid_instruments) {
+	$gti_path="";
+	for $instr ( keys %{ $obsid_instruments{$obs}} ) {
+	
+		$tcounter = $tcounter + 1;
+		my $gti_file            = &get_pointing_gti_file($instr,$obs);
+	
+		if (!-e $gti_file){ &error_code(102);}
+		
+		my $tmpSTART =  &getTime($gti_file,"START");
+		my $tmpSTOP  =  &getTime($gti_file,"STOP");
+		
+		$attitude = &get_att_file($instr,$obs);
+		my $ffile = $attitude;
+
+		if ($debug) {print ">> DEBUG: Filtering attitude for observation [$obs]...\n";}
+		chdir($Master_Analysis_path);
+		my $fileATT = $obs."/filtered_ATTHK.ds";
+	
+		@args = ("fselect $ffile $fileATT \"TIME > $tmpSTART && TIME < $tmpSTOP\" clobber=yes");
+		system(@args)== 0 or &error_code(5);
+		if ($debug) {print ">> DEBUG: Done.\n";}
+	}
+
+}
+
+
+my $meanRA = 0;
+my $meanDEC = 0;
+my @RA;
+my @DEC;
+
+my $deltaDEC = 0;
+my $deltaRA = 0;
+my $minRA = 0;
+my $minDEC = 0;
+my $maxRA = 0;
+my $maxDEC = 0;
+$tcounter = 0;
+for $obs ( keys %obsid_instruments) {
+	$tcounter = $tcounter + 1;
+
+
+	#.. Filter ATTHK file using minSTART and max STOP
+	
+	
+	chdir($Master_Analysis_path);
+	my $filteredATT = $obs."filtered_ATTHK.ds";
+	my $fileAttRA = $obs."filtered_ATTHK.ds[col AHFRA]";
+	my $fileAttDEC = $obs."filtered_ATTHK.ds[col AHFDEC]";
+	my $fileAttAPOS = $obs."filtered_ATTHK.ds[col AHFPA]";
+
+	if ($debug) {print ">> DEBUG: Calculating median attitude, min and max attitude values [$filteredATT]...\n";}
+	chomp($meanRA   = `ftstat '$fileAttRA' clip=yes nsigma=2  | grep mean | awk  '{print \$2}'` );
+	chomp($meanDEC   = `ftstat '$fileAttDEC' clip=yes nsigma=2  | grep mean | awk  '{print \$2}'` );
+	chomp($tmpminRA   = `ftstat '$fileAttRA' clip=yes nsigma=2  | grep min | awk  '{print \$2}'` );
+	chomp($tmpminDEC   = `ftstat '$fileAttDEC' clip=yes nsigma=2  | grep min | awk  '{print \$2}'` );
+	chomp($tmpmaxRA   = `ftstat '$fileAttRA' clip=yes nsigma=2  | grep max | awk  '{print \$2}'` );
+	chomp($tmpmaxDEC   = `ftstat '$fileAttDEC' clip=yes nsigma=2  | grep max | awk  '{print \$2}'` );
+
+	push(@RA,$meanRA);
+	push(@DEC,$meanDEC);
+	if ($debug) {print ">> DEBUG: poiting meanRA=$meanRA\n";}
+	if ($debug) {print ">> DEBUG: pointing meanDEC=$meanDEC\n";}
+	if ($debug) {print ">> DEBUG: pointing minRA=$tmpminRA\n";}
+	if ($debug) {print ">> DEBUG: pointing maxRA=$tmpmaxRA\n";}
+	if ($debug) {print ">> DEBUG: pointing minDEC=$tmpminDEC\n";}
+	if ($debug) {print ">> DEBUG: pointing maxDEC=$tmpmaxDEC\n";}
+	
+	#.. Initialize number
+	if ($tcounter == 1)
+	{
+		$minRA = $tmpminRA;
+		$minDEC = $tmpminDEC;
+		$maxRA = $tmpmaxRA;
+		$maxDEC = $tmpmaxDEC;
+	}
+
+
+	
+	if ($tmpminRA <= $minRA)
+	{
+		$minRA = $tmpminRA;
+	}
+	if ($tmpminDEC <= $minDEC)
+	{
+		$minDEC = $tmpminDEC;
+	}
+	if ($tmpmaxRA >= $maxRA)
+	{
+		$maxRA = $tmpmaxRA;
+	}
+	if ($tmpmaxDEC >= $maxDEC)
+	{
+		$maxDEC = $tmpmaxDEC;
+	}
+}
+if ($debug) {print ">> DEBUG: Done.\n";}
+
+if ($debug) {print ">> DEBUG: minRA=$minRA maxRA=$maxRA\n";}
+if ($debug) {print ">> DEBUG: minDEC=$minDEC maxDEC=$maxDEC\n";}
+
+
+
+$deltaDEC = abs($maxDEC-$minDEC);
+#$deltaRA = ($maxRA-$minRA)*cos(($minDEC+$maxDEC)/2./57.295780);
+
+
+$cosdeltaRA = sin(Math::Trig::deg2rad($maxDEC))*sin(Math::Trig::deg2rad($minDEC)) + 
+	(cos(Math::Trig::deg2rad($maxDEC))*cos(Math::Trig::deg2rad($minDEC))*cos(Math::Trig::deg2rad(($maxRA-$minRA))) );
+$deltaRA = Math::Trig::rad2deg( Math::Trig::acos($cosdeltaRA));
+if ($debug) {print ">> DEBUG: DeltaDEC $deltaDEC\n";}
+if ($debug) {print ">> DEBUG: DeltaRA $deltaRA\n";}
+
+
+$meanRA = &meanVal($minRA, $maxRA);
+$meanDEC = &meanVal($minDEC, $maxDEC);
+if ($debug) {print ">> DEBUG: poiting meanRA=$meanRA\n";}
+if ($debug) {print ">> DEBUG: pointing meanDEC=$meanDEC\n";}
+
+
+#... Default value for attcalc
+#... Full field of view 0.36*2
+my $imageSize = 0.72;
+my $tmpSizeImage = 0;
+if ($deltaRA >= $deltaDEC) 
+{
+	$tmpSizeImage = $deltaRA;
+}
+else
+{
+	$tmpSizeImage = $deltaDEC;
+}
+
+if ($tmpSizeImage > $imageSize) { $imageSize = $tmpSizeImage+$imageSize ;}
+$imageSize = $imageSize/2.0;
+
+if ($debug) {print ">> DEBUG: median RA=$meanRA\n";}
+if ($debug) {print ">> DEBUG: median DEC=$meanDEC\n";}
+if ($debug) {print ">> DEBUG: Done\n";}
+
+
+if ($debug) {print ">> DEBUG: "; &print_mosaic;}
+
+
+#.. Start Anlaysis
+
+for $obs ( keys %obsid_instruments) {
+
+#.. Set Paths
+    $Analysis_path=$obs."/";
+    $pn_path="";
+    $mos_path="";
+    $gti_path="";
+    $mosaic_path=""; 
+
+	
+    &build_dir_structure($Analysis_path,$Analysis_path.$pn_path,$Analysis_path.$mos_path,$Analysis_path.$gti_path,$Analysis_path.$mosaic_path);
+
+#.. Set environment variables 
+
+
+	$ccf_file      =  &getFile($Analysis_path,".cif");
+	$sumsas_file = &getFile($Analysis_path,"SUM.SAS");
+
+
+#    $ccf = $mosaic{$obs}{$instr}{0}{"CCFFile"}; 
+#    $sum =  $mosaic{$obs}{$instr}{0}{"SUMSASFile"};
+#    print "SUM.SAS $sum\n";
+#    print "ccf $ccf\n";
+    $ENV{'SAS_CCF'} = $ccf_file;
+    $ENV{'SAS_ODF'} = $sumsas_file;
+   
+  	print "#> Using SAS_ODF: $sumsas_file\n";
+  	print "#> Using SAS_CCF: $ccf_file\n";
+  	
+    print "#> Starting the Analsyis of $obs \n";
+    for $ins ( keys %{ $obsid_instruments{$obs}} ) {
+	
+		print "   Instrument: $ins \n";
+		print "   Pointing: $obs \n";
+		print "   Running attcalc ... \n";
+	
+		if ( ($meanRA == 0) && ($meanDEC == 0) )
+		{
+			$meanRA = $ra;
+			$meanDEC = $dec;
+		}
+		
+		#... Check that SAS_ODF and SAS_CCF is pointing to the right files.
+		
+		
+		my $att_flag=&run_attcalc($ins,$obs,$meanRA,$meanDEC,$imageSize);
+		if (!$att_flag) {exit;}
+		
+		print "   Producing Images ... \n";
+		my $img_flag=&produce_images($ins,$obs);
+		if (!$img_flag) {exit;}
+	
+		print "   Producing Exposure Maps ... \n";
+		my $ex_flag=&run_eexmap($ins,$obs);
+		if (!$ex_flag) {exit;}
+	
+		print "   Producing Masks ... \n";
+		$vig       = "no";
+		my $emask_flag=&run_emask($ins,$obs,$vig);
+		if (!$emask_flag) {exit;}
+		
+		print "   -----------------------\n";   
+    }
+    
+    print "   Running Source Detection  ... \n";
+    my $ebox_flag=&run_eboxdetect($obs);
+    if (!$ebox_flag) {exit;}
+
+    print "   Creating Background Maps  ... \n";
+    my $bmaps_flag=&create_background_maps($obs);
+    if (!$bmaps_flag) {exit;}
+    
+}
+
+print "   Running Source Detection for all Pointings ... \n";
+my $mosaic_flag=&run_mosaic_detect;
+if (!$mosaic_flag) {exit;}
+
+print "\n FINISHED \n";
+exit;
+
+
+##############################################################################
+sub meanVal {
+
+my $min = $_[0];
+my $max = $_[1];
+
+
+return ($min+$max)/2.0;
+} 
+
+##############################################################################
+sub build_dir_structure(){
+
+    foreach (@_) {
+	if (!-e $_) {
+	    mkdir ($_, 0755) or die "Cannot mkdir newdir: $!";
+	}
+    }
+    
+    return(1); 
+}
+
+
+
+
+##############################################################################
+sub run_attcalc{
+    
+    my $instr       = $_[0];
+    if ($instr eq "") {return(0);}
+    my $obs         = $_[1];
+    if ($obs eq "") {return(0);}
+    my $attitude    = &get_att_file($instr,$obs);
+  
+    my $event_file  = &get_evt_file($instr,$obs,$Master_Analysis_path);
+   
+
+#    my $ra  = &get_nomra($attitude,0);
+#    my $dec = &get_nomdec($attitude,0);
+	my $ra = $_[2];
+	my $dec = $_[3];
+	my $bin = $_[4];
+    #my $bin = &get_imagesize($instr);
+
+    @args = ("attcalc" 
+	     ,"eventset=$event_file"
+	     ,"attitudelabel=ahf"
+	     ,"atthkset=$attitude"
+	     ,"refpointlabel=user"
+	     ,"nominalra=$ra"
+	     ,"nominaldec=$dec"
+	     ,"imagesize=$bin");
+
+    if ($debug) {foreach (@args){print ">> DEBUG: $_\n";}}
+    system(@args)== 0 or return(0);
+
+    return(1);
+}
+
+##############################################################################
+sub produce_images{
+
+    my $instr       = $_[0];
+    if ($instr eq "") {return(0);} 
+    my $obs         = $_[1];
+    if ($obs eq "") {return(0);}
+    
+
+    my $event_file          = &get_evt_file($instr,$obs,$Master_Analysis_path);
+    my $gti_file            = &get_gti_file($instr,$obs);    
+    my $ximagebinsize       = &get_imagexbinsize($instr);
+    my $yimagebinsize       = &get_imageybinsize($instr);
+    my $imagebinning        = &get_imagebinning($instr);
+    my $prep_event_file = &get_ori_evt_file($instr,$obs,$Master_Analysis_path);
+
+
+    my @xRange = &get_Xima_limits($prep_event_file);
+    my @yRange = &get_Yima_limits($prep_event_file);
+
+    for $ene ( keys %{ $mosaic{$obs}{$instr}} ) {
+	$S = "S".$ene; 
+    $E = "E".$ene;
+	$lowe_cut    = $mosaic{$obs}{$instr}{$ene}{$S};
+	$highe_cut   = $mosaic{$obs}{$instr}{$ene}{$E};  
+	
+	$image_file          = &get_image($instr,$obs,$ene);
+	$filtered_event_file = &get_filtered_evt_file($instr,$obs,$ene);
+
+	
+	if ($gti_file) {
+	    if ($instr eq "EPN") {
+		$expr = "gti($gti_file,TIME)&&(RAWY>12)&&((FLAG & 0x2010024)==0)&&((FLAG & 0x8)==0)&&\#XMMEA_EP&&(PI>$lowe_cut)&&(PI<$highe_cut)&&(PATTERN==0)";
+	    }
+	    if ($instr eq "EMOS1") {
+		$expr = "gti($gti_file,TIME)&&(RAWY>12)&&((FLAG & 0x2010024)==0)&&((FLAG & 0x8)==0)&&\#XMMEA_EM&&(PI>$lowe_cut)&&(PI<$highe_cut)&&(PATTERN==0)";
+	    }
+	    if ($instr eq "EMOS2") {
+		$expr = "gti($gti_file,TIME)&&(RAWY>12)&&((FLAG & 0x2010024)==0)&&((FLAG & 0x8)==0)&&\#XMMEA_EM&&(PI>$lowe_cut)&&(PI<$highe_cut)&&(PATTERN==0)";
+	    }
+	}
+	else {
+	    if ($instr eq "EPN") {
+		$expr = "((FLAG & 0x2010024)==0)&&((FLAG & 0x8)==0)&&\#XMMEA_EP&&(PI>$lowe_cut)&&(PI<$highe_cut)&&(PATTERN==0)";
+	    }
+	    if ($instr eq "EMOS1") {
+		$expr = "((FLAG & 0x2010024)==0)&&((FLAG & 0x8)==0)&&\#XMMEA_EM&&(PI>$lowe_cut)&&(PI<$highe_cut)&&(PATTERN==0)";
+	    }
+	    if ($instr eq "EMOS2") {
+		$expr = "((FLAG & 0x2010024)==0)&&((FLAG & 0x8)==0)&&\#XMMEA_EM&&(PI>$lowe_cut)&&(PI<$highe_cut)&&(PATTERN==0)";
+	    } 
+	}
+	print "       Energy Band ($ene): $lowe_cut : $highe_cut : eV\n";
+
+	#$expr = $expr." && (X in [$xRange[0]:$xRange[1]]) && (Y in [$yRange[0]:$yRange[1]])";
+
+	@args = ("evselect"
+		 ,"table=$event_file"
+		 ,"filteredset=$filtered_event_file", "withfilteredset=yes", "keepfilteroutput=yes", "destruct=yes"
+		 ,"expression=$expr"
+		 ,"withimageset=yes","imageset=$image_file"
+		 ,"xcolumn=X", "ycolumn=Y", "ximagebinsize=$ximagebinsize", "yimagebinsize=$ximagebinsize", "imagebinning=$imagebinning",
+		 );
+
+#... Check the memory needed for eboxdetect. Throw a warning message if the memory needed
+#... is grater than 2 GB
+	if ($checkMemory)
+	{
+		&checkMemorySpace($image_file);
+		$checkMemory = 0;
+	} 
+
+	if ($debug) {foreach (@args){print ">> DEBUG: $_\n";}}	
+	system(@args)== 0 or return(0);
+
+    }
+    
+    return(1);
+}
+
+sub checkMemorySpace {
+	my $imFile = $_[0];
+	my @naxis = ();
+	print "CHECK MEMORY ".$imFile."\n";
+	chomp(@naxis   = `fkeyprint $imFile+0 outfile=STDOUT keynam=NAXIS | grep -v "\#" | awk \'\{if \(\$1 ~ \"NAXIS\"\) print \$3}'`);
+	
+	if ($naxis[0] != 2)
+	{
+	 	print ">> WARNING: Axis in the image less than 2 \n";
+	}
+	 my $memImaReal = $naxis[2]*$naxis[2]*9.*8./1024./1024./1024.;
+	 my $memImaInt = $naxis[2]*$naxis[2]*9.*4./1024./1024./1024.;
+	 my $memImaLog = $naxis[2]*$naxis[2]*9.*1./1024./1024./1024.;
+	 
+	 $sum = $memImaReal+$memImaInt+$memImaLog;
+	 if ($sum >= 2.0)
+	 {	 	
+ 		print ">> WARNING (LowMemory): Expected memory allocation larger than 2 GB\n";
+	 }
+	 
+}
+
+
+##############################################################################
+sub run_eexmap{
+    
+    my $instr       = $_[0]; 
+    if ($instr eq "") {return(0);}  
+    my $obs         = $_[1]; 
+    if ($obs eq "") {return(0);}
+    
+    my $attitude    = &get_att_file($instr,$obs);
+    my $event_file  = &get_filtered_evt_file($instr,$obs,0);
+
+    my @vignetting  = ("yes","no");
+
+    foreach (@vignetting) { 
+
+	$vig = $_;
+
+	for $ene ( keys %{ $mosaic{$obs}{$instr}} ) {		
+		$images[$ene]        = &get_image($instr,$obs,$ene);
+		$S = "S".$ene; 
+		$E = "E".$ene;
+		$pmin[$ene]          = $mosaic{$obs}{$instr}{$ene}{$S};
+		$pmax[$ene]          = $mosaic{$obs}{$instr}{$ene}{$E};
+		$exp_img_set[$ene]   = &get_exp_image($instr,$obs,$ene,$vig);
+	}
+	$image_file  = $images[0];
+		
+	@args = ("eexpmap"
+		 ,"attitudeset=$attitude" 
+		 ,"eventset=$event_file"
+		 ,"imageset=$image_file"
+		 ,"expimageset=@exp_img_set"
+		 ,"pimin=@pmin"
+		 ,"pimax=@pmax"
+		 ,"withvignetting=$vig");
+	
+	if ($debug) {foreach (@args){print ">> DEBUG: $_\n";}}
+	system(@args)== 0 or return(0);
+    }
+    
+    return(1);
+}
+
+##############################################################################
+sub run_emask{
+    my $instr       = $_[0]; 
+    if ($instr eq "") {return(0);}
+    my $obs         = $_[1];
+    if ($obs eq "") {return(0);}
+    my $vig         = $_[2];
+    if ($vig eq "") {return(0);}
+ 
+    my $ene             = 0; # use only one exposure map, any. 
+    my $images          = &get_exp_image($instr,$obs,$ene,$vig);
+    my $mask            = &get_mask($instr,$obs,$ene);
+    my $emask_threshold = &get_emask_threshold($instr,$obs);
+    
+    @args = ("emask"
+	     ,"expimageset=$images"
+	     ,"threshold1=$emask_threshold"
+	     ,"detmaskset=$mask");
+    
+    if ($debug) {foreach (@args){print ">> DEBUG: $_\n";}}
+    system(@args)== 0 or return(0);
+    
+    return(1);
+}
+
+##############################################################################
+sub run_eboxdetect{
+    
+    my $obs         = $_[0];
+    if ($obs eq "") {return(0);}
+
+    my $boxlist      = &get_boxlist;
+    my $boxsize      = &get_boxsize;
+
+
+
+    my $ene          = 0; # use only one mask, any.
+    
+    my $pn_mask = "";
+    my $m1_mask = "";
+    my $m2_mask = "";
+    for $ins ( keys %{ $obsid_instruments{$obs}} ) {
+    	if ($ins eq "EPN") {$pn_mask = &get_mask("EPN",$obs,$ene);}
+	    if ($ins eq "EMOS1") {$m1_mask = &get_mask("EMOS1",$obs,$ene);}
+	    if ($ins eq "EMOS2") {$m2_mask = &get_mask("EMOS2",$obs,$ene);}
+	}
+	my @maskset      = ($pn_mask,$m1_mask,$m2_mask);
+    my $ext          = 1; # for event file header
+	
+	my $event_file = "";
+	my $pn_filter = "";
+	my $mos1_filter = "";
+	my $mos2_filter = "";
+	
+	for $ins ( keys %{ $obsid_instruments{$obs}} ) {
+	    if ($ins eq "EPN") {
+	    	$event_file   = &get_evt_file("EPN",$obs,$Master_Analysis_path);   
+	    	$pn_filter    = &getfilter($event_file,$ext);
+	     }
+	    if ($ins eq "EMOS1") { 
+	    	$event_file      = &get_evt_file("EMOS1",$obs,$Master_Analysis_path);
+	    	$mos1_filter  = &getfilter($event_file,$ext);
+	    }
+	     if ($ins eq "EMOS2") {
+	    	$event_file      = &get_evt_file("EMOS2",$obs,$Master_Analysis_path);
+	    	$mos2_filter  = &getfilter($event_file,$ext);
+	     }
+  	}
+
+    my $vig          = "yes";
+    $con = 0;
+    my @pn_exp_images =();
+    my @pn_images = ();
+    my @pn_pmin_e= ();
+    my @pn_pmax_e= ();
+    my @pn_ecf_set= ();
+    for $ene ( keys %{ $mosaic{$obs}{"EPN"}} ) {
+	    $S = "S".$ene; 
+	    $E = "E".$ene;
+	    $pn_exp_images[$con]    = &get_exp_image("EPN",$obs,$ene,$vig);
+	    $pn_images[$con]        = &get_image("EPN",$obs,$ene);	   
+	    $pn_pmin_e[$con]        = $mosaic{$obs}{"EPN"}{$ene}{$S};
+	    $pn_pmax_e[$con]        = $mosaic{$obs}{"EPN"}{$ene}{$E};
+	    $pn_ecf_set[$con]       = &ecfvalues($pn_filter,"EPN",$obs,$ene);
+	    $con++;
+    }
+    @pn_exp_images = sort  @pn_exp_images;
+    @pn_images = sort  @pn_images;
+   	@pn_pmin_e = sort { $a <=> $b } @pn_pmin_e;
+   	@pn_pmax_e = sort { $a <=> $b } @pn_pmax_e;
+ 
+    $con = 0;
+    my @mos1_exp_images =();
+    my @mos1_images = ();
+    my @mos1_pmin_e=();
+    my @mos1_pmax_e=();
+    my @mos1_ecf_set=();
+    for $ene ( keys %{ $mosaic{$obs}{"EMOS1"}} ) {
+	    $S = "S".$ene; 
+	    $E = "E".$ene;
+	    $mos1_exp_images[$con]  = &get_exp_image("EMOS1",$obs,$ene,$vig);
+	    $mos1_images[$con]      = &get_image("EMOS1",$obs,$ene);
+	    $mos1_pmin_e[$con]      = $mosaic{$obs}{"EMOS1"}{$ene}{$S};
+	    $mos1_pmax_e[$con]      = $mosaic{$obs}{"EMOS1"}{$ene}{$E};
+	    $mos1_ecf_set[$con]     = &ecfvalues($mos1_filter,"EMOS1",$obs,$ene);
+	    $con++;
+    }
+    @mos1_exp_images = sort  @mos1_exp_images;
+    @mos1_images = sort  @mos1_images;
+   	@mos1_pmin_e = sort { $a <=> $b } @mos1_pmin_e;
+   	@mos1_pmax_e = sort { $a <=> $b } @mos1_pmax_e;
+ 
+    $con = 0;
+    my @mos2_exp_images = ();
+    my @mos2_images = ();
+    my @mos2_pmin_e=();
+    my @mos2_pmax_e=();
+    my @mos2_ecf_set=();
+    for $ene ( keys %{ $mosaic{$obs}{"EMOS2"}} ) {
+	    $S = "S".$ene; 
+	    $E = "E".$ene;
+	    $mos2_exp_images[$con]  = &get_exp_image("EMOS2",$obs,$ene,$vig);
+	    $mos2_images[$con]      = &get_image("EMOS2",$obs,$ene);
+	    $mos2_pmin_e[$con]      = $mosaic{$obs}{"EMOS2"}{$ene}{$S};
+	    $mos2_pmax_e[$con]      = $mosaic{$obs}{"EMOS2"}{$ene}{$E}; 
+	    $mos2_ecf_set[$con]     = &ecfvalues($mos2_filter,"EMOS2",$obs,$ene);
+	    $con++;
+    }
+    @mos2_exp_images = sort  @mos2_exp_images;
+	@mos2_images = sort  @mos2_images;	
+    @mos2_pmin_e = sort { $a <=> $b } @mos2_pmin_e;
+   	@mos2_pmax_e = sort { $a <=> $b } @mos2_pmax_e;      
+   
+    my @expset       = (@pn_exp_images,@mos1_exp_images,@mos2_exp_images);
+    my @imaset       = (@pn_images,@mos1_images,@mos2_images);
+ 		
+    my $like_value   = &get_like_value;
+  
+    my @pimin_set    = (@pn_pmin_e,@mos1_pmin_e,@mos2_pmin_e);
+    my @pimax_set    = (@pn_pmax_e,@mos1_pmax_e,@mos2_pmax_e); 
+    my @ecf_set      = (@pn_ecf_set,@mos2_ecf_set,@mos1_ecf_set);
+
+    @args = ("eboxdetect"
+	     ,"boxlistset=$boxlist"
+	     ,"boxsize=$boxsize"
+	     ,"detmasksets=@maskset"
+	     ,"expimagesets=@expset"
+	     ,"usemap=no"
+	     ,"likemin=$like_value"
+	     ,"imagesets=@imaset"
+	     ,"nruns=1"
+	     ,"ecf=@ecf_set"
+	     ,"pimin=@pimin_set"
+	     ,"pimax=@pimax_set"
+	    );
+    
+    if ($debug) {foreach (@args){print ">> DEBUG: $_\n";}}
+    system(@args)== 0 or return(0);
+
+    return(1);
+}
+
+##############################################################################
+sub create_background_maps(){
+
+    my $obs         = $_[0];
+    if ($obs eq "") {return(0);}
+
+    my $boxlist = &get_boxlist;
+    
+    for $ins ( keys %{ $obsid_instruments{$obs}} ) {
+	my $ene         = 0; # use only one mask, any.
+	my $detmask     = &get_mask($ins,$obs,$ene);
+	
+	my $vig         = "yes";
+	for $ene ( keys %{ $mosaic{$obs}{$ins}} ) {
+	    $S = "S".$ene; 
+	    $E = "E".$ene;
+	    $pmin    = $mosaic{$obs}{$ins}{$ene}{$S};
+	    $pmax    = $mosaic{$obs}{$ins}{$ene}{$E};	
+	    $exp_ima = &get_exp_image($ins,$obs,$ene,$vig);
+	    $ima     = &get_image($ins,$obs,$ene); 
+	    $bkgimag = &get_bkgimg_set($ins,$obs,$ene);	
+	    
+	    @exp_ima = sort  @exp_ima;
+	    @ima = sort  @ima;
+	    @bkgimag = sort  @bkgimag;	
+	    @pmin = sort { $a <=> $b } @pmin;
+   		@pmax = sort { $a <=> $b } @pmax;
+	    
+	    @args = ("esplinemap"
+		     ,"bkgimageset=$bkgimag"
+		     ,"boxlistset=$boxlist"
+		     ,"detmaskset=$detmask"
+		     ,"withexpimage=yes"
+		     ,"expimageset=$exp_ima"
+		     ,"imageset=$ima"
+		     ,"idband=1"
+		     ,"fitmethod=spline"
+		     ,"nsplinenodes=13"
+		     ,"excesssigma=2.5"
+		     ,"nfitrun=3"
+		     ,"scut=0.002"
+		     ,"withootset=no"
+		     ,"pimin=$pmin"
+		     ,"pimax=$pmax"
+		     );
+	    
+	    if ($debug) {foreach (@args){print ">> DEBUG: $_\n";}}	    
+	    system(@args)== 0 or return(0);
+	}
+    }
+    return(1);
+}
+
+############################################################################
+###  Order the content of the hash array regarding obsid
+###
+###########################################################################
+sub fixorder(\%\@) {
+
+	($values,$sortArr) = @_;	
+
+	foreach my $obs (sort keys %{$values}) {
+    	##printf "%-8s %s\n", $obs, $$values{$obs};
+    	push @{$sortArr},$$values{$obs};
+    }
+       
+	return(1);
+}
+##############################################################################
+
+
+############################################################################
+###  Order the content of the hash array regarding obsid
+###
+###########################################################################
+sub fixorderener(\%\@) {
+
+	($values,$sortArr) = @_;	
+
+	foreach my $obs (sort keys %{$values}) {
+		foreach my $ener (sort keys %{ $$values{$obs} }) {
+			##printf "%-8s %s\n", $obs, $$values{$obs}{$ener};
+    		push @{$sortArr},$$values{$obs}{$ener};
+    	}
+	}
+       
+	return(1);
+}
+##############################################################################
+
+
+##############################################################################
+sub run_mosaic_detect(){
+
+    my $boxlist      = &get_mosaic_boxlist;  
+    my $emllist      = &get_mosaic_emllist;
+    my $mosaic_image = &get_mosaic_image;
+    my $boxsize      = &get_boxsize;
+    my $like_value   = &get_like_value;
+      
+    
+    my @pn_maskset = ();
+    my @mos1_maskset = ();
+    my @mos2_maskset = ();
+    for $obs ( keys %obsid_instruments) {
+		for $ins ( keys %{ $obsid_instruments{$obs}} ) {
+		    $ene = 0;    # use only one mask, any.
+		    switch($ins) {
+	    		case "EPN" 	 	{ $pn_maskset{$obs} = &get_mask($ins,$obs,$ene);}
+	    		case "EMOS1"	{ $mos1_maskset{$obs} = &get_mask($ins,$obs,$ene);}
+	    		case "EMOS2"	{ $mos2_maskset{$obs} = &get_mask($ins,$obs,$ene);}
+	    		else 			{print "INSTRUMENT NOT FOUND\n"; exit;}
+	    	}
+		}
+    }
+    
+    my @maskset = ();
+    &fixorder(\%pn_maskset,\@maskset);
+    &fixorder(\%mos1_maskset,\@maskset);
+    &fixorder(\%mos2_maskset,\@maskset);
+    
+    
+    my @pn_expset = ();
+	my @mos1_expset = ();
+	my @mos2_expset = ();
+	my @pn_bkgset = ();
+	my @mos1_bkgset = ();
+	my @mos2_bkgset = ();
+	my @pn_imaset = ();
+	my @mos1_imaset = ();
+	my @mos2_imaset = ();
+	my @pn_srcimaset = ();
+	my @mos1_srcimaset = ();
+	my @mos2_srcimaset = ();
+	my @pn_ecf_set = ();
+	my @mos1_ecf_set = ();
+	my @mos2_ecf_set = ();	
+	my @pn_pimin_set = ();
+	my @mos1_pimin_set = ();
+	my @mos2_pimin_set = ();	
+	my @pn_pimax_set = ();
+	my @mos1_pimax_set = ();
+	my @mos2_pimax_set = ();
+	
+    for $obs ( keys %obsid_instruments) {
+	for $ins ( keys %{ $obsid_instruments{$obs}} ) {
+	    $ext          = 1; # for event file header
+	    $event_file   = &get_evt_file($ins,$obs,$Master_Analysis_path);   
+	    $filter       = &getfilter($event_file,$ext);
+	    for $ene ( keys %{ $mosaic{$obs}{$ins}} ) { 
+		    $S   = "S".$ene; 
+		    $E   = "E".$ene;
+		    $vig = 'yes';
+		    switch($ins) {
+		    	case "EPN" {
+		    		$pn_expset{$obs}{$ene}    = &get_exp_image($ins,$obs,$ene,$vig);
+		    		$pn_bkgset{$obs}{$ene}    = &get_bkgimg_set($ins,$obs,$ene);
+		    		$pn_imaset{$obs}{$ene}    = &get_image($ins,$obs,$ene);
+		    		$pn_srcimaset{$obs}{$ene} = &get_src_image($ins,$obs,$ene);
+		    		$pn_ecf_set{$obs}{$ene}   = &ecfvalues($filter,$ins,$obs,$ene);
+		    		$pn_pimin_set{$obs}{$ene} = $mosaic{$obs}{$ins}{$ene}{$S};
+		    		$pn_pimax_set{$obs}{$ene} = $mosaic{$obs}{$ins}{$ene}{$E};
+		    	}
+		    	case "EMOS1" {
+		    		$mos1_expset{$obs}{$ene}    = &get_exp_image($ins,$obs,$ene,$vig);
+		    		$mos1_bkgset{$obs}{$ene}    = &get_bkgimg_set($ins,$obs,$ene);
+		    		$mos1_imaset{$obs}{$ene}    = &get_image($ins,$obs,$ene);
+		    		$mos1_srcimaset{$obs}{$ene} = &get_src_image($ins,$obs,$ene);
+		    		$mos1_ecf_set{$obs}{$ene}   = &ecfvalues($filter,$ins,$obs,$ene);
+		    		$mos1_pimin_set{$obs}{$ene} = $mosaic{$obs}{$ins}{$ene}{$S};
+		    		$mos1_pimax_set{$obs}{$ene} = $mosaic{$obs}{$ins}{$ene}{$E};
+		    	}
+		    	case "EMOS2" {
+		    		$mos2_expset{$obs}{$ene}     = &get_exp_image($ins,$obs,$ene,$vig);
+		    		$mos2_bkgset{$obs}{$ene}     = &get_bkgimg_set($ins,$obs,$ene);
+		    		$mos2_imaset{$obs}{$ene}     = &get_image($ins,$obs,$ene);
+		    		$mos2_srcimaset{$obs}{$ene}  = &get_src_image($ins,$obs,$ene);
+		    		$mos2_ecf_set{$obs}{$ene}    = &ecfvalues($filter,$ins,$obs,$ene);
+		    		$mos2_pimin_set{$obs}{$ene}  = $mosaic{$obs}{$ins}{$ene}{$S};
+		    		$mos2_pimax_set{$obs}{$ene}  = $mosaic{$obs}{$ins}{$ene}{$E};
+		    	}
+		    	else 			{print "INSTRUMENT NOT FOUND\n"; exit;}
+		    }
+		    $con++;
+	    }
+	}
+    }
+
+	##SORT ARRAYS....
+	
+ 	&fixorderener(\%pn_expset,\@expset);
+    &fixorderener(\%mos1_expset,\@expset);
+    &fixorderener(\%mos2_expset,\@expset);
+ 		
+ 	&fixorderener(\%pn_bkgset,\@bkgset);
+    &fixorderener(\%mos1_bkgset,\@bkgset);
+    &fixorderener(\%mos2_bkgset,\@bkgset);
+	 	
+ 	&fixorderener(\%pn_imaset,\@imaset);
+    &fixorderener(\%mos1_imaset,\@imaset);
+    &fixorderener(\%mos2_imaset,\@imaset);
+
+ 	&fixorderener(\%pn_srcimaset,\@srcimaset);
+    &fixorderener(\%mos1_srcimaset,\@srcimaset);
+    &fixorderener(\%mos2_srcimaset,\@srcimaset);
+
+ 	&fixorderener(\%pn_ecf_set,\@ecf_set);
+    &fixorderener(\%mos1_ecf_set,\@ecf_set);
+    &fixorderener(\%mos2_ecf_set,\@ecf_set);
+
+ 	&fixorderener(\%pn_pimin_set,\@pimin_set);
+    &fixorderener(\%mos1_pimin_set,\@pimin_set);
+    &fixorderener(\%mos2_pimin_set,\@pimin_set);
+ 
+ 	&fixorderener(\%pn_pimax_set,\@pimax_set);
+    &fixorderener(\%mos1_pimax_set,\@pimax_set);
+    &fixorderener(\%mos2_pimax_set,\@pimax_set);
+
+
+    @args = ("eboxdetect"
+	     ,"boxlistset=$boxlist"
+	     ,"boxsize=$boxsize"
+	     ,"detmasksets=@maskset"
+	     ,"withdetmask=yes"
+	     ,"expimagesets=@expset"
+	     ,"withexpimage=yes"
+	     ,"usemap=yes"
+	     ,"bkgimagesets=@bkgset"
+	     ,"likemin=$like_value"
+	     ,"imagesets=@imaset"
+	     ,"ecf=@ecf_set"
+	     ,"pimin=@pimin_set"
+	     ,"pimax=@pimax_set"
+	    );
+    
+    if ($debug) {foreach (@args){print "$_ \n";}}	    
+
+    system(@args)== 0 or return(0);
+
+    @args = ("emldetect"
+	     ,"mllistset=$emllist"
+	     ,"imagesets=@imaset"
+	     ,"expimagesets=@expset"
+	     ,"boxlistset=$boxlist"
+	     ,"ecut=10."
+	     ,"nmulsou=1"
+	     ,"bkgimagesets=@bkgset"
+	     ,"determineerrors=yes"
+	     ,"ecf=@ecf_set"
+	     ,"pimin=@pimin_set"
+	     ,"pimax=@pimax_set"
+	     ,"mlmin=6"
+	     ,"fitextent=no"
+	     ,"sourceimagesets=@srcimaset"
+	     ,"detmasksets=@maskset"
+	    );
+    
+    if ($debug) {foreach (@args){print ">> DEBUG: $_\n";}}	    
+    system(@args)== 0 or return(0);
+    
+    @args = ("emosaic"
+	     ,"imagesets=@imaset"
+	     ,"mosaicedset=$mosaic_image"
+	    );
+    
+    if ($debug) {foreach (@args){print ">> DEBUG: $_\n";}}	    
+    system(@args)== 0 or return(0);
+    
+    return(1);
+}
+
+##############################################################################
+sub get_image(){
+    my $instr = $_[0];
+    if ($instr eq "") {return(0);}
+    my $obs   = $_[1];
+    if ($obs eq "") {return(0);}
+    my $ene   = $_[2];
+    if ($ene eq "") {return(0);}
+    
+    if ($instr eq "EPN") {$path = $pn_path;} 
+    if ($instr eq "EMOS1" || $instr eq "EMOS2") {$path = $mos_path;} 
+
+	my $firstchar =  substr $obs, 0,1;
+	
+	if ($firstchar eq "/")
+	{
+		$rel_path = "";
+	}
+	else
+	{
+		$rel_path = $Master_Analysis_path;
+	}
+
+    $image = $rel_path.$obs."/".$path.$mosaic{$obs}{$instr}{$ene}{"Image"}; 
+
+    return($image);
+}
+
+##############################################################################
+sub get_src_image(){
+    my $instr = $_[0];
+    if ($instr eq "") {return(0);}
+    my $obs   = $_[1];
+    if ($obs eq "") {return(0);}
+    my $ene   = $_[2];
+    if ($ene eq "") {return(0);}
+    
+    $image = $global_mosaic_path.$mosaic{$obs}{$instr}{$ene}{"SRCImage"}; 
+
+    return($image);
+}
+
+##############################################################################
+sub get_exp_image(){
+    my $instr = $_[0];
+    if ($instr eq "") {return(0);}
+    my $obs   = $_[1];
+    if ($obs eq "") {return(0);}
+    my $ene   = $_[2];
+    if ($ene eq "") {return(0);}
+    my $vig   = $_[3];
+    if ($vig eq "") {return(0);}
+      
+    if ($instr eq "EPN") {$path = $pn_path;} 
+    if ($instr eq "EMOS1" || $instr eq "EMOS2") {$path = $mos_path;} 
+
+    if ($vig eq "yes"){$exp=1;}
+    if ($vig eq "no"){$exp=2;}
+
+	my $firstchar =  substr $obs, 0,1;
+	
+	if ($firstchar eq "/")
+	{
+		$rel_path = "";
+	}
+	else
+	{
+		$rel_path = $Master_Analysis_path;
+	}
+    $exp_images = $rel_path.$obs."/".$path."exp".$exp."_".$mosaic{$obs}{$instr}{$ene}{"ExMap"};
+	
+	
+
+    return($exp_images);
+}
+
+
+##############################################################################
+sub get_filtered_evt_file(){
+    my $instr = $_[0];
+    if ($instr eq "") {return(0);}
+    my $obs   = $_[1];
+    if ($obs eq "") {return(0);}
+    my $ene   = $_[2];
+    if ($ene eq "") {return(0);}
+
+    if ($instr eq "EPN") {$path = $pn_path;} 
+    if ($instr eq "EMOS1" || $instr eq "EMOS2") {$path = $mos_path;} 
+
+	my $firstchar =  substr $obs, 0,1;
+	
+	if ($firstchar eq "/")
+	{
+		$rel_path = "";
+	}
+	else
+	{
+		$rel_path = $Master_Analysis_path;
+	}
+
+    $filter = $rel_path.$obs."/".$path.$mosaic{$obs}{$instr}{$ene}{"FEvtFile"};
+
+    return($filter);
+}
+
+
+##############################################################################
+sub get_mask(){
+    my $instr = $_[0];  
+    if ($instr eq "") {return(0);}
+    my $obs   = $_[1];
+    if ($obs eq "") {return(0);}
+    my $ene   = $_[2];
+    if ($ene eq "") {return(0);}
+
+    if ($instr eq "EPN") {$path = $pn_path;} 
+    if ($instr eq "EMOS1" || $instr eq "EMOS2") {$path = $mos_path;} 
+	
+	my $firstchar =  substr $obs, 0,1;
+	
+	if ($firstchar eq "/")
+	{
+		$rel_path = "";
+	}
+	else
+	{
+		$rel_path = $Master_Analysis_path;
+	}
+    
+    $mask = $rel_path.$obs."/".$path.$mosaic{$obs}{$instr}{$ene}{"Mask"};  
+    return($mask);
+}
+
+##############################################################################
+sub get_boxlist(){
+    	
+    my $box = $obs."/".$mosaic_path."eboxlist_l.fits";
+    return($box);
+}
+
+##############################################################################
+sub get_mosaic_boxlist(){
+    my $box = $global_mosaic_path."mosaic_eboxlist.fits";
+    return($box);
+}
+
+##############################################################################
+sub get_mosaic_emllist(){
+    my $eml = $global_mosaic_path."mosaic_emllist.fits";
+    return($eml);
+}
+
+##############################################################################
+sub get_mosaic_image(){
+    my $img = $global_mosaic_path."mosaic_image.ds";
+    return($img);
+}
+
+##############################################################################
+sub get_bkgimg_set(){
+    my $instr = $_[0];
+    if ($instr eq "") {return(0);} 
+    my $obs   = $_[1];
+    if ($obs eq "") {return(0);}
+    my $ene   = $_[2];
+    if ($ene eq "") {return(0);}
+
+    if ($instr eq "EPN") {$path = $pn_path;} 
+    if ($instr eq "EMOS1" || $instr eq "EMOS2") {$path = $mos_path;} 
+	my $firstchar =  substr $obs, 0,1;
+	
+	if ($firstchar eq "/")
+	{
+		$rel_path = "";
+	}
+	else
+	{
+		$rel_path = $Master_Analysis_path;
+	}
+	
+    $bkg = $rel_path.$obs."/".$path.$mosaic{$obs}{$instr}{$ene}{"BKGMap"}; 
+    return($bkg);
+}
+
+##############################################################################
+sub get_imagesize(){
+    my $instr = $_[0];
+    if ($instr eq "") {return(0);}
+
+    if ($instr eq "EPN") {return(0.5);}
+    if ($instr eq "EMOS1") {return(0.5);} 
+    if ($instr eq "EMOS2") {return(0.5);}
+    return(0);
+}
+
+##############################################################################
+sub get_imagexbinsize(){
+    my $instr = $_[0];
+    if ($instr eq "") {return(0);}
+
+    if ($instr eq "EPN") {return(80);}
+    if ($instr eq "EMOS1") {return(80);} 
+    if ($instr eq "EMOS2") {return(80);}
+    return(0);
+}
+
+##############################################################################
+sub get_imageybinsize(){
+    my $instr = $_[0];
+    if ($instr eq "") {return(0);}
+    
+    if ($instr eq "EPN") {return(80);}
+    if ($instr eq "EMOS1") {return(80);} 
+    if ($instr eq "EMOS2") {return(80);}
+    return(0);
+}
+
+##############################################################################
+sub get_imagebinning(){
+    my $instr = $_[0];
+    if ($instr eq "") {return(0);}
+
+    if ($instr eq "EPN") {return("binSize");}
+    if ($instr eq "EMOS1") {return("binSize");} 
+    if ($instr eq "EMOS2") {return("binSize");}
+    return(0);
+}
+
+
+
+##############################################################################
+sub get_gti_file(){
+    my $instr = $_[0];
+    if ($instr eq "") {return(0);}
+    my $obs   = $_[1];
+    if ($obs eq "") {return(0);}
+
+    if (length($obsid_instruments{$obs}{$instr}{'GTIFile'}) == 0) {return(0);}
+  	my $firstchar =  substr $obs, 0,1;
+	my $rel_path = "";
+	if ($firstchar eq "/")
+	{
+		$rel_path = "";
+	}
+	else
+	{
+		$rel_path = $Master_Analysis_path;
+	}
+
+	return($obsid_instruments{$obs}{$instr}{'GTIFile'});
+        
+}
+
+####################################################################################
+sub get_pointing_gti_file()
+{
+    my $instr = $_[0];
+    if ($instr eq "") {return(0);}
+    my $obs   = $_[1];
+    if ($obs eq "") {return(0);}
+	
+    if (length($obsid_instruments{$obs}{$instr}{'gti_position'}) == 0) {return(0);}
+  	my $firstchar =  substr $obs, 0,1;
+	my $rel_path = "";
+	if ($firstchar eq "/")
+	{
+		$rel_path = "";
+	}
+	else
+	{
+		$rel_path = $Master_Analysis_path;
+	}
+
+	return($rel_path.$obs."/".$gti_path.$obsid_instruments{$obs}{$instr}{'gti_position'});
+    return(1);    
+	
+}
+
+
+##############################################################################
+sub get_att_file(){    
+    my $instr = $_[0];
+    if ($instr eq "") {return(0);}
+    my $obs   = $_[1];
+    if ($obs eq "") {return(0);}
+    
+    my $firstchar =  substr $obs, 0,1;
+	if ($firstchar eq "/")
+	{
+		$rel_path = "";
+	}
+	else
+	{
+		$rel_path = $Master_Analysis_path;
+	}
+    return($rel_path.$obs."/".$obsid_instruments{$obs}{$instr}{'AttFile'});
+   
+    return(1);
+}
+
+##############################################################################
+sub get_ats_file(){    
+    my $instr = $_[0];
+    if ($instr eq "") {return(0);}
+    my $obs   = $_[1];
+    if ($obs eq "") {return(0);}
+
+    return($Master_Analysis_path.$obs."/".$obsid_instruments{$obs}{$instr}{'AtSFile'});
+    return(1);
+}
+
+##############################################################################
+sub get_emask_threshold(){
+    my $instr = $_[0];     
+    if ($instr eq "") {return(0);}   
+    my $obs   = $_[1];
+    if ($obs eq "") {return(0);}
+
+    if ($instr eq "EPN") {return(0.5);}
+    if ($instr eq "EMOS1") {return(0.5);}
+    if ($instr eq "EMOS2") {return(0.5);}
+    return(1);  
+}
+
+##############################################################################
+sub get_like_value(){return(6);}
+
+##############################################################################
+sub get_boxsize(){return(5);}
+
+##############################################################################
+sub ecfvalues(){
+    my $filter = $_[0];
+    if ($filter eq "") {return(0);}  
+    my $instr = $_[1];     
+    if ($instr eq "") {return(0);}   
+    my $obs   = $_[2];
+    if ($obs eq "") {return(0);}
+    my $ene   = $_[3];
+    if ($ene eq "") {return(0);}
+
+    $filter =~ s/\s+//;
+
+    if ($filter eq "Open"){$f="ECFOpen";}
+    if ($filter eq "Thick"){$f="ECFThick";}
+    if ($filter eq "Medium"){$f="ECFMed";}
+    if ($filter eq "Thin" or $filter eq "Thin1" or $filter eq "Thin2"){$f="ECFThin";}
+
+    $ecf=$mosaic{$obs}{$instr}{$ene}{$f};
+    
+    return($ecf);
+} 
+
+
+##############################################################################
+sub getfilter(){
+    my $event_file = $_[0]; 
+    my $ext        = $_[1];  
+    chomp(my $filter = `fkeyprint infile=$event_file+$ext keynam=FILTER outfil=STDOUT exact=yes | grep FILTER | tail -1 | cut -c12-25`);
+    $filter    =~ s/\s+//;
+    $filter    =~ s/\'+//;
+    if ($filter eq "FILTER" || $filter eq "" || $filter eq "UNKNOWN") {$filter ="unknown";}
+    return($filter);
+}
+
+
+##############################################################################
+sub getobsid(){
+    my $event_file = $_[0]; 
+    my $ext        = $_[1]; 
+    chomp(my $obs   = `fkeyprint infile=$event_file+$ext keynam=OBS_ID outfil=STDOUT exact=yes | grep s | tail -1 | cut -c10-31`);
+    $obs     =~ s/\s+//;
+    $obs     =~ s/\'+//;
+    if ($obs eq "OBS_ID" || $obs eq "") {$obs ="unknown";}
+    return($obs);
+}
+
+##############################################################################
+sub get_nomra(){
+    my $event_file = $_[0]; 
+    my $ext        = $_[1]; 
+    
+    chomp(my $ra   = `fkeyprint infile=$event_file+$ext keynam=AAHFRA outfil=STDOUT exact=yes | grep AAHFRA | tail -1 | cut -c10-31`);
+    $ra     =~ s/\s+//;
+    $ra     =~ s/\'+//;
+    if ($ra eq "AAHFRA" || $ra eq "") {$ra ="unknown";}
+    return($ra);
+}
+
+##############################################################################
+sub get_nomdec(){
+    my $event_file = $_[0]; 
+    my $ext        = $_[1]; 
+    chomp(my $dec   = `fkeyprint infile=$event_file+$ext keynam=AAHFDEC outfil=STDOUT exact=yes | grep AAHFDEC | tail -1 | cut -c10-31`);
+    $dec     =~ s/\s+//;
+    $dec     =~ s/\'+//;
+    if ($dec eq "AAHFDEC" || $dec eq "") {$dec ="unknown";}
+    return($dec);
+}
+
+##############################################################################
+sub getTime()
+{
+	
+	my $file = $_[0];
+	my $keyword = $_[1];
+	
+	
+    chomp(my $time   = `fdump $file+1 outfile=STDOUT columns=$keyword ROWS=1 prhead=no showcol=no prdata=yes showunit=no showrow=no showscale=no`);
+    $time     =~ s/\s+//;
+    $time     =~ s/\'+//;
+    if ($time eq "") {$time ="unknown";}
+    
+    return($time);
+}
+
+
+##############################################################################
+sub get_Xima_limits()
+{
+
+  my $file = $_[0];
+  my $coord = $_[1];
+  
+  chomp(my $min   = `fkeyprint $file+1 outfile=STDOUT keynam=TDMIN | awk \'\{if \(\$0 ~ \" X \"\) print \$3\} \' `);
+  chomp(my $max   = `fkeyprint $file+1 outfile=STDOUT keynam=TDMAX | awk \'\{if \(\$0 ~ \" X \"\) print \$3\} \' `);
+
+  return ($min, $max);
+
+}
+
+##############################################################################
+sub get_Yima_limits()
+{
+
+  my $file = $_[0];
+  my $coord = $_[1];
+  
+  chomp(my $min   = `fkeyprint $file+1 outfile=STDOUT keynam=TDMIN | awk \'\{if \(\$0 ~ \" Y \"\) print \$3\} \' `);
+  chomp(my $max   = `fkeyprint $file+1 outfile=STDOUT keynam=TDMAX | awk \'\{if \(\$0 ~ \" Y \"\) print \$3\} \' `);
+
+  return ($min, $max);
+
+}
+
+
+#========================================================================
+sub parameters_init(){
+
+#.. Read Default Parameters
+
+#.. Read Script Options
+
+    my $name="emosaicproc";
+    my $line="@ARGV"; 
+    my @save;
+   
+    if ( @save = grep /^\-p/ , @ARGV) {
+       &usage($name);
+    };
+
+    if ( @save = grep /^-d/ , @ARGV) {
+	     system("sasdialog $name");
+		 my $x = $? >> 8;
+    	 exit($x);      
+    }
+
+    if ( @save = grep /^-v/ , @ARGV) {
+		&getVersion($name);
+    }
+#.. Default parameters (Start)
+  
+    if ( @save = grep /^pnevlist=/ , @ARGV) {
+       $temp ="$save[-1]";
+       $temp =~ s/^.*=//; 
+       @pnevlist = split/\s/,$temp;
+    } else { undef  @pnevlist;}  
+    
+    if ( @save = grep /^pnPImin=/ , @ARGV) {
+       $temp ="$save[-1]";
+       $temp =~ s/^.*=//; 
+       print $temp."\n";
+       @pn_pmin = split/\s/,$temp;              
+    } else {@pn_pmin = &getDefaultParams("pnPImin");}  
+	
+	    
+    if ( @save = grep /^pnPImax=/ , @ARGV) {
+       $temp ="$save[-1]";
+       $temp =~ s/^.*=//; 
+       @pn_pmax = split/\s/,$temp; 
+    } else { @pn_pmax = &getDefaultParams("pnPImax"); }  
+
+
+
+    if ( @save = grep /^mos1evlist=/ , @ARGV) {
+       $temp ="$save[-1]";
+       $temp =~ s/^.*=//; 
+       @mos1evlist = split/\s/,$temp;
+    } else { undef @mos1evlist; }      
+
+    if ( @save = grep /^mos1PImin=/ , @ARGV) {
+       $temp ="$save[-1]";
+       $temp =~ s/^.*=//; 
+       @mos1_pmin = split/\s/,$temp;
+    } else { @mos1_pmin = &getDefaultParams("mos1PImin"); }  
+    
+
+    
+    if ( @save = grep /^mos1PImax=/ , @ARGV) {
+       $temp ="$save[-1]";
+       $temp =~ s/^.*=//; 
+       @mos1_pmax = split/\s/,$temp;
+    } else { @mos1_pmax = &getDefaultParams("mos1PImax"); }  
+
+
+
+    if ( @save = grep /^mos2evlist=/ , @ARGV) {
+       $temp ="$save[-1]";
+       $temp =~ s/^.*=//; 
+       @mos2evlist = split/\s/,$temp;
+    } else { undef  @mos2evlist; }       
+   
+    if ( @save = grep /^mos2PImin=/ , @ARGV) {
+       $temp ="$save[-1]";
+       $temp =~ s/^.*=//; 
+       @mos2_pmin = split/\s/,$temp;
+    } else { @mos2_pmin = &getDefaultParams("mos2PImin"); }  
+    
+
+    
+    if ( @save = grep /^mos2PImax=/ , @ARGV) {
+       $temp ="$save[-1]";
+       $temp =~ s/^.*=//; 
+       @mos2_pmax = split/\s/,$temp;
+    } else {@mos2_pmax = &getDefaultParams("mos2PImax");}  
+  
+   		
+    if ( @save = grep /^gtifile=/ , @ARGV) {
+       $gtifile ="$save[-1]";
+       $gtifile =~ s/^.*=//;        
+       $gtifile =~ s/\+/\_/;
+    } else { undef $gtifile; }      
+    
+    if ( @save = grep /^outdir=/ , @ARGV) {
+       $outdir="$save[-1]";
+       $outdir =~ s/^.*=//; 
+       $outdir =~ s/\+/\_/;                       		
+    } else { $outdir="mosaic"; }  
+   
+   
+   
+    return (0);
+}
+
+sub getDefaultParams()
+{
+	chomp(my @params  = `listparams emosaicproc`);
+	foreach (@params)
+    {
+    		my @val = split/\=/,$_;
+    		$val[0] =~ s/\s+//g; 
+    		if ($val[0] eq $_[0])    		    		
+    		{
+    				$val[1] =~ s/\'//g;
+    				$val[1] =~ s/^\s+//;     				
+					$val[1] =~ s/\s+$//;
+    				
+    				@store = split/\s/,$val[1];
+    				
+    				return (@store);
+    		}		
+    	}
+}
+
+1;
+

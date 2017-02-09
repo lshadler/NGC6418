@@ -1,0 +1,535 @@
+ChangeLog for omichain
+===============================
+
+Version 1.71.1 - 2014-09-30 (RDS) 
+--------------	
+	+(src/omichain.pl) Uses taskmain to handle command line options
+
+Version 1.71 - 2014-04-02 (EC)
+--------------
+	- moved binary data test/*123920103* to
+	testprods/omichain_data
+	- removed other unused binary data 
+
+Version 1.70 - 2014-03-20 (VNY,EOP) 
+--------------	
+	+(src/omichain.pl) Changed the name of the intermediate 
+	image (detectorCoordImageFileName) which was marked as 
+	a product (P...), but which was actually not the final 
+	product (i.e. it should be I...) in the call to the routine 
+	omqualitymap. The terminating string of this name is changed 
+	from _windowNo0 to 3windowNo0. The name of the image containing 
+	the quality map (stringQmap2) is changed from QIMA2_windowNo 
+	to IMAGE_windowNo.	
+Version 1.69.1 - 2013-08-02 (VNY)
+------------
+	+(doc/omichain_description.tex) Documentation updated
+Version 1.69 - 2012-12-14 (VNY)	
+------------	
+	+(src/omichain.pl) Fixed the problem of omitted end-4 images
+Version 1.68 - 2012-12-04 (VNY)	
+------------	
+	+(src/omichain.pl) Some test messages are removed 	
+Version 1.67 - 2012-12-04 (VNY)	
+------------	
+	+(src/omichain.pl) Protected from crashing when finding
+	an undefined OM filter.
+Version 1.66 - 2012-12-02 (VNY)	
+------------	
+	+(src/omichain.pl) added the task omregion to generate
+	the region file for the merged source list
+Version 1.65 - 2012-11-23 (VNY)
+------------
+	+(src/omichain.pl) Introduced the creation of the region file
+	for the mosaiced sky image; the extensions of region files
+	are changed from .ASC to .reg to make them consistent with ds9;
+	Introduced the task omvariability to calculate the 
+	exposure-to-exposure source variability parameters
+	+(config/omichain.par); the default value of the parameter 
+	"processmosaicedimages" is set to "yes" (was "no").
+Version 1.64 - 2012-11-19 (VNY)
+------------
+	+(src/omichain.pl) Protected against possible crash of omprep
+	if the input ODF does not contain the correct raw attitude data. 
+Version 1.63 - 2012-11-14 (VNY)
+	+(DEPEND) Dependencies updated
+------------
+Version 1.62 - 2012-10-23 (VNY)
+------------
+	+(src/omichain.pl) Adjusted the call to omatt, which, 
+	from the version 2.53, can generate its own USNO subset
+Version 1.61 - 2011-06-07 (VNY) 
+------------
+	+(src/omichain.pl) Setting the default value of the parameter 
+	rawattitude to 1, which means using the Raw Attitude File and 
+	averaging attitude for the first 20 s of the exposure; 
+	in the case the tracking history file is not found or the images 
+	are in the full-frame mode (ENG2 or ENG4) then the value of 
+	the parameter rawattitude is reset to 2, which means averaging 
+	raw attitudes over the whole exposure time
+Version 1.60 - 2011-05-20 (VNY)
+------------	
+	+(src/omichain.pl) The algorithm for compiling the image file lists
+	corresponding to the same OM filter is modified to use the
+	unique filter number to prevent stacking images from different
+	filters (SSC-SPR-6655).
+Version 1.59 - 2011-03-22 (VNY)
+-------------
+	+(config/omichain.par, src/omichain.pl) introduced the optional
+	parameter rawattitude, which is required by the new version
+	of omprep.
+Version 1.58 - 2010-04-21 (VNY)
+-------------
+	+(config/omichain.par, src/omichain.pl) introduced the optional
+	parameter maxrawcountrate, which is required by the new version
+	of omdetect.
+Version 1.57.1 - 2010-02-25 (VNY) 
+--------------	
+	+(src/omichain.pl), DEPEND
+        Introduced the optional parameters psfphotometryenabled and 
+	backgroundmethod, which are required by the new version of omdetect.
+	
+Version 1.57 - 2010-01-29 (CB) 
+--------------
+        +doc further documentation clarification
+
+Version 1.56 - 2010-01-28 (CB) 
+--------------
+        +doc documentation clarification
+	about Rudi-5 data
+
+	
+Version 1.55 - 2010-01-25 (CB) 
+--------------
+        Ammended documentation
+
+	
+Version 1.54.1 - Version 1.54 - 2009-04-07 (CB) 
+--------------
+	+scr Modified perl script to
+	check image file FITS headers
+	to determin window-type (fixes SPR 6552)
+
+Version 1.54 - 2009-04-07 (CB) 
+--------------
+        Ammended documentation
+
+	
+Version 1.53 - 2009-04-07 (CB) 
+--------------
+        Ammended DEPEND file to fix dependency failure
+        Modified to process mosaiced sky images
+
+Version 1.52 - 2008-04-17 (CB) 
+--------------
+	Intruduced optional parameter "alignaxes"
+	for omsrclistcomb and updated documentation.
+
+
+
+Version 1.50 - 2007-05-21 (CB) 
+--------------
+	Updated documentation.
+
+	
+Version 1.49 - 2007-05-17 (CB) 
+--------------
+	Removed a few test write statements and made the
+	omdetect background image an intermediate file.
+        
+
+	
+Version 1.48 - 2007-03-09 (CB) 
+--------------
+        Made a few more improvements to the documentation.
+	
+Version 1.47 - 2007-01-25 (CB) 
+--------------
+        Made a few improvements to the documentation  (fixes SPR 3635).
+	
+
+Version 1.46.1 - 2006-02-17 (CB) 
+--------------
+        Ammended perl script so that the input directory name is not
+	prefixed to the usno catalogue name when no catalogue name is 
+	given (fixes SPR 3584).
+	
+Version 1.46 - 2005-09-14 (CB) 
+--------------
+	Increased the default value of omdetectnsigma to 4.0
+
+Version 1.45.14 - 2005-06-09 (CB) 
+--------------
+	Increased the value of omdetectnsigma in the test
+	harness to fix time-out failures on some platforms
+	(SPR 3476)
+
+Version 1.45.13 - 2005-05-23 (CB) 
+--------------
+	Ammended DEPEND file to fix build failure.
+Version 1.45.12 - 2004-06-01 (CB) 
+--------------
+	Changed the output line "Processing exposure no .. (RUDI5)"
+	to  "Processing exposure no .. (IMAGING)- further fix to
+	SPR 3446.
+
+
+Version 1.45.11 - 2004-06-01 (CB) 
+--------------
+	Changed the name of the combined source-list file to contain the
+	string "COMBINED" instead of "RUDI5".  (fixes SPR 3446)
+
+Version 1.45.10 - 2004-06-01 (CB) 
+--------------
+	Ammended documentation and replaced imaging-chain diagram with
+	two new ones.  (fixes SPR 3328)
+	
+Version 1.45.9 - 2004-06-01 (CB) 
+--------------
+	Modified perl-script and configuration file  for new paramters
+        for astrometry correction (fixes SPR 3328)
+Version 1.45.8 - 2004-05-29 (VNY) 
+--------------
+	+(src/omichain.pl) Correction in the subroutine GetODFDirectory 
+	to protect the task from a failure during its test in Mac-machines
+	
+Version 1.45.7 - 2004-05-27 (CB)
+--------------
+	 Ammended test harness to fix mac test failure
+  
+Version 1.45.6 - 2004-04-14 (VNY)
+	 protected against uninitialized string variable SASFILE
+         in lines 398-413 (fixing SSC-SPR-3286)
+	
+Version 1.45.5 - 2004-03-15 (CB)
+--------------
+	Documentation ammended.
+Version 1.45.4 - 2004-02-24 (CB)
+--------------
+	Use DAL statement commented out.
+	
+Version 1.45.3 - 2004-02-01 (VNY)
+--------------
+	Protected from crashing when the verbosity level is higher 
+	than seven.
+Version 1.45.2 - 2004-01-28 (CB)
+--------------        	
+	Implememted Eduardo's fix to perl script to fix SPR 3236
+     
+Version 1.45.1 - 2004-01-19 (CB)
+--------------        	
+	Changed default value of parameter omdetectminsignificance
+	to that used in omdetect configuration file (fixes SPR 3196)
+        Ammended perl script to fix SPR 2133	
+Version 1.45 - 2003-12-08 (CB)
+--------------        
+	"usecat" parameters to omatt & omsrclistcomb corrected.
+	
+Version 1.44 - 2003-12-04 (CB)
+--------------        
+	Correction made to perl-script in setting up directory paths.
+	
+Version 1.43 - 2003-12-03 (CB)
+--------------        
+	Data in test harness replaced to reduce execution time and 
+	prevent failure due to insufficient time.
+	
+Version 1.42 - 2003-11-21 (CB)
+--------------        
+	DEPEND file ammended for ssclib 3.0
+	
+Version 1.41 - 2003-11-07 (CB)
+--------------        
+         Further modification to perl-script  to fix SPR 3162.
+
+
+Version 1.40 - 2003-11-06 (CB)
+--------------        
+         Further modifications to perl-script  to fix SPR 3162.
+
+Version 1.39 - 2003-11-05 (CB)
+--------------        
+         Perl script modified to fix SPR 3162 (problem with
+	 SAS summary file).
+
+	
+Version 1.38 - 2003-08-18 (CB)
+--------------        
+          Documentation improved (fixes SPR 3094).
+	
+Version 1.37 - 2003-07-17 (CB)
+--------------        
+          Corrction made to perl script to fix buld problem with gc 3.3.
+	
+Version 1.36 - 2003-06-12 (CB)
+--------------        
+          Perl script corrected and some improvements made.
+	
+Version 1.35 - 2003-02-26 (CB)
+--------------        
+          Uploaded into development track
+Version 1.34.7 - 2002-12-05 (CB)
+--------------    
+          Corrected configuration file.
+Version 1.34.6 - 2002-12-04 (CB)
+--------------    
+          Additional small correction made to Perl script.
+Version 1.34.5 - 2002-12-04 (CB)
+--------------    
+          Small correction made to Perl script.
+	
+Version 1.34.4 - 2002-12-04 (CB)
+--------------    
+          Modified for omatt version 2.30.
+	
+Version 1.34.3 - 2002-11-05 (CB)
+--------------    
+          Minor ammendment made to perl script for SPR 3016
+Version 1.34.2 - 2002-11-05 (CB)
+-------------    
+	  Perl scrip ammended to fix problem identifying engineering-4 data
+	  (fixes SPR 3016)
+	
+Version 1.34.1 - 2002-10-22 (CB)
+-------------    
+	  Configuration file ammended for omdetect version 4.1 (fixes SPR 3001)
+	
+Version 1.34 - 2002-10-17 (CB)
+-------------    
+	  Uploaded for release track
+	
+Version 1.33 - 2002-10-08 (CB) 
+_____________
+         + (src/omich.pl) Parameters for omdetect changed for omdetect
+	 VERSION 4.0. Documentation updated. SPRs 2936 & 2904 fixed.
+
+
+Version 1.32 - 2002-06-11 (CB) 
+_____________
+         + (src/omich.pl) Uploaded into development track to fix Jupiter problem.
+	
+
+Version 1.30.4 - 2002-05-30 (CB) 
+_____________
+	Documentation updated.
+
+Version 1.30.3 - 2002-05-27 (CB) 
+_____________
+	+ (src/omich.pl) Fix for Jupiter problem. Documentation updated.
+
+Version 1.30.2 - 2002-03-06 (CB) 
+_____________
+	+ (src/omich.pl) Added check for the existence of the file that
+	  ps2pdf converts(SPR 2801).
+
+
+Version 1.30.1 - 2002-01-13 (CB) 
+_____________
+	+ (src/omich.pl) Modified to make it look in the correct directory
+	for the SAS summary file when SAS_ODF has been set to point to the
+	file (fixes SPR 2751).
+
+
+Version 1.30 - 2002-01-08 (CB) 
+_____________
+	DEPEND file ammended.
+
+Version 1.29 - 2001-12-12 (CB) Modified to process the 
+	image files for each filter in turn, in the order that the filters 
+	appear in the SAS summary file. Added parameters to enable the 
+	user to reduce the data for a given list of filters, or the 
+	data for a given list of exposures. Output tidied up. Modified 
+	so that ommosaic will run when the image files for a particular filter 
+	have been processed. Intermediate file names changed so that 
+	they aren't overwritten. Some product file names changed. 
+	Modified to enable the user to set various parameters for
+	ommodmap, omdetect, omatt, ommosaic & omsrclistcomb. Modified so that 
+	omcomb runs at the beginning of an exposure if that exposure is
+	engineering-2 - modified so that new image file placed in output 
+	directory. Warning messages improved.
+	
+
+Version 1.28 - 2001-11-12
+	+ (src/omich.pl) Modified to correct a bug in processing
+	engineering-2 data files (fixes SPR 2636). Warning message tidied up.
+	
+Version 1.27 - 2001-10-18 SOC test problem rectified.
+Version 1.26.1 - 2001-10-09 
+	DEPEND file ammended to correct a build problem at the SOC.
+        + (src/omich.pl) Modified so that if the environment variable
+	SAS_ODF has been set to a directory the input directory is set to
+	that directory. Further modified so that if the environment variable
+	SAS_ODF has been set to a SAS Summary file the omichain will
+	retrieve the ODF directory from that file and set the input
+	directory to that file (Related to SPR 2582 for the omfchain)..
+	
+Version 1.26 - 2001-10-01 
+        + (src/omichain.pl) Modified to process engineering mode 2 and 4
+	data. For the former data, omcomb will run at the beginning of
+	the chain to combine the 4 separate images into a single-one,
+	which is then processed as a normal image file. The environment 
+	variable SAS_ODF is now set by the script. Some bugs relating to 
+	output files going to the wrong directory eradicated. Output
+	tidied up. Flatfield name generated by omflatgen corrected (SPR ?) 
+        + (doc) - Description file updated.
+		
+Version 1.25.2 - 2001-08-10
+	Added WDX and THX files for exposure 018 to test data (fixes SPR 2523)
+	
+Version 1.25.1 - 2001-07-28
+	Added task ommosaic to the DEPEND file to rectify a test-harness
+	failure at the SOC (SPR 2493)
+	
+	
+Version 1.25 - 2001-07-23
+	Updated the DEPEND file and changed the data in the test harness
+	(to rectify a test-harness failure at the SOC)..
+	
+Version 1.24 - 2001-06-15
+	+ (src/omichain.pl) Changed input parameter names for running
+	ommodmap and omflatfield.
+	
+Version 1.23 - 2001-06-14
+	+ (src/omichain.pl) Code ammended to fix SPRs 2419 and 2420.
+	Also ammended to prevent high-resolution central window from being
+	processed by omsrclistcomb and ommosaic (SPR 2352).
+	
+Version 1.22 - 2001-04-04
+	+ (src/omichain.pl) Print statements replaced with SAS::message
+	calls. If no flatfield in directory omflatgen runs to produce one.
+	
+
+Version 1.21 - 2001-01-21
+	+ (src/omichain.pl) Task "omosaic" added to produce a composite
+	ski image for each filter.
+
+
+Version 1.20.5 - 2000-11-10
+	+ (DEPEND) ompsf removed.
+
+
+Version 1.20.4 - 2000-11-09
+	+ (src/omichain.pl) Output not sent to a log file.
+
+
+Version 1.20.3 - 2000-11-08
+	+ (src/omichain.pl) omsens removed from the chain.
+
+Version 1.20.2 - 2000-11-07
+	+ (config/omichain.info) om added.
+
+Version 1.20.1 - 2000-11-01
+	+ (src/omichain.pl) Ammended code so that if omprep fails (eg for
+	an invalide filter) that observation is not processed further,
+	
+Version 1.20: - 2000-09-19
+------------
+	+(test) brought test harness data up-to-date..
+	
+Version 1.19: - 2000-09-19
+------------
+	+(test/testomprep) changed the 'export' statement.
+	
+Version 1.18: - 2000-09-06 (AMK)
+------------
+	+ (src/omichain.pl) Ammended code so that the new style house keeping files are processed correctly.
+	+ (src/omichain.pl) Ammended code so that product names conform to
+	specification.
+	
+Version 1.17.1: - 2000-06-13 (AMK)
+--------------
+      + (src/omichian.pl) Diverted the screen output for the task to create a file OMICHAIN.LOG.
+      + (src/omichain.pl) Removed OMPSF from pipeline as none of the tasks
+      in the pipeline use the output from it.
+      + (config/omichain.info) added (SSC-SPR-1766).
+	
+Version 1.17: 05 Apr 2000
+
+Allow input and output directories to be specified spr 1150
+
+Version 1.17: 04 Apr 2000
+
+Corrected erro in test script (setenv not bourne shell command)
+
+Version 1.16: 29 March 2000
+
+Updated documentation - spr 0898
+
+Version 1.15: 22 March 2000
+
+Included command line parameter interface using dal.	
+	
+Version 1.14: 21 March 2000
+
+Moved OAL files to test harness and set --odf = ./.
+Modified perl script at sort ODF files level.
+	
+Version 1.13: 10 March 2000
+
+Set environment variable SAS_ODF in testomichain	
+	
+Version 1.12: 30 November 1999
+
+Updated to conform to PPS naming convention.
+	
+Version 1.12: 30 November 1999
+
+Update to use periodic housekeeping files.	
+	
+Version 1.11: 12 November 1999
+
+Improve logic of chain to cope with multiple exposures, observations, etc.
+Create error and warning messages.
+
+Version 1.10: 30 September 1999
+
+No device specified for omdetect to prevent hanging without X server.
+
+Version 1.9: 24 September 1999
+
+Updated file filter to accept *OMX* files.
+
+Version 1.8: 25 August 1999
+
+Updated OMATT dependency.
+	
+Version 1.7: 19 July 1999
+
+Changed order of tasks OMATT and OMMAG
+Updated TCS file in test directory.
+	
+Version 1.6: 16 July 1999
+
+Updated parameter names
+Changed ODF's (No longer DSS images)
+
+Version 1.5: 15 December 1998
+
+Removed omsumm from chain and dependancies.
+
+Version 1.4: 14 December 1998
+
+Updated Dependancy file RE: omsumm
+
+Version 1.3: 10 December 1998
+
+updated Dependancy file RE: mssllib
+
+Version 1.2: 28 Sep 1998
+
+SPR 523 closed: permissions changed
+
+
+Version 1.1: 3 Sep 1998
+
+Perl script changed to take into account change in omprep (v2)
+parameters 
+
+Version 1.0: 28 August 1998
+	
+
+	
+Version 0.1
+----------------------------
+
+- Directory structure created by pkgmaker.

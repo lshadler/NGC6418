@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Comments</TITLE>
+<META NAME="description" CONTENT="Comments">
+<META NAME="keywords" CONTENT="omfchain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omfchain.css">
+
+<LINK REL="next" HREF="node14.html">
+<LINK REL="previous" HREF="node12.html">
+<LINK REL="up" HREF="omfchain.html">
+<LINK REL="next" HREF="node14.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omfchain (omfchain-1.42.6) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node12.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Running The Pipeline"></A>
+<A HREF="omfchain.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Future developments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omfchain.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="omfchain:description:comments"></A>
+<BR>
+Comments
+</H1>
+
+<UL>
+<LI>If the chain runs to completion, a number of important output files will
+appear. The chain product filenames have the extension `.FIT'. The names of the
+files start with `P' for the products and with `F' for the
+intermediate images and timeseries.
+</LI>
+<LI>The use of the parameters for the source and background extraction areas 
+requires some care. Although the source extraction region is simply a circle,
+the under-sampled nature of the OM PSF means that the circle has a
+small radius and thus encompasses only a few pixels. Pixels on the
+circle edge therefore contribute a substantial fraction to the area,
+and <SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$\pi r^2$"></SPAN> may not be a good approximation to the extraction
+area. 
+
+<P>
+Furthermore, the background extraction region is an annulus,
+possibly with circular areas excluded (see the <SMALL>OMREGION</SMALL> task
+description), and these excluded circles are not necessarily totally
+enclosed by the annulus. In addition, the FAST-mode OM window is small,
+and a part of the source and background areas falls out of this window.
+The source and background counts should be
+scaled to the CAL circular area in order to correct them for the
+coincidence loss. This scaling is sensitive to the currently used
+OM PSF. If the source and background areas are affected by the 
+source proximity to the edge of the OSW or if the real OM PSF differs
+from that taken from the current calibration file (CCF), than the 
+OMLCBUILD output count rates could vary from exposure to exposure,
+even if the source brightness remains constant.
+
+<P>
+This effect could be increased for bright sources 
+due to the 8-pixel pattern noise. In order to avoid these variations
+and to obtain a uniform combined light curve, it is better to use 
+a fixed radius for the source extraction area for all the exposures
+in the ODF. This radius should not be less than 6 pixels, although for 
+faint source one it is possible to use smaller values (this would 
+increase the signal-to-noise ratio). The value of 6 pixels is currently used 
+as the default value for the chain in order to get an optimal 
+signal-to-noise ratio for most of the sources.
+One may change this parameter by using  the command <I CLASS="sans">`omfchain srcradius=...`</I>.
+If <I>srcradius</I> is set to a negative value, it will be regarded as measured 
+in unbinned pixels and will be fixed for all the exposures 
+(its default value is negative). 
+
+<P>
+When changing the <I>srcradius</I>
+ parameter one should also properly establish
+the background extraction area setting <I>bkginner</I> and <I>bkgouter</I>
+parameters (see the description of the task parameters). 
+</LI>
+<LI>A few output files (P* files) from <I>omfchain</I> should be checked. A
+useful first step is to inspect the output PDF-light curve plots to check that
+the data are sensible - watch out for frequent drop-outs, isolated high or
+substantial negative values. Establish that the background light curve is
+reasonable (it would be constant for the option <I CLASS="sans">bkgfromimage=yes</I>). 
+One should also examine the image of the Fast-mode window, for
+example, with the ftool, <I>fv</I> or <I>ds9</I>. Check whether the source is well centred or
+close to an edge. If the latter, inspect the light curves, especially from
+different exposures, to see if the separate exposure-based light curves are
+plausibly consistent (bearing in mind any intrinsic source variability). If the
+image appears blurred or odd in any way, look at the tracking history file to
+see whether tracking was reliable. You may also want to overlay the image
+source list onto skymap using<I>implot</I>, e.g.
+
+<P>
+<B>implot set=</B>
+sky_image_file.FIT <B>withsrclistset=y
+srclistset=</B>osw_source_list_file.FIT <B>device=</B>your_device (e.g. <B>/XW</B>) <B>itv=1
+radius=3 maxsrc=10 colour=7</B>.
+
+<P>
+While often there will be only one object in the image, one should check for
+ spurious detections, which could affect the analysis of the target source and
+ also for missed sources or prominent objects in the window, which may
+ contaminate the target. Currently, bright contaminating sources are
+ not treated properly, and, if present, affect the light curve of the target
+ (and vice versa) - this will be rectified in a future version of the relevant
+ SAS tasks. It is possible to change the detection efficiency via the <B> boxscale</B>, <B>smoothsize</B>, <B>nsigma</B>, and <B>contrast</B> parameters.
+
+<P>
+The visual inspection may also reveal that a bright source of interest is affected
+by modulo-8 noise (a rectangular pattern around the source). Obviously, the 
+standard (calibrated) point-spread function is not applicable to these kind
+of images (the source counts could  be found at any pixel within the Fast-window;
+and a large fraction of them fall outside of this window). For this kind of images
+the determining of background from the Fast-window becomes impossible, and it would be
+appropriate to consider the entire Fast-window as the source extraction region.
+Since the sources generating modulo-8 noise patterns are quite bright,
+the background becomes negligeable and, thus, could be set to zero. For this purpose
+one can set the source extraction region to the entire Fast window by setting the 
+parameter <I>srcradius</I> to, say, 12 pixels (half of the Fast-window x- or y-size).
+The light-curve obtained in this way would be more reliable. 
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node12.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Running The Pipeline"></A>
+<A HREF="omfchain.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Future developments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

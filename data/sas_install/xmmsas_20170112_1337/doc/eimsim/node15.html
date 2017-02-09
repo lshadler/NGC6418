@@ -1,0 +1,424 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Make list of simulated sources</TITLE>
+<META NAME="description" CONTENT="Make list of simulated sources">
+<META NAME="keywords" CONTENT="eimsim">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eimsim.css">
+
+<LINK REL="next" HREF="node16.html">
+<LINK REL="previous" HREF="node14.html">
+<LINK REL="up" HREF="node14.html">
+<LINK REL="next" HREF="node16.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eimsim (eimsim-2.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node14.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="The task eimsim"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="The task eimsim"></A>
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Flag those sources outside"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node29.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eimsim.html">Home Page</A> / <A  HREF="node4.html">Description</A> / <A  HREF="node14.html">The task eimsim</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00043100000000000000"></A>
+<A NAME="eimsim:description:makeimsimlist"></A>
+<BR>
+Make list of simulated sources
+</H3>
+
+<P>
+This function may be performed alone by calling the script with <TT>entrystage</TT> and <TT>finalstage</TT>=`makesimlist'.
+
+<P>
+The tasks <A NAME="1230"></A><A NAME="tex2html57"
+  HREF="../srclistsim/index.html"><SPAN  CLASS="textbf">srclistsim</SPAN></A>
+and <A NAME="1234"></A><A NAME="tex2html58"
+  HREF="../newcolgen/index.html"><SPAN  CLASS="textbf">newcolgen</SPAN></A>
+are called within this section. The first of these performs the bulk of the work of the section, which is to generate a list of random source positions and fluxes. The description of the probability distributions these sources are to follow is given in the template set pointed to by parameter <TT>srcspecset</TT>. This template file is a FITS dataset. Its structure is described in section <A HREF="node26.html#eimsim:description:inputfiles">7</A>: I'd advise you to print this section out and have it beside you to refer to as you read the remainder of the present section (<A HREF="#eimsim:description:makeimsimlist">4.3.1</A>).
+
+<P>
+The explanation for the tables, keywords and columns in the template set is as follows. Table <A NAME="1239"></A><TT>SRCSPECS</TT> contains information about the probability distributions of the source positions and fluxes; table <A NAME="1241"></A><TT>FLUX_SCALES</TT> contains information about the source spectrum. (The template set contains other tables which are used in other parts of eimsim.)
+
+<P>
+The spatial locations of the sources are distributed evenly on the celestial sphere, but are restricted to a cone delimited by the <A NAME="1243"></A><TT>CONE_RA</TT>, <A NAME="1245"></A><TT>CONE_DEC</TT> and <A NAME="1247"></A><TT>CONE_RAD</TT> keywords. The number density function <SPAN CLASS="MATH"><IMG
+ WIDTH="36" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$n(S)$"></SPAN> of source fluxes <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$S$"></SPAN> is a piecewise power law
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+n(S) = k_i \ S^{-\gamma_i} \; \mathrm{for} \; S_i \le S < S_{i+1}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="231" HEIGHT="28" BORDER="0"
+ SRC="img6.png"
+ ALT="\begin{displaymath}
+n(S) = k_i \ S^{-\gamma_i} \; \mathrm{for} \; S_i \le S &lt; S_{i+1}
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+such that the reverse-cumulative integral <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$N$"></SPAN> of <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.png"
+ ALT="$n$"></SPAN> is also a piecewise power law:
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+N(>S) = \frac{k_i}{\gamma_i-1} S^{1-\gamma_i} \; \mathrm{for} \; S_i \le S < S_{i+1},
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="290" HEIGHT="42" BORDER="0"
+ SRC="img8.png"
+ ALT="\begin{displaymath}
+N(&gt;S) = \frac{k_i}{\gamma_i-1} S^{1-\gamma_i} \; \mathrm{for} \; S_i \le S &lt; S_{i+1},
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+where the units of <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$N$"></SPAN> are sources deg<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$^{-2}$"></SPAN>. For <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$N$"></SPAN> to also be given by a piecewise power law it is necessary that <SPAN CLASS="MATH"><IMG
+ WIDTH="47" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$\gamma_i &gt; 1$"></SPAN> for all <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$i$"></SPAN> and that
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+\frac{k_i}{\gamma_i-1} S_{i+1}^{1-\gamma_i} = \frac{k_{i+1}}{\gamma_{i+1}-1} S_{i+1}^{1-\gamma_{i+1}}.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="221" HEIGHT="43" BORDER="0"
+ SRC="img12.png"
+ ALT="\begin{displaymath}
+\frac{k_i}{\gamma_i-1} S_{i+1}^{1-\gamma_i} = \frac{k_{i+1}}{\gamma_{i+1}-1} S_{i+1}^{1-\gamma_{i+1}}.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+The log<SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$N$"></SPAN>-log<SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$S$"></SPAN> of such a function appears like a sequence of <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="$m$"></SPAN> connected line segments. The function is defined in table <A NAME="1249"></A><TT>SRCSPECS</TT> by the `knee' points of this log<SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$N$"></SPAN>-log<SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$S$"></SPAN>. The <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$i$"></SPAN>th row of the <A NAME="1251"></A><TT>FLUX</TT> and <A NAME="1253"></A><TT>DENSITY</TT> columns record <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.png"
+ ALT="$S_i$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="46" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$N(S_i)$"></SPAN> respectively. There must be <SPAN CLASS="MATH"><IMG
+ WIDTH="47" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$m \ge 1$"></SPAN> rows, since each row defines the left-hand anchor point of its line segment. The first row defines the faint-end cutoff of the log<SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$N$"></SPAN>-log<SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$S$"></SPAN> - in other words, no source may be fainter than <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$S_1$"></SPAN>. There is no need for a bright-end cutoff: it is assumed that the last power law continues to infinite flux. This means however that there is no uppermost `knee' to anchor this last, <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="$m$"></SPAN>th power law. This <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="$m$"></SPAN>th line segment is defined instead by storing the value of <SPAN CLASS="MATH"><IMG
+ WIDTH="52" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$1-\gamma_m$"></SPAN> in the <A NAME="1255"></A><TT>HI_SLOPE</TT> keyword. A Euclidian distribution of sources in space would therefore result in a <A NAME="1257"></A><TT>HI_SLOPE</TT> value of -1.5.
+
+<P>
+The <A NAME="1259"></A><TT>FLUX_SCALES</TT> table records information relating to the source spectrum. At present, all the simulated sources are assigned the same spectrum. (This is not very realistic, and may be changed in future.) The spectrum is an absorbed power law, the photon spectral index being given by keyword <A NAME="1261"></A><TT>SPECINDX</TT> and the HI column density by keyword <A NAME="1263"></A><TT>HI</TT>. The keyword <A NAME="1265"></A><TT>FLUX</TT> gives the total flux, within the band defined via the keywords <A NAME="1267"></A><TT>E_MIN</TT> and <A NAME="1269"></A><TT>E_MAX</TT>, from a source of such spectrum, in the case that the source flux density per unit energy is equal to 1 erg cm<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$^{-2}$"></SPAN> s<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$^{-1}$"></SPAN> keV<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$^{-1}$"></SPAN> at 1 keV. The flux values of the simulated sources are given for this same band.
+
+<P>
+The <A NAME="1271"></A><A NAME="tex2html59"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+package makes images in <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$N$"></SPAN> energy bands. Exactly which bands are used is defined by the occurrence of the respective exposure-map templates (see section <A HREF="node26.html#eimsim:description:inputfiles">7</A>). In other words, if exposure maps are found only for bands 1, 2 and 4, then these are the only bands for which images will be made within <A NAME="1275"></A><A NAME="tex2html60"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>. The <A NAME="1279"></A><TT>FLUX_SCALES</TT> table must have a row for each of these bands. It may have additional rows for other bands, but these will be ignored by <A NAME="1281"></A><A NAME="tex2html61"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>.
+
+<P>
+The first column of the <A NAME="1285"></A><TT>FLUX_SCALES</TT> table records the ID integer of each tabulated energy band. Columns <A NAME="1287"></A><TT>E_LO</TT> and <A NAME="1289"></A><TT>E_HI</TT> define the band edges. Column <A NAME="1291"></A><TT>FLUX</TT> records the flux in this band from a source of the spectrum defined by the keywords mentioned just above. Thus the flux of any simulated source in any of the <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$N$"></SPAN> bands may be calculated by dividing the source flux by the keyword <A NAME="1293"></A><TT>FLUX</TT> above, then multiplying by the appropriate value of the column <A NAME="1295"></A><TT>FLUX</TT>.
+
+<P>
+The remaining columns of table <A NAME="1297"></A><TT>FLUX_SCALES</TT> record the `Energy Conversion Factors' or ECFs for each EPIC instrument and for four filters. These ECFs are used to convert fluxes <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$S$"></SPAN> to count rates <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img20.png"
+ ALT="$R$"></SPAN> as follows:
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+R = S \times ECF \times 10^{11}.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="153" HEIGHT="25" BORDER="0"
+ SRC="img21.png"
+ ALT="\begin{displaymath}
+R = S \times ECF \times 10^{11}.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+The output of the `makesimlist' function of <A NAME="1299"></A><A NAME="tex2html62"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+is a FITS dataset containing a binary table extension <A NAME="1303"></A><TT>SRCLIST</TT> which has the following columns:
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>
+<DIV ALIGN="CENTER">
+
+</DIV>
+Name</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>Data type</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>Units</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1305"></A><TT>INDEX</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>4-byte int</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1307"></A><TT>FLUX</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>erg cm<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$^{-2}$"></SPAN> s<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$^{-1}$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1309"></A><TT>RA</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>8-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>deg</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1311"></A><TT>DEC</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>8-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>deg</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1313"></A><TT>FLUXRAND</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1315"></A><TT>STREAM_N</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>4-byte int</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1317"></A><TT>FIELD_N</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>4-byte int</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>&nbsp;</TD>
+</TR>
+</TABLE>
+
+<P>
+Column <A NAME="1319"></A><TT>INDEX</TT> is initially the same as the row number (starting at 1), but the <A NAME="1321"></A><TT>INDEX</TT> value obviously follows the source if the list is filtered or sorted in any way. It offers therefore an unambiguous way to identify each source.
+
+<P>
+The <A NAME="1323"></A><TT>FLUX</TT> value is the flux of the source within the band defined by the <A NAME="1325"></A><TT>E_MIN</TT> and <A NAME="1327"></A><TT>E_MAX</TT> keywords of table <A NAME="1329"></A><TT>FLUX_SCALES</TT> in the template set, as described above.
+
+<P>
+Columns <A NAME="1331"></A><TT>RA</TT> and <A NAME="1333"></A><TT>DEC</TT> don't require any explanation.
+
+<P>
+The explanation of the <A NAME="1335"></A><TT>FLUXRAND</TT> value is as follows. One well-known technique for generating random values of a coordinate <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$x$"></SPAN> which have a probability distribution <SPAN CLASS="MATH"><IMG
+ WIDTH="38" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$P(x)$"></SPAN> is to integrate <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img24.png"
+ ALT="$P$"></SPAN> then invert the result. That is, the random <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$x$"></SPAN> values are generated from the formula
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+x = I^{-1}(y)
+\end{equation}
+ -->
+<A NAME="equ1"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="equ1"></A><IMG
+ WIDTH="75" HEIGHT="28" BORDER="0"
+ SRC="img25.png"
+ ALT="\begin{displaymath}
+x = I^{-1}(y)\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">1</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+<BR>
+where <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$y$"></SPAN> is an evenly-distributed random variable, <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.png"
+ ALT="$I^{-1}$"></SPAN> denotes the inverse of <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.png"
+ ALT="$I$"></SPAN> and
+<BR>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+I(x) = \frac{\int_{-\infty}^{x} dx \, P(x)}{\int_{-\infty}^{\infty} dx \, P(x)}.
+\end{equation}
+ -->
+<A NAME="equ2"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="equ2"></A><IMG
+ WIDTH="145" HEIGHT="52" BORDER="0"
+ SRC="img29.png"
+ ALT="\begin{displaymath}
+I(x) = \frac{\int_{-\infty}^{x} dx \, P(x)}{\int_{-\infty}^{\infty} dx \, P(x)}.
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">2</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+In the present case in which <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img24.png"
+ ALT="$P$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$x$"></SPAN> are respectively the normalized differential sky density <!-- MATH
+ $n/n_{\rm {max}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$n/n_{\rm {max}}$"></SPAN> and the flux <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$S$"></SPAN>, the <A NAME="1337"></A><TT>FLUXRAND</TT> value is the evenly-distributed random variable (<SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$y$"></SPAN> in equation <A HREF="#equ1">1</A>) associated with the generated random flux value <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$S$"></SPAN> (<SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$x$"></SPAN> in equation <A HREF="#equ1">1</A>). This value is retained to assist in the matching of detected with simulated sources, as described in subsection <A HREF="node23.html#eimsim:description:compare">4.3.9</A>.
+
+<P>
+Columns <A NAME="1339"></A><TT>STREAM_N</TT> and <A NAME="1341"></A><TT>FIELD_N</TT> are fully described in the <A NAME="1343"></A><A NAME="tex2html63"
+  HREF="../eimsimbatch/index.html"><SPAN  CLASS="textbf">eimsimbatch</SPAN></A>
+documentation, but briefly speaking, <A NAME="1347"></A><TT>STREAM_N</TT> is created to allow <A NAME="1349"></A><A NAME="tex2html64"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+to be run in parallel in different streams; whereas <A NAME="1353"></A><TT>FIELD_N</TT> records the sequence number in the iteration performed by <A NAME="1355"></A><A NAME="tex2html65"
+  HREF="../eimsimbatch/index.html"><SPAN  CLASS="textbf">eimsimbatch</SPAN></A>.
+
+<P>
+A copy of the template table <A NAME="1359"></A><TT>SRCSPECS</TT> is also appended to the source list.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node14.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="The task eimsim"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="The task eimsim"></A>
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Flag those sources outside"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node29.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

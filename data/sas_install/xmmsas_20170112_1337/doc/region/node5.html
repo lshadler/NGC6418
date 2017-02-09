@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Spatial coordinate system of the region(s)</TITLE>
+<META NAME="description" CONTENT="Spatial coordinate system of the region(s)">
+<META NAME="keywords" CONTENT="region">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="region.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+region (region-7.13) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Modes"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Source selection"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="region.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000"></A>
+  <A NAME="region:description:coordinates"></A>
+<BR>
+Spatial coordinate system of the region(s)
+</H2>
+
+<P>
+The regions can be specified via the <TT>outunit</TT> parameter in either of two projection-plane coordinate systems, namely `detxy' and `xy'. (This parameter is not case-sensitive.) The first choice corresponds to columns <A NAME="626"></A><TT>DETX</TT> and <A NAME="628"></A><TT>DETY</TT> of the standard XMM EPIC event list, the second to columns <A NAME="630"></A><TT>X</TT> and <A NAME="632"></A><TT>Y</TT>. The DETXY coordinate system is fixed with respect to the EPIC instrument and is equivalent to the CAMCOORD2 system described in the <A NAME="634"></A><A NAME="tex2html5"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>
+task documentation, except that the units are 0.05 arcseconds instead of mm. Hence the DETXY projection plane is normal to the optic axis of the telescope<A NAME="tex2html4"
+  HREF="footnode.html#foot191"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A>. The XY system is fixed with respect to the sky (apart from any errors in the attitude correction); its units (= the size of its `pixels') happen also at present to be 0.05 arcseconds, but could in principle take any value since <A NAME="638"></A><A NAME="tex2html6"
+  HREF="../region/index.html"><SPAN  CLASS="textbf">region</SPAN></A>
+makes no assumptions about them.
+
+<P>
+Note that in either case the task needs to know information about the EPIC instrument and the epoch of the observation. This information is obtained from keywords in the header of the supplied event list.
+
+<P>
+If the user specifies <TT>outunit</TT>=`xy' then the task also needs WCS keywords to define the connection between the source RAs and decs and their positions in the XY coordinate system. These keywords are obtained from the <A NAME="643"></A><TT>X</TT> and <A NAME="645"></A><TT>Y</TT> columns of the event list.
+
+<P>
+If <TT>outunit</TT> is given as `detxy' and if the supplied source list is a standard XMM EPIC product then in principle the event list is unnecessary. However it has been decided for simplicity to make it mandatory to supply both the event list and the source list to <A NAME="648"></A><A NAME="tex2html7"
+  HREF="../region/index.html"><SPAN  CLASS="textbf">region</SPAN></A>.
+
+<P>
+Note that if the event list to be filtered by the regions is different from that used to supply the WCS and other keywords, it is important that at least the <A NAME="652"></A><TT>INSTRUME</TT> keyword in the headers and (if <TT>outunit</TT>=`xy') the WCS keywords in the <A NAME="655"></A><TT>X</TT> and <A NAME="657"></A><TT>Y</TT> columns of the two event lists are the same.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Modes"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Source selection"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

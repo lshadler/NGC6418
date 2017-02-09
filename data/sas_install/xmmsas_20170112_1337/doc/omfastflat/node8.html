@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="omfastflat">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omfastflat.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="omfastflat.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omfastflat (omfastflat-1.21) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="omfastflat.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omfastflat.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="omfastflat:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+   subroutine omfastflat
+   
+    Get task parameters.
+    Check data types of ODF input files
+    Check if input is an Inorbit flatfield.
+
+    Get a handle on the Inorbit flat field File.
+    Get a handle on the ODF OM Fast Mode Event List File.
+    Determine file type from file name in primary header.
+    Determine if BPE binning is on/off
+
+    if (dataMode == "FAST") then
+      Get a handle on the tracking history data binary table extension.    
+      Get handles and pointers on the event list binary table extension columns.
+      Get the number of rows in the event list binary table extension.
+      Get window information from modes extension.
+    else
+      Incompatible file.
+      call fatal("badFileMode","Value for keyword DATAMODE is incompatible")
+    end if
+     
+    Open the CCF.
+    Set the state of the cal.
+    Get the bad pixel map.
+
+    Add factor and bad pixel columns to event list file.
+    Initialise pointer arrays to zero.
+
+    If BPE binning off then need to rebin flatfield.
+
+    Calculate factor and bad pixel flag.
+    factorP(i) = (slewFlat(windowX0P(0) + rawXP(i), windowY0P(0) + rawYP(i)))**(-1.0)
+
+    Release the cal memory. 
+    Release handles on data.
+   
+    Create flatfielded fast mode image file.
+    Copy attributes.
+    Get image handle and pointer.
+    Get quality array handle and pointer.
+    Build image and quality array.
+    do i = 0 , nEvents - 1
+         fastImgP(corrXP(i), corrYP(i)) = fastImgP(corrXP(i), corrYP(i)) + factorP(i)
+         if badPixel then quality(corrXP(i), corrYP(i)) = 1
+    end do
+    Calculate the Mod-8 modulation factor
+    Copy MODES extension 
+
+    Create OM OSW flat field data product
+    Add the keyword MOD8FACTOR to the output image file
+    Copy Attributes
+    Add HDU keywords
+    Add Modes Extension
+
+    Free up memory and pointers.
+
+   end subroutine  omfastflat
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,281 @@
+ChangeLog for ommodmap
+======================
+Version 2.24 - 2013-07-11 (VNY)
+-----------
+	+(src/ommodmap_mod.f90): Introduced a check of the binning
+ 	factor by comparing the header keyword window size (unbinned)
+	and the real image size
+Version 2.23 - 2012-12-13 (VNY)
+-----------
+	+(src/ommodmap_mod.f90): protected from possible subscript
+	errors in the arrays mod8Tile and TotalInMod8Col
+Version 2.22 - 2011-07-12 (VNY)
+------------	
+	+(src/ommodmap_mod.f90): further protection against
+	possible undefined values of  the variables mod8xmin 
+	and mod8ymin
+Version 2.21 - 2011-06-07 (VNY)
+------------	
+	+(src/ommodmap_mod.f90): protected against the possibility
+	of getting undefined values of the variables mod8xmin 
+	and mod8ymin (on some computers)
+Version 2.20 - 2011-05-21 (VNY)
+------------	
+	+(src/ommodmap_mod.f90): protected against possible 
+	crashes with a subscript error message (SPR-6656)
+Version 2.19.2 - 2009-07-21 (CB) 
+--------------
+        +test Deleted ssc from Makefile to fix gcc4 build failure	
+Version 2.19.1 - 2009-07-20 (CB) 
+        +src Deleted ssc from Makefile to fix gcc4 build failure.	
+Version 2.19 - 2009-02-17 (CB1) 
+        Delete ampersand from line 1094 to fix build problem
+	(not sure how it got there).
+Version 2.18 - 2009-02-14 (CB1) 
+        Delete SSCLIB from DEPEND file to fix dependency failure.
+Version 2.17.2 - 2008-05-14 (VNY) +(src/recover16bits_mod.f90)
+	Restricting the number of calls to a recourcive procedure
+	(checkConnectedPixels) to 2500 to protect the task from
+	crashing when processing unusual images (or images with 
+	very bright sources). This is the real fix of SSC-SPR-6458
+	(the previous version didn'n fix it). 
+Version 2.17.1 - 2008-05-12 (VNY) +(test/testommodmap): Removing
+	wrong files from the test directory to avoid error
+	messages during the test procedure (SSC-SPR-6458)
+Version 2.17 - 2008-04-08 (VNY) +(src/ommodmap_mod.f90): Checking 
+	for the size of the bad-pixel region and, if this region is 
+	small (currently checking the 60 by 60-pixel vertical cross) 
+	then include this region for the mod-8 correction. 
+	Otherwise the region will remain uncorrected in order to 
+	prevent the infinite cycling of the task (SSC-SPR-3715).	
+Version 2.16 - 2007-07-23 (VNY) +(src/ommodmap_mod.f90): Bulding 
+	the modulo-8 mask for those pixels that were labelled as "bad" 
+	in the quality image is disabled to prevent the indefinite cycling 
+	of the task on images with black strips (fixing SSC-SPR-3696).
+Version 2.15.4 - 2005-02-23 (VNY) +(/src/ommodmap_mod.f90): The value 
+	of MJDREF is set to 50814, in accordance with the changes 
+	made 04.06.2004 in OMFASTSHIFT, SSC-SPR-3333. 
+	The old value (5.08140007312960D+04) was only used in 
+	rare occasions when the MJDREF key was abscent in the header.
+	So, this change practically does not affect the performance 
+	of the task.	
+Version 2.15.3 - 2004-06-09 (VNY) A bug causing problem of subscript 
+	in mod8TileDX and mod8TileDY mask arrays is fixed, SSC-SPR-3336
+        (the meaning of the variables xmax and ymax has been changed 
+	since long ago, but in a piece of code they still were understood 
+	as dx and dy) 	
+Version 2.15.2 - 2004-05-20 (VNY)
+------------	
+	+(src/ommodmap_mod.f90) 
+	The limiting counts/pixel value is increased from 
+	50000 to 250000 to ensure that no useful photometric 
+	information is lost (SSC-SPR-3323)
+	
+Version 2.15.1 - 2003-12-18 (CB)
+------------
+	Modification made to prevent window parameters not being
+	changed for non-grism images (fixes SPR 3188).
+	
+Version 2.15 - 2003-11-26 (VNY)
+------------
+	Protected against inconsistency of the image size and DETSEC
+	attribute +(src/ommodmap_mod.f90)
+	
+Version 2.14 - 2003-11-18 (CB)
+------------
+	DEPEND file ammended for ssclib 3.0
+	
+Version 2.13 - 2003-11-18 (VNY) +(src/Makefile) link to SASDAL added
+	to the makefile in order to rectify the static build
+	
+Version 2.12 - 2003-11-13 (VNY) +(src/Makefile) changed the order
+	of calling the libraries (in order to get properly the static 
+	build)
+	
+Version 2.11 - 2003-11-04  (VNY) 
+	+(src/ommodmap_mod.f90) +(config/ommodmap.par) Parameter
+	mod8correction changed its type: from boolean to integer
+	(SAS-SCR-116)
+	
+Version 2.10 - 2003-10-29  (VNY)
+------------
+	+(src/ommodmap_mod.f90) A bug leading to the divided by two 
+	output image is fixed (SSC-SPR-3160)
+	
+Version 2.9 - 2003-10-24 (VNY)
+-----------	
+	+(src/ommodmap_mod.f90) Small bugs are fixed. The programme is 
+	adjusted to the grism data; new parameter (mod8correction)
+	added - SSC-SCR-116
+	
+Version 2.8 - 2003-10-07 (VNY)
+-----------	
+	+(src/ommodmap_mod.f90) Allocation of the bad pixel map
+	is corrected (this caused infinite cycling in some 
+	data sets with OM grism images) - SSC-SPR-3156
+	
+Version 2.7 - 2003-09-30 (VNY) 
+----------
+	+(config/ommodmap.par) 
+	+(src/ommodmap_mod.f90)
+	+(doc/ommodmap_description.tex)
+	New parameters have been added, permitting
+	the OM XMM flat field to be used to determine the Mod-8
+	noise pattern. This would be useful for the fields with 
+	not sufficient number of photons or for the grism images.
+	The modification is made in accordance with SCR-116.
+	The new parameters do not change the task's interface
+	since they are not mandatory.
+Version 2.6 - 2002-09-26 (VNY)
+-----------
+	DEPEND file updated (dependence on SAS-1.312 included)
+	
+Version 2.5 - 2002-06-10 (CB)
+-----------
+	Modified config and depend file for param version 2.0.
+	
+Version 2.4.1 - 2002-05-29 (CB/SRR)
+------------
+        +(doc/ommodmap_description.tex) minor correction and improvement
+	(SPR 2697).
+	
+Version 2.4 - 2002-01-08 (CB)
+------------
+	DEPEND file modified for ssclib.
+
+Version 2.3 - 2001-12-13 (CB) - No changes - uploaded to keep Guiseppe happy.
+------------
+
+Version 2.2.1 - 2001-10-30 (CB)
+------------
+	+(src/Makefile) Ammended to correct static build failure.
+
+Version 2,2 - 2001-10-04 (CB)
+------------
+	+(src/ommodmap_mod.f90) Code for filling the mod8tile array
+	ammended to stop crashing when numpixels equal to 0 (fixes SPR 2576)
+	
+Version 2.1 - 2001-06-15 (CB)
+------------
+	+(config/ommodmap.par) Parameter name "ppsproduct" changed to
+	"mod8product", since not a PPS product.
+        +(src/ommodmap_mod.f90) As above.
+	
+Version 2.0 - 2001-06-14 (CB)
+------------
+	+(config/ommodmap.par) Parameter name "ppsmod8set" changed to
+	"mod8set", since not a PPS product.
+        +(src/ommodmap_mod.f90) As above.
+	
+Version 1.19.3 - 2000-11-09 (CB)
+------------
+	+(src/ommodmap_mod.f90) Some debug write statements removed. 
+	
+Version 1.19.2 - 2000-11-09 (CB)
+------------
+	+(config/ommodmap.info) "om" added. 
+	
+Version 1.19.1 - 2000-11-07 (CB)
+------------
+	+(config/ommodmap.info) "om" added..
+	
+Version 1.19 - 2000-09-08 (AMK)
+------------
+	+(doc/ommodmap_description.tex) minor change to documentation.
+	
+Version 1.18 - 2000-09-05 (MJP)
+------------
+	+(src/ommodmap_mod.f90) ammended code to process windows that have size not modulo 8
+
+Version 1.17.2 - 2000-06-13 (AMK)
+	+ (src/ommodmap_mod.f90) corrected error messaging.
+	+ (doc/ommodmap_description.tex) corrected error and warning
+	messaging. (SSC-SPR-1773) and (SSC-SPR-1646)
+	
+Version 1.17.1: 12th June 2000 - (AMK)
+Added info files to task - SPR 1767
+
+Version 1.17.1: 12th June 2000 - (AMK)
+Added extra code checks for memory allocation and release.
+
+Version 1.16: 29th March 2000 - spr 1391
+
+Parameter consistency checking
+
+Version 1.15: 14th March 2000
+
+Added statistics check.	
+Applied new testimage in test harness.	
+	
+Version 1.14: 2 March 2000
+
+Fixed problem with test harness.
+Updated task to check for RAW image extension.	
+	
+Version 1.13: 9 February 2000
+
+Updated Mod8 algorithm with flux-retaining algorithm
+	
+Version 1.12.1: 17 November 1999
+	+ SOC upload: modified checkoutput.f90 (add real around size(image)).
+	  Is this a compiler bug?
+
+Version 1.11: 28th October 1999
+
+Optimize code.
+
+Version 1.11: 24th September 1999
+
+Added checks to deal with images with blank areas.
+
+Version 1.10: 8th June 1999
+
+Updated dependancies for V3.
+
+Version 1.9: 25 May 1999
+
+Updated algorithm to use sigma clipping.
+Changed input parameters to conform to new standards.
+Update testomprep and checkoutput for new dataset.
+Added checks on input file types.
+	
+Version 1.8: 29 April 1999
+
+Updated DEPEND and src/Makefile for new structure of SAS
+Updated 'message' calls in code for new error library.
+
+Version 1.7: 10 Dec 1998
+
+Changed dependancies for mssllib-2.0
+
+Version 1.6: 28 July 1998
+
+Images moved to primary array
+mod8 tile now same size as OSW
+median-filtered sliding box algorithm employed
+test harness improved
+
+Version 1.5: 16 June 1998
+
+SPR 426 closed: test harness now checks tile values
+SPR 424 closed: crap deleted
+SPR 423 closed: .par file changed
+SPR 422 closed: permissions changed
+
+Version 1.4: 21 May 1998
+
+ChangeLog added
+DEPEND edited
+
+Version 1.3: 8 May 1998
+
+test harness updated
+
+Version 1.2: 27 April 1998
+
+SPR 240 closed: .par file added
+SPR 241 closed: datestamp call removed
+
+Version 1.1:  20 March 1998
+
+Original version submitted to the SOC

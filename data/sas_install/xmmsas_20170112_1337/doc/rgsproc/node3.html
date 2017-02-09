@@ -1,0 +1,591 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="rgsproc">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsproc.css">
+
+<LINK REL="next" HREF="node26.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="rgsproc.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsproc (rgsproc-1.34.7) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="rgsproc.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Stage One: ``events''"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node33.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsproc.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="rgsproc:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="fig:rgsproc:description:diagram"></A><A NAME="1197"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 1:</STRONG>
+
+   Diagram of <A NAME="1330"></A><A NAME="tex2html2"
+  HREF="../rgsproc/index.html"><SPAN  CLASS="textbf">rgsproc</SPAN></A>
+sub-tasks and data-flow.  Each exposure
+   is processed separately until the fluxing stage.  Sub-tasks
+   (yellow) appear within solid rectangles and process loops appear
+   within dotted rectangles.  Optional data files appear within rounded boxes, 
+   data files produced and used within the process are in green, with thick 
+   blue borders for permanent output files and dashed borders for
+   incomplete files.
+   </CAPTION>
+<TR><TD><IMG
+ WIDTH="580" HEIGHT="859" BORDER="0"
+ SRC="img1.png"
+ ALT="\begin{figure}\begin{center}
+\epsfig{height=19cm, file=rgsproc.eps}
+\end{center}
+\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+This task provides interactive control over the pipeline-style
+ processing of RGS Spectroscopy and High Time Resolution (HTR) data,
+ exposing the important options of the underlying tasks, while sparing
+ the user the tedium and hazards of running each by hand.  The user
+ specifies the ODF directory as an environment variable or on the
+ command line (see the OAL documentation).  The resulting pipeline
+ products and intermediate data files are created in the current
+ working directory.  By default all output files are named according
+ to the convention of the Pipeline Processing Subsystem (PPS).
+ Intermediate files that are discarded by the PPS--and so do not
+ appear in the CD-ROM distribution--are distinguished by the use of
+ lower case characters in the file name.  <A NAME="1334"></A><A NAME="tex2html18"
+  HREF="../rgsproc/index.html"><SPAN  CLASS="textbf">rgsproc</SPAN></A>
+can redo
+ later stages of processing without starting from scratch (parameters
+ <TT>entrystage</TT> and <TT>finalstage</TT>) and without accessing the
+ original ODF.  The five processing stages, or entry points, are the
+ organizing principle for the rest of this document:
+
+<P>
+
+<OL>
+<LI><B>1:events</B>: preliminary tasks, source-independent calibrations
+</LI>
+<LI><B>2:angles</B>: aspect-drift corrections
+</LI>
+<LI><B>3:filter</B>: filter events and exposure
+</LI>
+<LI><B>4:spectra</B>: generate spectra
+</LI>
+<LI><B>5:fluxing</B>: generate response matrices and flux the spectra
+</LI>
+<LI><B>6:lightcurve</B>: generate light curves
+ 
+</LI>
+</OL>
+
+<P>
+<A NAME="1340"></A><A NAME="tex2html19"
+  HREF="../rgsproc/index.html"><SPAN  CLASS="textbf">rgsproc</SPAN></A>
+also allows the user to restrict the scope of
+ processing to an enumerated subset of exposures within the
+ observation (parameter <TT>withinstexpids</TT>), and an enumerated set
+ of reflection orders (parameter <TT>orders</TT>).  See
+ Figure&nbsp;<A HREF="#fig:rgsproc:description:diagram">1</A> for a block diagram of
+ the data flow.  The first stage of processing performs basic
+ calibrations on the events in separate, CCD-specific <EM> intermediate event lists</EM> and then gathers them together in the <EM> combined event list</EM>.  The second stage performs the source-specific
+ aspect-drift correction and defines the channel grid for the events
+ and exposure.  The third stage performs the most basic filtering of
+ the data--just to remove what is unusable--and generates exposure
+ maps consistent with the filtering.  The fourth stage produces
+ spectra. The fifth stage generates response matrices and with
+ them produces a combined, fluxed spectrum for the designated primary
+ source and sixth stage generates source and background time series.
+
+<P>
+<EM>Note that fluxed spectra are inherently just a qualitative
+ summary of the data, not to be used for quantitative analysis.</EM>
+ Nevertheless the response matrices constructed in the fifth stage are
+ large enough, by default, for meaningful use with spectral fitting
+ packages such as XSPEC.  At default size they take a very long time
+ to compute, and are much larger than is necessary for the purpose of
+ fluxing.  Parameter <TT>rmfbins</TT>=250 produces very small matrices
+ that are still quite adequate for fluxing, and much faster to
+ compute, but such matrices should not be used for other purposes.
+
+<P>
+The combined event list takes from the intermediate event lists all
+ of the events (combined into a single table), the collections of
+ CCD-specific exposure tables and Good Time Interval (GTI) tables, and
+ the collections of node-specific bad pixel tables and rejectable
+ pixel tables.  Name collisions among tables copied in from the
+ intermediate event lists are avoided by placing the corresponding CCD
+ number at the eighth character of the extension name.  The following
+ tables document the finished state of the combined event list.  Next
+ to the name of each table is the name of the task that created it,
+ and for columns added later by a subsequent task the name of the
+ responsible task is included among the comments.  In addition to
+ these and the nine <A NAME="1347"></A><TT>STDGTI0n</TT> tables are eighteen node-specific
+ exposure map image blocks, <A NAME="1349"></A><TT>EXPMAPnn</TT>, created by
+ <A NAME="1351"></A><A NAME="tex2html20"
+  HREF="../rgsfilter/index.html"><SPAN  CLASS="textbf">rgsfilter</SPAN></A>.
+
+<P>
+In HTR mode the entire cross-dispersion dimension is collapsed into
+ one row, inextricably mixing source and background events together.
+ This mode is treated as a degenerate case of Spectroscopy in which
+ the event coordinates are assigned randomly over the whole vertical
+ extent of the chips.  Likewise the exposure maps also cover the full
+ cross-dispersion extent of the chips, but with variation only in the
+ dispersion dimension.  To annotate the minor structural differences
+ between Spectroscopy and HTR processing, throughout this document a
+ <IMG
+ WIDTH="8" HEIGHT="27" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="\dag"> marks items that do not apply to HTR mode data and a <IMG
+ WIDTH="8" HEIGHT="27" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="\ddag">  marks items that apply only to HTR mode data.
+
+<P>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" COLSPAN=3><SPAN><B>table</B>: <A NAME="1355"></A><TT>EVENTS</TT> -- <A NAME="1357"></A><A NAME="tex2html5"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A>
+<BR></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1361"></A><TT>BETA_CORR</TT>,
+ <A NAME="1363"></A><TT>XDSP_CORR</TT></TD>
+<TD ALIGN="CENTER">float32</TD>
+<TD ALIGN="LEFT">aspect-drift corrected RGS angles
+				    -- <A NAME="1365"></A><A NAME="tex2html6"
+  HREF="../rgsangles/index.html"><SPAN  CLASS="textbf">rgsangles</SPAN></A></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1369"></A><TT>TIME</TT></TD>
+<TD ALIGN="CENTER">float64</TD>
+<TD ALIGN="LEFT">time stamp of associated frame</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1371"></A><TT>FLAG</TT></TD>
+<TD ALIGN="CENTER">int32</TD>
+<TD ALIGN="LEFT">status bits (boolean attributes)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1373"></A><TT>BETA</TT>,
+ <A NAME="1375"></A><TT>XDSP</TT></TD>
+<TD ALIGN="CENTER">float32</TD>
+<TD ALIGN="LEFT">uncorrected RGS angles</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1377"></A><TT>CHIPX</TT>,
+ <A NAME="1379"></A><TT>CHIPY</TT></TD>
+<TD ALIGN="CENTER">int16</TD>
+<TD ALIGN="LEFT">chip-oriented pixel coordinates</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1381"></A><TT>PHA</TT></TD>
+<TD ALIGN="CENTER">int16</TD>
+<TD ALIGN="LEFT">total uncalibrated pulse-height</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1383"></A><TT>SHAPE</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^{\dag }$"></SPAN></TD>
+<TD ALIGN="CENTER">int8</TD>
+<TD ALIGN="LEFT">DPP shape code (may be null)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1386"></A><TT>GRADE</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^{\dag }$"></SPAN></TD>
+<TD ALIGN="CENTER">int8</TD>
+<TD ALIGN="LEFT">number of pixels combined</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1389"></A><TT>BETA_CHANNEL</TT>,
+ <A NAME="1391"></A><TT>XDSP_CHANNEL</TT></TD>
+<TD ALIGN="CENTER">int16</TD>
+<TD ALIGN="LEFT">binned aspect-drift corrected RGS angles
+				    -- <A NAME="1393"></A><A NAME="tex2html7"
+  HREF="../rgsangles/index.html"><SPAN  CLASS="textbf">rgsangles</SPAN></A></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1397"></A><TT>PI</TT></TD>
+<TD ALIGN="CENTER">int16</TD>
+<TD ALIGN="LEFT">calibrated pulse-height</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1399"></A><TT>CCDNR</TT></TD>
+<TD ALIGN="CENTER">int8</TD>
+<TD ALIGN="LEFT">CCD number</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1401"></A><TT>SC_POINTING_RA</TT>,</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1403"></A><TT>SC_POINTING_DEC</TT>,</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1405"></A><TT>SC_POINTING_POS</TT></TD>
+<TD ALIGN="CENTER">real32</TD>
+<TD ALIGN="LEFT">(optional) spacecraft pointing
+				    -- <A NAME="1407"></A><A NAME="tex2html8"
+  HREF="../rgsangles/index.html"><SPAN  CLASS="textbf">rgsangles</SPAN></A></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1411"></A><TT>M_LAMBDA</TT></TD>
+<TD ALIGN="CENTER">real32</TD>
+<TD ALIGN="LEFT">(optional) nominal wavelength
+				    -- <A NAME="1413"></A><A NAME="tex2html9"
+  HREF="../rgsangles/index.html"><SPAN  CLASS="textbf">rgsangles</SPAN></A></TD>
+</TR>
+</TABLE>
+</DIV>
+<P>
+<DIV ALIGN="CENTER"><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" COLSPAN=3><SPAN><B>table</B>: <A NAME="1417"></A><TT>EXPOSU0n</TT> -- <A NAME="1419"></A><A NAME="tex2html10"
+  HREF="../rgsframes/index.html"><SPAN  CLASS="textbf">rgsframes</SPAN></A>
+<BR></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1423"></A><TT>FRAME</TT></TD>
+<TD ALIGN="CENTER">int32</TD>
+<TD ALIGN="LEFT">frame number</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1425"></A><TT>FLAG</TT></TD>
+<TD ALIGN="CENTER">int32</TD>
+<TD ALIGN="LEFT">status bits (boolean attributes)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1427"></A><TT>TIMEDEL</TT></TD>
+<TD ALIGN="CENTER">real32</TD>
+<TD ALIGN="LEFT">integration time</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1429"></A><TT>TIME</TT></TD>
+<TD ALIGN="CENTER">real64</TD>
+<TD ALIGN="LEFT">timestamp</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1431"></A><TT>FRACEXP0</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^{\dag }$"></SPAN>, <A NAME="1434"></A><TT>FRACEXP1</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^{\dag }$"></SPAN></TD>
+<TD ALIGN="CENTER">real32</TD>
+<TD ALIGN="LEFT">node-specific exposure corrections
+			       for pixels rejected on-board</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1437"></A><TT>ASPCDSP</TT>, <A NAME="1439"></A><TT>ASPCXDSP</TT></TD>
+<TD ALIGN="CENTER">real32</TD>
+<TD ALIGN="LEFT">aspect-drift correction parameters
+			       -- <A NAME="1441"></A><A NAME="tex2html11"
+  HREF="../rgsangles/index.html"><SPAN  CLASS="textbf">rgsangles</SPAN></A></TD>
+</TR>
+</TABLE>
+</DIV>
+<P>
+<DIV ALIGN="CENTER"><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" COLSPAN=3><SPAN><B>table</B>: <A NAME="1445"></A><TT>BADPIXnn</TT> -- <A NAME="1447"></A><A NAME="tex2html12"
+  HREF="../rgsbadpix/index.html"><SPAN  CLASS="textbf">rgsbadpix</SPAN></A>
+<BR></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1451"></A><TT>CHIPX</TT>, <A NAME="1453"></A><TT>CHIPY</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^{\dag }$"></SPAN></TD>
+<TD ALIGN="CENTER">int16</TD>
+<TD ALIGN="LEFT">chip-oriented pixel
+				  coordinates of column bottom</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1456"></A><TT>YEXTENT</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^{\dag }$"></SPAN></TD>
+<TD ALIGN="CENTER">int16</TD>
+<TD ALIGN="LEFT">upward length of bad column</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1459"></A><TT>TYPE</TT></TD>
+<TD ALIGN="CENTER">int16</TD>
+<TD ALIGN="LEFT">bad pixel type code</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1461"></A><TT>BADFLAG</TT></TD>
+<TD ALIGN="CENTER">int16</TD>
+<TD ALIGN="LEFT">bad pixel source identifier</TD>
+</TR>
+</TABLE>
+</DIV>
+<P>
+<DIV ALIGN="CENTER"><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" COLSPAN=3><SPAN><B>table</B>: <A NAME="1463"></A><TT>REJPIXnn</TT> -- <A NAME="1465"></A><A NAME="tex2html13"
+  HREF="../rgsevents/index.html"><SPAN  CLASS="textbf">rgsevents</SPAN></A>
+<BR></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1469"></A><TT>FRAME</TT></TD>
+<TD ALIGN="CENTER">int32</TD>
+<TD ALIGN="LEFT">frame number</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1471"></A><TT>FLAG</TT></TD>
+<TD ALIGN="CENTER">int32</TD>
+<TD ALIGN="LEFT">status bits (boolean attributes)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1473"></A><TT>CHIPX</TT>,
+ <A NAME="1475"></A><TT>CHIPY</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^{\dag }$"></SPAN></TD>
+<TD ALIGN="CENTER">int16</TD>
+<TD ALIGN="LEFT">chip-oriented pixel coordinates</TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+The intermediate event lists contain some data of diagnostic value
+ that is not carried into the combined event list.  Except for this,
+ there is no reason not to delete them, and accordingly they are
+ deleted by default (parameter <TT>expunge</TT>).  The diagnostic value
+ of the intermediate files lies mostly in the <A NAME="1479"></A><TT>PIXELS</TT> table,
+ from which the events are reconstructed.  In addition to that there
+ are optional detector coordinate columns in the intermediate
+ <A NAME="1481"></A><TT>EVENTS</TT> table, which locate the event centroids to greater
+ precision than is preserved in the combined event list.  The finished
+ state of these two tables is as follows.
+
+<P>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" COLSPAN=3><SPAN><B>table</B>: <A NAME="1483"></A><TT>PIXELS</TT> -- <A NAME="1485"></A><A NAME="tex2html14"
+  HREF="../rgsframes/index.html"><SPAN  CLASS="textbf">rgsframes</SPAN></A>
+<BR></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1489"></A><TT>FRAME</TT></TD>
+<TD ALIGN="CENTER">int32</TD>
+<TD ALIGN="LEFT">frame number</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1491"></A><TT>TELX</TT>, <A NAME="1493"></A><TT>TELY</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^{\dag }$"></SPAN></TD>
+<TD ALIGN="CENTER">int16</TD>
+<TD ALIGN="LEFT">telemetered pixel coordinates</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1496"></A><TT>ENERGY</TT></TD>
+<TD ALIGN="CENTER">int16</TD>
+<TD ALIGN="LEFT">telemetered pulse-height</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1498"></A><TT>CCDNODE</TT></TD>
+<TD ALIGN="CENTER">int8</TD>
+<TD ALIGN="LEFT">CCD node number</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1500"></A><TT>SHAPE</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^{\dag }$"></SPAN></TD>
+<TD ALIGN="CENTER">int8</TD>
+<TD ALIGN="LEFT">shape code (from telemetered SER)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1503"></A><TT>GRADE</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^{\dag }$"></SPAN></TD>
+<TD ALIGN="CENTER">int8</TD>
+<TD ALIGN="LEFT">number of pixels (from telemetered SER)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1506"></A><TT>RAWX</TT>, <A NAME="1508"></A><TT>RAWY</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^{\dag }$"></SPAN></TD>
+<TD ALIGN="CENTER">int16</TD>
+<TD ALIGN="LEFT">node-oriented pixel coordinates</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1511"></A><TT>PI</TT></TD>
+<TD ALIGN="CENTER">real32</TD>
+<TD ALIGN="LEFT">calibrated pulse-height -- <A NAME="1513"></A><A NAME="tex2html15"
+  HREF="../rgsenergy/index.html"><SPAN  CLASS="textbf">rgsenergy</SPAN></A></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1517"></A><TT>EVENT</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^{\dag }$"></SPAN></TD>
+<TD ALIGN="CENTER">int32</TD>
+<TD ALIGN="LEFT">index to associated event -- <A NAME="1520"></A><A NAME="tex2html16"
+  HREF="../rgsevents/index.html"><SPAN  CLASS="textbf">rgsevents</SPAN></A></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1524"></A><TT>RAWY</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$^{\ddag }$"></SPAN></TD>
+<TD ALIGN="CENTER">attrib</TD>
+<TD ALIGN="LEFT">nominal y-coordinate for all events</TD>
+</TR>
+</TABLE>
+</DIV>
+<P>
+<DIV ALIGN="CENTER"><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" COLSPAN=3><SPAN><B>table</B>: <A NAME="1527"></A><TT>EVENTS</TT> (intermediate)
+   -- <A NAME="1529"></A><A NAME="tex2html17"
+  HREF="../rgsevents/index.html"><SPAN  CLASS="textbf">rgsevents</SPAN></A>
+<BR></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1533"></A><TT>FRAME</TT></TD>
+<TD ALIGN="CENTER">int32</TD>
+<TD ALIGN="LEFT">frame number</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1535"></A><TT>CHIPX</TT>, <A NAME="1537"></A><TT>CHIPY</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^{\dag }$"></SPAN></TD>
+<TD ALIGN="CENTER">int16</TD>
+<TD ALIGN="LEFT">chip-oriented pixel coordinates</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1540"></A><TT>BETA</TT>, <A NAME="1542"></A><TT>XDSP</TT></TD>
+<TD ALIGN="CENTER">real32</TD>
+<TD ALIGN="LEFT">uncorrected RGS angles</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1544"></A><TT>PI</TT></TD>
+<TD ALIGN="CENTER">int32</TD>
+<TD ALIGN="LEFT">calibrated pulse-height</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1546"></A><TT>FLAG</TT></TD>
+<TD ALIGN="CENTER">int32</TD>
+<TD ALIGN="LEFT">status bits (boolean attributes)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1548"></A><TT>SHAPE</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^{\dag }$"></SPAN></TD>
+<TD ALIGN="CENTER">int8</TD>
+<TD ALIGN="LEFT">DPP shape code (may be null)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1551"></A><TT>GRADE</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^{\dag }$"></SPAN></TD>
+<TD ALIGN="CENTER">int8</TD>
+<TD ALIGN="LEFT">number of pixels combined</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1554"></A><TT>PHA</TT></TD>
+<TD ALIGN="CENTER">int32</TD>
+<TD ALIGN="LEFT">total uncalibrated pulse-height</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1556"></A><TT>TIME</TT></TD>
+<TD ALIGN="CENTER">real64</TD>
+<TD ALIGN="LEFT">timestamp of associated frame</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1558"></A><TT>DETX</TT>, <A NAME="1560"></A><TT>DETY</TT>, <A NAME="1562"></A><TT>DETZ</TT></TD>
+<TD ALIGN="CENTER">real32</TD>
+<TD ALIGN="LEFT">(optional) detector coordinates</TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+The remainder of this section summarizes the contribution from each
+ sub-task.  The reader should consult the referenced task descriptions
+ for full details.
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html170"
+  HREF="node4.html">Stage One: ``events''</A>
+<UL>
+<LI><A NAME="tex2html171"
+  HREF="node5.html">atthkgen</A>
+<LI><A NAME="tex2html172"
+  HREF="node6.html">attfilter</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html173"
+  HREF="node7.html">hkgtigen</A>
+<UL>
+<LI><A NAME="tex2html174"
+  HREF="node8.html">rgsoffsetcalc</A>
+<LI><A NAME="tex2html175"
+  HREF="node9.html">rgssources</A>
+<LI><A NAME="tex2html176"
+  HREF="node10.html">rgsframes</A>
+<LI><A NAME="tex2html177"
+  HREF="node11.html">rgsenergy</A>
+<LI><A NAME="tex2html178"
+  HREF="node12.html">rgsbadpix</A>
+<LI><A NAME="tex2html179"
+  HREF="node13.html">rgsevents</A>
+<LI><A NAME="tex2html180"
+  HREF="node14.html">evlistcomb</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html181"
+  HREF="node15.html">Stage Two: ``angles''</A>
+<UL>
+<LI><A NAME="tex2html182"
+  HREF="node16.html">rgsangles</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html183"
+  HREF="node17.html">Stage Three: ``filter''</A>
+<UL>
+<LI><A NAME="tex2html184"
+  HREF="node18.html">rgsfilter</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html185"
+  HREF="node19.html">Stage Four: ``spectra''</A>
+<UL>
+<LI><A NAME="tex2html186"
+  HREF="node20.html">rgsregions</A>
+<LI><A NAME="tex2html187"
+  HREF="node21.html">rgsspectrum</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html188"
+  HREF="node22.html">Stage Five: ``fluxing''</A>
+<UL>
+<LI><A NAME="tex2html189"
+  HREF="node23.html">rgsrmfgen</A>
+<LI><A NAME="tex2html190"
+  HREF="node24.html">rgsfluxer</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html191"
+  HREF="node25.html">Stage Six: ``lightcurve''</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="rgsproc.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Stage One: ``events''"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node33.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

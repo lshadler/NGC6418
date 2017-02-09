@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Avoiding `droop' and filling in holes.</TITLE>
+<META NAME="description" CONTENT="Avoiding `droop' and filling in holes.">
+<META NAME="keywords" CONTENT="colsmooth">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="colsmooth.css">
+
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+colsmooth (colsmooth-1.7.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Masking."></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Masking."></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Output."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="colsmooth.html">Home Page</A> / <A  HREF="node3.html">Description</A> / <A  HREF="node6.html">Masking.</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00033100000000000000"></A> <A NAME="holes"></A>
+<BR>
+Avoiding `droop' and filling in holes.
+</H3>
+
+<P>
+The weighting factor <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$G$"></SPAN> in equations <A HREF="node4.html#convolution">1</A> and <A HREF="node4.html#unc">3</A> prevents ugly distortions of the smoothed output <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$y$"></SPAN> near the ends of the range of <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$y$"></SPAN> at <SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$i=1$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$i=N$"></SPAN>. This treatment is also desirable near holes in the mask. To prevent this `droop' in the output close to holes, equation <A HREF="node4.html#F">2</A> is modified to the following: 
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+F_{i,j} = \left\{
+  \begin{array}{ll}
+    c_{j} \ x_{i-j}	& \textrm{if $i-j \in [1,N]$\  and mask $m_{i-j}$\  is true}\\
+    0			& \textrm{else}\\
+  \end{array}
+\right.
+\end{displaymath}
+ -->
+<A NAME="F2"></A>
+
+<A NAME="F2"></A><IMG
+ WIDTH="397" HEIGHT="45" BORDER="0"
+ SRC="img26.png"
+ ALT="\begin{displaymath}
+F_{i,j} = \left\{
+\begin{array}{ll}
+c_{j} \ x_{i-j} &amp; \tex...
+..._{i-j}$\ is true}\\
+0 &amp; \textrm{else}\\
+\end{array}\right.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+(The specifications for <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$G$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.png"
+ ALT="$H$"></SPAN> should be amended in analogous fashion.) It should be pointed out that this cosmetic improvement is achieved at the cost of a little less noise suppression in these channels.
+
+<P>
+Similar costs are incurred by another appearence-enhancing feature of <A NAME="576"></A><A NAME="tex2html4"
+  HREF="../colsmooth/index.html"><SPAN  CLASS="textbf">colsmooth</SPAN></A>, namely the ability to `paper over' holes in the mask which are significantly smaller than the width <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$M$"></SPAN> of the convolver. The size of holes to be interpolated is provided via the integer parameter <TT>fillholewidth</TT>. The interpolation is implemented by employing two different masks: let's us call them <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.png"
+ ALT="$m$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.png"
+ ALT="$m^\prime$"></SPAN>. The one (<SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.png"
+ ALT="$m$"></SPAN>) that appears in equation <A HREF="#F2">3.3.1</A> and the analogous equations for <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$G$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.png"
+ ALT="$H$"></SPAN> is left unchanged. The other (<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.png"
+ ALT="$m^\prime$"></SPAN>), which appears in equation <A HREF="node6.html#convolution2">4</A> and the analogous equation for uncertainties <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.png"
+ ALT="$v$"></SPAN>, is for the most part set equal to <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.png"
+ ALT="$m$"></SPAN>; the exception being within stretches of contiguous <SPAN CLASS="MATH"><IMG
+ WIDTH="77" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.png"
+ ALT="$m=false$"></SPAN> channels of length=<TT>fillholewidth</TT>: <SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.png"
+ ALT="$m^\prime$"></SPAN> within such stretches is set to `true'. The result is that <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$y$"></SPAN> (and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.png"
+ ALT="$v$"></SPAN>) within these stretches or gaps is calculated as a weighted sum of only those values of <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$x$"></SPAN> that fall outside the gap. The results are acceptable provided the sum of those parts of the convolver that fall outside the gap onto the valid parts of <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$x$"></SPAN> is not too small a fraction of the total sum of the convolver.
+
+<P>
+Note that the default setting of <TT>fillholewidth</TT>=0 disables any hole-filling.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Masking."></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Masking."></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Output."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

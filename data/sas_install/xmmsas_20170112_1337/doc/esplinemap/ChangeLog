@@ -1,0 +1,457 @@
+ChangeLog for esplinemap
+===============================
+
+Version 5.0 - 2016-10-07 (IT)
+--------------
+	+ parameter nsplinenodes: maximum increased to 40 (for use with
+	  large images)
+	+ new fitmethod smooth (main part of the code: GL for eRosita).
+	  Introduced parameters snrmin and smoothsigma, module esp_smooth_mod.
+	  Modified exdb.f, restor.f, dbpari.f90, include/cdbio.cmn,
+	  include/cdbio_f90.cmn. Introduced wrinfo.f90.
+	+ ootmap_mod.f90: nullify CAL pointers for compliance with
+	  gfortran 6.2
+	+ moved many unused variables into comments (still some left ...)
+	+ cf. SCR 7399: source detection on stacked observations
+
+
+Version 4.5 - 2014-07-24 (IT)
+--------------
+	+ cp_head_mod.f90: copy full dataset and array headers of the
+	  input image to the background maps (instead of a list of selected
+	  keywords). In particular: make physical coordinates available.
+	+ documentation: Updated parameter descriptions.
+
+
+Version 4.4.3 - 2012-07-31 (IT)
+--------------
+	+ ootmap_mod.f90, subroutine ootcreate: scale flux from raw pixels
+	  to image pixels, introducing the appropriate conversion factor
+
+
+Version 4.4.2 - 2011-02-16 RDS
+-------------------------------	
+
+	+src/bkgimg.f
+
+	Removed debug
+
+Version 4.4.1 - 2011-02-14 RDS
+-------------------------------	
+
+	+src/bdfi4r.f90
+
+Change to support a mask array contained in the MASK extension
+(SCR-314)
+
+	
+Version 4.4 - 2005-09-14 GL
+-------------------------------	
+
+Remove test output files 'binned0.dat', 'binned.dat'
+
+	
+Version 4.3 - 2005-08-22 GL
+-------------------------------	
+
+Remove dss from 'USEDLIBS' line in Makefile
+(Close SSC-SPR-3422)
+
+	
+Version 4.2.1 - 2005-08-03 GL
+-------------------------------	
+
+Reduce dynamic range of fitted data by 
+       transformation f'(x,y)=(f(x,y))**0.1
+Set weight of the excluded bins to 0.1, not to 0.0.
+Close SSC-SPR-3498
+
+
+Version 4.2 - 2004-10-07 (EO)
+-----------
+        + Copy of 4.0.5 that will enter into release track builds.
+
+Version 4.1 - 2004-10-07 (EO)
+-----------
+        + Copy of 4.0.4 that will go into public release SAS 6.1.0
+		
+Version 4.0.5 - 2004-05-27 GL
+-------------------------------	
+
+Remove extrapolation of background map
+outside the detector mask. (Due to need to add
+	MOS1*2 maps for 2XMM)
+
+
+	
+	
+Version 4.0.4 - 2004-05-14 VH
+-------------------------------
+
+- a new module cgenl.f90 implemnted for replacing
+common blocks cgenl_f90.cmn and clslst_f90.cmn.
+	
+
+Version 4.0.3 - 2004-03-02 GL
+-------------------------------
+
+- Catch missing exposure extensions in OOT events file.
+- Close SSC-SPR-3253 
+	
+	
+Version 4.0.2 - 2004-02-26 GL
+-------------------------------
+
+Updated task description.
+	
+	
+Version 4.0.1 - 2003-12-19 GL
+-------------------------------
+
+Changed convergence criterion STOPCR from 1E-10 to 1E-7.
+Apply sigma clipping only to positive excesses.
+	
+Version 4.0 - 2002-12-08 GL
+-------------------------------
+
+Write error message if exposure map is not given
+with fitmethod=model
+Change major version in order to reflect the changes 
+already made in v3.7
+	
+	
+Version 3.7 - 2002-12-03 VVH,GL
+-------------------------------
+
+	
+Implemented alternative background estimation by fitting scaled exposure
+	map and constant component to cheesed image.
+	New parameters: withexpimage2, expimageset2, fitmethod
+
+
+
+	
+Version 3.6 - 2002-11-27 GL
+-----------------------------
+
+Use weighting of bins for spline fits according to number
+of valid pixels in bin.
+
+Improved replacement of empty (eg cheesed) bins by interpolation.
+	
+	
+Version 3.5 - 2002-06-29 GL
+-----------------------------
+
+Changed default values of parameters pimin,pimax
+Closed SPRs:  SSC-SPR-3075 (Parameters pimin & pimax not described)
+	      SSC-SPR-3012 (task description)
+	
+	
+Version 3.4 - 2002-11-01 GL
+-----------------------------
+
+Adapted to column name change in eboxdetect 4.11	
+
+	
+Version 3.3 - 2002-05-24 GL
+-----------------------------
+
+Changed .par file to XML
+
+	
+Version 3.2.3 (2002-05-24) GL
+-----------------------------
+
+Prevent crashes due to access of RAWCOLS with chipix=0
+
+
+Close SPR:
+SSC-SPR-2841: Problems with new oot features
+	
+Version 3.2.2 (2002-04-16) GL
+-----------------------------
+
+Close SPR:
+SSC-SPR-2841: Problems with new oot features
+	
+	
+Version 3.2.1 (2002-04-16) GL
+-----------------------------
+
+Close SPR:
+SSC-SPR-2832: Does not build statically
+	
+Version 3.2 (2002-04-16) GL
+-----------------------------
+
+Fixed bug in CAL calls.
+
+	
+Version 3.1 (2002-04-16) GL
+-----------------------------
+
+Updated ChangeLog.
+
+	
+Version 3.0 (2002-04-15) GL
+-----------------------------
+
+Included treatment of OOT events.
+New parameters "withootset" and "ooteventset".
+	
+	
+Version 2.8.2 (2002-03-01) HB
+-----------------------------
+	
+identical to 2.8.1 which for some reason was not 
+ingested into the system properly	
+	
+Version 2.8.1 (2002-02-27) HB
+-----------------------------
+
+Closed SPR:
+-SSC-SPR-2718: INSR array out of range if input source table empty (on Linux)
+	
+Version 2.8 (2002-01-10) HB
+---------------------------
+
+test harness updated	
+	
+Version 2.7 (2002-01-09) HB
+---------------------------
+
+default values of parameters withexpimage and withdetmask set to true
+	
+Closed SPR:
++SSC-SPR-2692 esplinemap writing massive output 
+	
+Version 2.6 (2001-10-17)
+------------------------
+
+Closed SPR:
++ SSC-SPR-2374 Incomplete directory execution rights	
+	
+Version 2.5 (2001-07-25)
+------------------------
+
+the dynamic range of the input data for the spline fit was
+compressed to avoid oscillations of the spline map in the
+presence of bright extended sources 
+		
+Closed SPR 	
++ SSC-SPR-2477 (on emldetect) fixed by extending the backgrounnd
+	       to areas outside the FOV (if withexpimage=true)
+
+Version 2.4 (2001-03-30)
+------------------------
+
+DEPEND file updated	
+	
+Version 2.3.1 (2001-03-16)
+--------------------------
+
+Task parameter idinst was removed. The instrument id is now read
+from the INSTRUME keyword of the input image.
+Closed SPR:
++ SSC-SPR-2113 can't specify cheese filename	
++ SSC-SPR-2131 does not trap detmask from wrong camera
++ SSC-SPR-2251 float to string problem	
+
+Version 2.3 (2001-01-26)
+------------------------
+
++ as suggested by JO, source cut-out radii are now source count dependent
+  (two new parameters, IDINST and IDBAND added. Parameter scut redefined)
++ SSC-SPR-2191 (was closed in v2.2): additional correction of number of
+               free parameters of spline fit: was (nx-4)(ny-4); corrected
+               to (nx-8)(ny-8) (= number of internal nodes of bicubic
+               spline fit; see, e.g.,  description of NAG routine E02DAF)  
++ SSC-SPR-2056 on edetect_chain (already closed): additional measures
+               to reduce undesired oscillating behaviour of spline fit:
+               1. lower limit of background map forced to 20% value of
+                  background histogram
+               2. removal of negative 4-sigma excesses from spline fit
+                  input data (previously only positive 4 sigma excesses
+                  were removed) 
+
+Version 2.2 (2001-01-15)
+------------------------
+	
+Closed SPR:
+
++ SSC-SPR-2191 reduced chisqr quoted in output file keyword is incorrect.
+               The number of dof of the spline fit is now listedin 
+	       keyword NDOF.
+	
+	
+Version 2.1 (2000-12-20)
+------------------------
+
+Closed SPRs:
+
++ SSC-SPR-2056 Background maps showing holes
++ SSC-SPR-2114 sets input or output?
++ SSC-SPR-2116 mmlmin not in input file
++ SSC-SPR-2122 Task crashed with FITSIO error	
+
+Version 2.0 (2000-09-25)
+------------------------	
+
+- Reduced Chi**2 of spline fit is now copied to keyword CHISQR of
+  background map.	
+	
+Closed SPRs:
+
++ SSC-SPR-1955 Input filename limited to 80 characters
++ SSC-SPR-0829 NO CHANGE when modifying the Spline_Node
++ SSC-SPR-0828 Radius of excluded regions
++ SSC-SPR-0826 Documentation Concern	
+
+	
+Version 1.9 2000-07-28
+-------------------------
+
+Task now generates an error if WCS reference pixel is outside FOV 
+.lyt file added
+	
+Closed SPR:
+
++ SSC-SPR-1933 Task in infinite loop ?	
+
+	
+Version 1.8.2  2000-07-02
+-------------------------
+
++ test output removed	
+
+	
+Version 1.8.1  2000-07-02
+-------------------------
+
+Closed SPRs:
+
++ SSC-SPR-1147 PSF center harcoded at 320,320
++ SSC-SPR-1604 Task fails if optional parameters are omitted
++ SSC-SPR-1791 missing info file
+
+Version 1.8 (January, 25 2000)
+--------------------------------
+
+- input source list modified to conform to DCPs
+  (requires eboxdetect v3.0 or higher)	
+- task now reads i1, i2, i4, r4, and r8 input images
+- task description adjusted to actual functionality of
+  present task version	  
+
+	
+Version 1.7.1 (Marco Beijersbergen, 1999-12-15)
+-------------
+
+- added DISTRIBUTION
+- fixed obsolete DAL calls
+
+
+Version 1.7 (July 20, 1999)
+---------------------------
+
+- this corrects an error which resulted in a program crash
+  if image sizes are not pultiples of 16 pixels	 
+
+- open SPRs: see version 1.6
+	  	
+Version 1.6 (July 12, 1999)
+---------------------------
+
+- parameter names changed to conform to convention
+
+Closed SPRs:
+
+  - 0827: box_size column filled in input source table	
+  - 0984: taskmain included in DEPEND
+  	
+Open SPRs: 
+
+  - 0826: documentation
+  - 0828: size of excluded regions
+  - 0829: spline nodes	
+	
+
+Version 1.5
+----------------------
+
+- Now operates on arbitrarily sized input images	
+	
+
+Version 1.4
+----------------------
+
+- Routine cp_head exchanged with newer version. This was required
+  to make the output of esplinemap consistent with the other tasks
+  in the edetect_chain script.
+
+- Minor corrections in task description. 	
+	
+Version 1.3
+----------------------	
+
+Closed SPRs:
+
+ - 0363: Scientific functionality added.  	
+ - 0510: Test harness corrected.	
+	
+Version 1.2
+----------------------	
+
+Default values for file name parameters removed. 
+
+Closed SPRs:
+	
+ - 0364: Test harness: changed: f90 program used to compare output
+         to reference background map.
+ - 0365: File test/Makefile edited.	
+ - 0474: "draft" removed from task description.
+
+Open SPRs:
+
+ - 0363: Full functionality will be added in version 1.3.	
+
+	
+Version 1.1
+----------------------
+
+ChangeLog added
+
+Closed SPRs:
+	
+ - 0162: .par file provided instead of .prm
+ - 0165: test harness is more robust now
+ - 0166: "
+
+Open SPRs: (will be treated in next task version)
+
+ - 0161: test_plan
+ - 0163: algorithmic section to be added in next task versionq
+ - 0164: cp_head to be replaced by generic mechanism 	
+
+Version 1.0
+----------------------------
+
+- Original version submitted to the SOC
+
+To do list:
+===========	
+
+- implement source extent dependent cutout radius
+
+- add out-of-time events contribution to background map	
+	
+- add error handling and verbosity control
+
+- add CAL call to function blur
+
+- upgrade io routines	
+	
+- change F77 code to F90
+
+- upgrade task description

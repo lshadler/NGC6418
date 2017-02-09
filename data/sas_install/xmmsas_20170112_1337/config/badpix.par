@@ -1,0 +1,103 @@
+<!-- converted from XPI formatted "badpix.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="eventset" type="dataset" mandatory="yes" default="">
+   <DESCRIPTION>
+    Name of input events set 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="getuplnkbadpix" type="bool" default="yes">
+   <DESCRIPTION>
+    Get uplinked bad pixels 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="getotherbadpix" type="bool" default="yes">
+   <DESCRIPTION>
+    Get non-uplinked bad pixels 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="getnewbadpix" type="bool" default="no">
+   <DESCRIPTION>
+    Get new bad pixels (from badpixfind) 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+      <PARAM id="badpixset" type="dataset" default="badpixfind.fits">
+        <DESCRIPTION>
+         Badpixfind output file 
+        </DESCRIPTION>
+        <CONSTRAINTS>
+         true
+        </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="emptyextension" type="bool" default="no">
+   <DESCRIPTION>
+    Create an empty BADPIX extension 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="windowfilter" type="bool" default="no">
+   <DESCRIPTION>
+    Just get pixels within input file X/Y window 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withoutset" type="bool" default="no">
+   <DESCRIPTION>
+    Create new output file (BADPIX extension is appended to input if false) 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+      <PARAM id="outset" type="dataset" default="out.fits">
+        <DESCRIPTION>
+         Name of optional output file 
+        </DESCRIPTION>
+        <CONSTRAINTS>
+         true
+        </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

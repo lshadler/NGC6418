@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Source matching</TITLE>
+<META NAME="description" CONTENT="Source matching">
+<META NAME="keywords" CONTENT="omsrclistcomb">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omsrclistcomb.css">
+
+<LINK REL="next" HREF="node48.html">
+<LINK REL="previous" HREF="node42.html">
+<LINK REL="up" HREF="omsrclistcomb.html">
+<LINK REL="next" HREF="node48.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omsrclistcomb (omsrclistcomb-2.22.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node46.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="CONFUSION FLAGS"></A>
+<A HREF="omsrclistcomb.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node48.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node54.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omsrclistcomb.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000110000000000000000">
+Source matching</A>
+</H1>
+
+<P>
+In order to produce the <SPAN  CLASS="textbf">merged</SPAN> source-list from all the individual input
+source-list files, <SPAN  CLASS="textbf">omsrclistcomb</SPAN> first produces a list of all the input
+sources sorted into order of decreasing source significance. To decrease the
+CPU time taken in the matching process, the distance (d) between two sources is computed
+from their equatorial-rectangulr coordinates (x, y and z), using the following formulae:
+
+<UL>
+<LI><!-- MATH
+ \begin{math}
+x=cos(\delta)\times cos(\alpha)
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="140" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$x=cos(\delta)\times cos(\alpha)$"></SPAN>
+</LI>
+<LI><!-- MATH
+ \begin{math}
+y=cos(\delta)\times sin(\alpha)
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="140" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$y=cos(\delta)\times sin(\alpha)$"></SPAN>
+</LI>
+<LI><!-- MATH
+ \begin{math}
+z=sin(\delta)
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="76" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$z=sin(\delta)$"></SPAN>
+</LI>
+<LI><!-- MATH
+ \begin{math}
+d=\arccos(x_1\times x_2+y_1\times y_2+z_1\times z_2)
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="277" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$d=\arccos(x_1\times x_2+y_1\times y_2+z_1\times z_2)$"></SPAN>
+</LI>
+</UL>
+
+<P>
+The equatorial coordinates are only computed once.
+
+<P>
+In order to deal with source-position 
+errors that may be underestimated, and don't in fact take into account ``offsets'' between 
+the coordinates in the different files, each source is assigned a new error based on the following:
+
+<P>
+
+<UL>
+<LI>For a source with a likely strong <SPAN  CLASS="textbf">mod-8</SPAN> pattern (Quality flag bit 4 set),
+the error in the position is taken to be the maximum of its computed position error
+and 1 arcsec.
+</LI>
+<LI>For extended sources the position error is taken to be the maximum of
+its computed position error and 0.25 <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\times$"></SPAN> its computed semi-major axis,
+or a minimum of 3 arc secs.
+</LI>
+</UL>
+
+<P>
+For each source in the list  <SPAN  CLASS="textbf">omsrclistcomb</SPAN> then 
+tries to find a counterpart from the other sources in the list, excluding sources from
+the same source-list file from where the current source originated. Two sources
+are considered to ``matched'' if the distance between them satisfies the following:
+
+<P>
+<!-- MATH
+ \begin{math}
+distance <= \max{(2.5, \min{(4, \textbf{nsigma} * \textbf{error}))}}
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="336" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$distance &lt;= \max{(2.5, \min{(4, \textbf{nsigma} * \textbf{error}))}}$"></SPAN> arcsecs
+
+<P>
+where <SPAN  CLASS="textbf">error</SPAN> is computed from the formula
+<!-- MATH
+ \begin{math}
+\sqrt{ err_1^2 + err_2^2}
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="99" HEIGHT="40" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$\sqrt{ err_1^2 + err_2^2}$"></SPAN>, where <!-- MATH
+ \begin{math}
+err_1
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$err_1$"></SPAN> and <!-- MATH
+ \begin{math}
+err_2
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$err_2$"></SPAN> 
+are the errors in the two source positions and <SPAN  CLASS="textbf">nsigma</SPAN> is the input parameter (default value=3). 
+The matching algorithm may find several possible ``matches'' and will select the closest.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node46.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="CONFUSION FLAGS"></A>
+<A HREF="omsrclistcomb.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node48.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node54.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

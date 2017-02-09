@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Auto selection of Prime source.</TITLE>
+<META NAME="description" CONTENT="Auto selection of Prime source.">
+<META NAME="keywords" CONTENT="rgssources">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgssources.css">
+
+<LINK REL="next" HREF="node13.html">
+<LINK REL="previous" HREF="node11.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node13.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgssources (rgssources-6.2.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node11.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Prime source."></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Attitude parameters."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgssources.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00035000000000000000"></A> <A NAME="prime-auto"></A>
+<BR>
+Auto selection of Prime source.
+</H2>
+
+<P>
+Here is the outline of the current algorithm to choose the (possibly the most reasonable) Prime source when <TT>primestyle</TT>=auto.  This is, for example, used in the Pipeline processing (section <A HREF="node20.html#pipeline">6.1</A>).  Given <TT>doconfusion</TT>=yes, <TT>withepicset</TT>=yes and <TT>enablefilter</TT>=yes, the selected Prime source will be
+
+<OL>
+<LI>the proposed source, if the proposal source is within the FOV (of RGS) and is not confused with other EPIC sources.
+<BR>
+A likely scenario is this: the central chip of EPIC is used in the timing mode, where no EPIC source list is extracted; as a result no source appears at the proposed position, which is most likely to be at the EPIC central chip.  Indeed if the observation is meant to be mainly for RGS, the source is quite likely to be too bright to observe in the standard mode in EPIC.
+</LI>
+<LI>the proposed source, if the proposal source is within the FOV (of RGS) and is confused with more than one EPIC source.
+<BR>
+A likely scenario is this: the proposed source is so bright that causes pile-ups in the EPIC chip, leading to many spurious EPIC detections around it.  In that case none of the EPIC detection is reliable, so the proposed position would be better than those.
+</LI>
+<LI>the brightest EPIC source, if either of the above is not the case, and if there are EPIC sources in the FOV.
+<BR>
+A likely scenario is this: there is one bright EPIC source detected as a confused source with the proposed source; in this case the proposed position of the source is slightly wrong, and so the position of the EPIC bright source is probably more appropriate for the RGS analysis.  Note that the brightest EPIC source (within the RGS FOV) may not be the source that confuses with the proposed source, i.e., a completely different source from the proposed one may be picked up as the Prime source, if the source is brighter than the supposedly proposed one.
+</LI>
+<LI>the ONAXIS source (=position), if none of the above is the case -- ie., the last resort.
+<BR>
+A likely scenario is this: the proposed position happens to be out of the FOV and no EPIC source is available (within the FOV).
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node11.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Prime source."></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Attitude parameters."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

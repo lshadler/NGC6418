@@ -1,0 +1,544 @@
+<!-- converted from XPI formatted "emldetect.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="boxlistset" type="table" mandatory="yes" default="boxlist.fits">
+   <DESCRIPTION>
+    name of input EBOXDETECT source list
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="mllistset" type="table" mandatory="yes" default="emllist.fits">
+   <DESCRIPTION>
+    name of output EMLDETECT source list
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="mlmin" type="real" default="10">
+   <DESCRIPTION>
+    minimum detection likelihood for including a source in the output list
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    mlmin in [0.0:1.0E10]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="determineerrors" type="bool" default="yes">
+   <DESCRIPTION>
+    determine statistical errors
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="fitposition" type="bool" default="yes">
+   <DESCRIPTION>
+    fit source positions
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="psfmodel" type="string" default="ellbeta">
+   <DESCRIPTION>
+     Model PSF: fully 2d parametrized analytical EPIC PSFs (default from
+     version 5.17.2 on) or medium accuracy PSF for observations in pointing
+     mode; slew for pn observations in slew mode
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="medium">
+    </ITEM>
+    <ITEM value="ellbeta">
+    </ITEM>
+    <ITEM value="slew">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="nmaxfit" type="int" default="1">
+   <DESCRIPTION>
+    maximum number of neighbouring sources to be fit simultaneously (nmaxfit*nmulsou .lt. 10)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    nmaxfit in [1:10]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="nmulsou" type="int" default="1">
+   <DESCRIPTION>
+    maximum number of sources fit per input source (nmaxfit*nmulsou .lt. 10)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    nmulsou in [1:3]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="ecut" type="real" default="0.68">
+   <DESCRIPTION>
+    source cut-out radius for PSF-fitting (if .lt. 1.0: integrated fraction of normalized PSF, else: pixels)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    ecut in [0.4:100.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="scut" type="real" default="0.9">
+   <DESCRIPTION>
+    source selection radius for multi-source fitting (if .lt. 1:  integrated fraction of normalized PSF, else: pixels)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    scut in [0.4:100.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+
+  <PARAM id="fitextent" type="bool" default="no">
+   <DESCRIPTION>
+    fit source extent
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="extentmodel" type="string" default="gaussian">
+   <DESCRIPTION>
+     Model function for source extent 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="gaussian">
+    </ITEM>
+    <ITEM value="beta">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="dmlextmin" type="real" default="10">
+   <DESCRIPTION>
+    required likelihood improvement for source extent
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    dmlextmin in [0.0:100.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="minextent" type="real" default="1.5">
+   <DESCRIPTION>
+    minimum value of source extent [in units of image pixels] 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    minextent in [0.0:300.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="maxextent" type="real" default="20.0">
+   <DESCRIPTION>
+    maximum value of source extent [in units of image pixels] 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    maxextent in [0.1:300.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+
+  <PARAM id="withthreshold" type="bool" default="no">
+   <DESCRIPTION>
+    minimum likelihood/brightness for performing multi-PSF fitting
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="threshold" type="real" default="20.0">
+   <DESCRIPTION>
+    value of threshold for multi-PSF fitting
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    threshold in [0.0:1E10]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="threshcolumn" type="string" default="LIKE">
+   <DESCRIPTION>
+     input list column to apply threshold 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="LIKE">
+    </ITEM>
+    <ITEM value="RATE">
+    </ITEM>
+    <ITEM value="SCTS">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="withtwostage" type="bool" default="no">
+   <DESCRIPTION>
+     use two-stage process for multi-PSF (nmulsou > 1) fitting
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+
+  <PARAM id="withimagebuffersize" type="bool" default="no">
+   <DESCRIPTION>
+    allow user-defined values of imagebuffersize
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="imagebuffersize" type="int" default="640">
+   <DESCRIPTION>
+    controls memory requirements for mosaic images
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    imagebuffersize in [100:10000]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="withxidband" type="bool" default="no">
+   <DESCRIPTION>
+    add XID band output
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="xidfixed" type="bool" default="no">
+   <DESCRIPTION>
+    Run emldetect on XID-band image with positions and source extent fixed to input values 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+
+  <PARAM id="pimin" type="int" list="yes" default="2000">
+   <DESCRIPTION>
+    lower PI energy boundaries of input images [eV]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    pimin in [1:30000]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="pimax" type="int" list="yes" default="4500">
+   <DESCRIPTION>
+    upper PI energy boundaries of input images [eV]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    pimax in [1:30000]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="hrpndef" type="int" list="yes" default="1 2 2 3 3 4 4 5">
+   <DESCRIPTION>
+    indices of low- and high-energy band of the hardness ratios for PN
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="xidpndef" type="int" list="yes" default="2 3 4">
+   <DESCRIPTION>
+    indices of the energy band(s) covered by the XID band for PN
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="hrm1def" type="int" list="yes" default="1 2 2 3 3 4 4 5">
+   <DESCRIPTION>
+    indices of low- and high-energy band of the hardness ratios for MOS1
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="xidm1def" type="int" list="yes" default="2 3 4">
+   <DESCRIPTION>
+    indices of the energy band(s) covered by the XID band for MOS1
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="hrm2def" type="int" list="yes" default="1 2 2 3 3 4 4 5">
+   <DESCRIPTION>
+    indices of low- and high-energy band of the hardness ratios for MOS2
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="xidm2def" type="int" list="yes" default="2 3 4">
+   <DESCRIPTION>
+    indices of the energy band(s) covered by the XID band for MOS2
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="ecf" type="real" list="yes" default="1">
+   <DESCRIPTION>
+    energy conversion factors
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    ecf in [0.0:1000.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="xidecf" type="real" list="yes" default="1">
+   <DESCRIPTION>
+    XID-band energy conversion factors
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    xidecf in [0.0:1000.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+
+
+
+
+
+
+
+
+  <PARAM id="fitcounts" type="bool" default="yes">
+   <DESCRIPTION>
+    fit source counts (not yet implemented)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="fitnegative" type="bool" default="no">
+   <DESCRIPTION>
+    allow fitted count rates to become negative
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="mergedlistset" type="dataset" default="mergedlist.fits">
+   <DESCRIPTION>
+    name of merged source list -- obsolete
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="useevents" type="bool" default="no">
+   <DESCRIPTION>
+    photon mode flag (mode not yet implemented)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="usecalpsf" type="bool" default="yes">
+   <DESCRIPTION>
+    Read PSF from the calibration db. This parameter is obsolete and has no effect anymore.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withhotpixelfilter" type="bool" default="no">
+   <DESCRIPTION>
+    hot pixel filter (detections relying on a single pixel will be disregarded)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withoffsets" type="bool" default="no">
+   <DESCRIPTION>
+    Flag for reading offsets from eident source list -- obsolete
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withrawrows" type="bool" default="no">
+   <DESCRIPTION>
+    include additional rows in output list with raw values (i.e. before
+   defining the final source list values). Experienced users only!
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+
+
+
+
+
+  <PARAM id="imagesets" type="dataset" list="yes" mandatory="yes" default="image.fits">
+   <DESCRIPTION>
+    names of input images
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="bkgimagesets" type="dataset" list="yes" mandatory="yes" default="bkgimage.fits">
+   <DESCRIPTION>
+    names of background images
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withdetmask" type="bool" default="no">
+   <DESCRIPTION>
+    use detection mask
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+  	<PARAM id="detmasksets" type="dataset" list="yes" default="detmask.fits">
+   		<DESCRIPTION>
+    		names of detection masks
+   		</DESCRIPTION>
+   		<CONSTRAINTS>
+    		true
+   		</CONSTRAINTS>
+  	</PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withexpimage" type="bool" default="yes">
+   <DESCRIPTION>
+    use exposure maps
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+	  <PARAM id="expimagesets" type="dataset" list="yes" default="expimage.fits">
+   		<DESCRIPTION>
+    		names of exposure maps
+   		</DESCRIPTION>
+   		<CONSTRAINTS>
+    		true
+   		</CONSTRAINTS>
+  	</PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withsourcemap" type="bool" default="no">
+   <DESCRIPTION>
+    creation of output source maps
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+  	<PARAM id="sourceimagesets" type="dataset" list="yes" default="srcmap.fits">
+   		<DESCRIPTION>
+    		source maps
+   		</DESCRIPTION>
+   		<CONSTRAINTS>
+    		true
+   		</CONSTRAINTS>
+  	</PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

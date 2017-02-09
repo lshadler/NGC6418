@@ -1,0 +1,1711 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>C++ API</TITLE>
+<META NAME="description" CONTENT="C++ API">
+<META NAME="keywords" CONTENT="dal">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="dal.css">
+
+<LINK REL="next" HREF="node33.html">
+<LINK REL="previous" HREF="node31.html">
+<LINK REL="up" HREF="dal.html">
+<LINK REL="next" HREF="node33.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+dal (dal-1.191.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node31.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Errors"></A>
+<A HREF="dal.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node33.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="C API"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="dal.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000200000000000000000">
+C++ API</A>
+</H1>
+
+<P>
+Abstract interface definition for DAL
+
+<P>
+ 
+<UL>
+<LI>CLASS 
+<BR>
+Dal
+</LI>
+<LI>PURPOSE 
+<BR>
+Information used by all Dal objects.
+</LI>
+<LI>DERIVED FROM 
+<BR>
+None.
+</LI>
+<LI>TYPES 
+<BR> 
+<UL>
+<LI>enum DataType { Bool = 1, Int8, Uint16, Int16, Uint32, Int32, Real32, Real64, DString } 
+<BR>
+Used to specify the data type of objects. These enumeration values represent
+the seven fundamental data types of the DAL Data Model. These types have the following meanings:
+
+<UL>
+<LI>Bool An 8-bit boolean object taking the values 0 (false) or 1 (true).
+</LI>
+<LI>Int8 An 8-bit integer object with values in the range [...]
+</LI>
+<LI>Uint16 A 16-bit unsigned integer object with values in the range [...]
+</LI>
+<LI>Int16 A 16-bit integer object with values in the range [...]
+</LI>
+<LI>Uint32 A 32-bit unsigned integer object with values in the range [...]
+</LI>
+<LI>Int32 A 32-bit integer object with values in the range [...]
+</LI>
+<LI>Real32 A 32-bit real object with values in the range [...]
+</LI>
+<LI>Real64 A 64-bit real object with values in the range [...]
+</LI>
+<LI>DString An array of character values.
+</LI>
+</UL>
+</LI>
+<LI>enum AccessMode  Read = 1, Create, Modify, Temp, AsParent  
+<BR>
+The AccessMode determines whether the data is read upon open and written
+ upon close.
+
+<UL>
+<LI>Create Indicates that a new dataset is to be created. In the event that
+a dataset already exists with the specified name, the subsequent behaviour is
+determined by the setting of the SAS_CLOBBER environment variable.
+</LI>
+<LI>Modify Indicates that a dataset, table or column is to be modified.
+</LI>
+<LI>Read Indicates that a dataset, table or column is to be accessed but not modified.
+</LI>
+<LI>Temp Indicates that a dataset, table or column is to be accessed, but all modifications made will be discarded upon closure.
+</LI>
+</UL>
+</LI>
+</UL> 
+</LI>
+<LI>DATA 
+<BR> 
+<UL>
+<LI>static const vector&lt;unsigned long&gt; scalar 
+<BR>
+This data value is used to indicate scalar dimension.
+</LI>
+<LI>static const vector&lt;unsigned long&gt; zero 
+<BR>
+This data value is used to indicate a starting position or a zero length.
+ 
+</LI>
+</UL> 
+
+<P>
+</LI>
+<LI>CLASS 
+<BR>
+DataSetServer
+</LI>
+<LI>PURPOSE 
+<BR>
+The DataServer is an abstract interface for an object that keeps track of
+opening and closing data files. It will implement
+some strategy to determine which part of the file is kept in memory.
+The open mode can be used as a hint how to deal with the file.
+</LI>
+<LI>DERIVED FROM 
+<BR> 
+<UL>
+<LI>public virtual Dal 
+<BR> 
+</LI>
+</UL> 
+</LI>
+<LI>TYPES 
+<BR> 
+<UL>
+<LI>enum FileType { Fits =  1, Dal, Deceit } 
+<BR>
+These enumeration are used to specify the output file type of new datasets. The values have the following meaning:
+
+<UL>
+<LI>Fits The output will be compliant to standard FITS format. This format is guaranteed to be platform independent.
+</LI>
+<LI>Dal The output will be a Dal specific format, closely related to the internal format of the Dal's data structures. This format will give the best performance, but is not guaranteed to be platform independent.
+</LI>
+<LI>Deceit A special format, not for general use, which will comply as far as is possible to the deceit-file format. This option is not implemented in the core implementation, and requires the extended Dal.
+</LI>
+</UL>
+</LI>
+<LI>enum MemoryModel { High = 1, HighLow, Low, UseEnvironment } 
+<BR>
+These enumeration values are used to specify which memory model a particular dataset should be opened with. The values have the following meaning:
+
+<UL>
+<LI>High The high memory model will be used.  The dataset will be loaded into memory in it's entirety. All subsequent dataset operations will be performaed on the memory-loaded version of the dataset. Upon closure, the memory is flushed back to disk. This option gives rise to high performance, but assumes that the machines core memory wil not be exhausted.
+</LI>
+<LI>HighLow This option should be used when the machines core memory is limited. When a dataset is opened with this option the data (arrays and tables) is not loaded. Only when the data is accessed is it loaded. When the data isrelased it will be flushed back to disk.
+</LI>
+<LI>Low This option is not implemented and is for future use. The intention is that a dataset opened with this option is guaranteed to work on a machine with very low memory.
+</LI>
+</UL>
+</LI>
+</UL> 
+</LI>
+<LI>METHODS
+ 
+<UL>
+<LI>virtual void client(const string&amp; name) = 0 
+<BR>
+Tell the DataServer who is accessing the datasets i.e. name of the client; can be any arbitrary string. It is like‡y that this name will be written any createdi or modifed datasets.
+</LI>
+<LI>virtual const string&amp; client() const = 0 
+<BR>
+Get the value which was set by the client( const string&amp; ) method.
+</LI>
+<LI>virtual void process(const string&amp; processDescription) = 0 
+<BR>
+Register a description of the process that is going on. Can be any arbitrary string.  It is likely that this desciprtion will be writtem to any created or modified datasets.
+</LI>
+<LI>virtual const string&amp; process() const = 0 
+<BR>
+Get the process description string.
+</LI>
+<LI>virtual void process( 
+<BR>
+const DataSet*		dataSet, 
+<BR>
+const string&amp;		processDescription ) = 0 
+<BR>
+Register a description of the process that is going on, for the given dataset.
+Multiple invocations of this method is cummulative giving rise to an ordered
+list of descriptions.
+The description will be written to the dataset upon closure (provided it was
+opened for create or modify).
+</LI>
+<LI>virtual const string&amp; process( 
+<BR>
+const DataSet*		dataSet, 
+<BR>
+unsigned int		processNumber ) const = 0 
+<BR>
+Get the process description string with the given ordinal number for the given
+dataSet.
+</LI>
+<LI>virtual unsigned int processes( const DataSet* dataSet ) const = 0 
+<BR>
+Get the number of process description strings for the given dataset.
+</LI>
+<LI>virtual DataSet * open( 
+<BR>
+const string &amp;		setName, 
+<BR>
+AccessMode		openMode, 
+<BR>
+MemoryModel		memoryModel = UseEnvironment, 
+<BR>
+DataSetReaderWriter*	readerWriter ) = 0 
+<BR>
+Opens a dataset. This is how datasets are created, read or modified. The pointer which is returned by other methods to create additional components or access existing components. In particular, this pointer must be passed to the close() method in order to release the dataset from memory.
+
+<P>
+If a dataset is opened for modify or read, the DAL attempts to detect the format
+. The format may be determined with the ouputFileFormat() method.
+The output file format of newly created datasets may be specified by setting
+the SAS_FORMAT environment variable appropriately.
+The final argument, is currently only prototyped and should be ignored.
+</LI>
+<LI>virtual DataSet * clone( 
+<BR>
+const string &amp;		from, 
+<BR>
+const string &amp;		to, 
+<BR>
+AccessMode		openMode, 
+<BR>
+MemoryModel		memoryModel = UseEnvironment, 
+<BR>
+DataSetReaderWriter*	readerWriter )
+			= 0 
+<BR>
+Clones a dataset. This method opens a dataset with the specified name (to) and specified mode (either
+Dal::Modify or Dal::Temp) and fills it with the contents of the given source
+dataset (from). The pointer which is returned by other methods to create additional components or access existing components. In particular, this pointer must be passed to the close() method in order to release the dataset from memory.
+</LI>
+<LI>virtual void close( DataSet * dataSet ) = 0 
+<BR>
+Closes the specified dataset.
+</LI>
+<LI>virtual void keep( const string &amp;	setName ) = 0 
+<BR>
+Tell the dataset server not to discard the named dataset.
+
+<P>
+NB. This method must only be called by Meta Tasks.
+</LI>
+<LI>virtual void discard( const string &amp;	setName ) = 0 
+<BR>
+Tell the dataset server to discard the named dataset.
+
+<P>
+NB. This method must only be called by Meta Tasks.
+</LI>
+<LI>virtual bool exists( const string &amp; setName ) const = 0 
+<BR>
+Determines if the dataset with the given name exists, in which case, true is returned. .Otherwise false is returned.
+</LI>
+<LI>virtual void copy( const string&amp; from, const string&amp; to ) = 0 
+<BR>
+Copies the dataset with name from, to the dataset with name to.
+</LI>
+<LI>virtual void clobber(bool b) = 0 
+<BR>
+Activate or Deactivate the clobber mechasism. If the clobber mechanism is activated, then datasets are overwritten when new datasets are created with the same name. When the machism is off, it is not possible to overwrite existing datasets, and any attempt to do so will give rise to an error.
+</LI>
+<LI>virtual bool clobber() const = 0 
+<BR>
+Retursn the current clobber mechanism setting:
+ture on false off.
+</LI>
+<LI>virtual void outputFileFormat( FileType fileType ) = 0 
+<BR>
+Sets the output file format.
+</LI>
+<LI>virtual FileType outputFileFormat() const = 0 
+<BR>
+Get the output file format.
+</LI>
+<LI>virtual void printOn(ostream&amp; os) const = 0 
+<BR> 
+</LI>
+</UL> 
+
+<P>
+</LI>
+<LI>FUNCTION 
+<BR>
+ostream&amp; operator&#171;(ostream&amp; os, const DataSetServer&amp; d)
+</LI>
+<LI>PURPOSE 
+<BR>
+<P>
+</LI>
+<LI>DATA 
+<BR>
+extern DataSetServer* dataSetServer; 
+</LI>
+<LI>PURPOSE 
+<BR>
+Single global instance of a DataSetServer.
+
+<P>
+</LI>
+<LI>CLASS 
+<BR>
+Labelled
+</LI>
+<LI>PURPOSE 
+<BR>
+An object which is derived from Labelled will have a name, together with
+an associated short (typically one line) textual description (which is essentially comment).
+</LI>
+<LI>DERVIED FROM 
+<BR>
+None
+</LI>
+<LI>METHODS
+ 
+<UL>
+<LI>virtual const string &amp; name() const = 0 
+<BR>
+The name of the object is obtained with name()
+</LI>
+<LI>virtual void rename( const string &amp; newName ) = 0 
+<BR>
+The object may be renamed with rename() and
+</LI>
+<LI>virtual const string &amp; label() const = 0 
+<BR>
+The short textual description is obtained with label()
+</LI>
+<LI>virtual void relabel( const string &amp; newLabel ) = 0 
+<BR>
+The short textual description may be changed (i.e. replaced)
+with relabel().
+</LI>
+<LI>virtual string qualifiedName() const = 0 
+<BR>
+qualifiedName() returns a colon-separated concatenation of the
+names, in hierarchical order, or the object and all its
+ancesters, up to and including the data set name.
+ 
+</LI>
+</UL> 
+
+<P>
+</LI>
+<LI>CLASS 
+<BR>
+Attribute
+</LI>
+<LI>PURPOSE 
+<BR>
+An attribute is an object which consists of a name, value, comment and units. Although for non numeric values, the units are meaningless. The name and comment methods are provided by the Labelled base class.
+An attribute belongs to an attributable object. The Attributable class is the ,managing class of attributes. The owner of a particular attribute is obtained with the parent() method.  An attribute is created with Attributable::addAttribute().
+</LI>
+<LI>DERIVED FROM 
+<BR> 
+<UL>
+<LI>public virtual Dal
+</LI>
+<LI>public virtual Labelled
+</LI>
+<LI>public virtual Child&lt;Attributable&gt;
+ 
+</LI>
+</UL> 
+</LI>
+<LI>TYPES
+ 
+<UL>
+<LI>enum DataType { Bool=1, Int, Real, DString } 
+<BR>
+The fundamental types of an attribute's value.
+ 
+</LI>
+</UL> 
+</LI>
+<LI>METHODS
+ 
+<UL>
+<LI>virtual&nbsp;Attribute() {}
+</LI>
+<LI>virtual Attribute &amp; operator=( int	value ) = 0 
+<BR>
+Assign an integer value to the attribute. The current value is lost, and the data type becomes Attribute::Int.
+</LI>
+<LI>virtual Attribute &amp; operator=( double	value ) = 0 
+<BR>
+Assign a real value to the attribute. The current value is lost and the data type becomes Attribute::Real.
+</LI>
+<LI>virtual Attribute &amp; operator=( bool	value ) = 0 
+<BR>
+Assign a boolean to the attribute. The current value is lost and the type becomes Attribute::Bool.
+</LI>
+<LI>virtual Attribute &amp; operator=( const char * value ) = 0 
+<BR>
+Assign a character string to the attribute. The current value is lost and the data type becomes Attribute::DString.
+</LI>
+<LI>virtual Attribute &amp; operator=( const string &amp; value ) = 0 
+<BR>
+Assign a string to the attribute. The current value is lost and the data type becomes DString.
+</LI>
+<LI>virtual Attribute &amp; operator=( const Attribute&amp; ) = 0 
+<BR>
+Assignment operator. The value, type, comment and units are assign to the attribute. The owner of the attribute remains unchanged.
+</LI>
+<LI>virtual int asInt() const = 0 
+<BR>
+Returns the value of the attribute as an integer, converting it if necessary.
+An error is generated in case it is not possible to convert
+value to an int.
+</LI>
+<LI>virtual double asReal() const = 0 
+<BR>
+Returns the value of the attribute as a real, converting it if necessary.
+An error is generated in case it is not possible to convert
+value to a real.
+</LI>
+<LI>virtual string asString() const = 0 
+<BR>
+Returns the value of the attribute as a string, converting it if necessary.
+An error is generated in case it is not possible to convert
+value to a string.
+</LI>
+<LI>virtual bool asBool() const = 0 
+<BR>
+Returns the value of the attribute as a boolean, converting it if necessary.
+An error is generated in case it is not possible to convert
+value to a bool.
+</LI>
+<LI>virtual const string &amp; units() const = 0 
+<BR>
+Get the units of the attribute's value. Only relevant for numeric types.
+</LI>
+<LI>virtual void units(const string&amp;) = 0 
+<BR>
+Set the units of the attribute's value. Only relevant for numeric types.
+</LI>
+<LI>virtual DataType dataType() const = 0 
+<BR>
+Get the data type of the attribute's value.
+</LI>
+<LI>virtual void dataType(DataType type) = 0 
+<BR>
+Set the data type of the attribute's value.
+</LI>
+<LI>virtual char* addressOfValue() const = 0 
+<BR>
+Get the memory address of attribute's value.
+</LI>
+<LI>virtual unsigned int dataSize() const = 0 
+<BR>
+Get the size, in bytes, of the attribute's value.
+</LI>
+<LI>virtual void printOn(ostream&amp; os) const = 0 
+<BR>
+Output an ASCII representation of the attribute to a given stream.
+ 
+</LI>
+</UL> 
+
+<P>
+</LI>
+<LI>FUNCTION 
+<BR>
+ostream&amp; operator&#171;(ostream&amp; os, const Attribute&amp; d)
+</LI>
+<LI>PURPOSE 
+<BR>
+Output an ASCII representation of the attribute to a given stream.
+
+<P>
+</LI>
+<LI>CLASS 
+<BR>
+Attributable
+</LI>
+<LI>PURPOSE 
+<BR>
+An object that is derived from Attributable has a set of attributes.
+An attribute is a dictionary of keyword-value pairs. Numeric attributes
+have a string describing the units; each attribute has a comment.
+</LI>
+<LI>DERIVED FROM 
+<BR> 
+<UL>
+<LI>public virtual Dal
+</LI>
+<LI>public virtual Labelled
+ 
+</LI>
+</UL> 
+</LI>
+<LI>METHODS
+ 
+<UL>
+<LI>virtual&nbsp;Attributable() {} 
+<BR></LI>
+<LI>virtual Attributable&amp; operator=( const Attributable&amp; ) = 0 
+<BR></LI>
+<LI>virtual Attribute * addAttribute(
+				const string &amp;		name,
+				const string &amp;		comment = "",
+				const string &amp;		units = "" ) = 0 
+<BR>
+Create and add an attribute to the set. This does not yet define the data type of the attribute's value. This is done with one of the assignment operators in the Attribute class. An attribute with name name must not already exist in the set, otherwise an error is raised.
+</LI>
+<LI>virtual Attribute * addAttribute( const Attribute * attribute ) = 0 
+<BR>
+Create and add an attribute to the set using the name, value, comment and units of the given attribute.
+</LI>
+<LI>virtual void addAttributes( const Attributable* ) = 0 
+<BR>
+Add the attributes from the given Attributable to this attributable set.
+</LI>
+<LI>virtual bool hasAttribute( const string &amp; attributeName ) const = 0 
+<BR>
+Determines if an attribute with the specified name exists in the set. Returns true if an attribute of the specified name exists.
+</LI>
+<LI>virtual Attribute * attribute( const string &amp; attributeName ) = 0 
+<BR>
+Get the attribute with the given name. If it does not exist, an
+        error is generated.
+</LI>
+<LI>virtual const Attribute * attribute( const string &amp; attributeName ) const = 0 
+<BR>
+Same as above except applies to constant objects.
+</LI>
+<LI>virtual unsigned int attributes() const = 0 
+<BR>
+Get the number of attributes in the set.
+</LI>
+<LI>virtual Attribute * attribute( unsigned int number ) = 0 
+<BR>
+Returns the attribute with the the given number (ordinal position within the set). Can be used to iterate over all attributes in the set. number must be in the range [0,n-1] where n in the number of attributes in the set.
+</LI>
+<LI>virtual const Attribute * attribute( unsigned int number ) const = 0 
+<BR>
+Same as above except applies to constant objects.
+</LI>
+<LI>virtual void deleteAttribute( const string &amp; name ) = 0 
+<BR>
+Deletes the attribute with the given name. If the attribute was not found an error is raised.
+</LI>
+<LI>virtual void deleteAttribute( unsigned int number ) = 0 
+<BR>
+Deletes attribute with the given number (ordinal position within the set). If the attribute was not found an error is raised. number must be in the range [0,n-1] where n is the number of attributes in the set.
+</LI>
+<LI>virtual void addComment(const string&amp; comment) = 0 
+<BR>
+Add a comment to the set. This may be any arbitrary string.
+</LI>
+<LI>virtual unsigned int comments() const = 0 
+<BR>
+Returns the number of comment lines in the set.
+</LI>
+<LI>virtual const string &amp; comment( unsigned int number ) const = 0 
+<BR>
+Returns comment line with the specified number starting from 0.
+</LI>
+<LI>virtual void addHistory(const string&amp; historyComment) = 0 
+<BR>
+Add a history record to the set. This may be any arbitrary string.
+</LI>
+<LI>virtual unsigned int historys() const = 0 
+<BR>
+Returns the number of history records in the set.
+</LI>
+<LI>virtual const string &amp; history ( unsigned int number ) const = 0 
+<BR>
+Returns the specified history record (starting from 0).
+</LI>
+<LI>virtual void printOn(ostream&amp; os) const = 0 
+<BR>
+Output an ASCII representation of the attributable object to the given stream.
+ 
+</LI>
+</UL> 
+
+<P>
+</LI>
+<LI>FUNCTION 
+<BR>
+ostream&amp; operator&#171;(ostream&amp; os, const Attributable&amp; d) 
+<BR>
+Output an ASCII representation of the attributable object to the given stream.
+
+<P>
+</LI>
+<LI>CLASS 
+<BR>
+DataSet
+</LI>
+<LI>PURPOSE 
+<BR>
+Structure classes. These objects do not necessarily contain the data
+itself, but they contain the information associated with the objects.
+For example, the column object can tell you its name, data type, number
+of rows etc, but to access the data the data in the column itself
+one of the data objects is needed.  
+A DataSet is attributable, and contains a set of blocks, where a block is either a data table or an array.
+</LI>
+<LI>DERIVED FROM 
+ 
+<UL>
+<LI>public virtual Attributable
+</LI>
+<LI>public virtual Child&lt;DataSetServer&gt;
+ 
+</LI>
+</UL> 
+</LI>
+<LI>METHODS
+ 
+<UL>
+<LI>virtual&nbsp;DataSet() {} 
+<BR></LI>
+<LI>virtual Table * addTable(
+				const string &amp;	name,
+				unsigned long	rows,
+				const string &amp;	label = "",
+				int		position = -1 ) = 0 
+<BR>
+Create and add a new table to the dataset. A pointer to the new table if returned. The arguments are:
+
+<UL>
+<LI>name The name of the table. It may, in priciple, be any arbitrary string, but should be limited to be FITS compliant. If a block with this name already exists in the dataset an error is raised.
+</LI>
+<LI>rows Specifies the number of rows of the table. This is used internally to ensure that all table columns have the same length.
+</LI>
+<LI>label A short description (typically one line) for the table.
+</LI>
+<LI>position The ordinal position, within the dataset, which the table is to occupy. Existing blocks will be moved along if necessary. The default value of -1 ensures that the table is placed at the end of the dataset.
+</LI>
+</UL>
+</LI>
+<LI>virtual Array * addArray(
+			const string&amp;			name,
+			DataType			dataType,
+			const vector&lt;unsigned long&gt; &amp;	size,
+			const string &amp;			units = "",
+			const string &amp;			label = "",
+			int				position = -1 ) = 0 
+<BR>
+Creates and adds a new array to the dataset. A pointer to the new array is returned. The arguments are:
+
+<UL>
+<LI>name The name of the array. Can in priciple be any arbitrary string, but should be limited to be FITS compliant. If a block with this name already exists in the dataset an error is raised.
+</LI>
+<LI>dataType The data type of the array's data. It must be one of Int8, Int16, Int32, Real32, Real64.  Note that Bool and DString types are not supported for arrays.
+</LI>
+<LI>size A vector whose elements describe the length along each dimension of the array's data. Note that the number of elements in this vector is the same as the number of dimensions of the array's data.
+</LI>
+<LI>units The units for the array's data.
+</LI>
+<LI>label A short description (typically one line) for the array.
+</LI>
+<LI>position The ordinal position, within the dataset, which the array is to occupy. Existing blocks will be moved along if necessary. The default value of -1 ensures that the array is placed at the end of the dataset.
+</LI>
+</UL>
+</LI>
+<LI>virtual Block * add(
+			const Block *		block,
+			const string&amp; 		newName = "",
+			int			position = -1 ) = 0 
+<BR>
+Adds a copy of the given block to the dataset. The arguments are:
+
+<UL>
+<LI>block The block to be copied to the dataset. The name may be overwridden by the newName argument. The owner is not copied, and the owner of the copied block is this dataset.
+</LI>
+<LI>newName The name for the new block. The defualt value ensures that the given block's name is also copied.
+</LI>
+<LI>position The ordinal position, within the dataset, which the block is to occupy. Existing blocks will be moved along if necessary. The default value of -1 ensures that the block is placed at the end of the dataset.
+</LI>
+</UL>
+</LI>
+<LI>virtual bool		hasBlock( const string &amp; blockName ) const = 0 
+<BR>
+Determines if a block with the given name exists in the dataset. Returns true if a block of the specified name exists.
+</LI>
+<LI>virtual Table *		table( unsigned int blockNumber, AccessMode=AsParent ) = 0 
+<BR>
+Get the table with the given number from the dataset. The arguments are:
+
+<UL>
+<LI>blockNumber The ordinal position of the table within the dataset. Must be in the range [0,n-1] where n is the number of blocks within the dataset.
+</LI>
+<LI>AccessMode The access mode which the table is to have. The default ensures that the access mode is the same as that of the parent object.
+</LI>
+</UL>
+</LI>
+<LI>virtual const Table *	table( unsigned int blockNumber, AccessMode=AsParent ) const = 0 
+<BR>
+Same as above except applies to constant objects.
+</LI>
+<LI>virtual Table *		table( const string &amp; blockName, AccessMode=AsParent ) = 0 
+<BR>
+Get the table with the given name from the dataset. The arguments are:
+
+<UL>
+<LI>blockname The name of the table to be retrieved from the dataset. In the event that the table with name name is not found (usually because the block is eitehr an array or does not exist at all) an error is raised.
+</LI>
+<LI>AccessMode The access mode which the block is to have. The default ensures that the access mode is the same as that of the parent object.
+</LI>
+</UL>
+</LI>
+<LI>virtual const Table *	table( const string &amp; blockName, AccessMode=AsParent ) const = 0 
+<BR>
+Same as above except applies to constant objects.
+</LI>
+<LI>virtual Array *		array( unsigned int blockNumber, AccessMode=AsParent ) = 0 
+<BR>
+<UL>
+<LI>blockNumber The ordinal position of the array within the dataset. Must be in the range [0,n-1] where n is the number of blocks within the table.
+</LI>
+<LI>AccessMode The access mode which the array is to have. The default ensures that the access mode is the same as that of the parent object.
+</LI>
+</UL>
+</LI>
+<LI>virtual const Array *	array( unsigned int blockNumber, AccessMode=AsParent ) const = 0 
+<BR>
+Same as above except applies to constant objects.
+</LI>
+<LI>virtual Array *		array( const string &amp; blockName, AccessMode=AsParent ) = 0 
+<BR>
+Get the array with the given name from the dataset. The arguments are:
+
+<UL>
+<LI>blockname The name of the array to be retrieved from the dataset. In the event that the array with name name is not found (usually because the block is either a table or does not exist at all) an error is raised.
+</LI>
+<LI>AccessMode The access mode which the block is to have. The default ensures that the access mode is the same as that of the parent object.
+</LI>
+</UL>
+</LI>
+<LI>virtual const Array *	array( const string &amp; blockName, AccessMode=AsParent ) const = 0 
+<BR>
+Same as above except applies to constant objects.
+</LI>
+<LI>virtual Block *		block( unsigned int blockNumber, AccessMode=AsParent ) = 0 
+<BR>
+Get the block with the given name from the dataset. The arguments are:
+
+<UL>
+<LI>blockNumber The ordinal position of the block within the dataset. Must be in the range [0,n-1] where n is the number of blocks within the dataset.
+</LI>
+<LI>AccessMode The access mode which the block is to have. The default ensures that the access mode is the same as that of the parent object.
+</LI>
+</UL>
+</LI>
+<LI>virtual const Block *	block( unsigned int blockNumber, AccessMode=AsParent ) const = 0 
+<BR>
+Same as above except applies to constant objects.
+</LI>
+<LI>virtual Block *		block( const string &amp; blockName, AccessMode=AsParent ) = 0 
+<BR>
+Get the block with the given name from the dataset. The arguments are:
+
+<UL>
+<LI>blockname The name of the block to be retrieved from the dataset. In the event that the block with name name is not found (usually block does not exist at all) an error is raised.
+</LI>
+<LI>AccessMode The access mode which the block is to have. The default ensures that the access mode is the same as that of the parent object.
+</LI>
+</UL>
+</LI>
+<LI>virtual const Block *	block( const string &amp; blockName, AccessMode=AsParent ) const = 0 
+<BR>
+Same as above except applies to constant objects.
+</LI>
+<LI>virtual void		deleteBlock(unsigned blockNumber) = 0 
+<BR>
+Delete the block with the given ordinal position from the dataset. In the event that the block was not found an error is raised.
+</LI>
+<LI>virtual void		deleteBlock( const string &amp; blockName ) = 0 
+<BR>
+Delete the block with the given name from the dataset. In the event that the block was not found an error is raised.
+</LI>
+<LI>virtual unsigned		blockNumber(const string &amp; name) const = 0 
+<BR>
+Returns the number of the block with the given name. In the event that the block is not found an error is raised.
+</LI>
+<LI>virtual unsigned		blocks() const = 0 
+<BR>
+Returns the number of blocks in the data set.
+</LI>
+<LI>virtual AccessMode		mode() const = 0 
+<BR>
+Get the access mode of this dataset.
+</LI>
+<LI>virtual void		printOn(ostream&amp; os) const = 0 
+<BR>
+Output an ASCII representation of this dataset to the given stream.
+ 
+</LI>
+</UL> 
+
+<P>
+</LI>
+<LI>FUNCTION 
+<BR>
+ostream&amp; operator&#171;(ostream&amp; os, const DataSet&amp; d) 
+<BR>
+Output an ASCII representation of the given dataset to the given stream.
+
+<P>
+</LI>
+<LI>CLASS 
+<BR>
+Block
+</LI>
+<LI>PURPOSE 
+<BR>
+A block is an abstract interface for all component of a DataSet.
+</LI>
+<LI>DERIVED FROM
+ 
+<UL>
+<LI>public virtual Attributable
+</LI>
+<LI>public virtual Child&lt;DataSet&gt;
+ 
+</LI>
+</UL> 
+</LI>
+<LI>DATA 
+<BR> 
+<UL>
+<LI>enum Type  TableT = 1, ArrayT  
+<BR>
+These enumeration values are used to indicate the fundamental block types. The values are:
+
+<UL>
+<LI>TableT A Table.
+</LI>
+<LI>ArrayT An Array.
+</LI>
+</UL>
+</LI>
+</UL> 
+</LI>
+<LI>METHODS
+ 
+<UL>
+<LI>virtual&nbsp;Block() {} 
+<BR></LI>
+<LI>virtual Type type() const = 0 
+<BR>
+Returns ArrayT if the block is an Array, and returns TableT if the block is a table.
+</LI>
+<LI>virtual void printOn(ostream&amp;) const = 0 
+<BR>
+Output an ASCII repreentation of the block to the given putput stream.
+ 
+</LI>
+</UL> 
+
+<P>
+</LI>
+<LI>TEMPLATE CLASS T 
+<BR>
+Seekable
+</LI>
+<LI>PURPOSE 
+<BR>
+An object which is seekable contains data which may be accessed in a restricted (as a subrange) manner.
+Seekable provides the methods for setting subranges of data.
+</LI>
+<LI>DERIVED FROM 
+<BR>
+None.
+</LI>
+<LI>METHODS
+ 
+<UL>
+<LI>virtual&nbsp;Seekable() {} 
+<BR></LI>
+<LI>virtual void seek( T from, T count ) = 0 
+<BR>
+Set a seek to the given range [from,from+count]. The arguments are:
+
+<UL>
+<LI>from The location of the start of the range.
+</LI>
+<LI>count The number of items to include in the range.
+</LI>
+</UL>
+</LI>
+<LI>virtual T from() const = 0 
+<BR>
+Get the from value of the current range.
+</LI>
+<LI>virtual T count() const = 0 
+<BR>
+Get the count value of the current range.
+ 
+</LI>
+</UL> 
+
+<P>
+</LI>
+<LI>CLASS 
+<BR>
+Table
+</LI>
+<LI>PURPOSE 
+<BR>
+A table is block which contains a set of columns. The columns in a table all have the same length, but may have different data types.
+</LI>
+<LI>DERIVED FROM
+ 
+<UL>
+<LI>public virtual Block
+</LI>
+<LI>public virtual Seekable&lt;unsigned long&gt;
+ 
+</LI>
+</UL> 
+</LI>
+<LI>METHODS
+ 
+<UL>
+<LI>virtual&nbsp;Table() {} 
+<BR></LI>
+<LI>virtual Column * addColumn(
+				const string&amp;			name,
+				DataType			dataType,
+				const string&amp;			label = "",
+				const string&amp;			units = "",
+				const vector&lt;unsigned long&gt; &amp; 	size = scalar,
+				int				position = -1 )
+				= 0 
+<BR>
+Create and add a new column to the table. A pointer to the new column is returned. The length of column is set to the number of rows of the table. The arguments are:
+
+<UL>
+<LI>name The name of the column. It may, in priciple, be any arbitrary string, but should be limited to be FITS compliant. If a column with this name already exists in the dataset an error is raised.
+</LI>
+<LI>dataType The data type of the column's data. It may be any one of the enumeration values given in the Dal::dataType type.
+</LI>
+<LI>label A short description (typically one line) for the column.
+</LI>
+<LI>units The units for the column's data.
+</LI>
+<LI>size The dimensionality of the column's data.
+</LI>
+<LI>position The ordinal position, within the table, which the column is to occupy. Existing columns will be moved along if necessary. The default value of -1 ensures that the column is placed at the end of the table.
+</LI>
+</UL>
+</LI>
+<LI>virtual Column * add(
+				const Column *	column,
+				const string&amp; 	newName = "",
+				int		position = -1 ) = 0 
+<BR>
+Copy and add the given column to the table. A pointer to the new column is returned. The given column must have the same number of rows as the table, otherwise an error is raised. The arguments are:
+
+<UL>
+<LI>column The source column. The dataType, size, units, label, attributes and data will be copied to the new column.
+</LI>
+<LI>newName The name of the new column. The default value ensures that the name of the source column is used. If a column with this name already exists in the table an error will be raised.
+</LI>
+<LI>position The ordinal position, within the table, which the column is to occupy. Existing columns will be moved along if necessary. The default value of -1 ensures that the column is placed at the end of the table.
+</LI>
+</UL>
+</LI>
+<LI>virtual Column * column(unsigned columnNumber, AccessMode=AsParent ) = 0 
+<BR>
+Get the column with the given ordinal position from the table. A pointer to the required column is returned. The arguments are:
+
+<UL>
+<LI>columnNumber The ordinal position of the column within the table. Must be in the range [0,n-1] where n is the number of columns within the table.
+</LI>
+<LI>AccessMode The access mode which the column is to have. The default ensures that the access mode is the same as that of the parent object.
+</LI>
+</UL>
+</LI>
+<LI>virtual const Column * column(unsigned columnNumber, AccessMode=AsParent) const = 0 
+<BR>
+Same as above except applies to constant objects.
+</LI>
+<LI>virtual Column * column(const string &amp; columnName, AccessMode=AsParent ) = 0 
+<BR>
+Get the column with the given name from the table. A pointer to the required column is returned. The arguments are:
+
+<UL>
+<LI>columnName The name of the column to retrieve. An error is raised in the event that the column was not found.
+</LI>
+<LI>AccessMode The access mode which the column is to have. The default ensures that the access mode is the same as that of the parent object.
+</LI>
+</UL>
+</LI>
+<LI>virtual const Column * column(const string &amp; columnName, AccessMode=AsParent ) const = 0 
+<BR>
+Same as above except applies to constant objects.
+</LI>
+<LI>virtual bool hasColumn( const string &amp; columnName ) const = 0 
+<BR>
+Determines if the table has a column with the given name.
+</LI>
+<LI>virtual unsigned int columnNumber(const string &amp; columnName ) const = 0 
+<BR>
+Get the ordinal position of the column with the given name.
+In the event that no such column exists an error is raised.
+</LI>
+<LI>virtual void deleteColumn(unsigned columnNumber ) = 0 
+<BR>
+Delete the column with the given ordinal position from the table. In the event that no such column exists an error will be raised.
+</LI>
+<LI>virtual void deleteColumn( const string &amp; columnName ) = 0 
+<BR>
+Delete the column with the given name from the table. In the event that no such column exists an error will be raised.
+</LI>
+<LI>virtual unsigned long rows() const = 0 
+<BR>
+Get the number of rows in the table.
+</LI>
+<LI>virtual unsigned columns() const = 0 
+<BR>
+Get the number of columns in the table.
+</LI>
+<LI>virtual void copyRows( unsigned long from, unsigned long to, unsigned long count=1 ) = 0 
+<BR>
+Copy the specified range of rows.
+</LI>
+<LI>virtual void deleteRows( unsigned long from, unsigned long count=1 ) = 0 
+<BR>
+Delete the specified range of rows from the table.
+</LI>
+<LI>virtual void insertRows( unsigned long pos, unsigned long count=1 ) = 0 
+<BR>
+Insert the given number of rows into the table.
+</LI>
+<LI>virtual void printOn(ostream&amp; os) const = 0 
+<BR>
+Writes an ascii representation of the column to a stream.
+Output an ASCII representation of the table to the given stream.
+</LI>
+<LI>virtual void forEachSubTable( void (*callThisFunction)(Table *) ) = 0 
+<BR>
+Call the given function for each subtable.
+ 
+</LI>
+</UL> 
+
+<P>
+</LI>
+<LI>CLASS Nullable
+</LI>
+<LI>PURPOSE 
+<BR>
+Nullable allows the values in a data component to have a designated
+ null (or undefined) value.
+</LI>
+<LI>DERIVED FROM 
+<BR>
+None
+</LI>
+<LI>METHODS
+ 
+<UL>
+<LI>virtual&nbsp;Nullable() {} 
+<BR></LI>
+<LI>enum NullType  Integer = 1, Real, String, Undefined  
+<BR>
+Used to determine the null value type of an object.
+</LI>
+<LI>virtual NullType nullType() const = 0 
+<BR>
+Get the null value type of an object.
+</LI>
+<LI>virtual void nullValue( long value ) = 0 
+<BR>
+Set the integer null value.
+</LI>
+<LI>virtual long intNullValue() const = 0 
+<BR>
+Get the integer null value.
+</LI>
+<LI>virtual bool nullDefined() const = 0 
+<BR>
+Determine if the null value has been set.
+</LI>
+<LI>virtual void deleteNullValue() = 0 
+<BR>
+Delete the null value. An error is raised if null value is not defined. The
+nullDefined() method can be used to determine if the null value is defined. For
+integer-valued columns, the nullValue( int ) method can be used to set the null value.
+For real-valued columns, the null value is always defined.
+ 
+</LI>
+</UL> 
+
+<P>
+</LI>
+<LI>CLASS DataComponent
+</LI>
+<LI>PURPOSE 
+<BR>
+A DataComponent is a collection of values all of the same type,
+arranged in a multidimensional array. The collection is referred to as teh object's data or simply the data.
+</LI>
+<LI>DERIVED FROM 
+<BR> 
+<UL>
+<LI>public virtual Nullable, public virtual Dal
+ 
+</LI>
+</UL> 
+</LI>
+<LI>METHODS
+ 
+<UL>
+<LI>virtual&nbsp;DataComponent() {} 
+<BR></LI>
+<LI>virtual DataType dataType() const = 0 
+<BR>
+Get the data type of the data.
+</LI>
+<LI>virtual unsigned int dimensions() const = 0 
+<BR>
+Get the number of dimensions of the object's data.
+</LI>
+<LI>virtual unsigned long elements() const = 0;
+Get the total number of elements comprising the object's data.
+</LI>
+<LI>virtual const vector&lt;unsigned long&gt;&amp; size() const = 0;
+Get the dimensionality of the object's data. Each element in the returned vector describes the size along each axis (dimension) of the object's data.
+</LI>
+<LI>virtual const string &amp; units() const = 0 
+<BR>
+Get the units of the object's data.
+</LI>
+<LI>virtual void units( const string&amp; ) = 0 
+<BR>
+Set the units of the object's data.
+</LI>
+<LI>virtual unsigned int dataSize() const = 0 
+<BR>
+The size in bytes of a single value.
+</LI>
+<LI>virtual void scaling( double zero, double scale ) = 0 
+<BR>
+Set the scaling of the object's data.
+</LI>
+<LI>virtual void scale( bool onoff ) = 0 
+<BR></LI>
+<LI>virtual bool scaled() const = 0 
+<BR></LI>
+<LI>virtual double scaleZero() const = 0 
+<BR></LI>
+<LI>virtual double scaleFactor() const = 0 
+<BR> 
+</LI>
+</UL> 
+
+<P>
+</LI>
+<LI>CLASS 
+<BR>
+Column
+</LI>
+<LI>PURPOSE 
+<BR>
+A column resides within its parent table. The parent table can be obtained with the parent() method.
+Internally, the Column object is responsible for the allocation and deallocation of its data's memory and intialization of its data, but
+it does not allow its data to be accessed directly. The data is accessed through the data descriptor objects ColumnData and CellData.
+
+<P>
+It is possible to have several ColumnData and CellData descriptors at the same time.  However, the [from,range] range specifications (in the data() and cellData() and seek() methods) give rise to a slice (or subrabge) of the Column's data. The only restriction on slices is that they must not overlap with existing slices (although a subslice is an existing slive is allowed).
+
+<P>
+Moreover, but they all have to be deleted manually to avoid memory leaks.
+In particular, the following example is eroneous as it leads to a memory leak, since the pointer to the ColumnData object (as returned by the data() method) is lost:
+<PRE>
+int
+main()
+{
+  DataSet * set = dataSetServer -&gt; open( "test.dat", DataSetServer::Create );
+  Table * tab = set -&gt; addTable( "tab1", 100 );
+  Column * col = tab -&gt; addColumn( "col1", Column::Int32 );
+  int32 * data = col -&gt; data() -&gt; int32Data();   // Memory leak
+  for( unsigned int i = 0; i &lt; col -&gt; elements() * col -&gt; rows(); ++i ) data[i] = i;
+  dataSetServer -&gt; close( set );
+}
+</PRE>
+
+<P>
+The correct method is as follows:
+
+<P>
+<PRE>
+int
+main()
+{
+  DataSet * set = dataSetServer -&gt; open( "test.dat", DataSetServer::Create );
+  Table * tab = set -&gt; addTable( "tab1", 100 );
+  Column * col = tab -&gt; addColumn( "col1", Column::Int32 );
+  ColumnData * coldat = col -&gt; data();
+  int32 * data = int32Data();
+  for( unsigned int i = 0; i &lt; col -&gt; elements(); ++i ) data[i] = i;
+  delete coldat; // Need to manually delete columnData objects to avoid memory leak
+  dataSetServer -&gt; close( set );
+}
+</PRE>
+The same is also true of the CellData object; it must be deleted after its final use, otherwise a memory leak is incurred.
+</LI>
+<LI>DERIVED FROM
+ 
+<UL>
+<LI>public virtual Attributable
+</LI>
+<LI>public virtual DataComponent
+</LI>
+<LI>public virtual Child&lt;Table&gt;
+</LI>
+<LI>public virtual Seekable&lt;unsigned long&gt;
+ 
+</LI>
+</UL> 
+</LI>
+<LI>DATA
+ 
+<UL>
+<LI>enum CellType { Fixed = 1, Variable } 
+<BR>
+The values have the following meaning:
+
+<UL>
+<LI>Fixed Specifies that the column has fixed length.
+</LI>
+<LI>Variable Specifies that the column has variable length.
+</LI>
+</UL>
+</LI>
+</UL> 
+</LI>
+<LI>METHODS
+ 
+<UL>
+<LI>virtual&nbsp;Column() {} 
+<BR></LI>
+<LI>virtual unsigned int columnNumber() const = 0 
+<BR>
+Get the ordinal position of the column within the parent table.
+</LI>
+<LI>virtual CellType cellType() const = 0 
+<BR></LI>
+<LI>virtual unsigned long rows() const = 0 
+<BR></LI>
+<LI>virtual ColumnData * data(
+    			unsigned long			from=0,
+    			unsigned long		 	count=0,
+    			AccessMode			accessMode=AsParent ) const =
+			0 
+<BR>
+Get a data descriptor describing a range of column cells to be accessed.  The range is specified as [from,from+count]. A pointer to the ColumnData object descriptor is returned, which must be deleted manually when it is no longer needed.
+
+<P>
+Note that once the ColumnData object has been deleted, any corresponding pointers to the Column's data will be stale and can no longer be safely used.
+
+<P>
+The arguments are as follows:
+
+<UL>
+<LI>from The first row number in the range to be accessed.
+</LI>
+<LI>count The number of rows to include in the range.
+</LI>
+<LI>accessMode The access mode with which the data is accessed.
+</LI>
+</UL>
+</LI>
+<LI>virtual CellData  * cellData(
+			unsigned long			rowNumber,
+			unsigned long 			from=0,
+			unsigned long 	 		count=0,
+			AccessMode			accessMode=AsParent ) const =
+			0 
+<BR>
+Get a data descriptor describing a range of elements within a column cell to be accessed. The range is specified as [from,from+count]. A pointer to the ColumnData object descriptor is returned, which must be deleted manually when it is no longer needed.
+
+<P>
+Note that once the CellData object has been deleted, any corresponding pointers to the Column's data will be stale and can no longer be safely used.
+
+<P>
+The arguments are as follows:
+
+<UL>
+<LI>rowNumber The number of the cell to be accessed.
+</LI>
+<LI>from The element of the first element to be included in the range.
+</LI>
+<LI>count The number of elements to include in the range.
+</LI>
+<LI>accessMode The access mode with which the data is accessed.
+</LI>
+</UL>
+</LI>
+<LI>virtual void printOn(ostream&amp; os) const = 0 
+<BR>
+Outputs an ASCII representation of the column to a stream.
+ 
+</LI>
+</UL> 
+
+<P>
+</LI>
+<LI>FUNCTION 
+<BR>
+ostream&amp; operator&#171;(ostream&amp; os, const Column&amp; c) 
+<BR>
+Outputs an ASCII representation of the given column to a stream.
+
+<P>
+</LI>
+<LI>CLASS 
+<BR>
+Array
+</LI>
+<LI>PURPOSE 
+<BR>
+An array is a Block that consists of an n-dimensional array of values
+all of the same type.
+An array resides within its parent dataset. The parent dataset can be obtained with the parent() method.
+Internally, the Array object is responsible for the allocation, deallocation and initialisation of its data's memory, but
+it does not allow its data to be accessed directly. The data is accessed through the data descriptor object ArrayData.
+
+<P>
+It is possible to have several ArrayData descriptors at the same time.  However, the [from,range] range specifications (in the data() and seek() methods) give rise to a slice (or subrabge) of the Column's data. The only restriction on slices is that they must not overlap with existing slices (although a subslice of an existing slice is allowed).
+
+<P>
+Moreover, they all have to be deleted manually after their last use to avoid memory leaks.
+
+<P>
+In particular, the following is considered eroneous as it leads to a memory leak, since the pointer to the ArrayData object (as returned by the data() method) is lost:
+<PRE>
+int
+main()
+{
+  DataSet * set = dataSetServer -&gt; open( "test.dat", DataSetServer::Create );
+  Array * arr = set -&gt; addArray( "arr1", size );
+  int32 * data = arr -&gt; data() -&gt; int32Data();   // Memory leak
+  for( unsigned int i = 0; i &lt; arr -&gt; elements(); ++i ) data[i] = i;
+  dataSetServer -&gt; close( set );
+}
+</PRE>
+
+<P>
+The correct method is as follows:
+<PRE>
+int
+main()
+{
+  DataSet * set = dataSetServer -&gt; open( "test.dat", DataSetServer::Create );
+  Array * arr = set -&gt; addArray( "arr1", size );
+  ArrayData * arrdat = arr -&gt; data();
+  int32 * data = arrdat() -&gt; int32Data();
+  for( unsigned int i = 0; i &lt; arr -&gt; elements(); ++i ) data[i] = i;
+  delete coldat; // Need to manually delete columnData objects to avoid memory leak.
+  dataSetServer -&gt; close( set );
+}
+</PRE>
+</LI>
+<LI>DERIVED FROM
+ 
+<UL>
+<LI>public virtual Block
+</LI>
+<LI>public virtual DataComponent
+</LI>
+<LI>public virtual Seekable&lt; vector&lt;unsigned long&gt; &gt;
+ 
+</LI>
+</UL> 
+</LI>
+<LI>METHODS
+ 
+<UL>
+<LI>virtual&nbsp;Array() {} 
+<BR></LI>
+<LI>virtual ArrayData * data(
+			const vector&lt;unsigned long&gt;&amp;	from=zero,
+			const vector&lt;unsigned long&gt;&amp;	count=zero,
+			AccessMode			accessMode=AsParent) const =
+			0 
+<BR>
+Get a data descriptor describing a range of elements within the array's data to be accessed. The range is specified as [from,from+count]. A pointer to the ArrayData object descriptor is returned, which must be deleted manually when it is no longer needed. The arguments are as follows:
+
+<UL>
+<LI>from The element of the first element to be included in the range.
+</LI>
+<LI>count The number of elements to include in the range.
+</LI>
+<LI>accessMode The access mode with which the data is accessed.
+</LI>
+</UL>
+</LI>
+</UL> 
+</LI>
+<LI>CLASS 
+<BR>
+Data
+</LI>
+<LI>PURPOSE 
+<BR>
+Data access.
+The data access functions int8Data(), uint16Data(), int16Data(), uint32Data(), int32Data(), real32Data(), real64Data(), boolData() and stringData() generate an error when the data cannot be accessed as a contiguous chunck of memory, such as a variable-size column.
+The data is typed and no type conversion is possible. The data type is determined with dataType(). An error will be raised if the incorrect data access function is called.
+</LI>
+<LI>DERIVED FROM
+ 
+<UL>
+<LI>public virtual Dal 
+<BR> 
+</LI>
+</UL> 
+</LI>
+<LI>METHODS 
+<BR> 
+<UL>
+<LI>virtual&nbsp;Data(){} 
+<BR></LI>
+<LI>virtual bool isNull( unsigned long pos ) const = 0 
+<BR>
+Determine if the element in position pos is a null value.
+</LI>
+<LI>virtual void setToNull( unsigned long pos) const = 0 
+<BR>
+Set the element at position pos to null.
+</LI>
+<LI>virtual bool hasNulls() const = 0 
+<BR>
+Determine if object has any null values.
+</LI>
+<LI>virtual int8*   int8Data() const = 0 
+<BR>
+Return a pointer to the start of the data.
+</LI>
+<LI>virtual uint16*  uint16Data() const = 0 
+<BR>
+Return a pointer to the start of the data.
+</LI>
+<LI>virtual int16*  int16Data() const = 0 
+<BR>
+Return a pointer to the start of the data.
+</LI>
+<LI>virtual uint32*  uint32Data() const = 0 
+<BR>
+Return a pointer to the start of the data.
+</LI>
+<LI>virtual int32*  int32Data() const = 0 
+<BR>
+Return a pointer to the start of the data.
+</LI>
+<LI>virtual real32* real32Data() const = 0 
+<BR>
+Return a pointer to the start of the data.
+</LI>
+<LI>virtual real64* real64Data() const = 0 
+<BR>
+Return a pointer to the start of the data.
+</LI>
+<LI>virtual bool8*  boolData() const = 0 
+<BR>
+Return a pointer to the start of the data.
+</LI>
+<LI>virtual char*   stringData() const = 0 
+<BR>
+Return a pointer to the start of the data.
+</LI>
+<LI>virtual unsigned int dataSize() const = 0 
+<BR></LI>
+<LI>virtual unsigned long elements() const = 0 
+<BR>
+Get the number of data elements.
+</LI>
+<LI>virtual DataType dataType() const = 0 
+<BR>
+Get the size in types of a single data element.
+</LI>
+<LI>virtual void printOn(ostream&amp; os, const string&amp; sep="") const = 0 
+<BR>
+Outputs an ASCII representation of the data to a stream.
+ 
+</LI>
+</UL> 
+
+<P>
+</LI>
+<LI>FUNCTION 
+<BR>
+ostream&amp; operator&#171;(ostream&amp; os, const Data&amp; d) 
+<BR>
+Outputs an ASCII representation of the given data to a stream.
+
+<P>
+</LI>
+<LI>CLASS 
+<BR>
+ColumnData
+</LI>
+<LI>PURPOSE 
+<BR>
+The ColumnData object gives access to (part of) the data in a column. The correct access function must be called (this is dependent on the data type) otherwise an error will be raised.
+This object is constructed by a Column, but has to be explicitly
+deleted after it's last use.
+The owner of a ColumnData object is a Column object, which is determined with the parent() method.
+</LI>
+<LI>DERIVED FROM
+ 
+<UL>
+<LI>public virtual Data
+</LI>
+<LI>public virtual Seekable&lt;unsigned long&gt;
+</LI>
+<LI>public virtual Child&lt;Column&gt;
+ 
+</LI>
+</UL> 
+</LI>
+<LI>METHODS
+ 
+<UL>
+<LI>virtual&nbsp;ColumnData() {} 
+<BR></LI>
+<LI>virtual const vector&lt;unsigned long&gt;&amp; size() const = 0 
+<BR></LI>
+<LI>virtual unsigned long position(
+				unsigned long			row) const = 0
+				
+<BR>
+Get the offset index of the first element in the specified row of the (parent) column.
+</LI>
+<LI>virtual unsigned long position(
+				unsigned long			row,
+				unsigned long			pos) const = 0
+				
+<BR>
+Get the offset index of the element in position pos in the specified row of the (parent) column.
+
+<P>
+</LI>
+<LI>virtual unsigned long position(
+				unsigned long			row,
+				const vector&lt;unsigned long&gt;&amp; 	pos) const = 0
+				
+<BR>
+Get the offset index of the element in the position described by pos in the specified row in the (parent) column.
+ 
+</LI>
+</UL> 
+
+<P>
+</LI>
+<LI>CLASS 
+<BR>
+MatrixData
+</LI>
+<LI>PURPOSE 
+<BR>
+MatrixData provides an interface to a rectangular multi-dimensional array.
+</LI>
+<LI>DERIVED FROM
+ 
+<UL>
+<LI>public virtual Data
+</LI>
+<LI>public virtual Seekable&lt; vector&lt;unsigned long&gt; &gt;
+ 
+</LI>
+</UL> 
+</LI>
+<LI>METHODS
+ 
+<UL>
+<LI>virtual&nbsp;MatrixData() {} 
+<BR></LI>
+<LI>virtual unsigned long position(const vector&lt;unsigned long&gt;&amp; pos) const =
+Get the offset index of the element in the position described by pos in the (parent) array.
+0 
+<BR> 
+</LI>
+</UL> 
+
+<P>
+</LI>
+<LI>CLASS 
+<BR>
+CellData
+</LI>
+<LI>PURPOSE 
+<BR>
+The CellData object gives access to (part of) a single cell in a column.
+The correct access function must be called (this is dependent on the data type) otherwise an error will be raised.
+This object is constructed by a Column, but has to be explicitly
+deleted after it's last use.
+The CellData object is owned by the parent column object, which is determined with the parent() method.
+For Variable length columns, the number of dimensions is 1.
+</LI>
+<LI>DERIVED FROM
+ 
+<UL>
+<LI>public virtual Data
+</LI>
+<LI>public virtual Seekable&lt;unsigned long&gt;
+</LI>
+<LI>public virtual Child&lt;Column&gt;
+ 
+</LI>
+</UL> 
+</LI>
+<LI>METHODS
+ 
+<UL>
+<LI>virtual&nbsp;CellData() {} 
+<BR></LI>
+<LI>virtual unsigned long size() const = 0 
+<BR>
+Get the number of elements in the cell.
+</LI>
+<LI>virtual void size( unsigned long size ) = 0 
+<BR>
+Set the number of elements in the cell.
+</LI>
+<LI>virtual unsigned long row() const = 0 
+<BR>
+Get the cell (row) number of the cell.
+ 
+</LI>
+</UL> 
+
+<P>
+</LI>
+<LI>CLASS 
+<BR>
+ArrayData
+</LI>
+<LI>PURPOSE 
+<BR>
+The ArrayData object gives access to (part of) the data in an Array.
+The correct access function must be called (this is dependent on the data type) otherwise an error will be raised.
+Note that stringData() and boolData() never called since DString and Bool are not supported by Arrays.
+This object is constructed by an Array, but has to be explicitly
+deleted after it's last use.
+The ArrayData object is owned by the parent Array object, which can be determined with the parent() method.
+</LI>
+<LI>DERIVED FROM
+ 
+<UL>
+<LI>public virtual MatrixData
+</LI>
+<LI>public virtual Child&lt;Array&gt;
+ 
+</LI>
+</UL> 
+</LI>
+<LI>METHODS
+ 
+<UL>
+<LI>virtual const vector&lt;unsigned long&gt;&amp; size() const = 0 
+<BR>
+Get the dimensionality of the array.
+ 
+</LI>
+</UL>
+</LI>
+</UL> 
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node31.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Errors"></A>
+<A HREF="dal.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node33.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="C API"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

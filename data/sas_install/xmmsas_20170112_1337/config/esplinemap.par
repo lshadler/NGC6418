@@ -1,0 +1,269 @@
+<!-- converted from XPI formatted "esplinemap.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="scut" type="real" default="0.01">
+   <DESCRIPTION>
+    source cut-out flux level; [counts/arcsec^2].
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    scut in [0.0:10.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="mlmin" type="real" default="1">
+   <DESCRIPTION>
+    minimum detection likelihood
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    mlmin in [0.0:1000.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="nsplinenodes" type="int" default="16">
+   <DESCRIPTION>
+    number of spline nodes
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    nsplinenodes in [10:40]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="excesssigma" type="real" default="4">
+   <DESCRIPTION>
+    threshold for excess with respect to spline
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    excesssigma in [1.0:6.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="nfitrun" type="int" default="3">
+   <DESCRIPTION>
+    number of iterations
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    nfitrun in [1:5]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="idband" type="int" default="1">
+   <DESCRIPTION>
+    band id from eboxdetect source list
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    idband in [0:9]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="boxlistset" type="table" mandatory="yes" default="eboxlist.fits">
+   <DESCRIPTION>
+    name of eboxdetect source list
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="imageset" type="dataset" mandatory="yes" default="image.fits">
+   <DESCRIPTION>
+    name of input EPIC fits image
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+
+
+  <PARAM id="withexpimage" type="bool" default="yes">
+   <DESCRIPTION>
+    flag to use exposure map
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+	  <PARAM id="expimageset" type="dataset" default="expimage.fits">
+   		<DESCRIPTION>
+    		name of exposure image
+   		</DESCRIPTION>
+  	</PARAM>
+
+    </ITEM>
+   </CASE>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+  <PARAM id="withexpimage2" type="bool" default="no">
+   <DESCRIPTION>
+    flag to use exposure map
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+	  <PARAM id="expimageset2" type="dataset" default="expimage2.fits">
+   		<DESCRIPTION>
+    		name of exposure image
+   		</DESCRIPTION>
+  	</PARAM>
+
+    </ITEM>
+   </CASE>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+
+
+  <PARAM id="withdetmask" type="bool" default="yes">
+   <DESCRIPTION>
+    flag to use detection mask
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+	  <PARAM id="detmaskset" type="dataset" default="detmask.fits">
+   		<DESCRIPTION>
+    		name of detection mask
+   		</DESCRIPTION>
+	  </PARAM>
+    </ITEM>
+   </CASE>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+
+
+  <PARAM id="bkgimageset" type="dataset" mandatory="yes" default="bkgimage.fits">
+   <DESCRIPTION>
+    name of output spline background map
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withcheese" type="bool" default="no">
+   <DESCRIPTION>
+    flag for output of cheesed image
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+	  <PARAM id="cheeseimageset" type="dataset" default="cheese.fits">
+	    <DESCRIPTION>
+    		name of diagnostic cheese image
+   		</DESCRIPTION>
+	  </PARAM>
+   </ITEM>
+   </CASE>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withcheesemask" type="bool" default="no">
+   <DESCRIPTION>
+    flag for output of cheese mask image
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+	  <PARAM id="cheesemaskset" type="dataset" default="cheesemask.fits">
+	    <DESCRIPTION>
+    		name of diagnostic cheese mask image
+   		</DESCRIPTION>
+	  </PARAM>
+   </ITEM>
+   </CASE>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="withootset" type="bool" default="no">
+   <DESCRIPTION>
+    use oot event list
+   </DESCRIPTION>
+   <CASE>
+	<ITEM value="yes">
+		<PARAM id="ooteventset" type="dataset" default="ootevents.fits">
+   			<DESCRIPTION>
+    			name of table containing oot events
+   			</DESCRIPTION>
+  		</PARAM>
+    	</ITEM>
+	<ITEM value="no"></ITEM>
+   </CASE>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="pimin" type="int" default="1">
+   <DESCRIPTION>
+    lower PI energy boundary of input image
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    pimin in [1:30000]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="pimax" type="int" default="30000">
+   <DESCRIPTION>
+    upper PI energy boundary of input image
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    pimax in [1:30000]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+
+  <PARAM id="fitmethod" type="string" default="spline">
+   <DESCRIPTION>
+     Method for background fitting [spline|smooth|model] 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="spline">
+    </ITEM>
+    <ITEM value="smooth">
+    </ITEM>
+    <ITEM value="model">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="snrmin" type="real" default="30.0">
+   <DESCRIPTION>
+    fitmethod smooth: Desired minimum signal to noise ratio during adaptive smoothing
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    snrmin in [1.0:1000.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="smoothsigma" type="real" default="15">
+   <DESCRIPTION>
+    fitmethod smooth: Minimum width of Gaussian smoothing kernel in pixel
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    smoothsigma in [0.0:100.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+
+ </CONFIG>
+</FILE>

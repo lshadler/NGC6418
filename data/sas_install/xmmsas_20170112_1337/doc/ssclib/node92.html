@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Integrated probability</TITLE>
+<META NAME="description" CONTENT="Integrated probability">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node93.html">
+<LINK REL="previous" HREF="node91.html">
+<LINK REL="up" HREF="node91.html">
+<LINK REL="next" HREF="node93.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node91.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Poissonian statistics and source"></A>
+<A HREF="node91.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Poissonian statistics and source"></A>
+<A HREF="node93.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Poisson probability"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node91.html">Poissonian statistics and source</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00081000000000000000">
+Integrated <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\chi ^2$"></SPAN> probability</A>
+</H2>
+
+<P>
+This subroutine gives the probability <!-- MATH
+ $P_\chi(\chi^2; \nu)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="68" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img81.png"
+ ALT="$P_\chi(\chi^2; \nu)$"></SPAN> of exceeding 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\chi ^2$"></SPAN> for a given number of degrees of freedom <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img82.png"
+ ALT="$\nu$"></SPAN>, <I>i.e.</I>,
+the single-sided integrated probability, where <SPAN CLASS="MATH"><IMG
+ WIDTH="67" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img83.png"
+ ALT="$P_x(x^2; \nu)$"></SPAN> is
+the <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\chi ^2$"></SPAN> probability distribution function (<I>e.g.</I>, see
+Appendix C.4 in Bevington &amp; Robinson (1992, ``Data reduction and
+error analysis for the physical sciences'', 2nd edition)).
+
+<P>
+<PRE>
+  subroutine integratedChi2Prob(chi2, degFree, probability, status)
+    real(single), intent(in)            :: chi2
+    integer,      intent(in)            :: degFree   ! or real(single)
+    real(single), intent(out)           :: probability
+    integer,      intent(out), optional :: status
+  end subroutine integratedChi2Prob
+</PRE>
+
+<P>
+The optional argument <TT>status</TT> is returned as follows;
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="CENTER">Status</TD>
+<TD ALIGN="LEFT">Description</TD>
+</TR>
+<TR><TD ALIGN="CENTER"><SPAN CLASS="MATH"><IMG
+ WIDTH="65" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img84.png"
+ ALT="$n (n&gt;0)$"></SPAN></TD>
+<TD ALIGN="LEFT">(status in <TT>incompleteGammaQ</TT>; see <TT>math_utils</TT>, Section&nbsp;<A HREF="node162.html#ssclib:description:math_utils">19</A>)</TD>
+</TR>
+<TR><TD ALIGN="CENTER">0</TD>
+<TD ALIGN="LEFT">Normal end</TD>
+</TR>
+<TR><TD ALIGN="CENTER">-1</TD>
+<TD ALIGN="LEFT">When the given chi2 <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img85.png"
+ ALT="$\leq 0$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="CENTER">-2</TD>
+<TD ALIGN="LEFT">When the given degFree <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img85.png"
+ ALT="$\leq 0$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="CENTER"><SPAN CLASS="MATH"><IMG
+ WIDTH="77" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img86.png"
+ ALT="$n (n&lt;-2)$"></SPAN></TD>
+<TD ALIGN="LEFT">((status in <TT>incompleteGammaQ</TT>) <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img87.png"
+ ALT="$- 2$"></SPAN>; see <TT>math_utils</TT>, Section&nbsp;<A HREF="node162.html#ssclib:description:math_utils">19</A>)</TD>
+</TR>
+</TABLE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

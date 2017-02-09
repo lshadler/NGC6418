@@ -1,0 +1,425 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Fast chain tasks</TITLE>
+<META NAME="description" CONTENT="Fast chain tasks">
+<META NAME="keywords" CONTENT="omfchain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omfchain.css">
+
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omfchain (omfchain-1.42.6) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Fast chain capabilities"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omfchain.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00035000000000000000">
+Fast chain tasks</A>
+</H2>
+
+<P>
+The Fast chain works in the following way:
+
+<P>
+
+<UL>
+<LI>When started, <I>omfchain</I> creates indexes of the Optical Monitor
+Fast mode data set files presented in the input directory.
+
+<P>
+</LI>
+<LI>If <I>flat field</I> files (FFX) are not found, <I>omfchain</I> creates an 
+empty flat field file
+
+<P>
+</LI>
+<LI>If <I>periodic</I> or <I>non-periodic housekeeping</I> files are not found
+in the input directory, the chain is stopped.
+
+<P>
+</LI>
+<LI>If <I>tracking history</I> files (THX) are not found for the given
+exposure, the chain creates a dummy tracking history file.
+
+<P>
+</LI>
+<LI>For each observation, as well as for each exposure and scientific window, 
+<I>omfchain</I> produces intermediate and pipeline output files according to
+the following scheme.
+
+<P>
+</LI>
+</UL>
+
+<P>
+The following tasks are used by the Fast chain:
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>
+<DIV ALIGN="CENTER">
+
+</DIV>
+Step</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>Task</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>Input files (coming from the step No.)</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>Output files (going to)</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>1</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>omprep</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>in<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN> Tracking history,</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>Temporary tracking
+ history <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN> 2,6</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>in<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN> Periodic house keeping,</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>in<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN> Non-periodic house-keeping,</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>in<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN> Window data</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>2</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>omdrifthist</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>1<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN> Temporary tracking history</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>Tracking history
+ plot <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>out</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>3</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>omthconv</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>in<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>Non-periodic house-keeping</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>Tracking history
+ timeseries <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>out</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>4</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>omprep</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>in <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN> Event list,</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>Intermediate event list <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>5,6</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>in <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN> Periodic house keeping,</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>in <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN> Non-periodic house-keeping,</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>in <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN> Window data</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>5</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>evselect</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>4<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>  Intermediate event list</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>Output raw
+ image <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>out</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>6</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>omfastshift</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>1<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN> Temporary tracking history,</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>Corrected event
+ list<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN> 7,11,12</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>4<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>  Intermediate event list</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>7</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>omfastflat</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>in<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN> In-orbit flat-field,</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>PPS
+ image <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>8</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>6<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN> Intermediate event list</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>PPS flat-field <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>out</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>8</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>omdetect</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>7 <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>  PPS image</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>Source region (ASCII-file) <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>9</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>OSW source list <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>9,10</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>9</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>omatt</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>8<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>  Source region</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>Sky coordinate PPS image <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>out</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>8<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>  OSW source list</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>10</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>omregion</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>8<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>  OSW source list</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>Source region <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>11,13</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>Background region <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>12,13</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>11</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>evselect</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>10<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>  Source region</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>Source rates table <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>13</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>6<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>  Intermediate event list</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>12</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>evselect</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>10<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>  Background region</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>Background rates table <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>13</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>6<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>  Intermediate event list</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>13</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>omlcbuild</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>11<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>  Source rates table</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>Light curve table <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>14</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>10<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>  Source region</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>12<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>  Background rates table</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>10<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>  Background region</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>in<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>  Imaging-mode data file (if exists)</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>14</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>lcplot</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>13<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>  light curve table</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>Light curve postscript
+ plot <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>15</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=9>15</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>ps2pdf</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>14<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>  Light curve postscript plot</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>Light curve <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\rightarrow$"></SPAN>out
+ PDF-plot</TD>
+</TR>
+</TABLE>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Fast chain capabilities"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

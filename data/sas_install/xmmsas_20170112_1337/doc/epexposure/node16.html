@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Comments</TITLE>
+<META NAME="description" CONTENT="Comments">
+<META NAME="keywords" CONTENT="epexposure">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epexposure.css">
+
+<LINK REL="next" HREF="node17.html">
+<LINK REL="previous" HREF="node15.html">
+<LINK REL="up" HREF="epexposure.html">
+<LINK REL="next" HREF="node17.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epexposure (epexposure-0.14) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node15.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithm"></A>
+<A HREF="epexposure.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Future developments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epexposure.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00090000000000000000"></A>
+<A NAME="epexposure:description:comments"></A>
+<BR>
+Comments
+</H1>
+
+<P>
+
+<UL>
+<LI>Handling of out-of-time events: the number of out-of-time
+events depends on the spatial selection, i.e. on the amount of events 
+which are assumed to originate from the target source, as well as
+on the readout mode. So this effect can not be handled as a livetime factor
+in an early stage of the pipeline processing but needs to be addressed as 
+a mode-dependent PSF effect by higher SAS tasks.
+
+<P>
+</LI>
+<LI>It has to be verified in orbit that there is a flat MIP distribution 
+before one just can use the NDISCLIN counter to calculate <SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$FC1$"></SPAN>. If not this 
+will imply the MIP deadtime correction has to be done properly on a 
+column-by-column basis by looking at the Discarded Lines Map which will be 
+transmitted at least once at the end of each observation.
+
+<P>
+</LI>
+<LI>Handling of counting mode: One will need to check the EPDH counter 
+to see how much time of an exposure was observed in counting mode (and hence
+did not produce any scientific data and entries in an event list). 
+This deadtime will be stored via a good time interval (GTI)
+by the task <A NAME="509"></A><A NAME="tex2html14"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>. 
+
+<P>
+</LI>
+<LI>Document EPIC-EST-OP-002, Sect.14.7 mentions the scientific data 
+structures `First and Second Lost Synch Data' which are related to a loosing 
+of the nominal scientific data flow. It needs to be verified that such a gap 
+in the scientific data flow is addressed in the ODF creation already.
+
+<P>
+</LI>
+<LI>For (e.g.) timing analysis there is a need to not only compute 
+the statistical livetime factors but also to create a list of good time 
+intervals. 
+<A NAME="513"></A><A NAME="tex2html15"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>
+already creates such GTIs corresponding to the flagged frames.
+But also the deadtimes due to the chopper, the counting mode and CCD readout 
+(which is significant for burst and small window modes) should be accessible
+as GTIs to be created by higher SAS tasks.
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node15.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithm"></A>
+<A HREF="epexposure.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Future developments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

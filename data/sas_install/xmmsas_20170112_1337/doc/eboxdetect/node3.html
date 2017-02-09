@@ -1,0 +1,595 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="eboxdetect">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eboxdetect.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="eboxdetect.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eboxdetect (eboxdetect-4.27.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="eboxdetect.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eboxdetect.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="eboxdetect:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+The task <A NAME="578"></A><A NAME="tex2html2"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+is used to perform source detection on individual
+  images or on sets of images from different energy bands and/or different
+  EPIC instruments.  If source detection on multiple images is performed, the
+  input images and corresponding exposure images, background images, and
+  detection masks have to be supplied as lists of file names.  All input
+  images and accompanying exposure images, background images, and detection
+  masks must have identical orientation and binning and must be supplied in a
+  consistent order. The task is designed for a maximum of five energy bands
+  and three EPIC instruments. It is technically possible to
+  run <A NAME="582"></A><A NAME="tex2html3"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+for up to six energy bands, but users are encouraged
+  not to use more than five because of the low count numbers in narrow-band
+  images.
+
+<P>
+<A NAME="586"></A><A NAME="tex2html4"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+has two different modes of operation: (1) local detection
+  and (2) map detection.  <A NAME="590"></A><A NAME="tex2html5"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+is first run in local mode. The
+  local-mode source lists serve as input for the task <A NAME="594"></A><A NAME="tex2html6"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>
+which
+  creates background maps (one per energy band for each EPIC instrument). They
+  are then used to run <A NAME="598"></A><A NAME="tex2html7"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+in map mode. The boolean input
+  parameter <TT>usemap</TT> controls whether the program operates in map mode
+  or in local mode.
+
+<P>
+
+<OL>
+<LI><SPAN  CLASS="textbf">Local detection mode:</SPAN>
+  The purpose of the local detection step is to provide an input list of
+  source positions for the task <A NAME="603"></A><A NAME="tex2html8"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>, which then constructs a
+
+background map from the non-source locations. Source counts are accumulated
+  from a 3x3 or 5x5 pixel window (controlled by the parameter <TT>boxsize</TT>)
+  and the background is determined from the surrounding 40 (7x7 pixel window
+  minus 3x3) or 56 pixels (9x9 pixel window minus 5x5), respectively.
+  Detection of moderately extended objects (up to several times the PSF size)
+  is achieved by searching the image in up to three consecutive detection
+  runs, each doubling the pixel size.  The input image pixel size resampled
+  from the original detector pixels is chosen such that the detection window
+  corresponds to the size of the on-axis PSF. It is thus required that the PSF
+  is at least moderately oversampled (which is the case for both pn and MOS
+  CCD EPIC data). It is recommended to use a detection threshold
+  of <TT>likemin</TT>=8 to provide a complete source list as input
+  for <A NAME="609"></A><A NAME="tex2html9"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>.
+
+<P>
+</LI>
+<LI><SPAN  CLASS="textbf">Map detection mode:</SPAN>
+  Source counts are accumulated from a 3x3 or 5x5 pixels window 
+  with the option 
+  to use a position and energy dependent PSF weighted filter 
+  (matched filter; not yet implemented). Detection of extended objects is 
+  again achieved by 
+  doubling the pixel sizes in up to three consecutive detection runs. In map detection mode the background is taken from the background maps
+  determined by <A NAME="613"></A><A NAME="tex2html10"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>, resulting in an improved detection
+
+sensitivity as compared to the local detection step.  If the map detection
+  run is used as input for the task <A NAME="617"></A><A NAME="tex2html11"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>, it is recommended to use
+
+a somewhat lower detection threshold than for <A NAME="621"></A><A NAME="tex2html12"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+itself,
+  e.g. <TT>mlmin</TT>=10 for emldetect and <TT>likemin</TT>=8
+  for <A NAME="627"></A><A NAME="tex2html13"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>.
+</LI>
+</OL>
+
+<P>
+In both modes, source searching is only performed in the area of the images
+  which is marked by an optional detection mask created by task <A NAME="631"></A><A NAME="tex2html14"
+  HREF="../emask/index.html"><SPAN  CLASS="textbf">emask</SPAN></A>.
+
+Use of a detection mask is controlled by the boolean input
+  parameter <TT>withdetmask</TT>. If true, one detection mask for each EPIC
+  instrument must be supplied
+  (parameter <TT>detmasksets</TT>). Parameter <TT>withexpimage</TT> controls the
+  optional use of exposure maps as created by task <A NAME="638"></A><A NAME="tex2html15"
+  HREF="../eexpmap/index.html"><SPAN  CLASS="textbf">eexpmap</SPAN></A>.  The value
+
+of the exposure image at the location of each detected source is then used
+  to calculate vignetting- and deadtime-corrected source count rates. If the
+  parameter <TT>withexpimage</TT> is set to true, one exposure image for each
+  energy band of each EPIC instrument must be supplied
+  (parameter <TT>expimagesets</TT>). If no exposure images are supplied, raw
+  count rates are calculated by deriving the exposure information from the
+  good time intervals.
+
+<P>
+Background-subtracted source counts are calculated by applying correction
+  factors to account for the respective fractions of source counts falling in
+  each source and background area. The respective off-axis angle dependent
+  correction factors are calculated using the medium-accuracy PSF. The
+  following equations describe the PSF correction of source and background
+  counts as implemented in the code of the task.
+
+<P>
+<SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$n$"></SPAN> = detection box size
+
+<P>
+Enboxed energy fraction in source box:
+<BR>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+\alpha =  \sum_{n\times n } {\rm PSF}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="89" HEIGHT="45" BORDER="0"
+ SRC="img2.png"
+ ALT="\begin{displaymath}\alpha = \sum_{n\times n } {\rm PSF} \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+Fraction of source counts in background counting area:
+<BR>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+\beta  =  \sum_{(n+4) \times (n+4) }\!\!\! \!\!\!{\rm PSF} - \sum_{n\times n } {\rm PSF}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="203" HEIGHT="48" BORDER="0"
+ SRC="img3.png"
+ ALT="\begin{displaymath}\beta = \sum_{(n+4) \times (n+4) }\!\!\! \!\!\!{\rm PSF} - \sum_{n\times n } {\rm PSF} \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+Raw box counts:
+<BR>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+
+ -->
+
+<IMG
+ WIDTH="146" HEIGHT="45" BORDER="0"
+ SRC="img4.png"
+ ALT="\begin{displaymath}\index{Columns!BOX\_CTS}{\tt BOX\_CTS} = \sum_{n\times n } {\rm image} \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+Raw background map:
+<BR>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+
+ -->
+
+<IMG
+ WIDTH="386" HEIGHT="48" BORDER="0"
+ SRC="img5.png"
+ ALT="\begin{displaymath}\index{Columns!BG\_RAW}{\tt BG\_RAW} = (\sum_{(n+4) \times (n...
+...\! {\rm image} - \sum_{n \times n } {\rm image})/((n+4)^2-n^2) \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+In local detection mode:
+
+<P>
+PSF corrected and background subtracted source counts:
+<BR>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+
+ -->
+
+<IMG
+ WIDTH="236" HEIGHT="45" BORDER="0"
+ SRC="img6.png"
+ ALT="\begin{displaymath}\index{Columns!SCTS}{\tt SCTS} = \frac{\index{Columns!BOX\_CT...
+...W}{\tt BG\_RAW}\cdot n^2}{\alpha-\beta\cdot n^2/((n+4)^2-n^2)} \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+PSF corrected background map:
+<BR>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+
+ -->
+
+<IMG
+ WIDTH="301" HEIGHT="28" BORDER="0"
+ SRC="img7.png"
+ ALT="\begin{displaymath}\index{Columns!BG\_MAP}{\tt BG\_MAP} = \index{Columns!BG\_RAW...
+..._RAW} - \index{Columns!SCTS}{\tt SCTS}\cdot\beta/((n+4)^2-n^2) \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P> 
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+err_{\rm bg} = \sqrt{ 
+ -->
+
+<IMG
+ WIDTH="349" HEIGHT="29" BORDER="0"
+ SRC="img8.png"
+ ALT="\begin{displaymath}err_{\rm bg} = \sqrt{ \index{Columns!BG\_RAW}{\tt BG\_RAW} \cdot ((n+4)^2-n^2)} / ((n+4)^2-n^2) \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P> 
+
+<P>
+Error of source counts:
+<BR>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+
+ -->
+
+<IMG
+ WIDTH="266" HEIGHT="47" BORDER="0"
+ SRC="img9.png"
+ ALT="\begin{displaymath}\index{Columns!SCTS\_ERR}{\tt SCTS\_ERR} = \frac{ \sqrt{ \ind...
+...CTS} + (n^2* err_{\rm bg})^2} }{\alpha-\beta\cdot n^2/(n+4)^2} \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P> 
+
+<P>
+In map detection mode:
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+
+ -->
+
+<IMG
+ WIDTH="235" HEIGHT="28" BORDER="0"
+ SRC="img10.png"
+ ALT="\begin{displaymath}\index{Columns!SCTS}{\tt SCTS} = (\index{Columns!BOX\_CTS}{\t...
+...\_CTS} - \index{Columns!BG\_MAP}{\tt BG\_MAP}\cdot n^2)/\alpha \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+The resulting output source table contains one row per input image 
+for each detected source, plus a number of summary rows containing
+the broad band results for each EPIC telescope and the combined
+results for all EPIC telescopes taken together.
+The individual source rows are identified through the column entries
+<A NAME="672"></A><TT>ID_INST</TT> and <A NAME="674"></A><TT>ID_BAND</TT> in the output table where <A NAME="676"></A><TT>ID_INST</TT>
+refers to the EPIC instrument (1: PN, 2: MOS1, 3: MOS2, 0: summary
+row) and <A NAME="678"></A><TT>ID_BAND</TT> is the energy band number as defined by the 
+ordering in which the energy bands are given on the command line.
+An <A NAME="680"></A><TT>ID_BAND</TT> value of 0 again refers to the summary information. 
+No summary rows are output if the source detection is only performed
+on a single input image. 
+
+<P>
+The source table lists statistical errors for both count rates and
+source positions. Count rate errors are calculated by assuming
+Poissonian statistics (<!-- MATH
+ ${\rm error} = \sqrt{\rm counts}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="117" HEIGHT="38" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="${\rm error} = \sqrt{\rm counts}$"></SPAN>) in both the 
+source and background cells (if <A NAME="682"></A><A NAME="tex2html16"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+is run in local mode) and by 
+applying standard error propagation. If run in map mode, the background 
+taken from the spline background maps is assumed to be free of statistical 
+errors. Positional errors are assumed to be equal to the standard deviation 
+of the distribution of the counts in the detection cell.
+The errors of the derived parameters, such as count rates, fluxes,
+and source positions in celestial coordinates are derived from the
+count and image pixel positional errors, respectively.
+
+<P>
+Following the definition which was e.g. used by the ROSAT mission,
+detection likelihoods (per energy band and total) are 
+given for each source in the
+form <SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$L = - \ln p$"></SPAN> where <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$p$"></SPAN> is the probability of Poissonian random 
+fluctuation of the counts in the detection cell which would have resulted in
+at least the observed number of source counts. 
+The value of  <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$p$"></SPAN> is calculated using the incomplete Gamma function <SPAN CLASS="MATH"><IMG
+ WIDTH="53" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.png"
+ ALT="$P(a,x)$"></SPAN>
+as a function of raw source counts  and raw background
+counts in the detection box.
+See  Press et al., Numerical Recipes, chapter 6.2 for the calculation of 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="53" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.png"
+ ALT="$P(a,x)$"></SPAN>.  
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+
+ -->
+
+<IMG
+ WIDTH="237" HEIGHT="28" BORDER="0"
+ SRC="img15.png"
+ ALT="\begin{displaymath}\index{Columns!LIKE}{\tt LIKE} = - {\rm ln} p(\index{Columns!...
+...}{\tt BOX\_CTS},\index{Columns!BG\_RAW}{\tt BG\_RAW}\cdot n^2) \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P> 
+
+<P>
+In the case of simultaneous detection runs over several energy bands,
+the <A NAME="692"></A><TT>LIKE</TT> values from each individual energy band are added and
+transformed to equivalent single band detection likelihoods using the
+incomplete Gamma function:
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+L = P(n,\sum_{i=1}^n L_i)
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="113" HEIGHT="53" BORDER="0"
+ SRC="img16.png"
+ ALT="\begin{displaymath}L = P(n,\sum_{i=1}^n L_i) \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P> 
+
+<P>
+where <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$n$"></SPAN> is the number of energy bands. A source is included in the 
+output table if the equivalent single band detection
+likelihood exceeds the threshold given by the parameter <TT>likemin</TT>.
+
+<P>
+If detection over several energy bands is performed, up to three
+hardness ratios are calculated from the source counts in the individual
+bands. The hardness ratios are defined as follows:
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+HR_i = \frac{B_m - B_n}{B_m + B_n}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="120" HEIGHT="41" BORDER="0"
+ SRC="img17.png"
+ ALT="\begin{displaymath}HR_i = \frac{B_m - B_n}{B_m + B_n} \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+where <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$B$"></SPAN> denotes the count rates in energy bands <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$n$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$m$"></SPAN>, respectively.  
+<SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$n$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$m$"></SPAN> are specified in the input parameter <TT>hrdef</TT> for each of 
+the (up to) three hardness ratios. The default band assignment is given in 
+the following table:
+
+<P>
+<DIV ALIGN="CENTER">
+</DIV>
+<P>
+<DIV ALIGN="CENTER"></DIV>
+<BR><P></P>
+<DIV ALIGN="CENTER">
+<DIV ALIGN="CENTER">
+
+</DIV>
+<A NAME="eboxdetect:description:tab:1"></A><A NAME="241"></A>
+<TABLE CELLPADDING=3 BORDER="1">
+<CAPTION><STRONG>Table 1:</STRONG>
+Default band assignments of hardness ratios HR<SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$_i$"></SPAN> for the EPIC
+  instruments</CAPTION>
+<TR><TD ALIGN="CENTER"><SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$i$"></SPAN></TD>
+<TD ALIGN="CENTER"><SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$n$"></SPAN></TD>
+<TD ALIGN="CENTER"><SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$m$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="CENTER">1</TD>
+<TD ALIGN="CENTER">1</TD>
+<TD ALIGN="CENTER">2</TD>
+</TR>
+<TR><TD ALIGN="CENTER">2</TD>
+<TD ALIGN="CENTER">2</TD>
+<TD ALIGN="CENTER">3</TD>
+</TR>
+<TR><TD ALIGN="CENTER">3</TD>
+<TD ALIGN="CENTER">3</TD>
+<TD ALIGN="CENTER">4</TD>
+</TR>
+</TABLE>
+</DIV>
+<BR>
+<DIV ALIGN="CENTER">
+</DIV>
+<P>
+<DIV ALIGN="CENTER">
+</DIV>
+
+<P>
+The band numbers <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$n$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$m$"></SPAN> (output table column <A NAME="696"></A><TT>ID_BAND</TT>) are 
+assigned to the individual bands by numbering the corresponding input 
+images in the order in
+which they are given on the command line. It is therefore important
+that the ordering of the input images is consistent with the
+contents of <TT>hrdef</TT> to obtain meaningful hardness ratios.
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+<SPAN  CLASS="textbf">Input images.</SPAN> With version 4.24, the parameter <TT>obsmode</TT> has
+been introduced to distinguish between input data from pointing observations
+(<TT>obsmode</TT>=pointing) and from slew-mode observations
+(<TT>obsmode</TT>=slew). Input data in detector coordinates are accepted from
+version 4.25 on and identified by their header keywords CTYPE1/2=DETX/Y. Only
+one instrument is allowed in this case. The
+columns <A NAME="702"></A><TT>X_IMA</TT>, <A NAME="704"></A><TT>Y_IMA</TT> of the output source lists are given
+in the same coordinate system as the input data. Two additional
+columns <A NAME="706"></A><TT>DETX</TT>, <A NAME="708"></A><TT>DETY</TT> hold the detector coordinates of the
+detections. Position errors are not converted into detector coordinates. If
+required, users can derive them from
+the <A NAME="710"></A><TT>X_IMA_ERR</TT>, <A NAME="712"></A><TT>Y_IMA_ERR</TT> columns. <SPAN  CLASS="textit">No PSF
+correction</SPAN> is calculated for data in detector coordinates. Use of the
+defaults - pointing observation, X/Y coordinates - is recommended.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="eboxdetect.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

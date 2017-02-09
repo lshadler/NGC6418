@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Table filtering</TITLE>
+<META NAME="description" CONTENT="Table filtering">
+<META NAME="keywords" CONTENT="selectlib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="selectlib.css">
+
+<LINK REL="next" HREF="node25.html">
+<LINK REL="previous" HREF="node23.html">
+<LINK REL="up" HREF="node23.html">
+<LINK REL="next" HREF="node25.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+selectlib (selectlib-4.74.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node23.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Example expressions"></A>
+<A HREF="node23.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Example expressions"></A>
+<A HREF="node25.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Table column construction"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node30.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="selectlib.html">Home Page</A> / <A  HREF="node2.html">Description</A> / <A  HREF="node23.html">Example expressions</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000215100000000000000"></A><A NAME="selectlib:user:examplecolfilter"></A>
+<BR>
+Table filtering
+</H3>
+These sample boolean expressions demonstrate the filtering of an event list
+table with columns <TT>RAWX</TT>, <TT>RAWY</TT>, <TT>PHA</TT>, <TT>PATTERNID</TT>,
+<TT>CCDID</TT>, <TT>PHASE</TT>, <TT>TIME</TT>, and <TT>FLAG</TT>:
+
+<P>
+
+<UL>
+<LI><TT>RAWX &gt;= 100 &amp;&amp; #ROW != 10</TT>
+<BR>
+select all events with X coordinates greater than or equal to 100; exclude
+the 10th event anyway
+</LI>
+<LI><TT>RAWX &gt; RAWY</TT>
+<BR>
+select all events to the right of the line <TT>RAWX==RAWY</TT>
+</LI>
+<LI><TT>CIRCLE(354,383,84,RAWX,RAWY)||ELLIPSE(243,215,27,108,0,RAWX,RAWY)</TT>
+<BR>
+select events which lie in the circle or the ellipse with the specified
+parameters
+</LI>
+<LI><TT>PATTERNID==4</TT>
+<BR>
+select all events with <TT>PATTERNID</TT> equal to 4
+</LI>
+<LI><TT>(CCDID==1 &amp;&amp; TIME in gti(ccd1.gti))||(CCDID==2 &amp;&amp; TIME in gti(ccd2.gti))</TT>
+<BR>
+select all events from CCD #1 which pass the GTI filters in <TT>ccd1.gti</TT>
+plus all events from CCD #2 which pass the GTI filters in <TT>ccd2.gti</TT>.
+</LI>
+<LI><TT>PHASE&gt;=.3 &amp;&amp; PHASE&lt;=.9</TT>
+<BR>
+select events from the specified phase window
+</LI>
+<LI><TT>(PHA&gt;=100 &amp;&amp; PHA&lt;=200)||(PHA&gt;=500 &amp;&amp; PHA &lt;=600)</TT>
+<BR>
+select events with PHA values greater than 99 and less than 201 or
+greater than 499 and less than 601
+</LI>
+<LI><TT>FLAG &amp; b110 != 0</TT>
+<BR>
+select events which have the second and third bit in an (integral)
+<TT>FLAG</TT> column set
+</LI>
+<LI><TT>SELECTED &amp;&amp; PHA &gt;= 10</TT>
+<BR>
+select events which have been selected in the previous selection
+run and have PHA values greater than or equal to 10
+</LI>
+<LI><TT>PHA in [0:10],(23:40),99,200: &amp;&amp; TIME in gti(gti.fits[GTI0])</TT>
+<BR>
+select events with PHA values in the range 0-10, or 23-40 (excl.), or
+equal to 99, or greater than or equal to 200 and arrival times
+lying within Good-Time-Intervals contained in the table named
+<TT>GTI0</TT> in the data set <TT>gti.fits</TT>
+</LI>
+<LI><TT>skyvector(RA, DEC) in cone(#RA_MED, #DEC_MED, 20*#ARCMIN)</TT>
+<BR>
+select rows for which it is true that the J2000 sky vector constructed
+from the columns <TT>RA</TT> and <TT>DEC</TT> lies within a cone with an
+opening angle of 20' and a symmetry axis given through the sky vector
+defined by the two attributes <TT>#RA_MED</TT> and <TT>#DEC_MED</TT>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node23.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Example expressions"></A>
+<A HREF="node23.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Example expressions"></A>
+<A HREF="node25.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Table column construction"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node30.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

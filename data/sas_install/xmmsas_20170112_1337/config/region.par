@@ -1,0 +1,196 @@
+<!-- converted from XPI formatted "region.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="eventset" type="dataset" mandatory="yes" default="dummy_default">
+   <DESCRIPTION>
+    Name of event list in which to look for instrument and exposure (and WCS, if necessary) info.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="tempset" type="dataset" default="tempset.ds">
+   <DESCRIPTION>
+    Name of a temporary dataset to hold the filtered source list.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="operationstyle" type="string" default="single">
+   <DESCRIPTION>
+    Operating mode.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="single">
+     <PARAM id="usersrcid" type="int" mandatory="yes" default="1">
+      <DESCRIPTION>
+       Source number.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       usersrcid in [1:9999]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="batch">
+     <PARAM id="srcidcol" type="string" mandatory="yes" default="dummy_default">
+      <DESCRIPTION>
+       Name of the column in which to look for a (unique) source id integer.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="global">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="srclisttab" type="table" mandatory="yes" default="dummy_default">
+   <DESCRIPTION>
+    Source list table.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="expression" type="string" default="">
+   <DESCRIPTION>
+    Source selection expression.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="regionset" type="dataset" default="src_region.ds">
+   <DESCRIPTION>
+    Name of output source region dataset.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="bkgregionset" type="dataset" default="bkg_region.ds">
+   <DESCRIPTION>
+    Name of output background region dataset.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="shrinkconfused" type="bool" default="yes">
+   <DESCRIPTION>
+    Automatically adjust size of source extraction region to eliminate overlaps.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="radiusstyle" type="string" default="userfixed">
+   <DESCRIPTION>
+    Radius determination mode.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="userfixed">
+     <PARAM id="fixedradius" type="real" default="12">
+      <DESCRIPTION>
+       Source region fixed radius [arcsec].
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       fixedradius in [0.0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="enfrac">
+     <PARAM id="energyfraction" type="real" default="0.9">
+      <DESCRIPTION>
+       Encircled energy fraction of PSF -> source region radius.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       energyfraction in [0.0:1.0)
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="contour">
+     <PARAM id="bkgratestyle" type="string" default="col">
+      <DESCRIPTION>
+       Style of obtaining the background rate.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="col">
+        <PARAM id="bkgratecol" type="string" default="BG_MAP">
+<!-- could use a column-type instead of string-type parameter here? -->
+         <DESCRIPTION>
+          Name of the column in which to look for the bkg flux per pixel.
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+
+       <ITEM value="kwdset">
+        <PARAM id="bkgratekwdset" type="dataset" default="kwd_set.ds">
+         <DESCRIPTION>
+          Name of the column in which to look for the bkg flux per pixel.
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+
+       <ITEM value="image">
+        <PARAM id="bkgrateimgset" type="dataset" default="bkg_rate_img.ds">
+         <DESCRIPTION>
+          Name of the image dataset in which to look for the bkg flux per pixel.
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+
+       <ITEM value="user">
+        <PARAM id="bkgrateuser" type="real" default="1.0">
+         <DESCRIPTION>
+          User-supplied bkg flux per pixel.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          bkgrateuser in (0.0:]
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+
+     <PARAM id="bkgfraction" type="real" default="1.0">
+      <DESCRIPTION>
+       Determine contour at which psf equals this fraction of local background.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       bkgfraction in (0.0:]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="nosrcellipse" type="bool" default="no">
+      <DESCRIPTION>
+       Whether to use an ellipse or circle for the source region.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="fovbkgannulus" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to centre the bkg annulus about the FOV centre or about the source position.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="outunit" type="string" default="xy">
+   <DESCRIPTION>
+    Unit of output regions.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="detxy">
+    </ITEM>
+
+    <ITEM value="xy">
+     <PARAM id="nobkgellipse" type="bool" default="no">
+      <DESCRIPTION>
+       When outunit=xy, whether to reproject circular bkg annuli as ellipses.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withboresightfudge" type="bool" default="yes">
+   <DESCRIPTION>
+    Flip the sign of the boresight euler%psi. This parameter should be removed after the boresight is fixed. 
+   </DESCRIPTION>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

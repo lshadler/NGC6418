@@ -1,0 +1,147 @@
+<!-- converted from XPI formatted "ebkreg.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+ <PARAM id="imageset" type="dataset" mandatory="yes" default="image.ds">
+	<DESCRIPTION>
+	Input image FITS file (eg., P0123456789PNS003IMAGE_8000.FIT/FTZ).
+	</DESCRIPTION>
+ </PARAM>
+
+ <PARAM id="withsrclist" type="bool" default="yes">
+   <DESCRIPTION>
+    Whether to use the source list in the observation.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+      <PARAM id="srclisttab" type="dataset" mandatory="yes">
+       <DESCRIPTION>
+        Source list (eg., P0123456789EPX000OBSMLI0000.FIT/FTZ) in the observation.
+       </DESCRIPTION>
+      </PARAM>
+      
+      <PARAM id="withsrcrad" type="bool" mandatory="no" default="no">
+	   <DESCRIPTION>
+	      Extraction region radius for each source (SRC_RAD) from input Source List, instead the tabulated LOOKUP.FITS table
+	   </DESCRIPTION>
+      </PARAM>
+	 
+      
+    </ITEM>
+
+    <ITEM value="no">
+      <PARAM id="withcoords" type="bool" default="no">
+       <DESCRIPTION>
+        Whether to give the coordinates in the command-line arguments.
+       </DESCRIPTION>
+       <CASE>
+        <ITEM value="no" />
+	
+        <ITEM value="yes">
+          
+	  <PARAM id="x" type="real" mandatory="yes">
+	   <DESCRIPTION>
+	      X coordinate of the source position.
+	   </DESCRIPTION>
+	  </PARAM>
+	  
+	  <PARAM id="y" type="real" mandatory="yes">
+	   <DESCRIPTION>
+	      Y coordinate of the source position.
+	   </DESCRIPTION>
+	  </PARAM>
+	  
+	  <PARAM id="coordtype" type="string" mandatory="yes" default="EQPOS">
+	   <DESCRIPTION>
+	      Coordinate type of source position. EQPOS for RA,Dec and POS for X,Y Sky coord.
+	   </DESCRIPTION>
+           <CASE>
+             
+             <ITEM value="POS">
+             </ITEM>
+             <ITEM value="EQPOS">
+             </ITEM>
+	     
+	   </CASE>
+          </PARAM>
+          
+	  <PARAM id="r" type="real" mandatory="yes">
+	   <DESCRIPTION>
+	    Extraction radius for source products production in arcsec.
+	   </DESCRIPTION>
+          </PARAM>
+	  
+        </ITEM>
+       </CASE>
+      </PARAM>
+    </ITEM>
+   </CASE>
+ </PARAM>
+ 
+ <PARAM id="bkg_ra_out" type="real" default="0">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+ </PARAM> 
+
+ <PARAM id="bkg_dec_out" type="real" default="0">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+ </PARAM>
+
+ <PARAM id="bkg_rad1_arcsec_out" type="real" default="0">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+ </PARAM>
+
+ <PARAM id="bkg_rad2_arcsec_out" type="real" default="0">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+ </PARAM>
+
+ <PARAM id="bkg_x_out" type="real" default="0">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+ </PARAM>
+
+ <PARAM id="bkg_y_out" type="real" default="0">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+ </PARAM>
+
+ <PARAM id="bkg_rad1_phys_out" type="real" default="0">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+ </PARAM>
+
+ <PARAM id="bkg_rad2_phys_out" type="real" default="0">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+ </PARAM>
+
+ </CONFIG>
+</FILE>
+

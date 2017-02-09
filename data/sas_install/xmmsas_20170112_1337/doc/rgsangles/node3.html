@@ -1,0 +1,843 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="rgsangles">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsangles.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="rgsangles.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsangles (rgsangles-4.8) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="rgsangles.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsangles.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="rgsangles:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+The main purpose of this task is the correction for attitude drifts
+using the dispersion coordinate system.
+The dispersion coordinates are defined based on the position and on the
+orientation of the RGA, and have two components: the dispersion angle
+<A NAME="567"></A><TT>BETA</TT> and the cross dispersion angle <A NAME="569"></A><TT>XDSP</TT>. 
+Under the assumption that
+the relative movement between the RGA and the RFC is negligible (stable
+telescope tube), these angles can be calculated per event solely from the pixel
+locations of the event on the RFC and from the relative
+alignment of RGA and RFC. This calculation is performed by a CAL
+call (using the coordinate converter modes) in <A NAME="571"></A><A NAME="tex2html4"
+  HREF="../rgsevents/index.html"><SPAN  CLASS="textbf">rgsevents</SPAN></A>, which
+adds <A NAME="575"></A><TT>BETA</TT> and <A NAME="577"></A><TT>XDSP</TT>
+to the event list. Each event is
+therefore associated with a position in dispersion coordinates.
+
+<P>
+The measured position of an event (<A NAME="579"></A><TT>BETA</TT>, <A NAME="581"></A><TT>XDSP</TT>)
+depends on the wavelength of the photon and the position of the X-ray
+source in the field of view (FOV) of the telescope. A drift of the
+telescope changes the position of the source in the FOV which results
+in a blurred wavelength spectrum.
+
+<P>
+While the aspect drift correction in the cross-dispersion coordinate
+is straightforward and similar to an imaging instrument, the approach
+in the dispersion direction is to absorb the aspect drift correction
+in the calculation of the dispersion coordinate from the RGA-RFC
+geometry. This approach of the drift correction is described in the
+following.
+
+<P>
+The following description is given in RGS FOV coordinates
+(<SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\phi$"></SPAN>,<SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\psi$"></SPAN>), which relate to the angles (<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$\theta'$"></SPAN>,<SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$\phi'$"></SPAN>) of the
+<TT>TELCOORD</TT> system in the following way:
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+\begin{array}{l}
+    \phi = - \theta \cos \phi' \ ,\\
+    \psi = - \theta \sin \phi' \ .
+  \end{array}
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="100" HEIGHT="45" BORDER="0"
+ SRC="img5.png"
+ ALT="\begin{displaymath}
+\begin{array}{l}
+\phi = - \theta \cos \phi' \ ,\\
+\psi = - \theta \sin \phi' \ .
+\end{array}\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">1</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+Hence <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\phi$"></SPAN> describes the angular component of an off-axis source
+parallel to the dispersion direction, and <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\psi$"></SPAN> its component
+anti-parallel to the cross-dispersion.
+
+<P>
+X-rays from a source which is at angles (<SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\phi$"></SPAN>,<SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\psi$"></SPAN>) 
+have the following angle of
+incidence <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$\alpha$"></SPAN> on the gratings of the RGA:
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+\alpha = \alpha_0 + \phi\ \frac{F}{L} \ ,
+\end{equation}
+ -->
+<A NAME="eq:dalpha"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:dalpha"></A><IMG
+ WIDTH="108" HEIGHT="39" BORDER="0"
+ SRC="img7.png"
+ ALT="\begin{displaymath}
+\alpha = \alpha_0 + \phi\ \frac{F}{L} \ ,
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">2</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+with the nominal angle of incidence for an on-axis source <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$\alpha_0$"></SPAN>,
+the focal length <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$F$"></SPAN>, and the distance between RGA and prime focus <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$L$"></SPAN>
+(nominal: <!-- MATH
+ $F=7500\,{\rm mm}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="99" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$F=7500\,{\rm mm}$"></SPAN>, <!-- MATH
+ $L=6700\,{\rm mm}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="97" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.png"
+ ALT="$L=6700\,{\rm mm}$"></SPAN>; exact values depend
+on the distances of the reference points of the RGA and of the RFC,
+and are provided by the CAL.
+Aspect drift is described by adding
+its amount along the dispersion direction <SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\Delta\phi$"></SPAN> to <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\phi$"></SPAN>. Note
+that for non-negligible drift in roll, <SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\Delta\phi$"></SPAN> also is a function
+of roll drift and source off-axis angle, because <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\phi$"></SPAN> and
+<SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\Delta\phi$"></SPAN> are angles in the RGA frame (i.e. along the dispersion
+direction).
+
+<P>
+From the dispersion relation
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+\cos\beta = \frac{m\lambda}{d} + \cos\alpha\ ,
+\end{equation}
+ -->
+<A NAME="eq:disprel"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:disprel"></A><IMG
+ WIDTH="144" HEIGHT="39" BORDER="0"
+ SRC="img14.png"
+ ALT="\begin{displaymath}
+\cos\beta = \frac{m\lambda}{d} + \cos\alpha\ ,
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">3</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+with the grating incidence angle <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$\alpha$"></SPAN> (measured from the grating
+surface), the grating exit angle <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$\beta$"></SPAN>, grating line density <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.png"
+ ALT="$d$"></SPAN> and
+order <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.png"
+ ALT="$m$"></SPAN> for a given wavelength <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$\lambda$"></SPAN>. It follows from
+(<A HREF="#eq:disprel">3</A>) for variations of <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$\alpha$"></SPAN> &amp; <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$\beta$"></SPAN> by
+differentiation
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+\Delta\beta \sin\beta = \Delta\alpha \sin\alpha\ ,
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="146" HEIGHT="27" BORDER="0"
+ SRC="img19.png"
+ ALT="\begin{displaymath}
+\Delta\beta \sin\beta = \Delta\alpha \sin\alpha\ ,
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">4</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+or
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+\Delta\beta = \frac{\sin\alpha}{\sin\beta} \Delta\alpha\ .
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="112" HEIGHT="42" BORDER="0"
+ SRC="img20.png"
+ ALT="\begin{displaymath}
+\Delta\beta = \frac{\sin\alpha}{\sin\beta} \Delta\alpha\ .
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">5</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+Using (<A HREF="#eq:dalpha">2</A>) and the aspect drift <SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\Delta\phi$"></SPAN>, this becomes
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+\Delta\beta = \frac{\sin(\alpha_0 +\phi\ F/L)}{\sin\beta}\ \Delta\phi\ \frac{F}{L}
+\end{equation}
+ -->
+<A NAME="eq:dbeta"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:dbeta"></A><IMG
+ WIDTH="210" HEIGHT="43" BORDER="0"
+ SRC="img21.png"
+ ALT="\begin{displaymath}
+\Delta\beta = \frac{\sin(\alpha_0 +\phi\ F/L)}{\sin\beta}\ \Delta\phi\ \frac{F}{L}
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">6</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+With this formulation, the drift of attitude is described as
+corrections in dispersion coordinates. This effectively means that the
+RFC moves in <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$\beta$"></SPAN>-space and has the side effect that the same
+correction has to be used for the calculation of the exposure maps.
+For this reason the evaluation of these equations are part of <A NAME="583"></A><A NAME="tex2html5"
+  HREF="../rgslib/index.html"><SPAN  CLASS="textbf">rgslib</SPAN></A>.
+
+<P>
+It can also be seen from (<A HREF="#eq:dbeta">6</A>) that the amount of
+correction of the dispersion angle is dependent in the position of the
+source in the FOV (through <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\phi$"></SPAN>). In order to achieve best possible
+accuracy, this correction should be performed per source that is to be
+considered in the RGS FOV. Hence the dependence on the source index in
+the RGS <A NAME="587"></A><TT>SRCLIST</TT> table.
+
+<P>
+The absolute values of <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\phi$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\Delta\phi$"></SPAN> have to be determined
+for a given starting value of the pointing of the telescope. This is
+called <EM>reference attitude</EM> and basically means that this is the
+on-axis sky position to which the telescope points after the attitude
+drift correction was performed. Different choices of reference
+attitudes will cause  absolute offsets of the amounts of
+<SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\Delta\phi$"></SPAN> accordingly, and it is therefore optimal to choose a center of
+reference that is close to the actual pointing.
+
+<P>
+The reference attitude is provided by the
+<A NAME="589"></A><TT>SRCLIST</TT> table.
+The reference attitude is added to the
+<A NAME="591"></A><TT>EVENTS</TT> table with the keywords <A NAME="593"></A><TT>RA_PNT</TT>,
+<A NAME="595"></A><TT>DEC_PNT</TT> and <A NAME="597"></A><TT>APOS_PNT</TT>.
+
+<P>
+The source position, from which <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\phi$"></SPAN> is calculated with respect to the center
+of the reference attitude, is read from the <A NAME="599"></A><TT>SRCLIST</TT> table, too.
+The source position that is used in correction described in
+equation&nbsp;(<A HREF="#eq:dbeta">6</A>) is added to the <A NAME="601"></A><TT>EVENTS</TT> table with the
+keywords <A NAME="603"></A><TT>RA_OBJ</TT> and <A NAME="605"></A><TT>DEC_OBJ</TT>. The row number of the source in the <A NAME="607"></A><TT>SRCLIST</TT> table
+is written to the <A NAME="609"></A><TT>EVENTS</TT> header with keyword <A NAME="611"></A><TT>SOURCEID</TT>.
+
+<P>
+It has been described before that <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\phi$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\Delta\phi$"></SPAN> have to be
+available in instrument specific coordinates, namely along the
+dispersion direction. The following steps have to be performed in
+order to obtain the components of the source position along dispersion (<SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\phi$"></SPAN>)
+and cross dispersion (<SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\psi$"></SPAN>) direction (implemented in
+<A NAME="613"></A><A NAME="tex2html6"
+  HREF="../rgslib/index.html"><SPAN  CLASS="textbf">rgslib</SPAN></A>).<A NAME="tex2html1"
+
+HREF="footnode.html#foot224"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A>
+<P>
+The calculation of the components of the source position with respect to the
+reference attitude is performed as follows. First the reference
+attitude matrix is calculated from the reference pointing as specified
+by
+<!-- MATH
+ $({\it Ra}_{\rm ref},{\it Dec}_{\rm ref}, {\it Pa}_{\rm ref})$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="146" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$({\it Ra}_{\rm ref},{\it Dec}_{\rm ref}, {\it Pa}_{\rm ref})$"></SPAN> with
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+{\it RefAtt} = {\tt OAL\_toAttitudeMatrix}\,({\it Ra}_{\rm ref},{\it Dec}_{\rm ref},{\it Pa}_{\rm ref})
+\end{equation}
+ -->
+<A NAME="eq:refattm"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:refattm"></A><IMG
+ WIDTH="375" HEIGHT="28" BORDER="0"
+ SRC="img23.png"
+ ALT="\begin{displaymath}
+{\it RefAtt} = {\tt OAL\_toAttitudeMatrix}\,({\it Ra}_{\rm ref},{\it Dec}_{\rm ref},{\it Pa}_{\rm ref})
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">7</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+The reference attitude is multiplied by the instrument specific
+BoreSight matrix, such that <I>RefAtt</I> holds the instrument specific
+attitude matrix.
+
+<P>
+Next the source position (Ra,Dec) is converted to a Cartesian sky
+vector with
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+{\it Src}_{\rm SkyVect} = {\tt unitCartesian}({\it Src}_{\rm Ra}, {\it Src}_{\rm Dec})\ ,
+\end{equation}
+ -->
+<A NAME="eq:srcsky"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:srcsky"></A><IMG
+ WIDTH="311" HEIGHT="29" BORDER="0"
+ SRC="img24.png"
+ ALT="\begin{displaymath}
+{\it Src}_{\rm SkyVect} = {\tt unitCartesian}({\it Src}_{\rm Ra}, {\it Src}_{\rm Dec})\ ,
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">8</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+and the Cartesian position of the source for the reference attitude is
+obtained in the instrument specific FOV coordinates <!-- MATH
+ ${\it Src}_{\rm cart}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="50" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="${\it Src}_{\rm cart}$"></SPAN> by
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+{\it Src}_{\rm cart}(t=0) = {\it RefAtt} \otimes {\it Src}_{\rm SkyVect}\ .
+\end{equation}
+ -->
+<A NAME="eq:srccart"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:srccart"></A><IMG
+ WIDTH="256" HEIGHT="29" BORDER="0"
+ SRC="img26.png"
+ ALT="\begin{displaymath}
+{\it Src}_{\rm cart}(t=0) = {\it RefAtt} \otimes {\it Src}_{\rm SkyVect}\ .
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">9</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+The angles <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\phi$"></SPAN> in the dispersion direction and <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\psi$"></SPAN> in the
+cross-dispersion direction are obtained straightforwardly from the
+Cartesian components
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+\begin{array}{rcl}
+    \phi &=& \arctan({\it Src}_{\rm cart,Z} / {\it Src}_{\rm cart,X}) \\
+    \psi &=& \arctan({\it Src}_{\rm cart,Y} / {\it Src}_{\rm cart,X})
+  \end{array}
+\end{equation}
+ -->
+<A NAME="eq:fovang"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:fovang"></A><IMG
+ WIDTH="237" HEIGHT="45" BORDER="0"
+ SRC="img27.png"
+ ALT="\begin{displaymath}
+\begin{array}{rcl}
+\phi &amp;=&amp; \arctan({\it Src}_{\rm cart,Z}...
+...n({\it Src}_{\rm cart,Y} / {\it Src}_{\rm cart,X})
+\end{array}\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">10</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+The calculations of equations&nbsp;(<A HREF="#eq:refattm">7</A>)-(<A HREF="#eq:fovang">10</A>)
+are performed by the <A NAME="617"></A><A NAME="tex2html7"
+  HREF="../rgslib/index.html"><SPAN  CLASS="textbf">rgslib</SPAN></A>
+function
+<BR><TT>offAxisAngles(referenceAttitude,sourcePos)</TT>.
+
+<P>
+Attitude drifts cause variations (<SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\Delta\phi$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$\Delta\psi$"></SPAN>) to
+<SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\phi$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\psi$"></SPAN> as calculated in equation&nbsp;(<A HREF="#eq:fovang">10</A>) and are
+calculated in instrument FOV coordinates as well as variations from
+the reference pointing. First <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\phi$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\psi$"></SPAN> are
+evaluated equivalent to the steps described above
+(equations&nbsp;(<A HREF="#eq:srcsky">8</A>)-(<A HREF="#eq:fovang">10</A>)), but instead of the the source
+pointing the pointing of the reference attitude is used. This yields
+<!-- MATH
+ ${\it Ref}_{\rm SkyVect}(t=0)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="123" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.png"
+ ALT="${\it Ref}_{\rm SkyVect}(t=0)$"></SPAN> together with
+the starting values for <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$\phi_0$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$\psi_0$"></SPAN> to be used for the calculation of
+<SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\Delta\phi$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$\Delta\psi$"></SPAN>.<A NAME="tex2html2"
+  HREF="footnode.html#foot539"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A>Then <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\phi$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\psi$"></SPAN> are  calculated for each available
+attitude, and the angles of the drift (<SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\Delta\phi$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$\Delta\psi$"></SPAN>) are
+just the differences between those obtained for the reference attitude
+and the time dependent attitude. Let <I>VarAtt</I> be the attitude of the
+instrument as a function of time, then
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+{\it VarAtt}(t) = {\tt OAL\_getAttitude}(t) \otimes BoreSight\ .
+\end{equation}
+ -->
+<A NAME="eq:curatt"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:curatt"></A><IMG
+ WIDTH="329" HEIGHT="28" BORDER="0"
+ SRC="img33.png"
+ ALT="\begin{displaymath}
+{\it VarAtt}(t) = {\tt OAL\_getAttitude}(t) \otimes BoreSight\ .
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">11</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+The multiplication with the BoreSight here is necessary, as <TT>  OAL_getAttitude</TT> returns the attitude of the star tracker as a
+function of time. Similar as above in (<A HREF="#eq:srccart">9</A>), the position
+of the reference pointing in the (drifted) FOV in Cartesian coordinates is obtained by
+multiplication, and
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+{\it Ref}_{\rm cart}(t) = {\it VarAtt}(t) \otimes {\it Ref}_{\rm SkyVect}(t=0)\ ,
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="303" HEIGHT="30" BORDER="0"
+ SRC="img34.png"
+ ALT="\begin{displaymath}
+{\it Ref}_{\rm cart}(t) = {\it VarAtt}(t) \otimes {\it Ref}_{\rm SkyVect}(t=0)\ ,
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">12</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+and the components of the drift then follow with
+equation&nbsp;(<A HREF="#eq:fovang">10</A>) according to
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+\begin{array}{rcl}
+    \Delta\phi &=& \arctan({\it Ref}_{\rm cart,Z}(t) / {\it Ref}_{\rm cart,X}(t)) - \phi_0 \\
+    \Delta\psi &=& \arctan({\it Ref}_{\rm cart,Y}(t) / {\it Ref}_{\rm cart,X}(t)) - \phi_0
+  \end{array}
+\end{equation}
+ -->
+<A NAME="eq:dfovang"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="eq:dfovang"></A><IMG
+ WIDTH="328" HEIGHT="45" BORDER="0"
+ SRC="img35.png"
+ ALT="\begin{displaymath}
+\begin{array}{rcl}
+\Delta\phi &amp;=&amp; \arctan({\it Ref}_{\rm c...
+...m cart,Y}(t) / {\it Ref}_{\rm cart,X}(t)) - \phi_0
+\end{array}\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">13</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+The calculations of equations&nbsp;(<A HREF="#eq:curatt">11</A>)-(<A HREF="#eq:dfovang">13</A>)
+are performed by the <A NAME="625"></A><A NAME="tex2html8"
+  HREF="../rgslib/index.html"><SPAN  CLASS="textbf">rgslib</SPAN></A>
+function
+<BR><TT>gratingAspectAngles(time, referenceAttitude)</TT>,
+which returns an array holding <!-- MATH
+ $(\Delta\phi,\Delta\psi)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="70" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$(\Delta\phi,\Delta\psi)$"></SPAN>, and also
+includes the calculation of <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$\phi_0$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$\psi_0$"></SPAN> according to
+equations&nbsp;(<A HREF="#eq:refattm">7</A>)-(<A HREF="#eq:fovang">10</A>), but for the reference
+pointing.  The values of
+<SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\Delta\phi$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$\Delta\psi$"></SPAN> are added to the <A NAME="629"></A><TT>EXPOSU0<SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.png"
+ ALT="$n$"></SPAN></TT> table as columns
+<A NAME="631"></A><TT>ASPCDSP</TT> and <A NAME="633"></A><TT>ASPCXDSP</TT> respectively.
+
+<P>
+For each event the aspect correction <SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$\Delta\beta$"></SPAN> is calculated using
+equation (<A HREF="#eq:dbeta">6</A>). The drift independent term <!-- MATH
+ $F/L
+\sin(\alpha_0 +\phi\ F/L)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="151" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img39.png"
+ ALT="$F/L
+\sin(\alpha_0 +\phi\ F/L)$"></SPAN> is written as keyword <A NAME="635"></A><TT>ASPFACT1</TT> to the
+EVENTS header for use by task <A NAME="637"></A><A NAME="tex2html9"
+  HREF="../rgsexposure/index.html"><SPAN  CLASS="textbf">rgsexposure</SPAN></A>.
+
+<P>
+The drift corrected columns <A NAME="641"></A><TT>BETA_CORR</TT> <A NAME="643"></A><TT>XDSP_CORR</TT> are
+binned into int16 channel columns <A NAME="645"></A><TT>BETA_CHANNEL</TT> and
+<A NAME="647"></A><TT>XDSP_CHANNEL</TT>. The binning can be specified either by the 
+number of bins together with the ranges in <A NAME="649"></A><TT>BETA_CORR</TT> and
+<A NAME="651"></A><TT>XDSP_CORR</TT>, or by specifying the bin-size and a reference
+value for the first channel. Keywords 
+<A NAME="653"></A><TT>TCRVL</TT> (formerly <A NAME="655"></A><TT>BETA_REF</TT>, <A NAME="657"></A><TT>XDSP_REF</TT>) and
+<A NAME="659"></A><TT>TCDLT</TT> (formerly <A NAME="661"></A><TT>BETA_WID</TT>, <A NAME="663"></A><TT>XDSP_WID</TT>)
+specify the midpoint of the first bin  and the bin width used
+for the binning. Depending on the data range and binning,
+channel numbers could become negative. Channel values outside the
+integer 16 range will cause a fatal error condition.
+
+<P>
+In order to secure against wrong values of <A NAME="665"></A><TT>BETA_CORR</TT> and
+<A NAME="667"></A><TT>XDSP_CORR</TT> which could arise from a bad choice of the
+reference attitude, a range check is performed on these values, and a
+warning is generated when unreasonable values are encountered.
+
+<P>
+The following optional columns can be added to the event table for
+investigation of the intermediate results:
+
+<UL>
+<LI>The spacecraft pointing in (rad) <A NAME="669"></A><TT>SC_POINTING_RA</TT>
+<A NAME="671"></A><TT>SC_POINTING_DEC</TT> <A NAME="673"></A><TT>SC_POINTING_POS</TT>: this is the
+pointing as a function of time as provided by the OAL, without aspect
+drift correction (this is provided for debugging purposes for
+subsequent tasks, which do not use the OAL).
+</LI>
+<LI><A NAME="675"></A><TT>M_LAMBDA</TT> order wavelength product from dispersion
+relation (<A HREF="#eq:disprel">3</A>) using corrected <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$\beta$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$\phi_0$"></SPAN> as inputs. 
+</LI>
+</UL>
+
+<P>
+Since version 4.7.2, <A NAME="677"></A><A NAME="tex2html10"
+  HREF="../rgsangle/index.html"><SPAN  CLASS="textbf">rgsangle</SPAN></A>
+task is able to correct <A NAME="681"></A><TT>M_LAMBDA</TT> column from:
+
+<UL>
+<LI>The systematic trend of the line shift with the angular distance
+between the Sun and the spacecraft -X axis (i.e. the pointing
+direction). This trend can be parametrised as a linear relation
+between both quantities, and can be applied using the
+<TT>withsunanglecorr</TT> parameter. The same correction is applied for both orders. 
+
+<P>
+</LI>
+<LI>The velocity of the Earth with respect to the barycentre of the Solar System, projected in the
+direction of the target. This velocity correction can be applied using
+the parameter <TT>withheliocentriccorr</TT>
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="rgsangles.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

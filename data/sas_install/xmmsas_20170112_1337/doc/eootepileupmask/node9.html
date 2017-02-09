@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="eootepileupmask">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eootepileupmask.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="eootepileupmask.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eootepileupmask (ebkgmap-2.9) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Behaviours and command-line arguments."></A>
+<A HREF="eootepileupmask.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eootepileupmask.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="eootepileupmask:description:parameters"></A>
+<A NAME="501"></A>
+<tr valign=top bgcolor='silver'><td><b>ratethreshold</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>0.008</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$0&lt;=$"></SPAN><TT>ratethreshold</TT></td></tr>
+
+<tr valign=top><td colspan=5>
+    The threshold of the rate, where the pixels having the rate larger than this value are regarded as `bad'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="510"></A>
+<tr valign=top bgcolor='silver'><td><b>eventset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Name of the input event list dataset used to construct the mask image. This parameter is read if <TT>inputstyle</TT>=`evlist'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="519"></A>
+<tr valign=top bgcolor='silver'><td><b>maskset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>ootemask.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the output mask image in sky coordinates is written to this file name.  If <TT>outputstyle</TT>=`raw', the output mask cube image in chip coordinates is written to this file name.  
+    <br>&nbsp;</td></tr>
+
+  <A NAME="528"></A>
+<tr valign=top bgcolor='silver'><td><b>outputstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>sky</td><td>sky|raw</td></tr>
+
+<tr valign=top><td colspan=5>
+    If `sky', the OOTE map is output in sky coordinates, to the file referred to by parameter <TT>ooteimageset</TT>. In this case a template set (<TT>templateset</TT>) is needed and the <TT>attstyle</TT> parameter is also read. If <TT>outputstyle</TT>=`raw' on the other hand the output is written to a cube (in the <TT>expcubeset</TT> format) to the file pointed to by <TT>ootecubeset</TT>.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="547"></A>
+<tr valign=top bgcolor='silver'><td><b>templateset</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>outputstyle</TT>=`sky'. This file should contain an image in the primary extension, which is used to define the pixel dimensions and World Coordinates of the output image.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="556"></A>
+<tr valign=top bgcolor='silver'><td><b>attstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>binnedset</td><td>binnedset|template</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>outputstyle</TT>=`sky'. To convert from chip to sky coordinates it is necessary to know the spacecraft attitude. However the attitude is never completely stable and may vary significantly during an exposure. In this case the net sky image must be a mosaic of components from different values of the attitude. A time series of attitude values (such as that made either by <A NAME="570"></A><A NAME="tex2html8"
+  HREF="../attbin/index.html"><SPAN  CLASS="textbf">attbin</SPAN></A>
+or <A NAME="574"></A><A NAME="tex2html9"
+  HREF="../evproject/index.html"><SPAN  CLASS="textbf">evproject</SPAN></A>) can be supplied to parameter <TT>binnedattset</TT> if <TT>attstyle</TT> is set to `binnedset' (default). If it is judged that the attitude wander during the exposure does not exceed some small fraction of the image pixel dimensions, or if the binned attitude set is not available, then the user may choose to set <TT>attstyle</TT> to `template' instead. In this case a single fixed value of attitude is read from *_PNT keywords in the template image header.
+
+<br>&nbsp;</td></tr>
+
+  <A NAME="581"></A>
+<tr valign=top bgcolor='silver'><td><b>binnedattset</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>attstyle</TT>=`binnedset' the user should supply to the present parameter the name of a dataset which contains a time series of the spacecraft attitude variation during the exposure.  The user should be aware of the fact that if an attitude (time) bin (specified in this file) is too small, the time bin is unlikely to be processed (see the description of <TT>avcnttoprocess</TT> below).  Therefore it is recommended to create the <TT>binnedattset</TT>, allowing a relatively large attitude fluctuation, such as 1&nbsp;arcsec, so that attitude bins are not too finely split.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="594"></A>
+<tr valign=top bgcolor='silver'><td><b>avcnttoprocess</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>7.0</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$0&lt;=$"></SPAN><TT>ratethreshold</TT></td></tr>
+
+<tr valign=top><td colspan=5>
+    When <TT>attstyle</TT>=`binnedset', the supplied <TT>binnedattset</TT> file may provide time durations with very short exposures.  In that case if a pixel happens to have an event during the short duration, the value of count per frame at that pixel in that duration is large and likely exceeds the threshold <TT>ratethreshold</TT>, and as a result that pixel will be masked as piled-up just because the pixel has one event at a wrong time.  To avoid this from happening, any time duration with too short exposure should not be processed.  This parameter gives the threshold for it, <I>i.e.</I>, only when there are reasonable number of frames in the time duration, in which the averaged count, corresponding to the piled-up threshold, exceeds this parameter <TT>avcnttoprocess</TT>, the time duration is processed to calculate the output mask.  For example, if <TT>ratethreshold</TT>=0.008 and <TT>avcnttoprocess</TT>=7.0, each time duration should have the (maximum) number of frames larger than 875 (=7/0.008) so as to be used by the process, which corresponds to <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="$\sim$"></SPAN>2.3 ks for the standard mode in MOSs.  Note that because the single-event ratio at 12&nbsp;keV in MOSs is <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="$\sim$"></SPAN>0.23 (0.54 for pn), <TT>avcnttoprocess</TT>=7.0 corresponds to just above 2 count per frame per pixel in MOSs for very high energy photons, after the grade-branching ratio is corrected.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="618"></A>
+<tr valign=top bgcolor='silver'><td><b>withrateimage</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    If this is true, the rate imagesets calculated are also output with the filename of <TT>ratesetroot</TT> followed by an attitude sequence number in the form of ``%04d'' with the suffix of <TT>.ds</TT> .  If <TT>outputstyle</TT>=`sky', the rate image set is in sky coordinates, whereas if <TT>outputstyle</TT>=`raw', the rate set is the cube format in chip coordinates.  Note that the rate is corrected for the event at the energy of 1.49&nbsp;keV.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="632"></A>
+<tr valign=top bgcolor='silver'><td><b>ratesetroot</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>rateset</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This is read only if <TT>withrateimage</TT>=true.  See the section of <TT>withrateimage</TT> for detail.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="643"></A>
+<tr valign=top bgcolor='silver'><td><b>withpileupmask</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    If this is true, the pileup mask imagesets calculated are also output with the filename of <TT>pileupmasksetroot</TT> followed by an attitude sequence number in the form of ``%04d'' with the suffix of <TT>.ds</TT> .
+    <br>&nbsp;</td></tr>
+
+  <A NAME="653"></A>
+<tr valign=top bgcolor='silver'><td><b>pileupmasksetroot</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>pileupmask</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This is read only if <TT>withpileupmask</TT>=true.  See the section of <TT>withpileupmask</TT> for detail.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="664"></A>
+<tr valign=top bgcolor='silver'><td><b>foroote</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    If true, the out-of-time (OOT) events due to piled-up pixels are masked in the output.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="671"></A>
+<tr valign=top bgcolor='silver'><td><b>forrgaspike</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    If true, the RGA spikes due to piled-up pixels are masked in the output.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="678"></A>
+<tr valign=top bgcolor='silver'><td><b>isinverted</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    If true, the bad pixels (namely affected by pile-up) in the output mask file are zero, if not, one.
+    For the later use of the output mask file with <A NAME="687"></A><A NAME="tex2html10"
+  HREF="../dpssflag/index.html"><SPAN  CLASS="textbf">dpssflag</SPAN></A>, <TT>isinverted</TT>=yes is more convenient (default).
+
+<br>&nbsp;</td></tr>
+
+  <A NAME="692"></A>
+<tr valign=top bgcolor='silver'><td><b>withapproxpatfrac</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    True if the approximate form of the pattern fraction parameters is used.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="699"></A>
+<tr valign=top bgcolor='silver'><td><b>withboresightfudge</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    Flip the sign of the boresight euler%psi.  <B>This parameter will be removed</B> after the boresight is fixed. 
+    <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Behaviours and command-line arguments."></A>
+<A HREF="eootepileupmask.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

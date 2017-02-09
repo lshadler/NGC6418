@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="eexpchipmap_pcms">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eexpchipmap_pcms.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="eexpchipmap_pcms.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eexpchipmap_pcms (lccorr_pcms-1.6.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="eexpchipmap_pcms.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eexpchipmap_pcms.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="eexpchipmap:description:parameters"></A><A NAME="422"></A>
+<tr valign=top bgcolor='silver'><td><b>eventset</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  Name of the event list dataset. This dataset contains information on the instrument, the WCS keywords of the X and Y columns, and exposure information contained in various extensions.
+ <br>&nbsp;</td></tr>
+
+ <A NAME="429"></A>
+<tr valign=top bgcolor='silver'><td><b>templateset</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  The name of a dataset with a template image in its primary extension should be supplied to this parameter. All keywords (except those pertaining to the DSS) in the primary HDU are copied over to the outputs. If <TT>outputstyle</TT>=`sky', the template image is also necessary to specify the pixel dimensions and World Coordinates of the output.
+ <br>&nbsp;</td></tr>
+
+ <A NAME="438"></A>
+<tr valign=top bgcolor='silver'><td><b>withdss</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  Whether to make use of information about event selections stored in the Data SubSpace (DSS) of a FITS extension.
+ <br>&nbsp;</td></tr>
+
+ <A NAME="445"></A>
+<tr valign=top bgcolor='silver'><td><b>dssstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>templateset</td><td>templateset|image|eventlist</td></tr>
+
+<tr valign=top><td colspan=5>
+  This parameter is read if <TT>withdss</TT>=`yes'. If <TT>dssstyle</TT>=`templateset', the task attempts to read a DSS in the first block of the image template set <TT>templateset</TT>. If <TT>dssstyle</TT>=`image', the task looks for the DSS in the first block of <TT>dssset</TT>. If <TT>dssstyle</TT>=`eventlist', the task looks for the DSS in the <A NAME="466"></A><TT>EVENTS</TT> extension of <TT>eventset</TT>.
+ <br>&nbsp;</td></tr>
+
+ <A NAME="469"></A>
+<tr valign=top bgcolor='silver'><td><b>dssset</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  This parameter is read if <TT>withdss</TT>=`yes' and <TT>dssstyle</TT>=`image'. In this circumstance the user should supply to <TT>dssset</TT> the name of a dataset which has the desired DSS attached to its first extension.
+ <br>&nbsp;</td></tr>
+
+ <A NAME="482"></A>
+<tr valign=top bgcolor='silver'><td><b>outputstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>sky</td><td>sky|raw</td></tr>
+
+<tr valign=top><td colspan=5>
+  Whether to write the exposure map in chip (ie CCD, or `raw') or sky coordinates. If the latter, a template image is necessary to supply the correct dimensions and WCS keywords. Note that a `raw' output can always be converted to `sky' after the fact by use of <A NAME="490"></A><A NAME="tex2html5"
+  HREF="../eimchip2sky/index.html"><SPAN  CLASS="textbf">eimchip2sky</SPAN></A>. The end result should be identical.
+
+<br>&nbsp;</td></tr>
+
+ <A NAME="494"></A>
+<tr valign=top bgcolor='silver'><td><b>flatexpimgset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>flat_expmap.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  An exposure map without vignetting, in sky coordinates, is written to this file name if <TT>outputstyle</TT>=`sky'.
+ <br>&nbsp;</td></tr>
+
+ <A NAME="503"></A>
+<tr valign=top bgcolor='silver'><td><b>vigexpimgset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>vig_expmap.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  An exposure map with vignetting, in sky coordinates, is written to this file name if <TT>outputstyle</TT>=`sky'.
+ <br>&nbsp;</td></tr>
+
+ <A NAME="512"></A>
+<tr valign=top bgcolor='silver'><td><b>attstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>binnedset</td><td>binnedset|template</td></tr>
+
+<tr valign=top><td colspan=5>
+  This parameter is read only if <TT>outputstyle</TT> is set to `sky'. To convert from chip to sky coordinates it is necessary to know the spacecraft attitude. However the attitude is never completely stable and may vary significantly during an exposure. In this case the nett sky image must be a mosaic of components from different values of the attitude. A time series of attitude values (such as that made either by <A NAME="526"></A><A NAME="tex2html6"
+  HREF="../attbin/index.html"><SPAN  CLASS="textbf">attbin</SPAN></A>
+or <A NAME="530"></A><A NAME="tex2html7"
+  HREF="../evproject/index.html"><SPAN  CLASS="textbf">evproject</SPAN></A>) can be supplied to parameter <TT>binnedattset</TT> if <TT>attstyle</TT> is set to `binnedset'. If it is judged that the attitude wander during the exposure did not exceed some small fraction of the image pixel dimensions, or if the binned attitude set is not available, then the user may choose to set <TT>attstyle</TT> to `template' instead. In this case a single fixed value of attitude is read from *_PNT keywords in the template image header.
+
+<br>&nbsp;</td></tr>
+
+ <A NAME="537"></A>
+<tr valign=top bgcolor='silver'><td><b>binnedattset</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  If <TT>attstyle</TT>=`binnedset' the user should supply to the present parameter the name of a dataset which contains a time series of the spacecraft attitude variation during the exposure.
+ <br>&nbsp;</td></tr>
+
+ <A NAME="546"></A>
+<tr valign=top bgcolor='silver'><td><b>flatexpcubeset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>flat_expmapcube.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  An exposure cube without vignetting, in chip coordinates, is written to this file name if <TT>outputstyle</TT>=`raw'.
+ <br>&nbsp;</td></tr>
+
+ <A NAME="555"></A>
+<tr valign=top bgcolor='silver'><td><b>vigexpcubeset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>vig_expmapcube.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  An exposure cube with vignetting, in chip coordinates, is written to this file name if <TT>outputstyle</TT>=`raw'.
+ <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="eexpchipmap_pcms.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Examples</TITLE>
+<META NAME="description" CONTENT="Examples">
+<META NAME="keywords" CONTENT="ecoordconv">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ecoordconv.css">
+
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ecoordconv (especget-1.44.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ecoordconv.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00033000000000000000">
+Examples</A>
+</H2>
+
+<P>
+1. Convert a particular sky coordinate position 
+
+<P>
+<PRE>
+ecoordconv imageset=pnimagexy.ds x=27000 y=26900 coordtype=POS
+
+ecoordconv:-  Region Centre:
+ Theta: Phi: 18.4712 2.59867
+ X: Y: 27010 26888
+ DETX: DETY: -353.754 160.874
+ RA: DEC: 275.505 64.3385
+ RAWX: RAWY: 43 186
+ CCD(s):  4 centred on CCD: 4
+</PRE>
+
+<P>
+2. Convert a detector coordinate region
+
+<P>
+<PRE>
+ecoordconv srcexp="(DETX,DETY) in CIRCLE(100,1000,7000)" imageset=pnimagexy.ds
+
+ecoordconv:-  Region Centre:
+ Theta: Phi: 50.5951 1.40977
+ X: Y: 26280.112  27503.672
+ DETX: DETY: 124.823 968.882
+ RA: DEC: 275.498 64.3258
+ RAWX: RAWY: 37 176
+ CCD(s):  1 4 5 7 8 10 centred on CCD: 4
+</PRE>
+
+<P>
+3. Convert a RAW coordinate
+
+<P>
+<PRE>
+ecoordconv imageset=image.ds coordtype=raw x=32 y=191 ccdno=4
+
+ecoordconv:-  Region Centre: 
+ Theta: Phi: 48.3652 3.84547
+ X: Y: 27095.5 27965.5
+ DETX: DETY: 546.171 -243.231
+ RA: DEC: 114.952 -85.6571
+ RAWX: RAWY: 32 191
+ CCD(s):  4 centred on CCD: 4
+</PRE>
+
+<P>
+4. Convert from sky to celestial coordinates only
+
+<P>
+<PRE>
+ecoordconv imageset=image.ds coordtype=pos x=25500 y=26200 pos2eqpos=yes
+
+ecoordconv:-  Region Centre: 
+ RA: DEC: 115.012 -85.6611
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="flspec">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="flspec.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="flspec.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+flspec (flspec-3.4.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="flspec.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="flspec.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="flspec:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+<A NAME="483"></A><A NAME="tex2html1"
+  HREF="../flspec/index.html"><SPAN  CLASS="textbf">flspec</SPAN></A>
+computes the spectrum of the background fluctuations
+in EPIC Imaging data in different offaxis annular regions.
+
+<P>
+The first step of the process is the 'flatfielding' (division) of the input image with the corresponding exposure map. Since the borders of the exposure map can be affected by counting statistics, it is previously 'cleaned' with the output of <A NAME="487"></A><A NAME="tex2html2"
+  HREF="../emask/index.html"><SPAN  CLASS="textbf">emask</SPAN></A>
+using a value of 0.1 as a threshold, i.e, only the area of the map with exposure time greater than 100% of maximum value is retained. 
+Then the regions affected by the observed sources (listed in the input source list) are removed taking into account the sizes obtained with the task <A NAME="491"></A><A NAME="tex2html3"
+  HREF="../region/index.html"><SPAN  CLASS="textbf">region</SPAN></A>
+(<TT>radiusmode</TT>=enfrac with an enclosed energy fraction of 95%).
+
+<P>
+Once the 'flatfielded' image is free from detected sources, its pixels are binned according to the input parameter <TT>binsize</TT> and classified as 'positive' (if they have more counts than the median in the image) and 'negative' pixels (less counts than the median). 
+Those binned pixels with positive(negative) label will lead to pixels with ``1'' (``0'') in the positive(negative) mask that <A NAME="497"></A><A NAME="tex2html4"
+  HREF="../flspec/index.html"><SPAN  CLASS="textbf">flspec</SPAN></A>
+creates with the pixel size of the input image. Those pixels that have null value in the flatfielded image (0 secs. in exposure time or pixel inside a region source) are kept as ``0'' in both masks.
+
+<P>
+These masks are then used to filter the input event list and extract positive(negative) spectra from a number of equal-area annuli around the image centre, to account for variations of the effective area as a function of the offaxis angle. The positive and negative spectra are extracted with an spectral binning  of 15 eV (MOS) and 5 eV (PN).
+
+<P>
+Once created, positive and negative spectra are subtracted to obtain the 'fluctuations' spectrum in each annular region (the number of offaxis regions is fixed by the number of output spectral files in the list <TT>spectrumsets</TT>).
+
+<P>
+The subtraction is performed normalising the solid angle in units of <I>detector pixels</I> (squared pixels of side 0.05 arcseconds) to that of the annular extraction region, i.e., 
+<PRE>
+difference= (TotSA/PosSA)*positive_spec - (TotSA/NegSA)*negative_spec.
+</PRE>
+
+<P>
+where PosSA and NegSA are the 'positive' and 'negative' spectrum solid angles, and TotSA is the solid angle in the annular extraction region.
+
+<P>
+The <A NAME="502"></A><TT>BACKSCAL</TT> attribute in this difference spectrum will then keep the value of the solid angle for the full annular region. Provided one of these positive/negative spectra has zero area, a warning is raised and the difference spectrum stores the non zero area spectrum:
+
+<P>
+<PRE>
+difference= (TotSA/PosSA)*positive_spec - 0.0*negative_spec
+</PRE>
+
+<P>
+or
+
+<P>
+<PRE>
+difference= 0.0*positive_spec - (TotSA/NegSA)*negative_spec
+</PRE>
+
+<P>
+<A NAME="504"></A><TT>BACKSCAL</TT>=0 if both spectra have null extraction area.
+
+<P>
+The <A NAME="506"></A><TT>OFFAXIS</TT> attribute in the 'SPECTRUM' extension of each output spectral file stores the central offaxis of the annular extraction region in arcmin.
+
+<P>
+If the observation is confusion dominated (as will be the case in most
+of them), the fluctuation spectrum is related to the average spectrum
+of the sources that dominate the fluctuations (below the detection
+threshold). This is necessary to estimate the systematic errors in the
+spectra of the faint detected sources.
+
+<P>
+Otherwise, if the observation is counting-noise limited, the spectrum
+of the fluctuations gives the shapes of the errors in the spectra of
+the faint detected sources.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="flspec.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

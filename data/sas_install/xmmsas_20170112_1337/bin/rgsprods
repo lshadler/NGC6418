@@ -1,0 +1,622 @@
+#! /usr/bin/perl -w
+#
+#
+# main for SAS perl tasks.
+#
+require 5;
+use strict;
+use Getopt::Long;
+Getopt::Long::Configure ("pass_through");
+use SAS::error;
+## At build time the following strings (enclosed in --, that is
+## -string-) are replaced:
+##  sasperl  -> This is taken from the PERL variable defined by configure
+##  taskname
+##  version
+##  release
+##  aka
+## Make sure they do not occur anywhere else in main.pl unless you
+## want them to be replaced.
+##  taskname also occurs at the end of main.pl
+##
+my $name = "rgsprods";
+SAS::error::client($name);
+my $VERSION = "1.10";
+my $RELEASE = "xmmsas_20170112_1337-16.0.0";
+my $AKA = "16.0.0";
+
+## 
+## Standard options: these follow taskmain.
+##
+## -a|--ccfpath <dir1>[:<dir2>...] --> SAS_CCFPATH
+## -f|--ccffiles <f1> [<f2>...] --> cannot be implemented
+## -c|--noclobber --> SAS_CLOBBER
+## -d|--dialog --> tool(sasdialog)
+## -h|--help --> tool(listparams)
+## -i|--ccf <cif> --> SAS_CCF
+## -m|--manpage --> sashelp
+## -o|--odf <sumfile> --> SAS_ODF
+## -V|--verbosity <level> -- SAS_VERBOSITY
+## -v|--version --> local implementation
+##
+## Getopt::Long provides support for short versions with single "-" except for -v.
+## Therefore all short versions were automatically included either with first letter
+## or via an alias as for -a, -i, -o and -V.
+##
+## -v deserves special care due to the existence of support for $version within the
+## Getopt module. Therefore -v is treated specially. 
+
+my ($ccfpath, $noclobber, $dialog, $help, $ccf, $manpage, $odf, $verbosity, $version);
+
+exit(1) unless
+    GetOptions("ccfpath|a=s"    => \$ccfpath,
+	       "noclobber"      => \$noclobber,
+	       "dialog"         => \$dialog,
+	       "help"           => \$help,
+	       "ccf|i=s"        => \$ccf,
+	       "manpage"        => \$manpage,
+	       "odf|o=s"        => \$odf,
+	       "verbosity|V=i"  => \$verbosity,
+	       "version"        => \$version,
+	      );
+
+my $arg;
+foreach $arg (@ARGV) {
+  $version=1 if ( $arg =~ "-v" );
+}
+
+$ENV{SAS_CCFPATH}   = $ccfpath if($ccfpath);
+$ENV{SAS_CLOBBER}   = 0 if($noclobber);
+$ENV{SAS_CCF}       = $ccf if($ccf);
+$ENV{SAS_ODF}       = $odf if($odf);
+$ENV{SAS_VERBOSITY} = $verbosity if($verbosity);
+
+use SAS::param;
+
+
+if($version){
+    print "$name-$VERSION [$RELEASE-$AKA]\n";
+    exit(0);
+}
+if($manpage){
+    system("sashelp --doc=$name");
+    my $x = $? >> 8; # perldoc -f system
+    exit($x);
+}
+if($help){
+    system("listparams $name");
+    my $x = $? >> 8;
+    exit($x);
+}
+if($dialog){
+    system("sasdialog $name");
+    my $x = $? >> 8;
+    exit($x);
+}
+
+&rgsprods();
+
+#!/usr/local/bin/perl
+#
+# NAME: rgsprods
+# VERSION: 1.5
+#
+# Developer: Ian Stewart		SSC-LUX
+#
+# TODO:
+#	- get rid of tells.
+################################################################################
+
+my ($testflag);
+
+sub rgsprods {
+
+  use SAS;
+
+  no strict 'refs';
+
+#  my $taskname = "rgsprods";
+
+  my $apm = $SAS::AppMsg;
+  my $vbs = $SAS::VerboseMsg;
+  my $nsy = $SAS::NoisyMsg;
+
+  my ($obs, $ins_list_name, $ins, $exp_list_name, $exp_id
+  , $prod_type_list_name, $evlist_name, $command, $srclist_filename
+  , $src_id_list, @process_list, $det_image_fits_name, $det_image_png_name
+  , $ban_image_fits_name, $ban_image_png_name, $src_list_name, @src_nums
+  , $src_index, $src_num_str, $src_num, $order_list_name, $spectra_list_str
+  , $spectrum_name, $spectrum_pdf_name);
+#  my ($evlist_name, $det_image_fits_name, $srclist_filename, $det_image_png_name
+#  , $ban_image_fits_name, $ban_image_png_name, $spectrum_pdf_name, $spectrum_name);
+#
+
+  # Prints all output to stderr:
+  select(STDERR);
+
+  #......................................................................
+  # Read and check parameters:
+
+#  my %params = &getParams;
+#
+#  my $testflag = &boolTranslate($params{astest});
+#  my $harsh = &boolTranslate($params{harsh});
+
+  my $filtered_intermediate = "intermediate_evlist.fits";
+  my $ban_image_gif_name = "intermediate_banimg.gif";
+  my $det_image_gif_name = "intermediate_detimg.gif";
+  my $spectrum_ps_name = "intermediate_spectrum.ps";
+
+  my $harsh    = booleanParameter('harsh');
+  $testflag = booleanParameter('astest');
+
+  my $order_list = '1 2';
+
+  #......................................................................
+  # Main processing:
+
+  if ($testflag) {
+    SAS::warning('testFlagIsSet', "Script testflag set. No output "
+      ."will be produced.\n\n");
+  }
+
+  my $dir = '.';
+  my %products_list = &makeHashTree($dir); # gets a tree of hashes that
+  # contains, in its outermost leaves, the names of all the pps files in $dir.
+
+  # Now go through all these files:
+  foreach $obs (keys(%products_list)) {
+
+    $ins_list_name = $products_list{"$obs"};
+    foreach $ins (keys(%{"$ins_list_name"})) {
+    next if ($ins ne 'R1' && $ins ne 'R2');
+
+#      $exp_list_name = ${${"$ins_list_name"}{"$ins"}};
+$exp_list_name = ${${"$ins_list_name"}{"$ins"}};
+      foreach $exp_id (keys(%{"$exp_list_name"})) {
+
+        $prod_type_list_name = ${${"$exp_list_name"}{"$exp_id"}};
+
+        if (exists(${"$prod_type_list_name"}{'EVENLI'})) { # make images:
+          $evlist_name = "P$obs$ins$exp_id"."EVENLI0000.FIT";
+
+SAS::error('noEvlist',"Can't find $evlist_name!") if (!-e "$evlist_name");
+
+          $command = "evselect "
+          ."expression='PI > 170' "
+          ."filteredset=$filtered_intermediate "
+          ."updateexposure=no "
+          ."table=$evlist_name".":EVENTS "
+          ."destruct=yes "
+          ."writedss=no "
+          ."withfilteredset=yes "
+          ."keepfilteroutput=yes "
+          ;
+
+          if (&run("$command")) {
+            if ($harsh) {
+SAS::error('evselectFailed',"Couldn't run evselect.");
+            } else {
+              SAS::warning('evselectFailed',"Couldn't run evselect.\n\n");
+            }
+          }
+
+          $srclist_filename = "P$obs$ins$exp_id"."SRCLI_0000.FIT";
+
+          # Get $src_id_list:
+          $src_id_list = ''; # default.
+          if (-e "$srclist_filename") {
+            $command = "fdump "
+            ."infile=$srclist_filename"."+1 "
+            ."outfile=STDOUT "
+            ."columns=PROCESS "
+            ."rows=- "
+            ."prhead=no "
+            ."showcol=no "
+            ."showunit=no "
+            ."page=no "
+            ;
+
+            if ($testflag) {
+#              &tell("$command");
+#SAS::message($SAS::VerboseMsg, "invoke $command\n\n");
+SAS::message($apm, $vbs, "invoke $command\n\n");
+            } else {
+              @process_list = `$command`;
+              foreach (@process_list) {
+                if (/^\s*(\d+)\s+T/) {
+                  $src_id_list .= "$1 ";
+                }
+              }
+              chop($src_id_list);
+            }
+          } # end if $srclist_filename exists.
+
+          $det_image_fits_name = "P$obs$ins$exp_id"."IMAGE_0000.FIT";
+
+          $command = "evselect "
+          ."attributestocopy='BETA_REF BETA_WID' "
+          ."xcolumn=BETA_CORR "
+          ."ycolumn=XDSP_CORR "
+          ."imageset=$det_image_fits_name "
+          ."updateexposure=yes "
+          ."table=$filtered_intermediate".":EVENTS "
+          ."withimageset=yes "
+          ."withxranges=yes "
+          ."writedss=yes "
+          ."withyranges=yes "
+          ."withimagedatatype=yes "
+          ."imagedatatype=Int32 "
+          ."ximagemin=0.03 "
+          ."ximagemax=0.08 "
+          ."yimagemin=-0.0007 "
+          ."yimagemax=0.0007 "
+          ;
+
+          if (&run("$command")) {
+            if ($harsh) {
+SAS::error('evselectFailed',"Couldn't run evselect.");
+            } else {
+              SAS::warning('evselectFailed',"Couldn't run evselect.\n\n");
+            }
+          }
+
+          if (!$testflag && !-e "$det_image_fits_name") {
+            if ($harsh) {
+SAS::error('noFitsDetImage',"Can't find $det_image_fits_name, so can't "
+."run rgsimplot.");
+            } else {
+              SAS::warning('noFitsDetImage',"Can't find $det_image_fits_name, "
+                ."so can't run rgsimplot.\n\n");
+            }
+
+          } else {
+            $command = "rgsimplot "
+            ."withspatialset=yes "
+            ."spatialset=$det_image_fits_name "
+            ."withendispset=no "
+            ."withendispregionsets=no "
+            ."device=/GIF "
+            ."colour=3 "
+            ."orderlist='$order_list' "
+            ."plotfile=$det_image_gif_name "
+            ;
+
+            if (-e "$srclist_filename") {
+              $command .= ""
+              ."withspatialregionsets=yes "
+              ."srclistset=$srclist_filename "
+              ."srcidlist='$src_id_list' "
+              ;
+
+            } else {
+              $command .= ""
+              ."withspatialregionsets=no "
+              ;
+            }
+
+            if (&run("$command")) {
+              if ($harsh) {
+SAS::error('rgsimplotFailed',"Couldn't run rgsimplot.");
+              } else {
+                SAS::warning('rgsimplotFailed',"Couldn't run rgsimplot.\n\n");
+              }
+            }
+
+            $det_image_png_name = "P$obs$ins$exp_id"."IMAGE_0000.PNG";
+
+            if (!$testflag && !-e "$det_image_gif_name") {
+              if ($harsh) {
+SAS::error('noGifDetImage',"Can't find $det_image_gif_name, so can't "
+."run giftopng.");
+              } else {
+                SAS::warning('noGifDetImage',"Can't find $det_image_gif_name, "
+                  ."so can't run giftopng.\n\n");
+              }
+
+            } else {
+              $command = "giftopnm $det_image_gif_name | "
+              ."pnmtopng > $det_image_png_name "
+              ;
+
+              if (&run("$command")) {
+                if ($harsh) {
+SAS::error('giftopngFailed',"Couldn't run giftopng.");
+                } else {
+                  SAS::warning('giftopngFailed',"Couldn't run giftopng.\n\n");
+                }
+              }
+
+              if (-e "$det_image_gif_name") {
+                $command = "rm $det_image_gif_name";
+                if (&run("$command")) {
+                  if ($harsh) {
+SAS::error('rmFailed',"Couldn't run rm.");
+                  } else {
+                    SAS::warning('rmFailed',"Couldn't run rm.\n\n");
+                  }
+                }
+              }
+            }
+          } # end if det fits image exists.
+
+          $ban_image_fits_name = "P$obs$ins$exp_id"."ORDIMG0000.FIT";
+
+          $command = "evselect "
+          ."attributestocopy='BETA_REF BETA_WID' "
+          ."xcolumn=BETA_CORR "
+          ."ycolumn=PI "
+          ."imageset=$ban_image_fits_name "
+          ."updateexposure=yes "
+          ."imagedatatype=Int32 "
+          ."table=$filtered_intermediate".":EVENTS "
+          ."withimageset=yes "
+          ."withxranges=yes "
+          ."writedss=yes "
+          ."withyranges=yes "
+          ."withimagedatatype=yes "
+          ."ximagemin=0.03 "
+          ."ximagemax=0.08 "
+          ."yimagemin=0 "
+          ."yimagemax=3500 "
+          ;
+
+          if (&run("$command")) {
+            if ($harsh) {
+SAS::error('evselectFailed',"Couldn't run evselect.");
+            } else {
+              SAS::warning('evselectFailed',"Couldn't run evselect.\n\n");
+            }
+          }
+
+          $command = "rm $filtered_intermediate";
+          if (&run("$command")) {
+            if ($harsh) {
+SAS::error('rmFailed',"Couldn't run rm.");
+            } else {
+              SAS::warning('rmFailed',"Couldn't run rm.\n\n");
+            }
+          }
+
+          if (!$testflag && !-e "$ban_image_fits_name") {
+            if ($harsh) {
+SAS::error('noFitsBananaImage',"Can't find $ban_image_fits_name, so can't "
+."run rgsimplot.");
+            } else {
+              SAS::warning('noFitsBananaImage',"Can't find "
+                ."$ban_image_fits_name, so can't run rgsimplot.\n\n");
+            }
+
+          } else {
+            $command = "rgsimplot "
+            ."withspatialset=no "
+            ."withendispset=yes "
+            ."endispset=$ban_image_fits_name "
+            ."withspatialregionsets=no "
+            ."device=/GIF "
+            ."colour=3 "
+            ."orderlist='$order_list' "
+            ."plotfile=$ban_image_gif_name "
+            ;
+
+            if (-e "$srclist_filename") {
+              $command .= ""
+              ."withendispregionsets=yes "
+              ."srclistset=$srclist_filename "
+              ."srcidlist='$src_id_list' "
+              ;
+
+            } else {
+              $command .= ""
+              ."withendispregionsets=no "
+              ;
+            }
+
+            if (&run("$command")) {
+              if ($harsh) {
+SAS::error('rgsimplotFailed',"Couldn't run rgsimplot.");
+              } else {
+                SAS::warning('rgsimplotFailed',"Couldn't run rgsimplot.\n\n");
+              }
+            }
+
+            $ban_image_png_name = "P$obs$ins$exp_id"."ORDIMG0000.PNG";
+
+            if (!$testflag && !-e "$ban_image_gif_name") {
+              if ($harsh) {
+SAS::error('noGifBananaImage',"Can't find $ban_image_gif_name, so can't "
+."run giftopng.");
+              } else {
+                SAS::warning('noGifBananaImage',"Can't find "
+                  ."$ban_image_gif_name, so can't run giftopng.\n\n");
+              }
+
+            } else {
+              $command = "giftopnm $ban_image_gif_name | "
+              ."pnmtopng > $ban_image_png_name "
+              ;
+
+              if (&run("$command")) {
+                if ($harsh) {
+SAS::error('giftopngFailed',"Couldn't run giftopng.");
+                } else {
+                  SAS::warning('giftopngFailed',"Couldn't run giftopng.\n\n");
+                }
+              }
+
+              if (-e "$ban_image_gif_name") {
+                $command = "rm $ban_image_gif_name";
+
+                if (&run("$command")) {
+                  if ($harsh) {
+SAS::error('rmFailed',"Couldn't run rm.");
+                  } else {
+                    SAS::warning('rmFailed',"Couldn't run rm.\n\n");
+                  }
+                }
+              }
+            }
+          } # end if banana fits image exists.
+        } # end if event list exists.
+
+      next if (!exists(${"$prod_type_list_name"}{'SRSPEC'}));
+
+        # else make specplots:
+
+        $src_list_name = ${${"$prod_type_list_name"}{'SRSPEC'}};
+        @src_nums = keys(%{"$src_list_name"});
+
+        if ($#src_nums > 0 && !-e "$srclist_filename") {
+SAS::error('bug',"Please contact the code developer.");
+        }
+
+        foreach $src_index (0 .. $#src_nums) {
+          $src_num_str = $src_nums[$src_index];
+
+          $src_num = $src_num_str;
+          $src_num =~ s/0+//;
+
+          $order_list_name = ${${"$src_list_name"}{"$src_num_str"}};
+
+          $spectra_list_str = "";
+          foreach (keys(%{"$order_list_name"})) {
+            $spectrum_name = ${${"$order_list_name"}{"$_"}};
+            $spectra_list_str .= "$spectrum_name ";
+          }
+          chop($spectra_list_str);
+
+          $command = "rgsspecplot "
+          ."device=/VPS "
+          ."sourcelistset=$srclist_filename "
+          ."spectrumsets='$spectra_list_str' "
+          ."sourceid=$src_num "
+          ."plotfile=$spectrum_ps_name "
+          ;
+
+          if (&run("$command")) {
+            if ($harsh) {
+SAS::error('rgsspecplotFailed',"Couldn't run rgsspecplot.");
+            } else {
+              SAS::warning('rgsspecplotFailed',"Couldn't run rgsspecplot.\n\n");
+            }
+          }
+
+          $spectrum_pdf_name = "P$obs$ins$exp_id"."SRSPEC0"."$src_num_str.PDF";
+
+          $command = "ps2pdf "
+          ."$spectrum_ps_name "
+          ."$spectrum_pdf_name "
+          ;
+
+          if (&run("$command")) {
+            if ($harsh) {
+SAS::error('pstopdfFailed',"Couldn't run pstopdf.");
+            } else {
+              SAS::warning('pstopdfFailed',"Couldn't run pstopdf.\n\n");
+            }
+          }
+
+          $command = "rm $spectrum_ps_name";
+          if (&run("$command")) {
+            if ($harsh) {
+SAS::error('rmFailed',"Couldn't run rm.");
+            } else {
+              SAS::warning('rmFailed',"Couldn't run rm.\n\n");
+            }
+          }
+        } # next src
+      } # next $exp_id
+    } # next $ins
+  } # next $obs
+
+  unlink("$filtered_intermediate") if (-e "$filtered_intermediate");
+  unlink("$ban_image_gif_name") if (-e "$ban_image_gif_name");
+  unlink("$det_image_gif_name") if (-e "$det_image_gif_name");
+  unlink("$spectrum_ps_name") if (-e "$spectrum_ps_name");
+
+exit 0;
+}
+
+  #---------------------------------------------------------------------
+  sub run {
+  #---------------------------------------------------------------------
+  # $testflag should be defined globally.
+
+    use SAS;
+
+    my ($command) = @_;
+    my $status = 0;
+
+#    print "\ninvoke $command\n\n";
+#    SAS::message($SAS::VerboseMsg, "invoke $command\n\n");
+SAS::message($SAS::AppMsg, $SAS::VerboseMsg, "invoke $command\n\n");
+    if (!$testflag) {
+      $status = system($command);
+    }
+
+  return $status;
+  }
+
+  #---------------------------------------------------------------------
+  sub makeHashTree {
+  #---------------------------------------------------------------------
+  # Construct a hash tree of observation, instrument, exposure, in
+  # which each hash value is a name of the next hash down. The easiest
+  # way to compose unambiguous hash names is to use the obs, ins etc strings
+  # themselves.
+
+    no strict 'refs';
+
+    my (%products_list, $filename, $obsn, $inst, $etyp, $expn, $ptyp, $ordr, $sorc);
+    my ($prodsdir) = @_;
+
+    my @filenames = `ls -1 $prodsdir`;
+
+    my $total_matching_files = 0;
+    foreach $filename (@filenames) {
+      chomp($filename);
+      if ($filename =~ /^P(\d{10})(\w\w)(S|U)(\d{3})(\w{6})(\d)(\d{3})\.FIT/i) {
+
+        ++$total_matching_files;
+
+        $obsn = $1;
+        $inst = $2;
+        $etyp = $3;
+        $expn = $4;
+        $ptyp = $5;
+        $ordr = $6;
+        $sorc = $7;
+
+        chomp($filename);
+
+        # Observation list:
+        $products_list{$obsn} = "$obsn";
+
+        # Instrument list for each observation:
+        ${${"$obsn"}{$inst}} = "$obsn$inst";
+
+        # Exposure list for each instrument:
+        ${${"$obsn$inst"}{"$etyp$expn"}} = "$obsn$inst$etyp$expn";
+
+        # Product list for each exposure:
+        ${${"$obsn$inst$etyp$expn"}{"$ptyp"}} = "$obsn$inst$etyp$expn$ptyp";
+
+        # Source list for each product type:
+        ${${"$obsn$inst$etyp$expn$ptyp"}{"$sorc"}}
+          = "$obsn$inst$etyp$expn$ptyp$sorc";
+
+        # Order/band list for each source (No more hash levels below this,
+        # so it is convenient to store the filename in the hash value instead):
+        ${${"$obsn$inst$etyp$expn$ptyp$sorc"}{"$ordr"}} = "$filename";
+      }
+    }
+
+    if ($total_matching_files == 0) {
+#&quit("No matching files in $prodsdir.", 0);
+SAS::error('noMatchingFiles',"There are no matching files in $prodsdir");
+    }
+
+  return %products_list;
+
+  }
+

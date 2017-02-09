@@ -1,0 +1,417 @@
+#! /usr/bin/perl -w
+#
+# epsplitproc
+#
+#
+use SAS;
+#use DAL::utils;
+use warnings;
+use Getopt::Long;
+use strict;
+#use File::Basename;
+
+use strict;
+
+use vars qw( 
+	     $pnFile
+	     $slices
+	     @products
+	     @merged
+	     );
+
+#.. get analysis path
+chomp(my $analysis_path = `pwd`) ;
+$analysis_path = $analysis_path."/";
+
+#.. Init Program Parameters
+    &parameters_init(@ARGV);	
+
+#.. Setup Directories and file varaibles
+my $odf =$ENV{'SAS_ODF'}; 
+
+my $odfFile;
+my $sumsasPath;
+if (-f $odf) {
+	$sumsasPath = &dirname($odf,$analysis_path);
+	$odfFile = &basename($odf);
+}
+else {
+	$sumsasPath = $analysis_path.$odf;
+	$odfFile = &getSUMSAS($odf);
+}
+
+print "ODF File Name: $odfFile\n";
+print "SUM_SAS Directory: $sumsasPath\n";
+my $file = $sumsasPath.$odfFile;
+
+chomp (my $odfDir = `grep PATH $file | awk '{print \$2}'`);
+print "ODF Directory: $odfDir\n";
+
+#my $event_file = $odfDir."/".$pnFile;
+my $event_file;
+
+if (!-e $pnFile) {
+	print "File $pnFile not found.\n";
+	exit;	
+}
+else {
+	$event_file = $pnFile;
+}
+
+#.. Run epsplitter
+print "Running epsplitter ... \n";
+	
+my $epsplitter_flag=&run_epsplitter($event_file,$slices);
+if (!$epsplitter_flag) {exit;}
+
+
+#.. Backup the original file
+my $backup_file = &basenamenoext($pnFile)."_BACKUP.FIT";
+$backup_file = $odfDir.$backup_file;
+if (!-e $backup_file) {          #.. Work with a copy of the event file
+		system("mv","-f","$event_file","$backup_file");
+}
+
+my $epprocOutputFile;
+
+for (my $slice=1;$slice<=$slices;$slice++) {
+	
+	my $part = $analysis_path.&basenamenoext($pnFile)."_part".$slice.".FIT";
+
+	#.. Create links in the odf directory
+	system("ln","-s","-f","$part","$event_file");
+		
+	#.. Run epproc
+	print "Running epproc ... \n";
+	my $epproc_flag=&run_epproc($event_file);
+#	if (!$epproc_flag) {exit;}
+	
+	#.. Remove the link 
+	system("rm","-f","$event_file");
+	
+	
+	#.. Rename epproc output file
+	print "Renaming epproc output file...\n";
+	
+	my $rev = substr $event_file, length($event_file)-31,4;
+	my $obsid = substr $event_file, length($event_file)-26,10;
+	my $exp = substr $event_file, length($event_file)-13,4;
+	my $prefix = $rev."_".$obsid."_EPN_".$exp;
+	
+	#.. Check Imaging event file
+	my $imagingFile = $prefix."_ImagingEvts.ds";
+
+	if (-e $imagingFile) {
+		my $tmpImagingFile = $prefix."_ImagingEvts_part".$slice.".ds";
+		system("mv","-f","$imagingFile","$tmpImagingFile");
+		push(@products, $tmpImagingFile);
+		$epprocOutputFile = $imagingFile;
+	}
+	#.. Check Timing event file
+	my $timingFile = $prefix."_TimingEvts.ds";
+
+	if (-e $timingFile) {
+		my $tmpTimingFile = $prefix."_TimingEvts_part".$slice.".ds";
+		system("mv","-f","$timingFile","$tmpTimingFile");
+		push(@products, $tmpTimingFile);
+		$epprocOutputFile = $timingFile;
+	}
+	
+}
+
+#.. Restore original file
+system("mv","-f","$backup_file","$event_file");
+
+#.. Merge files
+
+my $output;
+my $set1;
+my $set2;
+for (my $merge=0;$merge<$#products;$merge++) {
+	#.. Run merge
+	print "Running merge ... \n";
+
+	$output = "merge_".$merge.".ds";
+	if ($merge == 0) {
+		$set1 = $products[$merge];
+		$set2 = $products[$merge+1];
+	}
+	else {
+		$set2 = $products[$merge+1];
+	}
+	my $merge_flag=&run_merge($set1,$set2,$output);
+	if (!$merge_flag) {exit;}
+	$set1 = $output;
+	push(@merged, $output);
+}
+
+#.. Rename the final ouptut file
+system("mv","-f","$output","$epprocOutputFile");
+
+#.. REmoved merge temporary files
+foreach (@merged) {
+	$file = $_;
+	if (-e $file) {
+		system("rm","-f","$file");
+	}
+}
+
+exit;
+
+#############################################################################
+sub run_merge{
+    
+    my $set1       = $_[0];
+    if ($set1 eq "") {return(0);}
+    my $set2        = $_[1];
+    if ($set2 eq "") {return(0);}
+    my $output        = $_[2];
+    if ($output eq "") {return(0);}
+
+
+    my @args = ("merge" 
+	     ,"set1=$set1"
+	     ,"set2=$set2"
+	     ,"outset=$output");
+
+    system(@args)== 0 or return(0);
+
+    return(1);
+}
+
+#############################################################################
+sub run_epproc{
+    
+    my $file       = $_[0];
+    if ($file eq "") {return(0);}
+
+#.. Extract the CCD number from the event file name.
+	my $ccd = substr $file, length($file)-9,2;
+	my $expid = substr $file, length($file)-15,6;
+	my $tmp = $ccd;
+	if ($tmp < 10) {my $number = substr $ccd, 1,1;$ccd = "ccd".$number;}
+	if ($tmp >= 10) {$ccd = "ccd".$ccd;}
+	print "CCD selected... $ccd\n";
+
+   my @args = ("epproc" 
+	     ,"selectccds=yes"
+	     ,"$ccd=yes"
+	     ,"withinstexpids=yes"
+	     ,"instexpids=$expid");
+
+    system(@args)== 0 or return(0);
+
+    return(1);
+}
+
+
+#############################################################################
+sub run_epsplitter{
+    
+    my $file       = $_[0];
+    if ($file eq "") {return(0);}
+    my $slices         = $_[1];
+    if ($slices eq "") {return(0);}
+
+    my @args = ("epsplitter" 
+	     ,"pnfile=$event_file"
+	     ,"slices=$slices");
+
+    system(@args)== 0 or return(0);
+
+    return(1);
+}
+
+
+##############################################################################
+sub parameters_init(){
+
+#.. Read Script Options
+
+    my $name="epsplitproc";
+    my $line="@ARGV"; 
+    my @save;
+ 	
+ 	if ( @save = grep /^\-p/ , @ARGV) {
+       &usage($name);
+    };
+
+    if ( @save = grep /^-d/ , @ARGV) {
+	     system("sasdialog $name");
+		 my $x = $? >> 8;
+    	 exit($x);      
+    }
+
+    if ( @save = grep /^-v/ , @ARGV) {
+		&getVersion($name);
+    }
+#.. Default parameters (Start)
+	if ( @save = grep /^pnfile=/ , @ARGV) {
+      $pnFile="$save[-1]";
+      $pnFile =~ s/^.*=//; 
+      $pnFile =~ s/\+/\_/;         		
+    } else { error_code(101); }    
+   	
+   	if ( @save = grep /^slices=/ , @ARGV) {
+      $slices="$save[-1]";
+      $slices =~ s/^.*=//; 
+      $slices =~ s/\+/\_/;         		
+    } else { $slices = 2; }
+    
+    return (0);   
+}
+
+##############################################################################
+sub usage(){
+#..Print Help message
+	my $sasTaskName = $_[0];
+    system("listparams $sasTaskName");
+    my $x = $? >> 8;
+       
+    &do_exit(0);
+
+}
+##############################################################################
+
+## @method void getVersion()
+# Get the version number
+# @return Void
+
+##############################################################################  
+sub getVersion()
+{
+
+  my $sasTaskName = $_[0];
+  	
+  my $ccom="";  
+  chomp(my $sasdir = `which $sasTaskName`) ;
+ 
+  my $ii = index($sasdir,"/bin/".$sasTaskName);
+  print "index $ii\n";
+  if ($ii == -1) { print "Sorry, directory structure of $sasTaskName in $sasdir " .
+                   "could not be recognised.\n" ; }
+  else {
+    $sasdir = substr($sasdir,0,$ii) ;
+# Optimize to avoid searching whole directory if standard structure
+    $ccom = "packages/$sasTaskName/VERSION" ;
+    if ( ! -e $sasdir."/".$ccom ) {
+    	 print "sasdir $sasdir\n";
+      $ccom = `cd $sasdir; find . -name VERSION | grep epsplitproc` }
+    if ( length($ccom) == 0 ) {
+      print "Sorry, $sasTaskName 's version number was not found in $sasdir.\n" .
+            "Please look in the package documentation.\n" ;
+    } else {
+      chomp(my $version = `cd $sasdir; cat $ccom`) ;
+      $ccom = $sasdir . "/RELEASE" ;
+      my $release = "" ;
+      if ( -e $ccom ) { chomp($release = `cat $ccom`) }
+      print "$sasTaskName $version [$release] \n" ;
+    }
+  }
+  &do_exit(0);
+	
+}
+##############################################################################
+
+## @method void do_exit($exit_code)
+# Exit analysis program
+# @param exit_code Exit code to be output on exit
+# @return Void
+
+##############################################################################
+sub do_exit(){        	
+
+#.. Define exit code
+
+    my $exit_code = $_[0];
+
+    exit $exit_code;
+    return(0);
+}
+sub basenamenoext($) {
+ my $file = shift;
+ $file =~ s!^(?:.*/)?(.+?)(?:\.[^.]*)?$!$1!;
+ return $file;
+
+}
+
+sub basename($) {
+ my $file = shift;
+ $file =~ s!^(?:.*/)?(.+?)(?:\.[^.])?$!$1!;
+
+ if (length($file) == 0) {
+	 my @SAS_list = glob('*SUM.SAS');
+ 	if ($#SAS_list == 0) {                    
+        my $odfingestfile = $SAS_list[0];
+        print "OK\n";
+        return (1,$odfingestfile);
+ 	}
+ }     
+ 
+ return $file;
+}
+
+sub dirname() {
+	my $file = $_[0];
+	my $extra_path = $_[1]; 
+	$file =~ s!/?[^/]*/*$!!; 
+	if (length($file) == 0) {
+		$file = ".";
+	}
+	
+	my $char = substr $file, 0,1;
+	
+	if ($char ne "/")
+	{
+#		my @Dir = split(/\//, $file);
+#		$file = $Dir[$#Dir];
+		my $newFile = $extra_path.$file;
+		$file = $newFile;
+	}
+	
+	return $file."/"; 
+}
+
+sub getSUMSAS()
+{
+	my $dir = $_[0];
+    print "   #> Checking existance of SUM.SAS file ... ";
+    chdir ($dir);
+    my @SAS_list         = glob('*SUM.SAS');
+    if ($#SAS_list == 0) {
+        my $odfingestfile = $SAS_list[0];
+        print "OK\n";
+        return (1,$odfingestfile);
+    }
+    print "DOES NOT EXIST ... Running ... \n";
+    return (0,"No File");	
+}
+
+##############################################################################
+sub error_code(){
+#.. Define the actions to take according to Error Code
+
+    my $error_signal = $_[0];
+
+    my %error_code= (
+		     '0' => "   \#> Success",
+		     '100' => "   \#> Error: param not found",
+		     '101' => "   \#> Error: No pn event file introduced",
+		     );     
+
+   if (defined $error_code{$error_signal}) {
+	my $msg = $error_code{$error_signal};
+	print "$msg\n";
+	
+	if ($error_signal != 0) {&do_exit($error_signal);}
+    } else {
+	my $msg = "   \#> Error option not recognized.\n";
+	print "$msg\n";
+
+	&error_code(255);
+    } 
+
+    return(0);
+}
+
+1;

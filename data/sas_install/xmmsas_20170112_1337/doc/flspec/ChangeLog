@@ -1,0 +1,461 @@
+ChangeLog for flspec
+===================
+
+Version 3.4.1 - 2011-02-14 (RDS)
+--------------
+	+ (src/flspec.pl):
+		- support for mask arrays contained in the MASK extn.
+		  (SCR-314)
+
+Version 3.4 - 2009-04-01 (MC)
+--------------
+	+ test: solved error in test script regarding location of test data
+Version 3.3 - 2009-03-31 (MC)
+--------------
+	+ test: moved test data to testprods package
+Version 3.2 - 2009-02-05 (MC)
+--------------
+        +(DEPEND): updated ssclib version to 4.0
+Version 3.1 - 2005-05-26 (MC)
+--------------
+	+(src/flspec.pl): closes SSC-SPR-3460:"flspec crashes when the 
+	                  source list is empty".
+		- It now does not run 'region' when the source list is empty.
+                  Calculations are the same but no sources are removed from the
+	          images before the extraction of fluctuations spectra.
+	
+Version 3.0 - 2004-10-21 (MC)
+--------------
+	+(config/flspec.par): 
+		- replace parameter 'spectrumset' by parameter 'spectrumsets' 
+		  (list of output spectral sets) 
+		- added new parameter noffaxis (number of equal-area offaxis 
+		  regions)
+	+(src/flspec.pl):
+		- replace output multiple spectral file by list of spectral 
+		  sets (one for each offaxis value)
+	        - remove hard-coded number of offaxis values
+		- remove call to 'specadd' task
+	+(doc/flspec_description): updated to account for changes
+	+(test/testval.f90): adapted to the changes in output products
+	
+Version 2.43 - 2004-05-21 (MC)
+--------------
+	+ (src/flspec.pl): add lost attributes to fluctuations spectra: use 
+	  cphead to propagate attributes from positive and negative spectra 
+	  extracted with evselect. Closes SSC-SPR:3325
+	+ (test): remove temp files from test directory
+	+ (doc/flspec_description.tex): updated
+
+Version 2.42 - 2004-05-14 (MC)
+--------------
+	+ (src/flspec.pl): use standard binsize and spectral ranges in 
+	                   spectral extraction instead of TLMIN/TLMAX values 
+			   from input event list.
+			   Closes SSC-SPR:3322
+	
+Version 2.41 - 2004-05-13 (MC)
+--------------
+	+ (src/flspec.pl):replace "int" function by 'sprintf("%.0f")'
+	  Closes SSC-SPR:3320
+	
+Version 2.40 - 2004-05-07 (MC)
+--------------
+	+ (src/createpseudoevt_mod.f90):remove "print" lines used for debugging
+
+Version 2.39 - 2004-05-03 (MC)
+--------------
+	+ (src/createpseudoevt_mod.f90): remove unused ra,dec in deg
+		(it now uses correct units)
+
+Version 2.38 - 2004-04-30 (MC)
+--------------
+	+ (src/createpseudoevt_mod.f90): 
+	        + parts of code replaced by calls to ssclib subroutines
+	        + brought in line with ssclib-3.9
+	+ (src/flspec.pl):
+		+ removed search of some attributes/columns which are 
+	          unnecessary after createpseudoevt_mod.f90 modifications
+		+ x/yimagebinsize parameters in evselect calls now 
+		  calculated: removed hard-wired values
+        + (src/flmask_mod.f90): 
+		+ part of code replaced by calls to ssclib subroutines
+		+ removed obsoletes functions/subroutines (not used now)
+
+	+ DEPEND: now ssclib-3.9
+	
+Version 2.37 - 2004-03-18 (MC)
+--------------
+        + Changes in version 2.36.3 propagated to 2.37
+
+Version 2.36.3 - 2004-03-15 (MC)
+--------------
+        +(flspec_description): updated documentation
+	
+Version 2.36.2 - 2003-12-31 (EO)
+--------------
+	+ Added oal to USEDLIBS for static building since libssc depends on oal.
+
+Version 2.36.1 - 2003-12-19 (IMS SSC/LUX)
+----------------------------
+	+Fixed a couple of bugs introduced by 2.36 changes: (i) no 'my' declaration for $temp4; (ii) the test script did not have run permission; (iii) call to region was incorrect.
+	-Commented out the calls to fstruct with a totalhdu parameter.
+
+Version 2.36 - 2003-11-18 (IMS SSC/LUX)
+----------------------------
+	+DEPENDs now on ssclib-3.0 and region-7.0
+	+Updated interface to ssclib calls in createpseudoevt_mod.f90.
+	+Adapted the region call in flspec.pl to changes in the region interface.
+	+Global bkg region file rather than reversed all-src region file now used (comes to the same thing AFAICS)
+	+Introduced new parameter --tmpsrclistset to flspec since region now makes use of a temp file.
+
+Version 2.35 - 2003-02-17 (MC)
+----------------------------
+	+(src/Makefile): remove USEDLIBS = perlutils
+			 remove EXTERNALS = perl
+	+(src/flspec.pl): replace perl-mediated use of DAl by FTOOLs tasks
+	+(doc/flspec_description.tex): update documentation
+	
+Version 2.34 - 2002-06-12 (MC)
+----------------------------
+	+(config/createpseudoevt.par): fixed tag mismatch
+	
+Version 2.33 - 2002-05-10 (MC)
+----------------------------
+	+DEPEND: param-2.0
+	+config/*.par: brought in line with param-2.0
+	+src/Makefile: exchaged cal/dal order in USEDLIBS
+	
+Version 2.32.7 - 2002-03-18  (MC)
+----------------------------
+	+(doc/flspec_description.tex): updated documentation
+	
+Version 2.32.6 - 2002-03-12  (MC)
+----------------------------
+	+(src/flspec.pl): removed event selection for spectral extraction
+	
+Version 2.32.5 - 2002-03-08  (MC)
+----------------------------
+	+(src/createpseudoevt_mod.f90): brought in line with ssclib-2.3.9
+	
+Version 2.32.4 - 2002-03-04  (MC)
+----------------------------
+	Closes SSC-SPR 2796: output spectra should be binned
+	+(src/flspec.pl) : removed unnecessary fparkey call
+			 : new binning and improved selection criteria 
+			   for output spectra
+	+(doc/flspec_description.tex): documentation updated 
+Version 2.32.3 - 2002-03-01  (MC)
+----------------------------
+	Closes SSC-SPR 2793: ROWID column with incorrect values.
+	+(src/flspec.pl): sets appropriate values for ROWID column
+	+(doc/flspec_description.tex): updated documentation
+Version 2.32.2 - 2002-02-18  (MC)
+----------------------------
+	Closes SSC-SPR 2763: Should set CAL state
+	+(src/createpseudoevt_mod.f90): sets CAL state
+Version 2.32.1 - 2002-02-18  (MC)
+----------------------------
+        Closes SSC-SPR 2759 :Incorrect area units for fluctuations spectra
+	+(src/flspec.pl)  new spectral area units: 0.05 arcsecs pixels
+	+(doc/flspec_description) updated to account for new units
+	
+Version 2.32 - 2002-02-14  (MC)
+----------------------------
+	Brought in line with flspec2.29.3 and:
+	+(DEPEND): added emask, ssclib and cal
+	+(src/flspec.pl): removed use of backscale to calculate area.
+			  Brought in line with region6.2.1 and ssclib 2.3.1
+			  Exposure map borders eliminated using 'emask'
+	+(src/createpseudoevt_mod.f90): new routine to create a pseudo evt
+		list from input image and to use it to create mask files to
+		filter de input event list.
+	+(doc/flspec_description): updated to show task changes.
+	
+Version 2.29.3 - 2002-02-01  (MC)
+----------------------------
+	Closed SSC SPR 2728: fails test harness at mathpha
+	+(src/flspec.pl): numerical value in mathpha expression formated
+ 	                  in %.3f 
+
+Version 2.29.2 - 2002-01-30  (MC)
+----------------------------
+	Closed SSC SPR 2724: fails test harness
+	+(src/flspec.pl): corrected error introduced while solving SPR 2716
+	
+Version 2.29.1 - 2002-01-29  (MC)
+----------------------------
+        Same as 2.30 for the release track.
+
+Version 2.30 - 2002-01-29  (MC)
+----------------------------
+        Closed SPR SSC 2716: fails test at mathpha call
+
+	+(src/flspec.pl) formated numerical factor in 'mathpha' expression 
+	                 so that it only has 5 decimal places. Closes SPR.
+	
+Version 2.29 - 2002-01-18  (MC)
+----------------------------
+	Brought in line with region 6.2
+
+	+ (DISTRIBUTION) moved to world
+	+(src/flspec.pl) new parameter in 'region' call: outunit=xy
+	+(test/flspec_test) now it uses 'emldetect' output source list. 
+	                    (region does not read EPIC combined src list)
+Version 2.28 - 2002-01-18  (MC)
+----------------------------
+	Open SPRs: none
+	+ (DEPEND)  Updated dependencies (region 6.0)
+	+ (src/flspec.pl) In call to region, moved 'eventfile' to 'eventset'
+	                  according to new 'region' parameter interface.
+Version 2.27 - 2002-01-14  (MC)
+----------------------------
+	Open SPRs: none
+	+ (DISTRIBUTION)  Distribution moved from world to ssc until tasks
+	                  required by flspec close SPRs.
+Version 2.26 - 2002-01-04  (MC)
+----------------------------
+	Open SPRs: none
+	+ (DEPEND)  Updated dependencies (daltools 1.0, sasperl 1.0)
+Version 2.25 - 2001-12-13  (MC)
+----------------------------
+	Open SPRs: none
+	+ (DEPEND)  Updated dependencies (backscale 1.0)
+	
+Version 2.24 - 2001-11-6  (MC)
+----------------------------
+	Open SPRs: none
+	+ (src/flspec.pl) Corrected use of Solid Angle values
+	                  Improved some warning messages
+	+ (doc/flspec_description.tex) updated
+	
+Version 2.23 - 2001-11-2  (MC)
+----------------------------
+	Open SPRs: none	
+	+ (DEPEND)        Include backscale and specadd
+	+ (config/flspec.par) included default values
+	+ (src/flspec.pl) BACKSCAL calculated through backscale
+			  Included more explanatory SAS messages.
+			  Source regions now calculated with option 
+			  radiusmode=enfrac in task region
+			  Spectra stored in output file with specadd
+	+ (src/fladdspec_mod.f90) removed. It now uses specadd task
+	+ (doc/flspec_description.tex) updated
+	+ (test/)         new test files (real obervations)
+	+ (test/testval.f90) new test harness adapted to changes in perl script
+
+Version 2.22 - 2000-10-12 (GV/SOC)
+------------
+	+ (DEPEND) updated.
+	
+Version 2.20 (2000-08-17) (MC)
+---------------------------
+       Open SPRs: none
+       + (src/flspec.pl) Now it reads BACKSCAL keyword from the spectral files generated by evselect (although waiting for more modifications in evselect)
+       + (config/flspec.info) Removed "interactive" from GROUPS line
+       + (doc/flspec_description.doc) Updated macros
+
+Version 2.19.3 (2000-06-15) (MC)
+---------------------------
+       + (doc/flspec_description.tex) Fixed (SSC-SPR-1826), and updated
+       + (config/flspec.par) Changed default for parameter tmpnegmaskset
+ 	          to match documentation value.
+
+Version 2.19.2 (2000-06-14) (MC)
+---------------------------
+       + (config/flspec.lyt) Fixed (SSC-SPR-1783)
+	
+Version 2.19.1 (2000-06-01)
+---------------------------
+- Fixed SPR 1699: now flspec gets an updated EXPOSURE keyword for the output spectrum. It required selectlib work properly with expressions such as: "(X,Y) in mask(...)" (solved in selectlib 4.34) 
+	
+Version 2.19 (2000-05-29)
+---------------------------
+- Modified call to evselect to avoid error given by inconsistent parameter values (since evselect 3.23)
+	
+Version 2.18 (2000-05-26)
+---------------------------
+- Selected option in evselect so that it does not update the exposure of the spectra (data subspace not written) due to a problem with data subspace anf the mask filters.
+
+- CREATOR keyword now removed through an ftool task due to a problem with "dspurify".
+
+	
+Version 2.17 (2000-05-24)
+---------------------------
+- Code modified to adapt it to new version in evselect (3.22) and
+dal (1.121):
+	- If input event file is an XMM file and it has the correct structure,
+the output spectral files have the exposure keywords updated.
+	- CREATOR and DATE present only in file header.
+
+Version 2.16.1 (2000-05-11)
+---------------------------
+-Changed incorrect word GROUP in info files
+        
+Version 2.16 (2000-05-09)
+---------------------------
+-Closed SPR-1636: problem with evselect expression
+-Removed Spectral area calculation: note included in Developer's notes
+
+Version 2.15 (2000-04-07)
+---------------------------
+- Closed SPR-1633: flspec verbosity level
+- Closed SPR-1634: errstr declaration problem
+- Closed SPR-1635: CDELT1 keyword detection problem
+	
+Version 2.14 (2000-04-04)
+---------------------------
+- Improved task errors description. Solved documentation 
+build problem
+- Added info file to config directory and Make file
+	
+Version 2.13 (2000-03-09)
+---------------------------
+- Removed some superfluous tests and Error messages 
+(now made through the DAL)
+- Removed optional parameters assignment in code
+(now just done in parameters file)
+	
+Version 2.12.1 - 2000-03-09 (GV/SOC)
+---------------------------
+-(flmask_mod.f90) fix 'pure virtual method' erros that were
+ caused by the fact that datasets were released before their
+ children (tables/arrays).
+  
+Version 2.12 (2000-02-25)
+-------------------------
+- Minor modifications in code  to adapt it to evselect 3.16
+
+
+Version 2.11 (2000-01-27)
+-------------------------
+- Modified version number in documentation to adapt it to new task
+ version number convention
+- Added GUI layout file (flspec.lyt)
+- Minor modifications in code
+
+Version 2.10.1 (Marco Beijersbergen, 1999-12-15)
+--------------
+- fixed obsolete DAL calls.
+
+Version 2.10 (1999-11-26)
+-------------------------
+-Included word "world" in  DISTRIBUTION file
+
+Version 2.9 (1999-10-06)
+------------------------
+- Open SPR: SSC-SPR-1255: flspec fails on Linux (at ESTEC)
+- Removed "interpr" from USEDLIBS and DEPEND which made the task crash on DEC
+- Solid Angle of spectra correctly calculated. New FTOOL (fimgstat) and SAS task (arithmetic) used.
+- New version of documentation to account for these changes : 2.2
+
+Version 2.8  (1999-09-06)
+------------------------
+- Fixed a syntax error for \warn in the documentation: SPR 1232
+	
+Version 2.7  (1999-08-31)
+------------------------	
+- Fixed a bug that made it crash in the Linux build:
+EXTERNALS= ftools
+- Closed SSC-SPR-0854: FITS output
+
+Version 2.6  (1999-08-6)
+---------------------------
+- Modified to take into account changes in Region 4.0
+
+Version 2.5  (1999-08-4)
+---------------------------
+- Modified to take into account changes in evselect 3.0
+
+Version 2.4  (1999-07-8)
+---------------------------
+- Modified to take into account changes in Region_3.4
+	
+Version 2.3  (1999-06-3)
+--------------------------
+- Identical to V2.2 (delivery problem in uploadsas)
+	
+Version 2.2  (1999-06-2)
+---------------------------
+- Adapted to new parameters in evselect 2.0
+- Include SAS:error for Perl
+- Closed SSC-SPR-0850: incorrect error message
+- Closed SSC-SPR-0849: incorrect error message
+- Closed SSC-SPR-0848: incorrect error message
+- Closed SSC-SPR-0847: incorrect error message	
+
+	
+Version 2.1  (1999-05-12)
+---------------------------
+- Adapted to new parameters in region_3.0
+
+Version 2.0  (1999-04-26)
+---------------------------	
+- New parameter names
+- Adapted to new Perl functionality
+- Error Routines removed: waiting for SAS:error for Perl
+	
+Version 1.7  (1998-12-14)
+----------------------------
+- Closed SSC-SPR-0902:
+        region added to DEPEND file 
+- Closed SSC-SPR-0863:
+	version number
+- Closed XSSSC-SPR-0862:
+	Output file format
+- Closed SSC-SPR-0857:
+	verbosity
+- Closed SSC-SPR-0856:
+	output file ICD compliance
+- Closed SSC-SPR-0854:
+	FITS output
+- Closed SSC-SPR-0852:
+	parameter...not identified
+- Closed SSC-SPR-0563:
+	report version number
+	
+Version 1.6  (1998-12-9)
+----------------------------
+- interpr, sasperl and sasperllib added to DEPEND file
+
+Version 1.5  (1998-12-2)
+----------------------------
+- Adapted to PEDAL version 1.10
+	
+Version 1.4  (1998-11-16)
+----------------------------
+- Closed SSC-SPR-0823: spurious file
+	
+Version 1.3  (1998-11-10)
+----------------------------
+- Closed SSC-SPR 0814: adapted to pedal 1.2
+	
+Version 1.2  (1998-11-03)
+----------------------------
+- Closed SSC-SPR 0549 : test file too large
+- Closed SSC-SPR 0575 : Obsolete message call
+- Adapted to evselect v 1.11 : masks use
+- Adapted to region 2.1: ASC Fits format files
+- Errors now reported through DHS
+- Use of PEDAL to access FITS file attributes in Perl script.
+	
+	
+Version 1.1  (1998-09-25)
+----------------------------
+- Corrected wrong entry in DEPEND file 
+  (Closed SSC-SPR 0530)
+- Clobber parameter no longer used 
+  (SSC-SPR 0541)
+
+Version 1.0  (1998-09-11)
+----------------------------
+-Submitted 
+
+
+Version 0.1
+----------------------------
+
+- Directory structure created by pkgmaker.
+
+
+	

@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Output Files</TITLE>
+<META NAME="description" CONTENT="Output Files">
+<META NAME="keywords" CONTENT="rgsfluxer">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsfluxer.css">
+
+<LINK REL="next" HREF="node8.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="rgsfluxer.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsfluxer (rgsfluxer-1.9.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input Files"></A>
+<A HREF="rgsfluxer.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsfluxer.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00070000000000000000"></A>
+<A NAME="rgsfluxer:description:outputfiles"></A>
+<BR>
+Output Files
+</H1>
+
+<P>
+The output file is a table with three or four columns.  The first
+three are bin center, flux, and error.  The bin centers are given in
+units of &#197;or keV depending on the <TT>mode</TT>: wavelength or
+energy respectively.  Similarly the flux and error are given in
+<!-- MATH
+ $(s\;cm^2 \AA)^{-1}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="85" HEIGHT="36" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$(s\;cm^2 \AA)^{-1}$"></SPAN> or <!-- MATH
+ $(s\;cm^2 keV)^{-1}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="102" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$(s\;cm^2 keV)^{-1}$"></SPAN>.  The fourth column, the
+quality flag, is omitted if the <TT>quality</TT> parameter specifies
+uniform quality for all bins.  The structure of the file depends upon
+the selected output <TT>format</TT>:
+<DL>
+<DT><STRONG>dal</STRONG></DT>
+<DD>A FITS-compliant DAL dataset with the table placed in
+		an extension named ``FLUXED''.  The four columns are:
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><A NAME="656"></A><TT>CHANNEL</TT></TD>
+<TD ALIGN="LEFT">real32</TD>
+<TD ALIGN="LEFT">bin center</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="658"></A><TT>FLUX</TT></TD>
+<TD ALIGN="LEFT">real32</TD>
+<TD ALIGN="LEFT">observed flux</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="660"></A><TT>ERROR</TT></TD>
+<TD ALIGN="LEFT">real32</TD>
+<TD ALIGN="LEFT">statistical uncertainty</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="662"></A><TT>QUALITY</TT></TD>
+<TD ALIGN="LEFT">int16</TD>
+<TD ALIGN="LEFT">quality flag</TD>
+</TR>
+</TABLE>
+
+<P>
+</DD>
+<DT><STRONG>ascii</STRONG></DT>
+<DD>A plain-text file, beginning with two comment lines
+		indicated by ``!'' as the first character.  The first
+		line lists the names of the columns and the second
+		line describes their units.  The table follows; its
+		columns are space-delimited.  The name of the first
+		column is either ``wavelength'' or ``energy''.  The
+		remaining columns are ``flux'', ``error'', and
+		``quality'', in that order.
+
+<P>
+</DD>
+<DT><STRONG>qdp</STRONG></DT>
+<DD>A plain-text file, beginning with the qdp directive,
+		``READ SERR 2''.  The rest of the file is structured
+		in the same way as <TT>format</TT>=ascii, except that
+		NaN values are written as ``no'' by default.
+</DD>
+</DL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input Files"></A>
+<A HREF="rgsfluxer.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

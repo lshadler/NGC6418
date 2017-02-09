@@ -1,0 +1,437 @@
+ChangeLog for rgssources
+===============================
+
+Open SPRs:
+----------
+2886
+
+Version 6.2.2 - 2010-04-21 (MAS/LUX)
+--------------------------
+- Responded to SPR-6608, fixing a LaTeX compiling error.
+	
+Version 6.2.1 - 2009-12-02 (MAS/LUX)
+--------------------------
+- Closed SPR-6581, eliminating the warning message targetAwayFromFov in wrong situations.
+- Now "make test" cleans outfiles/* .
+	
+Version 6.2 - 2009-06-05 (MAS/LUX)
+--------------------------
+- Closed SPR-6543, it now handles well the ODFs with zero-coordinates created by SciSim.
+- Moved the testdata to the testprods package (DEPEND=1.19), and remove the directory.
+- Upgraded DEPENDency on ssclib to 4.9.
+
+Version 6.1.1 - 2009-05-28 (MAS/LUX)
+--------------------------
+- Fixed SPR-6537.  Removed warnings 'incompleteODFProposal', as well as the associated ODF check based on obsDuration obtained from the ODF.  Instead it now causes an error at the end of the execution (that is, after the output file has been created), if the proposed position obtained from the ODF is (RA,DEC)=(0,0).
+- Update the test harness, which I suppose used to fail since the upgrade to Ver.6.1.
+	
+Version 6.1 - 2009-04-03 (MAS/LUX)
+--------------------------
+- Added the error 'unreliableResult' and warnings 'incompleteODFProposal' and 'incompleteLikelyODF', all of which occur when it fails to get the (likely correct) proposed position from the ODF, that is, probaly when the ODF is incomplete or corrupt (or wrong).  Previously it caused an obscured error, which does not make any sense to users, and failed without producing any result.  Now the error message is explicit, and the output file is at least created although there is no guarantee for the contents.
+- DEPENDency on ssclib upgraded to 4.0, simple due to its major upgrade.  Actually Ver.3.26, as used to be, should be fine.
+- Added subroutine cleanupAllocatedGlobalVars() to play safe.
+	
+Version 6.0.1 - 2007-06-04 (MAS/LUX)
+--------------------------
+- Closed SPR 3661 (re. weird error caused by "multi-ALLOCATE" of epicBandIds)
+	
+Version 6.0 - 2007-01-24 (MAS/LUX)
+--------------------------
+- Closed SPR 3640 (re. the band definition in the input EPIC source list; see below)
+- Now it takes account of Band 2 and 3 (in default --- controlled by the new parameter --bandids), instead of just Band 2, for input EPIC source list in both selection of sources and RATE calculation, which actually follows the change in definition of the band IDs in the pipeline.
+- BADBAND bit is now not given, i.e., no check of the energy band for the input _RGS_ source is made now.
+- 'E_BANDnn' keyword in the header of the output RGS source list is abolished; instead 'E_mBNDnn' keyword is introduced (m=1..9), where m means the m-th band accepted.
+- Now it somehow handles over 99 EPIC source lists (warning('tooBigEPICAttrNum')).
+- Added comments in the FITS header of the output source list for E_* and PRIMESRC keywords.
+	
+Version 5.32 - 2007-01-18 (MAS/LUX)
+--------------------------
+- Closed SPR 3642 (in a way proposing --flagepicsrcoutoffov).
+- Parameter --flagepicsrcoutoffov (default `no') added, with a test-harness.
+- Significant amount of update in the reference manual.
+- .flist is added in CLEANFILES in test/Makefile to be compatible with the updated test harness.
+	
+Version 5.31.2 - 2007-01-17 (MAS/LUX)
+--------------------------
+- Fixed SPR 3641 (overestimate of RATE for EPIC srcs in the output src-list).
+- Created subroutine reportRgsAttitude() to give some Verbose messages.
+- Created testdata/ and move the datafiles in test/ into it.
+- In the documentation it mentioned --enablefilter is only read when --withepicset=true.  This is not the correct description of the behaviour of the code; in fact it is valid regardless of the value of --withepicset. Note .par and .lyt files have been written correctly.  SPR 3601 points out the descrepancy between the documentation and .par and .lyt files.  Now I close SPR 3601, after modifying the documentation.
+- Describe the command-line parameters --instweights and --withboresightfudge in the reference manual.
+
+Version 5.31.1 - 2006-03-10 (MAS/LUX)
+--------------------------
+- Fixed SPR 3592.
+
+Version 5.31 - 2005-11-17 (IMS/LUX)
+----------------------
+- Parameter --withboresightfudge (default 'yes') added to rgssources (until sign of boresight psi is corrected).
+
+Version 5.30 - 2005-11-14 (IMS/LUX)
+----------------------
+- (Same as 5.29.1) Fixed SPR 3539 by deallocating the weights array after use.
+
+Version 5.29 - 2005-10-17 (IMS/LUX)
+----------------------
+- The task can now cope with multi-instrument epic source lists. In this case a weights average is made of SCTS, RATE and BG_MAP. New code requires dependency on ssclib to be upgraded. An extra parameter --instweights has also been added; an ID_INST columns has also been added to the epic dataset in the test directory.
+
+Version 5.28 - 2004-04-19 (IMS/LUX)
+----------------------
+- Slight change in interface to ssclib/coordinate.f90:raDecToInst to bring it up tp ssclib-3.9 standard.
+
+Version 5.27 - 2004-03-25 (IMS/LUX)
+----------------------
+- Copy of patches to devtrack.
+
+Version 5.26.3 - 2004-03-17 (IMS SSC/LUX)
+--------------------------
+- Updated the documentation.
+
+Version 5.26.2 - 2004-03-04 (IMS SSC/LUX)
+--------------------------
+- Changed --attstyle default from 'mean' to 'expmedian' (request by CG).
+
+Version 5.26.1 - 2003-12-17 (IMS SSC/LUX)
+--------------------------
+- Added saslib to USEDLIBS line. The task won't compile static without it. Closes SPR 3180.
+
+Version 5.26 - 2003-12-10 (IMS SSC/LUX)
+--------------------------
+- Parameter --tempset removed on advice of DJF.
+
+Version 5.25 - 2003-12-08 (IMS SSC/LUX)
+--------------------------
+- Included 'selector' in src/Makefile:USEDLIBS line.
+
+Version 5.24 - 2003-11-24 (IMS SSC/LUX)
+--------------------------
+- Removed old code.
+
+Version 5.23 - 2003-11-11 (IMS SSC/LUX)
+--------------------------
+- Temp_ssclib modules now merged into ssclib-3.0.
+- Parameter --tempset introduced.
+- Duplicated parameter --atthkset replaced by two parameters --meanset and --medianset.
+- Parameters --attra, --attdec, --attapos, --ra, --dec: type changed from 'real' to 'angle'; default values now all 0; all now local-mandatory.
+- Parameters --deltaxdsp and --deltadisp have been made local-mandatory.
+- Now-useless tests in code to detect when user has forgotten to set ra/dec-like parameters have been removed.
+- All parameters now initialized at declaration.
+- .par file modified so as to make fuller use of param>2.0 facilities.
+
+Version 5.22 - 2003-06-26 (CG SOC)
+---------------------------
+- SPR 3020 fixed: No conversion of (already in radians) expmedian values.
+
+Version 5.21 - 2002-06-17 (IMS SSC/LUX)
+--------------------------
+- Changed --attstyle value 'filteredmedian' to 'expmedian' (and parameter --filteredmediantable to --expmediantable) on JDR's suggestion. This also fixes a bug he reported.
+
+Version 5.20 - 2002-05-17 (IMS SSC/LUX)
+--------------------------
+- Added 'filteredmedian' value to --attstyle and also --filteredmediantable. This is to allow rgssources to make use of the output of attfilter.
+
+Version 5.19 - 2002-05-17 (IMS SSC/LUX)
+--------------------------
+- Slight doco macro fix.
+
+Version 5.18 - 09 May 2002 (JDR CAL)
+--------------------------
+- Converted the parameter file to param-2.0 format.
+
+Version 5.17.10 - 07 May 2002 (IMS SSC/LUX)
+--------------------------
+- Fixed SPR 2760.
+- Fixed SPR 2827.
+- Fixed SPR 2843.
+- Fixed SPR 2844.
+
+Version 5.17.9 - 19 Mar 2002 (IMS SSC/LUX)
+--------------------------
+- Partial documentation upgrade.
+
+Version 5.17.8 - 12 Mar 2002 (IMS SSC/LUX)
+--------------------------
+- Changed the background multiplier value from 1.0 to 10.0. This produces smaller confusion circles around epic sources and thus makes it less likely for sources to be labelled as confused.
+- Reduced the (cross-dispersion) width of the 'slit' from +-3 arcmin to +-2.9. This lessens the probability that the source region can lie so far off axis that it has no events in it.
+- Some obsolete routines moved into old_code.
+
+Version 5.17.7 - 10 Mar 2002 (IMS SSC/LUX)
+--------------------------
+- Changed EQUINOX keyword from a string to floating-point. The source list fails fverify without this change.
+
+Version 5.17.6 - 8 Mar 2002 (IMS SSC/LUX)
+--------------------------
+- Updated DEPEND (including ssclib -> 2.4).
+
+Version 5.17.5 - 7 Mar 2002 (IMS SSC/LUX)
+--------------------------
+- Had to add some columns to the file test/EPIC.FIT to cope with the bug fixes detailed below.
+
+Version 5.17.4 - 7 Mar 2002 (IMS SSC/LUX)
+--------------------------
+- Changes to make the epic-plane confusion calculation work (+ssclib updated in parallel, to version 2.3.8).
+
+Version 5.17.3 - 27 Feb 2002 (IMS SSC/LUX)
+--------------------------
+- The great 'frog extermination' upload (see SPR 2789). Yesterday I inadvertently uploaded a debugging version as 5.17.2.
+
+Version 5.17.2 - 26 Feb 2002 (IMS SSC/LUX)
+--------------------------
+- Fixed confusing warning when --addusersource=yes and --userasprime=yes but --primestyle and --primelabel remain at their default values.
+
+Version 5.17.1 - 15 Feb 2002 (IMS SSC/LUX)
+--------------------------
+- Fixed SPR 2753 (changed arguments in call to ssclib/src/confusion_mod:findConfusedSets() from single to double).
+- Fixed SPR 2743.
+
+Version 5.17 - 16 Jan 2002 (IMS SSC/LUX)
+--------------------------
+- Fixed test harness (and added epic stuff to it).
+
+Version 5.16 - 16 Jan 2002 (IMS SSC/LUX)
+--------------------------
+- Moved my_psf_mod and 2 other routines to ssclib.
+
+Version 5.15 - 16 Jan 2002 (IMS SSC/LUX)
+--------------------------
+- Epic-plane confusion added (also added --doconfusion parameter).
+- Bug in call to OAL_setState fixed.
+- Introduced a FLAG column to the output src list.
+- Fixed bug in which FOV filter expression was only constructed if --withepicset=yes.
+- Fixed SPR 2693.
+
+Version 5.14 - 10 Jan 2002 (IMS SSC/LUX)
+--------------------------
+- Parameters --instrument and --exposure replaced by --instexpid. Fixes spr 2681.
+- Task now read and writes EXPIDSTR (eg 'S002') to source list header.
+- EXP_ID kwd now written correctly (10-digit obs no followed by 3-digit exp no).
+
+Version 5.13 - 10 Jan 2002 (IMS SSC/LUX)
+--------------------------
+- Altered a confusing message about prime src defaults.
+- Added --process and --bkgexclude params (relevant only to the user-supplied source).
+
+Version 5.12 - 31 Oct 2001 (IMS SSC/LUX)
+--------------------------
+- Oops, missed one instance of --rgsset
+
+Version 5.11 - 30 Oct 2001 (IMS SSC/LUX)
+--------------------------
+- Changed --rgsset to --srclist.
+
+Version 5.10 - 30 Oct 2001 (IMS SSC/LUX)
+--------------------------
+- Updated DEPEND;
+- Parameters --filterdisp and --filterxdsp deleted; the epic sources are now screened with the simple sel expression 'DELTA_XDSP in [-3.0:3.0]' (units arcmin). This removes the necessity for the call to rgslib/various_mod/chipCoordToRowCoord.
+
+Version 5.9 - 19 Oct 2001 (IMS SSC/LUX)
+--------------------------
+- Changed --instrument possibilities back to rgs1, rgs2 (r1, r2 broke rgsproc).
+
+Version 5.8 - 12 Oct 2001 (IMS SSC/LUX)
+--------------------------
+- Rearranged the .lyt file.
+
+Version 5.7 - 9 Oct 2001 (IMS SSC/LUX)
+--------------------------
+- Fixed SPR 2580 & 2567. This was done by cleaning up and correcting the way in which the exposure ID string is transported around the code.
+
+Version 5.6 - 25 Sep 2001 (IMS SSC/LUX)
+--------------------------
+- Updated rgslib dependency to 1.19.
+
+Version 5.5 - 14 Sep 2001 (IMS SSC/LUX)
+--------------------------
+- Fixed SPRs 2555 and 2558.
+
+Version 5.4 - 6 Sep 2001 (IMS SSC/LUX)
+--------------------------
+- Fixed SPR 2546.
+
+Version 5.3 - 10 Aug 2001 (IMS SSC/LUX)
+--------------------------
+- Uses new functions in rgslib-1.17/pointing_mod. Module temp_rgslib now deleted.
+- Depends on oal-3.78 (use new argument exposureId of OAL_setState).
+- Fixed SPR 2471.
+
+Version 5.2.4 - 6 Sep 2001 (IMS SSC/LUX)
+--------------------------
+- Fixed SPR 2546.
+
+Version 5.2.3 - 9 Aug 2001 (IMS SSC/LUX)
+--------------------------
+- Now using correct OAL_setState with instrument and exposureId.
+- Fixed SPR 2471.
+
+Version 5.2.2 - 9 Aug 2001 (UL SOC)
+--------------------------
+- un-did 5.2.1 changes and added dataMode=DATA_SPECTROSCOPY to
+  OAL_setState() in line 494 of rgssources_mod.f90.
+
+Version 5.2.1 - 9 Aug 2001 (IMS SSC/LUX)
+----------------------------
+- Changed ssclib dependency back to 1.5 and made piOn180 and ElectronQ variables local to rgssources.
+
+Version 5.2 - 7 Aug 2001 (IMS SSC/LUX)
+----------------------------
+- Sub convertOldFiles in rgssources_update is altered so that writing of PPS-ICD header attributes to the source list is optional.
+- Parameter --exposure introduced, mainly for pcms use, to allow the exposure-specific PPS-ICD attributes to be written to newly created source lists.
+- Filtering of the epic source list is now done in disp/xdsp (arcmin) coordinates to avoid problems at ra=0.
+
+Version 5.1 - 30 Jul 2001 (IMS SSC/LUX)
+----------------------------
+- Some routines placed in modules rgssources_init, rgssources_shared and temp_rgslib. The latter will hopefully eventually be absorbed in rgslib.
+- Comments removed from DEPEND.
+- Included a call to routine convertOldFiles() in a module rgssources_update, which converts source lists to sas-5.1+ format.
+- Documentation and .lyt file brought up to date.
+- SPR 2491 fixed.
+- Removed requirement that PROPOSAL and ONAXIS sources should be respectively 1st and 2nd members of the previous RGS source list.
+- Removed requirement that the INDEX value should be the same as the row number.
+- The spatial selection region has been truncated in the dispersion direction to +-5 milliradians.
+
+Version 5.0 - 25 Jul 2001 (IMS SSC/LUX)
+----------------------------
+- Fixed SPR 2471.
+- Now uses my_raDecToOffAxis() and my_offAxisToRaDec() instead of the older InstrumentPointing() routine in rgslib and rgscelestoffset() in rgssources/rgscelestoffset_mod. Rgscelestoffset_mod is now redundant. (The 'my' routines are in rgslib-1.14 but this dependency is at present too new.)
+- New parameters enablefilter, filterdisp and filterxdsp introduced so as to be able to filter out all epic sources except those within a defined rectangular region.
+- Now uses constants module of ssclib-1.6.
+- New value 'auto' for parameter --primestyle, intended for pcms use.
+- Code reshuffle to facilitate epic spatial filtering.
+
+Version 4.5 - 26 Jun 2001 (IMS SSC/LUX)
+----------------------------
+- Fixed SPRs 2443, 2446.
+
+Version 4.4 - 26 Jun 2001 (IMS SSC/LUX)
+----------------------------
+- Fixed SPR 2442.
+- Fixed SPR 2440.
+- The code has been changed so that, if (fileMode = 'modify' and changeAttitude = F) or attitudeStyle = 'user', it is no longer necessary to set SAS_ODF or to provide an attitude history file.
+
+Version 4.3.3 - 21 May 2001 (IMS SSC/LUX)
+----------------------------
+- When primestyle='brightest' but there are no sources with RATE>0, #PRIMESRC defaults to the proposal.
+- Bug fix: changed the character variable primeSrcStyle from length 8 to 9 to accommodate the string 'brightest'.
+
+Version 4.3.2 - 16 May 2001 (IMS SSC/LUX)
+----------------------------
+- Fixed a bug that prevented correct writing of epic source labels.
+
+Version 4.3.1 - 04 May 2001 (IMS SSC/LUX)
+----------------------------
+- Put rgslib and saslib before cal and oal in USEDLIBS.
+
+Version 4.3 - 23 Apr 2001 (IMS SSC/LUX)
+----------------------------
+- Fixed SPRs 2286, 2231.
+- Modified test harness now works.
+- Nearly all product header keywords are now written.
+
+Version 4.2 - 22 Apr 2001 (IMS SSC/LUX)
+----------------------------
+- Fixed SPR 2327.
+
+Version 4.1 - 12 Apr 2001 (CE SOC)
+---------------------------
+- moved the attributes RA_PNT, DEC_PNT, APOS_PNT, RADECSYS, EQUINOX from
+  the primary header into the SCRLIST
+- added attributes TELESCOP & INSTRUME to SRCLIST
+	
+Version 4.0 - 8 Apr 2001 (IMS SSC/LUX)
+----------------------------
+- A complete rewrite to comply with sas-5.1 rgs tasks.
+- SPR 2107 fixed.
+- SPR 2136 fixed.
+- SPR 2232 fixed.
+- SPR 2260 fixed.
+
+Version 3.2.5 - 2 Feb 2001 (IMS SSC/LUX)
+----------------------------
+- SPR 2199 fixed (I hope).
+
+Version 3.2.4 - 1 Dec 2000 (IMS SSC/LUX)
+----------------------------
+- SPR 2080 rejected; sign of RGS_XDSP changed back to pre-3.2.2 status quo.
+- Added .lyt file to config/Makefile.
+
+Version 3.2.3 - 23 Nov 2000 (IMS SSC/LUX)
+----------------------------
+- Documentation given a much-needed update.
+- Changed default of srcselectexpression.
+- Task now copies RATE column from epic srclist.
+- defaultsource=`brightest' now selects source with highest value of RATE.
+- Layout file provided.
+
+Version 3.2.2 - 17 Nov 2000 (IMS SSC/LUX)
+----------------------------
+- Workaround introduced to correct the sign of RGS_XDSP values (SPR 2080).
+
+Version 3.2.1 - 16 Nov 2000 (IMS SSC/LUX)
+----------------------------
+- Now accesses the RATE column of epic source list and uses this value to calculate IPRIME.
+- Default value of srcselectexpression changed so as to select the brightest sources.
+
+Version 3.2 - 31aug2000 (PV)
+----------------------------
+- make proposal source first source in new sources table.
+- uses column ML_ID_SRC instead of SRC_NUM in epic source list.
+- changed add* defaults to No in adding various sources.
+- added sorting. (does not work yet. Can not sort on real columns)
+- renamed columns PHI PSI to RGS_DISP RGS_XDSP. Units in arcmin.	
+- added telescope field of view coordinadates FOV_PHI FOV_R (arcmin)
+- documentation NOT updated.
+		
+Version 3.1 - 17aug2000 (PV)
+----------------------------
+- Default values for fovdisp and fovxdisp changed from 10 to 30 arcsec (rgssources.par)
+  Workaround for error in rgsproc. SPR(1728)
+
+Version 3.0 - 11aug2000 (PV)
+----------------------------
+- Complete rewrite. Lot's of new functionality. New parameters.
+- First version, for evaluation and comments.
+
+ new features:
+ - add sources to existing/new sources table.
+ - add perfect on-axis source
+ - add source at given off-axis position.
+ - add user defined source
+ - flag sources using arbitrary selection expression.
+ - flag background sources using arbritrary selection expression.
+ - select default source for processing name|first|last|brightest (PRIMESRC attribute)
+ - offaxis angles for all sources.
+
+ known bugs:
+ - documentation not inline with code (not updated).	
+ - IGNORE column not used.
+ - values in IPRIME column do not make sense because ID_BAND maps to wrong
+	column in EPIC source list.
+ - need better names for PHI PSI IPRIME columns.
+ - no lyout file yet.
+	
+Version 2.1 - 04jul2000 (PV)
+----------------------------
+- depend on rgslib-1.0
+	
+Version 2.0 - 22jun2000 Peter Videler
+----------------------------
+- reference attitude selection moved from rgsangles to rgssources
+
+Version 1.0 - 03may2000 Peter Videler (for GV)
+----------------------------
+- deliverd as v1.0 with approved task description.
+  (code identical to v0.3)
+
+Version 0.3 - 21dec99 PV
+----------------------------
+- default withsourcelist=No (rgssources.par)
+- index numbers start 1
+
+Version 0.2 - 20dec99 PV
+----------------------------
+- default proposal (rgssources.par)
+	
+Version 0.1 - date
+----------------------------
+- First version By PV
+

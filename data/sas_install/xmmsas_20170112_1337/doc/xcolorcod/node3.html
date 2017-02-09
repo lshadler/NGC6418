@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="xcolorcod">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="xcolorcod.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="xcolorcod.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+xcolorcod (xcolorcod-1.29) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="xcolorcod.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Color tables"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="xcolorcod.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="xcolorcod:description:description"></A><A NAME="552"></A>
+<BR>
+Description
+</H1><A NAME="tex2html2"
+  HREF="../xcolorcod/index.html"><SPAN  CLASS="textbf">xcolorcod</SPAN></A>
+generates from a given input event list a spatial
+image in which the value of a specified scalar event attribute
+(e.g. energy) is three-color coded. The coloring process is driven
+by three fundamental color curves (red, green, blue) that are constructed
+from the contents of an input color table.
+
+<P>
+The following examples demonstrates how the color of a pixel in the final
+image is computed. It is assumed there are only two events and the
+image should be color-coded using the event energy as scalar attribute:
+One pixel receives one photon of 1 keV and the other receives two photons
+of 1 keV. Assume that in the color table 1 keV corresponds to the
+color <!-- MATH
+ $(r,g,b)=(255,128,0)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="156" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$(r,g,b)=(255,128,0)$"></SPAN>. After adding all events the first pixel gets
+color <SPAN CLASS="MATH"><IMG
+ WIDTH="86" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$(255,128,0)$"></SPAN> and the second <SPAN CLASS="MATH"><IMG
+ WIDTH="86" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$(510,256,0)$"></SPAN>.
+Then the image is normalized: Divide by the largest value in the image and
+multiply by 255. Now the first pixel has color <SPAN CLASS="MATH"><IMG
+ WIDTH="78" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$(128,64,0)$"></SPAN> and the second
+<SPAN CLASS="MATH"><IMG
+ WIDTH="86" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$(255,128,0)$"></SPAN>. Note that they have the same color but a different
+intensity. So the color indicates the distribution of energy, the
+intensity indicates the flux.
+
+<P>
+Some more examples using the following color table:
+<PRE><TT>
+1 keV: (255,128,0) 
+<BR>
+8 keV: 		 (0,50,100):
+<BR>
+</TT></PRE>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">photons times energy</TD>
+<TD ALIGN="LEFT">corresponding color</TD>
+<TD ALIGN="LEFT">normalized against a
+global max of 1800</TD>
+</TR>
+<TR><TD ALIGN="LEFT">1x1keV</TD>
+<TD ALIGN="LEFT">255 128 0</TD>
+<TD ALIGN="LEFT">36 18 0</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2x1keV</TD>
+<TD ALIGN="LEFT">510 256 0</TD>
+<TD ALIGN="LEFT">72 36 0</TD>
+</TR>
+<TR><TD ALIGN="LEFT">1x8keV</TD>
+<TD ALIGN="LEFT">0 50 100</TD>
+<TD ALIGN="LEFT">0 7 14</TD>
+</TR>
+<TR><TD ALIGN="LEFT">1x1keV,1x8keV</TD>
+<TD ALIGN="LEFT">255 178 100</TD>
+<TD ALIGN="LEFT">36 25 14</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2x1keV,2x8keV</TD>
+<TD ALIGN="LEFT">510 356 200</TD>
+<TD ALIGN="LEFT">72 50 28</TD>
+</TR>
+</TABLE>
+
+<P>
+Please note: The actual generation of the red, green, and blue component
+images is done through the task <A NAME="556"></A><A NAME="tex2html3"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>. <A NAME="560"></A><A NAME="tex2html4"
+  HREF="../xcolorcod/index.html"><SPAN  CLASS="textbf">xcolorcod</SPAN></A>
+therefore
+inherits all of <A NAME="564"></A><A NAME="tex2html5"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>'s image extraction parameters which allows
+to control the image generation process, e.g., binning, windowing, etc.
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html88"
+  HREF="node4.html">Color tables</A>
+<UL>
+<LI><A NAME="tex2html89"
+  HREF="node5.html">Conversion from Ds9 format</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="xcolorcod.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Color tables"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

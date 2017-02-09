@@ -1,0 +1,163 @@
+<!-- converted from XPI formatted "merge.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="set1" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    Input set 1 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="set2" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    Input set 2 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="outset" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    Output set 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withradec" type="bool" default="no">
+   <DESCRIPTION>
+    Input user-defined RA/Dec (otherwise mean used) 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="ra" type="angle" default="0">
+      <DESCRIPTION>
+       RA of new ref.point (deg) 
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       ra in [0.0:360.0]
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="dec" type="angle" default="0">
+      <DESCRIPTION>
+       Dec of new ref.point (deg) 
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       dec in [-90.0:90.0]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="imagesize" type="angle" default="0.36">
+   <DESCRIPTION>
+    Image half-size (deg) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    imagesize in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withset1adjustpos" type="bool" default="no">
+   <DESCRIPTION>
+    Adjust sky positions of set 1 events before merge 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="set1deltara" type="angle" default="0">
+      <DESCRIPTION>
+       Change in RA (set 1) 
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       set1deltara in [-5.0:5.0]
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="set1deltadec" type="angle" default="0">
+      <DESCRIPTION>
+       Change in Dec (set 1) 
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       set1deltadec in [-5.0:5.0]
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="set1deltaposangle" type="angle" default="0">
+      <DESCRIPTION>
+       Change in position angle (set 1) 
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       set1deltaposangle in [-180.0:180.0]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withset2adjustpos" type="bool" default="no">
+   <DESCRIPTION>
+    Adjust sky positions of set 2 events before merge 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="set2deltara" type="angle" default="0">
+      <DESCRIPTION>
+       Change in RA (set 2) 
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       set2deltara in [-5.0:5.0]
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="set2deltadec" type="angle" default="0">
+      <DESCRIPTION>
+       Change in Dec (set 2) 
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       set2deltadec in [-5.0:5.0]
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="set2deltaposangle" type="angle" default="0">
+      <DESCRIPTION>
+       Change in position angle (set 2) 
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       set2deltaposangle in [-180.0:180.0]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="columns" list="yes" type="string" default="">
+   <DESCRIPTION>
+    Additional event list columns to be copied
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="mergedifferentobs" type="bool" default="no">
+   <DESCRIPTION>
+    Should the task merge events from different observations
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

@@ -1,0 +1,181 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="indatatab" type="table" mandatory="yes">
+   <DESCRIPTION>
+    Duh
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="dataxcol" type="string" mandatory="yes">
+   <DESCRIPTION>
+    Duh
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="histotab" type="table" default="histogram.fits:HISTO">
+   <DESCRIPTION>
+    Duh
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withhistoxcols" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to get the names for the X output columns from the user.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="histoxmidcol" type="string" default="X_MID">
+      <DESCRIPTION>
+       Duh
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="histoxintcol" type="string" default="X_INT">
+      <DESCRIPTION>
+       Duh
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+     <PARAM id="histodatadiffcol" type="string" default="DATA_DIFF_PROB">
+      <DESCRIPTION>
+       Duh
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="histodataintcol" type="string" default="DATA_INT_PROB">
+      <DESCRIPTION>
+       Duh
+      </DESCRIPTION>
+     </PARAM>
+
+  <PARAM id="withtheory" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to look for a dataset with theoretical Y values.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="intheorytab" type="table" default="ensemble.ds:PROBS">
+      <DESCRIPTION>
+       Duh
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="theoryxcol" type="string" default="X">
+      <DESCRIPTION>
+       Duh
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="theorydiffcol" type="string" default="DIFF_PRB">
+      <DESCRIPTION>
+       Duh
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="theoryintcol" type="string" default="INT_PROB">
+      <DESCRIPTION>
+       Duh
+      </DESCRIPTION>
+     </PARAM>
+
+        <PARAM id="histotheorydiffcol" type="string" default="THEORY_DIFF_PROB">
+         <DESCRIPTION>
+          Duh
+         </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="histotheoryintcol" type="string" default="THEORY_INT_PROB">
+         <DESCRIPTION>
+          Duh
+         </DESCRIPTION>
+        </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="newhistoset" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to make a new histogram dataset, or append new columns to an existing one.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="doreverse" type="bool" default="yes">
+      <DESCRIPTION>
+       Duh
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="dologx" type="bool" default="no">
+      <DESCRIPTION>
+       Duh
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="xrangestyle" type="string" default="auto">
+      <DESCRIPTION>
+       Style of inputting the acceptable range for the x coordinate.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="user">
+        <PARAM id="xmin" type="real" mandatory="yes">
+         <DESCRIPTION>
+          Lower range of accepted x values.
+         </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="xmax" type="real" mandatory="yes">
+         <DESCRIPTION>
+          Upper range of accepted x values.
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+
+       <ITEM value="legal">
+       </ITEM>
+
+       <ITEM value="actual">
+       </ITEM>
+
+       <ITEM value="auto">
+       </ITEM>
+      </CASE>
+     </PARAM>
+
+     <PARAM id="xbinningstyle" type="string" default="nbins">
+      <DESCRIPTION>
+       Style for deciding the number of x-axis image pixels.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="nbins">
+        <PARAM id="nbins" type="int" default="100">
+         <DESCRIPTION>
+          Duh
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          nbins in (1:]
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+
+       <ITEM value="binsize">
+        <PARAM id="binsize" type="real" default="1.0">
+         <DESCRIPTION>
+          The desired size of the histogram bins.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          binsize in (0.0:)
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

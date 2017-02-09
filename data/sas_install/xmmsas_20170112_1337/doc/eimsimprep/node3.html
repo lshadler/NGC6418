@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Detection-specific preparations</TITLE>
+<META NAME="description" CONTENT="Detection-specific preparations">
+<META NAME="keywords" CONTENT="eimsimprep">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eimsimprep.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eimsimprep (eimsim-2.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Make sky masks"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eimsimprep.html">Home Page</A> / <A  HREF="node2.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00021000000000000000"></A>
+<A NAME="eimsimprep:description:detprep"></A>
+<BR>
+Detection-specific preparations
+</H2>
+
+<P>
+This function may be performed alone by calling the script with <TT>entrystage</TT> and <TT>finalstage</TT>=`detprep'.
+
+<P>
+Task <A NAME="587"></A><A NAME="tex2html14"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+is designed to allow the user to supply their own source-detection script. (See the <A NAME="591"></A><A NAME="tex2html15"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+documentation for a description of the requirements of such a script.) As with other parts of the <A NAME="595"></A><A NAME="tex2html16"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+functionality, there may be source-detection functions or jobs which only need to be done once and others (eg to do with the actual detection) which need to be done anew during each simulation run. The `once-only' jobs can be separated and placed into another script which is called at the present stage of <A NAME="599"></A><A NAME="tex2html17"
+  HREF="../eimsimprep/index.html"><SPAN  CLASS="textbf">eimsimprep</SPAN></A>. At present, the <A NAME="603"></A><A NAME="tex2html18"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+package contains two example det prep scripts: <A NAME="607"></A><A NAME="tex2html19"
+  HREF="../eimsimdetprep1xmm/index.html"><SPAN  CLASS="textbf">eimsimdetprep1xmm</SPAN></A>
+and <A NAME="611"></A><A NAME="tex2html20"
+  HREF="../eimsimdetprep2xmm/index.html"><SPAN  CLASS="textbf">eimsimdetprep2xmm</SPAN></A>, corresponding to the respective detection scripts and template sets.
+
+<P>
+A user-written det prep script must fulfil the following requirements:
+
+<P>
+
+<UL>
+<LI>The name of the detection-preparation script should be supplied via parameter <TT>detpreptask</TT>.
+
+<P>
+</LI>
+<LI>The detection-preparation script should accept command-line parameters
+  
+<UL>
+<LI>obsidroots
+</LI>
+<LI>prdssubdir
+</LI>
+<LI>simopsubdir
+</LI>
+<LI>astest
+</LI>
+<LI>refband
+</LI>
+<LI>srcspecset
+</LI>
+</UL>
+  The values passed to these parameters by <A NAME="616"></A><A NAME="tex2html21"
+  HREF="../eimsimprep/index.html"><SPAN  CLASS="textbf">eimsimprep</SPAN></A>
+are the same values supplied to <A NAME="620"></A><A NAME="tex2html22"
+  HREF="../eimsimprep/index.html"><SPAN  CLASS="textbf">eimsimprep</SPAN></A>
+itself via the parameters of the same names - <A NAME="624"></A><A NAME="tex2html23"
+  HREF="../eimsimprep/index.html"><SPAN  CLASS="textbf">eimsimprep</SPAN></A>
+just feeds them through.
+
+<P>
+</LI>
+<LI>As described in the <A NAME="628"></A><A NAME="tex2html24"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+task documentation, the user should supply <A NAME="632"></A><A NAME="tex2html25"
+  HREF="../eimsimprep/index.html"><SPAN  CLASS="textbf">eimsimprep</SPAN></A>
+(and <A NAME="636"></A><A NAME="tex2html26"
+  HREF="../eimsimbatch/index.html"><SPAN  CLASS="textbf">eimsimbatch</SPAN></A>) with a list of directory names via the parameter <TT>obsidroots</TT>. The <A NAME="641"></A><A NAME="tex2html27"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+tasks expect to find SSC product files in subdirectories whose name is supplied in parameter <TT>prdssubdir</TT> off each of these <TT>obsidroots</TT>, and write their output files to subdirectories whose name is supplied in parameter <TT>simopsubdir</TT> off the <TT>obsidroots</TT>. The detection-preparation script should do the same.
+</LI>
+</UL>
+
+<P>
+It is helpful to construct the script so that it has an optional entry point named `cleanup'. The function of this portion of the det prep script should be just to delete all intermediate files. In other words, the det prep script should be so designed, that it deletes all its intermediate files if invoked as follows:
+
+<P>
+<PRE>
+  &lt;det prep task&gt; entrystage=cleanup
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Make sky masks"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

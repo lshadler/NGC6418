@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Matching exposure maps and event coordinates</TITLE>
+<META NAME="description" CONTENT="Matching exposure maps and event coordinates">
+<META NAME="keywords" CONTENT="eexpmap">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eexpmap.css">
+
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eexpmap (eexpmap-4.11.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eexpmap.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000"></A>
+<A NAME="eexpmap:description:matching-maps"></A>
+<BR>
+Matching exposure maps and event coordinates
+</H2>
+Earlier versions of <A NAME="573"></A><A NAME="tex2html17"
+  HREF="../eexpmap/index.html"><SPAN  CLASS="textbf">eexpmap</SPAN></A>
+often produce exposure maps
+ with zero exposure at certain image pixels where the event count
+ is nonzero in the input image.  This is especially so when
+ the input image is produced from an EPIC event list with
+ randomized coordinates (the default), and for sky images.
+This usually appears as an offset between the input image
+ and the exposure map, but in no particular direction,
+ and no shifting between the two can make them match exactly.
+For exposure maps in detector coordinates DETX/Y, the maximum `offset'
+ is <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\pm 1$"></SPAN>&nbsp;image pixels (default: <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\pm 4$"></SPAN>&nbsp;arcsec).
+For sky maps, the maximum offset depends in part on the attitude information
+ specific to each observation, but is usually less than <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$\pm 2$"></SPAN>&nbsp;image pixels.
+
+<P>
+Bugs related to this problem have mostly been fixed since <A NAME="577"></A><A NAME="tex2html18"
+  HREF="../eexpmap/index.html"><SPAN  CLASS="textbf">eexpmap</SPAN></A>&nbsp;4.6.1
+
+of xmmsas&nbsp;9.0.1.  <A NAME="581"></A><A NAME="tex2html19"
+  HREF="../eexpmap/index.html"><SPAN  CLASS="textbf">eexpmap</SPAN></A>
+should now produce exposure maps in DETX/Y
+ that match input images exactly.
+The single exception is when the event list from which the input image is made
+ contains any PN event with RAWX=28 and DETX=5476,
+ or with RAWY=72 and DETY=9588.
+The DETX/Y values in these cases actually lie outside the RAWX/Y pixels.
+Removing these events, reassigning their DETX/Y, or turning off randomization
+ will all solve the problem.
+
+<P>
+To produce exposure maps in sky coordinates that match input
+ images exactly, users should call <A NAME="585"></A><A NAME="tex2html20"
+  HREF="../eexpmap/index.html"><SPAN  CLASS="textbf">eexpmap</SPAN></A>
+with the parameter
+ <TT>attrebin</TT> set to at most <SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$10^{-7}$"></SPAN>&nbsp;radian,
+ i.e., <TT>attrebin=0.020626481</TT>&nbsp;(arcsec) or smaller.
+For long observations, this could prolong the running time of <A NAME="591"></A><A NAME="tex2html21"
+  HREF="../eexpmap/index.html"><SPAN  CLASS="textbf">eexpmap</SPAN></A>
+substantially.  However, exposure maps thus produced will match the input
+ images exactly.
+Doing the same with older versions of <A NAME="595"></A><A NAME="tex2html22"
+  HREF="../eexpmap/index.html"><SPAN  CLASS="textbf">eexpmap</SPAN></A>
+will also help to reduce,
+ but will not completely eliminate this offset.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

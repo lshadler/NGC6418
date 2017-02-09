@@ -1,0 +1,224 @@
+ChangeLog for eposcorr
+===============================
+
+Version 3.12.2 - 2012-03-28 (IT)
+------------------------------
+	+ Coordinates in match table: X_RA and X_DEC are set to the
+          coordinates in the input X-ray source list (instead of
+  	  intermediate results; SPR-6635).
+	+ Optical input source list: RA, DEC, and RADEC_ERR columns
+	  can be given in single or in double precision (user request
+	  in March 2012; SPR-6701).
+	+ Updated documentation.
+
+	
+Version 3.12.1 - 2008-05-09 GL
+-----------------------------------  
+
+Correct an error with using the parameter rawxsyserr,
+introduced in v 3.9.2.
+Close SOC-SPR 6436 (SSC-SPR 3701).
+
+	
+	
+Version 3.12 - 2007-05-25 GL
+-----------------------------------  
+
+Fixed documentation.
+
+	
+Version 3.11 - 2006-05-23 GL
+----------------------------------- 
+
+Copy of 3.9.3 for SAS 7
+	
+	
+Version 3.9.3 - 2006-02-07 GL
+-----------------------------------
+
+Updated documentation
+
+
+	
+Version 3.9.2 - 2005-06-21 GL
+-----------------------------------
+
+Changed column names containing "-" in match table:
+ X-INDEX -> X_INDEX
+ X-RA ->    X_RA
+ X-DEC ->   X_DEC
+ O-INDEX -> O_INDEX
+ O-RA ->    O_RA
+ O-DEC ->   O_DEC
+
+ Look for RA_PNT/DEC_PNT in both PRIMARY array and source list extension.	
+ Write axis information of the likelihood image as physical coordinate system.
+ (see SSC-SPR-3305) 
+
+ Improve efficiency by a large factor 
+   a) by reusing results of rotational coordinate transformations.
+   b) by reducing the input list to 1 row per source already on
+      reading the source list.
+ Write likelihood bias expected due to optical background source density 
+   into keyword LIK_NULL of the corrected source list.
+  (see SSC-SPR-3493)
+ Update test harness
+	
+
+	
+Version 3.10 - 2004-03-19 GL
+-----------------------------	
+
+Fixed problem that caused segmentation fault, when
+no error column was present in optical catalogue.
+
+Version 3.9.1 - 2002-03-02 GL
+-----------------------------
+
+Change coordinates in matchtable to double precision.
+
+Version 3.9 - 2002-12-08 GL
+-----------------------------
+
+Make use of param v2 features in .par file
+
+
+Version 3.8 - 2002-10-29 GL
+-----------------------------
+
+Update DEPEND
+Created lyt  file
+Changed info file
+Closed SPR:
++ SSC-SPR-2926  misleading duplicate error code.
+
+	
+Version 3.7 - 2002-05-24 GL
+-----------------------------
+
+Based on v3.4.2
++ Converted .par file to XML
+	
+Version 3.4.2 (2002-05-15) HB
+-----------------------------
+
+New task parameters added:
+rawxsyserr,r,h,1.5,,,"systematic error of input X-ray positions"
+minxsyserr,r,h,0.2,,,"irreducible systematic error of X-ray positions"
+maxsig,r,h,5.0,,,"sigma cutoff for X-ray/optical matches"
+usemaxsig,b,h,yes,,,"use sigma cutoff limit"
+
+maxposnerr internally multiplied by sqrt(0.5) to achieve consitency
+  with RADEC_ERR values
+	
+Closed SPR:
++ SSC-SPR-2863 inproperly fixed SPR 2830 corrected
+	
+Version 3.6 (2002-04-20) HB
+---------------------------	
+
+Closed SPR:
++ SSC-SPR-2830 Number of matches does not account for multiple rows
+
+Version 3.5 (2000-01-28) HB
+---------------------------
+
+-Error in parameter file corrected	
+	
+Version 3.4 (2001-10-17) HB
+---------------------------
+
+-error in the test harness corrected	
+	
+Version 3.3 (2001-10-13) HB
+---------------------------
+
+-units of RA, DEC, and error columns now read from source table
+-position error column no longer required
+-optional output of table containing matched sources with distances and 
+ likelihood contributions for each matched pair
+-RA, DEC offsets and rotation angle can optionally be specified as 
+ input parameters instead of being determined by the programme	
+-column names for R and B magnitues now specified by input parameter
+ 	
+Version 3.2 (2001-08-13) HB
+---------------------------
+
+Closed SPRs:	  
++ SSC-SPR-2486 Fails to compile with NAG F95 4.1
++ SSC-SPR-2357 Allow correlating X-ray sources with one another
++ SSC-SPR-2316 SCR 56task puts too many restrictions on input file
+	
+Version 3.1.1 (2001-06-01) HB
+-----------------------------	
+
+Closed SPR:
++ SSC-SPR-2414 broken link in HTML doc	
+	
+
+Version 3.1 (D.M., September 22., 2000)
+----------------------
+	+ Possibility to reduce positional error by only considering
+	  strong sources with low positional error: Parameter maxposnerr
+
+Version 3.0 (JV, Juli 21, 2000)
+----------------------	
+	+ Possibility to search for rotational errors added (but is still slow)
+	+ Parameters added/changed
+	
+Version 2.0.1 (JV, June 16, 2000)
+----------------------	
+	+ missing info file added
+	+ changed the internal error representation as there was a discrepancy
+	between documentation and code.
+	+ as a consequence the test harness had to be changed as well
+	
+Version 2.0 (JV, June 2000)
+----------------------	
+- Changed the names of keywords added by eposcorr to the source list data set.
+- Added some additional keywords.
+- Parameters added in order to select R and B magnitudes from the input optical
+	set.
+	
+
+
+Version 1.1
+----------------------	
+- The task has been updated to work properly with the latest summary srclists.
+  See SSC-SPR-1272, 1273, 1274
+- Added a keyword describing the approximate error in the position correction
+  applied.
+	
+
+
+Version 1.0
+----------------------------	
+Remarks about this version.
+
+This version is similar to v 0.1, but I have changed
+the test files and removed the *.cc files.
+See SSC-SPR-1253, SSC-SPR-1248, SSC-SPR-1129, SSC-SPR-1117.
+
+Open SPRs:
+SSC-SPR-1253
+	
+ - 1234
+
+	
+
+	
+Version <next version>
+----------------------
+
+Remarks about this version.
+
+Open SPRs:
+
+ - 1234
+
+	
+Version 0.1
+----------------------------
+
+- Directory structure created by pkgmaker.
+

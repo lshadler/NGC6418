@@ -1,0 +1,231 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>xmmtrack: XMM orbit TRACKing</TITLE>
+<META NAME="description" CONTENT="xmmtrack: XMM orbit TRACKing">
+<META NAME="keywords" CONTENT="tools">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="tools.css">
+
+<LINK REL="next" HREF="node12.html">
+<LINK REL="previous" HREF="node10.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node12.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+tools (tools-1.67) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node10.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="tcsfix: Time Correlation Spacecraft"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="regionmask: convert FITS REGION"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="tools.html">Home Page</A> / <A  HREF="node2.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00029000000000000000"></A>
+<A NAME="tools:xmmtrack"></A>
+<BR>
+xmmtrack: XMM orbit TRACKing
+</H2>
+
+<UL>
+<LI>SYNOPSIS
+<DIV><TT>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;xmmtrack
+<BR></TT></DIV>
+</LI>
+<LI>DESCRIPTION
+<BR><TT>xmmtrack</TT> is an interactive IDL application that visualizes the orbit
+and attitude data in an ODF in the form of a 3-D animation sequence.
+The presented scenery includes an astronomically accurate simulation of the
+Earth-Sun system plus the actual and predicted trajectory of the XMM
+satellite on its path around the Earth. In more detail, the following
+graphical elements are present:
+
+<UL>
+<LI>Earth:
+<BR>
+The central body in the view frame which is illuminated
+by the Sun on its day side. The Earth's surface shows the main geological
+features (continents, oceans) and is rotating eastward at a constant
+rate of 1 per day. The center defines the origin of a Cartesian reference
+coordinate system whose three orthogonal axes are shown as red, green,
+and blue lines. They define the directions: <!-- MATH
+ $(RA=0/Dec=0), (RA=90/Dec=0),
+(Dec=90)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="365" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$(RA=0/Dec=0), (RA=90/Dec=0),
+(Dec=90)$"></SPAN> respectively.
+
+<P>
+</LI>
+<LI>Actual trajectory:
+<BR>
+A thin yellow three dimensional line outlines
+the actual trajectory of the satellite that this ODF (pointed at via
+the environment variable <A NAME="463"></A><TT>SAS_ODF</TT>) corresponds to. The end points
+mark the beginning and the end of the observation.
+
+<P>
+</LI>
+<LI>Predicted trajectory:
+<BR>
+A thin red lines marks a complete orbit
+around the Earth for a specified epoch (see below). Please note:
+XMM's orbit is highly time variable and the predicted orbit will
+significantly deviate from the actual trajectory if the reference epochs
+differ. The predicted orbit is calculated on the bases of interpolated TLE
+(two-line-element) data from NASA/GSFC's
+<A NAME="tex2html6"
+  HREF="http://oig1.gsfc.nasa.gov/scripts/foxweb.exe/app01">Orbital Information Group</A>.
+</LI>
+<LI>Satellite:
+<BR>
+The satellite is shown as a solid model with a main cylindrical body and
+rectangular solar panels in its actual attitude. A thin red line signifies
+the viewing direction, the blue line is the <SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$+Z$"></SPAN> axis and the green line
+completes the orthogonal right-handed triad. Please note: Under normal
+circumstances one side of the solar panels is fully illuminated by the
+Sun at all times. If there is no attitude data available the satellites
+attitude will be set to RA=Dec=APOS=0 as a result of which
+the solar panels can become unilluminated.
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI>GUI CONTROLS:
+<BR>
+The user can interactively change the displayed scenery with a couple
+of GUI elements:
+
+<UL>
+<LI>Drawing area:
+<BR>
+The drawing area is sensitive to left-button mouse clicks. Moving the mouse
+while holding the left button pressed allows to rotate the scenery arbitrarily
+about all three axes.
+
+<P>
+</LI>
+<LI>Animation button group:
+<BR>
+Three buttons labeled <EM>Start</EM>, <EM>Stop</EM>, and <EM>Reset</EM> to
+start, stop and reset the animation sequence.
+</LI>
+<LI>Satellite Scaling:
+<BR>
+A slider to change the size of the satellite in the displayed frame between
+100% and 900%
+
+<P>
+</LI>
+<LI>Zoom view:
+<BR>
+A slider to zoom into the view - range is <SPAN CLASS="MATH"><IMG
+ WIDTH="44" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$[1, 10]$"></SPAN> with 1 being the farthest
+and 10 providing the closest view of the scenery.
+
+<P>
+</LI>
+<LI>Animation step:
+<BR>
+A slider to tune the animation step size - range: [100, 5000]s.
+
+<P>
+</LI>
+<LI>Time slider:
+<BR>
+The time slider at the bottom allows to advance the scenery to a specific
+epoch. If the animation is running, push the <EM>Stop</EM> button, and move
+the slider to the desired position. To resume the animation from this new
+point onward simply push the <EM>Start</EM> button.
+
+<P>
+</LI>
+<LI>Predicted orbit:
+<BR>
+By default the predicted orbit is not shown in the scenery. Pushing the
+button labeled <EM>Add</EM> will display a full predicted orbit for
+the displayed reference epoch. The latter is changeable, i.e., the time
+dependence of the orbit evolution can easily be studied. The predicted
+orbit is shown with two white reference lines to guide the eye. The short
+one signifies the position of the perigee. The longer one connects the
+ascending and descending nodes of the orbit. Those are the points where
+the orbital plane intersects the equator. Together with the orbit the
+three main orbital elements are shown in the left panel:
+
+<UL>
+<LI>orbit inclination
+</LI>
+<LI>R.A. of the ascending node
+</LI>
+<LI>argument of the perigee
+</LI>
+</UL>
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI>USED SAS COMPONENTS
+<BR>
+<UL>
+<LI><A NAME="465"></A><A NAME="tex2html7"
+  HREF="../oal/index.html"><SPAN  CLASS="textbf">oal</SPAN></A>: inquire orbit/attitude data
+</LI>
+<LI><A NAME="469"></A><A NAME="tex2html8"
+  HREF="../caloalutils/index.html"><SPAN  CLASS="textbf">caloalutils</SPAN></A>: compute predicted orbit
+</LI>
+<LI><EM>utils</EM>: various STime routines
+</LI>
+</UL>
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node10.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="tcsfix: Time Correlation Spacecraft"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="regionmask: convert FITS REGION"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

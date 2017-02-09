@@ -1,0 +1,541 @@
+<!-- converted from XPI formatted "edetect_chain.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="imagesets" type="dataset" list="yes" mandatory="yes" default="image.fits">
+   <DESCRIPTION>
+    List of EPIC fits images
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="eventsets" type="table" list="yes" mandatory="yes" default="events.fits">
+   <DESCRIPTION>
+    List of EPIC imaging event lists
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="attitudeset" type="table" mandatory="yes" default="attitude.fits">
+   <DESCRIPTION>
+    Attitude file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="pimin" type="int" list="yes" mandatory="yes" default="500">
+   <DESCRIPTION>
+    Lower pi bin range
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    pimin in [0:20000]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="pimax" type="int" list="yes" mandatory="yes" default="4500">
+   <DESCRIPTION>
+    Higher pi bin range
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    pimax in [0:20000]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="witheexpmap" type="bool" default="yes">
+   <DESCRIPTION>
+    Create new exposure maps?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="likemin" type="real" default="10">
+   <DESCRIPTION>
+    eboxdetect, emldetect: Lower detection likelihood threshold
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    likemin in [0.0:1.E10]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="ecf" type="real" list="yes" default="1">
+   <DESCRIPTION>
+    eboxdetect, emldetect: Energy conversion factors
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    ecf in [0.:1000.]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="eex_attrebin" type="real" default="4">
+   <DESCRIPTION>
+    eexpmap: Positional accuracy of attitude rebinning [arcsec]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    eex_attrebin in [0.0:60.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="emask_threshold1" type="real" default="0.3">
+   <DESCRIPTION>
+    emask: Threshold parameter 1: fraction of maximum exposure
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    emask_threshold1 in [0.0:1.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="emask_threshold2" type="real" default="0.5">
+   <DESCRIPTION>
+    emask: Threshold parameter 2: threshold for gradient of exposure
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    emask_threshold2 in [0.0:10.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="eboxl_list" type="string" default="eboxlist_l.fits">
+   <DESCRIPTION>
+    eboxdetect: Name of local mode source list
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="eboxm_list" type="string" default="eboxlist_m.fits">
+   <DESCRIPTION>
+    eboxdetect: Name of map mode source list
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="eboxl_likemin" type="real" default="8">
+   <DESCRIPTION>
+    eboxdetect: Local mode minimum detection likelihood
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    eboxl_likemin in [1.0:50.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="eboxm_likemin" type="real" default="8">
+   <DESCRIPTION>
+    eboxdetect: Map mode minimum detection likelihood
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    eboxm_likemin in [1.0:50.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="ebox_withdetmask" type="bool" default="yes">
+   <DESCRIPTION>
+    eboxdetect: Detection mask flag
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="ebox_withexpimage" type="bool" default="yes">
+   <DESCRIPTION>
+    eboxdetect: Exposure image flag
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="ebox_boxsize" type="int" default="5">
+   <DESCRIPTION>
+    eboxdetect: Detection box size: permitted values: 3 or 5
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    ebox_boxsize in [3:5]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="esp_withdetmask" type="bool" default="yes">
+   <DESCRIPTION>
+    esplinemap: Flag to use detection mask
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="esp_nsplinenodes" type="int" default="13">
+   <DESCRIPTION>
+    esplinemap: Number of spline nodes
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    esp_nsplinenodes in [5:20]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="esp_nfitrun" type="int" default="3">
+   <DESCRIPTION>
+    esplinemap: Number of iterations
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    esp_nfitrun in [1:5]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="esp_scut" type="real" default="0.005">
+   <DESCRIPTION>
+    esplinemap: Source cut-out flux level, [counts/arcsec^2]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    esp_scut in [0.0:10.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="esp_excesssigma" type="real" default="4">
+   <DESCRIPTION>
+    esplinemap: Threshold for excess with respect to spline
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    esp_excesssigma in [1.0:6.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="esp_withexpimage" type="bool" default="yes">
+   <DESCRIPTION>
+    esplinemap: Flag to use exposure map
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="esp_withexpimage2" type="bool" default="no">
+   <DESCRIPTION>
+    esplinemap: Flag to use exposure map
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+
+
+  <PARAM id="esp_withootset" type="bool" default="no">
+   <DESCRIPTION>
+    esplinemap: Flag to use out-of-time event set
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="esp_ooteventset" type="string" default="events.fits">
+   <DESCRIPTION>
+    esplinemap: EPN out-of-time event set
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+
+
+  <PARAM id="esp_withcheese" type="bool" default="no">
+   <DESCRIPTION>
+    esplinemap: Flag to write cheesed image
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+
+  <PARAM id="esp_fitmethod" type="string" default="spline">
+   <DESCRIPTION>
+     esplinemap: Method for background fitting [spline|model] 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="spline">
+    </ITEM>
+    <ITEM value="model">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="eml_list" type="string" default="emllist.fits">
+   <DESCRIPTION>
+    emldetect: Name of source list
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="eml_ecut" type="real" default="15">
+   <DESCRIPTION>
+    emldetect: Event cut-out radius (if .lt. 1.0: fraction of encircled energy, else pixels)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    eml_ecut in [0.4:100.]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="eml_scut" type="real" default="15">
+   <DESCRIPTION>
+    emldetect: Source cut-out radius for  multi-source fits (if .lt. 1.0: fraction of encircled energy, else pixels)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    eml_scut in [0.4:100.]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="eml_fitextent" type="bool" default="yes">
+   <DESCRIPTION>
+    emldetect: Fit source extent
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="eml_fitnegative" type="bool" default="no">
+   <DESCRIPTION>
+    emldetect: Allow fitted count rates to become negative
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+
+  <PARAM id="eml_determineerrors" type="bool" default="yes">
+   <DESCRIPTION>
+    emldetect: Determine statistical errors
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="eml_nmaxfit" type="int" default="1">
+   <DESCRIPTION>
+    emldetect: Maximum number of sources to be fit simultaneously in multi-source fits
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    eml_nmaxfit in [1:6]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="eml_nmulsou" type="int" default="1">
+   <DESCRIPTION>
+    emldetect: Maximum number of emldetect sources per input source position
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    eml_nmulsou in [1:3]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="eml_withsourcemap" type="bool" default="yes">
+   <DESCRIPTION>
+    emldetect: Creation of output source map
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="eml_withdetmask" type="bool" default="no">
+   <DESCRIPTION>
+    emldetect: Use detector masks
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="eml_extentmodel" type="string" default="beta">
+   <DESCRIPTION>
+     emldetect: Model function for source extent 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="gaussian">
+    </ITEM>
+    <ITEM value="beta">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="eml_dmlextmin" type="real" default="6.">
+   <DESCRIPTION>
+      emldetect: Extent likelihood threshold
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    eml_dmlextmin in [0.0:100.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="eml_maxextent" type="real" default="20">
+   <DESCRIPTION>
+     emldetect: Maximum value of source extent [in units of image pixels] 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    eml_maxextent in [0.1:300.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="eml_withtwostage" type="bool" default="yes">
+   <DESCRIPTION>
+    emldetect: Use two stage process for multi PSF (eml_nmulsou > 1) fitting
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+
+  <PARAM id="eml_withthreshold" type="bool" default="yes">
+   <DESCRIPTION>
+    emldetect: Use likelihood/brightness threshold for multi-PSF fitting
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="eml_threshold" type="real" default="20">
+   <DESCRIPTION>
+     emldetect: Threshold above which multi-PSF fitting is used
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    eml_threshold in [0.0:1.E10]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="eml_threshcolumn" type="string" default="LIKE">
+   <DESCRIPTION>
+     emldetect: Input list column to apply threshold [LIKE|RATE|SCTS]
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="LIKE">
+    </ITEM>
+    <ITEM value="RATE">
+    </ITEM>
+    <ITEM value="SCTS">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+ <PARAM id="psfmodel" type="string" default="ellbeta">
+   <DESCRIPTION>
+     emldetect: Model PSF - fully 2d parametrized analytical EPIC PSFs or medium accuracy PSF
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="medium">
+    </ITEM>
+    <ITEM value="ellbeta">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="withimagebuffersize" type="bool" default="no">
+   <DESCRIPTION>
+    eboxdetect, emldetect: Allow user-defined values of imagebuffersize
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="imagebuffersize" type="int" default="640">
+   <DESCRIPTION>
+    eboxdetect, emldetect: Controls memory requirements for raster scan data.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    imagebuffersize in [100:10000]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="esen_mlmin" type="real" default="10">
+   <DESCRIPTION>
+    esensmap: Upper limit likelihood
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    esen_mlmin in [0.0:1.E10]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+ </CONFIG>
+</FILE>

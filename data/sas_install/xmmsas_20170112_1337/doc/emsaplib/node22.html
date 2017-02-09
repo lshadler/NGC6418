@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>edusoft</TITLE>
+<META NAME="description" CONTENT="edusoft">
+<META NAME="keywords" CONTENT="emsaplib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emsaplib.css">
+
+<LINK REL="previous" HREF="node21.html">
+<LINK REL="up" HREF="node15.html">
+<LINK REL="next" HREF="node23.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emsaplib (emsaplib-2.31.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node21.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="pat_init"></A>
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="edusoft_mod module"></A>
+<A HREF="node23.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="badpixutils_mod module"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node41.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emsaplib.html">Home Page</A> / <A  HREF="node2.html">Description</A> / <A  HREF="node15.html">edusoft_mod module</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00022700000000000000">
+edusoft</A>
+</H3>
+
+<P>
+This is the EDUSOFT call. <BR>
+
+<P>
+The F90 calling sequence is:
+
+<P>
+<PRE>
+! Input arguments :
+
+ integer :: edumode                       ! 0  diagnostic mode
+                                          ! 1  timing mode
+                                          ! 2  reduced imaging (threshold) mode
+                                          ! 3  imaging mode  
+ 
+ type(edu_pattern)   :: edupat(edu_npat)  ! initialized by pat_init().
+ integer(kind=int32) :: dx                !  x size of the input image.
+ integer(kind=int32) :: dy                !  y size of the input image.
+ integer(kind=int16), dimension(dx,dy) :: im  ! input image.
+ integer(kind=int16) :: threshold         ! EDU threshold.
+
+! x EDU offset (must contain at least x0+dx data).
+ integer(kind=int16), dimension(0:x0+dx-1) :: offX
+
+! y EDU offset (must contain at least y0+dy data).
+ integer(kind=int16), dimension(0:y0+dy-1) :: offY
+
+! x coordinate of the closest pixel to the output CCD node.
+ integer(kind=int32) :: x0  
+
+! y coordinate of the closest pixel to the output CCD node.
+ integer(kind=int32) :: y0  
+                      
+! es_nmax : Maximum number of events that can be found in a frame by EDUSOFT.
+!           (See declaration subsection).
+
+! Output argument :
+
+! Data structure containing the EDUSOFT output event list.
+ type(edu_out)  :: eduout
+
+ 
+ call edusoft(edumode,edupat,dx,dy,im,threshold, &amp;
+              offX(0:x0+dx-1),offY(0:y0+dy-1),x0,y0,es_nmax,eduout)
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

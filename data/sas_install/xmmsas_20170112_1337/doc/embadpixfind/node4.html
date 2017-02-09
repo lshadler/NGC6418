@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Preparatory work</TITLE>
+<META NAME="description" CONTENT="Preparatory work">
+<META NAME="keywords" CONTENT="embadpixfind">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="embadpixfind.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+embadpixfind (embadpixfind-2.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Basic algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="embadpixfind.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+Preparatory work</A>
+</H2>
+
+<P>
+Call <A NAME="460"></A><A NAME="tex2html2"
+  HREF="../emeventsproj/index.html"><SPAN  CLASS="textbf">emeventsproj</SPAN></A>
+with <TT>rejectbadevents</TT>=Y 
+to project the events file to an image.
+An image built by <A NAME="465"></A><A NAME="tex2html3"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+would be accepted as well,
+but would not include the secondary pixels of multiple events
+(this may miss weak bad pixels next to a strong one).
+<BR>
+For optimal electronic noise rejection, the events file should
+be built by successive calls to <A NAME="469"></A><A NAME="tex2html4"
+  HREF="../emevents/index.html"><SPAN  CLASS="textbf">emevents</SPAN></A>
+(<TT>analysepatterns</TT>=N <TT>flagbadpixels</TT>=N
+<TT>splitdiagonals</TT>=N <TT>randomizeposition=N</TT> 
+allow it to run much faster)
+and <A NAME="477"></A><A NAME="tex2html5"
+  HREF="../emenergy/index.html"><SPAN  CLASS="textbf">emenergy</SPAN></A>
+(<TT>correctcti</TT>=N <TT>correctgain</TT>=N 
+<TT>randomizeenergy</TT>=N allow it to run much faster).
+
+<P>
+For calibration purposes, it is possible to improve the statistics
+(and the sensitivity to weak bright pixels or dark pixels)
+by stacking many images output of emeventsproj on top of one another
+before calling <A NAME="484"></A><A NAME="tex2html6"
+  HREF="../embadpixfind/index.html"><SPAN  CLASS="textbf">embadpixfind</SPAN></A>.
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

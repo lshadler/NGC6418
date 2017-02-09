@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Minimum resolution</TITLE>
+<META NAME="description" CONTENT="Minimum resolution">
+<META NAME="keywords" CONTENT="specgroup">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="specgroup.css">
+
+<LINK REL="previous" HREF="node14.html">
+<LINK REL="up" HREF="node14.html">
+<LINK REL="next" HREF="node16.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+specgroup (specgroup-1.6) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node14.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Other grouping options"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Other grouping options"></A>
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Associated file keywords"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node26.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="specgroup.html">Home Page</A> / <A  HREF="node5.html">Grouping options and examples</A> / <A  HREF="node14.html">Other grouping options</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00045100000000000000">
+Minimum resolution</A>
+</H3>
+
+<P>
+If the number of counts in a spectrum is very high then a statistical 
+grouping can dramatically oversample the instrument resolution. 
+This can cause problems
+during spectral fitting because the bins are then not completely
+independent.
+
+<P>
+A minimum energy width of each group can be 
+enforced by setting the parameter <TT>oversample</TT>. e.g.
+
+<P>
+<BR>
+<IMG
+ WIDTH="617" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.png"
+ ALT="\begin{code}{\em
+specgroup spectrumset=srcspec.ds mincounts=25 oversample=3 rmfset=myrmf.ds
+}\end{code}">
+<BR>
+
+<P>
+would ensure that no group was narrower than 1/3 of the full width 
+half maximum (FWHM) resolution 
+at the central photon energy of the group.
+
+<P>
+<!-- MATH
+ $\Delta E >= FWHM(E)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="150" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$\Delta E &gt;= FWHM(E)$"></SPAN>
+
+<P>
+where the values of <TT>FWHM(E)</TT> are read for a given instrument
+from a calibration file (<EM>XMM_SPECQUAL_nnnn.CCF</EM> for XMM instruments).
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

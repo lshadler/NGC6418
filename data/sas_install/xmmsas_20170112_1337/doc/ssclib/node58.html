@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Per unit frequency</TITLE>
+<META NAME="description" CONTENT="Per unit frequency">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node59.html">
+<LINK REL="previous" HREF="node57.html">
+<LINK REL="up" HREF="node57.html">
+<LINK REL="next" HREF="node59.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node57.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Black Body routines"></A>
+<A HREF="node57.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Black Body routines"></A>
+<A HREF="node59.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Per unit wavelength"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node46.html">A module which contains</A> / <A  HREF="node57.html">Black Body routines</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00053100000000000000">
+Per unit frequency</A>
+</H3>
+
+<P>
+The precision at low frequencies f is limited by the calculation of exp(x)-1, where x = hfk/T. At low values of x, exp(x) is close to 1 and thus the difference between exp(x) and 1 is a number of low precision. Thus for x values less than 0.1, a series expansion of (exp(x)-1)/x is used instead. The minimum precision occurs at x = 0.1 and is approximately equal to precision(1d0)-1.
+
+<P>
+<PRE>
+  subroutine getBBfluxPerHertz(hertzValues, kelvin, powerValues)
+    real(double), intent(in)  :: hertzValues(:), kelvin
+    real(double), intent(out) :: powerValues(size(hertzValues))
+  end subroutine getBBfluxPerHertz
+
+  function bbFluxPerHertz(hertz, kelvin) result(power)
+    real(double), intent(in) :: hertz, kelvin
+    real(double)             :: power
+  end function bbFluxPerHertz
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

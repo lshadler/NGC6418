@@ -1,0 +1,107 @@
+ChangeLog for epexposure
+===============================
+open SPRs:
+- none
+
+Version 0.14 - 2016-09-16 (MJF)
+-------------------------------
+- (src/epexposure_mod.f90): take care of empty input EVENTS extension
+
+Version 0.13 - 2014-05-26 (MJF)
+-------------------------------
+- (src/epexposure_mod.f90): special warning "offsetCorrectionNotHomogeneous"
+  if applied offset corrections for the CCDs are not the same
+  (SOC/SAS-SCR-7199)
+- (DEPEND): needs "epreject-5.15"
+
+Version 0.12 - 2012-08-20 (MJF)
+-------------------------------
+- (src/epexposure_mod.f90): special warning "spatialDLIgeneral" if I*2
+  overflows in the DLI files are generally expected due to high rate or
+  due to long exposure time.
+- (src/epexposure_mod.f90): special warning "spatialDLIquadrant" if I*2
+  overflows in the DLI files are expected for this quadrant due to
+  significant  differences of (PNAUX+CCX - DLI) discarded line counters
+- (src/Makefile): added library "eputils"
+- (DEPEND): needs "epmpelib-0.5" (module "eputils")
+- (DEPEND): removed obsolete "evselect-3.21" and "evlistcomb-4.8"
+
+Version 0.11 - 2012-08-17 (MJF)
+-------------------------------
+- (src/epexposure_mod.f90): read discarded line numbers during counting
+  mode intervals from event file as additional indicator for I*2 overflows
+  (SOC-SPR-6760)
+- (config/epexposure.par): changed default "spatialexposure": "N" -> "Y"
+
+Version 0.10 - 2011-08-22 (MJF)
+-------------------------------
+- (src/epexposure_mod.f90): changed randomization from intrinsic F90 to
+  SAS specific CAL calls (SOC/SAS-SPR-6668)
+
+Version 0.9 - 2008-07-01 (MJF)
+------------------------------
+- (src/epexposure_mod.f90): drop backwards compatibility: column TIME is
+  from now on randomized if randomization is switched on (randomizetime=Y)
+  and then TIME_RAW contains a copy of the original unrandomized times to
+  enable the user to check the event file for the presence of time jumps
+- (config/epexposure.par): changed default of "randomizetime": "N" -> "Y"
+
+Version 0.8 - 2008-06-10 (HB)
+-----------------------------
+- (src/epexposure_mod.f90) write keyword RAND_TIM to exposure extension
+	                  (1: time randomized, 0: not randomized)
+
+Version 0.7 - 2007-10-12 (MJF)
+------------------------------
+- (src/epexposure_mod.f90): enable time randomization for all IMAGING modes:
+  for backwards compatibility: TIME is unrandomized (as always in the past)
+  and TIME_RND contains randomized event times (within TIMEDEL)
+- (src/epexposure_mod.f90): issue randomization warning for BU and TI modes
+- (src/epexposure_mod.f90): added inter-CCD-analysis of MIP rejections (in
+  addition to CCD-level analysis in "epframes")
+- (src/epexposure_mod.f90): added correction numbers for "Discarded Line"
+  spatial exposure inhomogeneities (dummy "1.0" at the moment, intended as
+  interface test for "eexpmap" and "arfgen")
+
+Version 0.6.2 - 2005-06-07 (MJF)
+--------------------------------
+- (src/epexposure_mod.f90): added checks on presence of extensions and columns,
+  open input file in USE_ENVIRONMENT memory model
+
+Version 0.6.1 - 2004-03-16 (HB)
+-------------------------------
+- (src/epexposure_description.tex): parameters section updated	
+
+Version 0.6  - 2003-09-15 (MJF)
+-------------------------------
+- (src/epexposure_mod.f90): added new parameter "randomizetime" (not yet enabled)
+- (src/epexposure_mod.f90): added new parameter "spatialexposure" (not yet enabled)
+- (src/epexposure_mod.f90): added new parameter "screenexposure"
+- (config/epexposure.*): as above
+
+Version 0.5  - 2002-11-12 (MJF)
+-------------------------------
+- (src/epexposure_mod.f90): open event file in LOW_MEMORY mode
+
+Version 0.4  - 2002-11-09 (MJF)
+-------------------------------
+- some minor modifications for consistency with sas infrastructure
+
+Version 0.3  - 2002-11-07 (MJF)
+-------------------------------
+- new task design required since with the handling of empty frames in the task
+  "epframes" and the accompanied necessary exposure corrections the original
+  outline became obsolete (and partly unfeasible), so this version is thought
+  to be a new start (old versions were apparently never uploaded and only
+  several task descriptions were circulated)
+- no revised task description exists yet
+- the task now only removes a couple of columns in the EXPOSUnn extensions
+  and reads in and analyses DLIMAP extensions (if present)
+
+Version 0.2  - 2000-04-27 (MJF)
+-------------------------------
+- updated task description
+
+Version 0.1  - 1999-11-23 (ME)
+------------------------------
+- first version (task description + code)

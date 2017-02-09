@@ -1,0 +1,192 @@
+<!-- converted from XPI formatted "esky2det.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="datastyle" type="string" default="set">
+   <DESCRIPTION>
+    Data i/o either via FITS dataset or via STDIN/OUT.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="set">
+     <PARAM id="intab" type="table" default="inset.ds:INPUT">
+      <DESCRIPTION>
+       Name of the input dataset+table.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="witherrorcol" type="bool" default="no">
+      <DESCRIPTION>
+       Set this if you want to read and write position uncertainties.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="withouttab" type="bool" default="no">
+      <DESCRIPTION>
+       Set this if you want to write the output to a new file rather than adding columns to intab.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="yes">
+        <PARAM id="outtab" type="table" default="outset.ds:OUTPUT">
+         <DESCRIPTION>
+          Name of the output dataset+table.
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="user">
+     <PARAM id="ra" type="angle" default="0" mandatory="yes">
+      <DESCRIPTION>
+       User-supplied source RA (deg).
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       ra in [0.0:360.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="dec" type="angle" default="0" mandatory="yes">
+      <DESCRIPTION>
+       User-supplied source dec (deg).
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       dec in [-90.0:90.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="witherrorradius" type="bool" default="no">
+      <DESCRIPTION>
+       Set this if you want to read and write position uncertainties.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="yes">
+        <PARAM id="errorradius" type="angle" mandatory="yes">
+         <DESCRIPTION>
+          User-supplied error radius of the source. (Tip: want arcsec? Use XXdXXmXX.Xs form.)
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          errorradius in [0.0:]
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+
+     <PARAM id="withheader" type="bool" default="yes">
+      <DESCRIPTION>
+       Whether to print some header info with the output line.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="outunit" type="string" default="raw">
+   <DESCRIPTION>
+    Coordinate system of output positions.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="det">
+    </ITEM>
+
+    <ITEM value="raw">
+     <PARAM id="mosccdnode" type="string" default="primary">
+      <DESCRIPTION>
+       MOS CCD node (not read if instrument=pn).
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="primary">
+       </ITEM>
+       <ITEM value="redundant">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="calinfostyle" type="string" default="set">
+   <DESCRIPTION>
+    Style in which to input the instrument and the boresight date.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="set">
+     <PARAM id="calinfoset" type="dataset" default="calinfo.ds" mandatory="yes">
+      <DESCRIPTION>
+       Name of the dataset containing INSTRUME and DATE-OBS keywords.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="user">
+     <PARAM id="instrument" type="string" default="EMOS1" mandatory="yes">
+      <DESCRIPTION>
+       Instrument on XMM.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="EMOS1">
+       </ITEM>
+       <ITEM value="EMOS2">
+       </ITEM>
+       <ITEM value="EPN">
+       </ITEM>
+      </CASE>
+     </PARAM>
+
+     <PARAM id="datetime" type="string" default="0000-00-00T00:00:00" mandatory="yes">
+      <DESCRIPTION>
+       User-supplied date-time (at which to determine the instrument boresight).
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="scattra" type="angle" default="0" mandatory="yes">
+      <DESCRIPTION>
+       User-supplied spacecraft RA (deg).
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       scattra in [0.0:360.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="scattdec" type="angle" default="0" mandatory="yes">
+      <DESCRIPTION>
+       User-supplied spacecraft dec (deg).
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       scattdec in [-90.0:90.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="scattapos" type="angle" default="0" mandatory="yes">
+      <DESCRIPTION>
+       User-supplied spacecraft position angle (deg).
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       scattapos in [0.0:360.0]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="checkfov" type="bool" default="yes">
+   <DESCRIPTION>
+     If true then positions outside the field-of-view are not processed
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withboresightfudge" type="bool" default="no">
+   <DESCRIPTION>
+    Flip the sign of the boresight euler%psi. This parameter should be removed after the boresight is fixed. 
+   </DESCRIPTION>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

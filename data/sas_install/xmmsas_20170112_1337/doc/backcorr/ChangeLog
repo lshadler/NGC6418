@@ -1,0 +1,289 @@
+ChangeLog for backcorr
+===============================
+
+Version 3.6 - 2006-01-09 (NW)
+        -------------------------------
+
+        Corrected a small calculation error in make_backcorr that was 
+	causing some values in the output (corrected background spectrum) to 
+	be too small by a factor 0.5 or 0.333 as pointed out in SSC-SPR-3551.  
+	The same SPR requested that the detector map used to calculate the 
+	arf file for the background 
+	spectrum should be a flat detector map and further parameters to be 
+	added to the task so that the user can provide the eventlist, 
+	required by arfgen if a bad pixel correction is to be made as well as 
+	the option to keep the intermediary arf files.  RDS also suggested 
+	calling arfgen with extendedsource=yes.  These have all been 
+	done and the documentation has been updated.
+	
+
+Version 3.5.1 - 2005-06-07 (NW)
+        -------------------------------
+
+        Change to DEPEND for releasetrack version
+	
+
+Version 3.5 - 2004-11-26 (NW)
+        -------------------------------
+
+        Included dsslib' in DEPEND, as requested in SSC-SPR-3420.
+
+	
+Version 3.4 - 2004-11-02 (NW)
+        -------------------------------
+
+        Fixed a small bug that could result in a divide by zero in some cases.
+
+	
+
+Version 3.3 - 2003-11-03 (NW)
+        -------------------------------
+
+        Changed the USEDLIBS in the src/Makefile so that the task also 
+	builds in the static build
+
+	
+Version 3.2 - 2003-05-07 (NW)
+        -------------------------------
+
+        Changed the test harness, as the detector map may not be specified
+	in X/Y coordinates in the current release of arfgen.  This closes
+	SPR-3118, `test harness fails whilst running arfgen'.
+	
+
+Version 3.1 - 2002-11-20 (NW)
+        -------------------------------
+
+        As version 3.0, but with param 2. + for the development track.
+	
+	
+Version 3.0 - 2002-11-19 (NW)
+        -------------------------------
+ 
+        Major revisions after questions from the helpdesk.  Corrected the
+ 	cycle theiloop to cycle thejloop (typo) and added parameters to
+ 	allow the user to make a background correction for highly off-axis
+ 	sources if required.  Added inputs for the source co-ordinates, to
+ 	be used by arfgen, in the same manner as arfgen.  A PSF function
+ 	is now used for the `detmaptype' and the BACKSCAL value is
+ 	set. The documention and the test harness have also been updated.
+                                      
+                                            
+Version 2.4 - 2002-07-25 (NW)
+        -------------------------------
+ 
+        Updated the DEPEND file. It now includes a dependence on sas.
+                                    
+                                            
+Version 2.3 - 2002-06-03 (NW)
+----------------------
+
+        Made the updates necessary for the new version of param
+
+Version 2.2.4 - 08-02-02 (NW)
+----------------------
+
+	Test harness completely changed to solve the problem raised in
+	SPR-2732 `test_backcorr. 2 fixes so test passes at MPE'. The test
+	now calls a fortran program to test the output of backcorr, by
+	checking the spectral content and the content of the headers.  In
+	this way any problems with different platforms is avoided.
+
+	
+Version 2.2.3 - 23-11-01
+----------------------
+
+	Changes made to the test, to reflect the recent changes made to
+	programs preceding backcorr.
+
+	
+Version 2.2.2 - 07-11-01
+----------------------
+
+       Further refinements made to the test, to stop it failing on Linux.
+
+Version 2.2.1 - 19-10-01
+----------------------
+
+       A change has been made to the test, to stop it failing on Linux.
+	
+Version 2.2 - 12-09-01
+----------------------
+
+        A `do loop' at the end of the `make_backcorr' module has been changed
+	so that the energy boundaries don't have to exactly match those of
+	the arf.  This is to stop `backcorr' crashing with 'Internal file
+	overflow', with regards to SPR 2511. The test has also been
+	changed, so that it doesn't rely on the type of ftools being run,
+	thus solving the problem in SPR 2532.
+	
+
+Version 2.1.5 - 31-05-01
+----------------------
+
+	The test has also been changed so that it doesn't test for
+	high or a low memory model.
+
+Version 2.1.4 - 30-05-01
+----------------------
+
+	The test has also been changed so that it takes into account a
+	high or a low memory model.
+
+Version 2.1.3 - 22-05-01
+----------------------
+
+        Documentation has been changed to include an example of how to use
+	backcorr and to document the columns required in the input files.
+	The test has also been changed to make it sensitive to error in
+	the task.
+
+Version 2.1.2 - 27-04-01
+----------------------
+
+        Changed the system call to call deleteDataSet which is appropriate
+	for the SAS.
+
+Version 2.1.1 - 02-11-00
+----------------------
+
+        Revised the documentation and updated the GROUPS description
+
+Version 2.1 - 03-10-00
+----------------------  
+        Updrade the version number as required for the SAS V5
+
+Version 2.0.2 - 2000-09-26(DB)
+-------------------------------
+
+	Update the .info files to comply to the GROUPS definition
+
+Version 2.0.1 - 2000-06-27(DB)
+-------------------------------
+	SSC-SPR-1808 backcorr (version 2.0) - add make_backcorr.info file in the distribution. 
+	+ Reactivate the test harness now that arfgen has settled a little bit, and make the code work with
+	the arf files produced by arfgen.
+	
+Version 2.0 - 2000-05-27(DB)
+----------------------------
+
+	Major changes to the interface to follow latest release of arfgen
+	(this fixes SSC-SPR-1686).  This implied several changes in the
+ 	code also, as some checks that do not need any longer to be done
+ 	in the task (e.g. shape of the extraction region, this is now done
+ 	in arfgen). Update of the documentation. Addition of the layout
+ 	file, the info file.
+		
+Version 1.7 - 2000-04-19(GV/SOC)
+------------------------
+	+ resubmission of 1.6, having removed build.tmp_ tht was causing the distcheck to fail.
+	
+Version 1.6 - 2000-04-18
+------------------------
+
+	The following SPRs have been fixed:
+	
+	SSC-SPR-1640 backcorr (version 1.5.1): documentation macros
+
+	SSC-SPR-1628 backcorr (version 1.5.1): Task fails test harness
+	
+Version 1.5.1 - 2000-03-10 (GV/SOC)
+-------------
+	+ patched to cope with a problem in the dal. Do not absorb this
+	patch in the development track.
+
+Version 1.5 29/11/1999
+----------------------
+
+SSC-SPR-1358 fixed: In the test file I was testing for SAS_CCFDIR which is no
+longer a environment variable needed
+
+Version 1.4 28/09/1999
+----------------------
+
+The following SPR has been fixed:
+
+SSC-SPR-1270
+     backcorr (version 1.3): Use message instead of write(*,*)
+
+Note that the input spectrum now contains 4095 channels to
+comply with the CAL.
+
+Version 1.3 30/07/1999
+----------------------
+
+The following SPR has been fixed
+	
+SSC-SPR-1132
+     backcorr (version 1.2): dummy template .cc break build on Digital
+     Unix (+fix) Submitted on 29th July 1999 by Achim Bohnet
+     (ach@mpe.mpg.de) Closed 30th July 1999
+	
+Version 1.2 10/07/1999
+----------------------
+
+Following the tests performed by Dean Hishaw, the following SPRs
+have been raised and are now closed in the version 1.2
+	
+SSC-SPR-1046
+     backcorr (version 1.1): Warning in verbosity level
+     Submitted on 8th July 1999 by Dean Hinshaw (dah@star.le.ac.uk)
+     Closed 10th July 1999
+SSC-SPR-1049
+     backcorr (version 1.1): Bad output with high verbosity
+     Submitted on 8th July 1999 by Dean Hinshaw (dah@star.le.ac.uk)
+     Accepted 10th July 1999
+     Closed 10th July 1999
+SSC-SPR-1047
+     backcorr (version 1.1): Unclear message for spectrum with zero rows.
+     Submitted on 8th July 1999 by Dean Hinshaw (dah@star.le.ac.uk)
+     Closed 10th July 1999
+SSC-SPR-1045
+     backcorr (version 1.1): Does not fail when SAS_CCFDIR not set
+     Submitted on 8th July 1999 by Dean Hinshaw (dah@star.le.ac.uk)
+     Closed 10th July 1999
+SSC-SPR-1044
+     backcorr (version 1.1): Should not test for FTOOLS in test harness
+     Submitted on 8th July 1999 by Dean Hinshaw (dah@star.le.ac.uk)
+     Closed 10th July 1999
+SSC-SPR-1048
+     backcorr (version 1.1): Output file not OGIP compliant
+     Submitted on 8th July 1999 by Dean Hinshaw (dah@star.le.ac.uk)
+     Closed 10th July 1999
+SSC-SPR-1043
+     backcorr (version 1.1): background region file not an annulus
+     Submitted on 8th July 1999 by Dean Hinshaw (dah@star.le.ac.uk)
+     Closed 10th July 1999
+SSC-SPR-1042
+     backcorr (version 1.1): Input test file is not OGIP compliant
+     Submitted on 8th July 1999 by Dean Hinshaw (dah@star.le.ac.uk)
+     Closed 10th July 1999
+SSC-SPR-1041
+     backcorr (version 1.1): parameter names do not follow SAS conventions
+     Submitted on 8th July 1999 by Dean Hinshaw (dah@star.le.ac.uk)
+     Closed 10th July 1999
+SSC-SPR-1040
+     backcorr (version 1.1): Errors in parameter file
+     Submitted on 8th July 1999 by Dean Hinshaw (dah@star.le.ac.uk)
+     Closed 10th July 1999
+SSC-SPR-1039
+     backcorr (version 1.1): backcorr should not depend on evselect
+     Submitted on 8th July 1999 by Dean Hinshaw (dah@star.le.ac.uk)
+     Closed 10th July 1999
+SSC-SPR-1038
+     backcorr (version 1.1): Potential scope of variables to broad
+     Submitted on 8th July 1999 by Dean Hinshaw (dah@star.le.ac.uk)
+     Closed 10th July 1999
+
+The documentation has been changed accordingly.
+	
+Version 1.1 05/07/1999
+----------------------
+
+ - arfgen is now included in the DEPEND file
+	
+Version 0.1
+----------------------------
+
+- Directory structure created by pkgmaker.
+

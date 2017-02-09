@@ -1,0 +1,64 @@
+<!-- converted from XPI formatted "emask.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="expimageset" type="dataset" mandatory="yes" default="expimage.fits">
+   <DESCRIPTION>
+    Names of exposure images
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="detmaskset" type="dataset" mandatory="yes" default="detmask.fits">
+   <DESCRIPTION>
+    Name of detection mask file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="threshold1" type="real" default="0.3">
+   <DESCRIPTION>
+    Threshold parameter 1: fraction of maximum exposure
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    threshold1 in [0.0:1.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="threshold2" type="real" default="0.5">
+   <DESCRIPTION>
+    Threshold parameter 2: threshold for gradient of exposure
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    threshold2 in [0.0:10.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="withregionset" type="bool" default="no">
+   <DESCRIPTION>
+    Read a FITS region file and exclude circular/box regions from the mask
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+	  <PARAM id="regionset" type="table" default="region.fits">
+   		<DESCRIPTION>
+    		Name of the FITS region file providing the regions to be excluded
+   		</DESCRIPTION>
+   		<CONSTRAINTS>
+    		true
+   		</CONSTRAINTS>
+  	</PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+ </CONFIG>
+</FILE>

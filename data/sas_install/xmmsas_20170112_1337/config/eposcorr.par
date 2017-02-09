@@ -1,0 +1,363 @@
+<!-- converted from XPI formatted "eposcorr.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="xrayset" type="file" mandatory="yes">
+   <DESCRIPTION>
+    FITS file with  X-ray source positions
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="opticalset" type="file" mandatory="yes">
+   <DESCRIPTION>
+    FITS file with  optical source positions
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="findrotation" type="bool" default="no">
+   <DESCRIPTION>
+    Should the rotation error be determined? Not used yet
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="niter" type="int" default="3">
+   <DESCRIPTION>
+    Number of iterations
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    niter in [1:8]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="maxoffset" type="real" default="8">
+   <DESCRIPTION>
+    Maximum possible ra/dec offsets (arcsec)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    maxoffset in [4:15.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="maxposnerr" type="real" default="20">
+   <DESCRIPTION>
+    Max. position error (arcsec) of X-ray src to consider in fit (D.M.)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    maxposnerr in [1.0:120.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="maxrotation" type="real" default="1">
+   <DESCRIPTION>
+    Maximum possible rotation offset (degrees)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    maxrotation in [0.50:4.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="maxdist" type="real" default="20">
+   <DESCRIPTION>
+    Max. distance (arcsec) optical src to nearest X-ray src
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    maxdist in [4.0:120.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="usemaxdist" type="bool" default="yes">
+   <DESCRIPTION>
+    Use maxdist to filter optical source list
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="minbmagn" type="real" default="0">
+   <DESCRIPTION>
+    Constraints on optical B magnitudes
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    minbmagn in [-2.0:30.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="maxbmagn" type="real" default="26">
+   <DESCRIPTION>
+    Constraints on optical B magnitudes
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    maxbmagn in [-2.0:30.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="usebmagn" type="bool" default="no">
+   <DESCRIPTION>
+    Use B magnitude to constrain the optical lists
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="minrmagn" type="real" default="0">
+   <DESCRIPTION>
+    Constraints on optical R magnitudes
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    minrmagn in [-2.0:30.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="maxrmagn" type="real" default="26">
+   <DESCRIPTION>
+    Constraints on optical R magnitudes
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    maxrmagn in [-2.0:30.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="usermagn" type="bool" default="no">
+   <DESCRIPTION>
+    Use R magnitude to constrain the optical lists
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="makeimage" type="bool" default="no">
+   <DESCRIPTION>
+    Make an image of the likelihood distribution
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="imagename" type="file" default="likelihood_test.fits">
+   <DESCRIPTION>
+    Likelihood image name
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="xrayra" type="string" default="RA">
+   <DESCRIPTION>
+    Column name of X-ray source position RA
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="xraydec" type="string" default="DEC">
+   <DESCRIPTION>
+    Column name of X-ray source position DEC
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="xrayradecerr" type="string" default="RADEC_ERR">
+   <DESCRIPTION>
+    Column name of X-ray source position error
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="xraytableext" type="string" default="SRCLIST">
+   <DESCRIPTION>
+    X-ray source list fits table extension name
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="opticalra" type="string" default="CAT_RA">
+   <DESCRIPTION>
+    Column name of optical catalogue position RA (column in single or double precision)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="opticaldec" type="string" default="CAT_DEC">
+   <DESCRIPTION>
+    Column name of optical catalogue position DEC (column in single or double precision)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="opticalradecerr" type="string" default="CAT_RADEC_ERR">
+   <DESCRIPTION>
+    Column name of optical catalogue position error (column in single or double precision)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="bmag" type="string" default="Bmagn">
+   <DESCRIPTION>
+    Column name of optical B magnitudes (column in single precision)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="rmag" type="string" default="Rmagn">
+   <DESCRIPTION>
+    Column name of optical R magnitudes (column in single precision)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="opticaltableext" type="string" default="RAWRES">
+   <DESCRIPTION>
+    Optical catalogue fits table extension name
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withmatchtable" type="bool" default="no">
+   <DESCRIPTION>
+    write table of matched objects
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+  	<PARAM id="matchset" type="file" default="matches.fits">
+   		<DESCRIPTION>
+    		name of matched objects file
+   		</DESCRIPTION>
+   		<CONSTRAINTS>
+    		true
+   		</CONSTRAINTS>
+  		</PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="calculateoffsets" type="bool" default="yes">
+   <DESCRIPTION>
+    Calculate offsets; if no: use offsets/rotation provided by input parameter
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="raoffset" type="real" default="0">
+   <DESCRIPTION>
+    RA offset in arcsec
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="decoffset" type="real" default="0">
+   <DESCRIPTION>
+    DEC offset in arcsec
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="rotation" type="real" default="0">
+   <DESCRIPTION>
+    rotation angle in degrees
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="rawxsyserr" type="real" default="1.5">
+   <DESCRIPTION>
+    systematic error of input X-ray positions
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="minxsyserr" type="real" default="0.2">
+   <DESCRIPTION>
+    irreducible systematic error of X-ray positions
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="maxsig" type="real" default="5">
+   <DESCRIPTION>
+    sigma cutoff for matches X-ray/optical matches
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="usemaxsig" type="bool" default="yes">
+   <DESCRIPTION>
+    use sigma cutoff limit
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

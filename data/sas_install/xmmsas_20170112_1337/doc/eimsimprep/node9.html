@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Make sensitivity and reciprocal-sensitivity maps</TITLE>
+<META NAME="description" CONTENT="Make sensitivity and reciprocal-sensitivity maps">
+<META NAME="keywords" CONTENT="eimsimprep">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eimsimprep.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eimsimprep (eimsim-2.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Make maps of expected"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Add bits and bobs"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eimsimprep.html">Home Page</A> / <A  HREF="node2.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00025000000000000000"></A>
+<A NAME="eimsimprep:description:sensmaps"></A>
+<BR>
+Make sensitivity and reciprocal-sensitivity maps
+</H2>
+
+<P>
+******* should be part of the user-supplied det-prep script??? But does not sensy need an estimate of the background?
+
+<P>
+This function may be performed alone by calling the script with <TT>entrystage</TT> and <TT>finalstage</TT>=`sensmaps'.
+
+<P>
+Theoretically, given an exposure map, a background map and a knowledge of the source detection algorithm, one ought to be able to calculate the sensitivity limit of the source detection algorithm at each point in the sky, in terms of a map of the minimum flux of a point source which would be expected to be detected about half of the time. (Since this flux is obviously infinite for all points at which the exposure is zero, it is in practice often more convenient to work with the reciprocal map). Unfortunately, in both the 1XMM and the 2XMM detection algorithms, source candidates are accepted as valid as a function of not one but two independent, but in practice interfering, parameters (<A NAME="733"></A><A NAME="tex2html40"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>'s <A NAME="737"></A><TT>LIKE</TT> and <A NAME="739"></A><A NAME="tex2html41"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>'s <A NAME="743"></A><TT>DETML</TT>). The present author has shrunk from the task of disentangling this procedure. Since neither <A NAME="745"></A><A NAME="tex2html42"
+  HREF="../esensmap/index.html"><SPAN  CLASS="textbf">esensmap</SPAN></A>
+nor <A NAME="749"></A><A NAME="tex2html43"
+  HREF="../esensitivity/index.html"><SPAN  CLASS="textbf">esensitivity</SPAN></A>
+provides a sensitivity recipe which is formally correct in respect to these two detection algorithms, we have at this time no way within the sas to make such maps.
+
+<P>
+However, useful as a sensitivity map may be, it is not essential in the context of simulations. At present, exposure maps are used as a stop-gap reciprocal sensitivity map. This results in incorrect non-zero values of the <A NAME="753"></A><TT>INV_SENSY</TT> column of the list of simulated sources. However, only the zero values are important for the simulation machinery, so it functions correctly nevertheless.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Make maps of expected"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Add bits and bobs"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

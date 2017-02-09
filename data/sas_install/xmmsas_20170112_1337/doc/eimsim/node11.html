@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Choice of source detection scheme</TITLE>
+<META NAME="description" CONTENT="Choice of source detection scheme">
+<META NAME="keywords" CONTENT="eimsim">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eimsim.css">
+
+<LINK REL="next" HREF="node12.html">
+<LINK REL="previous" HREF="node10.html">
+<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node12.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eimsim (eimsim-2.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node10.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Multiple entry and exit"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Overview of the eimsim"></A>
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameter `astest'"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node29.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eimsim.html">Home Page</A> / <A  HREF="node4.html">Description</A> / <A  HREF="node6.html">Overview of the eimsim</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00042500000000000000"></A>
+<A NAME="eimsim:description:detchoice"></A>
+<BR>
+Choice of source detection scheme
+</H3>
+
+<P>
+It is possible to run the simulation with different schemes for detecting sources in the simulated images. The task <A NAME="1183"></A><A NAME="tex2html46"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+calls a separate script to perform the source detection. The user may either select one from the (small) range available, or supply their own. It is usually also necessary to supply a matching `preparation' script to <A NAME="1187"></A><A NAME="tex2html47"
+  HREF="../eimsimprep/index.html"><SPAN  CLASS="textbf">eimsimprep</SPAN></A>. Exact details of the necessary calls can be found in the documentation for these respective tasks. In `cookbook' terms however, the two styles appear as follows:
+
+<UL>
+<LI>If the user chooses one of the supplied detection schemes, eg the 2xmm scheme, the `cookbook' procedure changes to the following:
+      
+<OL>
+<LI>Do items 1 to 3 from the `cookbook' (section <A HREF="node5.html#eimsim:description:cookbook">4.1</A>).
+</LI>
+<LI>Copy <TT>$SAS_DIR/lib/data/eimsimdata/srcspec_2xmm.fits</TT> into the PWD and rename it `<TT>srcspec.fits</TT>'.
+</LI>
+<LI>Run the tasks as follows:
+          <PRE>
+        eimsimprep dettype=2xmm
+        eimsimbatch
+        eimsimreduce
+</PRE>
+</LI>
+</OL>
+
+<P>
+</LI>
+<LI>If the user wishes to supply their own detection and det-prep tasks, the `cookbook' procedure changes to the following:
+      
+<OL>
+<LI>Do items 1 to 3 from the `cookbook' (section <A HREF="node5.html#eimsim:description:cookbook">4.1</A>).
+</LI>
+<LI>Copy an appropriate template file from <TT>$SAS_DIR/lib/data/eimsimdata/</TT> into the PWD, or otherwise generate one; if you want to adhere to the present simple cookbook style you will then need to rename it `srcspec.fits'.
+</LI>
+<LI>Run the tasks as follows:
+          <PRE>
+        eimsimprep detpreptask=&lt;name of my det prep task&gt;
+        eimsimbatch dettask=&lt;name of my detection task&gt;
+        eimsimreduce
+</PRE>
+</LI>
+</OL>
+
+<P>
+Of course you can also use this command style to run one of the supplied detection schemes if you wish. If you do this you will find that there is some protection in place to prevent you running clashing preparation and detection scripts. You will also be warned if you try to use a 1xmm template set with 2xmm detection scheme, for example.
+  
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node10.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Multiple entry and exit"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Overview of the eimsim"></A>
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameter `astest'"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node29.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

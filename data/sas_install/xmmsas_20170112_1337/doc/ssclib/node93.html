@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Poisson probability</TITLE>
+<META NAME="description" CONTENT="Poisson probability">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node94.html">
+<LINK REL="previous" HREF="node92.html">
+<LINK REL="up" HREF="node91.html">
+<LINK REL="next" HREF="node94.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node92.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Integrated probability"></A>
+<A HREF="node91.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Poissonian statistics and source"></A>
+<A HREF="node94.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Integrated Poisson probability"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node91.html">Poissonian statistics and source</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00082000000000000000">
+Poisson probability</A>
+</H2>
+
+<P>
+This returns the probability <SPAN CLASS="MATH"><IMG
+ WIDTH="34" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img88.png"
+ ALT="$P(i)$"></SPAN> of the occurrence of an integer <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img89.png"
+ ALT="$i$"></SPAN> according to the Poisson distribution
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+P(i) = \frac{a^i exp(-a)}{i!}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="125" HEIGHT="41" BORDER="0"
+ SRC="img90.png"
+ ALT="\begin{displaymath}
+P(i) = \frac{a^i exp(-a)}{i!}
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+<P>
+where <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img91.png"
+ ALT="$a$"></SPAN> is the average or expectation value of <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img89.png"
+ ALT="$i$"></SPAN>.
+
+<P>
+Note that the argument may also be a real number. In this case what is returned is
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+p(r) = \frac{a^r exp(-a)}{\Gamma(r+1)}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="126" HEIGHT="44" BORDER="0"
+ SRC="img92.png"
+ ALT="\begin{displaymath}
+p(r) = \frac{a^r exp(-a)}{\Gamma(r+1)}
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+<P>
+The value <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img93.png"
+ ALT="$p$"></SPAN> is not quite a probability density: it would need to be normalized by
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+\int_{0}^{\inf} dr \; \frac{a^r exp(-a)}{\Gamma(r+1)}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="130" HEIGHT="47" BORDER="0"
+ SRC="img94.png"
+ ALT="\begin{displaymath}
+\int_{0}^{\inf} dr \; \frac{a^r exp(-a)}{\Gamma(r+1)}
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+<P>
+in order for this to be true. However it does have the property that, if <SPAN CLASS="MATH"><IMG
+ WIDTH="38" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img95.png"
+ ALT="$r=i$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="83" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img96.png"
+ ALT="$p(r)=P(i)$"></SPAN>.
+
+<P>
+<PRE>
+  interface poissonProb
+    real function poissonProbSingle(av, realI)
+      real(single), intent(in) :: av, realI
+    end function poissonProbSingle
+
+    real function poissonProbInt32(av, i)
+      real(single), intent(in) :: av
+      integer(int32), intent(in) :: i
+    end function poissonProbInt32
+  end interface
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="testprods">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="testprods.css">
+
+<LINK REL="next" HREF="node2.html">
+<LINK REL="previous" HREF="testprods.html">
+<LINK REL="up" HREF="testprods.html">
+<LINK REL="next" HREF="node2.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+testprods (testprods-1.47) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="testprods.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Home Page"></A>
+<A HREF="testprods.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Bibliography"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="testprods.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00010000000000000000"></A>
+<A NAME="testprods:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+This package contains FITS datasets (mostly images or event lists) for use in test harnesses for a number of sas tasks.
+
+<P>
+To make use of this facility for your own task, do the following:
+
+<P>
+
+<OL>
+<LI>Make a new subdirectory `mytask_data', or what you will, under <TT>testprods/</TT>.
+
+<P>
+</LI>
+<LI>Move the data files you need to run the test harness of mytask to <TT>testprods/mytask_data/</TT> .
+    The data files are preferably compressed, especially if they are big in size.
+    Note all the data files should have right readable/writable/executable permissions;
+    in particular no executable permission should be given
+    (otherwise compiling or uploading can fail).
+
+<P>
+</LI>
+<LI>Add `mytask_data' to the DATADIRS line of testprods/Makefile.
+
+<P>
+</LI>
+<LI>Check that testprods compiles ok, then upload testprods with an increment to the minor version number.
+
+<P>
+</LI>
+<LI>Add lines
+
+<P>
+<PRE>
+my $data_dir = `saslocate lib/data/mytask_data`;
+chomp($data_dir);
+</PRE>
+
+<P>
+to your perl test harness. (Shell-script preferers can, I am sure, translate.) Your files can now be found in the subdirectory name stored in the variable $data_dir. Alter command lines in the test harness to read the files from there.
+
+<P>
+</LI>
+<LI>Check that this all works then upload your new version of mytask.
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="testprods.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Home Page"></A>
+<A HREF="testprods.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Bibliography"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

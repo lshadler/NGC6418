@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="attbin">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="attbin.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="attbin.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+attbin (attcalc2-1.3.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Construction of the binned-attitude"></A>
+<A HREF="attbin.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="attbin.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="attbin:description:parameters"></A>
+<A NAME="593"></A>
+<tr valign=top bgcolor='silver'><td><b>attsource</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>odf</td><td>odf|atthk</td></tr>
+
+<tr valign=top><td colspan=5>
+    Source of the attitude data. If this equals `odf', the environment variable SAS_ODF must be set to point to the appropriate ODF.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="600"></A>
+<tr valign=top bgcolor='silver'><td><b>odfattsource</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>ahf</td><td>ahf|om</td></tr>
+
+<tr valign=top><td colspan=5>
+    Whether to use the Attitude History File or the OM pointing history file from the ODF. This parameter is read if <TT>attsource</TT>=`odf'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="609"></A>
+<tr valign=top bgcolor='silver'><td><b>timesource</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>user</td><td>user|eventlist</td></tr>
+
+<tr valign=top><td colspan=5>
+    If this = `user', the task reads parameters <TT>tstart</TT>, <TT>tstop</TT> (or <TT>datestrstart</TT> and <TT>datestrstop</TT>) and <TT>tstep</TT>, and constructs the sequence of attitude sample times from these numbers; if it = `eventlist', the event times from the event list supplied to parameter <TT>eventset</TT> are used.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="628"></A>
+<tr valign=top bgcolor='silver'><td><b>usertimestyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>timestamp</td><td>timestamp|datetimestr</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>timesource</TT>=`user'. If `timestamp' is specified, the start and stop times are read from parameters <TT>tstart</TT> and <TT>tstop</TT> as double-precision `timestamps' (seconds since the XMM-Newton reference epoch). If <TT>usertimestyle</TT>=`datetimestr', the start and stop times are read from parameters <TT>datestrstart</TT> and <TT>datestrstop</TT> as strings.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="647"></A>
+<tr valign=top bgcolor='silver'><td><b>tstart</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>0.0d0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Time stamp of the first time sample. This is read if <TT>timesource</TT>=`user' and <TT>usertimestyle</TT>=`timestamp'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="658"></A>
+<tr valign=top bgcolor='silver'><td><b>tstop</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>0.0d0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Time stamp of the last allowed time sample. This is read if <TT>timesource</TT>=`user' and <TT>usertimestyle</TT>=`timestamp'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="669"></A>
+<tr valign=top bgcolor='silver'><td><b>datestrstart</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>0000-00-00T00:00:00</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+     Date-time string of the first time sample. This is read if <TT>timesource</TT>=`user' and <TT>usertimestyle</TT>=`datetimestr'.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="680"></A>
+<tr valign=top bgcolor='silver'><td><b>datestrstop</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>0000-00-00T00:00:00</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Date-time string of the last allowed time sample. This is read if <TT>timesource</TT>=`user' and <TT>usertimestyle</TT>=`datetimestr'.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="691"></A>
+<tr valign=top bgcolor='silver'><td><b>tstep</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>1.0</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$0&gt;$"></SPAN><TT>tstep</TT></td></tr>
+
+<tr valign=top><td colspan=5>
+    Separation between successive time samples. This is read if <TT>timesource</TT>=`user'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="702"></A>
+<tr valign=top bgcolor='silver'><td><b>eventset</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Name of the event-list dataset which supplies time samples from the event times. This is read if <TT>timesource</TT>=`eventlist'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="711"></A>
+<tr valign=top bgcolor='silver'><td><b>pntkwdset</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Name of the dataset from which to read the spacecraft average pointing keywords (usually expected to be the output file of <A NAME="721"></A><A NAME="tex2html16"
+  HREF="../atthkgen/index.html"><SPAN  CLASS="textbf">atthkgen</SPAN></A>). This parameter is read if <TT>attsource</TT>=`odf' and <TT>timesource</TT>=`eventlist'.
+
+<br>&nbsp;</td></tr>
+
+<A NAME="727"></A>
+<tr valign=top bgcolor='silver'><td><b>atthkset</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The dataset (normally this would be expected to be the output files from task <A NAME="736"></A><A NAME="tex2html17"
+  HREF="../atthkgen/index.html"><SPAN  CLASS="textbf">atthkgen</SPAN></A>) which contains samples of the spacecraft attitude. This is read if <TT>attsource</TT>=`atthk'.
+
+<br>&nbsp;</td></tr>
+
+  <A NAME="741"></A>
+<tr valign=top bgcolor='silver'><td><b>atthkattsource</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>ahf</td><td>ahf|om</td></tr>
+
+<tr valign=top><td colspan=5>
+    Whether to use the Attitude History File data or the OM pointing history data from the <TT>atthkset</TT> file. This parameter is read if <TT>attsource</TT>=`atthk'.
+    <br>&nbsp;</td></tr>
+
+<A NAME="752"></A>
+<tr valign=top bgcolor='silver'><td><b>binnedattset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>binned_att.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The dataset which is to contain the binned attitude data.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="759"></A>
+<tr valign=top bgcolor='silver'><td><b>maxdelta</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>0.02</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$0&lt;$"></SPAN><TT>maxdelta</TT></td></tr>
+
+<tr valign=top><td colspan=5>
+    A new attitude bin is started if the attitude jumps by more than this amount (in arcsec).
+    <br>&nbsp;</td></tr>
+
+  <A NAME="768"></A>
+<tr valign=top bgcolor='silver'><td><b>withmedianpnt</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Whether to use/calculate median or mean pointing for the *_PNT keywords (and, if <TT>attsource</TT>=`atthk', whether to access the mean or median atthk data).
+    <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Construction of the binned-attitude"></A>
+<A HREF="attbin.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

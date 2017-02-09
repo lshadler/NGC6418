@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>SAS_OBT_MET_FIT</TITLE>
+<META NAME="description" CONTENT="SAS_OBT_MET_FIT">
+<META NAME="keywords" CONTENT="oal">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="oal.css">
+
+<LINK REL="next" HREF="node11.html">
+<LINK REL="previous" HREF="node9.html">
+<LINK REL="up" HREF="node5.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+oal (oal-3.133.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="SAS_TIMECORR_TCX"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Environment variables"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="SAS_OBT_MET_LINEAR"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="oal.html">Home Page</A> / <A  HREF="node3.html">User-visible functionality</A> / <A  HREF="node5.html">Environment variables</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00032500000000000000"></A><A NAME="690"></A><A NAME="oal:env:obtmetfit"></A>
+<BR>
+<TT>SAS_OBT_MET_FIT</TT>
+</H3>
+The conversion of Spacecraft-Onboard-Time (OBT) to
+Mission-Elapsed-Time (MET) tags
+makes use of a polynomial to which the data in the ODF Time Correlation
+File has been fitted. This is controlled through five parameters, viz:
+<EM>method</EM> (see below), <EM>deg</EM> (maximum degree of the polynomial),
+<EM>rms</EM> (Root-Mean-Square abandoning criterion for the fit), <EM>frac</EM>
+(fraction of OBT-MET data points that are allowed to be removed from the
+fitting procedure to fulfill the RMS criterion), and <EM>igngshov</EM> (see
+below). Default values are (0, 4, 5.e-5, .9, 1).
+
+<P>
+<EM>method</EM> can either be given as 0 or 1. A value of 0 means that
+the OBT-MET fit uses ready-made time correlation data that have been
+corrected for signal propagation delays using predicted orbit data.
+time. A value of 1 forces this calculation to be re-done with more
+accurate reconstructed orbit data. This value is ingored if TCX data is used, 
+since the Reconstructed Time Correlation data is already corrected.
+
+<P>
+The value assigned to <EM>deg</EM> chooses one of two possible
+options for the interpolating function:
+<DL COMPACT>
+<DT><!-- MATH
+ $\mbox{{\em deg}}>0$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\mbox{{\em deg}}&gt;0$"></SPAN></DT>
+<DD>: the maximum degree of the computed fit
+polynomial.
+Please note: the <EM>actual</EM> value after the fitting process can be smaller
+if the RMS criterion can be achieved with a smaller degree.
+</DD>
+<DT><!-- MATH
+ $\mbox{{\em deg}}<0$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\mbox{{\em deg}}&lt;0$"></SPAN></DT>
+<DD>: the time correlation data are not fitted by
+a single global function but by piecewise-linear segments through the
+instantaneous data values.
+</DD>
+</DL>
+
+<P>
+<EM>igngshov</EM> can either be given as 0 or 1. A value of 1 means that
+all groundstation handovers in the time correlation data are ignored,
+i.e., all data from all stations are considered in the construction
+of the fit polynomial. <EM>igngshov</EM>=0 on the other hand will
+trigger that all time correlation data after a handover are <EM>not</EM> taken
+into account, i.e. the fit polynomial is constructed just on the basis
+of the data from the first ground station alone. In the past there have been
+cases where the ground times of different stations varied by an amount
+large enough to make the OBT-MET fit fail. If this happens
+the <EM>igngshov</EM> provides a way to work around the problem such
+that processing of the ODF in question can be performed. Please note
+that this can only be a temporary measure and that the anomaly should
+be brought to the attention of the SOC. The default value of
+<EM>igngshov</EM> is 1.
+
+<P>
+The actual values of <EM>method</EM>, <EM>deg</EM>, <EM>rms</EM>, <EM>frac</EM>, and
+<EM>igngshov</EM>
+shall be written to corresponding attributes <A NAME="710"></A><TT>TFIT_RPD</TT>, <A NAME="712"></A><TT>TFIT_DEG</TT>,
+<A NAME="714"></A><TT>TFIT_RMS</TT>, <A NAME="716"></A><TT>TFIT_PFR</TT>, <A NAME="718"></A><TT>TFIT_IGH</TT>
+in the event list being processed.
+
+<P>
+<EM>Caution</EM>: Please alter the above parameters via <A NAME="720"></A><TT>SAS_OBT_MET_FIT</TT>
+only when you exactly know what you are doing. Out-of-range conditions
+are caught but improper values can lead to inaccurate event arrival times.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="SAS_TIMECORR_TCX"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Environment variables"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="SAS_OBT_MET_LINEAR"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

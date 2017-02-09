@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Intrinsic dispersion</TITLE>
+<META NAME="description" CONTENT="Intrinsic dispersion">
+<META NAME="keywords" CONTENT="embadpixfind">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="embadpixfind.css">
+
+<LINK REL="next" HREF="node8.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+embadpixfind (embadpixfind-2.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Columns and rows"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Dark features"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="embadpixfind.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00034000000000000000">
+Intrinsic dispersion</A>
+</H2>
+
+<P>
+Sometimes the distribution of the number of counts in the window around
+the tested pixel does not follow the Poisson law at all, but is much broader.
+This is particularly true for columns at low energy, because of charge
+transfer efficiency variations from one column to the next.
+This effect is of course more obvious for large count rates,
+in particular within bright sources.
+
+<P>
+To avoid wrongly detecting columns as bad (either dark or bright),
+the observed dispersion in the distribution is used to compute
+the significance of an excess assuming a Gaussian distribution.
+What is actually measured is the average absolute deviation
+(this is more robust than the root mean square when a few other bright
+pixels are present) divided by 0.8 (to recover the standard deviation
+when the distribution is normal).
+The true significance is taken to be the smallest of the Gaussian
+estimate and the Poisson one (from Eq.<A HREF="node5.html#lima">1</A>).
+The cost of this security is to detect less easily groups of bad
+columns/rows, because the observed dispersion is large even when
+the tested column/row is discounted.
+
+<P>
+In addition, the <TT>minratio</TT> parameter avoids detecting bright pixels, 
+rows or columns with too small contrast
+on observations with high statistics.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Columns and rows"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Dark features"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

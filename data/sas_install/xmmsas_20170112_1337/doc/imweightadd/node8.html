@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Estimation of the optimal weights</TITLE>
+<META NAME="description" CONTENT="Estimation of the optimal weights">
+<META NAME="keywords" CONTENT="imweightadd">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="imweightadd.css">
+
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+imweightadd (tools-1.67) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Null-hypothesis probability distribution for"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="imweightadd.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00035000000000000000"></A>
+<A NAME="imweightadd:description:optimization"></A>
+<BR>
+Estimation of the optimal weights
+</H2>
+
+<P>
+In order to estimate the optimal weights, <A NAME="522"></A><A NAME="tex2html7"
+  HREF="../imweightadd/index.html"><SPAN  CLASS="textbf">imweightadd</SPAN></A>
+needs two lists: a list of background maps and a list of source relative expectation values <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img63.png"
+ ALT="$\sigma_i$"></SPAN>.
+
+<P>
+The first job is to reduce each background map to a single representative value <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img64.png"
+ ALT="$\beta_i$"></SPAN> of background counts per pixel. This is done by making a histogram of all the non-zero values in each map and selecting the value which falls nearest the 90% mark on the histogram. The rationale behind this is as follows. Source detection is likely to be most sensitive near the centre of the image; this is also the place where one would expect the maximum to be in the background values. Hence it makes sense to choose a value which is nearer to the maximum value than to the minimum. However there is also the possibility of local increases in background due to out-of-time events or such like. Because of this possibility it was thought undesirable to pluck the background value right from the top of the tree so to speak: hence the 90% figure was arrived at as a compromise.
+
+<P>
+The next thing is to normalize the <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img65.png"
+ ALT="$\sigma$"></SPAN>s to 1. Naturally at least one of them must be non-zero.
+
+<P>
+<A NAME="526"></A><A NAME="tex2html8"
+  HREF="../imweightadd/index.html"><SPAN  CLASS="textbf">imweightadd</SPAN></A>
+then performs a minimisation via a simplex algorithm. The quantity to be minimized is the detection sensitivity as defined in section <A HREF="node6.html#imweightadd:description:sensitivity">3.3</A>. The analogue of equation <A HREF="node6.html#sens">2</A> in the present case is
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+L_{\rm {cutoff}} = -\ln[1 - Q(ky_{\rm {cutoff}},k\mu)]
+\end{equation}
+ -->
+<A NAME="sens2"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="sens2"></A><IMG
+ WIDTH="228" HEIGHT="28" BORDER="0"
+ SRC="img66.png"
+ ALT="\begin{displaymath}
+L_{\rm {cutoff}} = -\ln[1 - Q(ky_{\rm {cutoff}},k\mu)]
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">6</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+where
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+y_{\rm {cutoff}} = \sum_{i=1}^N w_i (\beta_i + S_{\rm {cutoff}} \sigma_i),
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="212" HEIGHT="56" BORDER="0"
+ SRC="img67.png"
+ ALT="\begin{displaymath}
+y_{\rm {cutoff}} = \sum_{i=1}^N w_i (\beta_i + S_{\rm {cutoff}} \sigma_i),
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+\mu = \sum_{i=1}^N w_i \beta_i,
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="90" HEIGHT="56" BORDER="0"
+ SRC="img68.png"
+ ALT="\begin{displaymath}
+\mu = \sum_{i=1}^N w_i \beta_i,
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+v = \sum_{i=1}^N w_i^2 \beta_i,
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="92" HEIGHT="56" BORDER="0"
+ SRC="img69.png"
+ ALT="\begin{displaymath}
+v = \sum_{i=1}^N w_i^2 \beta_i,
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+and
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+k = \mu / v
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="55" HEIGHT="28" BORDER="0"
+ SRC="img70.png"
+ ALT="\begin{displaymath}
+k = \mu / v
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+as before. At each step, equation <A HREF="#sens2">6</A> is inverted numerically via a Ridders-method algorithm to yield the sensitivity <!-- MATH
+ $S_{\rm {cutoff}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="47" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$S_{\rm {cutoff}}$"></SPAN>. The minimization procedure therefore arrives at the set of weights which yield the minimum value (within convergence limits) of <!-- MATH
+ $S_{\rm {cutoff}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="47" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$S_{\rm {cutoff}}$"></SPAN>. These weights are then applied to generate weighted sums of the input images and also the input background maps and exposure maps.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Null-hypothesis probability distribution for"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="espfilt">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="espfilt.css">
+
+<LINK REL="next" HREF="node16.html">
+<LINK REL="previous" HREF="node14.html">
+<LINK REL="up" HREF="espfilt.html">
+<LINK REL="next" HREF="node16.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+espfilt (espfilt-2.6) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node14.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Intermediate Files"></A>
+<A HREF="espfilt.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="espfilt.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00090000000000000000"></A>
+<A NAME="espfilt:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+Below is the algorithm for the CORNER METHOD
+   subroutine espfilt
+      Read parameters.	
+       Call method
+        if (method .eq. corner) then 
+	 call corner_method
+	 subroutine corner_method:
+	  task evselect (to create object image)
+	  task evselect (to create object light curve)
+	  task evselect (to create corners image)
+	  task evselect (to create corners light curve)
+	  call clean_lc (to bin and smooth)
+	  subroutine clean_lc:
+	   extract columns TIME, RATE from object LC
+	   extract columns TIME, RATE from corners LC
+	   bin TIME, RATE columns from object LC
+	   bin TIME, RATE columns from corners LC
+	   smooth RATE column from object LC
+	   smooth RATE column from corners LC
+	   create histogram from object 
+	    find peak of the distibution
+	  end clean_lc	   
+	  call gauss_fit 
+	  subroutine gauss_fit:
+	    find best paramater fit using Marquardt routines:
+	    MQM  maximum likelyhood fitting routine 
+	    MRQ  compute the matrix elements for Marquard method
+	    GFUNCS calculate gaussian function distribution
+	    return best fit
+	   end gauss_fit
+         end corner_method 
+	elseif (method .eq. ratio) then 
+	 call ratio_method
+ 	 subroutine ratio_method:
+	  task evselect (to create corners event list)
+	  task evselect (to extract corners spectral file)
+	  task backscale (to add area of corners region)
+	  task evselect (to create fov annulus event list)
+	  task evselect (to extract fov annulus spectral file)
+	  task backscale (to add area of fov annulus region)
+	  task evselect (to extract corners Lightcurve)
+	  task evselect (to extract fov annulus Lightcurve)
+	  extract time, counts, area for corners from spectrum and LC
+	  extract time, counts, area for fov annulus from spectrum and LC
+	   create ratio of FOV annulus to corner:
+	ratio =  fovann\_counts / corner\_counts * 
+         (corner\_time * corner\_area) / (fovann\_time * fovann\_area) 
+	   extract columns TIME, RATE from object LC
+	   extract columns TIME, RATE from corners LC
+	   bin TIME, RATE columns from object LC
+	   bin TIME, RATE columns from corners LC
+	   smooth RATE column from object LC
+	   smooth RATE column from corners LC
+	   create histogram from object 
+	  call clean_lc
+	  create ratio of FOV annulus to corner LC
+	  create GTI for time intervals when FOV\/corner ratio acceptable
+	 end ratio_method
+	end call_method
+	call write_qdp_fit
+	subroutine write_qdp_fit
+	 open QDP output file
+	 write header, title information
+	 write out count rate histogram
+	  overlay selection and fit limits
+	 write out FOV lightcurve
+	  overlay GTIs
+	 write out Corner lightcurve
+	  overlay GTIs
+	 open ASCII gti.txt file
+	  write out GTIs to ASCII
+	 task gtibuild create GTI fits file
+	 task evselect create object filtered event list
+	 task evselect create object filtered image
+	 task evselect create corners filtered event list
+	 task evselect create corners filtered image
+	Filtered event list, lightcurves, nice qdp plot are generated.
+   end espfilt
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

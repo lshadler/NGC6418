@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="srcmatch">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="srcmatch.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="srcmatch.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+srcmatch (srcmatch-3.20) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="srcmatch.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="srcmatch.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="srcmatch:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+    subroutine srcmatch
+      call subroutine read_set in order to read set 1
+      IF number of EMLDETECT datasets &gt; 1 THEN   
+         LOOP over input EMLDETECT datasets
+            call i/o subroutine for additional input sets       
+            call subroutine compare_src (correlates the two sets)
+            call subroutine combine_src (merge two sets into one set)
+            ! the first set is the main set and will finally constitute the
+            ! summary set
+         END LOOP
+         LOOP over input CROSSID datasets
+            call i/o subroutine for input sets  
+            call subroutine compare_src (correlates the two sets)
+            call subroutine crossid_srcs (fills in cross id pointers)
+         END LOOP
+      END IF
+
+      Copy source coordinate and source numbers from
+        OM observation source lists to memory.
+
+      LOOP over EMLDETECT source list
+
+        IF (ID_INST=0).AND.(ID_BAND=0) THEN 
+                    
+           LOOP over OM source coordinates
+              
+             Find EPIC OM counterparts (distance &lt; distance parameter) 
+
+             Increment `number of counterparts' counter and copy
+               to output record buffer
+
+             Write OM source number to output record buffer
+                 
+             Update OMFLAG and copy to output record buffer
+
+           END LOOP
+
+           Copy EMLDETECT source parameters to output record buffer.
+
+        END IF
+
+        IF (ID_INST&gt;=0.OR.ID_BAND&gt;=0) THEN  
+           Copy instrument and band specific EMLDETECT source parameters 
+             to output record buffer.
+        END IF
+
+       
+        IF (ID_INST=0.AND.ID_BAND.AND..NOT.first pass through loop) THEN
+           
+           Write out output record buffer in FITS format 
+             (EPIC FITS observation source list).             
+           Write out output record buffer in HTML format
+             (EPIC HTML observation source list).
+
+        END IF
+
+      END LOOP
+
+    end subroutine  srcmatch
+
+    subroutine compare_srcs
+        LOOP over two source lists
+          IF two sources are within max_err sigma of each other THEN
+                IF sources have no associations assigned yet THEN
+                        let the two sources point to each other
+          ELSE
+             IF New association is better than previous one THEN
+                  let the two sources point to each other
+             END
+          END IF
+        END LOOP
+    end subroutine compare_srcs
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Image Extraction</TITLE>
+<META NAME="description" CONTENT="Image Extraction">
+<META NAME="keywords" CONTENT="evselect">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="evselect.css">
+
+<LINK REL="next" HREF="node11.html">
+<LINK REL="previous" HREF="node9.html">
+<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+evselect (evselect-3.62) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Spectrum Extraction"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Extraction Stage (extractor)"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Light Curve Extraction"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node25.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="evselect.html">Home Page</A> / <A  HREF="node3.html">Description</A> / <A  HREF="node6.html">Extraction Stage (extractor)</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00032400000000000000">
+Image Extraction</A>
+</H3>
+
+<P>
+Image extraction is enabled by setting the
+name of the output file using the parameter <TT>imageset</TT>.  The name
+of the columns to use for the <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$x$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$y$"></SPAN> axes of the image are set using the
+parameters <TT>xcolumn</TT> and <TT>ycolumn</TT>.  The range of the columns used
+for image extraction is determined using the same algorithm as for the energy
+column in spectral extraction, and is controlled and determined independently
+for the <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$x$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$y$"></SPAN> columns.  The parameters used for the <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$x$"></SPAN> column are
+<TT>ximagemin</TT> and <TT>ximagemax</TT>, with similarly 
+named parameters for the <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$y$"></SPAN> column.
+
+<P>
+There are two options available for binning of images.  By default, the binning factor for the
+image is set such that the image will be of a certain size.  The size of the image
+is controlled by the parameters <TT>ximagesize</TT> and <TT>yimagesize</TT>, and
+is set to <SPAN CLASS="MATH"><IMG
+ WIDTH="71" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$600\times600$"></SPAN> by default. Note that non-integral binning of integer-valued
+columns is not allowed.  Thus when extracting an image from integer-valued 
+columns using <TT>ximagesize</TT> and <TT>yimagesize</TT>, the image binning factor
+will be rounded up to the nearest integer number, so that the actual extracted
+image may be smaller than what was requested.  It is also possible under these
+circumstances that the <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$x$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$y$"></SPAN> bin sizes could be set to different values, even
+though a square image was requested.  In this case a square image can be produced
+by setting the parameter <TT>squarepixels</TT> to true.  Then the <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$x$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$y$"></SPAN>
+bin sizes will both be set to whatever is the larger of the two values.
+
+<P>
+Alternatively, one can control the binning
+factor directly by setting the parameters <TT>ximagebinsize</TT> and <TT>yimagebinsize</TT>.
+
+<P>
+By default, an image is accumulated simply as counts of the number of rows (events)
+falling within each pixel.  However, if the parameter <TT>zcolumn</TT> is set,
+then the image is accumulated by summing up the values of the specified column
+for rows that fall within each pixel.  
+
+<P>
+By default, evselect tries to determine the best data type for the image created,
+under the assumption that the smallest data type possible should be used.  If
+<TT>zcolumn</TT> is not set, an integer-valued image will be created.  If
+<TT>zcolumn</TT> is set, a real-valued image will be created.  The default
+type of image can be over-ridden by setting the parameter <TT>imagedatatype</TT>.
+
+<P>
+Any World Coordinate System (WCS) information available for the columns used in
+image extraction will be propagated to the output image.  If no WCS information is
+available for a column, then the <A NAME="1130"></A><TT>CTYPE</TT> keyword for this axis of the image is
+set to the name of the column, and the other WCS keywords are set to reflect the
+range and binning of this column, as is done for <A NAME="1132"></A><TT>SPEC*</TT> keywords in spectral
+extraction.  If the image extraction columns do have WCS information, then one can
+request <A NAME="1134"></A><A NAME="tex2html15"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+to shift the image so that it is centered on a particular
+point in the sky.  This is activated by setting the coordinate center using the
+parameters <TT>raimagecenter</TT> and <TT>decimagecenter</TT>.  Coordinates must be
+given in decimal degrees.
+
+<P>
+As well as the standard WCS keywords described above, <A NAME="1140"></A><A NAME="tex2html16"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+also writes keywords to the image describing the ``physical''
+coordinate system, ie the native coordinate system of the columns used
+for extracting the image.  In order to maintain backward
+compatibility, there are currently two sets of redundant keywords
+written for this purpose.  The first set uses the <A NAME="1144"></A><TT>LTMn_m</TT> and
+<A NAME="1146"></A><TT>LTVn</TT> keywords to specify the transformation, where <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$n$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$m$"></SPAN> can
+take on the values of 1 or 2.  The transformation from the physical
+<!-- MATH
+ $(X_{ph}, Y_{ph})$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="75" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$(X_{ph}, Y_{ph})$"></SPAN> to the image <!-- MATH
+ $(X_{im}, Y_{im})$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="79" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$(X_{im}, Y_{im})$"></SPAN> coordinates is
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+\left( \begin{array}{ccc}
+LTM_{11} & LTM_{12} & LTV_1 \\
+LTM_{12} & LTM_{22} & LTV_2 \\
+0        & 0        & 1
+\end{array} \right)\left( \begin{array}{c}
+X_{ph} \\
+Y_{ph} \\
+1
+\end{array} \right)
+=
+\left( \begin{array}{c}
+X_{im} \\
+Y_{im} \\
+1
+\end{array} \right)
+.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="388" HEIGHT="64" BORDER="0"
+ SRC="img8.png"
+ ALT="\begin{displaymath}\left( \begin{array}{ccc}
+LTM_{11} &amp; LTM_{12} &amp; LTV_1 \\
+LTM...
+...\begin{array}{c}
+X_{im} \\
+Y_{im} \\
+1
+\end{array} \right)
+.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+As there is no rotation in the transformation, <!-- MATH
+ $LTM_{12}=LTM_{21}=0$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="157" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$LTM_{12}=LTM_{21}=0$"></SPAN>.
+
+<P>
+The second method uses the multiple WCS conventions to specify the physical 
+coordinate system for the image.  In this scheme a second set of WCS keywords
+is written, except each of the standard keywords has a letter appended to it,
+which we have chosen to be ``L''.  In addition we specify the following keywords
+to identify this coordinate system:<PRE>
+WCSNAMEL = 'PHYSICAL'
+WCSAXESL = 2
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Spectrum Extraction"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Extraction Stage (extractor)"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Light Curve Extraction"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node25.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

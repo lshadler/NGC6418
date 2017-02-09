@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Output Files</TITLE>
+<META NAME="description" CONTENT="Output Files">
+<META NAME="keywords" CONTENT="rgsspectrum">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsspectrum.css">
+
+<LINK REL="next" HREF="node8.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="rgsspectrum.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsspectrum (rgsspectrum-2.8.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input Files"></A>
+<A HREF="rgsspectrum.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsspectrum.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00070000000000000000"></A>
+<A NAME="rgsspectrum:description:outputfiles"></A>
+<BR>
+Output Files
+</H1>
+
+<P>
+The output files are spectra in OGIP-compliant format (OGIP Memo
+ OGIP/92-007).  In addition to the mandatory attributes, the following
+ non-standard attributes are provided for use by <A NAME="900"></A><A NAME="tex2html15"
+  HREF="../rgsfluxer/index.html"><SPAN  CLASS="textbf">rgsfluxer</SPAN></A>
+and
+ <A NAME="904"></A><A NAME="tex2html16"
+  HREF="../rgsrmfgen/index.html"><SPAN  CLASS="textbf">rgsrmfgen</SPAN></A>:
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><A NAME="908"></A><TT>SOURCEID</TT></TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">source identifier</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="910"></A><TT>RFLORDER</TT></TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">reflection order</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="912"></A><TT>LINE_SEP</TT></TD>
+<TD ALIGN="LEFT">real</TD>
+<TD ALIGN="LEFT">[Angstroms] grating line spacing</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="914"></A><TT>RGSALPHA</TT></TD>
+<TD ALIGN="LEFT">real</TD>
+<TD ALIGN="LEFT">[radians] grating incidence angle</TD>
+</TR>
+</TABLE>
+
+<P>
+These columns are provided for all spectra, regardless of type:
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><A NAME="916"></A><TT>CHANNEL</TT></TD>
+<TD ALIGN="LEFT">short</TD>
+<TD ALIGN="LEFT">dispersion channel number</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="918"></A><TT>COUNTS</TT></TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">number of selected photons</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="920"></A><TT>QUALITY</TT></TD>
+<TD ALIGN="LEFT">short</TD>
+<TD ALIGN="LEFT">data quality flag</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="922"></A><TT>AREASCAL</TT></TD>
+<TD ALIGN="LEFT">real</TD>
+<TD ALIGN="LEFT">full exposure correction factor</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="924"></A><TT>FRAC_EXP</TT></TD>
+<TD ALIGN="LEFT">real</TD>
+<TD ALIGN="LEFT">average exposure correction factor
+				  (optional)</TD>
+</TR>
+</TABLE>
+
+<P>
+In addition to these, for TOTAL and BKG spectra only the
+ <A NAME="926"></A><TT>BACKSCAL</TT> column is provided, and for NET spectra only the
+ <A NAME="928"></A><TT>STAT_ERR</TT> column is provided:
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><A NAME="930"></A><TT>BACKSCAL</TT></TD>
+<TD ALIGN="LEFT">real</TD>
+<TD ALIGN="LEFT">background scaling factor</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="932"></A><TT>STAT_ERR</TT></TD>
+<TD ALIGN="LEFT">real</TD>
+<TD ALIGN="LEFT">statistical error</TD>
+</TR>
+</TABLE>
+
+<P>
+
+<UL>
+<LI><TT>spectrumset</TT>
+
+<P>
+Source spectrum (TOTAL or NET), produced only if enabled by
+   parameter <TT>withspectrum</TT>.
+
+<P>
+</LI>
+<LI><TT>bkgset</TT>
+
+<P>
+Background spectrum (BKG), produced only if enabled by parameter
+   <TT>withbkgset</TT>.
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input Files"></A>
+<A HREF="rgsspectrum.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

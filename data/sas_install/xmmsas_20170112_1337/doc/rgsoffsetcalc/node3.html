@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="rgsoffsetcalc">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsoffsetcalc.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="rgsoffsetcalc.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsoffsetcalc (rgsoffsetcalc-1.18.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="rgsoffsetcalc.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsoffsetcalc.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="rgsoffsetcalc:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+Visible stray light and bright stars in the RGS avoidance fields can
+alter the zero energy level (CCD electronics offset or pedestal)
+measure by the RGS CCDs. This effect, if not properly taken into
+account, can affect the energy calibration of X-ray events.
+<A NAME="tex2html1"
+  HREF="footnode.html#foot307"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A>
+<P>
+It is ensured procedurally during the operations of the instrument
+that DIAGNOSTIC mode data of all CCD's are available at the start and
+at the end of each observation. Furthermore, if enough telemetry
+bandwidth is available, DIAGNOSTIC mode data are also transmitted
+interleaved with science data (this type of DIAGNOSTIC data is called
+Q-memory). Q-memory data are not guaranteed to be present for all CCDs
+in all observations, due to the uncertainties in the predicted event
+rates (hence in the telemetry requirements).
+
+<P>
+DIAGNOSTIC and Q-memory data can be used to determine the offset and
+noise levels of the CCD electronic chains at the actual telescope
+pointing. Q-memory data could be used to devise a time dependent
+correction of the offset levels by interpolation. This will only be
+implemented at a later time, if in-orbit experience warrants it.
+
+<P>
+<A NAME="336"></A><A NAME="tex2html2"
+  HREF="../rgsoffsetcalc/index.html"><SPAN  CLASS="textbf">rgsoffsetcalc</SPAN></A>
+accepts a list of DIAGNOSTIC datasets (refer to
+the ODF ICD&nbsp;[<A
+ HREF="node11.html#ct:SOCODFICD">1</A>]. For each DIAGNOSTIC dataset
+<A NAME="340"></A><A NAME="tex2html3"
+  HREF="../rgsoffsetcalc/index.html"><SPAN  CLASS="textbf">rgsoffsetcalc</SPAN></A>
+calculates the mean and standard deviation of the
+pulse height distribution. This calculation is performed by CCD node.
+The mean and standard deviation are calculated by fitting a Gaussian
+to the pulse height distribution.
+
+<P>
+Before being processed each diagnostic dataset is examined to
+determine if it is likely to yield a good fit. The dataset is ignored
+if any of the following conditions is false:
+
+<P>
+
+<UL>
+<LI>less than <SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$10\%$"></SPAN> of the pixels are empty. A pixel is considered
+  to be empty if the pulse height amplitude it measures is equal to
+  the value indicated by the attribute <A NAME="344"></A><TT>BLANK</TT>
+  ([<A
+ HREF="node11.html#ct:SOCODFICD">1</A>]).
+</LI>
+</UL>
+
+<P>
+<A NAME="346"></A><A NAME="tex2html4"
+  HREF="../rgsoffsetcalc/index.html"><SPAN  CLASS="textbf">rgsoffsetcalc</SPAN></A>
+stores the results of the computation in the
+dataset specified by <TT>outset</TT>. The output dataset can be used as
+a CCF constituent, and this is usually how <A NAME="351"></A><A NAME="tex2html5"
+  HREF="../rgsevents/index.html"><SPAN  CLASS="textbf">rgsevents</SPAN></A>
+will use
+it. Because the output dataset is a valid CCF constituent, it can only
+contain data relative to one CCF scope&nbsp;[<A
+ HREF="node11.html#ct:SOCCCFICD">2</A>]. If the
+list of input datasets contains more that one CCF scope (this is
+identified through the attribute <A NAME="355"></A><TT>INSTRUME</TT>), <A NAME="357"></A><A NAME="tex2html6"
+  HREF="../rgsoffsetcalc/index.html"><SPAN  CLASS="textbf">rgsoffsetcalc</SPAN></A>
+will process only the datasets belonging to the first CCF scope
+identified (this is the scope of the first dataset in the input
+list). A warning is issued.
+
+<P>
+<A NAME="361"></A><A NAME="tex2html7"
+  HREF="../rgsoffsetcalc/index.html"><SPAN  CLASS="textbf">rgsoffsetcalc</SPAN></A>
+can also operate on a list of datasets that do
+not conform to the ODF ICD. The only requirement is that the arrays be
+of type integer16. In this case the output dataset is not formatted as
+a valid CCF constituent. In the output table, null values are used to
+indicate information that could not be obtabined from the input
+datasets.
+
+<P>
+Optionally, <A NAME="365"></A><A NAME="tex2html8"
+  HREF="../rgsoffsetcalc/index.html"><SPAN  CLASS="textbf">rgsoffsetcalc</SPAN></A>
+can store the pulse height
+distributions for each input dataset and node in a dataset (see the
+description of <TT>withhistogramset</TT> and
+<TT>histogramset</TT>).
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="rgsoffsetcalc.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

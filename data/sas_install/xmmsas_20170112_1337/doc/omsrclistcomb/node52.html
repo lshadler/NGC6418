@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="omsrclistcomb">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omsrclistcomb.css">
+
+<LINK REL="next" HREF="node53.html">
+<LINK REL="previous" HREF="node51.html">
+<LINK REL="up" HREF="omsrclistcomb.html">
+<LINK REL="next" HREF="node53.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omsrclistcomb (omsrclistcomb-2.22.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node51.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="omsrclistcomb.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node53.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Bibliography"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node54.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omsrclistcomb.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000160000000000000000"></A>
+<A NAME="omsrclistcomb:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+subroutine omsrclistcomb
+
+
+Read in all OSW source lists 
+
+
+Collate all sources into a main list
+
+For each source in the list, i 
+
+  if this source has not been identified with other sources
+         list-of-same-sources(1) = i
+         no-of-same-sources = 1
+   endif
+
+   Loop over all other sources in the main list, j 
+
+          if ( i /= j) then
+
+          If the position of source i is the same as position of source j 
+          (to within  tolerance nsigma and systematic error) then 
+
+                no-of-same-sources++
+                list-of-same-source(no-of-same-sources) = j
+
+          Endif   
+   End loop   
+
+   Loop over same sources list, m
+
+      Loop over rest of same source list, n
+ 
+         if source m and n are in the same OSW
+
+             flag as being in the same OSW
+
+         endif
+      end loop
+   end loop
+
+   Loop over sources in same OSW
+
+        use nearest source and delete others from list_of_same_sources
+
+   end loop
+
+   now we have a list of sources that are the same
+
+
+end for
+
+create an index array giving the order of the sources in increasing
+Right-Ascension. 
+
+
+create a matrix of magnitudes containing n independent sources and m filters
+
+set matrix to NaN
+
+Loop over all independent sources
+
+   find weighted mean of source position
+
+   For each filter
+
+     if source has been observed in filter more than once
+        find mean position and magnitude.
+     endif
+
+     add entry to magnitude matrix
+
+   end for
+
+end loop
+
+
+Loop over matrix
+
+    compute colours in standard system from CAL colour transformation
+    matrices
+
+end loop
+
+
+define possible colours (mag1-mag2) e.g. (B-V) and (U-B) etc
+
+for each colour combination
+
+      if ANY(matrix(mag1) /= NaN) and ANY(matrix(mag2) /= NaN) then
+           compute colour and error
+       endif
+
+endfor
+
+
+for each independent source
+
+  Convert any undetermined (eg standard magnitude, colour) parameter value
+  to NULL and then insert the source information at its correct Right-Ascension 
+  position in table.      
+ 
+Endfor
+
+add a SRC-ID column to each OSW source list
+for each OSW source
+ write the appopriate source number from the observation source list
+endfor
+
+end subroutine omsrclistcomb
+</PRE>
+
+<P>
+
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

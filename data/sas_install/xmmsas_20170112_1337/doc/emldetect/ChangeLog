@@ -1,0 +1,1681 @@
+ChangeLog for emldetect
+-----------------------
+
+Version 7.0.3 - 2016-11-08 (IT)
+-------------
+	+ fftpsf.f90: Sloppy indexing caused occasional segmentation
+	  faults, in particular if emldetect is compiled with gfortran.
+	  Also make sure that arrays are initialized with 0 for gfortran
+	  compatibiliy. Fixes SPR-7405.
+
+Version 7.0.2 - 2016-10-26 (IT)
+-------------
+	+ typo - sorry
+
+Version 7.0.1 - 2016-10-24 (IT)
+-------------
+	+ eml_io.f90: fixed an old bug in the calculation of the degrees
+	  of freedom of multiple observations, used for the equivalent
+	  likelihoods per instrument and image. Has neither affected single
+	  observations nor summary lines of the output table. SPR-7400.
+	+ documentation updated
+
+Version 7.0 - 2016-09-30 (IT)
+------------
+        + new parameter "withrawrows" for processing of stacked images
+	  (expert-only use):
+	  Include additional rows in the output source list per image in
+	  which the source was detected, in case the source position is
+	  within the detection mask of the observation / image
+	  set. Additional rows are identified by a modified ID_INST,
+	  composed of the observation ID followed by the instrument
+	  number. ID_INST becomes double precision displayed as a long
+	  integer in this case and the usual integer in the default
+	  case. Store EXP_IDs in new keywords EXP_ID_INn with n giving the
+	  first digits of the modified ID_INSTs.  Consequences: New global
+	  variable "exp_id", argument to get_files.  Flag "rawflag" in
+	  subroutine mlout.
+        + Parameter constraints: changed lower limit of parameter ecf from
+          0.001 to 0.0. Purpose: Fluxes can be set to zero
+          (e.g. by edetect_stack), if no ecfs are defined.
+	+ Header keywords HRPNDEF, HRM1DEF, HRM2DEF added: will be read by
+	  edetect_stack.
+	+ emldata.f90: increased max_events and max_sou
+	+ edetect_io_ml.f90: increased max_ins and max_ima
+	+ emldetect_mod.f90: throw error message, if number of photons
+	  exceeds max_events (-> make it clearer to users)
+	+ edetect_io.f90: same for max_ins
+	+ eml_io.f90: number of detections in output source list as new
+	  informational output at high verbosity level and header keyword
+	  NDETECT. Minimum detection likelihood: LIKEMIN.  Pixel size:
+	  XBINSIZE, YBINSIZE (to be consistent with eboxdetect headers).
+	+ eml_io.f90: check whether coordinate columns are NULL.
+	  Motivation: allow to use srcmatch lists as input source lists in
+	  which X_IMA Y_IMA are NULL and RA, DEC non-NULL.
+	  Caveat: emldetect sorts the input list according to its SIGMA or
+	  LIKE or DET_ML or WCORR column. srcmatch input lists remain
+	  unsorted thus.
+	+ eml_io.f90: Show a warning if none of these four likelihood
+	  columns is found in the input list.
+	+ emldata.f90: changed dimension of hrdef and xiddef from
+	  (...,max_ins) to (...,3): pn, m1, m2
+	+ emlfit.f90: Runtime improvements for large arrays (loops).
+	+ fftpsf.f90: More concise and thus faster version of the
+	  re-binning. Source parameters may change slightly compared to
+	  the previous version because of the limited number precision.
+	+ edetect_io_ml.f90: Made determination of imbuff more concise.
+	+ config/emldetect.par: sort parameters for better readability;
+	  separate single values from lists, mandatory from obsolete.
+	+ Cleaned code in comments sections for better readability:
+	  Removed old code versions of before ~2006 and debugging
+	  "write"s. They can be still accessed in the archive.
+	+ cf. SCR 7399: source detection on stacked observations
+
+
+Version 6.3 - 2016-09-08 (AI)
+--------------
+	+ (src/edetect_io_ml.f90) Initialization of pointers using 
+	"nullify" statement instead of using "=> null()" initialization 
+	at pointer declaration. NAGWare 5.2 gives wrong array sizes for ChipX,ChipY, 
+	theta and phi pointers if we use the "=> null()" statemtent, but it gives 
+	correct array sizes if we initialize the pointers with "nullify()" statement.
+	With gcc-6.2 both initizalization gives correct results.
+
+Version 6.2 - 2016-09-07 (AI)
+--------------
+	+ (src/eml_io.f90) Initialization to null of all pointers that are passed 
+	to C++ (Dope vectors). If we do not initizialize the pointers, 
+	we get seg fault at run-time with gcc-6.2.	
+	
+Version 6.1 - 2016-07-18 (AI)
+--------------
+	+ (src/eml_io.f90) gfortran compatibility changes applied.
+
+Version 6.0.5 - 2016-04-25 (IT)
+--------------
+	+ Throw error "TooManyBands" if images for more than six energy
+	  bands and / or more than six pimin/pimax are provided. Documented
+	  error message and maximum number of bands (cf. SPR-7358 on
+	  eboxdetect).
+
+Version 6.0.4 - 2016-01-25 (IT)
+------------
+        + Documentation: Expanded description of fluxes and ECFs
+          (SPR-7306). Re-structured the description section.
+
+Version 6.0.3 - 2015-08-25 (IT)
+------------
+	+ Changed file permissions.
+
+Version 6.0.2 - 2014-10-24 (IT)
+------------
+	+ Documentation: corrected & updated section on position errors
+	  (SPR-7244)
+
+Version 6.0.1 - 2014-09-23 (IT)
+------------
+	+ edetect_io_ml.f90: include header keyword INSTRUME (SPR-7229)
+
+Version 6.0 - 2014-09-02 (IT)
+------------
+	+ introduced psfmodel=slew: sets new AccuracyLevel ACCURACY_SLEW
+	  (cal > 3.231); essentially the same code as psfmodel=ellbeta
+	  (SCR-7216)
+	+ emldetect exits with an error ("WrongPSFModel"), if
+	  psfmodel=slew is set for MOS data.
+	+ removed boolean variable modpsf which was implemented to
+	  distinguish between ellbeta and medium-accuracy PSF; check for
+	  psfmod.eq."medium" instead
+	+ removed never-used calls to ACCURACY_EXTENDED
+	+ updated DEPEND to cal 3.231
+	+ Documentation: slew mode; minor corrections.
+
+
+Version 5.21.2 - 2014-08-01 (IT)
+------------
+	+ test upload with new emldetect.lyt
+
+Version 5.21.1 - 2014-07-28 (IT)
+------------
+	+ emldetect.lyt: back to previous version
+
+Version 5.21 - 2014-07-24 (IT)
+------------
+	+ emlfit.f90, subroutine model: SAVE isize to fix the problem of
+	  wrong flux errors for a few per cent of the sources (SPR-7213)
+        + edetect_io_ml.f90: copy full dataset and array headers of the
+          input images to the output source images (instead of a list of
+          selected keywords). In particular: make physical coordinates
+	  available.
+	+ emldetect.lyt: fixed mergedlistset and withimagebuffersize
+        + Minor corrections to the documentation, additional links to 2XMM
+	  and 3XMM documentation.
+
+
+Version 5.20 - 2013-07-30 (IT)
+------------
+        + Bug fix: Output source lists were limitted to a smaller number
+          of rows than expected and intended. The "BufferOverflow" error in
+          eml_io.f90 was given for >max_sou instead of >nbuff. (Helpdesk id=52410).
+        + Bug fix: Vignetting values were calculated for E=0 only since
+          SAS 12 (SPR-7120). Back to mid-band energies as input values
+          (emlfit.f90).
+        + Fixed typos in error messages (edetect_io.f90).
+        + Documentation updated.
+
+
+Version 5.19 - 2013-02-25 (IT) MPE version, internal use only
+
+
+Version 5.18.1 - 2013-03-17 (IT)
+--------------
+        + Documentation updated. Minor latex syntax changes to build the
+          package index properly on Ubuntu
+
+        
+Version 5.18 - 2013-01-28 (IT)
+--------------
+        + Changed default values of parameters xidpndef, xidm1def,
+          xidm2def to "2 3 4", to be consistent with the energy band
+          definition in the pipeline since 2XMM
+        + Re-structured, extended, and updated documentation.
+        + Updated parameter file emldetect.par.
+
+
+Version 5.17.8 - 2012-11-01 (IT)
+--------------
+        + eml_io.f90: clean handling of empty input lists: raise a warning
+          "EmptySourceList" instead of an error, and exit without error code
+          (changed for 3XMM pipeline processing)
+
+Version 5.17.7 - 2012-09-21 (IT)
+--------------
+        + emlfit.f90, subroutine model: fixed problem with array
+          allocation for nmaxfit>1 - ff_save still had to be reallocated
+          more frequently. Closes SPR-6761.
+        + emldetect/test: Created new reference event list for
+          psfmodel=ellbeta and nmaxfit=3 and added ellbeta test to
+          emldetect_test / checkoutput.f90.
+
+
+Version 5.17.6 - 2012-08-04 (IT)
+--------------
+        + emlfit.f90, subroutine model, & psf.f90, subroutine bpsf:
+          changed allocation of arrays which caused problems for nmaxfit>1
+        + emldetect_mod.f90, subroutine cut_radius: check for PSF model
+          and get appropriate validity range from CAL (affects scut &
+          ecut, if not set to a fixed value)
+        + introduced memory check for allocatable arrays and error message
+          "notEnoughMemory"
+        + updated documentation
+
+
+Version 5.17.5 - 2012-07-10 (IT)
+--------------
+        + psf.f90, subroutine bpsf: made array gengen allocatable to scale
+          it with image binning and source extent and to save memory for
+          point sources. Fixes SPR-6747: index error for small image pixels
+          and very extended sources.
+
+
+Version 5.17.4 - 2012-06-13 (IT)
+--------------
+        + Documentation: Typographical and grammatical corrections (closes
+          SPR-6731) plus updates in form and content.
+
+
+Version 5.17.3 - 2012-05-13 (IT)
+--------------
+        + Corrected bug in emlfit.f90 which caused wrong / zero count
+          rates in very rare cases (e.g. ObsID 0110010701): array indices
+          used for creating the output source list could be wrong after
+          removing a spurious detection from the list (SPR-6724)
+
+
+Version 5.17.2 - 2012-04-20 (IT)
+--------------
+        + Changed the default PSF model to ellbeta (parameter psfmodel)
+          and updated the documentation, correspondingly (SPR-6716)
+
+
+Version 5.17.1 - 2012-04-03 (IT)
+--------------
+        + Marked parameter mergedlistset as "not yet implemented" in
+          documentation and parameter file (SPR-6571)
+        + Corrected information on free parameters (cf. SPR-6301)
+        + psf.f90, fftpsf.f90: Back to the fixed focal-length value of
+          7.5m for psfmodel=medium, to be consistent with former versions
+          (SPR-6705)
+        + psf.f90: fixed typo which caused wrong background values
+          since version 5.17 (affected mostly psfmodel=medium; SPR-6705)
+        + emlfit.f90 & fftpsf.f90: Runtime improvement. modelima is now
+          allocatable, arrays ff_save & modelima smaller, only the really
+          necessary parts of arrays are copied (SPR-6706)
+
+
+Version 5.17 - 2012-03-01 (IT)
+--------------
+        + Syntax changes speeding up the code
+        + Updated documentation (typos)
+
+
+Version 5.16 - 2012-02-15 (IT)
+--------------
+        + Updated documentation and marked parameter "usecalpsf" as obsolete.
+
+
+Version 5.15.5 - 2012-02-15 (EO)
+--------------
+        + Removed MKDIRS from main Makefile which not allowed building 
+        of the package.
+        + Removed Make.include in main directory. This file is taken 
+        from main directory for the whole build and should not be
+        modified.
+
+
+Version 5.15.4 -  2012-02-10 IT
+-------------------------------
+
+        + src/psf.f90
+        + src/emlfit.f90
+
+Included the (flux conserving) true re-sampling of the 2d psf image from
+psf pixels into sky image pixels (fftpsf.f90 in version 5.15.3) in the
+background modeling. Removed redundant CAL calls and merged functions
+psf1, psf2, and psf3 to a single function bpsf.
+emlfit: Exposure is averaged over the fitting region (radius "ecut")
+        instead of the whole region for the background simulation.
+Syntax changes in emlfit for better efficiency.
+Altogether: significant speed-up for 2d psf.
+Updated documentation.
+        
+        
+Version 5.15.3 -  2012-01-27 IT (test version)
+-------------------------------
+        
+        + src/fftpsf.f90
+        + src/psf.f90
+        + src/emlfit.f90
+        
+New algorithm to re-bin the 2d psf to sky image pixels.
+Fixes bug in calculation of the image centre.
+Fixes bug in reading the PSF image when combining data taken with
+different instruments: Only the PSF image corresponding to the
+first instrument in the list was read.
+Focal length of the telescopes is now set via CAL calls.
+Minor syntax changes speeding up the code.
+        
+
+Version 5.15.2 -  2011-02-17 RDS
+-------------------------------
+
+        + src/ftfpsf.f90
+
+Changed the type of FFTW3 plans to integer*8 - needed for 64 bit machines
+
+Version 5.15.1 -  2011-02-11 RDS
+-------------------------------
+
+        + src/edetect_io_ml.f90
+
+Modified code to access masks using the SAS infrastructure rather
+than directly from the PRIMARY array.
+
+Version 5.15 -  2010-09-01 JR
+-------------------------------
+
+Removed the extra redundant parameter
+imagebuffersize.
+
+
+Version 5.14 -  2010-06-24 JR
+-------------------------------
+
+Included parameter psfmodel to be used in
+the SAS GUI enviroment.
+
+
+Version 5.13 -  2010-06-17 JR
+-------------------------------
+
+Change in the rcut parameter, for restriction
+of the fitting position of a source. New value
+rcut=8.
+
+
+Version 5.12 -  2010-03-11 JR
+-------------------------------
+
+Implemented the withimagebuffersize parameter.
+This is for the use or not of the imagebuffersize
+parameter, meant to be used in the reduction of
+memory requirements. Default value=no. With the default
+value the imagebuffersize parameter will be read
+from the header of the image. This also
+fix the edetect_chain problem.
+
+
+Version 5.11.3 -  2009-10-11 JR
+-------------------------------
+
+Active psfmodel parameter to allow
+the use of ellbeta psf.
+
+
+Version 5.10.3 -  2009-06-13 JR
+-------------------------------
+
+The use of the parameter
+imagebuffersize, is documented.
+
+
+Version 5.10.2 -  2009-06-12 JR
+-------------------------------
+
+Removed psfmodel parameter, which
+allowed use of the ellbeta psf model,
+from the parameter list.
+
+Version 5.10.1 -  2009-05-31 JR
+-------------------------------
+
+Fixed error in psf.f90 for the right
+uploading of the new CAL psf ellbeta.
+(release track)
+
+
+Version 5.1 -  2009-05-07 JR
+-------------------------------
+
+Implemented use of the new interface
+CAL Psf. Now, the new 2D Psf model
+ellbeta is available. 
+New parameter: psfmodel, default value=medium
+
+
+Version 5.0 -  2009-04-07 JR
+-------------------------------
+
+Implemented reduction of memory requirements
+for raster scan data new parameter:
+imagebuffersize, default value=640
+
+
+
+Version 4.60.1 - 2008-05-06 GL
+------------------------------- 
+
+Subroutine get_files: changed name of logical variable 
+           "double" to "same_inst".
+
+
+Increased parameter values in order to enable 
+processing of large mosaics:
+ max_ima=240
+ max_ins=60     
+
+Subroutine mulsou: correct calculation of variable ntfix, when fitting extent
+with fixed positions.
+
+Enable processing of multiple exposures with identical ObsIDs:
+    increased lenghts of strings expid, ins, instrume
+(see  SOC-SPR 5874 on eboxdetect)
+        
+        
+Version 4.60 - 2006-01-15 GL
+------------------------------- 
+
+Changed subroutine "fill_arrs":
+Fixed problem of missing sources,
+when using nmaxfit>1 and one input position of
+a source cluster is outside the detection mask.
+        
+Version 4.44.25 - 2006-10-09 GL
+-------------------------------
+
+Set ONTIME values in output table to
+NULL (rather than 0.0), if source is out of 
+FOV or maskfrac < threshold.
+        
+        
+Version 4.44.24 - 2006-08-24 GL
+-------------------------------
+
+Remove test output
+        
+Version 4.44.23 - 2006-08-23 GL
+-------------------------------
+
+Read ONTIME<NN> keywords also from DataSet
+section of header (necessary for images 
+produced by task 'imweightadd').
+        
+        
+Version 4.44.22 - 2006-08-03 GL
+-------------------------------
+
+Assign values of 'psffrac' and 'maskzero'
+to correct source, if one source is removed
+from multi-PSF model.
+Close SSC-SPR-3624.
+
+        
+Version 4.44.21 - 2006-06-23 GL
+-------------------------------
+
+Double precision fit parameters.
+Improve initial error estimates for routine felsu.
+Increase size of working images in fpsf to isize > 2*nint(ecut)+2
+Do not calculate count rate error, if mask fraction threshold is not reached.
+        
+
+Version 4.44.20 - 2006-05-03 GL
+-------------------------------
+
+Identical with v4.59.1, 
+version for PPS track
+
+
+Version 4.59.1 - 2006-05-03 GL
+-------------------------------
+
+If input source is outside FOV and therefore
+not fitted, do not write any entry in output table for this source.
+Updated documentation.
+Remove warning "Number of ECFs not equal number of images",
+if parameter withxidband is not set.
+Close SSC-SPR-3610
+Close SSC-SPR-3611      
+        
+        
+Version 4.59 - 2006-05-03 GL
+------------------------------
+
+Based on v4.44.19
+New parameter minextent for minimum possible 
+source extent (in units of image pixels).
+Avoid exit out of loop over sources, if one source
+is completely out of the FOV (subroutine emldetect).ls
+Close SSC-SPR-3608/3609 
+        
+        
+Version 4.44.19 - 2006-04-26 GL
+------------------------------
+
+Set ONTIME to 0.0, if maskfrac < psfthreshold
+Correct error causing maskfrac=1.0 in single band rows,
+        where it should be 0.0
+
+        
+        
+Version 4.44.18 - 2006-04-21 GL
+------------------------------
+
+Throw out source in an instrument,
+if min(psffrac) of all energy bands < psfthreshold.
+
+Write min(psffrac) into energy band summary row.
+
+New output column OFFAX.
+Contains offaxis angles for each instrument in arcminutes.
+        
+        
+Version 4.44.17 - 2006-02-27 GL
+------------------------------
+
+Subroutine emlfit: set SCTS error values to 0.0
+where source was rejected due to small valid mask fraction.
+This avoids wrong error values in the ID_INST=0 row of the
+output table.
+
+        
+Version 4.44.16 - 2006-02-06 GL
+------------------------------  
+
+Change output of subroutine 'like'
+        to double precision.
+        
+        
+Version 4.44.15 - 2006-01-06 GL
+------------------------------  
+
+Throw out detection in an instrument only,
+if (psffrac < psffthreshold) in all energy bands 
+of that instrument.
+Use maximum of psffrac values in summary band row
+of column MASKFRAC.
+
+        
+        
+Version 4.44.14 - 2005-12-05 GL
+------------------------------  
+
+Increase max number of iterations (nit) 
+in subroutine felsu to 50.
+-> accurate positional errors.
+Close SSC-SPR-3549
+
+        
+Version 4.44.13 - 2005-11-06 GL
+------------------------------  
+
+Initialize variable nband before first use in subroutine mulsou
+Close SSC-SPR-3536
+Improve calculation of internal background map, extent model is 
+now calculated to radius=10*sigma before folding with PSF (previously 3*sigma).
+        
+        
+Version 4.44.12 - 2005-10-11 GL
+------------------------------  
+
+identical with version 4.57.1 
+release track version
+        
+
+        
+Version 4.57.1 - 2005-09-20 GL
+------------------------------  
+
+Write instrument summary row also for single instrument runs.
+        
+        
+Version 4.57 - 2005-08-23 GL
+------------------------------  
+
+Avoid crash due to unallocated array, when input list with
+non-zero EXT values and parameter fitextent=no are combined.
+Close SSC-SPR-3481. 
+        
+Version 4.44.11 - 2005-08-04 GL
+------------------------------  
+
+Fixed small syntax error, 4.44.10 did not compile.
+
+        
+Version 4.44.10 - 2005-08-03 GL
+------------------------------  
+
+Avoid condition, where uninitialized index nsrc is used in subroutine emldetect.
+        Close SSC-SPR-3496
+Increase the minimum extent to 1.5 pix and the minmum distance of multiple PSF fits
+to 1.5 pix.
+        Close SSC-SPR-3497
+        
+        
+Version 4.44.9 - 2005-06-30 GL
+------------------------------  
+
+
+Improve point-source/extended disrimination for multi PSF fits:
+   - always use total likelihood of model and correct with total number of DOF.
+   - when comparing likelihoods of 2 point source model vs. 1 extended source, 
+     do not use dmlmin threshold.
+In final detection likelihood calculation, do not use extent as additional DOF,
+if fit resulted in point source.
+Correct error in calculation of beta model.
+For model=beta, also use beta profile for the calculation of background map outside r=1 arcmin.  
+Correct error that lead to identical det_ml values for all sources of a multi-PSF fitting group.
+   - Close SSC-SPR-3487
+Correct error calculation routine, which entered endless loop for fitnegative=yes
+   - Close SSC-SPR-3437 
+Removed obsolete XID band option from test harness
+Update documentation
+
+        
+        
+Version 4.44.8 - 2005-04-12 GL
+------------------------------
+
+Write keywords EXPOS_PN, EXPOS_M1, EXPOS_M2
+to source list header.
+        
+Version 4.44.7 - 2005-04-05 GL
+------------------------------  
+
+Read column WCORR as SNR parameter 
+ for ewavelet input lists.
+Correct assignment of values in output columns 
+ RAWX, RAWX, CCDNR to instrument in all-EPIC source lists.
+Correct error which led to  EXT_ML>0.0 and EXT=0.0 
+ for point sources fitted simulteneously with extended sources. 
+Correct an error with the total likelihoods of some
+        sources outside the FOV of 1 or more cameras, this
+        fixes the problem of likelihoods < mlmin in the source lists.
+Do not apply psffrac criterion in mode "xidfix", this ensures
+        all input sources appear in output list.
+Write keywords FILT_PN,FILT_M1,FILT_M2
+               SUBM_PN,SUBM_M1,SUBM_M2
+to header of output list.
+        
+        
+        
+Version 4.44.6 - 2005-02-11 GL
+------------------------------  
+
+Set rates, fluxes to NULL, if maskfrac < psfthreshold
+(previously set to 0.0), but not in in instrument 
+summary row.
+
+        
+        
+Version 4.44.5 - 2005-02-10 GL
+------------------------------
+
+Only one string column "FLAG" 
+Set count rates, fluxes in output list to NULL,
+if maskfrac == 0.
+        
+        
+Version 4.44.4 - 2005-02-03 GL
+------------------------------
+
+Write ONTIME values in id_band=0 row of output table.
+
+        
+Version 4.56 - 2005-01-30 GL
+------------------------------
+        
+Same as 4.44.3 - for dev track
+        
+        
+Version 4.44.3 - 2005-01-28 GL
+------------------------------
+
+Correct summary band values of output column MASKFRAC
+Change minimum extent from 0.5 pix to 1.0 pix.
+Correct optical axis calculation in subroutine rawcoords
+Perform calculation of optical axis position in emldetect 
+        rather than using xcen/ycen kewords written by eexpmap.
+Increase max_ins to 12, max_ima to 60.
+        
+Version 4.44.2 - 2005-01-20 GL
+------------------------------
+
+Same as 4.55 - for release track
+
+        
+Version 4.55 - 2005-01-12 GL
+------------------------------
+
+Calculate correct psffrac values also for sources with zero countrate.
+If psffrac is below the threshold in an image, 
+ set source flux and detection likelihood to zero for this image.
+Corrected error with flag "withthreshold": now  option withthreshold=no
+ works as intended.
+Correct calculation of fit/fixed numbers of parameters "ntermf/ntfix"
+ in fitextent=no mode.
+During multi-PSF fitting reject double sources (with close positional and extent values).
+Change thresholds: psfthreshold=0.15, maskthreshold=0.25
+Added column ONTIME     
+        
+Version 4.54 - 2005-01-06 GL
+------------------------------
+
+subroutine fpsf: Change dimension of havePSF to max_ins
+        
+        
+Version 4.53 - 2004-12-20 GL
+------------------------------
+
+Implement changes needed for EPIC raster scans
+(multiple pointings with non-identical  centers)
+
+        
+        
+Version 4.52 - 2004-12-20 GL
+------------------------------
+
+Calculate "vignetting" column directly via calls to CAL,
+(derived from exposure map before).
+
+Calculate PSF weighted fraction of valid mask pixels (column maskfrac)
+
+Eliminate sources with maskfrac < 0.3
+
+Set columns EXT, EXT_ERR to zero (not NULL), if extent has been fitted and found not significant.
+        
+
+        
+        
+Version 4.51 - 2004-12-14 GL
+------------------------------
+
+Fix "xidfixed" mode broken in v4.47 
+
+        
+Version 4.50 - 2004-12-10 GL
+------------------------------
+
+Fix errors introduced with v4.49:
+      - fix wrong index in array maskzero
+      - move initialization of array maskzero from subroutine 
+        'mulsou' to 'fill_arrs'
+
+Fix error introduced with v 4.47:
+      - start with multi point source fit also for extfla=.false.
+
+Update test harness
+
+        
+Version 4.49 - 2004-11-18 GL
+------------------------------
+
+Set threshold of 30% valid pixels within source cutout radius:
+     - Moved code to calulate maskfrac to subroutine "fill_arrs"
+Change calculation of detection likelihoods for multi-PSF fits:
+     - Derive det_ml from difference between N*PSF fit and fixed
+       parameter model for (N-1)* PSF case with Nth source fixed to zero flux.
+Fix error in ext_ml likelihood ndof-correction
+
+        
+        
+Version 4.48 - 2004-11-18 GL
+------------------------------
+
+  -Implement two stage extent fitting in emldetect:
+    determine extent of input sources with nsmul=1,
+    if source is extended, use nsmul=nmulsou
+  -Add boolean parameter 'withtwostage' to switch
+   on two stage fitting 
+        
+        
+Version 4.47 - 2004-10-29 GL
+------------------------------
+
+Changes to mulsou:
+  start fitting with point sources,
+  then try one extended source and nsrc-1 point sources
+  to determine extentlikelihood  of each source.
+
+Improve source separation with nmulsou>1:
+  modify starting positions for nmulsou>1
+  increase deltaa for positions with nmulsou>1  
+        
+Version 4.46 - 2004-10-21 GL
+------------------------------
+        
+Corrected error, that in some cases caused fitting loop to end 
+after elimination of one source component. 
+
+Set positional and extent errors to NULL, if 
+'xidfix' mode is used.
+        
+
+        
+Version 4.45 - 2004-10-18 GL
+------------------------------
+
+Implement likelihood/brightness threshold for
+        the processing of sources with nmulsou>1
+New parameters "withthreshold","threshold","threshcolumn"
+        
+Version 4.42.7 - 2004-10-15 GL
+------------------------------
+
+Fixed error that resulted in non-significantly extended sources 
+        added to internal background map
+
+Fixed error in number of free parameters for non-significantly extended
+        sources, probably had no influence on results.
+        
+Version 4.42.6 - 2004-09-21 GL
+------------------------------
+
+interprete "ecut", "scut" input parameters in
+units of image pixels, if value >= 1.0
+Increased max. parameter value of "mlmin" to 1.E10
+        
+
+        
+Version 4.32.2 - 2004-09-17 GL
+------------------------------
+
+Identical to v4.42.5, for upload into release track.
+
+        
+        
+Version 4.42.5 - 2004-08-27 GL
+------------------------------
+
+- Set range of parameter nmaxfit to [1,10=max_fit]
+- New logical parameter "xidfixed" introduced in order 
+  to enable new scheme for XID band fitting in 2XMM
+  xidfixed=.true. : 
+   - sets fitposition=no, fitextent=no
+   - makes emldetect use the BOX_ID_SRC column as input index
+   - Use xid<inst>def parameters to determine which rows from the
+     input table are read as input for start values.    
+   - count x,y and extent as free parameters for likelihood correction
+
+        
+
+        
+Version 4.42.4 - 2004-08-11 GL
+------------------------------
+
+-Correct  eboxlist indices when using 
+  nmulsou>1 and nmaxfit>1 at the same time.
+-Set maximum of nmulsou*nmaxfit from 6 to max_fit (=10)
+-Correct detection likelihoods in "mulsou" only for
+ free parameters, where sources are on instrument mask
+ (free parameters=nspar+nband-nzero)
+-Write fraction of good pixels within source extraction radius
+ into new output column "MASKFRAC"
+        
+
+        
+Version 4.42.3 - 2004-08-10 GL
+------------------------------
+
+Initialize arrays "bima0" and "modelima" in order to avoid errors
+in source model.
+
+Copy proper eboxlist indices into source list for nmulsou>1 
+ Close SPR SSC-SPR-3359
+
+Only create FFT plans if  extfla=.true.
+        
+
+Version 4.42.2 - 2004-08-03 GL
+------------------------------
+
+FFT convolution fully implemented:
+  - subroutine fpsf replaces subroutines
+    psf1,psf2,psf3 during fitting.
+  
+        
+Changes to internal background map and source map generation:
+  - Changed ical from 45 arcsec to 60 arcsec
+  - Changed irad from 100 arcsec to 120 arcsec
+
+        
+        
+=============================
+
+Version 4.42.1 - 2004-07-16 VH
+------------------------------
+
+added EXTERNALS directive for library fftw3f in the Makefile
+        
+        
+Version 4.42 - 2004-07-05 GL
+------------------------------
+
+fftw PSF folding
+        
+
+        
+Version 4.41 - 2004-07-05 GL
+------------------------------
+
+Include test output for MPE version
+        
+        
+Version 4.40 - 2004-06-30 GL
+------------------------------
+
+
+Use source exposure values calculated (PSF weighted) 
+by "mulsou" in "wr_stab" and for output.
+- Close SSC-SPR 3343 
+- Close SSC-SPR 3342
+        
+Correct error in source indexing in "cut_radius".
+        
+        
+Version 4.37 - 2004-04-29 GL
+------------------------------  
+
+Enable reading RA and DEC from input source list,
+if columns X_IMA and Y_IMA are not present.
+
+Change minimum value of mlmin to 0.0
+        
+        
+Version 4.36 - 2004-04-01 GL
+------------------------------
+                
+- close SPR SSC-SPR-3283
+  change allocation of array psf_save
+        
+Version 4.32.1 - 2004-03-05 GL
+------------------------------
+
+Release track version based on v4.35
+- Changed max. number of calls of mlfit from 15 to 50
+- Relaxed likelihood convergence criterion to 1E-3
+- Updated documentation
+        
+Version 4.35 - 2004-02-01 GL
+------------------------------  
+
+- Change irad (area where background is modified by source model) 
+from 50 to 100 pixels
+- Read likelihood from column "DET_ML", if using emldetect
+  lists as input.
+- Correct errors within the  v4.34 enhancements  of subroutine model.
+
+        
+        
+Version 4.34 - 2003-12-14 GL
+------------------------------  
+
+Added Powell minimization to module emlfit
+Corrected errors in the computation of step sizes deltaa, where
+start count rates from boxlist are "NULL".
+Change to subroutine "model": if only count rate of the model changes,
+the previous model is scaled rather than recalculated.
+        
+        
+Version 4.33 - 2003-12-09 GL
+------------------------------  
+
+Remove test output
+
+Version 4.32 - 2003-12-08 GL
+------------------------------  
+
+New parameter "maxextent"
+
+Version 4.31 - 2003-10-06 GL
+------------------------------  
+
+Correct an error when reading "NULL" values from
+"rate" column of input list. This solves remaining
+problems with missing sources in multi-camera runs.     
+
+
+        
+Version 4.30 - 2003-07-18  GL
+------------------------------
+
+Implement proper treatment of detection
+mask in the case of all EPIC detection runs.
+
+        
+        
+Version 4.29 - 2003-05-26  GL
+------------------------------
+
+-Enable extent fitting with beta function
+ New parameter "extentmodel"
+
+-Corrected  error in fixing positions when using 
+ fitposition=no and nmaxfit>1.
+ Closed SPR SSC-SPR-3098:  Running emldetect with fixed source coordinates
+
+-Closed SPR SSC-SPR-3108: OOTE correction not documented
+
+        
+        
+        
+Version 4.28 - 2003-04-25  GL
+------------------------------
+
+Read keyword OOTCORR from EPN exposure maps 
+If "true", do not apply OOT correction to output count rates.   
+        
+Version 4.27 - 2003-02-28  GL
+------------------------------
+
+Fixed error in function gammln.
+
+Fixed error in subroutine LIKE.
+->Reduces values of DET_ML and EXT_ML by a factor >= 2.
+Values of EXT_ML are now also corrected for the number
+of free fit parameters (number of input images).
+
+Closed SPR
+  SSC-SPR-3090: wrong DET_ML values
+        
+Version 4.24 -  2002-11-20 GL
+-------------------------------
+
+Updated documentation
+
+        
+Version 4.23 -  2002-11-01 GL
+-------------------------------
+
+Adapted to column name change in eboxdetect 4.11
+Enable emldetect to read Chandra source lists
+        
+        
+Version 4.22 -  2002-08-09 GL
+-------------------------------
+
+introducing parameter "fitnegative":
+if set to "true", allow fitting of negative count rates.
+
+        
+Version 4.21 -  2002-08-09 GL
+-------------------------------
+
+Fudge likelihood function in order
+to avoid fits running away to very 
+negative count rates.
+
+        
+Version 4.20 -  2002-08-06 GL
+-------------------------------
+
+Remove countrate >= 0 limitation.
+        
+        
+Version 4.19 -  2002-07-31 GL
+-------------------------------
+        
+Fixed distribution
+
+        
+Version 4.18 -  2002-07-31 GL
+-------------------------------
+        
+Fixed distribution
+        
+Version 4.17 -  2002-07-31 GL
+-------------------------------
+        
+Limit count rates to >= 0 (as in versions to 4.14) .
+If lower confidence limit of count rate is negative,
+use upper 1 sigma confidence limit as
+count rate error.
+This modification ensures proper  
+error estimates for small count rates.
+
+
+Version  4.16 -  2002-07-18 GL
+-------------------------------
+        
+Modified likelihood computation
+in order to deal with negative
+source counts.
+        
+Version 4.15 -  2002-07-11 GL
+-------------------------------
+        
++ Allow negative count rates in PSF fitting.
+ (fixes problem of large errors of small or zero
+        count rates)
+        
+        
+        
+Version 4.14 - 2002-05-31 HB
+-------------------------------
+
+task now issues an error if WCS keywords of input files do not agree    
+        
+Version 4.13 - 2002-05-24 GL
+-------------------------------
+
+Based on v4.11.13
++ Changed dimensions of array SIMA to 0:250,
+prevents crashing for image binsize < 2 arcsec 
++ Adjust emldetect.par to param v2      
+        
+Version 4.11.13 - 2002-05-22 GL
+-------------------------------
+
+Removed test output
+        
+        
+Version 4.11.12 - 2002-05-22 HB
+-------------------------------
+
+Closed SPR: 
+SSC-SPR-2869 Several sources are not found at the right place
+Error occured in versions from 4.11.8 
+(Initialize XID band countrates to their proper values,
+changed initialisation of unknown countrates to 100./exposure)
+        
+        
+Version 4.11.11 - 2002-05-16 HB
+-------------------------------
+
+Closed SPR:
+SSC-SPR-2862 (on eposcorr) inconsistent lii/bii, lii_corr/bii_corr      
+             corrrected by changing constant 'pi' to double precision 
+        
+Version 4.11.10 - 2002-05-07 HB
+-------------------------------
+
+same as 4.11.9  
+        
+        
+Version 4.11.9 (2002-05-07) HB
+------------------------------
+
+Closed SPR:
+-SSC-SPR-2856 Incorrect summary band likelihood values if withxidband=yes
+        
+Version 4.11.8 (2002-04-22) HB
+------------------------------
+
+Closed SPRs:
+-SSC-SPR-2833 No desciption of DIST_NN column   
+-SSC-SPR-2834 SUBMODE keyword wanted
+-included changes made in 4.12.
+        
+Version 4.12 (2002-04-05) HB
+----------------------------
+
+- emldetect now accepts any eboxdetect, emldetect, or ewavelet
+  source lists as input source lists. The number of energy
+  bands and type and number of EPIC cameras do not need to
+  be the same as in the current detection run.  
+
+Version 4.11.8 (2002-04-22) HB
+------------------------------
+
+Closed SPRs:
+-SSC-SPR-2833 No desciption of DIST_NN column   
+-SSC-SPR-2834 SUBMODE keyword wanted
+        
+Version 4.11.7 (2002-04-03) HB
+------------------------------
+
+.lyt file modified      
+        
+Version 4.11.6 (2002-03-08) HB
+-----------------------
+
+Closed SPRs:
+-SSC-SPR-2804 NaNs in multi-camera source lists
+-SSC-SPR-2805 fluxes in multi-camera fits too low       
+        
+Version 4.11.5 (2002-02-27) HB
+------------------------------
+
+Closed SPR:
+-SSC-SPR-2646 Can we have optical axis position please? 
+              keywords OARAaann and OADEaann added to source lists
+
+EXPIDSTR & ATT_SRC propagated from input
+
+        
+Version 4.11.4 (2002-02-14) HB
+------------------------------
+
+minor correction of 4.11.3
+        
+Version 4.11.3 (2002-02-13) HB
+------------------------------
+
+-SSC-SPR-2752 array bound error 
+
+Version 4.11.2 (2002-01-30) HB
+------------------------------
+
+minor correction of 4.11.1
+        
+Version 4.11.1 (2002-01-30) HB
+------------------------------
+
+-SSC-SPR-2725 Source lists should contain raw coordinates and ccd number        
+        
+Version 4.11 (2002-01-14) HB
+----------------------------
+
+error in PSF routine, effecting MOS extent fitting corrected    
+
+minimum number of source pixels required for PSF fitting set to 
+<number of input images>+5
+        
+Version 4.10 (2002-01-11) HB
+----------------------------    
+
+error in detection mask reading routine corrected       
+        
+Version 4.9 (2002-01-09) HB
+---------------------------
+
+minor correction with respect to 4.8    
+        
+Version 4.8 (2002-01-09) HB     
+---------------------------
+
+New task parameters withdetmask and detmasksets were added. If withdetmask=true
+only sky pixels inside the mask are used in the PSF fit 
+        
+Closed SPRs:
+-SSC-SPR-1259 emldetect test harness should check the error status of the task  
+-SSC-SPR-2645 Include PSF coverage correction for gaps/badpix   
+              The PSF fits now fit the source count rates (source table column
+              RATE) considering the exposure in each sky pixel. Source counts
+              (source table column SCTS), which were a fit parameter in
+              previous task versions, are now calculated by multiplying the
+              rates with the PSF weighted exposure.
+        
+        
+Version 4.7 (2001-11-21)
+------------------------
+
+eboxdetect 4.0 removed from DEPEND      
+        
+Version 4.6 (2001-11-07)
+------------------------
+
+Closed SPR:
+-SSC-SPR-2621 library of routines shared by emldetect and eboxdetect;
+              module edetect_io renamed to edetect_io_ml
+              
+        
+Version 4.5 (2001-10-15)
+------------------------
+
+Closed SPR:
+- SSC-SPR-2593 need to account for OOT events
+  Rates and fluxes now divided by the following OOT correction factors:
+  PN FF mode: 0.9411;  PN eFF mode: 0.97815
+  Source counts (SCTS column) and other modes/cameras are left uncorrected       
+        
+Version 4.4 (2001-09-03)
+------------------------
+
+- lots of unused symbols removed
+        
+Closed SPR:
+- SSC-SPR-2537 Core dumps in test harness when compiling code 
+               with NAG F95 v4.1 compiler
+        
+        
+Version 4.3 (2000-07-25)
+------------------------
+
+-detection likelihoods, L, are now calculated such that, independently
+ of the number of free parameters or input images, they always obey
+ the definition L=-ln(p) where p is the probability that the observed
+ counts are due to Poissonian fluctuations of the background    
+-parameters 'withsourcemap' and 'sourceimagesets' added to allow output
+ of energy band source maps        
+-the task now exits with an error message if the input source list or
+ any of the input images are empty      
+         
+Closed SPRs:
+- SSC-SPR-2444 array bound error
+- SSC-SPR-2464 SCR 67: Calibration quantities in output source lists
+- SSC-SPR-2477 emldetect moves sources outside FOV
+        
+Version 4.2.3 (2000-08-13)
+--------------------------
+
+Closed SPR:
+- SSC-SPR-2527 XID band fluxes incorrect        
+        
+Version 4.2.2 (2000-05-30)
+-------------------------
+
+- allocatable array (derv1; subroutine mlfit) changed to reduce 
+  memory requirement of task    
+        
+Version 4.2.1 (2000-05-30)
+--------------------------
+
+Closed SPR:
+- SSC-SPR-2398  Does not work on Linux  
+        
+Version 4.2 (2001-05-20)
+--------------------------
+
+-corrected error which led to sources below the likelihood cutoff
+ in the output source table if withxid=true     
+
+-parameter withhotpixelfilter added: if true likelihood of brightest
+ pixel is ignored for each source
+
+-two internal buffers were enlarged to permit larger source extraction
+ radiii for extent fitting
+        
+-modification of psf routine to increase speed          
+        
+        
+Version 4.1.2 (2001-05-09)
+--------------------------
+
+Header keywords N_INSTR, PN_BNDS, M1_BNDS, M2_BNDS, XID_BND
+were added to describe the number of energy bands per source
+in the output source table (needed by V&V software).
+        
+Closed SPRs:
++ SSC-SPR-2380 wrong xid band energy range header keyword
++ SSC-SPR-2381 description of xiddef keyword    
+        
+Version 4.1.1 (2001-04-26)
+--------------------------
+        
+Closed SPR: 
++ SSC-SPR-2347 test harness fails on linux
+        
+Version 4.1 (2001-04-06)
+--------------------------
+
+Closed SPRs:
++ SSC-SPR-2305 Core dumps when nmaxfit=6 and several instruments        
++ SSC-SPR-2321 wrong ID_BAND value for MOS1/MOS2 xid band
+        
+Version 4.0 (2001-03-14)
+--------------------------
+
+The task now has the option to either use the tabulated
+PSF from the calibration database or an internal, hardcoded
+analytical PSF. New command line parameters: usecalpsf, 
+pixmin, pimax. Command line parameter pointresponse was removed.        
+
+Closed SPRs:
++ SSC-SPR-2007 wrong summary line if withxidband=true 
+               new command line parameter: xiddef
++ SSC-SPR-2185 An output file should always be produced 
++ SSC-SPR-2276 Energy band wanted       
+        
+        
+Version 3.8 (2001-02-13)
+------------------------
+
+Closed SPRs:
++ SSC-SPR-2194 ecf units not specified in documentation
++ SSC-SPR-2198 Only the first value in the ecf parameter is used
++ SSC-SPR-2236 definition of hardness ratio     
+        
+Version 3.7.2 2000-10-19
+------------------------        
+
+Definition of hardness ratio 3 changed (as requested by JO).    
+        
+Closed SPR
+
++ SSC-SPR-1179 Behaviour with fitextent=Y (extent fitting now enabled) 
++ SSC-SPR-2004 total DET_ML in multi-instrument fits
++ SSC-SPR-2007 wrong summary line if withxidband=true
+        
+Version 3.7.1 2000-10-16
+------------------------
+
++ documentation updated
+
+Closed SPRs     
+        
++ SSC-SPR-1166 WCS keywords in input images
++ SSC-SPR-1169 BAND for multi-instrument fits
++ SSC-SPR-1170 order of input images    
++ SSC-SPR-1606 Task runs for a long time        
+
+Version 3.7 2000-10-09
+----------------------
+
++ documentation updated 
+        
+Closed SPRs     
+
++ SSC-SPR-0787 maximum likelihood threshold (documentation)
++ SSC-SPR-0790 point_response parameter
++ SSC-SPR-0793 scut and ecut parameters (documentation)
++ SSC-SPR-0795 CAL calls
++ SSC-SPR-1557 core dumps when RA_PNT/DEC_PNT is outside the image
+               (was already implemeted in v3.5)
+        
+Version 3.6 2000-10-08
+----------------------
+        
+Error in .lyt file corrected    
+        
+Version 3.5 2000-07-28
+----------------------
+
+Version changed to 3.5
+
+
+Version 3.4.2 2000-07-02
+----------------------------
+
+Closed SPRs:
+  SSC-SPR-1720 nmaxfit constrains
+  SSC-SPR-1505 LII,BII differences 
+
+Version 3.4.1 (June 14, 2000)
+----------------------------
+
+- distance to nearest neighbour written to DIST_NN column 
+  in output source list (needed for V&V) 
+         
+        
+Version 3.4 (March 13, 2000)
+---------------------------
+
+- HR3 and hardness ratio errors corrected
+        
+        
+Version 3.3 (March 6, 2000)
+---------------------------     
+
+- name of VER_COMM column corrected
+- SPRs 1503 & 1506 corrected (fitting behaviour of test harness data)   
+
+        
+Version 3.2 (February 22, 2000)
+-------------------------------
+
+- parameter withxidband added (default value set to false for now).
+  Note that withxidband=true in v3.2 will result in wrong summary
+  band fluxes (xid band fluxes are counted twice). Will be corrected
+  in next version.
+- Column NUM_SRC removed from output list       
+- Problem with error calculation corrected which let the program
+  crash if the PN isn't the first instrument.   
+        
+Version 3.1 (February 18, 2000)
+-------------------------------
+
+- Error in error computation corrected
+- Flag columns added to source list     
+        
+
+Version 3.0 (January 19, 2000)
+------------------------------
+
+- Source list format adjusted to comply with recent DCPs.
+- Task now can handle several exposures per instrument.
+- XID band output added to output source list.  
+- Offsets between different instruments as determined by task eident
+  are now read and applied to the input images. Two command line
+  parameters were added to control whether the eident output file
+  is read.         
+- The pixel position of the optical axis is now calculated from
+  the image keywords (used to be set to the center of the image).
+        
+        
+Version 2.11 (September 20, 1999)
+---------------------------------
+
+Closed SPRs:
+
+- 1164: parameter default values corrected in doc 
+        
+Version 2.10 (September 14, 1999)
+---------------------------------
+
+- Error in routine psfoff corrected.    
+        
+
+Version 2.9 (August 6, 1999)
+----------------------------
+
+- use of CRVALn instead of ra_pnt, dec_pnt for ra,dec calculation.
+- prevent crash if negative count rates occure in bands where 
+  a source was not detected     
+          
+Open SPRs: see version 2.6
+
+                
+Version 2.8 (August 3, 1999)
+----------------------------
+        
+- roll angle is now read from CROTA2 instead of PA_PNT
+  if no CROTA2 is present, 0 is assumed  
+- max. filename sizes changed to 1024 (this didn't work in v2.7)
+- task now complains if number of supplied background & exposure maps
+  doesn't agree with number of supplied images    
+
+Open SPRs: see version 2.6 
+        
+        
+Version 2.7 (July 29, 1999)
+---------------------------     
+
+- error in RA, DEC calculation corrected
+- filename sizes changed to 1024
+        
+Open SPRs: see version 2.6
+        
+        
+Version 2.6 (July 12, 1999)
+---------------------------
+
+- parameter names changed to conform to conventions
+
+Closed SPR:
+
+  - 0791: _image parameters     
+
+Open SPRs: 
+        
+ - 0787,0790,0793: items missing from documentation     
+ - 0795: CAL calls      
+ - 0797: ID_SRC descriptors     
+ - 0798: FLAGs column   
+ - 0808: influence of background image  
+ - 0811: count flag not used
+
+        
+Version 2.5 (July 8, 1999)
+--------------------------
+
+Closed SPRs:
+
+ - 0796: small ecut values      
+ - 0800: Point response usage   
+ - 0803: consistency of boxdetect and mldetect source counts    
+ - 0805: lists of input images  
+ - 0807: BD_MAP corrected       
+ - 0985: taskmain added to DEPEND
+
+Open SPRs:
+
+ - 0787,0790,0793: items missing from documentation     
+ - 0791: _image parameters      
+ - 0795: CAL calls      
+ - 0797: ID_SRC descriptors     
+ - 0798: FLAGs column   
+ - 0808: influence of background image  
+ - 0811: count flag not used
+        
+        
+Version 2.4
+----------------------
+
+- smaller test harness files
+- hardness ratio calculation added
+- source table column renamed 
+- sevaral errors relating to multi-band source fitting corrected        
+        
+Version 2.3
+----------------------
+
+- Coding error in v2.2 which lead to failed test harness at SOC corrercted.
+
+        
+Version 2.2
+----------------------  
+
+Closed SPRs:
+
+- Check whether correct number of input files is given
+        
+ - 0812 & 0816: task made to exit gracefully if photon mode (not yet
+                implemented) is selected
+        
+Version 2.1
+----------------------
+
+Closed SPRs:
+
+ - 0533: This corrects some errors in the documentation of version 2.0. 
+        
+Version 2.0
+----------------------  
+
+- MIDAS prototyping code included.      
+        
+- Reading of parameter lists changed.
+        
+Closed SPRs:
+        
+ - 0119 & 0120: Routines get_files and cp_head are now included in a module
+                to be used by all EPIC detection tasks.
+
+Version 1.12
+----------------------  
+
+"to do list" section added to ChangeLog
+        
+Closed SPRs:
+
+ - 0122: same as SPR 342
+ - 0293: test files are now gzip'ed
+ - 0297: temporary files added to CLEANFILES    
+ - 0302: diff removed from the test harness: a f90 program is used
+         to inspect the output file 
+ - 0342: old task description removed
+ - 0343: see SPR 302    
+ - 0344: see SPR 302
+ - 0461: HDUCLASS keywords added
+ - 0464: EXTNAME changed to SRCLIST
+ - 0471: "draft" removed from task description  
+ - 0492: see SPR 302
+        
+Open SPRs:
+
+ - 0119: generic mechanism for get_files
+ - 0120: generic mechanism for cp_head
+        
+Version 1.11
+----------------------
+
+Closed SPR: 
+
+ - 0289: problem fixed (variable hew set to 0.0)
+        
+Version 1.1
+----------------------
+
+ChangeLog added
+
+Closed SPRs:
+ 
+ - 0115: subscript out of range problem fixed
+ - 0117: .par file provided instead of .prm
+ - 0121: test harness is more robust now
+
+Open SPRs: (will be treated in next task version)
+
+ - 0119: get_files to be replaced by generic mechanism
+ - 0120: cp_head to be replaced by generic mechanism    
+ - 0122: I will look into this  
+
+Version 1.0
+----------------------
+
+- Original version submitted to the SOC
+
+
+To do list:
+------------
+        
+- add functionality from MIDAS prototyping software. (done: v2.0)
+        
+- improve error determination loop
+
+- reduce memory requirement of task
+        
+- add error control
+
+- add verbosity control 

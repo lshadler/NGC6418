@@ -1,0 +1,320 @@
+#! /usr/bin/perl -w
+#
+#				treehunter
+#
+# This is a perl utility designed to look through the entire subdirectory
+# structure below the directory $params{dir}. For each directory, treehunter
+# calls a task whose name is specified on the command line by $params{child}.
+#
+#------------------------------------------------------------------------
+
+require 5.005;
+
+use English;
+use strict;
+
+  my $testflag = 0;
+
+  my ($line, $command, $i);
+  my (@list_of_subdirs, $new_path, $already_in, $dir, @files, $status);
+
+  my $taskname = 'treehunter';
+#  my $dirlist_path = "dirlist.txt";
+  my $log_name = 'log';
+  my $stopfile = './treestop';
+
+  my $quit_on_max = 0;
+  my $max_num_calls = 100;
+
+  if (-e "$stopfile") {
+&quit("You must remove the file $stopfile before $taskname can run.", 1);
+  }
+
+  my @start_times = times;
+
+  my %params = &getParams;
+
+#  my $use_prev  = &boolTranslate($params{'useprev'});
+  my $dirlist_style            = $params{'dirliststyle'};
+  my $dirlist_path             = $params{'dirlistpath'};
+  my $do_child  = &boolTranslate($params{'executechild'});
+  my $write_log = &boolTranslate($params{'writelog'});
+  my @starting_dirs = split('\s+', $params{'rootlist'});
+
+  if ($write_log && -e "$log_name") {
+    unlink($log_name);
+    system("touch $log_name");
+  }
+
+  if (!-e "$dirlist_path"
+  && ($dirlist_style eq 'read' || $dirlist_style eq 'append')) {
+    &warn("$dirlist_path not found. I'll construct a new one.");
+    $dirlist_style = 'write';
+  }
+
+  if ($dirlist_style eq 'read') {
+    &tell("Reading list of subdirectories.");
+    @list_of_subdirs = ();
+    open(DLIST, "$dirlist_path");
+    while(defined($line=<DLIST>)) {;
+    next if ($line =~ /^#/);
+      chomp($line);
+      push @list_of_subdirs, $line;
+    }
+    close(DLIST);
+
+  } elsif($dirlist_style eq 'write') {
+    &tell("Constructing list of subdirectories.");
+    push @list_of_subdirs, @starting_dirs;
+    my $i = $#list_of_subdirs;
+#    $list_of_subdirs[0] = $params{'dir'};
+#    my $i = 0;
+    while ($i <= $#list_of_subdirs) {
+      $dir = $list_of_subdirs[$i];
+      $command = "ls $dir";
+      @files = `$command`;
+      foreach (@files) {
+        chomp($_);
+        if (-d "$dir/$_") {
+          push @list_of_subdirs, "$dir/$_";
+        }
+      }
+      ++$i;
+    }
+
+    # Save the new list:
+    open(DLIST, ">$dirlist_path");
+    foreach (@list_of_subdirs) {
+      print DLIST "$_\n";
+    }
+    close(DLIST);
+
+  } elsif($dirlist_style eq 'append') {
+    &tell("Appending to list of subdirectories.");
+    @list_of_subdirs = ();
+    open(DLIST, "$dirlist_path");
+    while(defined($line=<DLIST>)) {;
+    next if ($line =~ /^#/);
+      chomp($line);
+      push @list_of_subdirs, $line;
+    }
+    close(DLIST);
+
+    if (!defined($list_of_subdirs[0])) {
+      push @list_of_subdirs, @starting_dirs;
+#      $list_of_subdirs[0] = $params{'dir'};
+    }
+    my $i = $#list_of_subdirs;
+#    my $i = 0;
+    while ($i <= $#list_of_subdirs) {
+      $dir = $list_of_subdirs[$i];
+      $command = "ls $dir";
+      @files = `$command`;
+      foreach (@files) {
+        chomp($_);
+        $new_path = "$dir/$_";
+        if (-d $new_path) {
+$already_in = 0;
+foreach (@list_of_subdirs){
+  if ($new_path eq $_) {
+    $already_in = 1;
+last;
+  }
+}
+          if (!$already_in) {push @list_of_subdirs, $new_path;}
+        }
+      }
+      ++$i;
+    }
+
+    # Save the combined list:
+    open(DLIST, ">$dirlist_path");
+    foreach (@list_of_subdirs) {
+      print DLIST "$_\n";
+    }
+    close(DLIST);
+
+  } else {
+&quit("Don't recognise --dirliststyle value $dirlist_style.", -1);
+  }
+
+&quitnice("Child invocation not requested.") if (!$do_child);
+
+  &tell("Starting work.");
+  my $num_calls_made = 0;
+  foreach (@list_of_subdirs) {
+    if (-e "$stopfile") {
+&quitnice("$taskname stopped by detection of file $stopfile.");
+    }
+
+    $command = "$params{'child'}";
+    if (&boolTranslate($params{'withinfile'})) {
+      $command .= " $params{'infilekey'}$_";
+    }
+    if (&boolTranslate($params{'withoutfile'})) {
+      $command .= " $params{'outfilekey'}$params{'outfilevalue'}";
+    }
+    $command .= " $params{'restcmdstr'}";
+
+#    ."$params{infilekeystring}$_ "
+#    ."clobber=$params{clobber} "
+#    ."writelog=$params{writelog} "
+    ;
+
+    if ($quit_on_max) {
+      &tell("$num_calls_made/$max_num_calls: invoke $command");
+    } else {
+      &tell("$num_calls_made: invoke $command");
+    }
+
+    if (!$testflag) {$status = system($command);}
+&quit("Couldn't execute command $command.", 3) if ($status);
+
+    ++$num_calls_made;
+    if ($quit_on_max && $num_calls_made > $max_num_calls) {
+&quitnice("Finished requested $max_num_calls calls.");
+    }
+  }
+
+&quitnice("Finished all.");
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub getParamDefaults {
+# Loading default parameter values:
+
+  my %params = (
+#    dir          => '.',
+    rootlist     => "",
+    child        => 'echo',
+    withinfile   => 'yes',
+    infilekey    => 'infile=',
+    withoutfile  => 'no',
+    outfilekey   => 'outfile=',
+    outfilevalue => '.',
+    restcmdstr   => '',
+    dirliststyle => 'write', # can be 'read', 'write', or 'append'
+    dirlistpath  => 'no',
+    executechild => 'yes',
+    writelog     => 'no',
+  );
+
+return %params;
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub getParams {
+
+  my ($possible_key, $actual_key, $value, $no_match_found, $unmatched_pars_found);
+
+  my %params = &getParamDefaults;
+
+#  # Look for '-v':
+#  foreach (@ARGV) {
+#    if ($_ eq '-v') {
+#&getVersionThenQuit();
+#    }
+#  }
+
+  $unmatched_pars_found = 0;
+  foreach (@ARGV) {
+    if ($_ =~ /^(\w+)(=+)/) {
+      $actual_key = $1;
+      $value = $';
+      $no_match_found = 1;
+      foreach $possible_key (keys(%params)) {
+        if ($possible_key eq $actual_key) {
+          $params{$possible_key} = $value;
+          $no_match_found = 0;
+      last;
+        }
+      }
+      if ($no_match_found) {
+        $unmatched_pars_found = 1;
+        &warn("Unrecognised parameter: $actual_key");
+      }
+    }
+  }
+&quit("Unmatched parameters found.", -1) if ($unmatched_pars_found);
+
+return %params;
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub boolTranslate {
+  my ($inStr) = @_;
+  my $out;
+
+  if ($inStr =~ /^\w+$/) {
+    $inStr = lc($inStr);
+    if ($inStr eq 'y' || $inStr eq 'yes' || $inStr eq 't'
+    || $inStr eq 'true') {
+      $out = 1;
+    } elsif ($inStr eq 'n' || $inStr eq 'no' || $inStr eq 'f'
+    || $inStr eq 'false') {
+      $out = 0;
+    } else {
+&quit("Non-boolean variable treated as boolean.", -2);
+    }
+  } elsif ($inStr ne '0' && $inStr ne '1') {
+&quit("Non-boolean variable treated as boolean.", -3);
+  }
+
+return($out);
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub tell {
+  open(LOG, ">> $log_name") if ($write_log);
+  foreach (@_) {
+    print "$taskname:- $_\n\n";
+    print LOG "$taskname:- $_\n\n" if ($write_log);
+  }
+  close(LOG) if ($write_log);
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub warn {
+  open(LOG, ">> $log_name") if ($write_log);
+  foreach (@_) {
+    print "** $taskname: warning, $_\n\n";
+    print LOG "** $taskname: warning, $_\n\n" if ($write_log);
+  }
+  close(LOG) if ($write_log);
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub quitnice {
+  my ($message) = @_;
+
+  my @end_times = times;
+  my $proc_time_sec = $end_times[2] - $start_times[2] + $end_times[3]
+  - $start_times[3];
+
+  &tell("Execution time: $proc_time_sec seconds.");
+
+  open(LOG, ">> $log_name") if ($write_log);
+  print "** $taskname: $message\n\n";
+  print LOG "** $taskname: $message\n\n" if ($write_log);
+  close(LOG) if ($write_log);
+
+exit 0;
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub quit {
+  my ($message, $status) = @_;
+
+  open(LOG, ">> $log_name") if ($write_log);
+  print "** $taskname: ERROR! $message\n\n";
+  print LOG "** $taskname: ERROR! $message\n\n" if ($write_log);
+  close(LOG) if ($write_log);
+
+exit $status;
+}

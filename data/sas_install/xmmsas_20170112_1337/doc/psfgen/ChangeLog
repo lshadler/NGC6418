@@ -1,0 +1,120 @@
+ChangeLog for psfgen
+===============================
+
+Open SPRs:
+
+Version 1.2 - 2014-04-28 (RDS)
+-------------
+	- Changes for GCC 4.8.2
+
+Version 1.1.14 - 2014-04-01 (EC)
+-------------
+	- Moved images/* and psf/* from test/ to testprods/psfgen_test/
+
+Version 1.1.13 - 2012-05-14 (RDS)
+-------------
+	+ test/psfgen_test 	- Fixed problem with test on mocs
+
+Version 1.1.12 - 2012-04-25 (RDS)
+-------------
+	+ test/psfgen_test 	- Added ELLBETA test
+
+Version 1.1.11 - 2012-04-18 (EO)
+--------------
+	+ src/PosWCS.h: Removed extra qualification on class definitions for refra, refdec, pa and useODF.
+
+Version 1.1.10 - 2011-02-09 (RDS)
+-------------
+	+ test/psfcompare 	- Changed to give a tolerance of 1% when
+				  checking for equality in the tests
+
+Version 1.1.9 - 2011-01-12 (RDS)
+-------------
+	+ test/psf/* 		- Updated the test PSF output images to
+				  use XRTn_XPSF_0012.CCF which have been
+				  publically released.
+
+Version 1.1.8 - 2010-12-01 (EO)
+-------------
+	+ Fixed call to memset in test/getregion.cc.
+	+ To be fixed test/ccf.cif: References already non-existent CCFs
+	  e.g. XRT1_XPSF_0010.CCF, etc.
+
+Version 1.1.7 - 2010-05-11
+o Fix bug. Now 'region' can specify the input coordinate system and PSF centre when no 'image' supplied.
+o Modify warning and error output.
++ Add tests for consistency between different inputs.
++ More description details added.
+
+Version 1.1.6 - 2010-05-04
+- Remove the OS dependent harness test. Now the MEDIUM & ELLBETA levels PSF will be created and compared to the same 'standard' PSFs on different OS platform. The standards are created on Linux with size 199x199. ELLBETA level standard PSF is using 'XRT?_XPSF_0010.CCF'.
+
+Version 1.1.5 - 2010-02-08
+- Drop 'xangle' & 'yangle' parameter
++ Add 'coortype' parameter to indicate the coordinate type of PSF
++ Add tests on size and coordinate type comparison of the input images and the output PSFs ( "test/psfcompare.cc", "test/imagepsf_test" )
+o Fix bugs on PSF center misalignment, PSF size mismatch the input image, and incorrect coordinate type for some input images ( "src/psfgen.cc", "src/PsfPosition.h", "src/PsfState.cc" )
+
+Version 1.1.4 - 2009-08-06
+o standard PSF changed to latest calview outputs [cal 3.197 & calview 1.13] ( "test/psf/*.psf.*" )
+o test images changes ("test/images/*.ds" "test/images/*.fits")
+o implement ELLBETA option ("src/psfgen.cc", "src/PsfState.cc", "config/psfgen.par", "doc/psfgen_desription.tex")
+o use CAL_setPosAngle instead of private internal function TransformPSF ("src/psfgen.cc")
++ more tests added ("test/psfgen_test" "test/imagepsf_test" "test/Makefile" "test/visual_test/showimagepsf")
+
+Version 1.1.3 - 2009-06-12
+o drop calling CAL_setPosAngle ("src/psfgen.cc")
+o comment out ELLBETA relevant codes from the source ("src/psfgen.cc", "src/PsfState.cc", "src/PsfPosition.cc")
+o delete ELLBETA option from command line parameter ("config/psfgen.par")
+o delete ELLBETA option from document ("doc/psfgen_description.tex")
++ more tests procedure added
+
+Version 1.1.2 - 2009-06-05
+o correct mistakes in "test/psfgen_test"
+o comment out unnecessary output of psfgen ("test/PsfPosition.cc")
+
+Version 1.1.1 - 2009-06-05
+o Change harnesses test files so that psfgen will pass the test on Solaris and OS X. ("test/psfgen_test", "test/imgpsfgen_test")
+
+Version 1.1 - 2009-05-25
+----------------------------
+o Change Class TwoAngleFBox to Class CoverFBox ("src/PsfPosition.h")
++ Add PSF auto rotation to match the real position of the object in image ("src/psfgen.cc")
++ Parameter "rotate" is implemented ("src/psfgen.cc")
+o Modify test routine so that it would do proper harness test on none linux OS ("test/psfgen_test")
+
+Version 1.0 - 2009-05-15
+----------------------------
+- Drop imgpsfgen.
++ The functionality of imgpsfgen is fitted into psfgen ("src/psfgen.cc")
+o some parameters' name and format changed ("config/psfgen.par")
++ Class TwoAngleFBox added ("PsfPosition.h")
+o Modify Class PsfPosition to return TwoAngleFBox instead of FBox ("src/PsfPosition.cc")
++ Add psfcompare for testing purpose ("test/psfcompare.cc")
+o Modify test programs so that the test can be conducted unattended ("test/psfgen_test")
+o Modify Makefiles ("src/Makefile", "test/Makefile")
+o Modify documents (files under doc/)
+
+Version 0.4 - 2009-03-27
+----------------------------
++ Add datautils 1.10 dependency ("DEPEND")
++ Add user supply CCF option ("psfgen.cc", "psfgen.par", "imgpsfgen.par")
++ Add print CCF Access Log to standard error output option ("psfgen.cc")
+o Modify documents (files under doc/)
+
+Version 0.3 - 2009-03-24
+----------------------------
+o correct the problem that instrument is not properly set ("psfgen.cc")
+
+Version 0.2 - 2009-03-10
+----------------------------
++ Add AccuracyLevel option 'ELLBETA' which will be useful for testing the 2-D PSF work ("PsfState.cc", "psfgen.par", "imgpsfgen.par")
++ Add test for AccuracyLevel option 'ELLBETA' ("testpsfgen_gui.tcl")
++ Add Comments to source files
+
+Version 0.1 - 2008-11-05
+----------------------------
++ Directory structure created by pkgmaker.
++ Implement psfgen, a tool to produce PSF.
++ Implement the imgpsfgen, a helper of psfgen to produce PSF from an xmmselect/evselect generated image.
+

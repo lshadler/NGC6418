@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="epexposure">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epexposure.css">
+
+<LINK REL="next" HREF="node16.html">
+<LINK REL="previous" HREF="node14.html">
+<LINK REL="up" HREF="epexposure.html">
+<LINK REL="next" HREF="node16.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epexposure (epexposure-0.14) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node14.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="epexposure.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epexposure.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="epexposure:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+   subroutine epexposure
+   
+    Read all parameters	
+    Open input event list(s) and auxiliary file from single exposure
+    
+    * call evlistcomb 
+    in addition to epn default also propagate the FRAME column
+    (this is needed to link the event list with CYCLE counters in the AUX file)
+    
+    * call evselect
+    to create CCD specific filtered versions of the AUX file
+    
+    * call make_epexposure
+    to actually perform the livetime computation
+
+   end subroutine  epexposure
+
+------------------------------   
+
+   subroutine make_epexposure
+
+    Read all parameters (passed on from epexposure)
+    Open merged events file
+    Open filtered(=CCD specific) auxiliary file
+    Open housekeeping file
+
+    Open frames output file and fill the primary header
+    Create frames table extension (one per CCD)
+    (this is temporarily used to collect counter info
+     and to store livetime factors per frame)
+
+    Create and fill columns:
+    FRAME
+    TIME: computed via call OAL_frameCounterToObt(aux1frameCol,obttags)
+                       call OAL_obtToTimeTag(obttags,timetags) 
+          for all frames which have an entry in the auxiliary file	
+          compute time tags for all remaining frames from time steps
+
+    Extract chopper value of quadrant under consideration: An_CHOP
+      from housekeeping file, error if An_CHOP not constant, 
+      store An_CHOP as attribute
+
+    Extract number of cycles after which count info is sent: An_MAXFRC
+      from housekeeping file, error if An_MAXFRC not constant
+
+    NDISCLIN: extracted from auxiliary file, valid for An_MAXFRC frames
+
+    Extract number of active CCDs in quadrant under consideration: An_CCDSEL	 
+      from housekeeping file, error if An_CCDSEL not constant
+
+    FC1: MIP dependent quadrant livetime factor
+         (based on NDISCLIN, An_MAXFRC and An_CCDSEL)
+
+    NEPDH: extracted from auxiliary file, valid for An_MAXFRC frames
+
+    NEVENTS: computed number of raw events per frame from merged event list
+
+    FC2: MIP dependent CCD livetime factor
+         (based on EXPOSURE extension prepared by `epframes')
+
+    flag all frames as bad where NEPDH /= NEVENTS
+    (if ground MIP correction is active, NEPDH has to be reduced by rejected
+    counts)
+
+    Modify CCD specific EXPOSURE extension: add enough FRAME entries
+      to store changing livetime factors
+
+    Compute FRACEXP entries: epframes took care of FC0, now
+      additional multiplication with FC1 and FC2 
+
+    Compute livetime corrected exposure time and store it as attribute 
+
+   end subroutine  make_epexposure
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

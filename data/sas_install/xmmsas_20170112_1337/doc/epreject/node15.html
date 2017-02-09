@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="epreject">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epreject.css">
+
+<LINK REL="next" HREF="node16.html">
+<LINK REL="previous" HREF="node14.html">
+<LINK REL="up" HREF="epreject.html">
+<LINK REL="next" HREF="node16.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epreject (epreject-5.17) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node14.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="epreject.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epreject.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="epreject:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+  Energy scale correction:
+
+  ** bin 20 adu and 30-40 adu images from input event file 
+
+  ** determine chip mask area on which to perform offset correction  
+       o remove offset columns (read from offset extension) from mask
+       o remove 10 sigma excesses (3x3 pixel sliding box) in 30-40 adu image 
+         due to soft sources or optical loading from mask   
+
+  ** inside mask area, 
+
+       if offset map is available and -withoffsetmask=true  
+
+         o create residual offset map by subtracting median
+           from each column and row 
+
+       else
+
+         o subtract 20 adu calibration reference image from 20 adu image
+         o if statistically significant excesses are found on 4x1 pixel grid
+           look up offset correction value corresponding to the 
+             observed excess in each pixel
+
+       end if
+
+  ** loop over input event file and
+       
+       o apply offset correction value to PHA value of each event           
+       o copy correction value into newly created OFF\_COR column   
+
+  Suppression of detector noise:
+
+  ** create averaged low energy spectra for each chip row
+
+  ** determine median spectrum for each +/- 10 rows range
+
+  ** for each row and each spectral bin determine the ratio of the
+       calibration noise spectra divided by the accumulated median spectra
+
+  ** apply cutoff value and chip specific correction factors to noise ratios
+
+  ** loop over the event file and randomly flag the events according
+       to the noise ratio of the corresponding chip row and energy channel
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,70 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="srclistset" type="dataset" mandatory="yes" default="src_list.fits">
+   <DESCRIPTION>
+    Name of the source list dataset.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="pgdevice" type="string" default="/xs">
+   <DESCRIPTION>
+    Pgplot device name.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="binstyle" type="string" default="nbins">
+   <DESCRIPTION>
+    How to define the histogram bin width.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="nbins">
+     <PARAM id="nbins" type="int" mandatory="yes" default="100">
+      <DESCRIPTION>
+       Width of the histogram bins.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       nbins in (1:)
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="binwidth">
+     <PARAM id="binsize" type="real" mandatory="yes" default="0.01">
+      <DESCRIPTION>
+       Width of the histogram bins.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       binsize in (0:)
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="dodiff" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to plot the differential distribution or the reverse cumulative distribution.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="dolog" type="bool" default="yes">
+   <DESCRIPTION>
+    Whether to do log or linear Y axis.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="style" type="string" default="number">
+   <DESCRIPTION>
+    Whether to plot number or flux density.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="flux">
+    </ITEM>
+    <ITEM value="number">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

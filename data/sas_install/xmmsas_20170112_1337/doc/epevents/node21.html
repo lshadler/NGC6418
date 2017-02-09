@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Near bad or edge pixels:</TITLE>
+<META NAME="description" CONTENT="Near bad or edge pixels:">
+<META NAME="keywords" CONTENT="epevents">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epevents.css">
+
+<LINK REL="previous" HREF="node20.html">
+<LINK REL="up" HREF="node18.html">
+<LINK REL="next" HREF="node22.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epevents (epevents-6.50.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node20.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Counter examples:"></A>
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Single events and recognizable"></A>
+<A HREF="node22.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Unrecognizable event patterns which"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epevents.html">Home Page</A> / <A  HREF="node13.html">Output Files</A> / <A  HREF="node17.html">Classification of the patterns</A> / <A  HREF="node18.html">Single events and recognizable</A></DIV>
+<!--End of Navigation Panel-->
+
+<H4><A NAME="SECTION00074130000000000000"></A><A NAME="epevents:description:outputfiles:patterndetails:edges"></A>
+<BR>
+Near bad or edge pixels:
+</H4>
+
+<P>
+A bad pixel is defined as a pixel which is excluded from
+telemetry; an edge pixel is a `virtual pixel' just outside
+the sensitive area, in particular a pixel at the edge of the CCD.<PRE> 
+             . . . . .
+             . . b . .               E E E E E
+Bad pixel:   . b B b .      Edges:   e e e e e
+             . . b . .               . . . . .
+             . . . . .               . . . . .
+</PRE>          
+Edge pixels are treated similar to bad pixels.
+Here 'E' is the area just outside the CCD, and 'e'
+are the outermost pixels. Since 'E' acts like 'B',
+'e' will be treated like 'b'.
+
+<P>
+Any single event which is located at 'b' will be
+considered as invalid ('B' is the position of the
+bad pixel), as will be any recognizable pattern with
+the maximum amplitude at 'b'. Recognizable patterns
+with their maximum outside 'b' will be treated as
+valid events. The reason for this treatment is that
+for events with their maximum at 'b', part of the
+charge distribution may be hidden in 'B'. This is
+less likely, if the maximum is located outside 'b'.
+Some typical singles and doubles at an edge:
+<PRE> 
+                   E e . .
+                   E e . .
+single event       E X . .
+                   E e . .
+                   E e . .
+
+                   E e . .    E e . .    E e . .    E e . .
+                   E e . .    E x . .    E e . .    E e . .
+double pattern     E x X .    E X . .    E X x .    E X . .
+                   E e . .    E e . .    E e . .    E x . .
+                   E e . .    E e . .    E e . .    E e . .
+</PRE>
+
+<P>
+The first (left) example above for double patterns is considered as 
+valid double, the other three not.
+
+<P>
+Flags for invalid events / patterns (recognizable case):
+<BR>
+<BR><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">single</TD>
+<TD ALIGN="CENTER">double</TD>
+<TD ALIGN="CENTER">triple</TD>
+<TD ALIGN="CENTER">quadruple</TD>
+</TR>
+<TR><TD ALIGN="LEFT">PAT_TYP</TD>
+<TD ALIGN="CENTER">-1</TD>
+<TD ALIGN="CENTER">-2</TD>
+<TD ALIGN="CENTER">-3</TD>
+<TD ALIGN="CENTER">-4</TD>
+</TR>
+<TR><TD ALIGN="LEFT">PAT_IND</TD>
+<TD ALIGN="CENTER">0</TD>
+<TD ALIGN="CENTER" COLSPAN=3><SPAN>always <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$&lt;0$"></SPAN></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT">PAT_ORI</TD>
+<TD ALIGN="CENTER">0</TD>
+<TD ALIGN="CENTER" COLSPAN=3><SPAN>always = 0</SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT">PI</TD>
+<TD ALIGN="CENTER">-A</TD>
+<TD ALIGN="CENTER" COLSPAN=3><SPAN>-sum(a) for pixel with maximum 
+                                         amplitude</SPAN></TD>
+</TR>
+</TABLE>    
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node20.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Counter examples:"></A>
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Single events and recognizable"></A>
+<A HREF="node22.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Unrecognizable event patterns which"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

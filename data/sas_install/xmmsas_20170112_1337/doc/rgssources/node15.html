@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Input Files</TITLE>
+<META NAME="description" CONTENT="Input Files">
+<META NAME="keywords" CONTENT="rgssources">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgssources.css">
+
+<LINK REL="next" HREF="node16.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="rgssources.html">
+<LINK REL="next" HREF="node16.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgssources (rgssources-6.2.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node14.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Upgrading the format."></A>
+<A HREF="rgssources.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Output Files"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgssources.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000"></A>
+<A NAME="rgssources:description:inputfiles"></A>
+<BR>
+Input Files
+</H1>
+
+<P>
+
+<OL>
+<LI>EPIC sources set with a binary extension table named <A NAME="1457"></A><TT>SRCLIST</TT> (required only if <TT>withepicset</TT> = `yes').
+
+<P>
+The following columns need to be present in this table:
+  
+<UL>
+<LI><A NAME="1460"></A><TT>RA</TT>: this value is copied into the RGS column of the same name.
+</LI>
+<LI><A NAME="1462"></A><TT>DEC</TT>: this value is copied into the RGS column of the same name.
+</LI>
+<LI><A NAME="1464"></A><TT>ML_ID_SRC</TT> (if the source list was made by <A NAME="1466"></A><A NAME="tex2html26"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>) or <A NAME="1470"></A><TT>BOX_ID_SRC</TT> (if the source list was made by <A NAME="1472"></A><A NAME="tex2html27"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>): this number is included in the <A NAME="1476"></A><TT>LABEL</TT> value of the source in the RGS list.
+</LI>
+<LI><A NAME="1478"></A><TT>ID_BAND</TT>: this value is used in distinguishing the energy band in calculating RATE (see below).
+</LI>
+<LI><A NAME="1480"></A><TT>RATE</TT>: the sum of these values in the specified energy bands are written in the output RGS list.  The energy band (ID) is listed in the above-mentioned <A NAME="1482"></A><TT>ID_BAND</TT> column, whereas the energy band IDs are specified in <TT>bandids</TT> command-line parameter.
+
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI>RGS sources set as described in the `Output files' section (required only if <TT>filemode</TT> = `modify').
+
+<P>
+</LI>
+<LI>The attitude history file created by <A NAME="1486"></A><A NAME="tex2html28"
+  HREF="../atthkgen/index.html"><SPAN  CLASS="textbf">atthkgen</SPAN></A>
+(required only if ((<TT>filemode</TT> = `modify' and <TT>changeattitude</TT> = `yes') or <TT>filemode</TT> = `create') and <TT>attstyle</TT> = `mean' or `median'.).
+
+<P>
+</LI>
+<LI>The filtered attitude history file created by <A NAME="1494"></A><A NAME="tex2html29"
+  HREF="../attfilter/index.html"><SPAN  CLASS="textbf">attfilter</SPAN></A>
+(required only if ((<TT>filemode</TT> = `modify' and <TT>changeattitude</TT> = `yes') or <TT>filemode</TT> = `create') and <TT>attstyle</TT> = `expmedian'.).
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node14.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Upgrading the format."></A>
+<A HREF="rgssources.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Output Files"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

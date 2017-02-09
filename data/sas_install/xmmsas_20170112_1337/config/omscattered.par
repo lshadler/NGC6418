@@ -1,0 +1,81 @@
+<!-- converted from XPI formatted "ommosaic.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="set" type="file" mandatory="yes" default="">
+   <DESCRIPTION>
+    Name of the input image
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="scatset" type="file" mandatory="no" default="">
+   <DESCRIPTION>
+    Name of the input calibrated scattered light image
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="outset" type="file" mandatory="no" default="">
+   <DESCRIPTION>
+    Name of the output image with scattered light subtracted
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="mode" type="int" default="1">
+   <DESCRIPTION>
+    Flag for using one of the three methods of computing the 
+    scattered light scaling factor:
+    1 is for computing the scaling factor using the ratio between
+    the background counts of the input and calibrated iamges.
+    2 is for computing the scaling factor from the differences 
+    between the background and scattered light counts for the 
+    input and calibrated images;
+    3 is for fitting the scaling factor by multiple-steps 
+    comparison of the background counts and the counts within
+    the scattered light feature; 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    mode in [1:3]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="scalingfactor" type="real" default="-1">
+   <DESCRIPTION>
+    Scaling factor for the scattered light image
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    scalingfactor in [-1.0:10000000.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="innerradius" type="real" default="-1">
+   <DESCRIPTION>
+    Inner radius (unbinned pixels) for the ring-shaped region, 
+    within which the image background level should be determined
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    innerradius in [-1.0:2048.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="outerradius" type="real" default="-1">
+   <DESCRIPTION>
+    Outer radius (unbinned pixels) for the ring-shaped region, 
+    within which the image background level should be determined
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    outerradius in [-1.0:2048.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

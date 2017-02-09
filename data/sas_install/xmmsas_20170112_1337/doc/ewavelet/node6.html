@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>The convolution</TITLE>
+<META NAME="description" CONTENT="The convolution">
+<META NAME="keywords" CONTENT="ewavelet">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ewavelet.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ewavelet (ewavelet-3.11.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="The detection threshold"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Background estimation"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ewavelet.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00033000000000000000">
+The convolution</A>
+</H2>
+From version 2.0 on <A NAME="712"></A><A NAME="tex2html7"
+  HREF="../ewavelet/index.html"><SPAN  CLASS="textbf">ewavelet</SPAN></A>
+uses the fast Fourier transform (FFT) 
+to convolve images with the wavelet filter and the background images
+with other smoothing filters. For small wavelet scales direct convolutions
+are still used. The FFT routines are those of the external <I>fftw</I> package.
+Care is taken that the input images are only once transformed and stored,
+in order to avoid unnecessary calls to the FFT routines.
+The Fourier Transforms of the Mexican hat function and the background smoothing
+functions are calculated directly using the analytical expressions for those
+functions (rather than using a FFT).
+
+<P>
+The direct convolution (small wavelet scales only)
+uses a window size of approximately
+<SPAN CLASS="MATH"><IMG
+ WIDTH="34" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img66.png"
+ ALT="$4.5\sigma$"></SPAN>. A smaller window size decreases the computational effort at the
+expense of the convolution accuracy. (Note that for a two dimensional Gaussian
+function <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img65.png"
+ ALT="$3\sigma$"></SPAN> does not correspond to a fraction of 99.73%, but to
+98.9%.)
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="ewavelet:description:fig:3"></A><A NAME="661"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 3:</STRONG>
+The response of a Gaussian source (dotted line) to
+the convolution of the image with the background smoothing function.
+The dashed line shows
+the function itself and the solid line shows the response to a Gaussian
+(<!-- MATH
+ $\sigma_{bgd} = 2\sigma_{gauss}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="105" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img67.png"
+ ALT="$\sigma_{bgd} = 2\sigma_{gauss}$"></SPAN>).
+The Gaussian has been multiplied by a factor 1/5.
+</CAPTION>
+<TR><TD><IMG
+ WIDTH="336" HEIGHT="239" BORDER="0"
+ SRC="img68.png"
+ ALT="\begin{figure}\centering
+\epsfig{figure=bgdresponse.ps,height=5.5cm}
+\par
+\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="The detection threshold"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Background estimation"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

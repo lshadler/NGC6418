@@ -1,0 +1,2598 @@
+#! /usr/bin/perl -w
+## NAME: epchain
+# VERSION: 8.76
+#
+# Developer: Michael Freyberg               MPE Garching
+#   inspired in January 2000 by:
+#  [emchain: David Landriu, Jean Ballet     SAp, CEA Saclay]
+# Modified by: Hermann Brunner              MPE, Garching   
+#
+################################################################################
+use 5.005;   # required by SAS (binary) installation
+use English;
+use Getopt::Long;
+use File::Path;
+use Cwd;
+use strict;
+#use DAL;
+use SAS;
+
+## use dal;  ## use sas;  ## $ENV{'SAS_VERBOSITY'}=6;
+
+my $TASK_NAME="epchain";     #
+my $TASK_VERSION="8.76";   # with epreject+epnoise
+
+# individual task verbosities, e.g. for debugging purposes
+# my verbosity_epframes=6;
+
+# SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Running version $TASK_VERSION");
+
+#
+# Define default ODF/data directory
+#
+my $indir=""; my $sumpath=""; my $ep=0;
+if ( exists $ENV{'SAS_ODF'}) {$indir = $ENV{'SAS_ODF'}};
+
+#
+# set default values for all parameter variables
+#
+my $instrume="EPN";        # Instrument (EPN)
+my $datamode="IMAGING";    # default data mode: IMAGING TIMING BURST
+my $exposure=1;            # default exposure number
+my $ccds="1-12";           # default string with CCDs, e.g. "1,6-9,12"
+my $schedule="S";          # default exposure schedule flag (if "odfaccess=odf")
+my $memorymodel="high";    # default memory model for "evlistcomb"
+my $warnlimit=" -w 10";    # default warning limit
+my $ccfok="Y";             # default CCF setup
+my $odfok="Y";             # default ODF setup
+my $hkok="Y";              # default HK setup
+my $setupbpx="nom3";       # default setup for badpix/offset correction vector
+my $odfaccess="oal";       # how to access the ODF
+my $outset="events.fits";  # default output file name if "usecanonicalnames=N"
+my $usecanonicalnames="Y"; # how to construct output filenames
+
+my $withdefaultcal="Y";    # how to call tasks depending on instrument mode
+my $orig_withrdpha="N";
+my $orig_withxrlcorrection="N";
+my $orig_runepreject="N";
+my $orig_runepfast="N";
+
+my $screen="Y";            # screen low-energy events
+my $screenlowthresh=150;   # screen PI column [eV]
+my $screenrejected="n";    # screen events on bad pixels etc.
+# my $keepintermediate="cal"; # keep intermediate files
+my $keepintermediate="none"; # keep intermediate files
+
+my $f1294=0;               # default CMS TIMINTREAQUA
+my $f1118="UNKNOWN";       # default HFWPOTPOSSENSORST
+my $anchop=0;              # default AN_CHOP
+
+my $ingtiset="";           # default HK GTI file        [future development]
+my $f1052=32400;           # default DTIMAUTRSTPREVAL   [future development]
+my $ecntempqb1=-9999.9;    # default quadrant box temperature [deg C]
+my $optloadingimage="N";   # default no adu 20-30 sky image
+my $optloadingimageset="optloading.img"; # name of adu 20-30 sky image
+#
+#-------------------------------------------------------------------------------
+# atthkgen
+#
+my $runatthkgen="Y";
+my $atthkset="atthk.dat"; my $timestep=1.0;
+#
+#-------------------------------------------------------------------------------
+# epframes
+#
+my $runepframes="Y";
+my $withsrcrawy="N"; my $srcposition=190; my $wrongpixlimit=20; 
+my $mipmethod="onboard"; my $qualmax=0; my $mipthreshold=3000; 
+my $mipdist="N"; my $gticcd=""; 
+my $witheventmap="N"; my $automode="N"; my $autofilter="N"; 
+my $eventmapset="eventmap" . "##" . ".dat";
+my $withsrccoords="N"; my $srcra=0.0; my $srcdec=0.0; # my $srcpa=0.0; 
+my $withfinetime="Y"; my $lowerthreshold=20;
+my $showaux="N"; my $showccx="N"; my $showpmh="N"; my $showpah="N"; my $showve="N"; 
+my $aneamipsel=1; my $anmaxmip=63; my $anmip=3512; my $ancmcorr=512;; my $ancmloth=532;
+my $withfifogti="N"; my $fifogtithresh="76";
+my $guessdeltap="N";
+#
+#-------------------------------------------------------------------------------
+# epreject
+#
+my $runepreject="N";
+my $withoffsetmap="Y";
+my $withoffsetlist="N";
+my $odilist="odilist.asc";
+my $badcolumnset="badcolumns.tab";
+my $sigma=4.0;
+my $noiseparameters="0.98 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0";
+my $withxrlcorrection="N";
+#
+#-------------------------------------------------------------------------------
+# eprejectti
+#
+my $runeprejectti="N";
+my $withsoftflarescreening="N";
+my $softflarethreshold1="10.0";
+my $softflarethreshold2="1.0";
+my $softflaresmooth="BOX";
+my $softflareenergyrange="40 50";
+my $softflaresmoothparams="2.0 1.0 1.0";
+#
+#-------------------------------------------------------------------------------
+# epnoise
+#
+my $runepnoise="N";
+my $identifynoisyframes="Y";
+my $applyfilter ="Y";
+my $noisecut=2;
+my $sigmacut=3.0;
+my $savemasks = "N";
+#
+#-------------------------------------------------------------------------------
+# epxrlcorr
+#
+my $runepxrlcorr="N";
+my $withxrlimage="N";
+#
+#-------------------------------------------------------------------------------
+# badpixfind
+#
+my $runbadpixfind="Y";
+my $flickertimesteps=5; 
+my $badpixfinddir="."; my $bpxfindprefix="bpxf_";
+my $badpixset="$badpixfinddir/$bpxfindprefix" . "##" . ".fits";
+my $hithresh=0.0045; 
+my $bpx_loenergythresh=0.14; 
+my $bpx_hicolthresh=0.00105; 
+#
+#-------------------------------------------------------------------------------
+# badpix
+#
+my $runbadpix="Y";
+my $getuplnkbadpix="Y"; my $getotherbadpix="Y"; my $getnewbadpix="Y";
+my $emptyextension="N"; my $windowfilter="N";
+#
+#-------------------------------------------------------------------------------
+# epevents
+#
+my $runepevents="Y";
+my $reemissionthresh=0;
+my $patternanalysis="Y";  ## parameter patternanalysis not used yet
+my $gainctiaccuracy=2;
+my $randomizeposition="Y"; my $randomizeenergy="Y";
+my $testenergywidth="Y";
+my $withoutoftime="N"; my $withctisrcpos="N";
+my $withccdoffsets="N"; my $withtempcorrection="Y"; ## my $withtempcorrection="N";
+my $withframecti="N"; my $withbackgroundgain="Y"; my $withpatternoffset="Y";
+my $withctilongterm="Y"; my $ctilongtermsoft="Y"; 
+# my $ctilongtermy="N"; my $ctilongtermpar="2.56 1.15 -0.26 0.10 120.0"; 
+my $ctilongtermy="Y"; # my $ctilongtermpar="1.5e-5 1.15 -0.26 0.10 1.0 ";
+my $withgaintiming="Y"; my $withgainburst="Y"; 
+my $withgainff="N"; my $withgaineff="Y"; 
+my $withphagaincolumn="N"; my $lowgainenergyscale="N";
+my $withphotonmap="N"; 
+# my $mappatterntype="sssd"; #  my $mappatterntype="sxvw"; 
+my $mappatterntype="sssd"; 
+my $photonmaplothresh="  0 200  500     0"; # my $photonmaplothresh="1000 1000 1000 1000"; 
+my $photonmaphithresh="200 500 2000 32000"; # my $photonmaphithresh="2000 2000 2000 2000"; 
+my $photonmapset="photonmap" . "##" . ".dat";
+my $checksasmip="N"; 
+my $withrdpha="Y"; # as of 8.71 # "N" as of 8.69.5 
+my $rdphatimebinsize=100.0;
+#
+#-------------------------------------------------------------------------------
+# attcalc
+#
+my $runattcalc="Y";
+my $attsou="ahf"; my $refpoint="pnt"; my $nominalra=""; my $nominaldec="";
+my $attra=0.0; my $attdec=0.0; my $attPA=0.0;
+my $imagesize=0.36; my $withmedianpnt="Y";
+#
+#-------------------------------------------------------------------------------
+# epexposure
+#
+my $runepexposure="Y";
+my $screenexposure="Y";    # screen exposure columns
+my $randomizetime="Y"; 
+my $spatialexposure="Y";
+#
+##-------------------------------------------------------------------------------
+# evlistcomb
+#
+my $runevlistcomb="Y";
+my $imagingset="merged.img"; my $timingset="merged.tim";
+my $propagatecolumns="auto";
+my $othertables="BADPIX EXPOSURE DLIMAP"; 
+my $maintable="EVENTS OFFSETS";
+my $mainattributes="";
+my $epnimgcolnames="TIME RAWX RAWY DETX DETY X Y PHA PI FLAG PATTERN PAT_ID PAT_SEQ OFFSETX";
+my $epnimgcoltypes="double int16 int16 int16 int16 int32 int32 int16 int16 int32 int8 int16 int8 int16";
+my $epntimcolnames="TIME RAWX RAWY PHA PI FLAG PATTERN PAT_ID OFFSETX";
+my $epntimcoltypes="double int16 int16 int16 int16 int32 int8 int16 int16";
+my $setstring="";
+my $content="EPIC PN IMAGING MODE EVENT LIST";
+#
+#-------------------------------------------------------------------------------
+# evselect
+#
+my $runevselect="Y";
+my $evselexpr="";
+my $runscreen="Y";
+my $ylowlim=0;     #  my $ylowlim=10;
+#
+#-------------------------------------------------------------------------------
+# epfast
+#
+my $runepfast="N"; # as of 8.71 # "Y"; # as of 8.69.5
+#
+#-------------------------------------------------------------------------------
+# e(p)patplot
+#
+my $withpatplot="N"; my $outmaskname="flag0_map_##.dat";
+#
+#-------------------------------------------------------------------------------
+# background rate & spectrum
+#
+my $runbackground="Y";
+my $rateset="rate_bkg.fits"; my $timebinsize=0.0;
+my $specset="spec_bkg.fits";
+my $rategtiset="bkg_GTI.fits"; 
+my $maskexpr="";
+my $hrdmaskexpr="";
+my $maskset="./mask_" . "##" . ".fits";
+my $hrdmskset="./hrdmask_" . "##" . ".fits";
+my $withmask="Y";            # use point source masks for background lightcurve
+my $gpixsum=0; my $hrdgpixsum=0;
+my $withhardmask="Y";        # use hard energy band for point source masks
+my $flaremaxrate=60;         # 
+my $patternbkg="(PATTERN<5)";
+my $hrdpatternbkg=$patternbkg . " && (PI>7000) && (PI<15000)";
+#
+# default mask values for background spectrum
+#
+my $sp_msk_loenergythresh=0.16;
+my $sp_msk_hienergythresh=10.0;
+my $sp_msk_hithresh=0.003;
+my $sp_msk_hicolthresh=0.0012;
+my $sp_msk_backgroundrate=0.0001;
+my $sp_msk_withfovmask=0;
+my $sp_msk_threshabovebackground=0;
+my $sp_flaremaxrate=60;
+#
+# default mask values for background lightcurve (hard band)
+#
+my $lc_msk_loenergythresh=7.0;
+my $lc_msk_hienergythresh=15.0;
+my $lc_msk_hithresh=0.00025;
+my $lc_msk_hicolthresh=0.00007;
+my $lc_msk_backgroundrate=-1.0;
+my $lc_msk_withfovmask=1;
+my $lc_msk_threshabovebackground=1;
+my $lc_flaremaxrate=10;
+#
+#-------------------------------------------------------------------------------
+#
+# temporary files and variables
+#
+my $set=""; my $eventset=""; my $gtiset=""; my $tmpdir=""; my $finalevt=0;
+my $outfil=""; my $outfile0=""; my $outfile1=""; 
+my $outfile2=""; my $outfile3="";
+my $outgti=""; my $eventsets=""; my $runtask=""; 
+my $outobsbase=""; my $outfilbase=""; my $epchain_txt = "";
+my $ccdlist=""; my $mode=""; my $skip=0; my $skipfinal=0; my $epo=0;
+my $ascii=0;              # is SAS_ODF an ASCII file (or directory otherwise)
+my $combinedset="merged.xxx";                 # filename after task evlistcomb
+my $clean=0;                                  # = 1 : rm "file"
+my $ccfcif=""; my $noccf=0;                   # SAS_CCF
+my $line_dashed="-------------------------------------------------------------------";
+my $line_plusplus=" ";
+my $message="";
+my $scom="";
+
+#
+# SAS DAL memory model
+#
+my $oldmemorymodel="";
+if ( not exists $ENV{'SAS_MEMORY_MODEL'}) {$oldmemorymodel="high"}
+else {$oldmemorymodel = $ENV{'SAS_MEMORY_MODEL'}
+};
+
+#
+# Set the verbosity (verbose: only 1/0 setting)
+#
+my $verbose = (not exists $ENV{'SAS_VERBOSITY'} or $ENV{'SAS_VERBOSITY'} > 0) ;
+my $tverbose = 1 ;
+my $verbosity = 4 ;
+if (exists $ENV{'SAS_VERBOSITY'} ) {$verbosity = $ENV{'SAS_VERBOSITY'} };
+
+SAS::message($SAS::AppMsg, $SAS::NoisyMsg, "Verbosity = $verbosity");
+
+#
+# check existence of SAS_CCF
+#
+if (exists $ENV{'SAS_CCF'} ) {
+  $ccfcif = $ENV{'SAS_CCF'} ;
+  if ( -f $ccfcif ) {$noccf=0
+  }
+  elsif ( -d $indir ) {
+    $ccfcif = $ccfcif . "/ccf.cif";
+    if ( -f $ccfcif ) {$noccf=0}
+    else {
+      $noccf=1; SAS::warning("SAS_CCF","ccf.cif not found")
+    };
+  }
+}
+else {$noccf=1; SAS::warning("SAS_CCF","environment variable not found")
+};
+
+#
+# Define a general error status
+#
+my $status = 0 ;
+
+#
+# Prints all output to stderr
+# select(STDERR) ;
+#
+SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_dashed);
+
+##sub epchain
+{
+#
+# Read the parameters, perform some checks
+#
+&getParams("odf", "odfaccess", " exposure", "datamode", "runepexposure", "screenexposure", 
+           "spatialexposure", "ccds", "schedule", 
+           "runatthkgen", "runbadpixfind","runbadpix", "runepframes", 
+           "runepevents", "runattcalc", "runevlistcomb", "runevselect", 
+           "runbackground", "runepreject", "runepnoise", "runepxrlcorr", 
+           "runepfast", "withdefaultcal", 
+           "rateset", "specset", "maskset", "hrdmskset", "withxrliamge",
+           "timebinsize", "lowerthreshold",
+           "screen", "screenlowthresh", "screenrejected",
+           "memorymodel", "keepintermediate", "runscreen",
+           "mipthreshold","mipmethod","qualmax","srcposition",
+           "withctisrcpos", "withfinetime", "withfifogti", "fifogtithresh",
+           "witheventmap", "withphotonmap",
+           "eventmapset", "photonmapset",
+#          "hithresh", "flickertimesteps", 
+           "getuplnkbadpix","getotherbadpix","getnewbadpix",
+           "emptyextension","windowfilter", "withmask",
+           "reemissionthresh","randomizeposition","randomizeenergy",
+           "gainctiaccuracy", "testenergywidth",
+           "randomizetime",
+           "imagesize", "withmedianpnt", 
+           "wrongpixlimit","badpixset", 
+           "attitudelabel","refpointlabel","nominalra","nominaldec",
+           "fixedra", "fixeddec","fixedposangle", "timestep",   
+           "epnimgcolnames", "epnimgcoltypes", "propagatecolumns", 
+           "epntimcolnames", "epntimcoltypes","othertables","ingtiset", 
+           "f1294","f1118","f1052","anchop","mipdist", "ecntempqb1", 
+           "ccfok", "odfok", "hkok", "setupbpx",
+           "patternanalysis", "withoutoftime", "withtempcorrection", 
+           "withccdoffsets", "ctilongtermsoft", "withframecti", 
+           "ctilongtermy", "withbackgroundgain", "withpatternoffset", 
+#          "ctilongtermpar", 
+           "withctilongterm", "withgaintiming", "withgainburst", 
+           "withgainff", "withgaineff", 
+           "withphagaincolumn", "lowgainenergyscale",
+           "withsrccoords", "srcra", "srcdec", "withsrcrawy", 
+           "showaux", "showccx", "showpmh", "showpah",
+           "aneamipsel", "anmaxmip", "anmip", "ancmcorr",
+           "automode", "autofilter", "withpatplot", 
+           "usecanonicalnames", "outset", "optloadingimage","odilist",
+           "optloadingimageset","sigmacut","savemasks","badcolumnset","sigma","noiseparameters",
+           "withoffsetmap","withoffsetlist","withxrlcorrection","noisecut",
+           "withsoftflarescreening", "softflarethreshold1",
+           "softflarethreshold2", "softflaresmooth",
+           "softflareenergyrange", "softflaresmoothparams",
+           "checksasmip","withrdpha","rdphatimebinsize","guessdeltap",
+           $indir, $odfaccess, $exposure, $datamode, $runepexposure, $screenexposure, 
+           $spatialexposure, $ccds, $schedule,
+           $runatthkgen, $runbadpixfind, $runbadpix, $runepframes, 
+           $runepevents, $runattcalc, $runevlistcomb, $runevselect, 
+           $runbackground, $runepreject, $runepnoise, $runepxrlcorr, 
+           $runepfast, $withdefaultcal, 
+           $rateset, $specset, $maskset, $hrdmskset, $withxrlimage,
+           $timebinsize, $lowerthreshold, 
+           $screen, $screenlowthresh, $screenrejected, 
+           $memorymodel, $keepintermediate, $runscreen,
+           $mipthreshold, $mipmethod, $qualmax, $srcposition, 
+           $withctisrcpos, $withfinetime, $withfifogti, $fifogtithresh, 
+           $witheventmap,$withphotonmap,
+           $eventmapset,$photonmapset,
+#          $hithresh, $flickertimesteps, 
+           $getuplnkbadpix, $getotherbadpix, $getnewbadpix,
+           $emptyextension, $windowfilter, $withmask,
+           $reemissionthresh, $randomizeposition, $randomizeenergy,
+           $gainctiaccuracy, $testenergywidth,
+           $randomizetime, 
+           $imagesize, $withmedianpnt,
+           $wrongpixlimit, $badpixset, 
+           $attsou, $refpoint, $nominalra, $nominaldec, 
+           $attra, $attdec, $attPA, $timestep, 
+           $epnimgcolnames, $epnimgcoltypes, $propagatecolumns, 
+           $epntimcolnames, $epntimcoltypes, $othertables, $ingtiset, 
+           $f1294, $f1118, $f1052, $anchop, $mipdist, $ecntempqb1,  
+           $ccfok, $odfok, $hkok, $setupbpx, 
+           $patternanalysis, $withoutoftime, $withtempcorrection, 
+           $withccdoffsets, $ctilongtermsoft, $withframecti, 
+           $ctilongtermy, $withbackgroundgain, $withpatternoffset, 
+#          $ctilongtermpar, 
+           $withctilongterm, $withgaintiming, $withgainburst, 
+           $withgainff, $withgaineff, 
+           $withphagaincolumn, $lowgainenergyscale,
+           $withsrccoords, $srcra, $srcdec, $withsrcrawy,
+           $showaux, $showccx, $showpmh, $showpah, 
+           $aneamipsel, $anmaxmip, $anmip, $ancmcorr,
+           $automode, $autofilter, $withpatplot, 
+           $usecanonicalnames, $outset, $optloadingimage, $odilist,
+           $optloadingimageset, $sigmacut, $savemasks, $badcolumnset, $sigma, $noiseparameters,
+           $withoffsetmap,$withoffsetlist,$withxrlcorrection,$noisecut,
+           $withsoftflarescreening, $softflarethreshold1,
+           $softflarethreshold2, $softflaresmooth,
+           $softflareenergyrange, $softflaresmoothparams,
+           $checksasmip, $withrdpha, $rdphatimebinsize, $guessdeltap
+           );
+
+#
+# check boolean variables: convert to unique values 0 (false) / 1 (true)
+#
+&getBoolean($runatthkgen,$runatthkgen);
+&getBoolean($runbadpixfind,$runbadpixfind);
+&getBoolean($runbadpix,$runbadpix);
+&getBoolean($runepframes,$runepframes);
+&getBoolean($runepreject,$runepreject);
+&getBoolean($runepnoise,$runepnoise);
+&getBoolean($runepxrlcorr,$runepxrlcorr);
+&getBoolean($runepevents,$runepevents);
+&getBoolean($runattcalc,$runattcalc);
+&getBoolean($runevlistcomb,$runevlistcomb);
+&getBoolean($runevselect,$runevselect);
+&getBoolean($runepexposure,$runepexposure);
+&getBoolean($withdefaultcal,$withdefaultcal);
+#
+&getBoolean($randomizetime,$randomizetime);
+&getBoolean($spatialexposure,$spatialexposure);
+#
+&getBoolean($screen,$screen);
+&getBoolean($screenexposure,$screenexposure);
+&getBoolean($screenrejected,$screenrejected);
+&getBoolean($runscreen,$runscreen);
+&getBoolean($runbackground,$runbackground);
+&getBoolean($runepfast,$runepfast);
+&getBoolean($withmask,$withmask);
+&getBoolean($withhardmask,$withhardmask);
+&getBoolean($testenergywidth,$testenergywidth);
+&getBoolean($patternanalysis,$patternanalysis);
+&getBoolean($withctisrcpos,$withctisrcpos);
+&getBoolean($withoutoftime,$withoutoftime);
+&getBoolean($withtempcorrection,$withtempcorrection);
+&getBoolean($withbackgroundgain,$withbackgroundgain);
+&getBoolean($withpatternoffset,$withpatternoffset);
+&getBoolean($withccdoffsets,$withccdoffsets);
+&getBoolean($withctilongterm,$withctilongterm);
+&getBoolean($ctilongtermsoft,$ctilongtermsoft);
+&getBoolean($ctilongtermy,$ctilongtermy);
+&getBoolean($checksasmip,$checksasmip);
+&getBoolean($withrdpha,$withrdpha);
+&getBoolean($guessdeltap,$guessdeltap);
+&getBoolean($withframecti,$withframecti);
+&getBoolean($withgaintiming,$withgaintiming);
+&getBoolean($withgainburst,$withgainburst);
+&getBoolean($withgainff,$withgainff);
+&getBoolean($withgaineff,$withgaineff);
+&getBoolean($withphagaincolumn,$withphagaincolumn);
+&getBoolean($lowgainenergyscale,$lowgainenergyscale);
+&getBoolean($automode,$automode);
+&getBoolean($autofilter,$autofilter);
+&getBoolean($withpatplot,$withpatplot);
+&getBoolean($withsrcrawy,$withsrcrawy);
+&getBoolean($withsrccoords,$withsrccoords);
+&getBoolean($witheventmap,$witheventmap);
+&getBoolean($withphotonmap,$withphotonmap);
+&getBoolean($usecanonicalnames,$usecanonicalnames);
+&getBoolean($withfinetime,$withfinetime);
+&getBoolean($withfifogti,$withfifogti);
+#
+&getBoolean($ccfok,$ccfok);
+&getBoolean($hkok,$hkok);
+&getBoolean($odfok,$odfok);
+&getBoolean($optloadingimage,$optloadingimage);
+#&getBoolean($withcontrolimages,$withcontrolimages);
+&getBoolean($withxrlcorrection,$withxrlcorrection);
+&getBoolean($withoffsetmap,$withoffsetmap);
+&getBoolean($withoffsetlist,$withoffsetlist);
+&getBoolean($withsoftflarescreening,$withsoftflarescreening);
+&getBoolean($withxrlimage,$withxrlimage);
+
+
+
+if ($withphagaincolumn) { $propagatecolumns="all" };
+
+#
+# make choice accoding to "propagatecolumns"
+#
+if ( $propagatecolumns eq "imaging" ){
+# $epntimcolnames=\"$epnimgcolnames \";
+# $epntimcoltypes=\"$epnimgcoltypes \";
+  $epntimcolnames="$epnimgcolnames";
+  $epntimcoltypes="$epnimgcoltypes";
+};
+if ( $propagatecolumns eq "subset" ){
+  $epntimcolnames="TIME RAWX RAWY DETX DETY PHA PI FLAG PATTERN PAT_ID OFFSETX";
+  $epntimcoltypes="double int16 int16 int16 int16 int16 int16 int32 int8 int16 int16";
+};
+if ( $propagatecolumns eq "icd" ){
+  $epntimcolnames="TIME RAWX PHA PI FLAG PATTERN OFFSETX";
+  $epntimcoltypes="double int16 int16 int16 int32 int8 int16";
+};
+if ( $propagatecolumns eq "all" ){
+  $epnimgcolnames="TIME RAWX RAWY DETX DETY X Y PHA PHA_GAIN PHA_CTI PI FLAG PATTERN PAT_ID PAT_TYP PAT_IND PAT_ORI PAT_SEQ OFFSETX";
+  $epnimgcoltypes="double int16 int16 int16 int16 int32 int32 int16 int16 int16 int16 int32 int8 int16 int16 int16 int16 int8 int16";
+  $epntimcolnames="$epnimgcolnames";
+  $epntimcoltypes="$epnimgcoltypes";
+};
+
+if ($verbosity > 5) {
+  SAS::message($SAS::AppMsg, $SAS::VerboseMsg, "EPNIMGCOLNAMES = $epnimgcolnames");
+  SAS::message($SAS::AppMsg, $SAS::VerboseMsg, "EPNIMGCOLTYPES = $epnimgcoltypes");
+  SAS::message($SAS::AppMsg, $SAS::VerboseMsg, "EPNTIMCOLNAMES = $epntimcolnames");
+  SAS::message($SAS::AppMsg, $SAS::VerboseMsg, "EPNTIMCOLTYPES = $epntimcoltypes");
+};
+
+#
+# warn about not fully implemented parameters
+#
+if (!($patternanalysis) && ($verbosity > 4)) {
+  SAS::message($SAS::AppMsg, $SAS::VerboseMsg, "Parameter <patternanalysis> not yet implemented.")
+  };
+if (($ingtiset ne "") && ($verbosity > 4)) {
+  SAS::message($SAS::AppMsg, $SAS::VerboseMsg, "Parameter <ingtiset> not yet implemented.")
+  };
+
+SAS::message($SAS::AppMsg, $SAS::VerboseMsg, $line_dashed);
+SAS::message($SAS::AppMsg, $SAS::VerboseMsg, " SAS_CCF index: $ccfcif");
+
+if ( $indir eq ""){
+   if ( not exists $ENV{'SAS_ODF'}) {
+      &showSyntax();
+      SAS::error("odf", "$0 needs a valid directory name in argument odf."); }
+   else { $indir = $ENV{'SAS_ODF'} }
+}
+
+
+#
+# how to call tasks depending on instrument mode
+#
+if ($withdefaultcal) {
+
+  $orig_withrdpha=$withrdpha;
+  $orig_withxrlcorrection=$withxrlcorrection;
+  $orig_runepreject=$runepreject;
+  $orig_runepfast=$runepfast;
+
+}
+
+
+#
+# check existence of data directory
+#
+
+$tmpdir = $indir;
+if ( ! -e $indir ) {
+   &showSyntax();
+   SAS::error("odf", "$indir could not be found.");
+};
+
+if ( -d $indir ) {
+   SAS::message($SAS::AppMsg, $SAS::VerboseMsg, " (D) SAS_ODF is directory: $indir");
+   $ascii = 0
+}
+elsif ( -f $indir ) {
+   SAS::message($SAS::AppMsg, $SAS::VerboseMsg, " (F) SAS_ODF is ASCII file: $indir");
+   $sumpath = `grep "PATH " $indir | cut -b6-` ;
+   $epo = length($sumpath)-1;
+#  print "LENGTH = " . $ep . "\n";
+   $epchain_txt = "SUMPATH = " . substr($sumpath, 0, $epo);
+   SAS::message($SAS::AppMsg, $SAS::VerboseMsg, " (F) $epchain_txt");
+   if ( $sumpath ne "" ) {
+     $indir = substr($sumpath, 0, $epo) . "/";
+     $ep = 0;
+#    print "INDIR = |" . $indir . "|\n";
+   }
+   else {
+     $ep = 1;
+   };
+   $ascii = 1
+}
+else {
+   SAS::error("odfType", "SAS_ODF neither directory nor ASCII file.")
+};
+
+if (! $ascii ) {$indir = $indir . "/" };
+my $jp = index($indir,"/");
+SAS::message($SAS::AppMsg, $SAS::NoisyMsg+1, "Position of / = $jp");
+
+if ( $jp > -1 ) {
+  $indir =~ /^(.*)\//;
+  $indir = $1;
+  SAS::message($SAS::AppMsg, $SAS::NoisyMsg, " (0) SAS_ODF is directory: $indir")
+  }
+else {
+  if ( $indir eq "." ){
+    SAS::message($SAS::AppMsg, $SAS::NoisyMsg, " (1) SAS_ODF is directory: $indir")
+  }
+  elsif ( $indir eq ".." ) {
+    SAS::message($SAS::AppMsg, $SAS::NoisyMsg, " (2) SAS_ODF is directory: $indir")
+  }
+  else {
+    $indir = ".";
+    SAS::message($SAS::AppMsg, $SAS::NoisyMsg, " (3) SAS_ODF was ASCII: $tmpdir, now $indir")
+  }
+};
+
+SAS::message($SAS::AppMsg, $SAS::NoisyMsg, " (9) SAS_ODF is directory: $indir");
+
+#
+# check attitude related stuff
+#
+if ( $refpoint eq "user" and $attsou ne "fixed" ) 
+   { SAS::error("attitude", "refpointlabel may be user only if attitudelabel is fixed.")
+}
+
+#
+# if "fixed" attitude: values for RA,DEC,PA must be given
+#
+if ( $attsou eq "fixed" and ($attra eq "" or $attdec eq "" or $attPA eq "") )
+   { SAS::error("attitude", "attitudelabel=fixed requires a full set of fixedra, fixeddec and fixedposangle.")
+}
+
+my $nn=0; my $jj=0; my $ii=0;
+my $filename=""; my $lfilename=0; my $ext=""; 
+my $tmpfil=""; my $tmpsched=""; my $tmpexp=0; my $ok=0; my $ismode=0; my $expos=0;
+my @tfil=("");
+my @tmode=("");
+my @tschedule=("");
+my @texposure;
+
+#
+# Define the bad pixel set
+#
+my $ip = index($badpixset,"##");
+if ( $ip == -1) {
+  SAS::error("badpixset", "parameter does not contain CCD place-marker ##")
+};
+
+#
+# parse CCD list parameter
+#
+$ccdlist = $ccds;
+
+$ccdlist =~ s/\s+//g;
+if ( $ccdlist !~ /^\d[-,\d\s]*$/ or
+     $ccdlist !~ /\d$/ or
+     $ccdlist =~ /[-]\d+[-]/ or
+     $ccdlist =~ /[-,][,-]/ ) {
+   SAS::error("ccdlist", "Invalid arguments in CCD list: $ccdlist");
+}
+
+$ccdlist =~ s/-/../g;
+my @ccdlist = eval "($ccdlist)";
+
+if ($verbosity > 4) {
+# SAS::message($SAS::AppMsg, $SAS::VerboseMsg, $line_plusplus);
+  SAS::message($SAS::AppMsg, $SAS::VerboseMsg, $line_dashed);
+  SAS::message($SAS::AppMsg, $SAS::VerboseMsg, " CCDLIST =         $ccdlist");
+  SAS::message($SAS::AppMsg, $SAS::VerboseMsg, " will process CCD: @ccdlist");
+  SAS::message($SAS::AppMsg, $SAS::VerboseMsg, $line_dashed);
+};
+
+for my $ccd (@ccdlist) {
+  if ( $ccd > 12 or $ccd < 1 ){
+     SAS::error("ccd", "CCD number out of range [1-12]");
+  } 
+}
+
+   SAS::message($SAS::AppMsg, $SAS::SparseMsg, " EXPOSURE = $exposure");
+
+#
+# convert to three digits
+#
+$expos=sprintf("%03.3d", $exposure);
+
+#
+# if "odfaccess=name" then guess the datamode
+#
+
+my $mode = substr($datamode, 0, 2); #  my $epchain_txt = "";
+if ($odfaccess eq "name") {
+  my $exposuffix=sprintf("_PN$schedule%03.3d", $exposure);
+# my $list_obs = "\*PN" . $schedule . $expos . "\?\?\?\?E.FIT";
+  my $list_obs = "\*" . $exposuffix . "\?\?\?\?E.FIT";
+  my $list_command = "ls -1 " . $indir . "/" . $list_obs . " |";
+  open(FILST, $list_command );
+  while ( <FILST> ) {
+    chomp($filename = $_) ;
+    SAS::message($SAS::AppMsg, $SAS::NoisyMsg, "$filename ..." );
+    $lfilename = length($filename);
+    my $ll0 = $lfilename-7;
+    $mode = substr($filename, $ll0, 2);
+    SAS::message($SAS::AppMsg, $SAS::NoisyMsg, " Mode = $mode" );
+    if ($mode eq "BU") {
+      $datamode = "BURST"}
+    elsif ($mode eq "TI") {
+      $datamode = "TIMING"}
+    else {
+      $datamode = "IMAGING"
+    };
+    SAS::message($SAS::AppMsg, $SAS::NoisyMsg, " DataMode = $datamode" );
+  };
+  close(FILST);
+  SAS::message($SAS::AppMsg, $SAS::VerboseMsg, " Mode determined from exposure number and schedule flag: $mode" );
+};
+
+if ($verbosity > 4) {SAS::message($SAS::AppMsg, $SAS::VerboseMsg, " DataMode = $mode [$datamode]" );
+}
+
+if ($withdefaultcal) {
+
+  if ($datamode eq "BURST") {
+    $withrdpha="N";
+    $withxrlcorrection="Y";
+    $runepreject="Y";
+    $runepfast="Y";
+  }
+  if ($datamode eq "TIMING") {
+    $withrdpha="Y";
+    $withxrlcorrection="Y";
+    $runepreject="Y";
+    $runepfast="N";
+  }
+  if ($datamode eq "IMAGING") {
+    $withrdpha="N";
+    $withxrlcorrection="N";
+    $runepreject=$orig_runepreject;
+    $runepfast="N";
+  }
+
+}
+
+&getBoolean($runepfast,$runepfast);
+&getBoolean($runepreject,$runepreject);
+&getBoolean($withrdpha,$withrdpha);
+&getBoolean($withxrlcorrection,$withxrlcorrection);
+
+#print " runepfast = $runepfast \n" ;
+#print " runepreject = $runepreject \n" ;
+#print " withrdpha = $withrdpha \n" ;
+#print " withxrlcorrection = $withxrlcorrection \n" ;
+
+my $allExp = 0;
+my $allMode = 0;
+$allExp = ($odfaccess eq "all" || $odfaccess eq "ALL");
+$allMode = ($datamode eq "all" || $datamode eq "ALL");
+
+#
+# Analyse the contents of the ODF input directory
+#
+open(FILST, "ls -1 $indir |");
+if ($tverbose) { 
+  SAS::message($SAS::AppMsg, $SAS::VerboseMsg, $line_plusplus );
+  if ($verbosity > 4) {
+    SAS::message($SAS::AppMsg, $SAS::VerboseMsg, " List of files in ODF/working directory: " );
+    SAS::message($SAS::AppMsg, $SAS::VerboseMsg, $line_plusplus )};
+  };
+
+while ( <FILST> ) {
+  chomp($filename = $_) ;
+  $lfilename = length($filename);
+  if ($lfilename >= 31) {
+    $ok = 1 ;
+    $epchain_txt = "$filename ...";
+
+#
+# Weed out non-FITS files
+#
+    $ii = index( $filename, "." ) + 1;
+    $ext = substr( $filename, $ii, $lfilename-$ii );
+    $ok = ( $ok and ( $ext eq "FIT" or $ext eq "FIT.gz" or $ext eq "FTZ" ) ) ;
+    if (! $ok and $verbosity > 5) {  $epchain_txt = "$epchain_txt" . "  not .FIT"};
+
+#
+# Select only those files coming from EPIC PN
+#
+    if ( $ok ) {
+       $ext = substr( $filename, 16, 2);
+       $ii = index($instrume,$ext);
+       $ok = ( $ok and $ii != -1) ;
+       if (! $ok and $verbosity > 5) { $epchain_txt = "$epchain_txt" . "  not $instrume"};
+    }
+
+#
+# ... and in selected scientific mode (IMAGING, TIMING, BURST)
+#
+    if ( $ok ) {
+       $ext = substr($filename, 24, 2);
+       $ii = index($mode,$ext);
+       $ismode = (index("IM",$ext) != -1 || index("TI",$ext) != -1 || index("BU",$ext) != -1);
+       $ok = ( $ok and ($ii != -1 || $allMode && $ismode ) );
+       if (! $ok and $verbosity > 5) {  $epchain_txt = "$epchain_txt" . "  not $mode"};
+    }
+
+    if ( $ok ) {
+       if ($verbosity > 5) {  $epchain_txt = "$epchain_txt" . "  OK"};
+       $tmpfil = substr($filename,0,22);
+       $tmpsched = substr($filename,18,1);
+       $tmpexp =  substr($filename,19,3);
+       $jj = 0;
+       while ( ($jj < $nn) && ($tmpfil ne $tfil[$jj]) ) {$jj++;}
+       if ($jj==$nn) { 
+	        $tfil[$nn] = $tmpfil;
+                $tmode[$nn] = $ext;
+                $tschedule[$nn] = $tmpsched;
+                $texposure[$nn] = $tmpexp;
+	        $nn = $nn + 1;
+       }
+    }
+
+#    if ( !$allExp ) {
+#       $texposure[0] = $exposure;
+#       $tschedule[0] = $schedule;
+#    }  
+
+    SAS::message($SAS::AppMsg, $SAS::VerboseMsg, "$epchain_txt");
+
+  }     # if (lfilename == 31)
+}       # while (<FILST>)
+
+close(FILST);
+
+if ($nn==0) {
+  SAS::error("odffiles", "No valid file for $datamode was found in $indir directory.")
+};
+
+my $kk=0; 
+SAS::message($SAS::AppMsg, $SAS::VerboseMsg, $line_plusplus);
+if ( $allMode ) {
+  if ($nn==1) {
+    SAS::message($SAS::AppMsg, $SAS::SparseMsg, " $nn exposure in ODF:")}
+  else {
+    SAS::message($SAS::AppMsg, $SAS::SparseMsg, " $nn exposures in ODF:")} }
+else {
+  if ($nn==1) {
+    SAS::message($SAS::AppMsg, $SAS::SparseMsg, " $nn $datamode exposure in ODF:")}
+  else {
+    SAS::message($SAS::AppMsg, $SAS::SparseMsg, " $nn $datamode exposures in ODF:")} }
+
+while ($kk<$nn) {
+   $jj = $kk+1;
+   SAS::message($SAS::AppMsg, $SAS::SparseMsg, " $jj: $tfil[$kk] $tmode[$kk]");
+   $kk++;
+};
+
+$kk=0;
+if ($odfaccess eq "oal") {
+  $kk = $exposure-1, $jj = $kk
+  }
+elsif (($odfaccess eq "odf") || ($odfaccess eq "name")) {
+  $kk = -1;
+  my $exposuffix=sprintf("_PN$schedule%03.3d", $exposure);
+  $jj=0; 
+  while ($jj<$nn) {
+    $ii = index($tfil[$jj],"$exposuffix");
+    if ($ii != -1) {$kk=$jj; $jj=$nn}
+    else {$jj++};
+};
+
+if ($kk == -1) {
+  SAS::error("exposure", "exposure not found in $indir directory. Check exposure suffix $exposuffix")};
+}
+
+if ($verbosity > 5) { SAS::message($SAS::AppMsg, $SAS::VerboseMsg, " odfaccess=$odfaccess  exposure=$exposure  kk=$kk")};
+
+if ($odfaccess eq "oal") {my $nnexp=$nn-$exposure;
+##  if ($nn lt $exposure) {
+  if ($nnexp lt 0) {
+    SAS::error("exposure", "exposure not found in $indir directory. Check exposure index $exposure")};
+  if ($kk == -1) {
+    SAS::error("exposure", "exposure not found in $indir directory. Check exposure index $exposure")};    
+}
+
+if ($verbosity > 4) { SAS::message($SAS::AppMsg, $SAS::VerboseMsg, "will do exposure: $tfil[$kk]")};
+
+    if ( !$allExp ) {
+       $texposure[$kk] = $exposure;
+       $tschedule[$kk] = $schedule;
+    }  
+
+#
+# Set the SAS_ODF environment variable for the constituent tasks
+#
+if ( $ep ){
+  $ENV{'SAS_ODF'}=$indir}
+else {
+  $ENV{'SAS_ODF'}=$tmpdir
+};
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Call atthkgen once (and for all selected CCDs) 
+#   creating atthk.dat for attcalc
+#
+if ($usecanonicalnames) {
+  $outobsbase = "P" . substr($tfil[$kk],5,10);
+  $atthkset   = $outobsbase . "OBX000ATTTSR0000.FIT";
+};
+my $ccom = "atthkgen atthkset=$atthkset timestep=$timestep";
+SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+if ( ( !$skip) && ($runatthkgen)) {&sendCommand($ccom . $warnlimit)} ;
+
+
+#
+# Loop over exposures
+#
+
+if ( $allExp ) 
+   {$kk=0} # process all exposures
+else
+   {$nn=$kk+1};  # only the one given exposure should be processed
+
+while ($kk<$nn) {
+   if ($verbosity > 5) { $jj = $kk+1; SAS::message($SAS::AppMsg, $SAS::NoisyMsg, "$jj: $tfil[$kk]")}
+   &PROCESS_FILES($tfil[$kk],$indir,$tmode[$kk],$tschedule[$kk],$texposure[$kk]);
+   $kk++;
+}
+
+#
+# Test general status
+#
+if ($status > 0) {
+  SAS::error("constituent", "One (or more) of the constituent tasks ended in error !")
+}
+
+
+}   # sub epchain
+
+#==============================================================================
+#==============================================================================
+# Process files for a single exposure
+#
+
+sub PROCESS_FILES{
+
+#
+# Enter arguments
+#
+    my $prefix     = $_[0];
+    my $datadir    = $_[1];
+    my $mode       = $_[2];
+    $schedule      = $_[3];
+    $exposure      = $_[4]; 
+
+    my $verbosity_bpf_bkg = $verbosity-1;
+    if ($verbosity_bpf_bkg < 0) {$verbosity_bpf_bkg = 0}
+
+    my $ccom = ""; my $ll = "";
+
+    my $ll0=0; my $cccd="00"; my $ccd=0; 
+    my $extname=""; my $ccdmode=-1; 
+    my $ime=""; my $tie=""; my $bue=""; my $ccdfil="";
+    my $off=""; my $aux=""; my $bad=""; 
+    my $mask=""; my $hrdmask=""; my $map=""; 
+    my $gticcd=""; my $gtiout="";
+    my $event0=""; my $event2=""; my $evento=""; my $evlist="";
+    my $eventim=""; my $eventti="";
+    my $epframesarr="";
+
+#
+# Define correct output prefix following XMM-SOC-ICD-0006-SSC
+# input  : 0001_0000010060_PNS00110IME.FIT
+#               obsidobsid inXexpcc
+# output : P0000010060PNS001PIEVLI0000.FIT
+#
+my $obsid  = substr( $prefix,  5, 10) ;
+my $inst   = substr( $prefix, 16,  2) ;
+my $expflg = substr( $prefix, 18,  1) ;
+my $expid  = substr( $prefix, 19,  3) ;
+
+if ( index($mode,"IM") != -1 ) {$datamode = "IMAGING"}
+elsif ( index($mode,"TI") != -1 ) {$datamode = "TIMING"}
+elsif ( index($mode,"BU") != -1 ) {$datamode = "BURST"};
+
+$outobsbase = "P" . $obsid ;
+$outfilbase = $outobsbase . $inst . $expflg . $expid ;
+$maskexpr=""; 
+$hrdmaskexpr="";
+$evselexpr="";
+
+  if ($usecanonicalnames) {
+    if ( $mode eq "IM"){
+#     $outfil = "P" . $obsid . $inst . $expflg . $expid . $mode . "EVLI0000.FIT" 
+      $outfil = $outfilbase . "PIEVLI0000.FIT"} 
+    else {
+      $outfil = $outfilbase . "TIEVLI0000.FIT"
+    };
+
+    if ($withoutoftime) {$outfil = $outfilbase . "OOEVLI0000.FIT"};
+    if ($withctisrcpos) {$outfil = $outfilbase . "PSEVLI0000.FIT"};
+    if ( ($withctisrcpos) && ($withoutoftime) )
+                        {$outfil = $outfilbase . "OSEVLI0000.FIT"};
+    }
+  else {
+    $outfil = $outset
+  };
+
+
+# do not use results of badpixfind on TI and BU mode
+
+    if ( $mode eq "BU"){
+      $getnewbadpix="N";
+      $getuplnkbadpix="N";
+      $getotherbadpix="N";
+      $emptyextension="Y";
+      $ylowlim=0;
+      $ccdmode=5 }
+    elsif ( $mode eq "TI"){
+      $getnewbadpix="N";
+      $getuplnkbadpix="N";
+      $getotherbadpix="N";
+      $emptyextension="Y";
+      $ylowlim=0;
+      $ccdmode=4
+    };
+
+#if ($withdefaultcal) { print " YES = $withdefaultcal \n" };
+#if (!$withdefaultcal) { print " NO = $withdefaultcal \n" };
+
+# from "emchain":
+# Define the input HK GTI file (same for all CCDs).
+# Default is to take it from xxxHKGTI.FIT in same directory
+# my $hkgti = $gtiin ;
+# if ( $hkgti eq "") { $hkgti = $indir."/".$file."HKGTI.FIT" }
+
+#
+# Define the bad pixel set (badpixfind)
+#
+    if ($usecanonicalnames) {
+      $badpixset = $outfilbase . "BPXFLI00##.FIT";
+    };
+    my $ip = index($badpixset,"##");
+    my $bad_prefix = substr($badpixset, 0, $ip);
+    my $bad_suffix = substr($badpixset, $ip+2, 200);
+
+#
+# Define the point source mask set (badpixfind - for backgr. spec)
+#
+    if ($usecanonicalnames) {
+      $maskset = $outfilbase . "BPXMSK00##.FIT";
+    };
+    $ip = index($maskset,"##");
+    my $mask_prefix = substr($maskset, 0, $ip);
+    my $mask_suffix = substr($maskset, $ip+2, 200);
+#
+# Define the hard band point source mask set (badpixfind - for backgr. lc)
+#
+    if ($usecanonicalnames) {
+      $hrdmskset = $outfilbase . "BPXHMK00##.FIT";
+    };
+    $ip = index($hrdmskset,"##");
+    my $hrdmask_prefix = substr($hrdmskset, 0, $ip);
+    my $hrdmask_suffix = substr($hrdmskset, $ip+2, 200);
+
+#
+# Define the event map set (epframes)
+#
+    $ip = index($eventmapset,"##");
+    my $emap_prefix = substr($eventmapset, 0, $ip);
+    my $emap_suffix = substr($eventmapset, $ip+2, 200);
+
+#
+# Define the photon map set (epevents)
+#
+    $ip = index($photonmapset,"##");
+    my $pmap_prefix = substr($photonmapset, 0, $ip);
+    my $pmap_suffix = substr($photonmapset, $ip+2, 200);
+
+#
+# Set file name for optical loading diagnostic image
+#
+   if ($usecanonicalnames) 
+     {$outfile3 = $outfilbase . "IMAGE_OPLD.FIT";}
+   else
+     {$outfile3 = $optloadingimageset;}   
+   if ( -e $outfile3 ) {`rm $outfile3`;}
+ 
+#
+# Loop over all specified CCDs
+#
+
+    my @ccdlist = eval "($ccdlist)";
+    for $ccd (@ccdlist) {
+          if ($ccd<10){$cccd="0$ccd"}
+          else        {$cccd="$ccd"};
+
+          if ($verbose) { SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Starting with CCD = $ccd")};
+
+          $skip = 0;
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Standard call to epframes
+#
+          $outfile0 = "rawevents" . $cccd . ".dat";
+          $map = "$emap_prefix$cccd$emap_suffix";
+          $outgti   = "gti" . $cccd . ".dat";
+
+          if ($odfaccess eq "odf") {
+#           print " ODF = $odfaccess \n";
+            $set = "ODF(EPN, $datamode, $exposure, $ccd, $schedule)"}
+          elsif ($odfaccess eq "oal") {
+#           print " ODF = $odfaccess \n";
+            $set = "OAL(EPN, $datamode, $exposure, $ccd)"}
+          else {
+#           print " ODF = $odfaccess \n";
+            $set = "ODF(EPN, $datamode, $exposure, $ccd, $schedule)"
+          };
+
+#          my $setname = `odfexpand --odfrequest='$set' 2>&1` ;
+          my $exist = system "odfexpand --odfrequest='$set'" ;
+
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, $set);
+
+          if ($exist != 0) {
+            SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+            SAS::warning("notInODF", "requested CCD file seems to be non-existent in ODF, skip processing for this CCD");
+            $skip = 1;
+          };
+
+          $ccom = "epframes set='$set' eventset=$outfile0 " . 
+                  "gtiset=$outgti wrongpixlimit=$wrongpixlimit " .
+                  "withsrcrawy=$withsrcrawy srcposition=$srcposition " .
+                  "withsrccoords=$withsrccoords srcra=$srcra srcdec=$srcdec " .
+                  "witheventmap=$witheventmap eventmapset=$map " . 
+                  "mipdist=$mipdist mipmethod=$mipmethod " .
+                  "f1294=$f1294 f1118=$f1118 f1052=$f1052 anchop=$anchop " . 
+                  "ecntempqb1=$ecntempqb1 " .
+                  "lowerthreshold=$lowerthreshold " .
+                  "withfinetime=$withfinetime " .
+                  "guessdeltap=$guessdeltap " .
+                  "withfifogti=$withfifogti " .
+                  "fifogtithresh=$fifogtithresh " .
+                  "automode=$automode autofilter=$autofilter " .
+                  "qualmax=$qualmax hkok=$hkok odfok=$odfok " .
+                  "showaux=$showaux showccx=$showccx " .
+                  "showpmh=$showpmh showpah=$showpah showve=$showve " .
+                  "aneamipsel=$aneamipsel anmaxmip=$anmaxmip " .
+                  "anmip=$anmip ancmcorr=$ancmcorr ancmloth=$ancmloth " .
+                  "ccfok=$ccfok setupbpx=$setupbpx " ;
+#                 "ccfok=$ccfok setupbpx=$setupbpx -V $verbosity_epframes " ;
+
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+          if (( !$skip ) && ( $runepframes )) {&sendCommand($ccom . $warnlimit)} ;
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# do not use results of badpixfind for TI BU modes [ccdmode = 4 5] 
+#    as these are not suitable for automatic processing of the fast modes
+#    only active for FF eFF LW SW if requested [ccdmode = 0 1 2 3 ]
+# do also not run epevents in out-of-time mode for TI BU modes [ccdmode = 4 5] 
+#    only active for FF eFF LW SW if requested [ccdmode = 0 1 2 3 ]
+#
+#         print " SET = $set \n";
+#         print " SKIP = $skip \n";
+#         print " CCDMODE = $ccdmode \n";
+          if (( !$skip) && ($ccdmode==-1)) {
+             $ccdfil = $datadir . "/" . $prefix . $cccd . $mode . 
+                       "E.FIT:PN" . $mode . "E1%CCDMODE" ;
+#         print " CCDFIL = $ccdfil \n";
+             $ccom = "dsattr attributes=" . $ccdfil ;
+             $ll = $verbosity;
+             $ENV{'SAS_VERBOSITY'}=0;
+             $ccdmode = `$ccom` ;
+#         print " CCDMODE = $ccdmode \n";
+             SAS::message($SAS::AppMsg, $SAS::NoisyMsg, "CCDMODE = $ccdmode");
+             $ip = index($ccdmode,"value=");
+             if ($ip < 0) {$ccdmode = 9}
+             else {
+               $ccdmode = substr($ccdmode, $ip+7, 1)
+             };
+             $ENV{'SAS_VERBOSITY'}=$ll;
+             if ($ccdmode > 3) {$getnewbadpix="N"; $withoutoftime=0};
+          };
+
+#   if ( $verbosity > 3 ) { SAS::message($SAS::AppMsg, $SAS::SparseMsg, "CCDMODE = $ccdmode, HARDMASK = $withhardmask, TIMEBINSIZE = $timebinsize")};
+    if (( !$skip ) && ( $timebinsize <= 0.0 )) {
+      if ( $withhardmask ) {
+        if ( $ccdmode <= 1 ) {
+          $timebinsize=100 }
+        elsif ( $ccdmode == 2 ) {
+          $timebinsize=200 }
+        elsif ( $ccdmode == 3 ) {
+          $timebinsize=350 }
+        else {
+          $timebinsize=100
+        }
+      }
+      else {
+        if ( $ccdmode <= 1 ) {
+          $timebinsize=10 }
+        elsif ( $ccdmode == 2 ) {
+          $timebinsize=20 }
+        elsif ( $ccdmode == 3 ) {
+          $timebinsize=350 }
+        else {
+          $timebinsize=10
+        };
+      };
+    };
+#   if ( $verbosity > 3 ) { SAS::message($SAS::AppMsg, $SAS::SparseMsg, "CCDMODE = $ccdmode, HARDMASK = $withhardmask, TIMEBINSIZE = $timebinsize")};
+
+
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Standard call to badpixfind (bad pixel)
+#
+          $bad = "$bad_prefix$cccd$bad_suffix";
+##        print " bad = $bad \n";
+
+          $ccom = "badpixfind eventset=$outfile0 badpixset=$bad " .
+                  "hithresh=$hithresh hicolthresh=$bpx_hicolthresh " .
+                  "backgroundrate=0.00011 " .
+                  "loenergythresh=$bpx_loenergythresh " .
+                  "hienergythresh=12.0 narrowerthanpsf=1.5 " .
+                  "withsearchbadcolumn=y thresholdlabel=rate ";
+          if (( !$skip) && ($runbadpixfind)){
+            if ( ! -e $outfile0 ) {$skip=1;          
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Input file does $outfile0 not exist, skip processing of this CCD.");
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+            };
+          } ;
+          if (( !$skip) && ($runbadpixfind)){
+            &sendCommand($ccom . $warnlimit);
+          } ;
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Call to badpixfind (hard band point source masking for background lightcurve)
+#
+          $hrdmask = "$hrdmask_prefix$cccd$hrdmask_suffix";
+
+          $ccom = "badpixfind eventset=$outfile0 badpixmap=$hrdmask " .
+                  "narrowerthanpsf=0 withfovmask=$lc_msk_withfovmask " .
+                  "withbadpixmap=Y withsearchbadcolumn=Y " .
+                  "loenergythresh=$lc_msk_loenergythresh " .
+                  "hienergythresh=$lc_msk_hienergythresh " .
+                  "hithresh=$lc_msk_hithresh " .
+                  "hicolthresh=$lc_msk_hicolthresh " .
+                  "backgroundrate=$lc_msk_backgroundrate " .
+                  "threshabovebackground=$lc_msk_threshabovebackground " .
+                  "thresholdlabel=rate -V $verbosity_bpf_bkg";
+
+          if (( !$skip) && ($runbackground)){
+            if ( ! -e $outfile0 ) {$skip=1;          
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Input file $outfile0 does not exist, skip processing of this CCD.");
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+            };
+          };
+
+          if (( !$skip) && ($runbackground)){
+             &sendCommand($ccom . $warnlimit);
+             if ($verbosity_bpf_bkg < 5){
+                SAS::message($SAS::AppMsg, $SAS::SparseMsg,"\n");
+             };
+             my $gpix = getKeyword($hrdmask,"GOODPIX");  
+             $hrdgpixsum = $hrdgpixsum+$gpix;
+             SAS::message($SAS::AppMsg, $SAS::NoisyMsg, "Sum of good mask pixels: $hrdgpixsum");
+             SAS::message($SAS::AppMsg, $SAS::NoisyMsg, $line_plusplus);     
+          } ;
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Call to badpixfind (point source masking for background spectrum)
+#
+          $mask = "$mask_prefix$cccd$mask_suffix";
+
+          $ccom = "badpixfind eventset=$outfile0 badpixmap=$mask " .
+                  "narrowerthanpsf=0 withfovmask=$sp_msk_withfovmask " .
+                  "withbadpixmap=Y withsearchbadcolumn=Y " .
+                  "loenergythresh=$sp_msk_loenergythresh " .
+                  "hienergythresh=$sp_msk_hienergythresh " .
+                  "hithresh=$sp_msk_hithresh " .
+                  "hicolthresh=$sp_msk_hicolthresh " .
+                  "backgroundrate=$sp_msk_backgroundrate " .
+                  "threshabovebackground=$sp_msk_threshabovebackground " .
+                  "thresholdlabel=rate -V $verbosity_bpf_bkg";
+
+          if (( !$skip) && ($runbackground)){
+            if ( ! -e $outfile0 ) {$skip=1;          
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Input file $outfile0 does not exist, skip processing of this CCD.");
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+            };
+          };
+
+          if (( !$skip) && ($runbackground)){
+             &sendCommand($ccom . $warnlimit);
+             if ($verbosity_bpf_bkg < 5){
+                SAS::message($SAS::AppMsg, $SAS::SparseMsg,"\n");
+             };
+             my $gpix = getKeyword($mask,"GOODPIX");  
+             $gpixsum = $gpixsum+$gpix;
+             SAS::message($SAS::AppMsg, $SAS::NoisyMsg, "Sum of good mask pixels: $gpixsum");
+             SAS::message($SAS::AppMsg, $SAS::NoisyMsg, $line_plusplus);
+          } ;
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Standard call to badpix (in LOW_MEM mode)
+#
+          $ccom = "badpix eventset=$outfile0" ;
+
+          $ccom = $ccom . " badpixset=$bad " .
+                          "getuplnkbadpix=$getuplnkbadpix " .
+                          "getotherbadpix=$getotherbadpix " .
+
+         "getnewbadpix=$getnewbadpix " .
+                          "emptyextension=$emptyextension " .
+                          "windowfilter=$windowfilter";
+          if (( !$skip) && ($runbadpix)) {
+            if ( ! -e $outfile0 ) {$skip=1;          
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Input file $outfile0 does not exist, skip processing of this CCD.");
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+            };
+          };
+          if (( !$skip) && ($runbadpix)) {
+            $ENV{'SAS_MEMORY_MODEL'}="low";
+            &sendCommand($ccom . $warnlimit);
+            $ENV{'SAS_MEMORY_MODEL'}=$oldmemorymodel;
+          } ;
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Call to epreject
+#
+          $ccom = "epreject set='$set' eventset=$outfile0 " .
+                  "badcolumnset=$badcolumnset " .
+                  "sigma=$sigma noiseparameters='$noiseparameters' " .
+                  "withoffsetlist=$withoffsetlist odilist=$odilist " .
+                  "withoffsetmap=$withoffsetmap " .
+                  "withsoftflarescreening=N " .
+                  "withxrlcorrection=$withxrlcorrection ";
+          if (( !$skip ) && ( $runepreject ) && ( !$withsoftflarescreening )) {
+            &sendCommand($ccom . $warnlimit);
+          };  
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Call to eprejectti
+#
+          $ccom = "eprejectti eventset=$outfile0 " .
+                  "softflarethreshold=$softflarethreshold1 " .
+                  "softflareenergyrange='$softflareenergyrange' " .
+                  "softflaresmoothparams='$softflaresmoothparams' ";
+          if (( !$skip ) && ( $runepreject ) && ( $withsoftflarescreening )) {
+            &sendCommand($ccom . $warnlimit);
+          };  
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Call to epxrlcorr
+#
+          $ccom = "epxrlcorr eventset=$outfile0 " .
+          "withoutset=N outset=eventsxrd.ds " .
+	  "withxrlimage=$withxrlimage xrlimage=xrlimage.ds " .
+          "withoffsetmap=N offsetmap=odi.ds ";
+          if (( !$skip ) && ( $runepxrlcorr )) {
+            &sendCommand($ccom . $warnlimit);
+          };  
+
+ 
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Call to epnoise
+#
+          $ccom = "epnoise set=$outfile0 " .
+                  "identifynoisyframes=yes " .
+                  "applyfilter=no " .
+                  "noisecut=$noisecut " .
+                  "sigmacut=$sigmacut " .
+                  "savemasks=$savemasks ";
+          if (( !$skip ) && ( $runepnoise )) {
+            &sendCommand($ccom . $warnlimit);
+            SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+          };  
+
+          $outfile1 = $outfile0;
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Standard call to epevents: normal events
+#
+          $map = "$pmap_prefix$cccd$pmap_suffix";
+          if ($withoutoftime) {
+            $outfile2 = "ootevents" . $cccd . ".dat"}
+          else {
+            $outfile2 = "events" . $cccd . ".dat"
+          };
+          $ccom = "epevents eventset=$outfile1 outset=$outfile2 " .
+                  "reemissionthresh=$reemissionthresh " .
+                  "gainctiaccuracy=$gainctiaccuracy " .
+                  "testenergywidth=$testenergywidth " .
+                  "randomizeposition=$randomizeposition " .
+                  "randomizeenergy=$randomizeenergy " .
+                  "withframecti=$withframecti " .
+                  "checksasmip=$checksasmip " .
+                  "withrdpha=$withrdpha " .
+                  "rdphatimebinsize=$rdphatimebinsize " .
+                  "withctisrcpos=$withctisrcpos " .
+                  "withtempcorrection=$withtempcorrection " .
+                  "withccdoffsets=$withccdoffsets " .
+                  "withbackgroundgain=$withbackgroundgain " .
+                  "withpatternoffset=$withpatternoffset " .
+                  "withctilongterm=$withctilongterm " .
+                  "ctilongtermsoft=$ctilongtermsoft " .
+                  "ctilongtermy=$ctilongtermy " .
+#                 "ctilongtermpar=\"$ctilongtermpar\" " .
+                  "withgaintiming=$withgaintiming " .
+                  "withgainburst=$withgainburst " .
+                  "withgainff=$withgainff " .
+                  "withgaineff=$withgaineff " .
+                  "withphagaincolumn=$withphagaincolumn " .
+                  "lowgainenergyscale=$lowgainenergyscale " .
+                  "withphotonmap=$withphotonmap photonmapset=$map " .
+                  "mappatterntype=$mappatterntype " .
+                  "lothresh=\"$photonmaplothresh\" " .
+                  "hithresh=\"$photonmaphithresh\" " .
+                  "patternanalysis=$patternanalysis " ;
+
+          if ($withoutoftime) {$ccom = $ccom . " withoutoftime=Y"};
+
+          if (( !$skip) && ($runepevents)) {
+            if ( ! -e $outfile1 ) {$skip=1;          
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Input file $outfile1 does not exist, skip processing of this CCD.");
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+            };
+          };
+
+          if (( !$skip) && ($runepevents)) {
+            &sendCommand($ccom . $warnlimit);
+            if ($status==0) {
+              if ($keepintermediate eq "all") {
+                $clean=0 }
+              elsif ($keepintermediate eq "notmerged") {
+                $clean=0 }
+              elsif ($keepintermediate eq "raw") {
+                $clean=0 }
+              elsif ($runepnoise) {
+                $clean=0 }
+              else {
+#               $ccom = "rm -f $outfile1\n"; $clean=1
+                $ccom = "rm -f $outfile1"; $clean=1
+              };
+              if ($clean==1) {
+                if ($verbose) {
+                  SAS::message($SAS::AppMsg, $SAS::SparseMsg, "CMD: $ccom");
+                  SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+                };
+                $ll = `$ccom`
+              };
+            };
+          };
+
+#-----------------------------
+# build selection expressions for evselect
+#
+          $gtiout = "gti".$ccd.".out" ;
+          $gtiout = $outgti ;
+
+          if ( !$skip ) { 
+
+          if ($runbackground) {
+            if (length($maskexpr) > 0) {$maskexpr = $maskexpr." || "}
+            else { $maskexpr = "(" };
+              $maskexpr = $maskexpr . "(CCDNR==" . $ccd . 
+                        " && MASK(" . $mask . ",1,1,RAWX,RAWY))" ;
+            if (length($hrdmaskexpr) > 0) {$hrdmaskexpr = $hrdmaskexpr." || "}
+            else { $hrdmaskexpr = "(" };
+              $hrdmaskexpr = $hrdmaskexpr . "(CCDNR==" . $ccd . 
+                           " && MASK(" . $hrdmask . ",1,1,RAWX,RAWY))" ;
+          };
+
+          if ( -e $gtiout ) {
+	          if ( length($evselexpr) > 0 ) { $evselexpr = $evselexpr." || " }
+	          else { $evselexpr = "(" }
+	          $evselexpr = $evselexpr . "(CCDNR==" . $ccd . 
+                                  " && GTI(" . $gtiout . ",TIME))" ;
+          };
+
+          }
+
+#-----------------------------
+# Standard call to attcalc
+#
+          $ccom = "attcalc eventset=$outfile2 attitudelabel=$attsou " . 
+                  "refpointlabel=$refpoint atthkset=$atthkset " .
+                  "withmedianpnt=$withmedianpnt imagesize=$imagesize";
+#
+# Test whether the attitude label was set to fixed:
+# If so call attcalc with fixed attitude
+#
+          if ($attsou eq "fixed") 
+             { $ccom = $ccom . " fixedra=$attra fixeddec=$attdec " . 
+                               "fixedposangle=$attPA" }
+#
+# Test whether the reference point was set to user:
+# If so call attcalc with same nominal pointing direction as fixed attitude
+#
+          if ($refpoint eq "user") 
+###          { $ccom = $ccom . " nominalra=$attra nominaldec=$attdec" }
+             { $ccom = $ccom . " nominalra=$nominalra nominaldec=$nominaldec" }
+
+          if (( !$skip) && ($runattcalc)) {
+            if ( ! -e $outfile2 ) {$skip=1;          
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Input file $outfile2 does not exist, skip processing of this CCD.");
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+            };
+          };
+
+          if (( !$skip) && ($runattcalc)) {&sendCommand($ccom . $warnlimit)} ;
+#----------------------------
+# create 20...30 ADU sky image as a diagnostic for optical loading 
+#
+          if ( $optloadingimage ) {
+            $ccom="evselect expression='(PHA IN (20:30))' " .
+                  "imageset=optloading0.img withimageset=yes " .
+                  "withfilteredset=no table='${outfile2}:EVENTS' " .
+                  "imagebinning=binSize ximagebinsize=80 yimagebinsize=80 " . 
+                  "xcolumn=X ycolumn=Y withxranges=no withyranges=no " .
+                  "writedss=no updateexposure=no filterexposure=no " .
+                  "destruct=no";
+
+            if ( !$skip ) { &sendCommand($ccom) };
+
+            if ( -e $outfile3 ) {`mv $outfile3 optloading1.img`;} 
+            if ( -e "optloading0.img" && -e "optloading1.img" )
+               {`farith optloading0.img optloading1.img $outfile3 ADD`;
+                `cphead optloading1.img $outfile3 comment=no history=no`;} 
+            else
+               {if ( -e "optloading0.img" ) {`mv optloading0.img $outfile3`;}}
+            if ( -e "optloading0.img" ) {`rm optloading0.img`}
+            if ( -e "optloading1.img" ) {`rm optloading1.img`}
+          }
+#----------------------------
+
+# Filter event list before evlistcomb:
+#
+          if ($screenrejected) {
+            if ($runepreject) {
+               if ($withsoftflarescreening) { 
+                 $ccom="evselect table=${outfile2}:EVENTS ".
+	               "withfilteredset=Y filteredset=clean$outfile2 destruct=Y ".
+                       "expression='(#XMMEA_EP && FLARE==0 && PI>$screenlowthresh && RAWY>$ylowlim )' ".
+                       "writedss=Y updateexposure=Y keepfilteroutput=Y";
+               } else {
+                 $ccom="evselect table=${outfile2}:EVENTS ".
+	               "withfilteredset=Y filteredset=clean$outfile2 destruct=Y ".
+                       "expression='(#XMMEA_EP && NOISE==0 && PI>$screenlowthresh && RAWY>$ylowlim )' ".
+                       "writedss=Y updateexposure=Y keepfilteroutput=Y";
+               }
+            } else { 
+            $ccom="evselect table=${outfile2}:EVENTS ".
+	             "withfilteredset=Y filteredset=clean$outfile2 destruct=Y ".
+              "expression='(#XMMEA_EP && PI>$screenlowthresh && RAWY>$ylowlim )' ".
+              "writedss=Y updateexposure=Y keepfilteroutput=Y";
+            }
+          } else {
+            $ccom="evselect table=${outfile2}:EVENTS ".
+	             "withfilteredset=Y filteredset=clean$outfile2 destruct=Y ".
+              "expression='(PI>$screenlowthresh && RAWY>$ylowlim )' ".
+              "writedss=Y updateexposure=Y keepfilteroutput=Y";
+          };
+          if (( !$skip) && ($screen) && ($runscreen))  {
+            if ( ! -e $outfile2 ) {$skip=1;          
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Input file $outfile2 does not exist, skip processing of this CCD.");
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+            };
+          };
+          if (( !$skip) && ($screen)) {
+            if ($runscreen) { &sendCommand($ccom . $warnlimit) };
+            if ($status==0) {
+              if ($keepintermediate eq "all") {
+                $clean=0 }
+              elsif ($keepintermediate eq "notmerged") {
+                $clean=0 }
+              elsif ($keepintermediate eq "cal") {
+                $clean=0 }
+              else {
+                $ccom = "rm -f $outfile2\n"; $clean=1
+              };
+              if ($clean==1) {
+                if ($verbose) {
+                  SAS::message($SAS::AppMsg, $SAS::SparseMsg, "CMD: $ccom");
+                  SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+                };
+                $ll = `$ccom`
+              };
+            };
+          };
+
+      }                 ### end of loop over all specified CCDs
+
+#
+# evlistcomb does not know about BURST mode therefore set it to TIMING mode
+# in the following, this affects also the check for running epfast
+#
+      if ( $mode eq "BU"){
+        $datamode = "TIMING";
+      }
+
+#-----------------------------
+#-----------------------------
+# Merge the event lists of all CCDs
+#
+    if ( $screen ){
+      if ($withoutoftime) {
+        $evlist = join(" ",split(/\n/,`ls -1 cleanootevents*.dat 2> errors`)) }
+      else {
+        $evlist = join(" ",split(/\n/,`ls -1 cleanevents*.dat 2> errors`)) 
+      }}
+    else {
+      if ($withoutoftime) {
+        $evlist = join(" ",split(/\n/,`ls -1 ootevents*.dat 2> errors`)) }
+      else {
+        $evlist = join(" ",split(/\n/,`ls -1 events*.dat 2> errors`)) 
+      }
+    };
+
+#-----------------------------
+#-----------------------------
+# Get the epframes output file names
+#
+    if ($runepnoise) {
+        $epframesarr = join(" ",split(/\n/,`ls -1 rawevents*.dat 2> errors`)) };
+
+#-----------------------------
+#-----------------------------
+# Call evlistcomb
+#
+$ENV{'SAS_MEMORY_MODEL'}=$memorymodel;
+
+    if ( $evlist ne "" ){
+
+       if ( $mode eq "IM") {
+         $combinedset = "$imagingset";
+#        $ccom = "rm -f $combinedset\n" ;
+         $ccom = "rm -f $combinedset" ;
+         $setstring = "imagingset=$combinedset ";  # epndatamodes=IMAGING "; 
+         if ($runevlistcomb){
+           if ($verbose) {
+             SAS::message($SAS::AppMsg, $SAS::SparseMsg, "CMD: $ccom");
+             SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+           }
+           $ll = `$ccom` };
+         }
+       elsif ( $mode eq "TI") {
+         $combinedset = "$timingset";
+#        $ccom = "rm -f $combinedset\n" ;
+         $ccom = "rm -f $combinedset" ;
+         $setstring = "timingset=$combinedset ";  # epndatamodes=TIMING "; 
+         if ($runevlistcomb){
+           if ($verbose) {
+             SAS::message($SAS::AppMsg, $SAS::SparseMsg, "CMD: $ccom");
+             SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+           };
+           $ll = `$ccom` };
+         }
+       elsif ( $mode eq "BU"){
+         $combinedset = "$timingset";
+#        $ccom = "rm -f $combinedset\n" ;
+         $ccom = "rm -f $combinedset" ;
+         $setstring = "timingset=$combinedset ";  # epndatamodes=TIMING ";
+         $mode = "TI";
+         if ($runevlistcomb){
+           if ($verbose) {
+             SAS::message($SAS::AppMsg, $SAS::SparseMsg, "CMD: $ccom");
+             SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+           };
+           $ll = `$ccom` }; 
+       };
+
+       if ($runepreject && !($screenrejected)) {
+         if ($withsoftflarescreening) {
+           $epntimcolnames .= " FLARE";
+           $epntimcoltypes .= " int16";
+         } else { 
+           $epnimgcolnames .= " OFF_COR NOISE";
+           $epnimgcoltypes .= " int16 int16";
+         };
+       };
+
+       if ($runepnoise) {
+           $epnimgcolnames .= " NEVT_FRM";
+           $epnimgcoltypes .= " int16";
+       };
+
+       if ( $runepreject ) {
+         $mainattributes .= " REJ_CORR";
+       };
+
+       if ( $runepxrlcorr ) {
+         $mainattributes .= " XRL_CORR";
+       };
+
+       if ( $runepevents ) {
+         $mainattributes .= " PHA_RDCO";
+       };
+
+       $ccom = "evlistcomb " . # epndatamodes='$datamode' " .
+               "eventsets=\"$evlist\" instrument=epn " .
+               $setstring .
+               "othertables='$othertables' " .
+               "maintable='$maintable' "  .
+               "mainattributes='$mainattributes' " .
+               "epnimgcolnames='$epnimgcolnames' " .
+               "epnimgcoltypes='$epnimgcoltypes' " .
+               "epntimcolnames='$epntimcolnames' " .
+               "epntimcoltypes='$epntimcoltypes' " ;
+
+       if ($runevlistcomb) {
+         &sendCommand($ccom . $warnlimit);
+         if ($status==0) {
+           if ($keepintermediate eq "all") {
+             $clean=0 }
+           elsif ($keepintermediate eq "notmerged") {
+             $clean=0 }
+           elsif (($keepintermediate eq "clean") && ($screen)) {
+             $clean=0 }
+           elsif (($keepintermediate eq "cal") && !($screen)) {
+             $clean=0 }
+# TEST
+           elsif (($keepintermediate eq "cal") && ($screen)) {
+             $clean=0 }
+           else {
+#            $ccom = "rm -f $evlist\n"; $clean=1
+             $ccom = "rm -f $evlist"; $clean=1
+           };
+           if ($clean==1) {
+             if ($verbose) {
+               SAS::message($SAS::AppMsg, $SAS::SparseMsg, "CMD: $ccom");
+               SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+             };
+             $ll = `$ccom`
+           };
+         };
+       };
+
+#-----------------------------
+# Call evselect
+#
+       if ( length($evselexpr) > 0 ) { $evselexpr = $evselexpr . ")" }
+       if ( $mode eq "IM"){
+         $setstring = "table=$imagingset ";
+         $content = "EPIC PN IMAGING MODE EVENT LIST";
+       };
+       if ( $mode eq "TI"){
+         $setstring = "table=$timingset ";
+         $content = "EPIC TIMING MODE EVENT LIST";
+       };
+
+       $ccom = "evselect " . $setstring . "expression=\"$evselexpr\" " .
+               "withfilteredset=Y keepfilteroutput=Y " . 
+               "writedss=Y updateexposure=Y " .
+#              "calculatebackscale=N " .
+               "filteredset=$outfil destruct=Y" ;
+
+       SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+
+       if ( ! -e $combinedset ) { $skipfinal=1;         
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Input file $combinedset does not exist, skip further processing...");
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+       };
+       if (( !$skipfinal) && ($runevselect)){
+              &sendCommand($ccom . $warnlimit);
+              $ENV{'SAS_MEMORY_MODEL'}="low";
+              $ccom = "dssetattr -V 0 to=$outfil%CONTENT " .
+                      "value=\"$content\" type=string";
+              &sendCommand($ccom);
+              $ccom = "dssetattr -V 0 to=$outfil%ORIGIN " .
+                      "value=\"User site\" type=string";
+#                     "value=\"$TASK_NAME\" type=string";
+              &sendCommand($ccom);
+              $ENV{'SAS_MEMORY_MODEL'}=$oldmemorymodel;
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+       };
+
+    } elsif ($verbose) { 
+      SAS::message($SAS::AppMsg, $SAS::SparseMsg, "No list found in current directory. Cannot apply evlistcomb");
+      SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+    };
+
+$ENV{'SAS_MEMORY_MODEL'}=$oldmemorymodel;
+
+      if ( -e $outfil ) { 
+        $finalevt=1 };
+#     else { 
+#       $status = $status+1
+#     };
+
+#-----------------------------
+# Call epfast
+#
+      if ( $runepevents && $withrdpha && $runepfast ) {
+#       SAS::message($SAS::AppMsg, $SAS::SparseMsg, $runepfast);
+        SAS::warning("runepfast", "to avoid double correction epfast will not run if: epevents withrdpha=Y");
+        $runepfast = 0
+      };
+
+      if ($runepfast) {
+         $ccom = "epfast evfile=$outfil " ;
+         if ( $datamode eq "TIMING" ) {&sendCommand($ccom . $warnlimit)};
+      };
+
+#-----------------------------
+      if ($status==0) {
+
+#
+# delete intermediate files if processing was without errors so far
+#
+        if ($keepintermediate eq "all") {
+          $clean=0 }
+        else {
+#         $ccom = "rm -f $combinedset\n"; $clean=1 
+          $ccom = "rm -f $combinedset"; $clean=1 
+        };
+        if ($clean==1) {
+          if ($verbose) {
+            SAS::message($SAS::AppMsg, $SAS::SparseMsg, "CMD: $ccom");
+            SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+          };
+          $ll = `$ccom`
+        };
+        if ($keepintermediate eq "none") {
+#         $ccom = "rm -f gti??*.dat $bad_prefix??$bad_suffix\n"; $clean=1} 
+          $ccom = "rm -f gti??*.dat $bad_prefix??$bad_suffix"; $clean=1} 
+        else {
+          $clean=0
+        };
+        if ($clean==1) {
+          if ($verbose) {
+            SAS::message($SAS::AppMsg, $SAS::SparseMsg, "CMD: $ccom");
+            SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+          };
+          $ll = `$ccom`
+        };
+
+#
+# screen EXPOSUnn extensions: delete non-standard columns
+#
+        if (($screenexposure) && ($finalevt)){ 
+#         $ENV{'SAS_MEMORY_MODEL'}="low";   # does not matter
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Screening exposure extensions ...");
+#
+# Standard call to epexposure
+#
+          $ccom = "epexposure eventsets=$outfil " .
+                  "screenexposure=$screenexposure " .
+                  "spatialexposure=$spatialexposure " .
+                  "randomizetime=$randomizetime " ;
+          {&sendCommand($ccom . $warnlimit)} ;
+
+#         $ENV{'SAS_MEMORY_MODEL'}=$oldmemorymodel;
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+          };
+
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# Second Call to epnoise to filter finale eventlist
+#
+    $ccom = "epnoise ". 
+	"set=\"$epframesarr\" identifynoisyframes=no " .
+	"eventset=$outfil " .
+	"applyfilter=yes " .
+	"savemasks=no";
+    if (( !$skip ) && ( $runepnoise )) {
+       &sendCommand($ccom . $warnlimit);
+       if ($status==0) {
+         if ($keepintermediate eq "all") {
+           $clean=0 }
+         elsif ($keepintermediate eq "notmerged") {
+           $clean=0 }
+         elsif ($keepintermediate eq "raw") {
+           $clean=0 }
+         else {
+#          $ccom = "rm -f $outfile1\n"; $clean=1
+#          $ccom = "rm -f \"$epframesarr\" "; $clean=1 # problem if more than 1 CCD
+           $ccom = "rm -f $epframesarr  "; $clean=1
+         };
+         if ($clean==1) {
+           if ($verbose) {
+             SAS::message($SAS::AppMsg, $SAS::SparseMsg, "CMD: $ccom");
+             SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+           };
+           $ll = `$ccom` ;
+           SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+         };
+       };
+    };  
+
+
+#
+# create pattern statistics plot and FLAG==0 masks
+#
+        if (($withpatplot) && ($finalevt)){
+          if ($usecanonicalnames) {
+            $outmaskname = $outfilbase . "FLGMAP00##.FIT";
+          };
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Creating pattern plots and masks ...");
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+          $ccom = "epatplot set=$outfil xaxisadu=N withoutputmask=Y " .
+                  "sigma=3 outmaskname=$outmaskname -V 0" ;
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, "CMD: $ccom");
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+          $ENV{'SAS_MEMORY_MODEL'}="low";
+          $ll = `$ccom` ;
+          $ENV{'SAS_MEMORY_MODEL'}=$oldmemorymodel;
+        };
+
+#
+# copy pn relevant (i.e. EPN XMM XRT3) CIF entries to final event file
+# changed: now copy all CCF entries
+#
+        if (($noccf==0) && ($finalevt)) {
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Copying CCF entries to events file ...");
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+
+#-        $ccom = "evselect table=$ccfcif filteredset=epn.cif withfilteredset=Y destruct=y " .
+#-             "expression='SCOPE .eq. \"EPN\" .or. SCOPE .eq. \"XMM\" .or. SCOPE .eq. \"XRT3\"' ".
+#-             "keepfilteroutput=y writedss=n updateexposure=n" ;
+#-        SAS::message($SAS::AppMsg, $SAS::SparseMsg, "CMD: $ccom");
+#-        SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+#-        $ll = `$ccom`;
+#-
+#-        $ccom = "dscopyblock blocks=epn.cif:CALINDEX to=$outfil " ;
+          $ccom = "dscopyblock blocks=$ccfcif:CALINDEX to=$outfil " ;
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, "CMD: $ccom");
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+          $ENV{'SAS_MEMORY_MODEL'}="low";
+          $ll = `$ccom` ;
+          $ENV{'SAS_MEMORY_MODEL'}=$oldmemorymodel;
+#-
+#-        $ll = `rm -f epn.cif` ;
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+        };
+
+#
+# create background spectrum
+#
+        if (($runbackground) && ($finalevt)) {
+          if ($usecanonicalnames) {
+            $specset = $outfilbase . "FBKSPC0000.FIT";
+          };
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Creating background spectrum ...");
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+
+          if ( length($evselexpr) > 0 ) { $maskexpr = $maskexpr . ")" }
+
+#         if ($ccdmode > 2) {
+          if ($ccdmode > 3) {
+            if ($withmask) {
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Using badpixfind masks for CCDMODE = $ccdmode is not meaningful. Will set parameter withmask=N");
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+            }
+            $withmask = 0;
+          };
+
+          if ($gpixsum < 1) {
+            if ($withmask) {
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, "The badpixfind masks contain no unmasked pixels. Will set parameter withmask=N");
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+            }
+            $withmask = 0;
+            $gpixsum=-1;
+          };
+          $ccom = "evselect table=$outfil " ;
+          if ($withmask) {
+             $ccom = $ccom . "expression=\"$patternbkg && $maskexpr\" " }
+          else {
+             $ccom = $ccom . "expression=\"$patternbkg\" " 
+          };
+          $ccom = $ccom . 
+                  "withspectrumset=Y spectrumset=$specset " .
+                  "energycolumn=PI withspecranges=yes " .
+                  "specchannelmin=0 specchannelmax=20479 spectralbinsize=5 " .
+                  "writedss=N updateexposure=N \n" ;
+          &sendCommand($ccom);
+          
+#
+# create background lightcurve
+#
+        ###if (($runbackground) && ($finalevt)) {
+          if ($usecanonicalnames) {
+            $rateset = $outfilbase . "FBKTSR0000.FIT";
+            $rategtiset = $outfilbase . "FBKGTI0000.FIT";
+          };
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Creating background lightcurve ...");
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+
+          if ( length($evselexpr) > 0 ) { $hrdmaskexpr = $hrdmaskexpr . ")" }
+
+#         if ($ccdmode > 2) {
+          if ($ccdmode > 3) {
+            if ($withmask) {
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Using badpixfind masks for CCDMODE = $ccdmode is not meaningful. Will set parameter withmask=N");
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+            };
+            $withmask = 0;
+          };
+
+          if ($hrdgpixsum < 1) {
+            if ($withmask) {
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, "The badpixfind masks contain no unmasked pixels. Will set parameter withmask=N");
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+            };
+            $withmask = 0;
+            $hrdgpixsum=-1;
+          };
+          $ccom = "evselect table=$outfil " ;
+          if ($withmask) {
+             $ccom = $ccom . "expression=\"$hrdpatternbkg && $hrdmaskexpr\" " }
+          else {
+             $ccom = $ccom . "expression=\"$hrdpatternbkg\" " 
+          };
+          $ccom = $ccom . 
+                  "maketimecolumn=Y timebinsize=$timebinsize " .
+                  "withrateset=Y rateset=$rateset " .
+                  "writedss=N updateexposure=N \n" ;
+          &sendCommand($ccom);
+
+#
+# 1 pixel ~ 17 arcsec**2 ~ 0.00474 arcmin**2, convert to per [ks * arcmin**2]
+#
+          my $scalefactor=0.0047355e-3;  # unit = [arcmin**2/pixel ks/s]
+
+#
+# add attributes to rate and spectrum files
+#
+          $ENV{'SAS_MEMORY_MODEL'}="low";
+
+          $ccom = "dssetattr to=$rateset:RATE%GOOD_PIX " .
+                  "value=$hrdgpixsum type=int " .
+                  "label=\"Total number of source-free pixel\" ";
+          &sendCommand($ccom);
+
+          $ccom = "dssetattr to=$specset:SPECTRUM%GOOD_PIX " .
+                  "value=$gpixsum type=int " .
+                  "label=\"Total number of source-free pixel\" ";
+          &sendCommand($ccom);
+
+          $ccom = "dsaddcolumn table=$rateset:RATE name=RATE " .
+                  "type=real32 withunits=Y withlabel=Y " .
+                  "units=\"cts/ks/arcmin**2\" " .
+                  "label=\"Background count rate\" ";
+          &sendCommand($ccom);
+
+          $ENV{'SAS_MEMORY_MODEL'}=$oldmemorymodel;
+
+          if ($gpixsum < 1) {
+            SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Sum of good mask pixels is 0, cannot weight by pixel number");
+            $gpixsum=1}
+          else {
+            SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Sum of good mask pixels: $gpixsum");
+            SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+          };
+#
+# create RATE column
+#
+          $ccom = "tabcalc tables=$rateset:RATE columntype=real32 column=RATE ".
+                  "expression=\"(COUNTS/($timebinsize*$hrdgpixsum*$scalefactor))\" ";
+          $ll = `$ccom`;
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+#
+# create BKG_GTI file
+#
+          $ccom = "tabgtigen table=$rateset gtiset=$rategtiset " .
+                  "expression=\"(RATE<$flaremaxrate)\" ";
+          $ll = `$ccom`;
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus);
+
+        };
+
+        if ($finalevt) {
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Done. Output event list is in file: $outfil");
+          SAS::message($SAS::AppMsg, $SAS::SparseMsg, $line_plusplus) }
+        else {
+          SAS::warning("sequence", "Due to chosen parameter sequence some chain tasks were not performed and output event list was not created: $outfil");
+	};
+        $ll = `rm -f errors badpixfind.fits` ;
+
+      };
+
+#     print "epchain:- Sum of good mask pixels: $gpixsum \n" if $verbosity > 5;
+
+}     ### end of PROCESS_FILES
+
+#
+#==============================================================================
+# sendCommand : send command to the system
+# Uses $status from main level
+
+sub sendCommand {
+    my $epchain_msg = -$SAS::AppMsg;
+#   print " T(PARAMETERS) = $_[0] \n";
+    if ($#_ /= 1) { 
+      SAS::message($SAS::AppMsg, $epchain_msg, "Syntax error in sendCommand. Should be called with 1 argument.")
+      }
+    else {
+#
+# first print out command with command line parameters
+#
+#      my $ccom = $_[0] . "\n" ;
+       my $ccom = $_[0] ; 
+       if ($verbose) { 
+       my $scom = $ccom; 
+       $scom =~ s/\"/'/g; 
+##       print "$scom\n"; 
+         SAS::message($SAS::AppMsg, $SAS::SparseMsg, "CMD: $scom");
+       }
+#
+# then actually execute command with command line parameters
+#
+       my $stat = system $ccom; 
+       $status = $status + $stat/256 ;
+    }
+}
+
+#
+#==============================================================================
+# getParams : command line parameter parser
+#
+
+sub getParams {
+
+#
+# Look for '--v' or '-v': print version information
+# Look for '--p' or '-p': print parameter information
+# Look for '--h' or '-h': print parameter information
+#          else: determine parameters
+
+    if ( grep /^--?v\b/, @ARGV) { getVersion() ; exit; } ;
+
+#   if ( grep /^--?d\b/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?d\b/, @ARGV) { system ("sasdialog epchain @ARGV") ; exit; } ;
+    if ( grep /^--?a\b/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?c\b/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?f\b/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?i\b/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?V\b/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?w\b/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?m\b/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?t\b/, @ARGV) { showSupported() ; exit; } ;
+
+    if ( grep /^--?p\b/, @ARGV) { showSyntax() ; exit; } ;
+    if ( grep /^--?h\b/, @ARGV) { showSyntax() ; exit; } ;
+
+
+    my $nparams = ($#_ + 1) / 2 ;
+#            SAS::message($SAS::AppMsg, $SAS::SparseMsg, "NPARAMS = $nparams \n");              
+    my $quotedparam;
+# Add blank to treat first and last parameters like all others (and like in emchain ;-)
+    @ARGV=" " . "@ARGV" . " " ;    
+    my $line=" " . "@ARGV" . " " ;    
+            SAS::message($SAS::AppMsg, $SAS::SparseMsg, "ARGV = !@ARGV! \n");              
+    ## $line =~ s/\"//g;
+    my $linepart1=""; my $linepart2=""; my $linesum="";
+    my $param=""; my $strcur=""; my $shortline=""; my @save; 
+    my $ll=0; my $pp=0; my $ppp=0; my $ii=0; my $kk=0; my $ap=0; my $ep=0; 
+
+#   if ( @save = grep / exposure=/ , @ARGV) {
+#      $exposure=$save[-1];
+#      $ep = 11; # then it is command line parameter, otherwise default parameter
+#      SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Exposure = $exposure , EP = $ep\n");
+#   };
+    SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Test: $epnimgcolnames");
+    if ( @save = grep /^epnimgcolnames=/ , @ARGV) {
+      SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Testing1 $epnimgcolnames");
+       $epnimgcolnames="$save[-1]";
+      SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Testing2 $epnimgcolnames");
+       $epnimgcolnames =~ s/^.*=//; 
+      SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Testing3 $epnimgcolnames");
+    };
+    SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Tested: $epnimgcolnames");
+    SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Test: $epnimgcoltypes");
+    if ( @save = grep /^epnimgcoltypes=/ , @ARGV) {
+      SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Testing1 $epnimgcoltypes");
+       $epnimgcoltypes="$save[-1]";
+      SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Testing2 $epnimgcoltypes");
+       $epnimgcoltypes=~ s/^.*=//; 
+      SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Testing3 $epnimgcoltypes");
+    };
+    SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Tested: $epnimgcoltypes");
+    if ( @save = grep /^epntimcolnames=/ , @ARGV) {
+       $epntimcolnames="$save[-1]";
+       $epntimcolnames =~ s/^.*=//; 
+    };
+    if ( @save = grep /^epntimcoltypes=/ , @ARGV) {
+       $epntimcoltypes="$save[-1]";
+       $epntimcoltypes=~ s/^.*=//; 
+    };
+    if ( @save = grep /^othertables=/ , @ARGV) {
+       $othertables="$save[-1]";
+       $othertables=~ s/^.*=//; 
+    };
+#   if ( @save = grep /^ctilongtermpar=/ , @ARGV) {
+#      $ctilongtermpar="$save[-1]";
+#      $ctilongtermpar=~ s/^.*=//; 
+#   };
+    if ( @save = grep /^noiseparameters=/ , @ARGV) {
+       $noiseparameters="$save[-1]";
+       $noiseparameters=~ s/^.*=//; 
+    };
+    if ( @save = grep /^softflareenergyrange=/ , @ARGV) {
+       $softflareenergyrange="$save[-1]";
+       $softflareenergyrange=~ s/^.*=//; 
+    };
+    if ( @save = grep /^softflaresmoothparams=/ , @ARGV) {
+       $softflaresmoothparams="$save[-1]";
+       $softflaresmoothparams=~ s/^.*=//;
+    };
+
+#
+# Look for '--v' or '-v': print version information
+# Look for '--p' or '-p': print parameter information
+# Look for '--h' or '-h': print parameter information
+#          else: determine parameters
+#
+# code MOVED from HERE to BEGINNING of subroutine
+#
+#
+
+    for ($kk=0; $kk<$nparams; $kk++){
+	       $param = $_[$kk] . "=";
+	       $ii = index($line,$param);
+#       if ( ($param eq " exposure=") && ($ep eq 11) ) {$ii = -1};
+        $ap = 0 ;
+        if ($param eq "epnimgcolnames=") {$ap = 1};
+        if ($param eq "epnimgcoltypes=") {$ap = 2};
+        if ($param eq "othertables=")    {$ap = 3};
+        if ($param eq "epntimcolnames=") {$ap = 4};
+        if ($param eq "epntimcoltypes=") {$ap = 5};
+#       if ($param eq "ctilongtermpar=") {$ap = 6};
+        if ($param eq "noiseparameters=")        {$ap = 7};
+        if ($param eq "softflareenergyrange=")   {$ap = 8};
+        if ($param eq "softflaresmoothparams=")  {$ap = 9};
+        ## print "PARAM: $param, LINE = $line, II = $ii, AP = $ap \n";
+#       SAS::message($SAS::AppMsg, $SAS::SparseMsg, "\n  II = $ii , PARAM = $param , EP = $ep , AP = $ap ");              
+	       if ( $ii != -1) {
+          if ($ap == 0) {
+	           $pp = length("$param") + $ii;
+	           $ppp = length("$line");
+##          print "PP = $pp, LEN(LINE) = $ppp \n";
+	           $shortline = substr($line,$pp,length($line)-$pp);
+	           $ll = index($shortline," ");
+	           if ( $ll == -1 )  { $ll = length($shortline) };
+            $quotedparam =  substr($shortline,0,$ll);
+            $quotedparam =~ s/\"//g; 
+            $_[$kk+$nparams] = $quotedparam;
+            ## print "$_[$kk+$nparams]\n";
+          };
+          if ($verbose) {
+            if ($verbosity > 4) {
+              $linepart1 = "Command line parameter: ";
+              if ($ap==0) {$linepart2 = " $_[$kk] = $_[$kk+$nparams]"} 
+              else {$linepart2 = " $_[$kk] = '$_[$kk+$nparams]'"}; 
+              $linesum = $linepart1 . $linepart2;
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $linesum);              
+            }
+          }
+	      }
+       else {
+           if ($verbosity > 4) {
+              $linesum = "Default parameter values: $_[$kk] = $_[$kk+$nparams]";
+              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $linesum);              
+           };
+        };
+    };
+#  exit ;
+}
+
+#
+#==============================================================================
+# getBoolean : convert input variable to unique values 0(false) or 1(true)
+#
+
+sub getBoolean {
+
+   my $tmpvar = substr($_[0], 0, 1);
+   if ( $tmpvar =~ /[1YyTt]/ ) { $_[1] = 1 }
+   else { $_[1] = 0};
+}
+
+#
+#==============================================================================
+# getVersion : get the version number of epchain, and of the constituents
+#
+
+sub getVersion {
+   my $epchain_msg = -$SAS::AppMsg;
+   my $ccom = "" ; my $version = "" ; my $release = "";
+   my $vfile = $ENV{'SAS_DIR'} . "/packages/epchain/VERSION" ;   
+   if ( ! -e $vfile ) {
+     SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Not found: $vfile");
+     SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Take version from task.");
+     $version = $TASK_VERSION }
+   else {
+#    $ccom = "cat `saslocate packages/epchain/VERSION` /dev/null" ;
+#    chomp($version = `$ccom`) ;  
+     chomp($version = `cat $vfile`);
+   };
+   $vfile = $ENV{'SAS_DIR'} . "/RELEASE" ;   
+   if ( ! -e $vfile ) {
+     $release = "" }
+   else {
+#    $ccom = "cat `saslocate RELEASE`" ;
+#    $ccom = "cat $vfile";    
+     chomp($release = `cat $vfile`) ;
+   };
+   SAS::message($SAS::AppMsg, $epchain_msg, "");
+   SAS::message($SAS::AppMsg, $epchain_msg, "epchain (epchain-$version) [$release]");
+
+#
+# Write the version of the constituent tasks
+#
+   SAS::message($SAS::AppMsg, $epchain_msg, "");
+   SAS::message($SAS::AppMsg, $epchain_msg, "You are using the following constituent task versions :");
+   SAS::message($SAS::AppMsg, $epchain_msg, "");
+   foreach my $task ("atthkgen","odfexpand","epframes",
+                     "badpixfind","badpix","epreject","epnoise","epxrlcorr",
+                     "epevents","attcalc","evlistcomb","evselect","epexposure","epatplot","epfast") {
+#     $ccom = $task . " -v \n" ;
+      $ccom = $task . " -v " ;
+      chomp(my $message = `$ccom`) ;
+#     $message = `$ccom` ;
+      SAS::message($SAS::AppMsg, $epchain_msg, $message);
+   }
+   SAS::message($SAS::AppMsg, $epchain_msg, "");
+}
+#
+#==============================================================================
+#
+# getKeyword : Return the trimmed value of a FITS keyword
+# Input 1: File name with extension (FTOOLS like)
+# Input 2: Keyword name
+
+sub getKeyword {
+
+  my $ccom = "fkeyprint $_[0] $_[1] outfil=STDOUT exact=Y | grep \"= \"" ;
+  my $line = `$ccom` ;
+#  print "LINE:",$ccom,"\n";
+#  print "LINE:",$line,"\n";
+  if ( $? > 0 ) { return "" }
+
+# Extract the keyword value
+  $line = substr($line,10) ;
+  $line = substr($line,0,index($line,"/")) ;
+
+# Special case for strings
+  my $i1 = index($line,"'") ;
+  my $i2 = rindex($line,"'") ;
+  if ( $i1 >= 0 ) { $line = substr($line,$i1+1,$i2-$i1-1) }
+
+# Trim the keyword value to the left and right (but not in the center)
+  return trim($line,3) ;
+}
+sub trim {
+  use integer ;
+  my $strcur = $_[0] ;
+  my $lead  = $_[1] / 2 ;
+  my $trail = $_[1] - $lead * 2 ;
+  if ( $lead ) {
+    while (index($strcur," ")==0 && length($strcur) > 0) { 
+      $strcur = substr($strcur,1) }
+  }
+  if ( $trail ) {
+    while (rindex($strcur," ")==length($strcur)-1 && length($strcur) > 0) { 
+      $strcur = substr($strcur,0,-1) }
+  }
+  return $strcur ;
+}
+#
+#==============================================================================
+# show supported and unsupported options
+
+sub showSupported {
+  my $epchain_msg = -$SAS::AppMsg;
+  SAS::message($SAS::AppMsg, $epchain_msg, $line_plusplus);
+  SAS::message($SAS::AppMsg, $epchain_msg, "Supported options:");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --v   : show version of epchain and constituent tasks");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --p   : show supported parameters and default values");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --h   : show supported parameters and default values");
+  SAS::message($SAS::AppMsg, $epchain_msg, "Unsupported options (use e.g. environment variables instead):");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --a   : ccfpath");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --c   : noclobber");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --d   : dialog GUI");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --f   : ccffiles");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --i   : cifname");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --m   : manual");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --t   : trace");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --V   : verbosity level");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --w   : warning");
+  SAS::message($SAS::AppMsg, $epchain_msg, "");
+  $ENV{'SAS_VERBOSITY'}=$verbosity;
+}
+
+#
+#==============================================================================
+# in case of early error show the full syntax, 
+#   also for options "--p" and "-p" and "--h" and "-h"
+#
+sub showSyntax {
+  if ( $indir eq ""){
+    if ( not exists $ENV{'SAS_ODF'}) {}
+    else { $indir = $ENV{'SAS_ODF'} }
+  };
+  my $epchain_msg = -$SAS::AppMsg;
+  SAS::message($SAS::AppMsg, $epchain_msg, $line_plusplus);
+  SAS::message($SAS::AppMsg, $epchain_msg, "Syntax: epchain odf=<ODF directory>                  [$indir]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "datamode=<IMAGING|TIMING|BURST|ALL>                  [$datamode]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "odfaccess=<oal|odf|name|all>                         [$odfaccess]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "exposure=<exposure number>                           [$exposure]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "schedule=<S|U>                                       [$schedule]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "ccds=<list of CCDs>                                  [$ccds]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "usecanonicalnames=<Y|N> for output files             [$usecanonicalnames]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withdefaultcal=<Y|N> overriding individual defaults  [$withdefaultcal]");
+  SAS::message($SAS::AppMsg, $epchain_msg, " ");
+
+  SAS::message($SAS::AppMsg, $epchain_msg, "runatthkgen=<Y|N>                                    [$runatthkgen]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "runepframes=<Y|N>                                    [$runepframes]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "runbadpixfind=<Y|N>                                  [$runbadpixfind]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "runbadpix=<Y|N>                                      [$runbadpix]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "runepreject=<Y|N>                                    [$runepreject]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "runepnoise=<N|Y>                                     [$runepnoise]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "runepxrlcorr=<N|Y>                                   [$runepxrlcorr]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "runepevents=<Y|N>                                    [$runepevents]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "runattcalc=<Y|N>                                     [$runattcalc]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "runevlistcomb=<Y|N>                                  [$runevlistcomb]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "runevselect=<Y|N>                                    [$runevselect]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "runepexposure=<Y|N>                                  [$runepexposure]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "runscreen=<Y|N>                                      [$runscreen]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "runbackground=<Y|N>                                  [$runbackground]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "runepfast=<N|Y>                                      [$runepfast]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withpatplot=<N|Y>                                    [$withpatplot]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withoutoftime=<N|Y>                                  [$withoutoftime]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "");
+
+  SAS::message($SAS::AppMsg, $epchain_msg, "timestep=<atthkgen timestep>                         [$timestep]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "attitudelabel=<attitude source fixed|ahf|om>         [$attsou]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "refpointlabel=<attitude reference nom|obj|pnt|user>  [$refpoint]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "nominalra=<right ascension>                          [$nominalra]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "nominaldec=<declination>                             [$nominaldec]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "fixedra=<right ascension>                            [$attra]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "fixeddec=<declination>                               [$attdec]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "fixedposangle=<position angle>                       [$attPA]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "imagesize=<in degrees>                               [$imagesize]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withmedianpnt=<y|n>                                  [$withmedianpnt]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "");
+
+  SAS::message($SAS::AppMsg, $epchain_msg, "witheventmap=<n|y>                                   [$witheventmap]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "eventmapset=<>                                       [$eventmapset]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withsrccoords=<y|n>                                  [$withsrccoords]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "srcra=<right ascension>                              [$srcra]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "srcdec=<declination>                                 [$srcdec]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "showaux=<y|n>                                        [$showaux]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "showccx=<y|n>                                        [$showccx]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "showpah=<y|n>                                        [$showpah]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "showpmh=<y|n>                                        [$showpmh]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withfifogti=<y|n>                                    [$withfifogti]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "fifogtithresh=<y|n>                                  [$fifogtithresh]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withfinetime=<y|n>                                   [$withfinetime]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "guessdeltap=<y|n>                                    [$guessdeltap]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "lowerthreshold=<processing lower limit in adu>       [$lowerthreshold]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withsrcrawy=<y|n>  for TI + BU mode                  [$withsrcrawy]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "srcposition=<source Y position TI or BU>             [$srcposition]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "");
+
+  SAS::message($SAS::AppMsg, $epchain_msg, "badpixset=<>                                         [$badpixset]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "getuplnkbadpix=<y|n>                                 [$getuplnkbadpix]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "getotherbadpix=<y|n>                                 [$getotherbadpix]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "getnewbadpix=<y|n>                                   [$getnewbadpix]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "emptyextension=<n|y>                                 [$emptyextension]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "windowfilter=<n|y>                                   [$windowfilter]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "rateset=<background lightcurve file>                 [$rateset]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "specset=<background spectrum file>                   [$specset]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "timebinsize=<bin size for bkg lightcurve>            [$timebinsize]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withmask=<y|n>                                       [$withmask]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "maskset=<>                                           [$maskset]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "hrdmskset=<>                                         [$hrdmskset]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "sigma=<sigma threshold for offset correction>        [$sigma]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "optloadingimage=<y|n>                                [$optloadingimage]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "optloadingimageset=<name of optical loading image>   [$optloadingimageset]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withxrlcorrection=<y|n> for TI+BU modes              [$withxrlcorrection]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withxrlimage=<y|n>                                   [$withxrlimage]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withoffsetmap=<y|n>                                  [$withoffsetmap]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withoffsetlist=<y|n>                                 [$withoffsetlist]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "odilist=<>                                           [$odilist]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "");
+
+  SAS::message($SAS::AppMsg, $epchain_msg, "withphotonmap=<n|y>                                  [$withphotonmap]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "photonmapset=<>                                      [$photonmapset]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withrdpha=<Y|N>                                      [$withrdpha]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "rdphatimebinsize=<Y|N>                               [$rdphatimebinsize]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withctilongterm=<Y|N>                                [$withctilongterm]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withtempcorrection=<Y|N>                             [$withtempcorrection]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "testenergywidth=<N|Y> 1eV output bin width           [$testenergywidth]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "randomizeposition=<Y|N>                              [$randomizeposition]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "randomizeenergy=<Y|N>                                [$randomizeenergy]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "gainctiaccuracy=<0|1|2>                              [$gainctiaccuracy]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withgainff=<N|Y> 					 [$withgainff]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withgaineff=<N|Y>                                    [$withgaineff]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withgaintiming=<N|Y>                                 [$withgaintiming]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withgainburst=<N|Y>                                  [$withgainburst]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withbackgroundgain=<Y|N>                             [$withbackgroundgain]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "witpatternoffset=<Y|N>                               [$withpatternoffset]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withtempcorrection=<Y|N>                             [$withtempcorrection]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withphagaincolumn=<Y|N>                              [$withphagaincolumn]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "lowgainenergyscale=<N|Y>                             [$lowgainenergyscale]");
+# SAS::message($SAS::AppMsg, $epchain_msg, "patternanalysis=<Y|N>                                [$patternanalysis]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withctisrcpos=<N|Y>                                  [$withctisrcpos]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "checksasmip=<y|n>                                    [$checksasmip]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "");
+
+  SAS::message($SAS::AppMsg, $epchain_msg, "screenexposure=<y|n>                                 [$screenexposure]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "spatialexposure=<y|n>                                [$spatialexposure]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "randomizetime=<y|n>                                  [$randomizetime]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "");
+
+  SAS::message($SAS::AppMsg, $epchain_msg, "identifynoisyframes=<Identify Noisy Frames           [$identifynoisyframes]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "applyfilter=<eep output of filtering process>        [$applyfilter]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "noisecut=<Maximum number of soft events in frame>    [$noisecut]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "sigmacut=<Sigma cut for bright sources>              [$sigmacut]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "savemasks=<Save CCDs mask to a file>                 [$savemasks]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "screenrejected=<Y|N>                                 [$screenrejected]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "");
+
+  SAS::message($SAS::AppMsg, $epchain_msg, "keepintermediate=<notmerged|all|cal|raw|clean|none>  [$keepintermediate]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "screen=<y|n>                                         [$screen]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "screenlowthresh=<low-energy threshold [eV]>          [$screenlowthresh]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "memorymodel=<evlistcomb memory low|highlow|high>     [$memorymodel]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "othertables=<other tables/arrays to propagate>       [$othertables]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "propagatecolumns=<auto|all|icd|imaging|subset>       [$propagatecolumns]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "epnimgcolnames=<IMAGING mode column names>           [$epnimgcolnames]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "epnimgcoltypes=<IMAGING mode column types>           [$epnimgcoltypes]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "epntimcolnames=<TIMING mode column names>            [$epntimcolnames]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "epntimcoltypes=<TIMING mode column types>            [$epntimcoltypes]");
+# SAS::message($SAS::AppMsg, $epchain_msg, "ingtiset=<>                                          [$ingtiset]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "outset=<>                                            [$outset]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "");
+
+  SAS::message($SAS::AppMsg, $epchain_msg, "---- do not change temporary parameters below unless you know why ----");
+  SAS::message($SAS::AppMsg, $epchain_msg, "odfok=<Y|N>                                          [$odfok]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "ccfok=<Y|N>                                          [$ccfok]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "hkok=<Y|N>                                           [$hkok]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "f1294=<quadrant wait states 0|3|5>                   [$f1294]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "f1118=<filter wheel state>                           [$f1118]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "f1052=<coarse time reset>                            [$f1052]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "setupbpx=<badpixel map setup>                        [$setupbpx]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "anchop=<chopper value>                               [$anchop]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "aneamipsel=<columns to be rejected [0..63]>          [$aneamipsel]"),
+  SAS::message($SAS::AppMsg, $epchain_msg, "anmaxmip=<max number of MIP pixels [0..4095]>        [$anmaxmip]"),
+  SAS::message($SAS::AppMsg, $epchain_msg, "anmip=<MIP trigger threshold [0..4095]>              [$anmip]"), 
+  SAS::message($SAS::AppMsg, $epchain_msg, "mipthreshold=<maximum PHA for non-MIPs>              [$mipthreshold]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "mipmethod=<none|sas|com|onboard>                     [$mipmethod]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "mipdist=<y|n>                                        [$mipdist]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "autofilter=<try to determine FILTER from HK>         [$autofilter]"), 
+  SAS::message($SAS::AppMsg, $epchain_msg, "automode=<try to determine F1294 and An_CHOP>        [$automode]"), 
+  SAS::message($SAS::AppMsg, $epchain_msg, "ancmcorr=<global offset value>                       [$ancmcorr]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "ecntempqb1=<quadrant box temperature in degC>        [$ecntempqb1]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "qualmax=<maximum event quality>                      [$qualmax]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "wrongpixlimit=<no warning percentage>                [$wrongpixlimit]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withframecti=<Y|N> interpretation of TIME+FRAME      [$withframecti]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "ctilongtermy=<Y|N>                                   [$ctilongtermy]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "ctilongtermsoft=<Y|N>                                [$ctilongtermsoft]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withccdoffsets=<Y|N>                                 [$withccdoffsets]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "reemissionthresh=<trailing events lower adu limit>   [$reemissionthresh]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "badcolumnset=<bad column file>                       [$badcolumnset]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "noiseparameters=<noise fraction parameters>          [$noiseparameters]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withsoftflarescreening=<turns on TI flash screening> [$withsoftflarescreening]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "softflarethreshold1=<flare screening threshold 1>    [$softflarethreshold1]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "softflarethreshold2=<flare screening threshold 2>    [$softflarethreshold2]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "softflaresmooth=<BOX|GAUSS|FLARE>                    [$softflaresmooth]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "softflareenergyrange=<flare screening energy range>  [$softflareenergyrange]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "softflaresmoothparams=<smoothing parameters>         [$softflaresmoothparams]");
+#
+  SAS::message($SAS::AppMsg, $epchain_msg, "");
+}

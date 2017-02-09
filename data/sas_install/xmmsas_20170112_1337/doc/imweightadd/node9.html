@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="imweightadd">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="imweightadd.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="imweightadd.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+imweightadd (tools-1.67) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Estimation of the optimal"></A>
+<A HREF="imweightadd.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="imweightadd.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="imweightadd:description:parameters"></A>
+<A NAME="530"></A>
+<tr valign=top bgcolor='silver'><td><b>imagesets</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset list</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    List of <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$N$"></SPAN> input images to be summed. They must all have the same pixel dimensions.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="537"></A>
+<tr valign=top bgcolor='silver'><td><b>outimageset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>outimage.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The output image, equal to <!-- MATH
+ $\sum_{i=1}^N w_i$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="61" HEIGHT="41" ALIGN="MIDDLE" BORDER="0"
+ SRC="img71.png"
+ ALT="$\sum_{i=1}^N w_i$"></SPAN> <TT>imagesets</TT>.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="547"></A>
+<tr valign=top bgcolor='silver'><td><b>tempset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>tempimage.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Name of a temporary image dataset (for pipeline use).
+  <br>&nbsp;</td></tr>
+
+  <A NAME="554"></A>
+<tr valign=top bgcolor='silver'><td><b>calculateweights</b></td><td>no</td><td><A HREF=../param/node3.html>bool</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If this parameter = `no', the input images are simply summed, and neither background maps or exposure maps are required inputs. Contrariwise for `yes'.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="561"></A>
+<tr valign=top bgcolor='silver'><td><b>bkgmapsets</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset list</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    List of background maps to be summed. They must all have the same pixel dimensions as the <TT>imagesets</TT>, and there must be the same number of members in each list. Each background map should correspond with the image at the same place in the respective list. This parameter is only read if <TT>calculateweights</TT>=`yes'.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="572"></A>
+<tr valign=top bgcolor='silver'><td><b>outbkgmapset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>outbkgmap.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The output background map, equal to <!-- MATH
+ $\sum_{i=1}^N w_i$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="61" HEIGHT="41" ALIGN="MIDDLE" BORDER="0"
+ SRC="img71.png"
+ ALT="$\sum_{i=1}^N w_i$"></SPAN> <TT>bkgmapsets</TT>. This parameter is only read if <TT>calculateweights</TT>=`yes'.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="584"></A>
+<tr valign=top bgcolor='silver'><td><b>expmapsets</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset list</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    List of exposure maps to be summed. They must all have the same pixel dimensions as the <TT>imagesets</TT>, and there must be the same number of members in each list. Each exposure map should correspond with the image at the same place in the respective list. This parameter is only read if <TT>calculateweights</TT>=`yes'.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="595"></A>
+<tr valign=top bgcolor='silver'><td><b>outexpmapset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>outexpmap.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The output exposure map, equal to <!-- MATH
+ $\sum_{i=1}^N w_i$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="61" HEIGHT="41" ALIGN="MIDDLE" BORDER="0"
+ SRC="img71.png"
+ ALT="$\sum_{i=1}^N w_i$"></SPAN> <TT>expmapsets</TT>. This parameter is only read if <TT>calculateweights</TT>=`yes'.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="607"></A>
+<tr valign=top bgcolor='silver'><td><b>withrelsrcrates</b></td><td>no</td><td><A HREF=../param/node3.html>bool</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Whether to read the relative source-count expectation values (`source spectrum') from parameter <TT>relsrcrates</TT>. If <TT>withrelsrcrates</TT>=`no', these relative rates are all set to 1. This parameter is only read if <TT>calculateweights</TT>=`yes'.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="620"></A>
+<tr valign=top bgcolor='silver'><td><b>relsrcrates</b></td><td>yes</td><td><A HREF=../param/node3.html>real list</A></td><td>1.0</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img72.png"
+ ALT="$0&lt;$"></SPAN><TT>relsrcrates</TT></td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>calculateweights</TT>=`yes' and <TT>withrelsrcrates</TT>=`yes'.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="633"></A>
+<tr valign=top bgcolor='silver'><td><b>likemin</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>10.0</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img72.png"
+ ALT="$0&lt;$"></SPAN><TT>likemin</TT></td></tr>
+
+<tr valign=top><td colspan=5>
+    The cutoff value of likelihood.
+  <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Estimation of the optimal"></A>
+<A HREF="imweightadd.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,51 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="srcspecset" type="dataset" default="srcspec.fits">
+   <DESCRIPTION>
+    Name of the dataset which contains the logN-logS specification for the list of simulated sources.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="inputstyle" type="string" default="single">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="sensmap">
+     <PARAM id="invsensmapset" type="dataset" default="sensy_image.fits">
+      <DESCRIPTION>
+       Name of the input reciprocal sensitivity map.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="bkgfluxmapset" type="dataset" default="src_list.fits">
+      <DESCRIPTION>
+       Name of the output map of the average flux due to undetectable sources.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="tempset" type="dataset" default="src_list.fits">
+      <DESCRIPTION>
+       Name of a temporary dataset.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="single">
+     <PARAM id="fluxcutoff" type="real" default="1e-15">
+      <DESCRIPTION>
+       The nominal minimum detectable source flux (in cgs units, for sim source spectrum and energy band).
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="templateset" type="dataset" mandatory="yes">
+      <DESCRIPTION>
+       Dataset which is used as the source of WCS keywords.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

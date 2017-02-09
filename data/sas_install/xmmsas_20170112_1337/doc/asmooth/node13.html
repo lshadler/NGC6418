@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Weighting and masking</TITLE>
+<META NAME="description" CONTENT="Weighting and masking">
+<META NAME="keywords" CONTENT="asmooth">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="asmooth.css">
+
+<LINK REL="next" HREF="node14.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node14.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+asmooth (asmooth-2.30) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node12.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Smoothing from an adaptive"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Correcting for exposure before"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="asmooth.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00034000000000000000"></A>
+  <A NAME="asmooth:description:weights"></A>
+<BR>
+Weighting and masking
+</H2>
+
+<P>
+Images necessarily have sharp boundaries at their edges, and may in addition have sharp internal steps between zero- and non-zero-valued pixels. Such steps become `smeared out' through the convolution. Smearing manifests itself as both `drooping' of non-zero values as the edge is approached and `bleeding' of non-zero values into the previously zero-valued area. A glance at equation <A HREF="node4.html#convolution">1</A> shows that drooping can be avoided by supplying as weight image (parameters <TT>withweightset</TT> and <TT>weightset</TT>) something which exhibits the same steps as the input image. Where this is the case, both numerator and denominator of equation <A HREF="node4.html#convolution">1</A> fall to approximately half their usual values at pixels adjacent to an image step to zero; if no weight image is supplied, all values of <SPAN CLASS="MATH"><IMG
+ WIDTH="34" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$w_{x,y}$"></SPAN> are set to 1, and thus only the numerator of <A HREF="node4.html#convolution">1</A> falls by about half at such pixels, so also the result as a whole. An exposure map often serves very well as a weight image. This can also prevent large noise fluctuations in areas of low exposure when the input image is exposure-corrected before smoothing (see section <A HREF="node14.html#asmooth:description:expmaps">3.5</A>).
+
+<P>
+Droop correction by weighting carries on in principle even outside the area of the input image which was non-zero-valued. This facility can be used to interpolate over gaps or holes in the input and weight images. However such extrapolation becomes increasingly noisy far from the step as fewer and fewer non-zero pixels of the input and weight images overlap the convolver. Indeed such extrapolation cannot extend further than the convolver array dimensions from non-zero areas of the weight image, else the denominator of equation <A HREF="node4.html#convolution">1</A> would become zero.
+
+<P>
+This extrapolation can be controlled by supplying <A NAME="1128"></A><A NAME="tex2html7"
+  HREF="../asmooth/index.html"><SPAN  CLASS="textbf">asmooth</SPAN></A>
+with a mask image via parameters <TT>withoutmaskset</TT> and <TT>outmaskset</TT>. The mask actually has two effects: only pixels for which the mask is TRUE contribute to the convolution; and convolution is only performed for pixels for which the mask is TRUE. In fact we should rewrite equation <A HREF="node4.html#convolution">1</A> to read
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+O_{x,y} = C \ \delta_{x,y} \, \frac{\sum_{i=L}^{M} \sum_{j=P}^{Q} \delta_{x-i,y-j} \ c_{i,j} \ w_{x-i,y-j} \ I_{x-i,y-j}} {\sum_{i=L}^{M} \sum_{j=P}^{Q} \delta_{x-i,y-j} \ c_{i,j} \ w_{x-i,y-j}} + (1 - \delta_{x,y}) I_{x,y},
+\end{equation}
+ -->
+<A NAME="masked"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="masked"></A><IMG
+ WIDTH="515" HEIGHT="56" BORDER="0"
+ SRC="img47.png"
+ ALT="\begin{displaymath}
+O_{x,y} = C \ \delta_{x,y} \, \frac{\sum_{i=L}^{M} \sum_{j=P...
+...-i,y-j} \ c_{i,j} \ w_{x-i,y-j}} + (1 - \delta_{x,y}) I_{x,y},
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">4</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+where <SPAN CLASS="MATH"><IMG
+ WIDTH="30" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img48.png"
+ ALT="$\delta_{x,y}$"></SPAN> represents the mask.
+
+<P>
+Note from section <A HREF="node20.html#asmooth:description:outputfiles">7</A> that the image supplied to <TT>outmask</TT> may have any numeric data type. The exposure map for example is often a convenient choice.
+
+<P>
+If the absolute value of the numerator of equation <A HREF="node4.html#convolution">1</A> falls below a certain minimum value, the task will do the following: (i) issue the warning outMaskTooNarrow; (ii) set the value of that pixel in the outset to zero; (iii) set the respective pixel of an internal logical image to TRUE. This logical image of pixels where weighted smoothing could not be carried out can be written to file by setting <TT>writebadmaskset</TT>=`yes'.
+
+<P>
+An example of a situation in which a small amount of controlled extrapolation is desirable is in the creation of background maps by smoothing. Bright sources should be removed from any image before smoothing it to create such a map. However if pixels in the neighbourhood of sources are simply set to zero, smoothing won't remove the resulting holes in the image, just blur them. The surrounding background values can be interpolated into the holes by supplying a weight image (eg the exposure map) with a matching set of holes. Provided the holes do not approach the convolver array dimensions in size, the holes should become completely filled in. Note that if a mask is also used, the mask should <SPAN  CLASS="textit">not</SPAN> have holes cut in it at the source positions. In total, the recommended procedure is as follows:
+
+<P>
+
+<OL>
+<LI>Make a source-mask image which has holes at source locations. From its appearence the name of `cheese mask' suggests itself. (Unfortunately the present sas offers no easy way to do this.)
+
+<P>
+</LI>
+<LI>Multiply the input image by the cheese mask. Let us call the result the cheesed input image.
+
+<P>
+</LI>
+<LI>Multiply the exposure map by the cheese mask. Let us call the result the cheesed weight image.
+
+<P>
+</LI>
+<LI>Call asmooth as follows:
+
+<P>
+<PRE>
+  asmooth inset=&lt;cheesed input image&gt;
+  withweightset=yes weightset=&lt;cheesed weight image&gt;
+  withoutmaskset=yes outmaskset=&lt;original exposure map&gt;
+</PRE>
+
+<P>
+</LI>
+</OL>
+
+<P>
+If you still get the `outMaskTooNarrow' warning, you will either have to reduce the size of some of the holes or use a broader convolver.
+
+<P>
+Note that, although the exposure map is recommended for three separate inputs of <A NAME="1136"></A><A NAME="tex2html8"
+  HREF="../asmooth/index.html"><SPAN  CLASS="textbf">asmooth</SPAN></A>
+(<TT>weightset</TT>, <TT>outmaskset</TT> and <TT>expimageset</TT>), these three functions are separate and should not be confused.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node12.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Smoothing from an adaptive"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Correcting for exposure before"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,1095 @@
+#! /usr/bin/perl -w
+#
+#
+# main for SAS perl tasks.
+# 2012-12-23 vny
+# Task omcatlim adds the detection limit columns to the SUMMARY table 
+#
+
+require 5;
+use strict;
+use Getopt::Long;
+Getopt::Long::Configure ("pass_through");
+use SAS::error;
+use Astro::FITS::CFITSIO qw( :longnames :constants );
+use Carp;
+#use SimpleFITS;
+
+#use Thread qw'async yield';
+
+my $inp_directory = "";  # The input directory
+my $out_directory = "";  # The output directory
+my $log_directory = "";
+my $odfListFileName = "";
+my $oldMasterCatalogue = "old_mastercatalogue.fit";
+my $inputCatalogue = "inputcatalogue.fit";
+my $finalCatalogueName = "outputcatalogue.fit";
+
+my $homeDirectory="";
+my $nThreads = 2;
+my $deleteOldCatalogue="no";
+
+
+#******************************************************
+#
+#
+#*****************************************************
+sub reduceProducts
+{
+    
+    my ($inputCatalogue, $finalCatalogueName, $logFileName, $logFlagsName, $log_directory, $out_directory, 
+	$deleteOldCatalogue, $noBadAstrometry, 
+	$noGoodAstrometry, $noObsFiles, $noLarge, @directories)=@_;
+    
+    my $numDirectories =  @directories;
+    
+    print("L44 numDirectories=$numDirectories \n");
+    #print("L45 log_directory=$log_directory, out_directory=$out_directory \n");
+    print("L46 deleteOldCatalogue=$deleteOldCatalogue \n");
+    #print("L47 logFlagsName=$logFlagsName  \n");
+    #print("L48 finalCatalogueName=$finalCatalogueName \n");
+    #print("L49 inputCatalogue=$inputCatalogue \n");
+
+    my $oldMasterFile = "$out_directory/old_mastercatalogue.fit";
+    #print("L52 oldMasterFile=$oldMasterFile \n");
+    my $newMasterFile = "$out_directory/new_mastercatalogue.fit";
+    #print("L54 newMasterFile=$newMasterFile \n");
+    my $tempsrclistFile1 = "$out_directory/tempsourcelist1.fit";
+    my $tempsrclistFile2 = "$out_directory/tempsourcelist2.fit";
+    my $tempMasterFile = "$out_directory/tempmastersourcelist0.fit";
+
+
+    my $nPrintLimit=10000;
+
+    #--------------
+    # column OBSID
+    #--------------
+    my @columnsqf=(
+		   { name=>'OBSID'}
+		   );
+    my %columnsqf=map{$_->{name}=>$_} @columnsqf;
+    #--------------------
+    # column DETLIM_UVW2
+    #-------------------
+    my @columnsw2=(
+		   { name=>'DETLIM_UVW2'}
+		   );
+    my %columnsw2=map{$_->{name}=>$_} @columnsw2;
+    #--------------------
+    # column DETLIM_UVM2
+    #-------------------
+    my @columnsm2=(
+		   { name=>'DETLIM_UVM2'}
+		   );
+    my %columnsm2=map{$_->{name}=>$_} @columnsm2;
+
+    #--------------------
+    # column DETLIM_UVW1
+    #-------------------
+    my @columnsw1=(
+		   { name=>'DETLIM_UVW1'}
+		   );
+    my %columnsw1=map{$_->{name}=>$_} @columnsw1;
+    #--------------------
+    # column DETLIM_U
+    #-------------------
+    my @columnsu=(
+		   { name=>'DETLIM_U'}
+		   );
+    my %columnsu=map{$_->{name}=>$_} @columnsu;
+    #--------------------
+    # column DETLIM_B
+    #-------------------
+    my @columnsb=(
+		   { name=>'DETLIM_B'}
+		   );
+    my %columnsb=map{$_->{name}=>$_} @columnsb;
+    #--------------------
+    # column DETLIM_V
+    #-------------------
+    my @columnsv=(
+		   { name=>'DETLIM_V'}
+		   );
+    my %columnsv=map{$_->{name}=>$_} @columnsv;
+
+
+    if ($deleteOldCatalogue){
+	print("L56 deleting the old catalogue files (if they exist)\n");
+	if (-e $oldMasterFile)
+	{
+	    unlink($oldMasterFile);
+	}
+
+	if (-e $newMasterFile)
+	{
+	    unlink($newMasterFile);
+	}
+    }
+    #****************************************************************
+    # copy the input catalogue file into output (for further editing)
+    #****************************************************************
+    system("cp $inputCatalogue $finalCatalogueName ") && die ("failed copying $inputCatalogue \n");
+    # open the output catalogue
+    my $status=0;
+    my $ofptr = Astro::FITS::CFITSIO::open_file($finalCatalogueName,READWRITE,$status);
+    check_status($status) or die;
+    # move to the SUMMARY hdu
+    $ofptr->movnam_hdu(ANY_HDU,'SUMMARY',0,$status);
+    # get number of rows in the SUMMARY table
+    my $nrows=0;
+    $ofptr->get_num_rows($nrows,$status);
+    print("L87 nrows=$nrows \n");
+    #****************************************
+    # iinsert 6 columns for detection limits
+    #****************************************
+    # get column type from RA_PNT
+    my $colnumber=-1;
+    my $fltype;
+    my ($col, $qftype, $qfrepeat, $qfwidth,$qfnelem);
+    $ofptr->get_colnum(CASEINSEN,'RA_PNT',$colnumber,$status);
+    ($status == COL_NOT_FOUND) and
+	die "$0: could not find TTYPE 'RA_PNT' in binary table";
+    $ofptr->get_coltype($colnumber, $fltype, $qfrepeat, $qfwidth, $status);
+    #print("L152 fltype=$fltype \n");
+    #---------------------------
+    # insert column DETLIM_UVW2
+    #---------------------------
+    $ofptr->insert_col(25, 'DETLIM_UVW2', 'E', $status);
+    $ofptr->write_key(TSTRING,'TUNIT25','mag','unit of the field', $status);
+    $ofptr->write_key(TSTRING,'TDISP25','F5.2','display format of the field', $status);
+    $ofptr->modify_comment('TTYPE25', 'detection limit for the filter UVW2', $status);
+    print("L161 inserted column DETLIM_UVW2 status=$status \n");
+    #---------------------------
+    # insert column DETLIM_UVM2
+    #---------------------------
+    $ofptr->insert_col(26, 'DETLIM_UVM2', 'E', $status);
+    $ofptr->write_key(TSTRING,'TUNIT26','mag','unit of the field', $status);
+    $ofptr->write_key(TSTRING,'TDISP26','F5.2','display format of the field', $status);
+    $ofptr->modify_comment('TTYPE26', 'detection limit for the filter UVM2', $status);
+    print("L169 inserted column DETLIM_UVM2 status=$status \n");
+    #---------------------------
+    # insert column DETLIM_UVW1
+    #---------------------------
+    $ofptr->insert_col(27, 'DETLIM_UVW1', 'E', $status);
+    $ofptr->write_key(TSTRING,'TUNIT27','mag','unit of the field', $status);
+    $ofptr->write_key(TSTRING,'TDISP27','F5.2','display format of the field', $status);
+    $ofptr->modify_comment('TTYPE27', 'detection limit for the filter UVW1', $status);
+    print("L177 inserted column DETLIM_UVW1 status=$status \n");
+    #---------------------------
+    # insert column DETLIM_U
+    #---------------------------
+    $ofptr->insert_col(28, 'DETLIM_U', 'E', $status);
+    $ofptr->write_key(TSTRING,'TUNIT28','mag','unit of the field', $status);
+    $ofptr->write_key(TSTRING,'TDISP28','F5.2','display format of the field', $status);
+    $ofptr->modify_comment('TTYPE28', 'detection limit for the filter U', $status);
+    print("L185 inserted column DETLIM_U status=$status \n");
+    #---------------------------
+    # insert column DETLIM_B
+    #---------------------------
+    $ofptr->insert_col(29, 'DETLIM_B', 'E', $status);
+    $ofptr->write_key(TSTRING,'TUNIT29','mag','unit of the field', $status);
+    $ofptr->write_key(TSTRING,'TDISP29','F5.2','display format of the field', $status);
+    $ofptr->modify_comment('TTYPE29', 'detection limit for the filter B', $status);
+    print("L193 inserted column DETLIM_B status=$status \n");
+    #---------------------------
+    # insert column DETLIM_V
+    #---------------------------
+    $ofptr->insert_col(30, 'DETLIM_V', 'E', $status);
+    $ofptr->write_key(TSTRING,'TUNIT30','mag','unit of the field', $status);
+    $ofptr->write_key(TSTRING,'TDISP30','F5.2','display format of the field', $status);
+    $ofptr->modify_comment('TTYPE30', 'detection limit for the filter V', $status);
+    print("L201 inserted column DETLIM_V status=$status \n");
+
+
+    #*********************************
+    # get the column number for OBSID
+    #*********************************
+    $colnumber=-1;
+    $ofptr->get_colnum(CASEINSEN,'OBSID',$colnumber,$status);
+    ($status == COL_NOT_FOUND) and
+	die "$0: could not find TTYPE 'OBSID' in binary table";
+#    print("L99 OBSID column number colnumber=$colnumber \n");
+    # read the column OBSID
+    
+ 
+    my $qfanynul=0;
+    my $qffirstrow=1;
+    my $qffirstelem=1;
+    my $col2;
+    # get the column obsid
+    foreach $col (@columnsqf){ # just for one column OBSID
+	$col->{data}=[(0) x $nrows];
+	$status=0;
+	$ofptr->get_coltype($colnumber, $qftype, $qfrepeat, $qfwidth, $status);
+#	print("L107 after getting coltype qftype=$qftype qfwidth=$qfwidth status=$status \n");
+	$qfnelem=$nrows;
+	$ofptr->read_col($qftype,$colnumber,$qffirstrow,$qffirstelem, 
+			    $qfnelem, -1, $col->{data},$qfanynul,$status);
+#	print("L114 after reading the data from OBSID status=$status \n");
+#	for (my $i=0; $i<$nrows;$i++){	
+#	    #$col->{data}[$i]+=$nrows_summary1;
+#	    print("L117 i=$i data="); print($col->{data}[$i]);print("\n");
+#	}
+	$col2=$col;
+	last;
+    } # foreach $col
+    #print("L123 col2=$col2 \n");
+
+    my ($colw2, $colm2, $colw1, $colu, $colb, $colv);
+    # get the column uvw2
+    foreach $col (@columnsw2){ 
+	$col->{data}=[(0) x $nrows];
+	$status=0;
+	$colnumber=25;
+	$ofptr->get_coltype($colnumber, $qftype, $qfrepeat, $qfwidth, $status);
+	$qfnelem=$nrows;
+	$ofptr->read_col($qftype,$colnumber,$qffirstrow,$qffirstelem, 
+			    $qfnelem, -1, $col->{data},$qfanynul,$status);
+	$colw2=$col;
+	last;
+    } 
+    # get the column uvm2
+    foreach $col (@columnsm2){ 
+	$col->{data}=[(0) x $nrows];
+	$status=0;
+	$colnumber=26;
+	$ofptr->get_coltype($colnumber, $qftype, $qfrepeat, $qfwidth, $status);
+	$qfnelem=$nrows;
+	$ofptr->read_col($qftype,$colnumber,$qffirstrow,$qffirstelem, 
+			    $qfnelem, -1, $col->{data},$qfanynul,$status);
+	$colm2=$col;
+	last;
+    } 
+    # get the column uvw1
+    foreach $col (@columnsw1){ 
+	$col->{data}=[(0) x $nrows];
+	$status=0;
+	$colnumber=27;
+	$ofptr->get_coltype($colnumber, $qftype, $qfrepeat, $qfwidth, $status);
+	$qfnelem=$nrows;
+	$ofptr->read_col($qftype,$colnumber,$qffirstrow,$qffirstelem, 
+			    $qfnelem, -1, $col->{data},$qfanynul,$status);
+	$colw1=$col;
+	last;
+    } 
+    # get the column u
+    foreach $col (@columnsu){ 
+	$col->{data}=[(0) x $nrows];
+	$status=0;
+	$colnumber=28;
+	$ofptr->get_coltype($colnumber, $qftype, $qfrepeat, $qfwidth, $status);
+	$qfnelem=$nrows;
+	$ofptr->read_col($qftype,$colnumber,$qffirstrow,$qffirstelem, 
+			    $qfnelem, -1, $col->{data},$qfanynul,$status);
+	$colu=$col;
+	last;
+    } 
+    # get the column b
+    foreach $col (@columnsb){ 
+	$col->{data}=[(0) x $nrows];
+	$status=0;
+	$colnumber=29;
+	$ofptr->get_coltype($colnumber, $qftype, $qfrepeat, $qfwidth, $status);
+	$qfnelem=$nrows;
+	$ofptr->read_col($qftype,$colnumber,$qffirstrow,$qffirstelem, 
+			    $qfnelem, -1, $col->{data},$qfanynul,$status);
+	$colb=$col;
+	last;
+    } 
+    # get the column v
+    foreach $col (@columnsv){ 
+	$col->{data}=[(0) x $nrows];
+	$status=0;
+	$colnumber=30;
+	$ofptr->get_coltype($colnumber, $qftype, $qfrepeat, $qfwidth, $status);
+	$qfnelem=$nrows;
+	$ofptr->read_col($qftype,$colnumber,$qffirstrow,$qffirstelem, 
+			    $qfnelem, -1, $col->{data},$qfanynul,$status);
+	$colv=$col;
+	last;
+    } 
+
+    #**************************************************
+    # Convert the list of folders into a list of obsIDs
+    #**************************************************
+    my @obsids=();
+    for (my $i=0; $i<$numDirectories; $i++){
+	my $k1=length($directories[$i]);
+	my $k2 = rindex($directories[$i], '/');
+	$k2++;
+	my $obsid = substr($directories[$i], $k2, $k1 - $k2);
+	push(@obsids,$obsid);
+    }
+
+
+    print("L87 -----------------------------------------------\n");
+    my @tn=();
+ 
+    #print("L136 col2=$col2 nrows=$nrows ofptr=$ofptr \n");
+
+    for (my $i = 0; $i < $numDirectories; $i++){
+	my $startTime = time();
+	my $index=$i;	
+	my $directory =  $directories[$index];	
+	my $logFile =  $log_directory . "/" . $logFileName . $obsids[$index] . ".log" ;
+	my $logFlags =  $log_directory . "/" . $logFlagsName . $obsids[$index] . ".log" ;
+	my $outObsidDirectory= $out_directory;
+	
+	my $code=&reduceDirectory($directory, $outObsidDirectory, 
+			 $logFile, $logFlags, $index, $numDirectories, $noBadAstrometry,
+				  $noGoodAstrometry, $noObsFiles, $noLarge,  
+				  $oldMasterFile, $newMasterFile, $tempsrclistFile1,
+				  $tempsrclistFile2, $tempMasterFile, $deleteOldCatalogue,
+				  $inputCatalogue, $finalCatalogueName, $col2, 
+				  $colw2, $colm2, $colw1, $colu, $colb, $colv, $nrows, $ofptr);
+	
+
+	my $finishTime = time();
+	my $diff = $finishTime - $startTime;
+
+	if ($i<$nPrintLimit){
+	    print("L112 Finished updating the detection limit columns in set $i in $diff s (code=$code)\n");
+	    print("-----------------------------------------------------\n");
+	}
+    }
+
+    # write inserted columns
+    $colnumber=25;
+    $ofptr->write_col($qftype,$colnumber,$qffirstrow,$qffirstelem, 
+			 $qfnelem, $colw2->{data},$status);
+    #print("L360 after writing the column W2 status=$status \n");
+    $colnumber=26;
+    $ofptr->write_col($qftype,$colnumber,$qffirstrow,$qffirstelem, 
+			 $qfnelem, $colm2->{data},$status);
+    $colnumber=27;
+    $ofptr->write_col($qftype,$colnumber,$qffirstrow,$qffirstelem, 
+			 $qfnelem, $colw1->{data},$status);
+    $colnumber=28;
+    $ofptr->write_col($qftype,$colnumber,$qffirstrow,$qffirstelem, 
+			 $qfnelem, $colu->{data},$status);
+    $colnumber=29;
+    $ofptr->write_col($qftype,$colnumber,$qffirstrow,$qffirstelem, 
+			 $qfnelem, $colb->{data},$status);
+
+    $colnumber=30;
+    $ofptr->write_col($qftype,$colnumber,$qffirstrow,$qffirstelem, 
+			 $qfnelem, $colv->{data},$status);
+
+    $ofptr->close_file($status); 
+    check_status($status) or die;
+
+    my $k = 0;
+    return $k;
+}
+
+
+#************************************************************
+#
+#
+#************************************************************
+sub reduceDirectory
+{
+ 
+
+    my ($dataDirectory, $outObsidDirectory, $logFile, $logFlags, $currentSet, 
+	$numDirectories, $noBadAstrometry, $noGoodAstrometry, $noObsFiles, $noLarge, 
+	$oldMasterFile, $newMasterFile, $tempsrclistFile1,
+	$tempsrclistFile2, $tempMasterFile, $deleteOldCatalogue,
+	$inputCatalogue, $finalCatalogueName, $col, 
+	$colw2, $colm2, $colw1, $colu, $colb, $colv,$nrows, $ofptr) = @_;
+    
+    $ENV{SAS_ODF} = $dataDirectory;
+ 
+    my $k = 0;
+
+    
+    my @obsFiles = <$dataDirectory/*P0**OBS**FIT*>;
+    my @obsMerFiles=<$dataDirectory/*P0**OBSMER**FIT*>;
+    my @obsMliFiles=<$dataDirectory/*P0**OBSMLI**FIT*>;
+    my @obsMosFiles=<$dataDirectory/*P0**OBSMOS**FIT*>;
+
+    my $nobsFiles=@obsFiles;
+    my $nobsFilesTotal=@obsFiles;
+    my $nobsMer=@obsMerFiles;
+    my $nobsMli=@obsMliFiles;	
+    my $nobsMos=@obsMosFiles;
+
+    my $fileType="";
+
+    my $nPrintLimit=10000;
+
+
+    if ($nobsFiles == 0) 
+    {
+	if ($currentSet<$nPrintLimit){	
+	    print("L425 no OBS-files found, skipping ... \n");	   
+	}
+	$k=1;
+	return $k;
+    } else {
+
+	if ($nobsMer>0){
+	    # processing only the merged files
+	    $fileType="MERGED";
+	    @obsFiles=();
+	    @obsFiles=@obsMerFiles;
+	    
+	} else{
+	    $fileType="COMBINED";	    
+	}
+	    
+	$nobsFiles=@obsFiles;
+	if ($currentSet<$nPrintLimit){
+	    if ($nobsFilesTotal >1){
+		print("L444 Found $nobsFilesTotal OBS-files, processing (source list type: $fileType) ... \n");
+	    } else {
+		print("L446 Found $nobsFilesTotal OBS-file, processing (source list type: $fileType) ... \n");
+	    }
+	}
+    }
+    #print("L434 col=$col nrows=$nrows ofptr=$ofptr \n");
+    print("L451 input file: $inputCatalogue \n");
+    print("L452 output file:  $finalCatalogueName \n");
+
+#    print("--\n");
+    my $currentObsIndex=-1;
+    #for (my $i=0; $i<$nrows;$i++){	
+#	#$col->{data}[$i]+=$nrows_summary1;
+#	print("L444 i=$i data="); print($col->{data}[$i]);print("\n");
+#	 
+#    }
+#    print("--\n");
+#    for (my $i=0; $i<$nrows;$i++){	
+#	#$colw2->{data}[$i]= 23.0;
+#	print("L446 i=$i data="); print($colw2->{data}[$i]);print("\n");
+#    }
+#    print("--\n");
+
+    for (my $fileIndex=0; $fileIndex<$nobsFiles; $fileIndex++){ 
+	my $srcListFile=$obsFiles[$fileIndex];
+	my $printFlag=0;
+	if ($currentSet<$nPrintLimit){
+	    $printFlag=1;
+	}
+	my $posCorOk = getAttribute( $srcListFile, "SRCLIST", "POSCOROK" );  
+	
+	if ($posCorOk ne "T")
+	{
+	    print("L199 set=$currentSet file=$srcListFile POSCOROK = $posCorOk skipping ... \n");
+
+	    ++$noBadAstrometry; 
+	    next;
+	} else {
+	    $noGoodAstrometry++;
+
+	}
+	
+	my $size = getAttribute( $srcListFile, "SRCLIST", "NAXIS2" ); 
+	my $mlimm2= getAttribute( $srcListFile, "SRCLIST", "MLIMM2" ); 
+	my $mlimw1= getAttribute( $srcListFile, "SRCLIST", "MLIMW1" ); 
+	my $mlimw2= getAttribute( $srcListFile, "SRCLIST", "MLIMW2" ); 
+	my $mlimu= getAttribute( $srcListFile, "SRCLIST", "MLIMU" ); 
+	my $mlimb= getAttribute( $srcListFile, "SRCLIST", "MLIMB" ); 
+	my $mlimv= getAttribute( $srcListFile, "SRCLIST", "MLIMV" ); 
+	my $srcListFileShortName = $srcListFile;
+	$srcListFileShortName =~ s/$dataDirectory//g;
+	my $obsIdNumber=substr($srcListFileShortName,2,10);
+	if ($currentSet<$nPrintLimit){
+	    print("L217 noGoodAstrometry=$noGoodAstrometry, Checking directory $dataDirectory - size=$size\n");
+	    print("L218 file = $srcListFile \n");
+	    #print("L220 short= $srcListFileShortName \n");
+	    print("L223 obsIdNumber=$obsIdNumber \n"); 
+	    #print("L219 mlimm2=$mlimm2 \n");
+	    #print("L220 mlimw1=$mlimw1 \n");
+	    #print("L221 mlimw2=$mlimw2 \n");
+	    #print("L222 mlimu=$mlimu \n");
+	    #print("L223 mlimb=$mlimb \n");
+	    #print("L224 mlimv=$mlimv \n");
+
+	}
+	
+	$currentObsIndex=-1;
+#	print("--\n");
+	for (my $i=0; $i<$nrows;$i++){	
+	    #$col->{data}[$i]+=$nrows_summary1;
+	    #print("L498 i=$i data="); print($col->{data}[$i]);print("\n");
+	    if ($col->{data}[$i] eq $obsIdNumber){
+		$currentObsIndex=$i;
+		last;
+	    }
+	}
+	#print("--\n");
+	print("L506 ObsID index = $currentObsIndex \n");
+	print("--\n");
+	if ($currentObsIndex>=0){
+	    #print("L508 filling in the detection limits \n");
+	    print("L525 mlimw2=$mlimw2 \n");
+	    print("L526 mlimm2=$mlimm2 \n");
+	    print("L527 mlimw1=$mlimw1 \n");
+	    print("L528 mlimu=$mlimu \n");
+	    print("L529 mlimb=$mlimb \n");
+	    print("L530 mlimv=$mlimv \n");
+	    if ($mlimw2>1.0){
+		$colw2->{data}[$currentObsIndex]=$mlimw2;
+	    } else {
+		$colw2->{data}[$currentObsIndex]=0.0;
+	    }
+	    if ($mlimm2>1.0){
+		$colm2->{data}[$currentObsIndex]=$mlimm2;
+	    } else {
+		$colm2->{data}[$currentObsIndex]=0.0;
+	    }
+	    if ($mlimw1>1.0){
+		$colw1->{data}[$currentObsIndex]=$mlimw1;
+	    } else {
+		$colw1->{data}[$currentObsIndex]=0.0;
+	    }
+	    if ($mlimu>1.0){
+		$colu->{data}[$currentObsIndex]=$mlimu;
+	    } else {
+		$colu->{data}[$currentObsIndex]=0.0;
+	    }
+	    if ($mlimb>1.0){
+		$colb->{data}[$currentObsIndex]=$mlimb;
+	    } else {
+		$colb->{data}[$currentObsIndex]=0.0;
+	    }
+	    if ($mlimv>1.0){
+		$colv->{data}[$currentObsIndex]=$mlimv;
+	    } else {
+		$colv->{data}[$currentObsIndex]=0.0;
+	    }
+	}
+
+	if($size > 10000)
+	{
+	    next;
+	}   
+	
+	if($size > 5000)
+	{
+	    
+	    ++$noLarge;
+	    print("WARNING $srcListFile has $size sources\n");
+	    
+	}
+	$noObsFiles++;
+
+	my $arg="";
+
+	#my $filter="";
+	#my $comment="";
+#	my $status=0;
+#	my $ifptr = Astro::FITS::CFITSIO::open_file($srcListFile,READONLY,$status);
+#	print("L254 opening file $srcListFileShortName  status=$status \n");
+#	check_status($status) or die;
+#	$ifptr->movnam_hdu(ANY_HDU,'SRCLIST',0,$status);  
+#
+#	#$ifptr->read_keyword('FILTER',$filter,$comment,$status);
+#	#print("L260 filter=$filter comment=$comment \n");
+#	$ifptr->close_file($status);
+#	check_status($status) or die;
+
+	#**************************************************************
+	# Run omflags
+	#*************************************************************
+	#runOmflags($srcListFile, $tempsrclistFile1, $printFlag, $logFlags); 
+
+	#**************************************************************
+	# Run ommastercatalogue
+	#*************************************************************
+	#print(" deleteOldCatalogue = $deleteOldCatalogue \n");
+	#if ($deleteOldCatalogue){
+	#    $arg = "ommastercatalogue oldmastercatalogue=$oldMasterFile " . 
+	#	"newmastercatalogue=$newMasterFile " . 
+	#	"srclistfile=$tempsrclistFile1 " .
+	#	"tmpmastercatalogue=$tempMasterFile " .
+	#	"create=yes " .
+	#	"tmpsrclistfile=$tempsrclistFile2 -V 5 >& $logFile";
+	#} else {
+	#    $arg = "ommastercatalogue oldmastercatalogue=$oldMasterFile " . 
+	#	"newmastercatalogue=$newMasterFile " . 
+	#	"srclistfile=$tempsrclistFile1 " .
+	#	"tmpmastercatalogue=$tempMasterFile " .
+	#	"tmpsrclistfile=$tempsrclistFile2 -V 5 >& $logFile";
+	#}
+	#if ($currentSet<$nPrintLimit){
+	#    print("L251 set=$currentSet: $arg\n");
+	#}
+
+	#system($arg);
+	#unlink($tempsrclistFile1);
+	#unlink($tempMasterFile);
+	#unlink($tempsrclistFile2);
+    }
+
+
+ 
+    return $k;
+} # reduceDirectory
+
+
+#***********************************
+# Subroutine GetCurrentDirectory
+#**********************************
+sub GetCurrentDirectory
+{
+    my $command = "pwd";
+    my $curdir = `$command`;
+
+    my $leng = length($curdir);
+    substr($curdir, $leng - 1) = "";    
+    return $curdir;
+}
+
+
+#****************************************************************
+# The main program
+#
+#***************************************************************
+sub omcatlim
+{
+
+    my $startTime = time();
+    my $SASVERBOSITY = " ";
+    if (exists($ENV{SAS_VERBOSITY}))
+    {
+	$SASVERBOSITY = $ENV{SAS_VERBOSITY};
+    }
+    else
+    {
+	$SASVERBOSITY = "5";
+	$ENV{SAS_VERBOSITY} = "5";
+    }
+    if ($SASVERBOSITY > 7) 
+    {
+	$ENV{SAS_VERBOSITY} = "5";
+    }
+    
+    $inp_directory = stringParameter("inpdirectory");
+    $out_directory = stringParameter("outdirectory");
+    $log_directory = stringParameter("logdirectory");
+    $odfListFileName=stringParameter("odflist");
+    $oldMasterCatalogue=stringParameter("oldmastercatalogue");
+    $inputCatalogue=stringParameter("inputcatalogue");
+    $finalCatalogueName=stringParameter("finalcatalogue");
+    $deleteOldCatalogue = booleanParameter("deleteoldcatalogue");
+    
+
+    print("L313 inp_directory=$inp_directory \n");
+    print("L314 out_directory=$out_directory \n");
+    print("L315 log_directory=$log_directory \n");
+    print("L316 odfListFileName=$odfListFileName \n");
+    print("L317 oldMasterCatalogue=$oldMasterCatalogue \n");
+    print("L318 inputCatalogue=$inputCatalogue \n");
+    print("L319 finalCatalogueName=$finalCatalogueName \n");
+    print("L320 deleteOldCatalogue=$deleteOldCatalogue \n");
+ 
+
+    $homeDirectory=&GetCurrentDirectory;
+    print("L324 homeDirectory=$homeDirectory \n");
+
+    my $len = length($out_directory);
+
+    if ($len < 2){
+	# using the home directory for the input and output 
+	$out_directory=$homeDirectory;
+    }
+
+    $len = length($odfListFileName);
+
+    if ($len < 3){
+	# using the default name of the ODF-list file
+	$odfListFileName="odf.list";
+    }
+
+    my $useDirectoryInside=0;
+    my $auxFileName;
+    my $sasodf_safe="";
+    my $sasodfStored=0;
+    if (exists($ENV{SAS_ODF})){
+	$sasodf_safe=$ENV{SAS_ODF};
+	$sasodfStored=1;
+    }
+
+    my $masterCataloguePathModified=0;
+    my $oldMasterCatalogueFound=0;
+
+    #*******************************************
+    # Check for the existence of the old master catalogue list
+    #*******************************************
+    if (not -e $inputCatalogue) {
+	printf("L356 Could not find the input catalogue $inputCatalogue specified by the parameter \n");
+	# Try to find the file in the output directory
+	if (not -e $out_directory) {
+	    print("L359 Cannot find the directory $out_directory   \n");
+	    # Check the system variable SAS_ODF
+	    if (exists($ENV{SAS_ODF})){
+		print("L362 The environmental variable SAS_ODF does exist: OK \n ");
+		
+		$len = length($ENV{SAS_ODF});
+		$out_directory = $ENV{SAS_ODF};
+	
+		if ($len < 3)
+		{
+		    print("L369 Checking the current directory \n");
+		    my $currentDirectory = &GetCurrentDirectory;
+		    $ENV{SAS_ODF} =  $currentDirectory;
+		    $out_directory=$currentDirectory;
+		    #$useDirectoryInside=1;
+		    $masterCataloguePathModified=1;		    
+		}
+
+	    }
+	    else {
+		print("L379 The environmental variable SAS_ODF does not exist (using current directory)\n");
+		# Try to get the catalogue file name from the current directory
+		my $currentDirectory = &GetCurrentDirectory;
+		
+		$out_directory=$currentDirectory;
+		$masterCataloguePathModified=1;	
+		#$useDirectoryInside=1;
+		
+	    }
+	}
+	else {
+	    
+	    # try to get  the catalogue file from the out_directory
+	   
+	    #my $oldMasterCataloguePath=$out_directory . "/" . $oldMasterCatalogue;
+	    my $oldMasterCataloguePath=$out_directory . "/" . $inputCatalogue;
+	    
+	    if (not -e $oldMasterCataloguePath) { # file was not found in the output directory
+		# Try to find it in the current directory
+		my $currentDirectory = &GetCurrentDirectory;
+		$out_directory=$currentDirectory;
+		#$useDirectoryInside=1;
+		print("L401 Using the current directory  \n");
+		#$oldMasterCataloguePath=$out_directory . "/" . $oldMasterCatalogue;
+		$oldMasterCataloguePath=$out_directory . "/" . $inputCatalogue;
+		if (not -e $oldMasterCataloguePath) {
+		    # file not found (the flag oldMasterCatalogueFound will be zero) 
+		    $masterCataloguePathModified=0;
+		    $oldMasterCatalogueFound=0;	
+		} else { # found the file
+		    $masterCataloguePathModified=1;
+		    $oldMasterCatalogueFound=1;	
+		} 
+				
+	    } else {
+		# the file with the list of ODFs was eventually found
+		print("L415 found the input catalogue : $oldMasterCataloguePath OK \n");
+		$masterCataloguePathModified=1;	
+		$oldMasterCatalogueFound=1;
+	    }
+	}
+
+    }
+    else {
+	$oldMasterCatalogueFound=1;
+	print("L424 The file $inputCatalogue is in the specified directory: OK \n"); 
+    }
+
+    print("L427 oldMasterCatalogueFound=$oldMasterCatalogueFound \n");
+
+    #*******************************************
+    # Check for the existence of the ODF list
+    #*******************************************
+    if (not -e $odfListFileName) {
+	printf("L433 Cannot find the file $odfListFileName in the current directory \n");
+	# Try to find the file in the input directory
+	if (not -e $inp_directory) {
+	    print("L436 Cannot find the directory $inp_directory   \n");
+	    # Check the system variable SAS_ODF
+	    if (exists($ENV{SAS_ODF})){
+		print("L439 The environmental variable SAS_ODF does exist: OK \n ");
+		
+		$len = length($ENV{SAS_ODF});
+		$inp_directory = $ENV{SAS_ODF};
+	
+		if ($len < 3)
+		{
+		    print("L446 Checking the current directory \n");
+		    my $currentDirectory = &GetCurrentDirectory;
+		    $ENV{SAS_ODF} =  $currentDirectory;
+		    $inp_directory=$currentDirectory;
+		    $useDirectoryInside=1;
+		   		    
+		}
+
+	    }
+	    else {
+		print("L456 The environmental variable SAS_ODF does not exist (using current directory)\n");
+		# Try to get the list of ODFs to process from the current directory
+		my $currentDirectory = &GetCurrentDirectory;
+		
+		$inp_directory=$currentDirectory;
+		$useDirectoryInside=1;
+		
+	    }
+	}
+	else {
+	    
+	    # try to get  the list of ODFs from the inp_directory
+	    $auxFileName=$inp_directory . "/" . $odfListFileName;
+	    $odfListFileName=$auxFileName;
+	    
+	    if (not -e $odfListFileName) { # file doe not exist: use the directories inside
+		$useDirectoryInside=1;
+		print("L473 Could not find the list of ODFs: using the folders inside of the directory $inp_directory \n");
+		
+	    } else {
+		# the file with the list of ODFs was eventually found
+		print("L477 found the ODF-list file: $odfListFileName OK \n");
+	    }
+	}
+
+    }
+    else {
+	print("L483 The file $odfListFileName is in the current directory: OK \n"); 
+    }
+
+
+    my @directories=();
+    my @obsids=();
+
+    my $arraySize=0;
+    if ($useDirectoryInside){
+	print("L492 Using the folders inside of the directory $inp_directory \n");
+	# if there was no ODF-list file provided then use the ODF folders
+	# inside of the inp_directory
+
+	@directories=<$inp_directory/*>;
+
+	$arraySize=@directories;
+	print("L499 Number of ODFs to process: $arraySize \n");
+#	print("L500 Folders to process: \n");
+#	print("-------------------------------\n");
+#	for (my $i=0; $i<$arraySize; $i++){
+#	    if ($i<10){
+#		print("L504 i=$i    $directories[$i] \n");
+#	    }
+#	}
+#	print("-------------------------\n");
+    } else {
+	# use the list of ODFs from the text file
+	open(INFILE, "<$odfListFileName") || die("Unable to open ODF-list file $odfListFileName");
+	my @lines = <INFILE>;
+	
+	my $num=@lines;
+	$arraySize=$num;
+
+	my $iline=0;
+	foreach my $odfpath (@lines) {
+	    chomp($odfpath);
+
+	    push(@directories, $odfpath);
+	    $iline++;
+	}
+
+
+	close INFILE;
+	
+    } # else if useDirectoryInside
+
+    #**************************************************
+    # Convert the list of folders into a list of obsIDs
+    #**************************************************
+    for (my $i=0; $i<$arraySize; $i++){
+	my $k1=length($directories[$i]);
+	my $k2 = rindex($directories[$i], '/');
+	$k2++;
+	my $obsid = substr($directories[$i], $k2, $k1 - $k2);
+	
+	push(@obsids,$obsid);
+    }
+
+
+    #**********************************************
+    # Check whether the output log directory exists
+    #**********************************************
+    if (not -e $log_directory) {
+	print("L546 Folder $log_directory does NOT exist ... Creating \n"); 
+	mkdir($log_directory,0777) || die "L260 cannot make directory $log_directory: $!";
+	print("L548 Has created the folder $log_directory \n");
+    }
+    else {
+	#printf("L330 Folder $log_directory already exists, OK \n");
+    }
+
+
+    #**********************************************
+    # Check whether the output data directory exists
+    #**********************************************
+    if (not -e $out_directory) {
+	print("L559 Folder $out_directory does NOT exist ... Creating \n"); 
+	mkdir($out_directory,0777) || die "L304 cannot make directory $out_directory: $!";
+	print("L561 Has created the folder $out_directory \n");
+    }
+    else {
+	#printf("L355 Folder $out_directory already exists, OK \n");
+    }
+
+
+    my $oldMasterCataloguePath=$out_directory . "/" . $oldMasterCatalogue;
+    my $inputCataloguePath=$out_directory . "/" . $inputCatalogue;
+    my $finalCataloguePath=$out_directory . "/" . $finalCatalogueName;
+
+    if ($oldMasterCatalogueFound){
+	print("L573 Found the input catalogue in the path $out_directory \n");
+	#$oldMasterCatalogue=$oldMasterCataloguePath;
+	$oldMasterCatalogue=$inputCataloguePath;
+	$inputCatalogue=$inputCataloguePath;
+	$finalCatalogueName=$finalCataloguePath;
+    }
+    #print("L578 oldMasterCatalogue=$oldMasterCatalogue \n");
+    #print("L579 inputCatalogue=$inputCatalogue \n"); 
+    #print("L580 finalCatalogueName=$finalCatalogueName \n");
+
+    my $logFileName="omcat_";
+    my $logFlagsName="flags_";
+    my $noBadAstrometry=0;
+    my $noGoodAstrometry=0;
+    my $noObsFiles=0;
+    my $noLarge=0;
+
+    #print("L398 calling the subroutine reduceProducts logFileName=$logFileName \n");
+    $startTime = time();
+
+    &reduceProducts($inputCatalogue, $finalCatalogueName, $logFileName, $logFlagsName, $log_directory, 
+		    $out_directory, $deleteOldCatalogue, 
+		    $noBadAstrometry, $noGoodAstrometry, $noObsFiles, $noLarge, @directories);
+    my $finishTime = time();
+    my $diff = $finishTime - $startTime;
+    #print("------------------------------\n");
+    print("L508 finish time: $finishTime ; total time taken: $diff s \n");
+
+
+#nbnbnbnbnbnbbn
+#-------------------------------------
+#
+#
+#    my $logFile=$log_directory . "/final_catalogue.log";
+#    my $arg = "ommastercatalogue oldmastercatalogue=$oldMasterCatalogue " . 
+#	"newmastercatalogue=$inputCatalogue " . 
+#	"finalcatalogue=$finalCatalogueName  finish=yes -V 5 >& $logFile";
+#
+#    if ($oldMasterCatalogueFound){
+#	print("L506 Processing the old master catalogue to finalise it \n");
+#	print("L508 command=$arg \n");
+#	#****************************************
+#	# Calling the task ommastercatalogue with the parameter finish=yes
+#	system($arg);
+#	#****************************************
+#    } else {
+#	print("L509 The old master catalogue was not found: stopping \n");
+#    }
+#
+#    $finishTime = time();
+#    $diff = $finishTime - $startTime;
+#    #print("------------------------------\n");
+#    print("L517 Total time taken: $diff s \n");
+#nbnbnbnbnbnbbn
+#------------------------------
+    if ($sasodfStored){
+	$ENV{SAS_ODF} =  $sasodf_safe;
+    }
+}
+
+
+#***********************************************************
+#
+#
+#***********************************************************
+sub getAttribute
+{
+    
+    my ($file, $extension, $name) = @_;
+    
+
+    open (INPUT1, $file) || die "couldn't open file $file";
+
+    
+    my $keywordValue=0;
+    my $tmpline;
+    my @words;
+
+    while($tmpline=<INPUT1>) 
+    {
+
+        #split;
+	@words=split(/[\t ]+/,$tmpline);
+          
+        #for (my $j = 0; $j < @_; $j++)
+        for (my $j = 0; $j < @words; $j++)
+        {
+        
+            my $string =  $words[$j];
+	    
+            my $k = $j + 1;
+
+        
+            if ( $string =~ $name )
+            {
+
+                if ($words[$j + 1] eq "=" )
+                {
+                    $k++;
+                
+                }
+
+		my $value = $words[$k];
+
+                
+		my $text2 = substr($value, 0, 1);
+                if($text2 eq "'")
+                {
+                                 	       
+                    $value = substr($value, 1, 10); 
+                }
+
+                close(INPUT1);
+	       
+                return $value; 
+
+
+            } 
+    
+            elsif ( $string eq "END" )
+            {
+               
+              
+#                close(INPUT1);
+#                die("Couldn't find attribute $name in extension $extension");
+
+
+            } 
+    
+
+        }
+
+    }
+
+    
+    close(INPUT1);
+#    die();	 
+} # getAttribute
+
+
+
+# check CFITSIO status
+sub check_status {
+    my $s = shift;
+    if ($s != 0) {
+	my $txt;
+      Astro::FITS::CFITSIO::fits_get_errstatus($s,$txt);
+	carp "CFITSIO error: $txt";
+	return 0;
+    }
+
+    return 1;
+}
+
+
+
+

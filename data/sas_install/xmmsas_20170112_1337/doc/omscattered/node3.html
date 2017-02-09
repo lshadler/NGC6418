@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="omscattered">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omscattered.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="omscattered.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omscattered (omscattered-1.3.4) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="omscattered.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omscattered.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="omscattered:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+XMM Newton Optical Monitor images are contaminated by a persistent
+scattered light feature (Fig.<A HREF="#fig:sclight1">1</A>). This feature is 
+a consequence of a uniform background outside 
+of the telescope field of view scattered off of shiny telescope structure. 
+It therefore scales with the background and can be removed in principle. 
+The task <I>omscattered</I> performs this function.
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="fig:sclight1"></A><A NAME="351"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure:</STRONG>
+<SMALL CLASS="SMALL">An example of the XMM OM image containing the 
+central scattered light feature (Obs. ID 0112250301, exposure 006, filter V).</SMALL></CAPTION>
+<TR><TD><IMG
+ WIDTH="350" HEIGHT="340" BORDER="0"
+ SRC="img1.png"
+ ALT="\begin{figure}\centering
+\epsfig{file=P0112250301OMS006IMAGEsclight.eps, height=7.5cm}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+In order to remove the central scattered light feature a calibrated 
+image containing exclusively this feature is required (the name
+of the file with this feature can be indicated by the parameter 
+scatset). 
+An example of the image with the calibrated scattered light 
+(for the OM V-filter) is given in Fig.<A HREF="#fig:calibratedFilterV">2</A>.
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="fig:calibratedFilterV"></A><A NAME="352"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure:</STRONG>
+<SMALL CLASS="SMALL">Central part of the image containing the 
+calibrated scattered light feature for the OM V-filter.</SMALL></CAPTION>
+<TR><TD><IMG
+ WIDTH="394" HEIGHT="340" BORDER="0"
+ SRC="img2.png"
+ ALT="\begin{figure}\centering
+\epsfig{file=calibrated1_V.eps, height=7.5cm}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+Calibrated images, one for each filter, 
+containing the scattered structure are planned for 
+inclusion in the SAS CAL system. However, for SAS v9.0 these 
+calibration images can be obtained by direct download 
+from the following URL: 
+<PRE>
+http://www.mssl.ucl.ac.uk/~vny/omscattered/omscatteredfiles.tar.gz
+</PRE>
+
+<P>
+The task <I>omscattered</I> can be called with the following parameters:
+ <PRE>
+   omscattered
+          set=           input data set file name
+          scatset=       file with the calibrated scattered light feature;
+          outset=        output image file name;
+          scalingfactor= to force the scaling of the calibrated data
+                          with a given factor; default value scalingfactor=-1;
+          innerradius=   inner radius for scaling the scattered light 
+                          feature, expressed in unbinned pixels; 
+                          default value innerradius=-1;
+          outerradius=   outer radius for scaling the scattered light
+                           feature; default value outerradius=-1;
+          mode=          optional parameter for switching between 3 
+                available modes of calculating the scaling factor;
+                default value mode=1
+</PRE>
+
+<P>
+(the first two parameters are mandatory). 
+
+<P>
+If the second parameter (<I>scatset</I>) is omitted (the
+file containing the calibrated scattered light feature is not specified)
+then <I>omscattered</I> will first try to find the appropriate calibration 
+file among the files of the SAS system itself, and only in the case of 
+not finding the required file the task will issue an error message 
+and finish without producing any output file.
+
+<P>
+If the name of the output file (third parameter) is not specified, the task will
+use the name of the input file but with an extra letter ``S'' 
+at the beginning of the name.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="omscattered.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,2 @@
+files=`\ls *.png | sed 's%\.png%%'`
+for n in $files ; do pngtopnm < $n.png | pnmtops -noturn > $n.ps ; ps2epsi $n.ps; rm $n.ps ; done

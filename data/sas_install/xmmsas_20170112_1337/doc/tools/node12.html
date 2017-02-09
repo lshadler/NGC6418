@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>regionmask: convert FITS REGION to image MASK</TITLE>
+<META NAME="description" CONTENT="regionmask: convert FITS REGION to image MASK">
+<META NAME="keywords" CONTENT="tools">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="tools.css">
+
+<LINK REL="previous" HREF="node11.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node13.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+tools (tools-1.67) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node11.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="xmmtrack: XMM orbit TRACKing"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="tools.html">Home Page</A> / <A  HREF="node2.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000210000000000000000"></A>
+<A NAME="tools:regionmask"></A>
+<BR>
+regionmask: convert FITS R<SMALL>EGION</SMALL> to image <SMALL>MASK</SMALL>
+</H2>
+
+<UL>
+<LI>SYNOPSIS
+ <DIV><TT>
+<BR>&nbsp;&nbsp;&nbsp;regionmask region=&lt;table&gt; autosize=no withmaskset=yes maskset=mask.ds
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichpixdef=image pixdefset=&lt;image&gt;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichpixdef=columns xcolumn=&lt;column&gt; ycolumn=&lt;column&gt;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;whichpixdef=manual xrpix=1 xrval=1 xdelt=1 xbins=100
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;yrpix=1 yrval=1 ydelt=1 ybins=100
+<BR>&nbsp;</TT></DIV>
+</LI>
+<LI>DESCRIPTION
+<BR>
+<P>
+<TT>regionmask</TT> converts a FITS Region extension table to an image
+ mask, either as a FITS image or as an ASCII list of pixels.  The FITS
+ Region extension format describes an arbitrary selection region in
+ terms of set operations on basic geometrical shapes.  This format has
+ some virtues to recommend it (most particularly its compactness), and
+ is becoming a standard representation, but at present it remains
+ awkward and poorly supported for most users.  Once converted to an
+ image mask the region can be viewed without specialized software and
+ can be used for image processing.  An image mask is a raster image
+ (array of pixels) with all pixels outside the region set to zero and
+ all pixels inside the region set to one.  This task uses the
+ <TT>ShapeScanner</TT> module of <A NAME="476"></A><A NAME="tex2html9"
+  HREF="../rgslib/index.html"><SPAN  CLASS="textbf">rgslib</SPAN></A>
+to rasterize the region.
+
+<P>
+The mapping from the region coordinate system to image coordinates is
+ established via the command line parameters: a template may be
+ provided in the form of an existing FITS image or pair of FITS table
+ columns, or the user may specify the mapping explicitly.  These same
+ parameters also define a clipping rectangle (the origin and extent of
+ the output image), which engages by default.  An alternative clipping
+ rectangle, the ``natural'' bounding box of the region itself, may be
+ substituted by setting parameter <TT>autosize</TT>=<EM>yes</EM>.  The
+ natural bounding box of a region is the smallest rectangle outside of
+ which all pixels have identical value.  However, some regions
+ (sectors, for example) have no natural bounding box, and auto-sizing
+ these will yield an output image of ``infinite'' size, which will not
+ be aborted gracefully by <TT>regionmask</TT>.  Note also that for a
+ complex region the auto-sized clipping rectangle computed by
+ <TT>regionmask</TT> is generally larger than its true natural bounding
+ box.  These problems do not seem to warrant solutions at this time.
+
+<P>
+Parameter <TT>whichpixdef</TT> activates one of the following
+ specifications for the mapping from region coordinates to image
+ coordinates:
+
+<P>
+
+<UL>
+<LI><EM>image</EM>
+
+<P>
+This is the default.  Parameter <TT>pixdefset</TT> is the name of a
+  FITS image (PRIMARY array) with World Coordinate System (WCS)
+  keywords defined on the first and second axes.  The output image
+  will use the same pixel size and alignment, and (unless auto-sized)
+  the same origin and extent.
+
+<P>
+</LI>
+<LI><EM>columns</EM>
+
+<P>
+Parameters <TT>xcolumn</TT> and <TT>ycolumn</TT> are the names of FITS
+  table columns with WCS and bounding keywords.  The preferred
+  bounding keywords are TLMIN and TLMAX, but in their absence TDMIN
+  and TDMAX will be used instead.  The WCS keywords specify the size
+  and alignment of the pixels and the bounding keywords specify the
+  clipping rectangle of the output image (unless auto-sized).  Its
+  first and second axes are specified by <TT>xcolumn</TT> and
+  <TT>ycolumn</TT> respectively.
+
+<P>
+</LI>
+<LI><EM>manual</EM>
+
+<P>
+Parameters <TT>xrpix</TT>, <TT>xrval</TT>, <TT>xdelt</TT>, and
+  <TT>xbins</TT> explicitly define the first axis of the output image.
+  Parameters <TT>yrpix</TT>, <TT>yrval</TT>, <TT>ydelt</TT>, and
+  <TT>ybins</TT> explicitly define its second axis.  (rpix,rval,delt)
+  is a WCS mapping: delt is the grid spacing, rval is a reference
+  point in the region coordinate system, and rpix is the image
+  coordinate associated with that reference point.  Unless auto-sized,
+  bins is the extent of the output image, and its origin is placed at
+  the reference point.
+ 
+</LI>
+</UL>
+
+<P>
+The default output format (parameter <TT>withmaskset</TT>=<EM>yes</EM>)
+ is a FITS image (PRIMARY array) of unsigned bytes.  Its WCS keywords
+ record the mapping from image coordinates back to the region
+ coordinate system.  Parameter <TT>maskset</TT> is the file name.
+
+<P>
+The alternate output format (parameter <TT>withmaskset</TT>=<EM>no</EM>)
+ is sent to the tty standard out in three columns of ASCII text: pixel
+ x-coordinate, low pixel y-coordinate, and high pixel y-coordinate.
+ The latter two columns define a vertical span of pixels that are all
+ inside the region.  Multiple spans at the same x-coordinate are
+ output on successive lines, such that the output is sorted in
+ increasing order of pixel coordinates (x first, then y).  The output
+ is restricted to the clipping rectangle, and x-coordinates within
+ that rectangle are skipped unless associated with at least one
+ y-coordinate span.  Note that these coordinates refer to the
+ reference pixel of the given region-to-image coordinate mapping--not
+ the lower-left corner of the clipping rectangle.
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node11.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="xmmtrack: XMM orbit TRACKing"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

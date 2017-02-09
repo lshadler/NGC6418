@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Local-background region shapes and sizes</TITLE>
+<META NAME="description" CONTENT="Local-background region shapes and sizes">
+<META NAME="keywords" CONTENT="region">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="region.css">
+
+<LINK REL="previous" HREF="node9.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+region (region-7.13) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Source non-overlap algorithm"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="region.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00036000000000000000"></A>
+  <A NAME="region:description:localbkg"></A>
+<BR>
+Local-background region shapes and sizes
+</H2>
+
+<P>
+Local-background regions are in all cases annuli. The fundamental choice here is between annuli concentric about the optic axis of the particular EPIC telescope or annuli concentric about the source location itself. This choice is made via the parameter <TT>fovbkgannulus</TT> and is described as follows.
+
+<P>
+
+<UL>
+<LI><TT>fovbkgannulus</TT>=`yes'. The local-background annulus for each source is made concentric about the telescope optic axis (OA). The central radius of the annulus passes through the source location, and the thickness of the annulus is equal to the maximum diameter of the (unshrunk) source region. Background regions of this shape should be chosen when there is no extended emission in the FOV, because OA-concentric regions are in general larger than source-concentric ones (thus offer better statisitics), yet sample everywhere approximately the same background level, because the value of the vignetting function is approximately the same at a given radius from the OA.
+
+<P>
+</LI>
+<LI><TT>fovbkgannulus</TT>=`no'. The local-background annulus for each source is made concentric about the source position itself. The inner radius of the annulus is equal to the maximum semiaxis of the (unshrunk) source region, and the outer radius is set to three times that value. Background regions of this shape should be chosen if there is extended emission in the FOV.
+    
+</LI>
+</UL>
+
+<P>
+So far it has been assumed that the annuli are circular. However, if the region units are selected to be `xy', then locii of equal radius (in DETXY coordinates) from the OA will in general appear as ellipses in the XY projection and pixellization scheme. If <TT>fovbkgannulus</TT>=`yes' in this case then the annuli must follow this distortion in order to preserve the approximate uniformity of background around the annulus. The task therefore distorts the circular DETXY annuli into appropriate ellipses if <TT>outunit</TT>=`xy' (not the default), <TT>fovbkgannulus</TT>=`yes' (not the default) and <TT>nobkgellipse</TT>=`no' (default), but not otherwise.
+
+<P>
+All source-extraction regions are excised from any given local-background region: thus in most general terms a local-background extraction region looks like an elliptical annulus with holes at source locations.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Source non-overlap algorithm"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

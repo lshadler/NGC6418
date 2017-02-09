@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>allBitsEquiv</TITLE>
+<META NAME="description" CONTENT="allBitsEquiv">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="previous" HREF="node135.html">
+<LINK REL="up" HREF="node134.html">
+<LINK REL="next" HREF="node137.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node135.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="getBitMasksFromFilter"></A>
+<A HREF="node134.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Routines which deal with"></A>
+<A HREF="node137.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Subroutines for dumping test"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node100.html">DSS utilities</A> / <A  HREF="node134.html">Routines which deal with</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00097200000000000000">
+allBitsEquiv</A>
+</H3>
+
+<P>
+This function tests all the values of the specified bit in the on-masks for logical equivalence and all the values in the off-masks for equivalence and returns TRUE if the equivalence holds. Note that bitNum starts at zero.
+
+<P>
+Examples:
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="CENTER">Element number</TD>
+<TD ALIGN="CENTER">on-bits</TD>
+<TD ALIGN="CENTER">off-bits</TD>
+</TR>
+<TR><TD ALIGN="CENTER">1</TD>
+<TD ALIGN="CENTER">0010010101101</TD>
+<TD ALIGN="CENTER">1010110101100</TD>
+</TR>
+<TR><TD ALIGN="CENTER">2</TD>
+<TD ALIGN="CENTER">1110101001110</TD>
+<TD ALIGN="CENTER">1001010101001</TD>
+</TR>
+<TR><TD ALIGN="CENTER">3</TD>
+<TD ALIGN="CENTER">0110010100110</TD>
+<TD ALIGN="CENTER">1000110001010</TD>
+</TR>
+<TR><TD ALIGN="CENTER">4</TD>
+<TD ALIGN="CENTER">0110111001110</TD>
+<TD ALIGN="CENTER">0010010100101</TD>
+</TR>
+<TR><TD ALIGN="CENTER">5</TD>
+<TD ALIGN="CENTER">0010000101101</TD>
+<TD ALIGN="CENTER">0000111100011</TD>
+</TR>
+</TABLE>
+
+<P>
+Taking the right-most bit of each mask to be bit 0, bits 2, 4, 9 and 10 of the on-masks are equivalent, whereas bits 4, 7 and 11 of the off-masks are equivalent. Hence allBitsEquiv() would return TRUE for bitNum=4 but not otherwise.
+
+<P>
+<PRE>
+  logical(bool) function allBitsEquiv(bitMasks, bitNum)
+    type(BitMaskT), intent(in) :: bitMasks(:)
+    integer(int32), intent(in) :: bitNum
+  end function allBitsEquiv
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

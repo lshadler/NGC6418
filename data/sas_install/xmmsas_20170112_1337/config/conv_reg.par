@@ -1,0 +1,113 @@
+<!-- converted from XPI formatted "conv_reg.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="imagefile" type="string" mandatory="yes">
+   <DESCRIPTION>
+    Image file name for esky2det (sky image)
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="inputfile" type="string" mandatory="no">
+   <DESCRIPTION>
+    Input text region file
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="outputfile" type="string" mandatory="no">
+   <DESCRIPTION>
+    Output text region file
+   </DESCRIPTION>
+  </PARAM>
+
+
+  <PARAM id="mode" type="string" mandatory="yes" default="3">
+   <DESCRIPTION>
+    1 - input FITS region file, 2 - input ASCII file, 3 - command line region
+   </DESCRIPTION>
+
+    <CASE> 
+
+    <ITEM value="1"> 
+    </ITEM>
+
+    <ITEM value="2"> 
+    </ITEM>
+
+    <ITEM value="3"> 
+
+     <PARAM id="ra" type="real" mandatory="yes">
+      <DESCRIPTION>
+       Region center RA in decimal degrees 
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       ra in [0.0:360.0)
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="dec" type="real" mandatory="yes">
+      <DESCRIPTION>
+       Region center Declination in decimal degrees 
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       dec in [-90.0:90.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="shape" type="string" mandatory="yes" default="CIRCLE">
+      <DESCRIPTION>
+       Shape of region (CIRCLE|ELLIPSE|circle|ellipse)
+      </DESCRIPTION>
+
+      <CASE> 
+      <ITEM value="CIRCLE">
+        <PARAM id="radius" type="real" mandatory="yes" default="1.0" >
+         <DESCRIPTION>
+          Radius of circular region in arc minutes 
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          radius in [0.0:30.0]
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+
+      <ITEM value="ELLIPSE">
+        <PARAM id="semimajor" type="real" mandatory="yes" default="1.0">
+         <DESCRIPTION>
+          Semi-major axis of elliptical region in arc minutes 
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          semimajor in [0.0:30.0]
+         </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="semiminor" type="real" mandatory="yes" default="1.0">
+         <DESCRIPTION>
+          Semi-minor axis of elliptical region in arc minutes 
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          semiminor in [0.0:30.0]
+         </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="rotangle" type="real" mandatory="yes" default="1.0">
+         <DESCRIPTION>
+          Rotation angle of elliptical region in degrees 
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          rotangle in [0.0:360.0]
+         </CONSTRAINTS>
+        </PARAM>
+
+       </ITEM>
+
+      </CASE> 
+     </PARAM>
+
+    </ITEM>
+    </CASE>
+
+  </PARAM>
+
+ </CONFIG>
+</FILE>

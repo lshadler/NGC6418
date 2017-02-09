@@ -1,0 +1,844 @@
+ChangeLog for epevents
+===============================
+open SPRs:
+- none
+
+Version 6.50.1 - 2016-10-27 (RDS)
+----------------------------------
+- (src/epevents_mod.f90) Initialization to zero of ipat4 array
+			 (SPR-7401)
+
+Version 6.50 - 2016-00-06 (AI)
+----------------------------------
+- (src/epevents_mod.f90) Initialization to null of all pointers that are passed 
+  to C++ (Dope vectors). If we do not initizialize the pointers, 
+  we get seg fault at run-time with gcc-6.2.	
+
+Version 6.49.10 - 2016-01-24 (MJF)
+----------------------------------
+- (src/epevents_mod.f90): complete change to avoid I*1 overflow
+  to allow compilation with NAG-6.0 compiler on Mac-OSX
+
+Version 6.49.9 - 2016-01-20 (MJF)
+---------------------------------
+- (src/epevents_mod.f90): minor change to avoid (intentional) I*1 overflow
+  to allow compilation with NAG-6.0 compiler on Mac-OSX
+- (src/epevents_mod.f90): remove warning related to "ctilongtermsoft=Y" (SCR-7194)
+
+Version 6.49.8 - 2014-09-29 (MJF)
+---------------------------------
+- (config/epevents.par): changed default "ctilongtermsoft=Y" (SCR-7194)
+- (doc/epevents_description.tex): as above
+
+Version 6.49.7 - 2014-09-26 (MJF)
+---------------------------------
+- (config/epevents.par): changed default "withpatternoffset=Y" (SCR-7195)
+- (doc/epevents_description.tex): as above
+
+Version 6.49.6 - 2014-09-23 (MJF)
+---------------------------------
+- (config/epevents.par): changed default "withbackgroundgain=Y" (SCR-7192)
+- (doc/epevents_description.tex): as above
+
+Version 6.49.5 - 2014-09-03 (MJF)
+---------------------------------
+- (src/epevents_mod.f90): adapt to new CAL interface for background-gain
+  calibration, i.e. propagate MAXMIP value in addition to MIPSEL (SCR-7195)
+- (DEPEND): needs `cal-3.232'
+
+Version 6.49.3 - 2014-07-08 (MJF)
+---------------------------------
+- (src/epevents_mod.f90): lowered verbosity related to pattern offset (SCR-7195)
+- (test/epevents_test_IM): run test with and without new corrections (SCR-7195)
+
+Version 6.49.2 - 2014-06-30 (MJF)
+---------------------------------
+- (src/epevents_mod.f90): write pattern offset energies to output file (SCR-7195)
+
+Version 6.49.1 - 2014-06-26 (MJF)
+---------------------------------
+- (src/epevents_mod.f90): add 256 if pattern2Col < 0 (SCR-7195)
+
+Version 6.49 - 2014-05-31 (MJF)
+-------------------------------
+- (src/epevents_mod.f90): added new call CAL_pnCombinedEventCorrect()
+- (src/epevents_mod.f90): added new parameter "withpatternoffset" (default "N")
+- (config/epevents.*): as above
+- (doc/epevents_description.tex): as above
+closed SCRs:
+- SCR-7195: PN Single-Double pattern energy offset
+
+Version 6.48 - 2014-05-30 (MJF)
+-------------------------------
+- (src/epevents_mod.f90): added new call CAL_pnBkgDepGainCorrect() 
+- (src/epevents_mod.f90): added new parameter "withbackgroundgain" (default "N")
+- (config/epevents.*): as above
+- (doc/epevents_description.tex): as above
+- (DEPEND): needs `cal-3.225'
+closed SCRs:
+- SCR-7192: PN quiescent background dependent gain
+
+Version 6.47.1 - 2013-10-29 (MJF/RDS)
+-------------------------------------
+- (src/epevents_mod.f90): updated RDPHA correction according to new CAL I/F
+- (DEPEND): needs "cal-3.219"
+
+Version 6.47 - 2013-10-28 (MJF)
+-------------------------------
+- (src/epevents_mod.f90): tabular RDPHA corrections, with time resolution
+  (SOC-SCR-7123, SOC-SCR-7133, SOC-SCR-7139)
+- (config/epevents.*): changed parameter "withrdcti" to "withrdpha"
+- (config/epevents.*): added new parameter "rdphatimebinsize" (default "100")
+- (doc/epevents_description.tex): as above
+- (DEPEND): needs "cal-3.218.1" (and at least EPN_CTI_0030.CCF)
+
+Version 6.46.6 - 2013-03-26 (MJF)
+---------------------------------
+- (src/epevents_mod.f90): change energy scale "adu" -> "eV" for RDPHA correction
+  (SOC-SCR-349)
+
+Version 6.46.5 - 2013-03-20 (MJF)
+---------------------------------
+- (src/epevents_mod.f90): check parameter setting "withoutoftime=Y"
+- (doc/epevents_description.tex): added warning "notUsefulModeOOTE" if
+   out-of-time events are requested for non-imaging modes, and warning
+   "notUsefulModeRDCTI" in the case of non-fast modes.
+- (test/epevents_test_IM): trigger warning "notUsefulModeRDCTI"
+- (test/epevents_test_TI): trigger warning "notUsefulModeOOTE"
+- (test/epevents_test_XX): changed "withoutoftime" from "N" to "Y"
+  (SOC-SCR-349)
+
+Version 6.46.4 - 2013-03-19 (MJF)
+---------------------------------
+- (src/epevents_mod.f90): prevent overwriting of RDCTI corrected amplitudes
+   after pattern recognition (SOC-SCR-349)
+- (doc/epevents_description.tex): added comment in parameter section
+
+Version 6.46.3 - 2013-03-06 (MJF)
+---------------------------------
+- (src/epevents_mod.f90): strict separation of out-of-time events (IMAGING
+   modes) and rate-dependent CTI (FAST modes)
+  (SOC-SCR-349)
+
+Version 6.46.2 - 2013-02-19 (MJF)
+---------------------------------
+- (src/epevents_mod.f90): write rate-dependent CTI parameters used in
+  correction (and flag whether applied) to output event file as
+  PHA_RDCB, PHA_RDCO, and the PHASHIFT as extension (keeping original PHA)
+  (SOC-SCR-349)
+
+Version 6.46.1 - 2013-02-18 (MJF)
+---------------------------------
+- (src/epevents_mod.f90): get rate-dependent CTI parameter via CAL/CCF
+- (DEPEND): needs "cal-3.214" (and at least EPN_CTI_0027.CCF)
+
+Version 6.46 - 2013-02-18 (MJF)
+-------------------------------
+- (config/epevents.*): changed default "testenergywidth" from "N" to "Y"
+- (doc/epevents_description.tex): as above
+
+Version 6.45 - 2013-01-31 (MJF)
+-------------------------------
+- (src/epevents_mod.f90): alternative approach for rate-dependent CTI
+   correction for TI and BU modes (first version, without CAL interface)
+- (config/epevents.*): added new parameter "withrdcti" (default "N")
+- (doc/epevents_description.tex): as above
+
+Version 6.44 - 2011-09-02 (MJF)
+-------------------------------
+- (src/epevents_mod.f90): test for SAS MIP rejection in SW TI BU modes
+   via printing discarded column information
+- (config/epevents.*): added new parameter "checksasmip" (default "N")
+- (doc/epevents_description.tex): as above
+
+Version 6.43 - 2008-04-08 (HB)
+------------------------------
+- (src/epevents_mod.f90): added new flag EVATT_BELOW_ACCEPTANCE to list 
+	                 of flags excluded from amplitude recombination
+
+Version 6.42.2 - 2007-11-21 (MJF)
+---------------------------------
+- (config/epevents.*): changed default "withtempcorrection" from "N" to "Y"
+- (doc/epevents_description.tex): as above
+
+Version 6.42.1 - 2007-07-05 (AI)
+-------------------------------
+- (src/epevents_mod.f90): Warning message related to temperature correction
+  removed.
+
+Version 6.42 - 2004-12-06 (MJF)
+-------------------------------
+- (src/epevents_mod.f90): create intermediate column PHA_GAIN if new parameter
+  "withphagaincolumn" is set to "Y" (default: "N")
+- (src/epevents_mod.f90): initial low-gain mode energy correction, 
+  can be switched on via new parameter "lowgainenergyscale=Y" (default: N)
+  NOTE: when switching on the low-gain energy correction then most of the
+  events fall outside the 2-byte-limit for the PI column (i.e. > 32757 eV)
+  as the energy range is then about 2-280 keV; if one is interested in this
+  full range the setting "N" should be used and energy values be multiplied
+  later with 18.4 to obtain "real" event energies. The new parameter is only
+  effective in case of low-gain mode data, of course.
+- (config/epevents.*): as above
+- (config/epevents.*): changed default for "withgaineff" from "N" to "Y"
+- (doc/epevents_description.tex): as above
+
+Version 6.41 - 2004-09-20 (MJF)
+-------------------------------
+- (DEPEND): corrected typo (epmpelib-0.5 -> 0.4)
+
+Version 6.40 - 2004-09-19 (MJF)
+-------------------------------
+- (config/epevents.*): removed obsolete (unused) parameter "ctilongtermpar" as
+   corresponding information is read from CCF
+- (doc/epevents_description.tex): as above
+- (src/epevents_mod.f90): as above
+- (src/epevents_mod.f90): optional calls to special mode-dependent gain
+   correction routines for FF and eFF mode,
+   controlled via new parameters "withgainff" and "withgaineff",
+   defaults are "N" (i.e. keep current behaviour and do not use new calls)
+- (doc/epevents_description.tex): as above
+- (config/epevents.*): as above
+- needs cal-3.172.5 [(src/EnergyCorrector.h/cc) - added gain correction for PN Eff mode]
+
+Version 6.39.1 - 2004-03-16 (HB)
+--------------------------------
+- (doc/epevents_description.tex): description of two missing parameters added
+
+Version 6.39 - 2003-05-08 (HB)
+--------------------------------
+- (config/epevents.par): modified to enable param-2.0 functionality	
+
+Version 6.38  - 2003-04-34 (MJF)
+--------------------------------
+- (doc/epevents_description.tex): extended section on Out-of-Time events
+- (src/epevents_mod.f90): removed verbose debug statement in OoT computation
+- (src/epevents_mod.f90): brought in-line with new `caloalutils-1.81´
+- (DEPEND): needs `eptestdata-0.7', added `caloalutils´
+
+Version 6.37  - 2002-12-03 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): the new CAL interface to the additional gain/CTI
+   correction requires to set the start time and duration explicitely
+- (DEPEND): needs `cal-3.152'
+closed SPR:
+- SSC-SPR-3041: CAL interface requires observation start time via setState()
+
+Version 6.36  - 2002-11-18 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): use "CAL_pnAdditionalGainCtiCorrect()", "CAL_pnGainBurstCorrect()",
+   "CAL_pnGainTimingCorrect()" instead of `calpnalgo' routines
+- (DEPEND): needs `cal-3.147'
+
+Version 6.35  - 2002-11-06 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): ensured "OR" in FLAG column
+closed SPR:
+- SSC-SPR-2997: CLOSE_TO_BRIGHTPIX, INVALID_PATTER flag overwrite CLOSE_TO_CCD_WINDOW flag
+
+Version 6.34  - 2002-09-19 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): option for alternative out-of-time event handling
+- (config/epevents.par): new parameter "withctisrcpos" (default: N)
+- (doc/epevents_description.tex): see above
+
+Version 6.33  - 2002-05-15 (MJF)
+--------------------------------
+- (config/epevents.par): updated for `param-2.0'
+- (DEPEND): needs `param-2.0', updated all other entries to latest
+
+Version 6.32  - 2002-04-18 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): propagate SRCPOS for TI and BU modes to long-term
+   CTI correction instead of the actual RAWY values (which refer to fine times)
+- (DEPEND): needs `calpnalgo-2.36'
+
+Version 6.31  - 2002-04-12 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): removed warning about long-term CTI setting if the
+   Y-dependence is activated
+- (config/epevents.par): changed defaults of `ctilongtermy' (N -> Y) and of
+   `ctilongtermpar' ("2.56 1.15 -0.26 0.10 120" -> "1.5e-5 1.15 -0.26 0.10 1")
+- (DEPEND): needs `calpnalgo-2.35'
+
+Version 6.30.6  - 2002-03-28 (MJF)
+----------------------------------
+- (doc/epevents_description.tex): some comments about long-term CTI effects
+
+Version 6.30.5  - 2002-03-18 (MJF)
+----------------------------------
+- (doc/epevents_description.tex): corrected a couple of typos
+
+Version 6.30.4  - 2002-03-08 (MJF)
+----------------------------------
+- (src/epevents_mod.f90): implement SOC-SCR-88: bit #8 in PATTERN is not set
+   anymore for singles and bits #7 and #8 are not set anymore for doubles events
+   close to CCD edges or bad pixels: this means these do not have PATTERN = 128
+   or 205 anymore but 0 and 1-4, just as `normal' single and double events;
+   they still have the corresponding flags set (e.g. CLOSE_TO_CCD_WINDOW,
+   CLOSE_TO_ONBOARD_BAD). A few remarks:
+   - the selection "PATTERN==0 && FLAG==0" will give the same events as before,
+     this was and is a recommended selection for spectral analysis of pn data
+   - the selection "PATTERN==0" will now also yield edge singles and doubles
+     which may have lost part of the charge in the gaps: the photon energy may
+     be underestimated; resulting products should be used with care, however,
+     broad-band images should be fine
+   - the PATTERN coding for triple and quadruple events close to edges (etc.)
+     has not been changed, only singles and doubles are affected
+- (src/epevents_mod.f90): write keyword "SCR_88" with content "Y" to EVENTS and
+   EXPOSURE extensions to distinguish between previous and present coding
+- (test/checkoutput_IM.f90): check SCR_88 keywords in extensions
+- (doc/epevents_description.tex): explain changes (see above)
+closed SCR:
+- SOC-SCR-88: epevents uses double coding in PATTERN and FLAG
+
+Version 6.30.3  - 2002-03-07 (MJF)
+----------------------------------
+- (src/epevents_mod.f90): avoid any negative recombined PI value in output file
+   [extends SOC-SCR-48 also for events with FLAG=0]
+- (doc/epevents_description.tex): extended section about PATTERN coding
+
+Version 6.30.2  - 2002-03-06 (MJF)
+----------------------------------
+- (src/epevents_mod.f90): use warning "frameCTI" instead of debug statement in
+  case of setting "withframecti=Y" for non-IMAGING modes [SSC-SPR-2800]
+- (doc/epevents_description.tex): added warning "frameCTI"
+
+Version 6.30.1  - 2002-03-06 (MJF)
+----------------------------------
+- (src/epevents_mod.f90): ensured that the XMMEA_16 attribute is written always
+   when the OUT_OF_FOV flag is set [SSC-SPR-2802]
+- (src/epevents_mod.f90): use TIME-derived frame numbers only for IMAGING modes,
+   for TI and BU modes use the ODF supplied numbers to avoid broadening of the
+   low-energy noise peak [SSC-SPR-2800], this behaviour can be reset by the
+   new parameter "withframecti" (default="N", "Y" should only be used for
+   engineering purposes) which is only active for the non-imaging modes (as the
+   problem only occurs there)
+- (doc/epevents_description.tex): as above
+- (test/checkoutput_*.f90): check XMMEA_16 and FRAMECTI keywords
+- (config/epevents.*): new parameter "withframecti" (for non-imaging modes)
+closed SPRs:
+- SSC-SPR-2800: Broadening of noise peak in TIMING mode
+- SSC-SPR-2802: OUT_OF_FOV flag is set but no XMMEA_16 keyword written
+
+Version 6.30  - 2002-01-16 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): made long-term CTI increase correction more flexible
+  by extending interface to `calpnalgo' package routines
+- (test/epevents_test_XX): call with all experimental parameters (also for
+  long-term CTI effects)
+- (DEPEND): needs `calpnalgo-2.30'
+
+Version 6.29  - 2002-01-14 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): new warning `veryManyClasses' with condition as the
+   old error `tooManyClasses' which has now a stricter error condition
+- (doc/epevents_description.tex): as above
+closed SPR:
+- SSC-SPR-2597: error (tooManyClasses) [0320_0085581001_PNS003, CCD9]
+
+Version 6.28  - 2002-01-11 (MJF)
+--------------------------------
+- (doc/epevents_description.tex): renamed reference `eppatplot' to `epatplot'
+- (test/checkoutput_IM.f90): more verbose output for optimizer issues
+
+Version 6.27  - 2001-12-19 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): removed CCD temperature parameter, instead read the
+   value from the events file (written by epframes)
+- (doc/epevents_description.tex): clarify that "coordSysType = CAMCOORD"
+closed SPR:
+- SSC-SPR-2642: documentation
+
+Version 6.26  - 2001-11-16 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): moved calibration routines into a new module
+   "sas_epn_gaincticorrect_mod" that is now part of `calpnalgo'
+- (doc/epevents_description.tex): added patterns for events at CCD window
+- (DEPEND): needs `calpnalgo-2.26'
+
+Version 6.25  - 2001-11-06 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): update TI mode specific gain correction
+- (src/epevents_mod.f90): messages if experimental corrections are enabled
+
+Version 6.24 (2001-10-31) - UL
+-------------------------
+- brought in line with cal-3.121: type of CAMCOORD/TELCOORD coordinates
+  changed from single to double precision
+
+Version 6.23  - 2001-10-11 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): set FOV attribute only for IMAGING modes
+closed SPR:
+- SSC-SPR-2551: Should set OUT_OF_FOV event attribute only for IMAGING modes
+
+Version 6.22  - 2001-09-01 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): several temporary energy correction switches via
+  parameters (gain TI+BU, CCD offsets, long-term CTI increase), experimental,
+  default behaviour completely identical with previous version
+- (par/epevents.*): implemented above changes
+- (src/epevents_mod.f90): issue (new) warning "CCDlowGain" if a CCD has a
+  GAINCAME value of "LOW" instead of "HIGH", energy correction does not apply
+- (doc/epevents_description.tex): implemented above changes
+
+Version 6.21  - 2001-08-08 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): update BU mode specific gain correction
+
+Version 6.20  - 2001-07-17 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): update BU mode specific gain correction
+
+Version 6.19  - 2001-07-16 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): add BU mode specific gain correction
+- (src/epevents_mod.f90): convert warning "badEvent" to verbose message for
+  setting "withoutoftime=Y"
+- (DEPEND): added `calpnalgo-2.18' to prepare for later restructuring
+
+Version 6.18  - 2001-06-16 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): split "withtempcorrection" part into several loops, 
+  access events individually (instead of arrays/pointers) to avoid memory 
+  confusion, take long-term CTE decrease out of "withtempcorrection"
+- (config/epevents.par): default "withtempcorrection=Y" -> "N"
+closed SPR:
+- SSC-SPR-2426: Apparent memory failures
+
+Version 6.17  - 2001-06-06 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): call revised TI mode specific gain correction
+- (config/epevents.par): default "withtempcorrection=N" -> "Y"
+
+Version 6.16.2  - 2001-05-08 (MJF)
+----------------------------------
+- (src/epevents_mod.f90): added consistency check of FRAMELIM column
+- (src/epevents_mod.f90): dropped negative PI value coding of certain FLAGs
+- (src/epevents_mod.f90): added support for mappatterntype=[xyvw]
+- (doc/epevents_description.tex): updated examples and parameter section
+closed SPRs:
+- SSC-SPR-2377: too few pattern types supported for photon maps
+- SSC-SCR-2359: Redundant information in FLAG and PI by epevents [= SOC-SCR-48]
+
+Version 6.16.1  - 2001-05-03 (MJF)
+----------------------------------
+- (src/epevents_mod.f90): switched off FLAG update for "withoutoftime=Y" 
+- (DEPEND): depend on cal-3.111
+closed SPR:
+- SSC-SPR-2367: occasional failure of OoT-events creation by wrong FLAG
+
+Version 6.16  - 2001-04-24 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): corrected type of variables related to SRCPOS
+
+Version 6.15  - 2001-04-23 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): call CAL_setState(auxiliaryParameter=srcpos)
+
+Version 6.14  - 2001-04-10 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): new optional parameters `lothresh', `hithresh', and
+  `mappatterntype' to customize diagnostic output of `withphotonmap'
+- (doc/epevents_description.tex): added examples section
+- (test/*): remove test data files and link tests to package `eptestdata'
+- (DEPEND): depend on `eptestdata-0.2'
+
+Version 6.13  - 2001-04-09 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): initialize array CORRPAR also for empty input files
+- (src/epevents_mod.f90): new optional parameters `photonmapset' and 
+   `withphotonmap' similar to task `epframes' [SSC-SPR-1723]
+- (src/epevents_mod.f90): change IFRAME from Int16 to Int32 to avoid overflow
+  [SOC-SPR-1984]
+- (DEPEND): depend on cal-3.109
+- (test/*): split the test harness for the various instrument modes
+- (test/epevents_test_XX): one run with ``withphotonmap=Y''
+
+Version 6.12.3  - 2001-03-15 (MJF)
+----------------------------------
+- (src/epevents_mod.f90): updated ``tempcorrection'' part, 
+   write used values to EXPOSUnn extension for later reference
+- (src/epevents_mod.f90): check pattern information when `withoutoftime=Y'
+- (test/epevents_test): one run with ``withtempcorrection=Y''
+
+Version 6.12.2  - 2001-03-12 (MJF)
+----------------------------------
+- (src/epevents_mod.f90): new (optional) parameter ``withtempcorrection'' to
+   enable test and verification of additional gain and CTI corrections,
+   considered as ``temporary'' and ``experimental''
+- (config/epevents.*): add new (optional) parameter ``withtempcorrection''
+- (doc/epevents_description.tex): new optional parameter ``withtempcorrection''
+
+Version 6.12.1  - 2001-02-19 (MJF)
+----------------------------------
+- (src/epevents_mod.f90): warning(wrongBadpixel) -> message [SSC-SPR-2238]
+- (src/epevents_mod.f90): minor fixes when `withoutoftime=Y':
+    -- normal pixel size RAWY=200
+    -- correct lower limit of RAWY for LW and SW modes
+- (doc/epevents_description.tex): updated section "Out-of-Time Events"
+- (doc/epevents_description.tex): corrected couple of typos
+- (doc/epevents_description.tex): removed warning(wrongBadpixel) [SSC-SPR-2238]
+closed SPR:
+- SSC-SPR-2238: Warning "wrongBadpixel" should be message
+
+Version 6.12  - 2001-02-02 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): add `call CAL_getFOVmap()', set OUT_OF_FOV
+- (doc/epevents_description.tex): add `EVATT_OUT_OF_FOV' + CAL_getFOVmap
+closed SPR:
+- SSC-SPR-2221: Event attribute OUT_OF_FOV is not set
+
+Version 6.11  - 2001-01-22 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): new (optional) parameter ``withoutoftime'' to enable
+   analysis of out-of-time events, considered as ``experimental'' [SOC-SCR-25]
+- (config/epevents.*): add new (optional) parameter ``withoutoftime''
+- (doc/epevents_description.tex): add subsection about out-of-time events
+- (test/epevents_test): add run with ``withoutoftime=Y''
+
+Version 6.10.2  - 2000-11-17 (MJF)
+----------------------------------
+- (src/epevents_mod.f90): enable correct use of empty frames [SSC-SPR-2000]
+
+Version 6.10.1  - 2000-11-10 (MJF)
+----------------------------------
+- (config/epevents.info): removed `calibration' and `filter' from groups entry 
+
+Version 6.10  - 2000-10-02 (MJF)
+--------------------------------
+- (src/epevents_mod.f90): adapt to new `caloaldefs.f90' [caloalutils-1.34]
+
+Version 6.9  - 2000-08-25 (MJF)
+-------------------------------
+- (src/epevents_mod.f90): new parameters randomizeenergy, randomizeposition
+- (config/epevents.*): same as above
+- (doc/epevents_description.tex): same as above
+
+Version 6.8.3  - 2000-06-26 (MJF)
+---------------------------------
+- (doc/epevents_description.tex): \param{} -> \tt{} for outdated parameters etc.
+
+Version 6.8.2  - 2000-06-16 (MJF)
+---------------------------------
+- (src/epevents_mod.f90): reactivate temporarily disabled CAL-platescale
+
+Version 6.8.1  - 2000-06-08 (MJF)
+---------------------------------
+- correct typos in documentation, clarify parameter `patternanalysis'
+
+closed SPRs:
+- SSC-SPR-1727: parameter patternanalysis not present in .par or .lyt files:
+  clarify in documentation that this is `future development' and not active yet
+- SSC-SPR-1732: use lower case text in \task{} macro:
+  replace in 2 sentences: \task{Epevents} by \task{epevents}
+
+Version 6.8  - 2000-05-26 (MJF)
+-------------------------------
+- new plate scale also written as attributes SCALE_X,SCALE_Y
+- updated doc (section input/output files) and `epevents.info'
+
+Version 6.7  - 2000-05-08 (MJF)
+-------------------------------
+- change DATAMODE to TIMING if BURST mode (required by `evlistcomb')
+- change event attribute `REJECTED_BY_GATTI' to `MIP_ASSOCIATED'
+- warning if old SAS event attributes were causing a failure
+- allow for empty frames
+- updated DEPEND file
+
+Version 6.6  - 2000-04-12 (MJF)
+-------------------------------
+- dropped scale factor for "adu -> electron" conversion
+- delete output file in case of `error'
+- added support for `ONBOARD' mip mode
+- updated documentation on badpix handling
+
+closed SPRs:
+- SSC-SPR-1419: PAT* codes for "next to bad pixel" events
+- SSC-SPR-1420: PATTERN for unresolved events
+- SSC-SPR-1423: events on bad pixels
+- SSC-SPR-1504: Output file created when task ends in error
+
+Version 6.5  - 2000-04-04 (MJF)
+-------------------------------
+- adapted to new CAL interface (CAL_PNGAINCORRECT, CAL_PNCTICORRECT)
+- do not create output column `PHA_GAIN' (data not returned by CAL anymore)
+- adapted test harness
+- changed default of parameter `gainctiaccuracy' from 2 to 1
+- improved setting of pointers in the code
+- added `epevents.info' to `config' directory and Makefile
+
+Version 6.4     (03.03.00) 
+----------------------------
+- added missing `deallocate' for `ieIn' and `eTot'
+
+Version 6.3     (29.02.00) 
+----------------------------
+- check for badpixels outside window, Null value for PAT_SEQ
+
+closed SPR:
+- SSC-SPR-1502: Invalid NULL value on PAT_SEQ
+
+Version 6.2     (21.02.00)
+----------------------------
+- parameter naming, tlmin/max, new calibration, `ind' array deallocation
+
+Version 6.1     (15.02.00)
+----------------------------
+- fixed minor extension inconsistencies
+
+Version 6.0     (11.02.00)
+----------------------------
+- now includes functionality of former task `epreject'
+- program restructured to reduce memory usage and increase speed 
+- Null values, high/low accuracy gain/cti correction, new errors and warnings
+- new task parameter 'temperature' for CTI correction 
+  (introduced to allow running of epevents without HK data)
+- uses new WINDOWX0/Y0/DX/DY attribute definitions (see epframes-7.1)
+- major update of algorithm for improved runtime and correct
+  badpixel handling
+- removed warnings/errors which had been introduced for task development only
+
+closed SPRs:
+- SSC-SPR-1246: Problem on PI column
+- SSC-SPR-1387: unnecessary warning about trailing events
+- SSC-SPR-1418: description of PAT* columns
+- SSC-SPR-1424: srcposition parameter
+- SSC-SPR-1426: recombAmplitudeHigh warning
+- SSC-SPR-1445: PI keywords not written
+
+Version 5.11    (30.11.99)
+----------------------------
+- makes use of new CTI algorithm (calpnalgo >= 2.0) 
+- CAL-setState(temperature = 163.0) as valid for XMM-FM
+- improved test harness script, re-introduced test on PI values
+- doc: new version numbering 
+
+Version 5.10    (26.11.99)
+----------------------------
+- no test on PI values as CTI correction in calpnalgo-2.0 has problems
+- changed SAS_CCFDIR to SAS_CCF='saslocate lib/testccf/ccf.cif in test harness
+- uses CAL_pnGainCorrect (instead of CAL_gainCorrect)
+
+Version 5.9     (29.09.99)
+----------------------------
+closed SPRs:
+- SSC-SPR-1277: noEvents warning should be message
+- SSC-SPR-1271: Use message instead of write(*,*)
+
+Version 5.8     (24.09.99)
+----------------------------
+- fixed test harness exit status
+
+Version 5.7     (18.09.99)
+----------------------------
+- writes DET_SYST attribute (System for camera coordinates)
+- doc updated for new LaTeX macros
+- removed adu to keV conversion after CAL_gainCorrect
+- trailing events now have negative PI values and PAT_TYP=0
+- test harness takes care of Null values in PI
+
+Version 5.6     (02.09.99)
+----------------------------
+- fixed a bug in the quadruple pattern recognition
+
+Version 5.5     (26.08.99)
+----------------------------
+- changed adu to eV conversion factor from 4.3138 to 5.0
+
+closed SPR:
+- SSC-SPR-1197: Subscript out of range in variable I4H
+
+Version 5.4     (18.08.99)
+----------------------------
+- fixed bug: in case of no events the BADPIX extension was not propagated
+
+Version 5.3     (18.08.99)
+----------------------------
+- now creates TCRPX, TCTYP, TCDLT, TLMIN, TLMAX attributes also for event 
+  files with no events
+
+Version 5.2     (11.08.99)
+----------------------------
+- new test harness includes event file with no events
+- event attributes stored as keywords
+
+Version 5.1     (09.08.99)
+----------------------------
+- introduced new optional parameter 'srcposition'
+- created new test-harness including TIMING mode data
+
+Version 5.0     (02.08.99)
+----------------------------
+- another update of the test harness (new pnCTI correction)
+- now excludes trailing events from the pattern analysis
+- introduced new parameter 'randomization_on' to trigger randomization
+  for DETXY calculation
+
+closed SPRs:
+- SSC-SPR-1138: PN images suffer from a moire effect
+
+Version 4.1     (28.06.99)
+----------------------------
+- update of the test harness (to account for cal changes)
+
+Version 4.0     (16.06.99)
+----------------------------
+- brought in line with cal v3
+- makes use of event attributes (GV/XMM/1999-01)
+
+Version 3.2     (01.06.99)
+----------------------------
+- increased the loop variables to Int32
+- create attributes in exposure extension summarizing the pattern analysis
+
+Version 3.1     (25.05.99)
+----------------------------
+- uses CAMCOORD2 as spatial coordinate system
+- handles now input data in TIMING or BURST mode, too
+
+Closed SPRs:
+ - SSC-SPR-0992: ad hoc calibration file
+ - SSC-SPR-0706: The task does not use the CAL
+
+Version 3.0     (21.04.99)
+----------------------------
+- changed parameter names according to GV/XMM/1992-02
+
+Version 2.0     (05.03.99)
+----------------------------
+- new method to store PAT_xxx infos:
+  PAT_SEQ now Int8, PAT_ID (Int16) combines PAT_ORI and PAT_IND,
+  PATTERN now Int8 (MOS codes 0-12 still included)
+  (see propsal shown at last SASWG meeting)
+  These 3 columns should be transfered into the final PPS product
+- use FLAG column (now Int32) for additional event flags
+  (see propsal by J. Ballet, last SASWG meeting)
+- create two additional columns: CTI corrected and gain corrected amplitudes,
+  PHA_CTI and PHA_GAIN, respectively
+- distinguish between events close to bad pixel or edge (KOD) 
+- transfer EXPOSURE extension (created by epframes) from input to output
+- if (SAS_VERBOSITY >= Noisy) then time stamps are created for the different
+  subroutines (temporarily used for code improvements only)
+- GUI layout file config/epevents.lyt created
+ 
+Version 1.14    (07.12.98)
+----------------------------
+- add TCRPX, TCDLT, TLMIN and TLMAX keywords for DETX/Y columns
+
+Version 1.13    (01.12.98)
+----------------------------
+- the test harness does not use any longer evselect, 
+  test/checkoutput has the corresponding functionality and is more 
+  descriptive now
+
+Version 1.11    (28.11.98)
+----------------------------
+- fixed the test harness: use evselect to remove flagged events
+
+Version 1.10    (23.11.98)
+----------------------------
+- proper use of message mechanism
+- updated for renamed BADPIX extension column BADPIXTYPE -> TYPE
+- CAL_getMiscellaneousData used to convert to 0.05" units 
+  (for DETX/Y coordinates)
+
+open SPRs:
+- SSC-SPR-0706: The task does not use the CAL
+
+Version 1.9     (03.11.98)
+----------------------------
+ - valid RAWX, RAWY coordinates now are 1-64 and 1-200, respectively
+ - overall CCD numbering in agreement with CAL/SciSim standard
+ - uses CAL_rawXY2mm for conversion from raw to detector coordinates
+ - test harness takes into account events with FLAG=0 only
+ 
+Closed SPRs:
+
+ - SSC-SPR-0708: Problem with input file with no BADPIX extension 
+ - SSC-SPR-0707: Error on out of range RAWY value
+
+Open SPRs:
+
+ - SSC-SPR-0706: The task does not use the CAL
+
+Version 1.8
+------------------------
+- Code updated to be in agreement with F90 standards
+- copyAttribute replaced by setAttributes
+- in agreement with new error interface v1.9
+  
+Closed SPRs:
+ 
+ - SSC-SPR-0548: prlev parameter replaced by global SASVERBOSITY variable
+
+Version 1.7
+------------------------
+more functionality:
+
+ - creation of an additional column PRE_EVT containing pointers to
+   the previous event in the same column (will be needed by future 
+   cal calls to correct for CTI)
+
+Version 1.6
+------------------------
+more functionality:
+
+ - handling of pattern with bad pixels
+ - handling of pattern at the edges of the readout window
+ - detection and flagging of cosmic ray events (MIPs) 
+ - test updated to check these new functionalities 
+
+Version 1.5
+------------------------
+Closed SPRs:
+
+ - SSC-SPR-0010: PAT_IND and PATTERN wrong for bipixels
+ - SSC-SPR-0125: Test harnesses are base tests
+ - SSC-SPR-0345: Use type f for file parameters
+ - SSC-SPR-0346: Replace the arbitrary default gain file by an empty one
+ - SSC-SPR-0493: Test harness fails after dal upgrade
+	
+Open SPRs:
+ - none
+
+Version 1.4
+------------------------
+- Modified test: delete empty lines before comparing ASCII files
+- Source code fixed for identification of invalid patterns at the
+  edges of the CCD
+
+Version 1.3
+------------------------
+
+ChangeLog added
+DEPEND edited
+
+Closed SPRs:
+ 
+ - SSC-SPR-0123: file permissions fixed
+ - SSC-SPR-0124: config/epevents.msg and reference in config/Makefile removed
+ - SSC-SPR-0126: removed unused gain files
+ - SSC-SPR-0127: hardcoded data is used to describe gaps between adjacent CCDs,
+         conversion from raw- to detector coordinates will be handled
+         by CAL call, if possible
+ - SSC-SPR-0128: history records now done by single call
+ - SSC-SPR-0129: epevents.par file fixed
+ - SSC-SPR-0130: unused library memdal removed in src/Makefile
+ - SSC-SPR-0131: make test passed on SSC system (ermintrude) 
+
+Open SPRs: 
+
+ - SSC-SPR-0010: PAT_IND and PATTERN wrong for bipixels (closed in v1.5)
+ - SSC-SPR-0125: Test harnesses are base tests          (closed in v1.5)
+	
+Version 1.2
+----------------------------
+
+- Version submitted to Saclay for further I&T
+
+Version 1.1
+----------------------------
+
+- Original version submitted to the SOC
+

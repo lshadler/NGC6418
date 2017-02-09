@@ -1,0 +1,314 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="rgsevents">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsevents.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="rgsevents.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsevents (rgsevents-3.12.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="rgsevents.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsevents.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="rgsevents:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+<A NAME="493"></A><A NAME="tex2html2"
+  HREF="../rgsevents/index.html"><SPAN  CLASS="textbf">rgsevents</SPAN></A>
+adds the <A NAME="497"></A><TT>EVENTS</TT> and <A NAME="499"></A><TT>REJPIXn</TT> tables
+ to the intermediate event list for a single RGS CCD exposure, which
+ has been processed by <A NAME="501"></A><A NAME="tex2html3"
+  HREF="../rgsbadpix/index.html"><SPAN  CLASS="textbf">rgsbadpix</SPAN></A>.  These tables are sorted in
+
+increasing order of frame number.  The <A NAME="505"></A><TT>EVENTS</TT> table is also
+ cross-referenced with the existing <A NAME="507"></A><TT>PIXELS</TT> table so that the
+ correspondence between the reconstructed events and the raw
+ telemetered pixels is not lost.  Throughout this document a <IMG
+ WIDTH="8" HEIGHT="27" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="\dag">  marks items that do not apply to High Time Resolution (HTR) mode data
+ and a <IMG
+ WIDTH="8" HEIGHT="27" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="\ddag"> marks items that apply only to HTR mode data.
+
+<P>
+The event reconstruction algorithm defines an event as a maximal set
+ of adjacent pixels.  That is, any two pixels which share an edge are
+ contained within the same event.  The user has the option to disable
+ event reconstruction, which only means that each qualifying
+ telemetered pixel is treated as a separate event regardless of its
+ proximity to other pixels.  To cross-reference the reconstructed
+ events with their comprising telemetered pixels a column named
+ <A NAME="509"></A><TT>EVENT</TT> is added to the <A NAME="511"></A><TT>PIXELS</TT> table, in which is
+ recorded for each pixel the <A NAME="513"></A><TT>EVENTS</TT> table row number of the
+ event in which it is included, or null if it is not associated with
+ an event.  From the raw pixel data the following properties are
+ computed for each event and stored in the <A NAME="515"></A><TT>EVENTS</TT> table.  Also
+ stored for each event are three properties copied from the
+ <A NAME="517"></A><TT>EXPOSURE</TT> table: frame number, flags and timestamp.
+
+<P>
+
+<UL>
+<LI>energy
+
+<P>
+Total energy, both calibrated and raw.
+
+<P>
+</LI>
+<LI>grade
+
+<P>
+Total number of pixels, or area of the event.
+
+<P>
+</LI>
+<LI>shape
+
+<P>
+Chip-oriented DPP shape code for any event confined within a
+ two-by-two pixel region; otherwise null.  The shapes are shown below,
+ with the numeral indicating both the code number for each pattern and
+ the relative position of the reference pixel.  Note that in the
+ <A NAME="519"></A><TT>PIXELS</TT> table the telemetered coordinates mark the location of
+ the reference pixel, but in the <A NAME="521"></A><TT>EVENTS</TT> table the centroid
+ coordinates may lie anywhere within the bounding rectangle of the
+ event.
+
+<P>
+<PRE>
+              **     *            *       *     **     **
+        0     1*     2     3*     4*     5*     6       7
+</PRE>
+
+<P>
+</LI>
+<LI>coordinates
+
+<P>
+Coordinates of the event centroid in various units:
+
+<P>
+
+<UL>
+<LI>Chip-oriented pixel coordinates, in integer format.
+</LI>
+<LI>RGS angular coordinates, without aspect correction.
+</LI>
+<LI>RGS detector coordinates in a system chosen by the user.  Optional.
+ 
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI>flags
+
+<P>
+These flags indicate conditions which cast serious doubt upon the
+ quality of the event as an x-ray detection:
+
+<P>
+
+<UL>
+<LI><A NAME="523"></A><TT>ON_BADPIX</TT>
+
+<P>
+At least one pixel included in the event is found in the bad pixel
+  tables.
+
+<P>
+</LI>
+<LI><A NAME="525"></A><TT>NEXT_TO_BADPIX</TT>
+
+<P>
+The pixel under the event centroid shares an edge with a pixel from
+  the bad pixel tables.
+
+<P>
+</LI>
+<LI><A NAME="527"></A><TT>ON_WINDOW_BORDER</TT>
+
+<P>
+The pixel under the event centroid lies in the first or last row or
+  column of the telemetered window.
+
+<P>
+</LI>
+<LI><A NAME="529"></A><TT>ON_NODE_INTERFACE</TT>
+
+<P>
+The pixel under the event centroid shares an edge with the opposing
+  node.
+
+<P>
+</LI>
+<LI><A NAME="531"></A><TT>BELOW_ACCEPTANCE</TT>
+
+<P>
+The calibrated energy of every pixel included in the event lies
+  below the acceptance threshold.
+
+<P>
+</LI>
+<LI><A NAME="533"></A><TT>BAD_SHAPE</TT>
+
+<P>
+The event does not lie entirely within a two-by-two pixel region.
+ 
+</LI>
+</UL>
+
+<P>
+These flags provide information about the composition of the event:
+
+<P>
+
+<UL>
+<LI><A NAME="535"></A><TT>ON_NODE0</TT>
+
+<P>
+At least one pixel included in the event lies in node zero.
+
+<P>
+</LI>
+<LI><A NAME="537"></A><TT>ON_NODE1</TT>
+
+<P>
+At least one pixel included in the event lies in node one.
+
+<P>
+</LI>
+<LI><A NAME="539"></A><TT>ONBOARD_SER</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^{\dag }$"></SPAN>
+
+<P>
+At least one pixel included in the event represents an on-board
+  reconstruction.
+ 
+</LI>
+</UL>
+
+<P>
+Included also are any flags set by <A NAME="542"></A><A NAME="tex2html4"
+  HREF="../rgsframes/index.html"><SPAN  CLASS="textbf">rgsframes</SPAN></A>
+in the
+ <A NAME="546"></A><TT>EXPOSURE</TT> table.  For each flag present in the output table a
+ Sparse message declares the total number of events so flagged.
+</LI>
+</UL>
+
+<P>
+For each node the CCF provides PI thresholds for acceptance and
+ rejection--not to be confused with similarly named thresholds used
+ on-board by the Data Preprocessor (DPP).  Since these thresholds are
+ directly applicable only to single-pixel energies, the average
+ highest single-pixel energy is computed for pixels with on-board
+ split-event reconstruction (SER) using an empirical charge-splitting
+ ratio provided for each grade (no SER correction is applied in HTR
+ mode).  Any pixel with PI less than the rejection threshold is
+ ignored, just as if it had not been telemetered.  Further, any event
+ that does not include at least one pixel with PI at or above the
+ acceptance threshold is flagged with <A NAME="548"></A><TT>BELOW_ACCEPTANCE</TT>.  The
+ floating-point pixel PI values are summed over the pixels comprising
+ each event and ``pixelized'' by rounding to the nearest integer.  The
+ pixelization of the event PI values, as well as the minimum and
+ maximum (pixelized) values present in the data, are described by
+ standard FITS attributes on the <A NAME="550"></A><TT>PI</TT> column of the
+ <A NAME="552"></A><TT>EVENTS</TT> table.  It may be unwise to assume that the minimum
+ value is nonnegative.
+
+<P>
+A null shape code implies nothing about the shape of the event.  In
+ particular, it does not imply that the event is not confined within a
+ two-by-two pixel region.  A previous version of the DPP does not
+ provide enough information about pixels of grade two and three for
+ the ground software to determine the shape.  Use the
+ <A NAME="554"></A><TT>BAD_SHAPE</TT> event flag to test whether an event is two-by-two
+ confined.  The event centroid is computed as a PI weighted sum over
+ randomized sub-pixel coordinates (to avoid aliasing effects).  For
+ pixels with on-board SER the combined energy is treated as if spread
+ uniformly over the telemetered shape.  If the shape is not available
+ for a pixel, its energy is placed at a random offset from its upper
+ right corner.  HTR mode y-coordinates are randomly distributed over
+ the full 384 row height of the chip (disabling randomization produces
+ the nominal readout row used in the energy corrections).
+ Randomization may be disabled via the CAL state.  This program does
+ not attempt to identify cosmic-rays by pulse-height analysis.  If an
+ event falls within a two-by-two pixel region it is considered to be
+ an x-ray; otherwise it is something with a bad shape--possibly a
+ cosmic-ray.  Note that if any of the pixels in a two-by-two region
+ have no shape information, <A NAME="556"></A><TT>BAD_SHAPE</TT> is not set as long as
+ all pixels are under grade three.  This should not be an issue with
+ the current DPP, and in any case should pertain only to events
+ straddling the node boundary.
+
+<P>
+While determining the flags for each event, special note is taken of
+ pixels with certain flags, when these flags have not been set
+ identically in the bad pixel map.  These are additional rejectable
+ pixels and may be needed when constructing the exposure map.  The
+ flags in question are: <A NAME="558"></A><TT>BAD_SHAPE</TT>, <A NAME="560"></A><TT>ON_BADPIX</TT>,
+ <A NAME="562"></A><TT>NEXT_TO_BADPIX</TT>, <A NAME="564"></A><TT>ON_WINDOW_BORDER</TT> and
+ <A NAME="566"></A><TT>ON_NODE_INTERFACE</TT>.  The chip coordinates of each such pixel
+ are added to the <A NAME="568"></A><TT>REJPIXn</TT> table for its node, along with its
+ frame number and any of these flags that were set on its associated
+ event.  The <A NAME="570"></A><TT>REJPIXn</TT> tables augment the <A NAME="572"></A><TT>BADPIXn</TT> tables
+ for the purpose of mapping exposure.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="rgsevents.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

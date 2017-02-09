@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Testing</TITLE>
+<META NAME="description" CONTENT="Testing">
+<META NAME="keywords" CONTENT="omqualitymap">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omqualitymap.css">
+
+<LINK REL="next" HREF="node25.html">
+<LINK REL="previous" HREF="node23.html">
+<LINK REL="up" HREF="omqualitymap.html">
+<LINK REL="next" HREF="node25.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omqualitymap (omqualitymap-1.4) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node23.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Example QUALITY map produced"></A>
+<A HREF="omqualitymap.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node25.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Future developments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node27.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omqualitymap.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000110000000000000000">
+Testing</A>
+</H1>
+
+<P>
+The actual testing is controlled by a shell program in the <SPAN  CLASS="textbf">ommergelists</SPAN> test directory and 
+is initiated by typing the command <SPAN  CLASS="textbf">make test</SPAN>. To do the testing in <SPAN  CLASS="textbf">low memory</SPAN> mode,
+you should set the environment variable <SPAN  CLASS="textbf">SAS_MEMORY_MODEL</SPAN> equal to <SPAN  CLASS="textbf">low</SPAN>. <SPAN  CLASS="textbf">Note</SPAN> that
+at the daily builds at Vilspa the testing of all SAS software packages is done in both <SPAN  CLASS="textbf">high</SPAN> and <SPAN  CLASS="textbf">low</SPAN>
+memory modes (referring to the memory model used by the <SPAN  CLASS="textbf">SAS Data Access Layer</SPAN>).
+
+<P>
+The tests work as follows:
+
+<P>
+
+<OL>
+<LI>A program <SPAN  CLASS="textbf">createtest</SPAN> will execute and-
+
+<UL>
+<LI>Produce a 2-d image with random sizes in the x and y directions.
+</LI>
+<LI>Produce a 2-d quality-map image with the same dimensions as the image.
+</LI>
+<LI>Produce a source-list containing a random number of sources. For each source-
+
+<UL>
+<LI>Compute a random x and y image coordinate, within the image boundaries, and a random raw count-rate
+between 1 and 100 counts/second. 
+</LI>
+<LI>If the count-rate is at least 60 counts/sec-
+
+<UL>
+<LI>Set bit number 1 of all the pixels in the quality map within a column of width 24 unbinned pixels centred on the source.
+</LI>
+<LI>Set bit number 2 of all the pixels in the quality map that lie within a circle of radius 36 unbinned pixels centred on
+the computed position of a smoke ring produced by the source.
+</LI>
+<LI>Set bit number 6 of all the pixels that lie within a radius of 36 unbinned pixels from the centre of the source.
+</LI>
+<LI>Set quality flags bits 1, 2 and 6 of the source. 
+</LI>
+</UL>
+</LI>
+</UL>
+</LI>
+<LI>Produce a source-list file (<SPAN  CLASS="textbf">test.fits</SPAN> with the same structure as an <SPAN  CLASS="textbf">OM</SPAN> source-list file.
+</LI>
+<LI>Produce an image file (<SPAN  CLASS="textbf">testimage.fits</SPAN> containing the 2 images. with the same structure as an <SPAN  CLASS="textbf">OM</SPAN> sky-image.
+</LI>
+</UL>
+</LI>
+<LI>Execute <SPAN  CLASS="textbf">omqualitymap</SPAN> with the parameter <SPAN  CLASS="textbf">updateimage</SPAN> set to <SPAN  CLASS="textbf">true</SPAN>, <SPAN  CLASS="textbf">set</SPAN> set to <SPAN  CLASS="textbf">testimage.fits</SPAN>,
+ <SPAN  CLASS="textbf">srclistset</SPAN> set to <SPAN  CLASS="textbf">test.fits</SPAN> and <SPAN  CLASS="textbf">outset</SPAN> set to test1.fits.
+
+<P>
+</LI>
+<LI>A program <SPAN  CLASS="textbf">checkoutput</SPAN> will execute and will-
+</LI>
+<LI>Read in the data for each source from <SPAN  CLASS="textbf">test,fits</SPAN>
+</LI>
+<LI>Load the <SPAN  CLASS="textbf">QUALITY</SPAN> image from <SPAN  CLASS="textbf">testimage.fits</SPAN>
+</LI>
+<LI>Check that the <SPAN  CLASS="textbf">edge quality flags</SPAN> have been set properly.
+</LI>
+<LI>Loop through all the sources and for any with a raw count-rate of at least 60 counts/sec
+
+<UL>
+<LI>Check that the pixels along a read-out streak centred on the source have bit 1 set.
+</LI>
+<LI>Check that the pixels with a circle of radius 36 pixels centred at the predicted position of the smoke-ring have bit 2 set.
+</LI>
+<LI>Check that the pixels around the source within a radius of 20 pixels have bit 6 set.
+</LI>
+</UL>
+</LI>
+<LI>If any check has failed record a test failure and give some information where it failed. 
+
+<P>
+</LI>
+<LI>SECOND PART OF TEST (MODE 2)
+</LI>
+<LI>Execute <SPAN  CLASS="textbf">omqualitymap</SPAN> with the parameter <SPAN  CLASS="textbf">mode</SPAN> set to <SPAN  CLASS="textbf">true</SPAN>, <SPAN  CLASS="textbf">set</SPAN> set to <SPAN  CLASS="textbf">testimage.fits</SPAN>,
+ <SPAN  CLASS="textbf">srclistset</SPAN> set to <SPAN  CLASS="textbf">test.fits</SPAN> and <SPAN  CLASS="textbf">outset</SPAN> set to test1.fits.
+
+<P>
+</LI>
+<LI>A program <SPAN  CLASS="textbf">checkoutput1</SPAN> will execute and will-
+</LI>
+<LI>Read in the data for each test source from <SPAN  CLASS="textbf">test.fits</SPAN>
+</LI>
+<LI>Read in the data for each source from <SPAN  CLASS="textbf">test1.fits</SPAN>
+
+<P>
+</LI>
+<LI>Load the <SPAN  CLASS="textbf">QUALITY</SPAN> image from <SPAN  CLASS="textbf">testimage.fits</SPAN>
+</LI>
+<LI>Check that the <SPAN  CLASS="textbf">edge quality flags</SPAN> have been set properly.
+</LI>
+<LI>Loop through all the sources from test.fits and for any with a raw count-rate of at least 60 counts/sec
+
+<UL>
+<LI>Check to see that bits 2 and 6 of the quality-flag have been set in the sources of test1.fits
+</LI>
+</UL>
+</LI>
+<LI>If any check has failed record a test failure and give some information where it failed. 
+
+<P>
+</LI>
+</OL>
+
+<P>
+<SPAN  CLASS="textbf">omqualitymap</SPAN>
+correctly adds quality flags to an <SPAN  CLASS="textbf">OM</SPAN> image, and also that
+it correctly transfers <SPAN  CLASS="textbf">quality-flag information</SPAN> from a
+<SPAN  CLASS="textbf">quality</SPAN> image to an <SPAN  CLASS="textbf">OM</SPAN> source-list.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node23.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Example QUALITY map produced"></A>
+<A HREF="omqualitymap.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node25.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Future developments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node27.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

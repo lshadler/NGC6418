@@ -1,0 +1,317 @@
+<!-- converted from XPI formatted "evlistcomb.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="eventsets" type="dataset" list="yes" mandatory="yes" default="">
+   <DESCRIPTION>
+    List of input events files
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="imagingset" type="dataset" default="merged.img">
+   <DESCRIPTION>
+    Output IMAGING event file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="timingset" type="dataset" default="merged.tim">
+   <DESCRIPTION>
+    Output TIMING event file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="maintable" type="string" list="yes" default="EVENTS">
+   <DESCRIPTION>
+    Name of extensions to merge
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="othertables" type="string" list="yes" default="EXPOSURE BADPIX STDGTI">
+   <DESCRIPTION>
+    Name of extensions to be propagated
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="primarychecks" type="string" list="yes" default="TELESCOP INSTRUME OBS_ID EXP_ID">
+   <DESCRIPTION>
+    Primary keywords to check for compatibility
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="primaryonly" type="string" list="yes" default="ORIGIN">
+   <DESCRIPTION>
+    Primary keywords not propagated to extensions
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="extensionchecks" type="string" list="yes" default="DET_SYST TIMEUNIT TIMESYS MJDREF TIMEREF TASSIGN TIMEZERO CLOCKAPP TCRPX TCTYP TCRVL TCDLT TCROT TCUNI">
+   <DESCRIPTION>
+    Extension keywords to check for compatibility
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="maxattributes" type="string" list="yes" default="TSTOP TLMAX TDMAX">
+   <DESCRIPTION>
+    Keywords to maximise in main extension
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="minattributes" type="string" list="yes" default="TSTART TLMIN TDMIN">
+   <DESCRIPTION>
+    Keywords to minimise in main extension
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="mainattributes" type="string" list="yes" default="">
+   <DESCRIPTION>
+    Additional keywords to propagate to main extension
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="instrument" type="string" mandatory="yes" default="emos">
+   <DESCRIPTION>
+    Instrument name
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="emos">
+     <PARAM id="emosdatamodes" type="string" list="yes" default="IMAGING TIMING">
+      <DESCRIPTION>
+       Name (DATAMODE keyword) of the two modes to distinguish
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="emosimgcolnames" type="string" list="yes" default="TIME RAWX RAWY DETX DETY X Y PHA PI FLAG PATTERN OFFSETX OFFSETY">
+      <DESCRIPTION>
+       EMOS imaging mode column list
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="emosimgcoltypes" type="string" list="yes" default="double int16 int16 int16 int16 int32 int32 int16 int16 int32 int8 int16 int16">
+      <DESCRIPTION>
+       EMOS imaging mode output column type
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="boolean">
+       </ITEM>
+       <ITEM value="double">
+       </ITEM>
+       <ITEM value="int16">
+       </ITEM>
+       <ITEM value="int32">
+       </ITEM>
+       <ITEM value="int8">
+       </ITEM>
+       <ITEM value="single">
+       </ITEM>
+       <ITEM value="string">
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="emostimcolnames" type="string" list="yes" default="TIME RAWX PHA PI FLAG PATTERN OFFSETX">
+      <DESCRIPTION>
+       EMOS timing mode column list
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="emostimcoltypes" type="string" list="yes" default="double int16 int16 int16 int32 int8 int16">
+      <DESCRIPTION>
+       EMOS timing mode output column type
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="boolean">
+       </ITEM>
+       <ITEM value="double">
+       </ITEM>
+       <ITEM value="int16">
+       </ITEM>
+       <ITEM value="int32">
+       </ITEM>
+       <ITEM value="int8">
+       </ITEM>
+       <ITEM value="single">
+       </ITEM>
+       <ITEM value="string">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+    <ITEM value="epn">
+     <PARAM id="epndatamodes" type="string" list="yes" default="IMAGING TIMING">
+      <DESCRIPTION>
+       Name (DATAMODE keyword) of the two modes to distinguish
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="epnimgcolnames" type="string" list="yes" default="TIME RAWX RAWY DETX DETY X Y PHA PI FLAG PATTERN PAT_ID PAT_SEQ OFFSETX">
+      <DESCRIPTION>
+       EPN imaging mode column list
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="epnimgcoltypes" type="string" list="yes" default="double int16 int16 int16 int16 int32 int32 int16 int16 int32 int8 int16 int8 int16">
+      <DESCRIPTION>
+       EPN imaging mode output column type
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="boolean">
+       </ITEM>
+       <ITEM value="double">
+       </ITEM>
+       <ITEM value="int16">
+       </ITEM>
+       <ITEM value="int32">
+       </ITEM>
+       <ITEM value="int8">
+       </ITEM>
+       <ITEM value="single">
+       </ITEM>
+       <ITEM value="string">
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="epntimcolnames" type="string" list="yes" default="TIME RAWX PHA PI FLAG PATTERN">
+      <DESCRIPTION>
+       EPN timing mode column list
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="epntimcoltypes" type="string" list="yes" default="double int16 int16 int16 int32 int8">
+      <DESCRIPTION>
+       EPN timing mode output column type
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="boolean">
+       </ITEM>
+       <ITEM value="double">
+       </ITEM>
+       <ITEM value="int16">
+       </ITEM>
+       <ITEM value="int32">
+       </ITEM>
+       <ITEM value="int8">
+       </ITEM>
+       <ITEM value="single">
+       </ITEM>
+       <ITEM value="string">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+    <ITEM value="rgs">
+     <PARAM id="rgsdatamodes" type="string" list="yes" default="SPECTROSCOPY HIGHTIMERESOLUTION">
+      <DESCRIPTION>
+       Name (DATAMODE keyword) of the two modes to distinguish
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="rgsimgcolnames" type="string" list="yes" default="BETA_CORR XDSP_CORR TIME FLAG BETA XDSP CHIPX CHIPY PHA SHAPE GRADE BETA_CHANNEL XDSP_CHANNEL PI">
+      <DESCRIPTION>
+       RGS imaging mode column list
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="rgsimgcoltypes" type="string" list="yes" default="single single double int32 single single int16 int16 int16 int8 int8 int16 int16 int16">
+      <DESCRIPTION>
+       RGS imaging mode output column type
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="boolean">
+       </ITEM>
+       <ITEM value="double">
+       </ITEM>
+       <ITEM value="int16">
+       </ITEM>
+       <ITEM value="int32">
+       </ITEM>
+       <ITEM value="int8">
+       </ITEM>
+       <ITEM value="single">
+       </ITEM>
+       <ITEM value="string">
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="rgstimcolnames" type="string" list="yes" default="BETA_CORR TIME FLAG BETA CHIPX PHA BETA_CHANNEL PI">
+      <DESCRIPTION>
+       RGS timing mode column list
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="rgstimcoltypes" type="string" list="yes" default="single double int32 single int16 int16 int16 int16">
+      <DESCRIPTION>
+       RGS timing mode output column type
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="boolean">
+       </ITEM>
+       <ITEM value="double">
+       </ITEM>
+       <ITEM value="int16">
+       </ITEM>
+       <ITEM value="int32">
+       </ITEM>
+       <ITEM value="int8">
+       </ITEM>
+       <ITEM value="single">
+       </ITEM>
+       <ITEM value="string">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

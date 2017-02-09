@@ -1,0 +1,224 @@
+ChangeLog for epiclccorr
+===============================
+
+Open SPRs:
+
+Version 1.21.1 - 2016-10-27 (AI)
+------------
+	+ (src/FrameList.cc) set random number generator between -1 and 1.
+	
+Version 1.21 - 2016-10-06 (AI)
+------------
+	+ (src/FrameList.cc) New method getRandomTime() added. This method
+	returns a timestamp with a particular frame (used in evqpb task).
+	Related to SCR-7361.
+	
+Version 1.20 - 2015-12-09 (AI)
+------------
+	+ Parameter "extendedsource" set you "yes" in the arfgen background 
+	call. 
+	
+Version 1.19 - 2014-12-12 (AI)
+------------
+	+ Seg fault when the first frame falls in two bins fixed. 
+	
+Version 1.18.3 - 2014-09-29 (AI)
+------------
+	+ extra parameters added to arfgen call. Related to SOC-SPR-7119
+	
+Version 1.18.2 - 2014-09-24 (AI)
+------------
+	+ One more check added to prevent errors when arfgen returns 
+	negative areas. SOC-SPR-7230 closed
+	
+Version 1.18.1 - 2014-09-10 (AI)
+------------	
+	+ The error that occurs when arfgen returns empty area has been 
+	changed to a warning. There is a new error message that is thrown only 
+	when all the areas for all of the CCDs are empty. SOC-SPR-7119 closed
+	+ New error thrown in case binze is smaller than frametime. 
+	SOC-SPR-7167 closed
+	+ doc updated.
+	
+Version 1.18 - 2014-07-02 (AI)
+------------	
+	+ Bug in error calculation when source extraction region 
+	falls in more than one CCD fixed.
+	
+Version 1.17 - 2014-07-01 (AI)
+------------	
+	+ Bug in error calculation when negative counts fixed.
+	
+Version 1.16 - 2014-06-02 (AI)
+------------
+	+ Added some keywords to the output file.
+	
+Version 1.15 - 2014-05-05 (AI)
+------------
+	+ (src/LightCurve.cc) Seg fault fixed when processing all CCDs 
+	without background. 
+	
+Version 1.14 - 2014-04-30 (AI)
+------------
+	+ src/LightCurve.cc: Replaced createGti(this,"SRC_GTI",out) and 
+	  createGti(bkgLC,"BKG_GTI",out) by createGti(this,"SRC_GTIS",out)
+	  and createGti(bkgLC,"BKG_GTIS",out), respectively.
+
+Version 1.13 - 2014-04-29 (AI)
+-----------	
+	+ (src/LightCurve.cc) Bug applying the backscale ratio fixed.
+
+Version 1.12 - 2014-04-24 (AI)
+-----------	
+	+ Changes to align epiclccorr output with lccorr_pcms output
+	+ GTI extension removed from output file
+	+ New keyword: CHANMIN,CHANMAX,CHANTYPE and EXPOSURE
+	+ New extensions: SRC_GTI and BKG_GTI that exclude null values in the src and bkg rate columns.
+	+ Check if the GTI extension is empty. SOC-SPR-7117 closed
+	+ doc updated. SOC-SPR-7087 closed
+	
+Version 1.11 - 2014-04-21 (AI)
+-----------	
+	+ gcc4.8.2 portability change
+	
+Version 1.10 - 2013-07-23 (AI)
+-----------	
+	+ HDUCLAS2 and LIGHTCURVE keywords properly written. SOC-SPR-6963 fixed.
+	
+Version 1.9 - 2012-10-19 (AI)
+-----------	
+	+ New parameter "allcamera" to handle all camera relative corrections. In principle, 
+	needed only for background flaring.
+	
+Version 1.8 - 2012-09-13 (AI)
+-----------
+	+ Bug fixed when the input time serie does not contain any selection expression. 
+	In this case, all the weighted area calculation per CCD are skipped.
+	
+Version 1.7.2 - 2011-02-17 (AI)
+-----------
+	+ Background ARF tmp file removed.
+	
+Version 1.7.1 - 2011-02-15 (AI)
+-----------
+	+ Background corrected rates and errors added to the output file. SOC-SCR-305 fixed)
+	+ BACKRATIO keyword added.
+	+ Bug subtracting background TS when source regions fall in more than one CCD fixed.
+	+ doc updated
+	
+Version 1.7 - 2010-10-26 (AI)
+-----------
+	+ Bug fix when bkg region contains more than one CCD.
+	+ RATE and RATEERR set to NULL if FRACEXP equals to 0.
+	+ arfgen call (for background) updated enabling the badpixlocation parameter. 
+	+ doc updated
+	
+Version 1.6 - 2010-09-15 (AI)
+-----------
+	+ Code refractoring (new classes DeadTime and Exposure)
+	+ New algorithm to deal with extraction region over more than one CCD.
+	+ documentation updated.
+	
+Version 1.5 - 2010-06-11 (AI)
+-----------
+	+ (src/FrameList.cc) events randomization removed.
+	+ (src/FrameList.cc) Exposure correction. Checks for first bin changed
+	+ doc updated.
+	
+Version 1.4.6 - 2010-05-05 (AI)
+-----------
+	+ Class Spec renamed to Spect because of name space problems using gcc-4.3.X
+
+	
+Version 1.4.5 - 2010-03-26 (AI)
+-----------
+	+ Temporary file name error fixed. SOC-SPR-6562
+	+ SOC-SPR-6568 fixed.
+	
+Version 1.4.4 - 2009-09-03 (AI)
+-----------
+	+Fixes to make epiclccorr gcc-4.3 compliant
+
+Version 1.4.3 - 2009-07-16 (AI)
+-----------
+	+ Memory management optimized.
+	+ (src/FrameList.cc) _effBinTime vector size limits checked.
+	
+Version 1.4.2 - 2009-05-20 (AI)
+-----------
+	+ (LightCurve.cc) New GTI CCDID searching algortihm. 
+	+ doc updated.
+	
+Version 1.4.1 - 2008-10-24 (AI)
+-----------
+	+ Copy of 1.4 and 1.0.8 	
+	
+Version 1.0.8 - 2008-10-20 (AI)
+-----------
+	+ New Version number for the SAS 8.0 patch 
+	
+Version 1.4 - 2008-10-14 (AI)
+-----------
+	+ (src/LightCurve.cc, src/Spec.cc) Missing header file added. SOC-SPR-6508 fixed
+	
+Version 1.3 - 2008-10-09 (AI)
+-----------
+	+ (src/LightCurve.cc) GTI extension filtering fixed.
+	+ (src/FrameList.cc) fixed a bug  calculating the contribution of
+	the first and last frame in a bin.
+	+ SOC-SPR-6498 and SOC-SPR-6503 fixed.
+
+
+Version 1.2 - 2008-09-02 (AI)
+-----------
+	+ (src/LightCurve.cc) Accidental error introduce while fixing SOC-SPR-6493 fixed.
+	+ Debug line removed.
+
+Version 1.1 - 2008-08-26 (AI)
+-----------
+	+(src/FrameTable.cc) TIMEDEL keyword taken into account in PN exposure correction.
+	SOC-SPR-6492 fixed.
+	+(src/LightCurve.cc) Bug processing time series that overlaps several chips fixed.
+	SOC-SPR-6493 fixed.
+	
+Version 1.0.7 - 2008-07-01 (AI)
+-----------
+	+(src/FrameList.cc) Check that for PN in Timing mode we cannot randomize the events.
+	SOC-SPR-6489 fixed.
+	+ Documentation updated.
+
+Version 1.0.6 - 2008-06-25 (AI)
+-----------
+	+ (src/LightCurve.cc) Fixed problem related to the STDGTI and GTI extensions.
+	SOC-SPR-6487 fixed
+
+Version 1.0.5 - 2008-06-23 (AI)
+-----------
+	+ (src/LightCurve.cc) Fixed a problem retrieving the GTI blocks in the event
+	list. SOC-SPR-6486 fixed. 
+	
+Version 1.0.4 - 2008-06-20 (AI)
+-----------
+	+ (src/LightCurve.cc) Info about DSS added to the output file. SOC-SPR-6477 fixed
+	+ (src/FrameList.cc) Check for PN rand events implemented. SOC-SPR-6481 fixed
+	+ Parameter "detxbins" and "detybins" added.
+	+ Documentation updated.
+	
+Version 1.0.3 - 2008-06-06 (AI)
+-----------
+	+ (src/FrameList.cc) Bug fixed. index out of bounds.
+	
+Version 1.0.2 - 2008-04-11 (AI)
+-----------
+	+ src/Makefile: extra "," removed from INTERFACE keyword
+	
+Version 1.0.1 - 2008-04-10 (AI)
+-----------
+	+ src/Makefile: INTERFACE keyword updated.
+	
+Version 1.0 - 2008-04-02 (AI)
+-----------
+	+ First version of epiclccorr.
+	+ Relative corrections and Absolute corrections applied.
+
+

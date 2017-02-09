@@ -1,0 +1,73 @@
+ChangeLog for omgrismplot
+===============================
+Version 1.5.3 - 2011-02-21 (VNY) +(src/omgrismplot_mod.f90) 
+	Reshaped to reduce the number of subroutine calls
+	(as the previos fix of SSC-SPR-6649 did not work).
+Version 1.5.2 - 2011-02-16 (VNY) +(src/omgrismplot_mod.f90) 
+	String manipulation is modified in the subroutine 
+	create_labels to avoid a crash in the 64-bit mode
+	(SSC-SPR-6649)
+Version 1.5.1 - 2009-11-25 (VNY) +(src/omgrismplot_mod.f90) A bug 
+	related to the memory deallocation problem is fixed (SSC-SPR-6579)
+Version 1.5 - 2009-04-06 (VNY) +(DEPEND) the previouse change was
+	unmade and the dependency on ssclib-4.6 is included as
+	the task uses one of the routines from this library.
+Version 1.4 - 2009-04-05 (VNY) +(DEPEND) the dependency from ssclib
+	is removed to avoid build failure.
+Version 1.3 - 2008-05-01 (VNY) 	+(src/omgrismplot_mod.f90) introducing
+	the capability to generate a postscript file showing
+	the spectra extraction regions on the grism rotated image
+Version 1.2.1 - 2005-11-15, 2005-05-23 (VNY) 
+	+(src/omgrismplot_mod.f90) The X- and Y- 
+	coordinates are introduced into the plot header; strange symbols
+	at the top of the plot are eliminated (this version is
+	not uploaded yet - VNY 15.11.2005)
+Version 1.2 - 2005-10-18 (VNY) +(src/omgrismplot_mod.f90) A small bug
+	introduced during the previous upload is fixed
+Version 1.1 - 2005-10-18 (VNY) +(src/omgrismplot_mod.f90) A warning
+	message is included in the case of no spectral data in the
+	input file (fixed SSC-SPR-3526)
+Version 1.0.6 - 2005-06-03 (VNY) +(src/omgrismplot_mod.f90)
+	A bug is fixed (SSC-SPR-3436) which was leading to the 
+	task failure in the Full-Frame Low-Resolution mode when
+	extracting field spectra. The failure was cause by some
+	unexplicable manipulation of memory by the Fortran compiler:
+	coding the same thing in slightly different way has fixed
+	the problem.
+Version 1.0.5 - 2004-10-02 (VNY) +(src/omgrismplot_mod.f90)
+	The contaminating sources are masked to avoid the 
+	excessive scale of the plot in the vertical axis
+	when some zero-order images overlap the 
+	target spectrum (SPR-3396)
+Version 1.0.4 - 2004-07-15 (VNY) +(src/omgrismplot_mod.f90) 
+	The target plot is labelled with ``Object: target'' to 
+	distinguish it from the other sources (SSC-SPR-3356)
+Version 1.0.3 - 2004-05-13 (VNY) +(src/omgrismplot_mod.f90) Information
+	bout the used spectrum extraction mode is inserted into
+	the title of the output plot (SSC-SPR-3321)
+Version 1.0.2 - 2004-03-04 (VNY) +(src/omgrismplot_mod.f90)
+	the bug causing crushing of the task on some data set
+	is fixed (SSC-SPR-3267)
+Version 1.0.1 - 2004-02-03 (VNY) +(src/omgrismplot_mod.f90), 
+	+(config/omgrismplot.par) The parameters plotflux and
+	scalebkgplot are activeted. The spectra ID's are inserted
+	into the plots (SSC-SPR-3242)
+Version 1.0 - 2003-12-04 (VNY) +(src/omgrismplot_mod.f90) plotting
+	of undetected spectra in included
+Version 0.5 - 2003-11-21 (VNY) +(src/omgrismplot_mod.f90) wrong warning
+	messages are corrected
+Version 0.4 - 2003-11-20 (VNY) +(config/omgrismplot.par) the parameter
+	plotdevise is set to the default value /PS since /VC is not 
+	recognised in some machines
+Version 0.3 - 2003-11-19 (VNY) +(config/omgrismplot.par) the parameter
+	plotdevice is set to produce the portrait orientation 
+	of the output plot by default; +(src/omgrismplot_mod.f90):
+	the plot labels are improved
+Version 0.2 - 2003-11-07 (VNY) +(src/omgrismplot_mod.f90) a new parameter
+	(plotflux) is introduced 
+Version 0.1 - 2003-10-27 (VNY) Created as a new task for plotting 
+	OM grism spectra, SAS-SCR-116
+
+
+
+

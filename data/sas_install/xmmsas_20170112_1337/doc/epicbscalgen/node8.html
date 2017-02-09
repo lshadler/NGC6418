@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Practical examples and hints</TITLE>
+<META NAME="description" CONTENT="Practical examples and hints">
+<META NAME="keywords" CONTENT="epicbscalgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epicbscalgen.css">
+
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epicbscalgen (ccftools-1.35.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithm"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epicbscalgen.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000">
+Practical examples and hints</A>
+</H2>
+The usage of the task is very straightforward and the possibilities
+of making mistakes are small. The following points should be noted
+however:
+
+<UL>
+<LI><A NAME="549"></A><A NAME="tex2html12"
+  HREF="../epicbscalgen/index.html"><SPAN  CLASS="textbf">epicbscalgen</SPAN></A>
+is a meta-task that makes use of a couple of other
+SAS tasks,
+viz.:
+
+<UL>
+<LI><A NAME="553"></A><A NAME="tex2html13"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+</LI>
+<LI><A NAME="557"></A><A NAME="tex2html14"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>
+</LI>
+<LI><A NAME="561"></A><A NAME="tex2html15"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+</LI>
+<LI><A NAME="565"></A><A NAME="tex2html16"
+  HREF="../srcdisplay/index.html"><SPAN  CLASS="textbf">srcdisplay</SPAN></A>
+</LI>
+<LI><A NAME="569"></A><A NAME="tex2html17"
+  HREF="../imgdisplay/index.html"><SPAN  CLASS="textbf">imgdisplay</SPAN></A>
+</LI>
+</UL>
+
+<P>
+A basic familiarity with the functionality provided by these tasks is
+recommended. This is not a pre-requisite of making use of <A NAME="573"></A><A NAME="tex2html18"
+  HREF="../epicbscalgen/index.html"><SPAN  CLASS="textbf">epicbscalgen</SPAN></A>
+though.
+</LI>
+<LI>It is recommended to run the task on a verbosity level 5 for getting
+a feeling for the operations carried out in each iteration.
+</LI>
+<LI>For controlling the convergence process it is usually advantageous
+to re-direct the standard output and error stream into a file and
+monitor its contents. This can be done with
+<PRE>
+unix&gt; epicbscalgen -V 5 eventtable=ev.ds 2&gt;&amp;1 | tee log
+</PRE>
+(<TT>sh</TT> syntax) which duplicates the standard error and output stream
+and logs all output in the file <TT>log</TT>. While the task is running
+the convergence process can then be monitored by periodically checking
+the content of <TT>log</TT> for the actual values of <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$\epsilon$"></SPAN> and
+the angles <!-- MATH
+ $(\phi, \theta, \psi)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="59" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$(\phi, \theta, \psi)$"></SPAN>:
+<PRE>
+unix&gt; fgrep 'Iteration' log
+unix&gt; fgrep 'New set of Euler angles' log
+</PRE>
+With each iteration, <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$\epsilon$"></SPAN> should get smaller and the Euler angle
+tuple should approach the sought solution.
+</LI>
+<LI>In the very first iteration, the user is required to input the
+true coordinates of at least two sources interactively. For this
+<A NAME="tex2html19"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A> is launched showing an image that has been
+accumulated from the input event list with all found sources marked
+through <EM>excluded circles</EM>. For each source that is to be used
+as a reference source the user needs to:
+
+<OL>
+<LI>Double click with the left mouse button on the respective circle
+marker.
+</LI>
+<LI>In the dialog box that will pop up:
+	
+<OL>
+<LI>Select the menu item ``Properties'' <!-- MATH
+ $\longrightarrow$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="30" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.png"
+ ALT="$\longrightarrow$"></SPAN>
+``Include/Exclude''.
+After that the circle marker will be redrawn with a solid line which marks
+the source as a reference source.
+</LI>
+<LI>In the field ``Text'', input the celestial J2000 coordinates
+(right ascension/declination) of the source in the form
+<PRE>
+      23h59m48.12s / 45o38'14.55"
+</PRE>
+or
+<PRE>
+      123.23445 / 45.238474
+</PRE>
+</LI>
+</OL>
+</LI>
+<LI>Click on ``Apply'' and ``Close''
+</LI>
+</OL>
+
+<P>
+If done, hit the <TT>Enter</TT> key in the terminal window from which
+the task was started. If all input is ok, execution shall proceed normally,
+otherwise an error message should be produced.
+
+<P>
+There is an alternative reference source input method available that
+is activated with the <TT>withrefsrclist</TT> parameter. Here an
+<A NAME="580"></A><A NAME="tex2html20"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>-compliant source list data set is required
+from which the true celestial coordinates will be obtained. As in the
+scheme described above in a first iteration a source detection will
+be performed on the image from the given event list and the result
+displayed using <A NAME="tex2html21"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A>. Then, the given reference source list is
+read and likewise displayed on the image however with a different
+color and the markers labeled with the respective source indices.
+The user is now requested to perform the cross-correlation between
+the two source marker sets by activating, i.e. <EM>including</EM>, the
+corresponding markers from the source detection run and labeling them
+with the right indices. Detailed on-screen instructions on this
+are given when this input scheme is selected.
+
+<P>
+</LI>
+<LI>Convergence to the minimum can be slow - in this
+regard it is worth noticing that the Nelder-Mead-Simplex method is
+not optimized for minimum number of function evaluations. Please monitor
+the convergence process in the above described manner. As long as
+<SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$\epsilon$"></SPAN> is steadily decreasing there is no need for any intervention.
+
+<P>
+</LI>
+<LI>If two or more of the selected reference sources do not differ in flux
+by more than 5% it is conceivable that possible source-confusion problems
+are reported. This is not a real problem as long as the affected sources
+are sufficiently spatially separated from each other such that the
+scheme can uniquely identify them in each iteration. A failure to do
+so would typically lead to an oscillating <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$\epsilon$"></SPAN>. In this case, please
+stop the task and re-start with different reference sources. Choosing a
+different source radius (see parameter <TT>sourceradius</TT>)
+may also help to resolve the problem.
+</LI>
+<LI>The above described scheme is rather CPU intensive because it
+involves the execution of several non-trivial tasks. The main performance
+driver is clearly the size of the initial event list which should be kept
+as small as possible.
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithm"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

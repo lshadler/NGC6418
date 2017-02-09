@@ -1,0 +1,465 @@
+ChangeLog for attcalc
+===============================
+Open SPRs:
+- none
+
+Version 4.37 - 2016-09-06 (AI)
+---------------------------------
+	- (src/attcalc_mod.f90) Initialization to null of all pointers that are passed 
+	to C++ (Dope vectors). If we do not initizialize the pointers, 
+	we get seg fault at run-time with gcc-6.2.	
+
+Version 4.36 - 2016-07-20 (AI)
+---------------------------------
+	+ (src/attcalc_mod.f90) compatibility changes with gfortran applied.
+	The Bmatrix is passed to C++ with a wrong array descriptor elements (dtype and triplet).
+	Only if we create the local variable matrix, we can pass the right values to C++. Not clear 
+	why this is happening, we have to keep an eye on it.
+	The OAL_toEulerAngles subrotutine has to be called with the matrix transpose. 
+	Otherwise, the C++ function handle the matrix elements in the wrong order. We 
+	have a similar effect in  rgslib(euler321_mod.f90) module. This problem also appears in
+	eexpmap package (the code is duplicated...)
+	+ (src/Makefile) gfrotran preprocessor macros added.
+	
+Version 4.35 - 2016-07-15 (AI)
+---------------------------------
+	+ (src/attcalc_mod.f90) gfortran compatibilty changes.
+	
+Version 4.34 - 2015-08-25 (RDS)
+---------------------------------
+ + (src/attcalc_mod.f90): Changed the use of the psi euler angle such that 
+ 			  it subtracts rather than adds. This is only valid if
+			  the BORESIGHT CCF contains PSI with a changed sign
+			  (SCR-7265)
+
+Version 4.33 - 2012-11-14 (RDS)
+---------------------------------
+ + (src/attcalc_mod.f90): Added keyword, calctlmax, which if set true
+			  causes the code to calculate TLMIN and TLMAX
+			  independently for X and Y from the actual X,Y event
+			  positions.
+			           (SPR-6769)
+
+Version 4.32.2 - 2012-05-07 (RDS)
+---------------------------------
+ + (src/attcalc_mod.f90): Only copy RA_PNT keywords from primary into 
+			  events header if they exist.
+			           (SPR-6648)
+
+Version 4.32.1 - 2012-05-04 (RDS)
+---------------------------------
+ + (src/attcalc_mod.f90): Copy REF keywords from pimary into events header.
+			           (SPR-6648)
+
+Version 4.32 - 2003-07-14 (RDS)
+------------------------------
++ fixed a trivial oversight in 4.31 where memory was being freed
+  without being allocated.
+
+Version 4.31 - 2003-07-11 (UL)
+------------------------------
++ experimental change :-) attempt to fix a supposed problem about the
+  position of the optical axes; the code used to calculate the position
+  in DETX/DETY space (CAMCOORD2 in units of 1/20th arcsec) wrongly;
+  what was really computed was the position of the *nominal* optical axes
+  in the frame centered on the position of the *real* optical axes;
+  impact of this change is expected to be minimal because up to and
+  including XMM_MISCDATA_0019 the real axis position (attibutes OPTICS_X/Y
+  in CHIPCOORD) concided with the nominal ones; for more info search
+  for 'cendetx' in code
+
+Version 4.30 - 2003-05-07 (HB)
+-------------------------------
+ + (config/attcalc.par): modified to enable  param-2.0 functionality	
+	
+Version 4.29 - 2002-07-15 (MJF)
+-------------------------------
+ + (DEPEND): added "sas" as required by new infrastructure (sas-1.302)
+
+Version 4.28 - 2002-05-15 (MJF)
+-------------------------------
+ + (config/attcalc.par): updated for `param-2.0'
+ + (DEPEND): needs `param-2.0', updated all other entries to latest
+
+Version 4.27.1 - 2002-04-08 (MJF)
+---------------------------------
+ + (src/attcalc_mod.f90): converted debug output introduced in 4.27 to a
+   "Noisy" message [SSC-SPR-2824]
+closed SPR:
+- SSC-SPR-2824: debug output should be message
+
+Version 4.27 - 2002-03-14 (UL)
+------------
+ + now takes position of optical axes (obtained from OPTICS_X/Y in CCF)
+   into account
+
+Version 4.26 - 2001-12-07 (MJF)
+-------------------------------
+ + resubmitted 4.25.5 for start of 5.3 RT
+
+Version 4.25.5 2001-02-20 (AMR)
+------------
+ + (config/attcalc.par) fixedposangle range widened (SSC-SPR-2242)
+ + (doc/attcalc_description.tex) Documentation updated (SSC-SPR-2242)
+
+Version 4.25.4 2000-11-23 (AMR)
+------------
+ + (doc/attcalc_description.tex) Documentation updated (SSC-SPR-2109)
+
+Version 4.25.3 2000-11-09 (AMR)
+------------
+ + (src/attcalc_mod.f90) Release atthkgen file correctly (SSC-SPR-2035)
+ + (config/attcalc.lyt) improved GUI layout (frames)
+
+Version 4.25.2 2000-10-18 (AMR)
+------------
+ + (config/attcalc.par) attitudelabel (default=ahf) and refpointlabel 
+     (default=pnt) changed to optional parameters (SSC-SPR-1990).  
+ + (doc/attcalc_description.tex) Parameter changes described
+
+Version 4.25.1 2000-10-18 (AMR)
+------------
+ + (src/attcalc_mod.f90) Copies of WCS attributes added to output 
+     primary header (SSC-SPR-1988)
+ + (doc/attcalc_description.tex) New WCS attribute copies described
+
+Version 4.25 2000-09-29 (AMR)
+------------
+ + (test/) FILTER=`NONE" changed to FILTER=`UNKNOWN' in test harness files
+
+Version 4.24 2000-09-13 (AMR)
+------------
+ + (src/attcalc_mod.f90) TLMIN, TLMAX changed back to pre-v4.22.1
+ + (src/attcalc_mod.f90) TDMIN, TDMAX (min and max X/Y data values) 
+     attributes added 
+
+Version 4.23 2000-08-29 (AMR)
+------------
+ + (DEPEND) emsaplib 1.6 -> 2.0
+
+Version 4.22.2 2000-07-03 (AMR)
+------------
+ + (doc/attcalc_description.tex) errors/warnings updated (SSC-SPR-1908)
+
+Version 4.22.1 2000-06-12 (AMR)
+------------
+ + (src/attcalc_mod.f90) TLMIN, TLMAX keywords changed (SSC-SPR-1734)
+ + (config/Makefile) added .lyt file to CONFIGFILES (SSC-SPR-1737)
+ + (config/attcalc.par) default values added to angle parameters (SSC-SPR-1736)
+ + (doc/attcalc_description.tex) documentation updated (SSC-SPR-1724)
+ + (Changelog) format updated
+
+Version 4.22 2000-05-26 (AMR)
+------------
+
+- info file included, documentation updated
+
+Version 4.21 2000-05-04 (AMR)
+------------
+
+- New boolean parameter `withatthkgen' (default Yes), determines whether the 
+  task assumes that an atthkgen output file is present
+- Documentation, config files updated
+
+Version 4.20 2000-05-03 (AMR)
+------------
+
+- No error when atthkgen output does not exist - warning message is given, PNT
+  keywords not propogated, and if refpointlabel=pnt is used, NOM values are 
+  used for reference point. 
+- Reference point keywords RAREF and DECREF (degrees) put into primary header.
+- Documentation updated (above plus reading/writing of keywords)
+
+Version 4.19 2000-03-29 (AMR)
+------------
+
+- SSC-SPR-1605 closed (documentation, Changelog)
+- Documentation updated, new Changelog format adopted
+
+Version 4.18  -  29-02-00
+------------
+
+- Attcalc test Odfs updated, solving failure at ESTEC
+
+Version 4.17  -  28-02-00
+------------
+
+- History and documentation updated.
+- Test harness updated to try and solve failure at ESTEC
+- Imagesize warning (different from default) changed to message.
+
+Version 4.16  -  14-02-00
+------------
+
+- Test harness altered to handle introduction of non-zero boresight into CCF
+- Parameter imagesize now has slightly larger default size (0.36 degrees)
+
+Version 4.15  -  03-12-99
+-----------
+
+- Task works normaly in timing and burst mode 
+- Test harness updated
+- Documentation numbering changed
+
+Version 4.14  -  19-11-99
+-----------
+
+- Test harness changed - handles new SAS_ODF and SAS_CCF
+- DISTRIBUTION file and newline in ./Makefile included 
+- DEPENDS on new emsaplib
+
+Version 4.13  -  15-11-99
+-----------
+
+- New CAL (3.32) and testccf (1.51) used, incorporating changed boresight 
+  handling (CAL_getBoresightMatrix) and camera-to-spacecraft co-ord handling
+  (CAL_getCamCoord2ToSacCoord).
+
+Version 4.12  -  05-10-99
+-----------
+
+- Three SPRs closed (use of errors, warnings and messages)
+- Test harness updated
+
+Closed SPRs: SSC-SPR-1269, 1273, 1274
+
+Version 4.11  -  24-09-99
+-----------
+
+- Task handles completely bad quality atthkgen files correctly. 
+- Test harness updated. Handles exit status checking of each subtest programs.
+
+Closed SPRs: SSC-SPR-1207 
+
+Version 4.10  -  17-09-99
+-----------
+
+- NULL settings are now used for X and Y values, in cases of bad attitude data.
+  The X/Y TNULL values are -99999999, and `INDEF' appears in the X/Y columns
+- Documentation updated to attcalc v4.10. New latex macros used. 
+- Test harness updated to include testing of bad attitude/NULL functions.
+- Layout file corrected (atthkset file must exist). Closes SPR.
+- ChangeCase function accessed via emutils library. Closes SPR.
+
+Closed SPRs : SSC-SPR-0317, 1244
+SPRs to be closed, pending outside tests : 1207 
+
+Version 4.9  -  01-09-99
+-----------
+
+- Test harness updated. Newly created files used. `Drifting' AHF accessed. 
+  Individual detector boresight and orientations tested. 
+- Documentation updated, partly as regards use of atthkgen output file
+- Several SPRs closed
+
+Closed SPRs : SSC-SPR-1200, 1202, 1204, 1206, 1230
+SPRs to be closed, pending outside tests : 1207 
+
+Version 4.8  -  20-08-99
+-----------
+
+- As v4.7, with one character in the code changed! 
+
+Version 4.7  -  19-08-99
+-----------
+
+- As v4.6, with errors regarding PNT keywords and lo-number event lists 
+  corrected for. 
+- As regards propogating the PNT keywords, atthkgen must be run before
+  attcalc, whatever mode of attcalc is used. 
+
+Version 4.6  -  19-08-99
+-----------
+
+- As v4.5, but with slight change in usage of OAL_getAttitude
+- Depends on cal-3.16 and oal-3.28
+
+Version 4.5  -  18-08-99
+-----------
+
+- Two new (optional) parameters to use when refpointlabel=pnt. Here 
+  either (set via "withmedianpnt") the median (default) or mean attitude 
+  pointing can be used as the reference point of the sky co-ordinates. 
+  This information is here retrieved from the output of the task atthkgen 
+  (which will need to have been run previously) via the parameter "atthkset" 
+  (default: atthk.dat). 
+- Because of above, chains that attempt to run attcalc with refpointlabel=pnt, 
+  will need to have run atthkgen first. 
+- Attcalc should be able to correctly handle the CAMCOORD2-to-Spacecraft 
+  boresight matrices expected soon (cal-3.16). 
+- Usage of OAL_getAttitude changed to reflect expected changes in oal (v3.28)
+- Documentation and test harness updated. 
+- NB `Blind' delivery (DEPEND on oal-3.28)
+
+- Closed SPRs: SSC-SPR-1183, 1185, 1186, 1187
+
+Version 4.4  -  12-08-99
+-----------
+
+- Use with `drifting' attitude tested. Included in test harness. 
+- Small error found when using varying attitude corrected for. 
+- Should be complient with new camera orientation information
+  provided by CAL/OAL (testccf-1.30). 
+
+Version 4.3  -  06-08-99
+-----------
+
+- SPRs SSC-SPR-1127 and 1145 dealt with (also 1157 closed)
+- TCUNI WCS attributes now introduced
+- No attempts at checking with varying odf `scisimwobble', as this does 
+  not yet exist
+
+Version 4.2  -  11-06-99
+-----------
+
+- In line with CAL v3.0
+- No attempts at checking with varying odf `scisimwobble', as this does 
+  not yet exist
+
+Version 4.1  -  28-05-99
+-----------
+
+- Bug in transformation fixed - closes SPRs
+
+Closed SPRs: SSC-SPR-0993,994
+
+Version 4.0  -  21-04-99
+-----------
+
+- All parameters now have new names (documentation changed accordingly)
+- Parameter `imagesize' (old imsize) now has default of 0.34 deg (20.4 arcm)
+
+Closed SPRs: SSC-SPR-0962
+
+Version 3.1  -  16-03-99
+-----------
+
+- Minor change to 3.0, allowing attcalc to work (with attsrc=ahf/om and 
+  refpoint=pnt) on files containing no RA_NOM/DEC_NOM or RA_OBJ/DEC_OBJ 
+  attributes.
+
+Version 3.0  -  10-03-99
+-----------
+
+- removed odfdir parameter (covered by taskmain functionality). Hence present 
+  chains may need to be changed - hence new main version number
+- boresight correctly handled via CAL_getBoresightMatrix and OAL_toEulerAngles.
+- removed call to `call CAL_openCCF("")' 
+- uses new h/q mode in parameter file
+
+Version 2.4  -  22-02-99
+-----------
+
+A version submitted by Marco to solve a small problem 
+(just %positionAngle => %apos)
+
+Version 2.3  -  04-02-99
+-----------
+
+The position angle now assumed is the *astronomical* position angle
+(XMM-MOC-TN-0109-OAD), and should be in line with SciSim (this closes two
+SPRs). The task is now GUI-compatible (an attcalc.lyt file has been created).
+Also, the default value of the parameter `imsize' has been reduced to a more
+friendly value (20 arcmin). Also the documentation has been updated. 
+
+Closed SPRs: SSC-SPR-0868, 903, 908
+
+Version 2.2  -  10-12-98
+-----------
+
+Final delivery before version 2 deadline. Almost identical to Version 2.1, 
+apart from one mistake in the transformation, which has been rectified.
+
+Version 2.1  -  02-12-98
+-----------
+
+New version, incorporating changes suggested after V2 testing. 
+Attsrc and refpoint parameters are now just lowercase. TCRPX and TCDLT 
+attributes are read in from input events file.
+
+Closed SPRs: SSC-SPR-0859, 0860, 0867, 0870
+
+Version 2.0  -  17-11-98
+-----------
+
+New delivery incorporating a new mandatory parameter (refpoint - hence the
+change in major version number), which points to the source of the central
+reference point coordinates. Choices are NOM (ra/dec taken from RA_NOM,
+DEC_NOM keywords), OBJ (ra/dec taken from RA_OBJ, DEC_OBJ keywords), PNT
+(calculated mean pointing over the observation used as ra/dec), an USER (user
+input ra/dec). Several SPRs closed with this delivery. 
+
+Closed SPRs: SSC-SPR-0833 to SSC-SPR-0846 (14 SPRs)
+
+Version 1.8  -  03-11-98
+-----------
+
+Delivery to hopefully concur with problems with the test ODF summary file.
+Lines have been deleted from the test odf summary file, as suggested by Jon
+Brumfitt. Because of this, gmake test no longer works at MPE (or at Leicester),
+though it should now work at estec.
+
+Version 1.7  -  16-10-98
+-----------
+
+Further delivery to incorporate new f90 coding standards. Position angle now
+defined as it should be (i.e. now not consistent with (old?) scisim). Still
+some confusion as to certain things (attcalc, ep/emevents, CAL etc). These may
+change later.
+
+Closed SPRs: SSC-SPR-0560
+
+Version 1.6  -  01-10-98
+-----------
+
+Final delivery for version 2
+Task changed slightly as confusion existed (and still exists) regarding 
+where certain corrections should be done (attcalc, ep/emevents, CAL etc). 
+Some confusion still exists also regarding definition of position angle. 
+Position angle is defined here to give images consistent with Scisim 
+(this may change later). 
+
+Version 1.5  -  16-09-98
+-----------
+
+Redelivery to comply with new parameter package
+
+Version 1.4  -  14-09-98
+-----------
+
+Slight corrections to Version 1.3. The task contains a dummy odf 
+directory which the task accesses in its test. A new 
+parameter `odfdir' is included. 
+
+Closed SPRs: 0525 (including all similar occurences of similar errors)
+
+Version 1.3  -  04-09-98
+-----------
+
+Redelivery of task, such that it is now compatible with OAL v2.0. 
+Also significant changes have occurred in the code, such that an 
+intermediate corrected attitude file is now not produced. The task
+is also now able to access the AHF via OAL commands (see task 
+description). 
+
+Closed SPRs: 0038, 0044, 0313-0316, 0459
+
+Version 1.2  -  29-05-98
+-----------
+
+Final task redelivery for SAS v1 (Version 1.2)
+
+Fixed SPRs: SSC-SPR-0287 (test harness fails)
+
+Version 1.1  -  26-05-98
+-----------
+
+Final task delivery for SAS v1 (Version 1.1)
+
+Fixed SPRs: SSC-SPR-0029 to 0033, 0035 to 0037, 0039 to 0043, 0045
+
+Version 1.0  -  14-05-98
+-----------
+
+Initial version for SAS v1 integration
+

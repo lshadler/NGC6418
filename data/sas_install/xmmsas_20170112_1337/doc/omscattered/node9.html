@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Using the peripheral background for computing the scaling factor (mode=1)</TITLE>
+<META NAME="description" CONTENT="Using the peripheral background for computing the scaling factor (mode=1)">
+<META NAME="keywords" CONTENT="omscattered">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omscattered.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node8.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omscattered (omscattered-1.3.4) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithm"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Algorithm"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Computing the scaling factor"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omscattered.html">Home Page</A> / <A  HREF="node8.html">Algorithm</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00081000000000000000">
+Using the peripheral background for computing the 
+scaling factor (mode=1)</A>
+</H2>.
+<A NAME="omscattered:description:peripheral"></A>
+<P>
+The first method of scaling the calibrated scattered light feature 
+is based upon the assumption that the number of counts corresponding
+to this feature scales linearly with the background level
+of the OM image. 
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="fig:twoBkgRings"></A><A NAME="353"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure:</STRONG>
+<SMALL CLASS="SMALL">The ring-shaped region used for finding the background
+levels of the input image (left) and the calibration image (right) 
+in the case of the default algorithm (mode=1) for
+calculation of the scaling factor of the calibrated image.</SMALL></CAPTION>
+<TR><TD><IMG
+ WIDTH="722" HEIGHT="339" BORDER="0"
+ SRC="img4.png"
+ ALT="\begin{figure}\centering
+\epsfig{file=bkgRings.eps, height=7.5cm}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+The background is calculated for the same ring-shaped region of
+both the input (<SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$B_1$"></SPAN>) and calibration (<SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$B_2$"></SPAN>) images (Fig.<A HREF="#fig:twoBkgRings">3</A>). 
+The scaling factor applied to the calibrated image in this case
+will be 
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+S=\frac{B_1}{B_2}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="53" HEIGHT="41" BORDER="0"
+ SRC="img7.png"
+ ALT="\begin{displaymath}
+S=\frac{B_1}{B_2}
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+and the output image is obtained by subtracting the scaled calibrated image
+from the input image and restoring the constant background level of the
+input image:
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+I_{\rm output}=I_{\rm input}-I_{\rm calibrated}*S+B_1.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="254" HEIGHT="29" BORDER="0"
+ SRC="img8.png"
+ ALT="\begin{displaymath}
+I_{\rm output}=I_{\rm input}-I_{\rm calibrated}*S+B_1.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+Systematic error is reduced in the background calculation by 
+masking sources in the data image. These are identified 
+by an "Emboss-filtering" technique which compares modified 
+versions of the image, shifted by a few pixels in the 
+horizontal and vertical directions.
+
+<P>
+A histogram of the remaining pixels is computed. The background 
+value is measured from only the most-populated 10% of pixel values. 
+This reduces bias in the measurement from residual structure 
+such as irregular scattered light.
+
+<P>
+Thus, <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$B_1$"></SPAN> is then obtained as the weighted average 
+of the values of these most populated pixels:
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+B_1=\frac{\sum_{p_c>0.9p_{c^{\rm max}}} p_c \cdot c}{\sum_{p_c>0.9p_{c^{\rm max}}} p_c},
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="172" HEIGHT="49" BORDER="0"
+ SRC="img9.png"
+ ALT="\begin{displaymath}
+B_1=\frac{\sum_{p_c&gt;0.9p_{c^{\rm max}}} p_c \cdot c}{\sum_{p_c&gt;0.9p_{c^{\rm max}}} p_c},
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+where <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$c$"></SPAN> is the number of counts (histogram slot); 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$p_c$"></SPAN> is the number of pixels having this number of counts; 
+and <!-- MATH
+ $p_{c^{\rm max}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$p_{c^{\rm max}}$"></SPAN> is the maximal histogram value 
+corresponding to the most populated count number <SPAN CLASS="MATH"><IMG
+ WIDTH="35" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="$c^{\rm max}$"></SPAN>.
+The value of <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$B_1$"></SPAN> is usually close to <SPAN CLASS="MATH"><IMG
+ WIDTH="35" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="$c^{\rm max}$"></SPAN>.    
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithm"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Algorithm"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Computing the scaling factor"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

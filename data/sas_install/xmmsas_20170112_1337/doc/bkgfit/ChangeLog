@@ -1,0 +1,172 @@
+ChangeLog for ebkgmap
+===============================
+
+Open SPRs:
+----------
+Nil.
+
+Version 2.9 - 2014-06-04 (AI)
+----------------------	
+
+	+ foreach syntax corrected in test perl modules.
+	
+Version 2.8.2 - 2013-10-17 (EC)
+----------------------
+	+ Use LIVETIxx keywords in EVENTS extension rather than LIVETIME
+	  in each EXPOSU extension, in case evselect was used with
+	  a TIME and/or GTI selection (keywords appear not to be
+	  written correctly). epileupmask_share.f90
+	+ reduce time for test harnesses by selecting a subset of
+	  the input events list. Note factoring out of test data
+	  preparation in scripts to new "prepdata.pm".
+	+ above required adding evselect as a dependency
+	
+Version 2.8.1 - 2013-04-04 (MAS/LUX)
+----------------------
+- Gzipped all the obsolete config files to avoid the error in build.
+
+Version 2.8 - 2013-03-26 (MAS/LUX)
+----------------------
+- Removed tasks eootemap and epnoisemap and esrcmap from the public release (and saved in obsolete_modules/ sub-directories).
+	
+Version 2.7 - 2012-10-04 (MAS/LUX)
+----------------------
+- Fixed a bug that it may fail with the error(yRawNegativeInPileupmaskDetToRaw) or Runtime Error in rare cases, where the coordinate conversion falls into specific values.
+- Changed a message output for Verbose to the warning (skipAttitudeBin).
+- Some clean-ups in the codes (epileupmask_shared.f90 and eootepileupmask_aux.f90).
+
+Version 2.6.1 - 2012-05-17 (MAS/LUX)
+----------------------
+- Fixed SPR-6725; the task used to terminate with an undefined POINTER error when an attitude bin does not contain any data in the given event file.
+- Warning (missingBlockName) is not issued any more.
+
+Version 2.6 - 2011-07-22 (MAS/LUX)
+----------------------
+- DEPENDency on ssclib upgraded to 4.26.
+- Changed GROUPS and VISIBLE in *.info in bkgfit, eootepileupmask, epileupmask, eoptloadmask
+- bkgfit
+  + Tidied up the code, eliminating unnecessary standard outputs.
+  + Confirmed the behavious with the new test harness code, bkgfit_m2_test .
+- Removed the task estrayregion (which has been not quite complete and so I believe has not been used anyway).
+	
+Version 2.5 - 2011-07-05 (MAS/LUX)
+----------------------
+- eootepileupmask and epileupmask:
+  + Fixed a potential bug, which may have caused a problem in some special cases in the pn data.
+  + Fixed a potential bug, which may have caused a memory leak when the task is called from a C++ task and satisfies a certain (unusual) condition.
+  + Corrected some wrong statements in algorithm in the documents.
+  + Major tidying up of the codes.
+	
+Version 2.4 - 2011-06-24 (MAS/LUX)
+----------------------
+- epileupmask is now usable again, after it has been taken out since it was imcomplete.  The test harness is also developed.
+- eootepileupmask
+  + The command-line arguments rateset and pileupmaskset are changed into ratesetroot and pileupmasksetroot, respectively.
+  + Fixed a bug that the output file of pileupmaskset was not always consistent with the output mask when some chips were ignored due to too short GTI, and its tests are included in the test harness.
+- Tidied up the codes of eootepileupmask and epileupmask.
+
+Version 2.3 - 2011-06-15 (MAS/LUX)
+----------------------
+- Fixed a bug in eootepileupmask that outputstyle=raw was not usable, and its test harness code eootepileupmask_raw_test now tests it.
+- DEPENDency on ssclib and eimchip2sky upgraded to 4.25 and 2.3, respectively.
+
+Version 2.2 - 2011-06-08 (MAS/LUX)
+----------------------
+- Fixed a bug in eootepileupmask (and epileupmask) that it did not correctly handle the case, or even did abort, where the exposures vary significantly from chip to chip.  New modules (eootepileupmask_sky_0111360101_m1_test and eootepileupmask_sky_0111360101_m2_test and eootepileupmask_sky_0111360101_pn_test) are added to the test harness to test this. 
+- DEPENDency on ssclib, testprods and testodf upgraded to 4.24, 1.25 and 0.48, respectively.
+	
+Version 2.1 - 2011-05-18 (MAS/LUX)
+----------------------
+- It now DEPENDs on testodf Ver.0.47 (this package should have depended on it since the previous version, 2.0).  DEPENDency on ssclib and testprods upgraded to 4.23 and 1.24, respectively.
+- The new task eoptloadmask is added (SCR-315), together with its test harness.
+
+Version 2.0 - 2011-04-11 (MAS/LUX)
+----------------------
+- DEPENDency on cal, dsslib, ssclib, eimchip2sky and testprods upgraded to 3.187(3.186.4 may be enough), 5.6, 4.22, 2.2, 1.23, respectively.  It now DEPENDs on fitsutils Ver.1.5.
+- SegFault due to the Fortran interface to DSSLib is now circumvented (see ssclib).
+- The new library ebkgmap is created (mainly for testing purpose).
+- The routines are split into epileupmask_shared.f90 ebkgmap_skyframe.f90, ebkgmap_attcommon.f90, eootepileupmask_aux.f90 from eootepileupmask_mod.f90 and eootepileupmask_mod.f90 and estrayregion_mod.f90 .
+- eootepileupmask has a major revision (see the upgrades in ssclib and eimchip2sky) and is now usable.  The test harness is developed. The document is written.
+- epileupmask has a major revision.
+- estrayregion now accepts new command-line parameters of withsrcmask and regionwidth.
+	
+Version 1.3 - 2009-02-02 (IMS/JBO)
+----------------------
+- Originally developed by IMS/JBO on 2006-10-19.
+- Upgraded ssclib dependency to 4.0.
+- All logical(bool) types changed to logical.
+- Removed status argument from calls to ssclib/linear:invertPosDefMatrix.
+- Removed temp_ssclib library from here, and now uses the official ssclib
+- Task esrcmap brought more into line with eimsim/srcmap.
+
+Version 1.2 - 2005-11-17 (IMS/LUX)
+----------------------
+- Parameter --withboresightfudge (default 'yes') added to eootepileupmask, esrcmap and estrayregion (until sign of boresight psi is corrected).
+- DEPENDency on attcalc2, eimchip2sky and ssclib all brought up to date (1.2, 2.0 and 3.27 respectively).
+- Changed parameter --binnedattset to --binnedatttab in eootemap, eootepileupmask and epnoisemap.
+- Made other changes to eootemap, eootepileupmask and epnoisemap so they conform with latest attcalc2 and eimchip2sky.
+- Quite a bit of surgery has been done to eootemap and epnoisemap so they no longer use the eimchip2sky_aux routine writeCubeToSkyImage.
+
+Version 1.1 - 2005-11-02 (IMS/LUX)
+----------------------
+- New task eootepileupmask added.
+- Parameter --tempset added to eootemap.
+- Some rearrangement of esrcmap to provide instrument info when --withidcol=no.
+
+Version 1.0 - 2005-04-01 (IMS/LUX)
+----------------------
+- emrgaregion renamed to estrayregion because it now has additional capacity to mask out a circular region around bright sources, in pn as well as mos images.
+- Uploaded as 1.0 rather than 0.10 because the package now seems mature enough to get out of '0.*' diapers...
+
+Version 0.9 - 2005-02-21 (IMS/LUX)
+----------------------
+- New parameters --posstyle, --xcol and --ycol added to esrcmap.
+- esrcmap now accesses findUniqueValues from ssclib/array_utils. DEPEND updated accordingly.
+
+Version 0.8 - 2004-11-17 (IMS/LUX)
+----------------------
+- emrgaregion has been altered so that it creates a region describing the pixels to be _excluded_ rather than included, as it was before. The resulting regionmask output then needs to be inverted. This has been done to make it easier to run these tasks together in a script environment, specifically when there are no sources which require masking, thus no entries in the region table. Since regionmask works in an inclusive sense, such situations produce an entirely 0-valued mask, whereas what we want is an entirely 1-valued mask.
+- Temporary parameter --eventset added to emrgaregion, until SOC-SPR 2563 on regionmask is fixed.
+
+Version 0.7 - 2004-11-16 (IMS/LUX)
+----------------------
+- Error 'noSourcesSelected' in emrgaregion and esrcmap changed to a warning, so it is easier to run the task in a script.
+- Source selection is now more carefully done in esrcmap.
+
+Version 0.6 - 2004-11-03 (IMS/LUX)
+----------------------
+- In bkgfit, changed call to ssclib/detection_stats:chi2Prob to integratedChi2Prob in accordance with ssclib-3.17.
+- Updated DEPEND of ssclib to 3.17.
+- Added (as yet unapproved) task emrgaregion.
+
+Version 0.5 - 2004-09-14 (IMS SSC/LUX)
+----------------------------
+- Wrong number was being used for the total number of sources in esrcmap.
+- Source RA, DEC and SCTS column values were not being read properly in esrcmap.
+- Introduced --withidcol parameter in esrcmap and made --idcol, --idbands and --idinst subordinate to it (to allow esrcmap once again to be used with very general, non-sas-product source lists).
+- bkgfit: chi^2 calculation was using all points, not just those for which the model was non-zero.
+
+Version 0.4 - 2004-09-07 (IMS SSC/LUX)
+----------------------------
+- epnoisemap param --erangesstyle renamed to --selexprstyle, and --dssset added, for conformity with eootemap.
+- eootemap brought up to ssclib-3.16, attcalc2-0.3 and eimchip2sky-1.6 standard.
+- eootemap now writes count rate cubes (to comply with new eimchip2sky algorithms).
+- esrcmap parameters altered slightly to allow it to process several bands at once. Null-rate sources are now also filtered out.
+- Added dependency on testprods-1.5.
+
+Version 0.3 - 2004-08-12 (IMS SSC/LUX)
+----------------------------
+- eootemap and epnoisemap interfaces to eimchip2sky have been updated (also the dependencies to attcalc2, eimchip2sky and ssclib).
+
+Version 0.2 - 2004-08-12 (IMS SSC/LUX)
+----------------------------
+- bkgfit: max like statistic multiplied by 2;
+- bkgfit: error matrix now output;
+- bkgfit: approx chi^2 of fit now calculated.
+- DEPEND cal 3.173 replaced by 3.172 so the package will build under reltrack.
+
+Version 0.1 - 2003-05-16 (IMS SSC/LUX)
+----------------------------
+- First draft.
+- Temp_ssclib modules now merged into ssclib-3.0.
+

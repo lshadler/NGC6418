@@ -1,0 +1,69 @@
+ChangeLog for fitsutils
+====================
+
+Open SPRs:
+----------
+Nil
+Version 1.9.2 - 2014-10-29 (AI)
+------------	 
+	+ (src/FitsCelCoordsSys) Debug lines removed.
+	
+Version 1.9.1 - 2014-10-28 (AI)
+------------	 
+	+ (src/FitsCelCoordsSys) isNearlyEqual subroutine modified to sort alphabetically
+	the "keys" in the hash table. This modification fixed the error in testfitscelcoordssys.
+	
+Version 1.9 - 2014-06-04 (AI)
+------------	 
+   + (src/MultipleCoordsSys.pm) foreach syntax corrected.
+	
+Version 1.8 - 2012-09-25 (MAS/LUX)
+----------------------
+- New function fpartab() added in Fitsplutils.
+	
+Version 1.7 - 2012-07-31 (MAS/LUX)
+----------------------
+- New function getAnnularMask() added in fits_utils and tested in testfitsutils, a newly added test-code.
+- fitsstat now accepts the region constraint (either circle or annulus) via a set of new command-line parameters: withregion, regionstyle, centrecoords, radii, radiiinner.  Tests added in testfitsplutils_img .
+- DEPENDency on ssclib upgraded to 4.27.
+	
+Version 1.6.1 - 2012-04-17 (MAS/LUX)
+----------------------
+- The test harness is more robust, now dealing with the unexpected error from fitsstat.
+- DEPENDency on ssclib upgraded to 4.26.
+	
+Version 1.6 - 2011-06-08 (MAS/LUX)
+----------------------
+- Improved the document of readFitsStatInfo() in Fitsplutils.pm .
+	
+Version 1.5 - 2011-04-08 (MAS/LUX)
+----------------------
+- readFitsStatInfo() in Fitsplutils now returns a integer scalar if abnormal ends (tested in testfitsplutils_col).
+- fitsstat_mod now checks the consistency of the command-line parameters of minareacoords and maxareacoords and may issue an error 'inconsistentMinMaxAreaCoords' if needed.
+- DEPENDency on ssclib upgraded to 4.22.
+	
+Version 1.4 - 2010-08-17 (MAS/LUX)
+----------------------
+- WcsKey.pm is modified to support some non-standard FITS WCS keywords appearing in some output files of SAS.
+- PA_PNT in WcsKey.pm is now handled as an extra keyword, instead of the third dimension in axis.
+- Fixed a minor bug in isNearlyEqual() in MultipleCoordsSys.pm .
+- Fixed a minor bug (or bad specification) in tbl2arrays() and sumup_images() in Fitsplutils.pm .
+
+Version 1.3 - 2010-08-13 (MAS/LUX)
+----------------------
+- Added a method minglePair in MultipleCoordsSys.pm and FitsCelCoordsSys.pm, as well as their tests.
+
+Version 1.2 - 2010-08-06 (MAS/LUX)
+----------------------
+- Added WcsKey.pm (module), MultipleCoordsSys.pm and FitsCelCoordsSys.pm (classes), as well as their respective test harnesses, testmultiplecoordssys and testfitscelcoordssys .
+- DEPENDency on ssclib and testprods upgraded to 4.19 (for Perl libraries) and to 1.19, respectively.
+
+Version 1.1 - 2010-07-12 (MAS/LUX)
+----------------------
+- Now Fitsplutils::getattribute() supports String as well.  The corresponding test routines are added to test/testfitsplutils .
+- The document of Fitsutils has not been compiled, but now is fixed.
+	
+Version 1.0 - 2009-05-01 (MAS/LUX)
+----------------------
+- Imported fitsstat , fits_utils.f90 and Fitsplutils.pm and related files including the test harnesses and documents from the ssclib package.  See ssclib/ChangeLog for the previous history.
+

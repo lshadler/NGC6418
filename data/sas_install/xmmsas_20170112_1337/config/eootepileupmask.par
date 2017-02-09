@@ -1,0 +1,129 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="ratethreshold" type="real" default="0.008">
+   <DESCRIPTION>
+    Mask pixels are set true(=1) if the corrected count/frame is smaller than ratethreshold.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    ratethreshold in (0:1)
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="eventset" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    Name of the input event list dataset.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="maskset" type="dataset" default="ootemask.ds">
+   <DESCRIPTION>
+    Name of the dataset to which the mask image/cube is written.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="outputstyle" type="string" default="raw">
+   <DESCRIPTION>
+    Output style, either sky or raw.  If raw, the output format is FITS cube.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="raw">
+    </ITEM>
+
+    <ITEM value="sky">
+     <PARAM id="templateset" type="dataset" mandatory="yes">
+      <DESCRIPTION>
+       Template image set for output.  If inputstyle=image, the imageset file is used, regardless of the user-specified value of templateset.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="attstyle" type="string" default="binnedset">
+      <DESCRIPTION>
+       Attitude style: either binnedset or template.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="binnedset">
+        <PARAM id="binnedattset" type="string" mandatory="yes">
+         <DESCRIPTION>
+          Binned attitude set name.
+         </DESCRIPTION>
+        </PARAM>
+        <PARAM id="avcnttoprocess" type="real" default="7.0">
+         <DESCRIPTION>
+          Minimum averaged count of the threshold to process a frame.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          avcnttoprocess in (0:)
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+       <ITEM value="template">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withrateimage" type="bool" default="no">
+   <DESCRIPTION>
+    True if the count/frame image is also output.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="ratesetroot" type="dataset" default="rateset">
+      <DESCRIPTION>
+       Root of the filenames of the dataset to which the rate (count per frame) images/cube is written.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withpileupmask" type="bool" default="no">
+   <DESCRIPTION>
+    If true, the pile-up mask is also output.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="pileupmasksetroot" type="dataset" default="pileupmask">
+      <DESCRIPTION>
+       Root of the filenames of the dataset to which the piled-up mask images/cube (namely neither OOTE nor RGA spikes) is written.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="foroote" type="bool" default="yes">
+   <DESCRIPTION>
+    If true, the out-of-time (OOT) events due to piled-up pixels are masked in the output.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="forrgaspike" type="bool" default="no">
+   <DESCRIPTION>
+    If true, the RGA spikes due to piled-up pixels are masked in the output.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="isinverted" type="bool" default="yes">
+   <DESCRIPTION>
+    If true, the affected regions by pile-up in the output mask are zero; if not, one.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withapproxpatfrac" type="bool" default="yes">
+   <DESCRIPTION>
+    True if the approximate form of the pattern fraction parameters is used.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withboresightfudge" type="bool" default="yes">
+   <DESCRIPTION>
+    Flip the sign of the boresight euler%psi. This parameter should be removed after the boresight is fixed. 
+   </DESCRIPTION>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

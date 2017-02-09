@@ -1,0 +1,427 @@
+#! /usr/bin/perl -w
+## NAME: eimageget
+# VERSION: 0.5
+#
+# Developer: Richard Sturm, Michael Freyberg               MPE Garching
+#
+################################################################################
+use 5.005;   # required by SAS (binary) installation
+use English;
+use Getopt::Long;
+use File::Path;
+use Cwd;
+use strict;
+#use DAL;
+use SAS;
+my $line_plusplus=" ";
+
+
+#
+# Set the verbosity (verbose: only 1/0 setting)
+#
+my $verbose = (not exists $ENV{'SAS_VERBOSITY'} or $ENV{'SAS_VERBOSITY'} > 0) ;
+my $tverbose = 1 ;
+my $verbosity = 4 ;
+if (exists $ENV{'SAS_VERBOSITY'} ) {$verbosity = $ENV{'SAS_VERBOSITY'} };
+
+SAS::message($SAS::AppMsg, $SAS::NoisyMsg, "Verbosity = $verbosity");
+
+#
+# Define default ODF/data directory
+#
+my $indir=""; my $sumpath=""; my $ep=0;
+if ( exists $ENV{'SAS_ODF'}) {$indir = $ENV{'SAS_ODF'}};
+
+
+
+my $TASK_NAME="eimageget";     #
+my $TASK_VERSION="0.5";        #
+
+
+
+# set default values for all parameter variables
+my $evtfile='';                           # input event file
+my $ootfile='';                           # input oot event file
+my $attfile='';                           # input att file
+my $fwcfile='';                           # input fwc event file
+my $gtifile='';                           # input gti file
+
+my $withemtaglenoise=1;                     # remove noisy MOS ccds? 
+my $withexposure=1;                         # calculate exposure maps (0/1/yes/no/...)
+
+my $withfwcimages=1;                        # allows to turn off the fwc-image creation
+my $withwindowmode=0;                       # allows to include large/small window observations, however no fwc-images are created for these CCDs!
+
+my $pimin='200 500 1000 2000 4500';         # minimum PI for each energy band
+my $pimax='500 1000 2000 4500 12000';       # maximum PI for each energy band
+my $patmin='';                              # minimum PATTERN for each energy band (at the moment default is set in the bash script)
+my $patmax='';                              # maximum PATTERN for each energy band (at the moment default is set in the bash script)
+my $flag='' ;                               # FLAG for image selection (at the moment default is set in the bash script)
+my $flagout='' ;                            # FLAG for selection of events out of the FoV (at the moment default is set in the bash script)
+
+my $withbadpixupdate=1;                     # update bad pixels to be the same in all eventfiles (0/1/yes/no/...)
+
+my $withmask=1;                             # calculate mask (0/1/yes/no/...)
+my $threshold1=0.01;                        # emask parameter
+my $threshold2=0.5;                         # emask parameter
+
+my $ximagemin=1;                            # evselect parameter
+my $ximagemax=640;                          # evselect parameter
+my $yimagemin=1;                            # evselect parameter
+my $yimagemax=640;                          # evselect parameter
+my $imagebinning='binSize';                 # evselect parameter
+my $ximagebinsize=40;                       # evselect parameter
+my $yimagebinsize=40;                       # evselect parameter
+my $ximagesize=600;                         # evselect parameter
+my $yimagesize=600;                         # evselect parameter
+my $withxranges=0;                          # evselect parameter
+my $withyranges=0;                          # evselect parameter
+my $squarepixels=1;                         # evselect parameter
+my $raimagecenter=0;                        # evselect parameter
+my $decimagecenter=0;                       # evselect parameter
+my $withcelestialcenter=0;                  # evselect parameter
+#note: imagedatatype is not used, since images (int) 
+#      and scaled images (float) should have different format
+#my $imagedatatype=Real64;                   # evselect parameter
+#my $withimagedatatype=0;                    # evselect parameter
+
+my $withattcalc=0;                        # run attcalc (0/1/yes/no/...)
+my $nominalra='';                         # attcalc parameter
+my $nominaldec='';                        # attcalc parameter
+my $imagesize='';                         # attcalc parameter
+                 
+
+
+&getParams("evtfile", "ootfile", "attfile", "fwcfile", "gtifile", 
+           "withemtaglenoise", "withexposure", "withmask", "threshold1", "threshold2", "pimin", "pimax", "patmin", "patmax", "flag", "flagout",
+           "nominalra", "nominaldec", "imagesize", "withbadpixupdate", "withfwcimages", "withwindowmode",
+           "ximagemin", "ximagemax", "yimagemin", "yimagemax", "imagebinning", "ximagebinsize", "yimagebinsize", "ximagesize", "yimagesize", 
+           "withxranges", "withyranges", "squarepixels", "withattcalc", "raimagecenter", "decimagecenter", "withcelestialcenter", 
+          $evtfile, $ootfile, $attfile, $fwcfile, $gtifile,
+          $withemtaglenoise, $withexposure, $withmask, $threshold1, $threshold2, $pimin, $pimax, $patmin, $patmax, $flag, $flagout,
+          $nominalra, $nominaldec, $imagesize, $withbadpixupdate, $withfwcimages, $withwindowmode,
+          $ximagemin, $ximagemax, $yimagemin, $yimagemax, $imagebinning, $ximagebinsize, $yimagebinsize, $ximagesize, $yimagesize, 
+          $withxranges, $withyranges, $squarepixels, $withattcalc, $raimagecenter, $decimagecenter, $withcelestialcenter
+          );
+
+
+
+# check boolean variables: convert to unique values 0/1
+&getBoolean($withemtaglenoise,$withemtaglenoise);
+&getBoolean($withxranges,$withxranges);
+&getBoolean($withyranges,$withyranges);
+&getBoolean($withexposure,$withexposure);
+&getBoolean($withmask,$withmask);
+&getBoolean($withattcalc,$withattcalc);
+&getBoolean($withbadpixupdate,$withbadpixupdate);
+&getBoolean($withfwcimages,$withfwcimages);
+&getBoolean($withwindowmode,$withwindowmode);
+
+
+my $im = "'updateexposure=yes writedss=yes withimageset=true xcolumn=X ycolumn=Y squarepixels=$squarepixels imagebinning=$imagebinning ximagebinsize=$ximagebinsize yimagebinsize=$yimagebinsize ximagesize=$ximagesize yimagesize=$yimagesize ximagemin=$ximagemin yimagemin=$yimagemin ximagemax=$ximagemax yimagemax=$yimagemax withxranges=$withxranges withyranges=$withyranges raimagecenter=$raimagecenter decimagecenter=$decimagecenter withcelestialcenter=$withcelestialcenter'";
+
+my $ccom = "/bin/bash eimageget.sh '$evtfile' '$ootfile' '$attfile' '$fwcfile' '$gtifile' " .
+           "$withemtaglenoise $withexposure $withmask $threshold1 $threshold2 '$pimin' '$pimax' '$patmin' '$patmax' '$flag' '$flagout' " .
+           "$withattcalc '$nominalra' '$nominaldec' '$imagesize' '$withbadpixupdate' '$withfwcimages' '$withwindowmode' " .
+           "$im " ;
+
+
+
+###&sendCommand($ccom);
+system $ccom; 
+
+
+
+
+
+
+
+
+
+#
+#==============================================================================
+# getParams : command line parameter parser
+#
+
+sub getParams {
+
+
+    my $nparams = ($#_ + 1) / 2 ;
+#            SAS::message($SAS::AppMsg, $SAS::SparseMsg, "NPARAMS = $nparams \n");              
+    my $quotedparam;
+# Add blank to treat first and last parameters like all others (and like in emchain ;-)
+###    @ARGV=" " . "@ARGV" . " " ;    
+    my $line=" " . "@ARGV" . " " ;    
+
+###            SAS::message($SAS::AppMsg, $SAS::SparseMsg, "ARGV = !@ARGV! \n");              
+    ## $line =~ s/\"//g;
+    my $linepart1=""; my $linepart2=""; my $linesum="";
+    my $param=""; my $strcur=""; my $shortline=""; my @save; 
+    my $ll=0; my $pp=0; my $ppp=0; my $ii=0; my $kk=0; my $ap=0; my $ep=0; 
+
+#    if ( @save = grep /^pimin=/ , @ARGV) {
+#       $pimin="$save[-1]";
+#       $pimin =~ s/^.*=//; 
+#    };
+
+
+#
+# Look for '--v' or '-v': print version information
+# Look for '--p' or '-p': print parameter information
+# Look for '--h' or '-h': print parameter information
+#          else: determine parameters
+#
+
+    if ( grep /^--?v/, @ARGV) { getVersion() ; exit; } ;
+    if ( grep /^--?p/, @ARGV) { showSyntax() ; exit; } ;
+    if ( grep /^--?h/, @ARGV) { showSyntax() ; exit; } ;
+    if ( grep /^--?m/, @ARGV) { showSupported() ; exit; } ;
+#    if ( grep /^--?d/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?d\b/, @ARGV) { system ("sasdialog eimageget @ARGV") ; exit; } ;
+    if ( grep /^--?a/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?c/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?f/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?i/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?t/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?V/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?w/, @ARGV) { showSupported() ; exit; } ;
+
+    for ($kk=0; $kk<$nparams; $kk++){
+	       $param = $_[$kk] . "=";
+	       $ii = index($line,$param);
+#       if ( ($param eq " exposure=") && ($ep eq 11) ) {$ii = -1};
+        $ap = 0 ;
+        if ($param eq "pimin=") {$ap = 1};
+        if ($param eq "pimax=") {$ap = 1};
+        if ($param eq "patmin=") {$ap = 1};
+        if ($param eq "patmax=") {$ap = 1};
+        if ($param eq "flag=") {$ap = 2};
+        if ($param eq "flagout=") {$ap = 2};
+        # print "PARAM: $param, LINE = $line, II = $ii, AP = $ap \n";
+#       SAS::message($SAS::AppMsg, $SAS::SparseMsg, "\n  II = $ii , PARAM = $param , EP = $ep , AP = $ap ");              
+	       if ( $ii != -1) {
+          if ($ap == 0) {
+	           $pp = length("$param") + $ii;
+	           $ppp = length("$line");
+##          print "PP = $pp, LEN(LINE) = $ppp \n";
+	           $shortline = substr($line,$pp,length($line)-$pp);
+	           $ll = index($shortline," ");
+	           if ( $ll == -1 )  { $ll = length($shortline) };
+            $quotedparam =  substr($shortline,0,$ll);
+            $quotedparam =~ s/\"//g; 
+            $_[$kk+$nparams] = $quotedparam;
+            # print "$param: $_[$kk+$nparams]\n";
+          };
+          if ($ap == 1) {
+
+	           $pp = length("$param") + $ii;
+	           $ppp = length("$line");
+	           $shortline = substr($line,$pp,length($line)-$pp);
+
+	           $ll = index($shortline,"=");
+	           if ( $ll == -1 )  { $ll = length($shortline) };
+	           $shortline = substr($shortline,0,$ll);
+
+	           $ll = index($shortline,"-");
+	           if ( $ll == -1 )  { $ll = length($shortline) };
+	           $shortline = substr($shortline,0,$ll);
+
+	           $ll = rindex($shortline," ");
+	           if ( $ll == -1 )  { $ll = length($shortline) };
+	           $shortline = substr($shortline,0,$ll);
+
+		   $quotedparam =  substr($shortline,0,$ll);
+		   $quotedparam =~ s/\"//g; 
+		   $quotedparam =~ s/\'//g; 
+		   $_[$kk+$nparams] = $quotedparam;
+          };
+
+          if ($ap == 2) {
+	      foreach(@ARGV){
+		  $ii = index($_,$param);
+		  if ( $ii == 0 )  {
+		      $quotedparam =  substr($_,length($param),length($_)-length($param));
+		      $quotedparam =~ s/\"//g; 
+		      $quotedparam =~ s/\'//g; 
+		      $_[$kk+$nparams] = $quotedparam;
+		  };
+
+	      }
+
+          };
+
+
+###          if ($verbose) {
+###            if ($verbosity > 4) {
+###              $linepart1 = "Command line parameter: ";
+###              if ($ap==0) {$linepart2 = " $_[$kk] = $_[$kk+$nparams]"} 
+###              else {$linepart2 = " $_[$kk] = '$_[$kk+$nparams]'"}; 
+###              $linesum = $linepart1 . $linepart2;
+###              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $linesum);              
+###            }
+###          }
+	       }
+###       else {
+###           if ($verbosity > 4) {
+###              $linesum = "Default parameter values: $_[$kk] = $_[$kk+$nparams]";
+###              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $linesum);              
+###           };
+###        };
+    };
+#  exit ;
+}
+
+
+
+
+#
+#==============================================================================
+# getBoolean : convert input variable to unique values 0(false) or 1(true)
+#
+
+sub getBoolean {
+
+   my $tmpvar = substr($_[0], 0, 1);
+   if ( $tmpvar =~ /[1YyTt]/ ) { $_[1] = 1 }
+   else { $_[1] = 0};
+}
+
+
+
+
+
+
+
+
+#
+#==============================================================================
+# getVersion : get the version number of epchain, and of the constituents
+#
+
+sub getVersion {
+   my $epchain_msg = -$SAS::AppMsg;
+   my $ccom = "" ; my $version = "" ; my $release = "";
+   my $vfile = $ENV{'SAS_DIR'} . "/packages/eimageget/VERSION" ;   
+   if ( ! -e $vfile ) {
+     SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Not found: $vfile");
+     SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Take version from task.");
+     $version = $TASK_VERSION }
+   else {
+#    $ccom = "cat `saslocate packages/epchain/VERSION` /dev/null" ;
+#    chomp($version = `$ccom`) ;  
+     chomp($version = `cat $vfile`);
+   };
+   $vfile = $ENV{'SAS_DIR'} . "/RELEASE" ;   
+   if ( ! -e $vfile ) {
+     $release = "" }
+   else {
+#    $ccom = "cat `saslocate RELEASE`" ;
+#    $ccom = "cat $vfile";    
+     chomp($release = `cat $vfile`) ;
+   };
+   SAS::message($SAS::AppMsg, $epchain_msg, "");
+   SAS::message($SAS::AppMsg, $epchain_msg, "eimageget (eimageget-$version) [$release]");
+
+#
+# Write the version of the constituent tasks
+#
+   SAS::message($SAS::AppMsg, $epchain_msg, "");
+   SAS::message($SAS::AppMsg, $epchain_msg, "You are using the following constituent task versions :");
+   SAS::message($SAS::AppMsg, $epchain_msg, "");
+   foreach my $task ("attcalc","evselect","emtaglenoise",
+                     "eexpmap") {
+#     $ccom = $task . " -v \n" ;
+      $ccom = $task . " -v " ;
+      chomp(my $message = `$ccom`) ;
+#     $message = `$ccom` ;
+      SAS::message($SAS::AppMsg, $epchain_msg, $message);
+   }
+   SAS::message($SAS::AppMsg, $epchain_msg, "");
+}
+#
+#==============================================================================
+# show supported and unsupported options
+
+sub showSupported {
+  my $epchain_msg = -$SAS::AppMsg;
+  SAS::message($SAS::AppMsg, $epchain_msg, $line_plusplus);
+  SAS::message($SAS::AppMsg, $epchain_msg, "Supported options:");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --v   : show version of eimageget and constituent tasks");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --p   : show supported parameters and default values");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --h   : show supported parameters and default values");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --d   : dialog GUI");
+  SAS::message($SAS::AppMsg, $epchain_msg, "Unsupported options (use e.g. environment variables instead):");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --a   : ccfpath");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --c   : noclobber");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --f   : ccffiles");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --i   : cifname");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --m   : manual");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --t   : trace");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --V   : verbosity level");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --w   : warning");
+  SAS::message($SAS::AppMsg, $epchain_msg, "");
+  $ENV{'SAS_VERBOSITY'}=$verbosity;
+}
+#
+#==============================================================================
+# in case of early error show the full syntax, 
+#   also for options "--p" and "-p" and "--h" and "-h"
+#
+sub showSyntax {
+  if ( $indir eq ""){
+    if ( not exists $ENV{'SAS_ODF'}) {}
+    else { $indir = $ENV{'SAS_ODF'} }
+  };
+  my $epchain_msg = -$SAS::AppMsg;
+
+  SAS::message($SAS::AppMsg, $epchain_msg, $line_plusplus);
+
+  SAS::message($SAS::AppMsg, $epchain_msg, "evtfile=<input event file>                          [$evtfile]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "ootfile=<input out-of-time event file>              [$ootfile]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "attfile=<attitude file>                             [$attfile]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "fwcfileb=<input filter-wheel-closed event file>     [$fwcfile]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "gtifile=<good-time-interval file>                   [$gtifile]");
+
+  SAS::message($SAS::AppMsg, $epchain_msg, "pimin;                                              [$pimin]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "pimax;                                              [$pimax]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "patmin;                                             [$patmin]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "patmax;                                             [$patmax]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "flag;                                               [$flag]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "flagout;                                            [$flagout]");
+
+  SAS::message($SAS::AppMsg, $epchain_msg, "withemtaglenoise=<Y|N>;                             [$withemtaglenoise]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withexposure=<Y|N>;                                 [$withexposure]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withbadpixupdate=<Y|N>;                             [$withbadpixupdate]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withattcalc=<Y|N>;                                  [$withattcalc]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withmask=<Y|N>;                                     [$withmask]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withfwcimages=<Y|N>;                                [$withfwcimages]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withwindowmode=<Y|N>;                               [$withwindowmode]");
+
+  SAS::message($SAS::AppMsg, $epchain_msg, "---- parameters passed to evselect ----");
+  SAS::message($SAS::AppMsg, $epchain_msg, "ximagemin;                                          [$ximagemin]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "ximagemax;                                          [$ximagemax]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "yimagemin;                                          [$yimagemin]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "yimagemax;                                          [$yimagemax]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "imagebinning;                                       [$imagebinning]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "ximagebinsize;                                      [$ximagebinsize]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "yimagebinsize;                                      [$yimagebinsize]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "ximagesize;                                         [$ximagesize]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "yimagesize;                                         [$yimagesize]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withxranges;                                        [$withxranges]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withyranges;                                        [$withyranges]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "squarepixels;                                       [$squarepixels]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withcelestialcenter;                                [$withcelestialcenter]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "raimagecenter;                                      [$raimagecenter]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "decimagecenter;                                     [$decimagecenter]");
+
+  SAS::message($SAS::AppMsg, $epchain_msg, "---- parameters passed to attcalc ----");
+  SAS::message($SAS::AppMsg, $epchain_msg, "nominalra;                                          [$nominalra]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "nominaldec;                                         [$nominaldec]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "imagesize;                                          [$imagesize]");
+
+  SAS::message($SAS::AppMsg, $epchain_msg, "---- parameters passed to emask ----");     
+  SAS::message($SAS::AppMsg, $epchain_msg, "threshold1;                                         [$threshold1]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "threshold2;                                         [$threshold2]");
+#
+  SAS::message($SAS::AppMsg, $epchain_msg, "");
+}

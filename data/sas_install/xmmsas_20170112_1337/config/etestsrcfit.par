@@ -1,0 +1,93 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="imagesets" list="yes" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    List of input images.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="bkgmapsets" list="yes" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    List of input background maps.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="expmapsets" list="yes" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    List of input exposure maps.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withdetmaskset" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to input a detection mask.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="detmaskset" type="dataset" mandatory="yes">
+      <DESCRIPTION>
+       Detection mask. Fits will not be tested in unmasked areas of the images.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="srclisttab" type="table" mandatory="yes">
+   <DESCRIPTION>
+    Name of the source list dataset+table.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="confefrac" type="real" default="0.98">
+   <DESCRIPTION>
+    Used to calculate the confusion radius.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    confefrac in (0:1)
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="idbandstyle" type="string" default="user">
+   <DESCRIPTION>
+    Style for inputting the band IDs.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="imageset">
+    </ITEM>
+    <ITEM value="user">
+     <PARAM id="useridbands" list="yes" type="int" default="1">
+      <DESCRIPTION>
+       List of integers representing the band IDs.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       useridbands in [1:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="efracstyle" type="string" default="sourceset">
+   <DESCRIPTION>
+    Style for inputting the PSF energy fraction.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="sourceset">
+    </ITEM>
+    <ITEM value="user">
+     <PARAM id="efrac" type="real" default="0.9">
+      <DESCRIPTION>
+       PSF energy fraction (used to calculate the psf coverage).
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       efrac in (0:1)
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

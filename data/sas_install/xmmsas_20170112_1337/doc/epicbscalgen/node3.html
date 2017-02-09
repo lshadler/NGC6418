@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="epicbscalgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epicbscalgen.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="epicbscalgen.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epicbscalgen (ccftools-1.35.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="epicbscalgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Computational scheme"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epicbscalgen.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="epicbscalgen:description:description"></A>
+<BR>
+Description
+</H1>
+The XMM Current Calibration File contains the constituent <TT>CCF::Boresight</TT>
+[<A
+ HREF="node16.html#ct:SOCCCFICD">1</A>] which holds for each instrument a tuple of
+three angles <!-- MATH
+ $(\phi, \theta, \psi)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="59" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$(\phi, \theta, \psi)$"></SPAN> describing the misalignment
+of the respective instrument boresight with respect to the
+satellite coordinate frame (SACCOORD - see documentation of package
+<A NAME="501"></A><A NAME="tex2html2"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>. The angles are to be interpreted
+as 3-2-1 Euler rotation angles[<A
+ HREF="node16.html#ct:Wertz78">2</A>] through which the
+SACCOORD frame is transformed into the instrument boresight (IBS) frame
+as depicted in Fig.&nbsp;1 for the case of EMOS2.
+Formally, the IBS is defined as follows:
+
+<UL>
+<LI>The <SPAN CLASS="MATH"><IMG
+ WIDTH="31" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$+X$"></SPAN> axis points along the optical axis of the telescope
+of the respective instrument from the focal plane into the
+sky.
+</LI>
+<LI>The <SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$+Z$"></SPAN> axis is orthogonal to the <SPAN CLASS="MATH"><IMG
+ WIDTH="31" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$+X$"></SPAN> axis and lies in the plane
+spanned by the <SPAN CLASS="MATH"><IMG
+ WIDTH="31" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$+X$"></SPAN> axis and the <SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$+Z$"></SPAN> axis of the CAMCOORD2
+(see documentation of package <A NAME="505"></A><A NAME="tex2html3"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>
+frame.
+</LI>
+<LI>The <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$+Y$"></SPAN> axis completes the right-handed, orthonormal Cartesian
+coordinate frame.
+</LI>
+</UL>
+
+<P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $\epsfig{file=bsframe.eps,width=10cm}$
+ -->
+<IMG
+ WIDTH="454" HEIGHT="443" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="\epsfig{file=bsframe.eps,width=10cm}">
+<BR>
+<BR>
+<BR></DIV>
+<DIV CLASS="centerline" ID="par1433" ALIGN="CENTER">
+<DIV ALIGN="CENTER">
+Figure&nbsp;1: Coordinate frames used in <A NAME="509"></A><A NAME="tex2html1"
+  HREF="../epicbscalgen/index.html"><SPAN  CLASS="textbf">epicbscalgen</SPAN></A></DIV></DIV>
+<DIV ALIGN="CENTER">
+</DIV>
+
+<P>
+The computation of the angles is a purely geometrical problem and,
+thus, should have a straightforward analytical solution. However, due to
+the large number of involved independent variables (Ra/Dec of pointing,
+position angle, position of cameras in satellite frame, uncertainties in
+focal lengths, position and extent of sources being looked at, etc.) and
+the fact that math with Euler angles is non-trivial <A NAME="513"></A><A NAME="tex2html4"
+  HREF="../epicbscalgen/index.html"><SPAN  CLASS="textbf">epicbscalgen</SPAN></A>
+employs an empirical scheme which is outlined below. The scheme
+has the following advantages:
+
+<UL>
+<LI>The process is fully automatic in the sense that is does require
+   only minimal input from the person running the task.
+</LI>
+<LI>It is bound to always give the right answer (chances of making
+   mistakes are small).
+</LI>
+<LI>The correctness of the algorithm can be tested with SciSim.
+</LI>
+</UL>
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html105"
+  HREF="node4.html">Computational scheme</A>
+<UL>
+<LI><A NAME="tex2html106"
+  HREF="node5.html">Input</A>
+<LI><A NAME="tex2html107"
+  HREF="node6.html">Output</A>
+<LI><A NAME="tex2html108"
+  HREF="node7.html">Algorithm</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html109"
+  HREF="node8.html">Practical examples and hints</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="epicbscalgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Computational scheme"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

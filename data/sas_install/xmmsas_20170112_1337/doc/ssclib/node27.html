@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>sumInt32Dbl</TITLE>
+<META NAME="description" CONTENT="sumInt32Dbl">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node28.html">
+<LINK REL="previous" HREF="node26.html">
+<LINK REL="up" HREF="node22.html">
+<LINK REL="next" HREF="node28.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node26.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Value at histogram fraction"></A>
+<A HREF="node22.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Array or vector scalar"></A>
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="sumInt32"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node6.html">General-purpose array-processing utilities</A> / <A  HREF="node22.html">Array or vector scalar</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00026500000000000000"></A> <A NAME="sec:array:sumInt32Dbl"></A>
+<BR>
+sumInt32Dbl
+</H3>
+
+<P>
+The Fortran90 builtin function <TT>sum()</TT> returns the value
+in as the same type as its argument (at least in NAG Fortran specification).
+For example, when <TT>aryInt8</TT> is an array of Integer(int8),
+the returned value of <TT>sum(aryInt8)</TT> is also Integer(int8)
+-- which is practically not very useful,
+as the total sum of <TT>aryInt8</TT> is very likely to exceed the
+maximum (or minimum if negative) possible number of Integer(int8)
+(which can be obtained with <TT>huge()</TT> function).
+
+<P>
+This subroutine is developed to avoid that problem; it still returns
+the total sum of the array as <TT>sum()</TT> does, but always returns
+the type Integer(int32) and/or Real(double) if requested,
+whether the type of the argument is int8/16/32.
+In addition if an overflow happens during the calculation,
+that is, if the absolute value of the total sum is larger than
+<TT>huge(int32_variable)</TT>, 
+the returned Integer(int32) are <TT>INTEGER_NULL</TT>,
+which is defined in <TT>DAL</TT>.
+Also if the size of the given array is zero, the returned values are
+<TT>INTEGER_NULL</TT> and <TT>REAL_NULL</TT>.
+
+<P>
+<TT>sumInt32Dbl()</TT> can accept up to 4-dimensional arrays at the time of writing.
+
+<P>
+See also Section&nbsp;<A HREF="node28.html#sec:array:sumInt32">2.6.6</A> for the handier, function version
+of this routine <TT>sumInt32()</TT>.
+
+<P>
+<PRE>
+interface sumInt32Dbl
+  subroutine sumInt32DblInt81d(ary, sumInInt32, sumInDbl)
+    integer(int8),  intent(in) :: ary(:)
+    integer(int32), intent(out), optional :: sumInInt32
+    real(double),   intent(out), optional :: sumInDbl
+  end subroutine sumInt32DblInt81d
+  subroutine sumInt32DblInt161d(ary, sumInInt32, sumInDbl)
+    integer(int16), intent(in) :: ary(:)
+    integer(int32), intent(out), optional :: sumInInt32
+    real(double),   intent(out), optional :: sumInDbl
+  end subroutine sumInt32DblInt161d
+  subroutine sumInt32DblInt321d(ary, sumInInt32, sumInDbl)
+    integer(int32), intent(in) :: ary(:)
+    integer(int32), intent(out), optional :: sumInInt32
+    real(double),   intent(out), optional :: sumInDbl
+  end subroutine sumInt32DblInt321d
+
+  subroutine sumInt32DblInt82d(ary, sumInInt32, sumInDbl)
+    integer(int8),  intent(in) :: ary(:,:)
+    integer(int32), intent(out), optional :: sumInInt32
+  end subroutine sumInt32DblInt82d
+  subroutine sumInt32DblInt162d(ary, sumInInt32, sumInDbl)
+    integer(int16), intent(in) :: ary(:,:)
+    integer(int32), intent(out), optional :: sumInInt32
+    real(double),   intent(out), optional :: sumInDbl
+  end subroutine sumInt32DblInt162d
+  subroutine sumInt32DblInt322d(ary, sumInInt32, sumInDbl)
+    integer(int32), intent(in) :: ary(:,:)
+    integer(int32), intent(out), optional :: sumInInt32
+    real(double),   intent(out), optional :: sumInDbl
+  end subroutine sumInt32DblInt322d
+
+  subroutine sumInt32DblInt83d(ary, sumInInt32, sumInDbl)
+    integer(int8),  intent(in) :: ary(:,:,:)
+    integer(int32), intent(out), optional :: sumInInt32
+    real(double),   intent(out), optional :: sumInDbl
+  end subroutine sumInt32DblInt83d
+  subroutine sumInt32DblInt163d(ary, sumInInt32, sumInDbl)
+    integer(int16), intent(in) :: ary(:,:,:)
+    integer(int32), intent(out), optional :: sumInInt32
+    real(double),   intent(out), optional :: sumInDbl
+  end subroutine sumInt32DblInt163d
+  subroutine sumInt32DblInt323d(ary, sumInInt32, sumInDbl)
+    integer(int32), intent(in) :: ary(:,:,:)
+    integer(int32), intent(out), optional :: sumInInt32
+    real(double),   intent(out), optional :: sumInDbl
+  end subroutine sumInt32DblInt323d
+
+  subroutine sumInt32DblInt84d(ary, sumInInt32, sumInDbl)
+    integer(int8),  intent(in) :: ary(:,:,:,:)
+    integer(int32), intent(out), optional :: sumInInt32
+    real(double),   intent(out), optional :: sumInDbl
+  end subroutine sumInt32DblInt84d
+  subroutine sumInt32DblInt164d(ary, sumInInt32, sumInDbl)
+    integer(int16), intent(in) :: ary(:,:,:,:)
+    integer(int32), intent(out), optional :: sumInInt32
+    real(double),   intent(out), optional :: sumInDbl
+  end subroutine sumInt32DblInt164d
+  subroutine sumInt32DblInt324d(ary, sumInInt32, sumInDbl)
+    integer(int32), intent(in) :: ary(:,:,:,:)
+    integer(int32), intent(out), optional :: sumInInt32
+    real(double),   intent(out), optional :: sumInDbl
+  end subroutine sumInt32DblInt324d
+end interface
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node26.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Value at histogram fraction"></A>
+<A HREF="node22.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Array or vector scalar"></A>
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="sumInt32"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

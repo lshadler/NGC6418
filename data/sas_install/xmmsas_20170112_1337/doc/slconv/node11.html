@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Examples.</TITLE>
+<META NAME="description" CONTENT="Examples.">
+<META NAME="keywords" CONTENT="slconv">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="slconv.css">
+
+<LINK REL="previous" HREF="node10.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node12.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+slconv (slconv-2.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node10.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Extra columns for GAIA"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="slconv.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00038000000000000000">
+Examples.</A>
+</H2>
+
+<P>
+The following minimal command
+
+<P>
+<PRE>
+  slconv srclisttab=srclist.ds radiusexpression='RATE/10.0'
+</PRE>
+
+<P>
+does the following:
+
+<UL>
+<LI>Reads sources from the first table in the dataset srclist.ds;
+</LI>
+<LI>Reads RA and dec information, in decimal degrees, from columns named <A NAME="685"></A><TT>RA</TT> and <A NAME="687"></A><TT>DEC</TT>;
+</LI>
+<LI>Uses all the sources (no filtering or truncation);
+</LI>
+<LI>Determines the radii of the ds9 or gaia circles in arcseconds, directly using the number found in a column called <A NAME="689"></A><TT>RATE</TT>, divided by 10;
+</LI>
+<LI>Specifies green circles for the source symbols;
+</LI>
+<LI>Writes the output to a ds9-style region file called region.reg.
+</LI>
+</UL>
+
+<P>
+If data from some other table in srclist.ds is desired, say one called <A NAME="691"></A><TT>SOURCES</TT>, it must be specified in the value of <TT>srclisttab</TT> as follows:
+
+<P>
+<PRE>
+  slconv srclisttab=srclist.ds:SOURCES radiusexpression='RATE/10.0'
+</PRE>
+
+<P>
+If the RA and dec are contained in columns of names different from the defaults, these also must be specified directly, eg:
+
+<P>
+<PRE>
+  slconv srclisttab=srclist.ds radiusexpression='RATE/10.0'
+  racolumn=RA_CORR deccolumn=DEC_CORR
+</PRE>
+
+<P>
+Similarly with the unit of these data:
+
+<P>
+<PRE>
+  slconv srclisttab=srclist.ds radiusexpression='RATE/10.0' radecunits=radians
+</PRE>
+
+<P>
+An example of some filtering of the input source list:
+
+<P>
+<PRE>
+  slconv srclisttab=srclist.ds radiusexpression='RATE/10.0'
+  expression='(ID_BAND==0)&amp;&amp;(!(isnull(EXT)))&amp;&amp;((ID_INST!=1)||(RAWY&gt;15))'
+</PRE>
+
+<P>
+Suppose you wanted to display only the 10 most extended sources in an XMM-product source list. You could do:
+
+<P>
+<PRE>
+  slconv srclisttab=srclist.ds radiusexpression='RATE/10.0'
+  expression='!(isnull(EXT))' withncut=yes
+  ncutsortexpression='EXT' ncut=10
+</PRE>
+
+<P>
+If you wanted the source circles in the previous example to scale with the extent <A NAME="694"></A><TT>EXT</TT> instead of <A NAME="696"></A><TT>RATE</TT>/10, but were not very concerned to maintain an exact quantitative arrangement, the following would produce an acceptable qualitative result:
+
+<P>
+<PRE>
+  slconv srclisttab=srclist.ds radiusexpression='EXT' radiusstyle=auto
+  expression='!(isnull(EXT))' withncut=yes
+  ncutsortexpression='EXT' ncut=10
+</PRE>
+
+<P>
+Still maintaining this example, suppose you also wanted the sources to be numbered in decreasing order of the extent, you should do:
+
+<P>
+<PRE>
+  slconv srclisttab=srclist.ds radiusexpression='EXT' radiusstyle=auto
+  expression='!(isnull(EXT))' withncut=yes
+  ncutsortexpression='EXT' ncut=10
+  withlabels=yes labelstyle=sortedint labelsortstyle=radius
+</PRE>
+
+<P>
+This locks the source numbering into the calculation of radii. If you changed <TT>radiusexpression</TT> in the previous command line to `<A NAME="699"></A><TT>DET_ML</TT>' for example, but nothing else, then the radii would then decrease with a decrease in the detection likelihood <A NAME="701"></A><TT>DET_ML</TT>, but the labels would still be integers in an ordered sequence following the decrease in radius. If you wanted to tie the label sequence definitely to, say, <A NAME="703"></A><TT>EXT</TT>, regardless of which rule the radius followed, you would rather do
+
+<P>
+<PRE>
+  slconv srclisttab=srclist.ds radiusexpression='EXT' radiusstyle=auto
+  expression='!(isnull(EXT))' withncut=yes
+  ncutsortexpression='EXT' ncut=10
+  withlabels=yes labelstyle=sortedint labelsortstyle=expr sortexpression='EXT'
+</PRE>
+
+<P>
+To use the actual value of, say, column <A NAME="705"></A><TT>COUNTS</TT> as the label, do:
+
+<P>
+<PRE>
+  slconv srclisttab=srclist.ds radiusexpression='RATE/10.0'
+  withlabels=yes labelstyle=expr labelexpression='COUNTS'
+</PRE>
+
+<P>
+So far all these examples have produced an output file in ds9 format, since this reflects the default setting of the parameter <TT>outputstyle</TT>. To obtain gaia-style output, this must be set to `gaia' explicitly:
+
+<P>
+<PRE>
+  slconv srclisttab=srclist.ds radiusexpression='RATE/10.0' outputstyle=gaia
+</PRE>
+
+<P>
+With this nearly all-default command line, the processing is identical to that in the first example in this subsection, except that the task in addition looks  for two more columns in the input source table: <A NAME="708"></A><TT>RADEC_ERR</TT> and <A NAME="710"></A><TT>RATE</TT>, because the default value of <TT>extragaiacolumns</TT> lists these two columns. If these are found, their contents are copied to columns with identical names in the output table (an error results if either is not found). If you want a different set of columns, these must of course be explicitly specified, for example:
+
+<P>
+<PRE>
+  slconv srclisttab=srclist.ds radiusexpression='RATE/10.0' outputstyle=gaia
+  extragaiacolumns='RADEC_ERR COUNTS EXT EXT_ML'
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node10.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Extra columns for GAIA"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

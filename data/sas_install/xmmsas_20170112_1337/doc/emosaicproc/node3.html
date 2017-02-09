@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="emosaicproc">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emosaicproc.css">
+
+<LINK REL="next" HREF="node8.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="emosaicproc.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emosaicproc (emosaicproc-0.4.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="emosaicproc.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="The data processing"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emosaicproc.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="emosaicproc:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+<TT>emosaicproc</TT> is a task to perform coherently source detection on several
+more or less displaced exposures from different observations, 
+or "pseudo-exposures" as created by the task <TT>emosaic_prep</TT>, designed
+specifically for treating XMM-Newton observations in <I>emosaic</I> mode. A
+combination of real and "pseudo-exposures" (evtl. from different <I>emosaic</I>
+observations) is of course also possible. Spectral bands can be defined for maximizing the 
+source detection.
+
+<P>
+Given the nature of this SAS task, it is possible to run out of memory
+if a large sky area is covered by the mosaic or the different ODFs.
+In this case, it is recommended to split the process in several runs.
+
+<P>
+Due to memory limitations od this task, usersmay find it necessary to
+ work with subsets of different pointings We encorage user to be
+ conservative when using <TT>emosaicproc</TT> and users have to be aware
+ that RAM memory can be an issue.
+
+<P>
+When co-adding information for source detection from displaced exposures which 
+cover more or less the same area, several factors act in different way for the 
+images of the same
+source, eg. vignetting and PSF changes within the FOV have to be taken into account. This is the reason
+why it is more accurate to treat the data basically pointing by pointing, instead of merging different
+pointings in the first place. 
+
+<P>
+<TT>emosaicproc</TT> works on several individual (pseudo-)exposures. The reduced data (event files, as 
+resulting from <TT>e[m][p]proc</TT> for pointing observations or pre-processed through <TT>emosaic_prep</TT> 
+for EPIC mosaic observations, previously reduced) 
+has to be prepared in a way, that each (pseudo)-exposure is contained in a separate directory,
+immediately above the working directory (eg. ../&lt;my-working-dir&gt;/prep_mosaic_001 ; 
+../&lt;my-working-dir&gt;/prep_mosaic_002 , etc). This is exactly the way data corresponding to different
+pointings in a mosaicking observation is left, after separating the data in pseudo-exposures by <TT>emosaic_prep</TT>. To avoid confusion and to keep the procedure simple, the names of the directories
+containing the (pseudo-)exposures are fixed (eg. "prep_mosaic_&lt;xxx&gt;", where &lt;xxx&gt; between 000 and 999 
+stands for each position. The numbering does not necessarily reflect any sequence - furthermore any
+combination of the (pseudo-)exposures can be taken for processing). 
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html58"
+  HREF="node4.html">The data processing</A>
+<UL>
+<LI><A NAME="tex2html59"
+  HREF="node5.html">Data preparation</A>
+<LI><A NAME="tex2html60"
+  HREF="node6.html">Source detection steps on individual pointins</A>
+<LI><A NAME="tex2html61"
+  HREF="node7.html">Final source detection steps using all images simultaneously</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="emosaicproc.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="The data processing"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Examples</TITLE>
+<META NAME="description" CONTENT="Examples">
+<META NAME="keywords" CONTENT="epevents">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epevents.css">
+
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epevents (epevents-6.50.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Analysis of very bright"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epevents.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00033000000000000000">
+Examples</A>
+</H2>
+
+<P>
+Let us assume we have an output event file produced by 
+<A NAME="939"></A><A NAME="tex2html17"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>
+and <A NAME="943"></A><A NAME="tex2html18"
+  HREF="../badpix/index.html"><SPAN  CLASS="textbf">badpix</SPAN></A>
+with name <TT>rawevents_04.dat</TT>,
+then the simplest call to <A NAME="947"></A><A NAME="tex2html19"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>
+is
+<PRE>
+  epevents eventset=rawevents_04.dat outset=events_04.dat
+</PRE>
+If you want to produce a diagnostic file containing CCD maps
+in 4 energy bands in the same run then you may use
+<PRE>
+  epevents eventset=rawevents_04.dat outset=events_04.dat \
+    withphotonmap=Y photonmapset=eventmap_04.dat          \
+    lothresh="0 200 500 0" hithresh="200 500 2000 32000"  \
+    mappatterntype=sssn
+</PRE>
+This creates three maps with single events only 
+(<SPAN CLASS="MATH"><IMG
+ WIDTH="52" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$0-0.2$"></SPAN>keV, <SPAN CLASS="MATH"><IMG
+ WIDTH="64" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$0.2-0.5$"></SPAN>keV, <SPAN CLASS="MATH"><IMG
+ WIDTH="64" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$0.5-2.0$"></SPAN>keV) and one with
+all non-single events in the energy range <SPAN CLASS="MATH"><IMG
+ WIDTH="47" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$0-32$"></SPAN>keV.
+The parameters <TT>lothresh</TT>, <TT>hithresh</TT>, and 
+<TT>mappatterntype</TT> are used with default values. 
+A non-default call is
+<PRE>
+  epevents eventset=rawevents_04.dat outset=events_04.dat \
+    withphotonmap=Y photonmapset=eventmap_04.dat          \
+    lothresh="0 0 0 0" hithresh="32000 32000 32000 32000"  \
+    mappatterntype=sxvw
+</PRE>
+which creates one single events map, one with doubles perpendicular
+to the readout direction, and two maps with doubles in readout direction
+where one has the main event near the CAMEX and the other with the 
+main away from the CAMEX.
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

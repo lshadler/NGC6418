@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>OGIP spectral products</TITLE>
+<META NAME="description" CONTENT="OGIP spectral products">
+<META NAME="keywords" CONTENT="multixmmselect">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="multixmmselect.css">
+
+<LINK REL="previous" HREF="node20.html">
+<LINK REL="up" HREF="node20.html">
+<LINK REL="next" HREF="node22.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+multixmmselect (xmmselect-2.65.12) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node20.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Product extraction"></A>
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Product extraction"></A>
+<A HREF="node22.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Typical usage scenarios"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node30.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="multixmmselect.html">Home Page</A> / <A  HREF="node3.html">Description</A> / <A  HREF="node14.html">Detailed layout of GUI</A> / <A  HREF="node20.html">Product extraction</A></DIV>
+<!--End of Navigation Panel-->
+
+<H4><A NAME="SECTION00033610000000000000">
+OGIP spectral products</A>
+</H4>
+<BR><A NAME="multixmmselect:guilayout:specprod"></A>
+<P>
+In <A NAME="640"></A><A NAME="tex2html55"
+  HREF="../multixmmselect/index.html"><SPAN  CLASS="textbf">multixmmselect</SPAN></A>, the generation of spectral products goes one
+step beyond, allowing the generation of:
+
+<P>
+
+<UL>
+<LI>OGIP spectrum for selected source region
+</LI>
+<LI>OGIP spectrum for selected background region
+</LI>
+<LI>Redistribution Matrix File (RMF) corresponding to source spectrum
+</LI>
+<LI>Auxiliary Response File (ARF) corresponding to source spectrum
+</LI>
+</UL>
+
+<P>
+for more than one EPIC event list simultaneously. To do this, once the OGIP spectral
+button is pressed in <A NAME="644"></A><A NAME="tex2html56"
+  HREF="../multixmmselect/index.html"><SPAN  CLASS="textbf">multixmmselect</SPAN></A>, a call to
+<A NAME="648"></A><A NAME="tex2html57"
+  HREF="../multiespecget/index.html"><SPAN  CLASS="textbf">multiespecget</SPAN></A>
+is triggered. This task calls <A NAME="652"></A><A NAME="tex2html58"
+  HREF="../especget/index.html"><SPAN  CLASS="textbf">especget</SPAN></A>
+as 
+many times as input files have been introduced. 
+
+<P>
+The only differect in terms of behavior with respect to the OGIP
+spectral product generation feature in <A NAME="656"></A><A NAME="tex2html59"
+  HREF="../xmmselect/index.html"><SPAN  CLASS="textbf">xmmselect</SPAN></A>, is the creation and propagation of
+the source and background region in sky coordinates (RA,DEC), instead
+of the standard camera coordinates system (X,Y) used by <A NAME="660"></A><A NAME="tex2html60"
+  HREF="../xmmselect/index.html"><SPAN  CLASS="textbf">xmmselect</SPAN></A>.
+
+<P>
+The primary input to <A NAME="664"></A><A NAME="tex2html61"
+  HREF="../multiespecget/index.html"><SPAN  CLASS="textbf">multiespecget</SPAN></A>
+is a mosaic image made of
+several EPIC event files and two spatial selection expressions, one
+indicating an extraction region around the point source of interest
+and a second one for the source-free background region. These can be
+generated with <A NAME="668"></A><A NAME="tex2html62"
+  HREF="../multixmmselect/index.html"><SPAN  CLASS="textbf">multixmmselect</SPAN></A>
+in a convenient manner:
+
+<P>
+
+<OL>
+<LI>create a mosaic image in sky coordinates as described above
+</LI>
+<LI>when the image is displayed in <A NAME="tex2html63"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A> define a circular region around the source of interest 
+</LI>
+<LI>make another (not necessarily circular) region that shall comprise
+only background events. In order for <A NAME="674"></A><A NAME="tex2html64"
+  HREF="../multixmmselect/index.html"><SPAN  CLASS="textbf">multixmmselect</SPAN></A>
+to distinguish the
+source from the background region, the latter must be assigned in
+<A NAME="tex2html65"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A> the attribute <EM>Background</EM>. To do that, double click on
+the region marker and in the upcoming dialogue box select ``Property''
+and ``Background''. When done, the border line style should change
+from solid to dashed.
+<BR>
+Be sure that the ``exclude'' regions has not been selected.
+
+<P>
+</LI>
+<LI>click on <B><EM>OGIP Spectral Products</EM></B>. At this point <A NAME="681"></A><A NAME="tex2html66"
+  HREF="../multixmmselect/index.html"><SPAN  CLASS="textbf">multixmmselect</SPAN></A>
+will read the two regions from <A NAME="tex2html67"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A> and perform some basic checks
+for correctness (e.g. there is exactly one source and one background
+region). In case this fails, an error messages with suggested
+actions will be presented. If the two regions are
+successfully read, <A NAME="687"></A><A NAME="tex2html68"
+  HREF="../multiespecget/index.html"><SPAN  CLASS="textbf">multiespecget</SPAN></A>
+will be called with the
+necessary inputs. In this first version of <A NAME="691"></A><A NAME="tex2html69"
+  HREF="../multixmmselect/index.html"><SPAN  CLASS="textbf">multixmmselect</SPAN></A>, the
+optional optimization step have been disabled.
+</LI>
+</OL>
+
+<P>
+Please note that the production of one single RMF with <A NAME="695"></A><A NAME="tex2html70"
+  HREF="../especget/index.html"><SPAN  CLASS="textbf">especget</SPAN></A>
+is a computationally intensive task and can take several tens of
+minutes on a moderately loaded workstation. Now, with
+<A NAME="699"></A><A NAME="tex2html71"
+  HREF="../multixmmselect/index.html"><SPAN  CLASS="textbf">multixmmselect</SPAN></A>, several RMFs files can be automatically generated, therefore this process can take longer to complete. 
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node20.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Product extraction"></A>
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Product extraction"></A>
+<A HREF="node22.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Typical usage scenarios"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node30.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

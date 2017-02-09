@@ -1,0 +1,416 @@
+ChangeLog for badpixfind
+===============================
+Open SPRs: 
+- none
+
+Version 1.40 - 2016-09-06 (AI)
+--------------------------------
+- (src/badpixfind_mod.f90) Initialization to null of all pointers that are passed 
+  to C++ (Dope vectors). If we do not initizialize the pointers, 
+  we get seg fault at run-time with gcc-6.2.	
+
+Version 1.39 - 2014-04-08 (EC)
+--------------------------------
+- moved test/*.NEW to testprods/badpixfind_data
+- removed unused binary data from test/
+
+Version 1.38 - 2012-16-10 (AI)
+--------------------------------
+- (src/badpixfind_mod.f90): Now the task writes the mask in a MASK extension,
+	instead of PRIMARY extension.
+	
+Version 1.37 - 2005-06-08 (HB)
+--------------------------------
+- (src/badpixfind_mod.f90): missing QUADRANT (pn) and CCDNODE (MOS) keywords 
+	                    copied to output badpix file, CCDID keyword (pn) 
+	                    corrected, if badpixfind is run on calibrated, 
+	                    multi-chip event files (SSC-SPR-3469).
+	
+Version 1.36 - 2003-09-16 (HB)
+-------------------------------	
+- (src/badpixfind_mod.f90): test output removed
+		
+Version 1.35 - 2003-09-16 (HB)
+-------------------------------	
+- (src/badpixfind_mod.f90): error in code to recognice multi-chip
+	event files corrected
+	
+Version 1.34 - 2003-07-31 (HB)
+-------------------------------
+- (src/badpixfind_mod.f90): correction of v. 1.30: task parameter
+	"flickertimesteps" also read for PN; crash in the case of
+	empty input event list prevented
+	
+Version 1.33 - 2003-05-07 (HB)
+-------------------------------
+- (config/badpixfind.par): modified to enable param-2.0 functionality	
+		
+Version 1.32 - 2003-04-25 (HB)
+-------------------------------
+- (src/badpixfind_mod.f90): correction of v. 1.30: incorrect badpixmap
+	filename in single chip mode 
+	
+Version 1.31 - 2003-04-22 (HB)
+-------------------------------
+- (src/badpixfind_mod.f90): correction of v. 1.30: event files with 
+	CCDNR column but same CCDNR value for all events now treated 
+	as single chip event files
+	
+Version 1.30 - 2003-03-21 (HB)
+-------------------------------
+- (src/badpixfind_mod.f90): task now also accepts merged, calibrated
+ 	event lists as input; new task parameter 'ccd' selects chip
+	for bad pixel search
+- (config/badpixfind.par, doc/badpixfind_description.tex): param. 'ccd' added
+	
+Version 1.29  - 2002-05-15 (MJF)
+--------------------------------
+- (config/badpixfind.par): updated for `param-2.0'
+- (DEPEND): needs `param-2.0', updated all other entries to latest
+
+Version 1.28 - 2002-01-16 (MJF)
+-------------------------------
+- (test/badpixfind): set VERBORSITY=5
+- (test/pn.*): reasonable FRMTIME values written into header
+
+Version 1.27 - 2001-10-20 (MJF)
+-------------------------------
+- (DEPEND): needs cal-3.121
+- (src/badpixfind_mod.f90): CAL coordinate routines need double type variables
+- (src/badpixfind_mod.f90): for EPN access table columns in read-only mode
+
+Version 1.26.5 2001-04-11 (AMR)
+--------------
+	+ (src/badpixfind_mod.f90) Correction to bad column searching 
+	  algorithm in columnsearchlabel=total mode
+        + (doc/badpixfind_description.tex) Updated
+
+Version 1.26.4 2001-03-23 (AMR)
+--------------
+	+ as 1.26.3. Resubmission. Firewall/uploadsas problems
+
+Version 1.26.3 2001-03-22 (AMR)
+--------------
+	+ (src/badpixfind_mod.f90) Improvement in hot pixel finding algorithm 
+	  in confused regions. 
+	+ (doc/badpixfind_description.tex) Updated (warnings, recommended 
+          automatic settings etc)
+
+Version 1.26.2 2001-02-09 (AMR)
+--------------
+	+ (src/badpixfind_mod.f90) Optional parameters: threshabovebackground 
+          (thresholds can be set can as normal or as thresholds above the 
+          b/g), withfovmask (areas outside of FOV can be masked out in bad pixel
+          map). Both have default `N' - default behaviour as V.1.26.1
+        + (doc/badpixfind_description.tex) Updated (new parameters/usage etc). 
+        + (config/badpixfind.par & .lyt) Updated (new parameters). 
+
+Version 1.26.1 2001-02-09 (AMR)
+--------------
+	+ (src/badpixfind_mod.f90) Slight improvement in hot column/pixel 
+          finding algorithm in very confused regions.  
+        + (doc/badpixfind_description.tex) Updated (newer recommended pn 
+          settings)
+
+Version 1.26 2000-12-20 (AMR)
+--------------
+	+ (src/badpixfind_mod.f90) Task altered so as to suppress numerous
+	  and unnecessary OffaxisAngleOutsideValidityRange warning repetitions
+	  - at off-axis angles greater than 15 arcminutes, the PSF *at* 15
+	  arcminutes is used (no celestial sources are seen here).
+	+ (doc/badpixfind_description.tex) Updated with new recommended 
+	  automatic pn settings. 
+
+Version 1.25.7 2000-11-23 (AMR)
+--------------
+	+ (doc/badpixfind_description.tex) Updated (SSC-SPR-2112)
+
+Version 1.25.6 2000-11-09 (AMR)
+--------------
+	+ (src/badpixfind_mod.f90) Uplinked bad pixels and badpixfind bad 
+	  pixels handled correctly during PSF comparison of test pixel and 
+	  neighbours (SSC-SPR-2039)
+	+ (doc/badpixfind_description.tex) Updated
+
+Version 1.25.5 2000-11-07 (AMR)
+--------------
+	+ (src/badpixfind_mod.f90) Inclusion of uplinked bad pixels in map
+	  (SSC-SPR-2031)
+        + (doc/badpixfind_description.tex) Updated as regards above and 
+	  improved pn default values (after changes in CAL PSF handling). 
+
+Version 1.25.4 2000-10-27 (AMR)
+--------------
+	+ (src/badpixfind_mod.f90) Large off-axis angle problem (at Leicester) 
+	  solved (SSC-SPR-2011)
+        + (config/badpixfind.info) Updated
+
+Version 1.25.3 2000-10-26 (AMR)
+--------------
+	+ (src/badpixfind_mod.f90) Handling of MOS SW data (SSC-SPR-2001)
+
+Version 1.25.2 2000-10-20 (AMR)
+--------------
+	+ (src/badpixfind_mod.f90) Warning removed (SSC-SPR-1995)
+        + (doc/badpixfind_description.tex) Updated (SSC-SPR-1995)
+
+Version 1.25.1 2000-10-20 (AMR)
+--------------
+	+ (config/Makefile) Added badpixfind.lyt (SSC-SPR-1991)
+
+Version 1.25 2000-10-09 (AMR)
+--------------
+	+ (src/badpixfind_mod.f90) Correct (currently wrong) CAL_getEbounds 
+	  output for PN
+	+ (src/badpixfind_mod.f90) Small screen ouput changes
+        + (doc/badpixfind_description.tex) Updated 
+
+Version 1.24 2000-10-06 (AMR)
+--------------
+	+ (src/badpixfind_mod.f90) Energy filtering now for pn and MOS 
+	+ (src/badpixfind_mod.f90) Search outside FOV performed (MOS)
+        + (config/badpixfind.par) New default settings (reasonable for MOS
+	  analysis, conservative for pn analysis - see documentation[comments])
+        + (doc/badpixfind_description.tex) Default and suggested parameter 
+          settings described
+        + (test/badpixfind_test checkoutput.f90) updated (energy filtering)
+
+Version 1.23 2000-09-29 (AMR)
+--------------
+        +(test/) FILTER=`NONE" changed to FILTER=`UNKNOWN' in test harness files
+
+Version 1.22 2000-09-26 (AMR)
+--------------
+	+ (src/badpixfind_mod.f90) Adapted to CAL-3.81 PSF handling (SSC-SPR-1965)
+        + (test/badpixfind_test checkoutput.f90) Test harness updated
+ 
+Version 1.21 2000-09-15 (AMR)
+--------------
+	+ (src/badpixfind_mod.f90) Introduced energy filtering
+        + (config/badpixfind.par config/badpixfind.lyt) New optional
+          energy filtering parameters: loenergythresh, hienergythresh
+        + (doc/badpixfind_description.tex) Energy filtering described
+        + (test/badpixfind_test checkoutput.f90) Test harness updated
+ 
+Version 1.20 2000-08-29 (AMR)
+--------------
+	+ (DEPEND) emsaplib 1.7 -> 2.0
+        + (src/badpixfind_mod.f90) Introduced bad pixel image map creation
+        + (config/badpixfind.par config/badpixfind.lyt) New optional 
+ 	  map creation parameters: withbadpixmap, mappixcellsize, badpixmap
+        + (doc/badpixfind_description.tex) Map creation described
+
+Version 1.19.3 2000-06-30 (AMR)
+--------------
+	+ (doc/badpixfind_description.tex) Removed wrong attribute (SSC-SPR-1894)
+
+Version 1.19.2 2000-06-21 (AMR)
+--------------
+	+ (DEPEND) altered to solve SOC releasetrack error
+
+Version 1.19.1 2000-06-20 (AMR)
+--------------
+        + (doc/badpixfind_description.tex) Removed non-existent links (SSC-SPR-1816)
+        + (config/badpixfind.par) Added new default values
+        + (Changelog) Format updated
+	+ (test/badpixfind_test) Updated
+
+Version 1.19 2000-05-25 (AMR)
+------------
+
+- New Changelog format adopted, info file included
+- Documentation updated (closing SPR-1689)
+- Handling of extremely bright pixels altered 
+- Count rate handling changed (PN exposure taken from LIVETIME)
+
+Version 1.18  -  11-02-00
+-----------
+
+- Altered to handle new epframes output 
+- Hot pixel comparison with PSF and flickering analysis updated 
+- Documenataion and test harness updated
+
+Version 1.17  -  08-02-00
+-----------
+
+- Dal-1.100 Read-only bug corrected
+
+Version 1.16  -  27-01-00
+-----------
+
+- Small bug in output file corrected
+
+Version 1.15  -  21-01-00
+-----------
+
+- Task now handles small windows and offset datasets (pn and MOS) [SPR]
+- Detections of very large numbers of dead pixels handled properly [SPR]
+- Events outside of RAWX/RAWY windows are noted. 
+- More information placed in output file header. 
+- Test harness and documentation updated. 
+
+- Closed SPRs: SSC-SPR-1438, 1439
+
+Version 1.14  -  03-12-99
+-----------
+
+- Documentation numbering changed
+
+Version 1.13  -  26-11-99
+-----------
+
+- In PSF comparison, edge pixels handled correctly and low memory CAl used
+- DISTRIBUTION file and newlines introduced
+- test harness updated
+
+Version 1.12  -  18-11-99  
+-----------
+
+- Search for flickering pixels now introduced (involving K-S and Chi2 testing). 
+- Comparison of hot pixels and neighbours with PSF introduced. 
+- Checking of pixels with dual entries performed. 
+- Test harness updated. 
+- Documentation updated. 
+- DISTRIBUTION (empty) file and newline in ./Makefile added.
+
+Version 1.11  -  24-09-99  
+-----------
+
+- Test harness updated. Exit status of each subtest program checked.
+
+Version 1.10  -  23-09-99  
+-----------
+
+- As 1.9, with changes in DEPEND and src/Makefile (works under solaris)
+
+Version 1.9  -  22-09-99  
+-----------
+
+- For MOS, flagged, out of CCD range events are now rejected. 
+- Test harness updated. 
+
+- Closed SPRs: SSC-SPR-1227, 1229, 1243
+
+Version 1.8  -  16-09-99  
+-----------
+
+- In MOS case, correct backprojecting of patterns is now used. 
+- Documentation updated. Also newest macros now used. 
+- Test harness updated. Includes MOS pattern recognition testing. 
+
+- Closed SPRs: SSC-SPR-1228
+
+Version 1.7  -  03-09-99  
+-----------
+
+- Task is now completely self-contained, and does not require evselect 
+  (it is now not a metatask) - this will aid future development of task.
+- Because of above, no intermediate image files produced
+- Task now has single default output filename
+- Three SPRs have been cleared
+
+Closed SPRs: SSC-SPR-1191, 1192, 1226
+
+Version 1.6  -  30-08-99  
+-----------
+
+- Redelivery fixing three SPRs and discussing how two others will be solved
+  in the future.
+
+Closed SPRs: SSC-SPR-1189, 1190, 1193
+
+Version 1.5  -  02-08-99  
+-----------
+
+- Redelivery to incorporate change in evselect
+
+Closed SPRs: SSC-SPR-1130
+
+Version 1.4  -  30-06-99  
+-----------
+
+- Task now works on many different array types, and on epframes, emevents and 
+rgsframes output. 
+
+- Optional parameters added to search for bad pixels. Threshold 
+values can be input in terms of counts, count rates or percentages of the 
+peak values in the dataset. Task can also search for whole columns (channels)
+that are bad (see documentation). 
+
+- Documentation up to date
+
+
+Version 1.3  -  08-06-99  
+-----------
+
+- Use of run_badpixfind V1.2 as a template to create first proper f90 metatsk
+version of badpixfind. 
+
+- New parameters (rawxlist, rawylist, typelist, yextentlist) - These are four
+individual lists of integers, specifying the user-defined bad pixel properties 
+(i.e. when used in user-flagged mode [userflagbadpix=Y]).
+
+- Documentation up to date
+
+- The task works on the output from epframes and emevents. When ran on the 
+most recent output of rgsframes that I have, I get an error - "error
+(accessingAsWrongDataType), Accessing data im.PRIMARY of type 2 as int16 is
+not supported". Evselect, ran on epframes or emevents output, produces type 3
+images. This is fine. Evselect, ran on the rgsframes output I have, produces
+type 2 (array data type) images. Hence the error.
+
+
+Version 1.2  -  01-06-99 (Marco Beijersbergen)
+-----------
+
+- run_badpixfind converted into a proper metatask.
+
+Version 1.1  -  31-05-99  
+-----------
+
+- V3 redelivery - Now works on emevents output
+- Refer to Changelog for V1.0 (below) for usage of task
+
+
+Version 1.0  -  27-05-99  
+-----------
+
+- First working version of approved task (submitted for V3) 
+
+- In order that badpixfind performs to the requirements described in the task
+description, it is necessary to use an f90 metatask. As even the simplest of 
+f90 metasks is not as yet able to compile, the version of badpixfind
+delivered here (V1.0) is a simpler script version, whereby evselect is called
+only once, and only a search for hot and dead pixels is possible (i.e. when
+searchbadpix=Y). Mode 2 (userflagbadpix=Y), whereby the user can flag specific
+pixels or columns of pixels, works OK [see task description].
+
+- The task works via a script, "run_badpixfind" (which is contained within
+the src directory), which calls evselect and badpixfind. The script works as
+follows:
+
+run_badpixfind eventset searchbadpix userflagbadpix lothresh hithresh 
+                                                             badpixset(opt)
+
+(The output filename [badpixset] is not needed, and it is recommended to
+leave it to the task to perform the naming. The values of lothresh and
+hithresh are needed however, even in searchbadpix=N mode, where they just act
+as dummy values, and are not used).
+
+Examples:- 
+
+run_badpixfind in.fits N Y 0.0 100.0 (just user-flagging, output filename
+created by task, lothresh, hithresh values are dummies)
+
+run_badpixfind in.fits Y Y 1.5 95.0 (searching for hot and dead pixels with
+values above and below threshold values, user-flagging also)
+
+run_badpixfind in.fits Y N 1.5 95.0 out.fits (searching for hot and dead 
+pixels with values above and below threshold values, no user-flagging, output
+file will be named out.fits)
+
+	
+Version 0.1
+-----------
+
+- Directory structure created by pkgmaker.

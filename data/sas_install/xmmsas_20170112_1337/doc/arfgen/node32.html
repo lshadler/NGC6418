@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>A cross-region ARF</TITLE>
+<META NAME="description" CONTENT="A cross-region ARF">
+<META NAME="keywords" CONTENT="arfgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="arfgen.css">
+
+<LINK REL="previous" HREF="node31.html">
+<LINK REL="up" HREF="node14.html">
+<LINK REL="next" HREF="node33.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+arfgen (arfgen-1.93.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node31.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Out of time event"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node33.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node44.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="arfgen.html">Home Page</A> / <A  HREF="node14.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000612000000000000000"></A>
+<A NAME="arfgen:description:description:cra"></A>
+<BR>
+A cross-region ARF
+</H2>
+Due to the finite size of the PSF in XMM, a fraction of photons which 
+are emitted from one part of the sky are detected at another position
+on the detector. This is generally not a problem for point sources but for
+regions of extended emission it can cause an extracted spectrum to be
+a mix of flux from different areas of an object. It may be possible
+to disentangle the true sky emission by simultaneously fitting
+different spectral files. In this case an ARF giving the expected
+contribution (effective area) of flux received in one area from 
+a different area is needed. This can be achieved by finding the
+product of the usual effective area components at the position of
+the output area with the energy-dependent encircled-energy fraction
+contained in the output area due to flux from the input area.
+
+<P>
+i.e.
+
+<P>
+<BR>
+<IMG
+ WIDTH="223" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="\begin{code}
+\par
+$A_{io} = F_{o} C_{o} Q_{o} \sum_{i}{I_{i}\psi_{io}V_{i}}/\sum_{i}{I_{i}}$\ \\
+\par
+\end{code}">
+<BR>
+
+<P>
+where <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$F_{o}$"></SPAN> is the filter response, <SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$C_{o}$"></SPAN> is the chip gap and bad
+pixel factor, <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$Q_{o}$"></SPAN> is the quantum efficiency, <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$I_{i}$"></SPAN> is the relative
+flux in a pixel <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$i$"></SPAN> of the input region, <SPAN CLASS="MATH"><IMG
+ WIDTH="26" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\psi_{io}$"></SPAN> is the fraction of
+the PSF which falls in the output region from this input pixel
+and  <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$V_{i}$"></SPAN> is the vignetting at the position of the input region pixel.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node31.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Out of time event"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node33.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node44.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

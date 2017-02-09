@@ -1,0 +1,83 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="poissonset" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    Name of image dataset to fit the bkg to.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="fitsets" list="yes" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    List of background component images.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="fitstyle" type="string" default="whole">
+   <DESCRIPTION>
+    Style in which the fitting is performed.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="whole">
+    </ITEM>
+
+    <ITEM value="base">
+     <PARAM id="truncationset" type="dataset" mandatory="yes">
+      <DESCRIPTION>
+       Pixels brighter than the truncation image are not included in the fit.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="wholethenbase">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withmaskset" type="bool" default="no">
+   <DESCRIPTION>
+    Whether apply a mask to the input poisson image.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="maskset" type="dataset" default="mask.ds">
+      <DESCRIPTION>
+       Name of mask dataset.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withinitcoeffs" type="bool" default="no">
+   <DESCRIPTION>
+    Whether specify the starting value of the amplitudes to fit.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="initcoeffs" list="yes" type="real" default="1.0">
+      <DESCRIPTION>
+       List of starting values for the coefficients.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       initcoeffs in (0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="tempset" type="dataset" default="tempset.ds">
+   <DESCRIPTION>
+    Name of temporary image dataset.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="outbkgmapset" type="dataset" default="bkgmap.ds">
+   <DESCRIPTION>
+    Name of the output background map (the weighted sum of the components).
+   </DESCRIPTION>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

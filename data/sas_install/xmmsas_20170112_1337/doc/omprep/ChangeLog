@@ -1,0 +1,467 @@
+ChangeLog for omprep
+--------------------
+------------------------------	
+Version 2.47 - 2016-07-18 (AI)
+------------------------------	
+	+ (src/omprep_mod.f90) gfortran compatibility changes applied.
+
+Version 2.46.1 - 2014-09-09 (RDS)
+------------------------------	
+	+(src/checkpath.cc): checked for the LAST occurrence of the
+	"_OM" string when finding the exposure number to avoid problems with
+	directories which contain this string - SPR-7078
+------------------------------	
+Version 2.46 - 2013-07-13 (VNY)
+------------------------------
+	+(src/omprep_mod.f90): introduced an additional protection against the possibility
+	of calculating a wrong binning factor for full-frame high-resolution.	
+------------------------------	
+Version 2.45 - 2012-07-19 (VNY)
+------------------------------
+	+(src/omprep_mod.f90): checked the initialisation of variables 
+	dummyTHXFlag and others; propagated the keywords BFASTID 
+	and SAMPTIME in the output file header 	
+------------------------------	
+Version 2.44 - 2011-03-24 (VNY)
+------------------------------	
+	+(src/omprep_mod.f90): Correcting the task behaviour for modeset=3
+	in which case the task should ignore the parameter rawattitude
+------------------------------	
+Version 2.43 - 2011-03-23 (VNY)
+------------------------------	
+	+(src/checkpath.cc): ensured that the run-time
+	exception error in checkpath.cc is fixed; the code is made 
+	compatible with SUN OS
+------------------------------	
+Version 2.42 - 2011-03-22 (VNY)
+------------------------------	
+	+(src/omprep_mod.f90): fixed a run-time
+	exception error caused by an interface between C++ and Fortran-90
+-------------------------------
+Version 2.41 - 2011-03-21 (VNY) 
+-------------------------------	
+	+(src/omprep_mod.f90): fixed a syntax error 
+------------------------------
+Version 2.40 - 2011-03-18 (VNY)
+------------------------------
+	A new parameter (rawattitude) is included to allow using the
+	raw attitude data file (RAF); the possible values of this 
+	parameter are 0,1 or 2:
+	0- for use the current setting of the SAS_ATTITUDE variable,
+	1- for using the average of the first 20 seconds of the raw attitude
+	data and 2- for using the average over the entire time span of 
+	the exposure (SSC-SPR-6652). 
+Version 2.39 - 2010-08-19 (VNY) fixing a bag which might lead to 
+ 	a wrong exposure ID in the header of the output file.
+Version 2.38.2 - 2009-06-01 (VNY) Adding a warning message for the cases 
+	when a binning factor in the WDX table was found wrong 
+	(SSC-SPR-6541)	
+Version 2.38.1 - 2009-05-20 (VNY) Protected againt the possibility of
+	picking up wrong binning factors from the WDX-tabele (SSC-SPR-6541)
+	
+Version 2.38 - 2009-02-10 (CB)
+------------------------------
+        Deleted ssclib from DEPEND file to
+        fix build problem on xmac02 machine
+        (Hadn't noticed it was in the file twice)
+
+Version 2.37 - 2009-02-10 (CB)
+------------------------------
+        Deleted ssclib from DEPEND file to
+        fix build problem on xmac02 machine
+
+
+
+Version 2.36 - 2005-11-10 (vny)
+-------------------------
+	+(src/omprep_mod.f90) Protected against oscillating sign
+	of FTFINE caused by telemetry drops (FAST-regime, SSC-SPR-3505)
+	
+Version 2.35.1 - 2005-10-25 (cb1)
+--------------------------------
+       +(src/omprep_mod.f90) Ammended program so that Engineering-4
+	data only the keywords BINAX1, BINAX2, BINBPE, WINDOWDX and
+	WINDOWDY are set to what they should be, thus overcoming
+	problems with missing/incorrect attributes in the input
+	image header. (fixes SPR-3532)
+	
+Version 2.35 - 2005-08-17 (cb1)
+--------------------------------
+       +(src/omprep_mod.f90) minor modifications to the way the exposure-
+	identifier string is obtaine (fixesSSC-SPR-3502)
+
+Version 2.34.5 - 2005-06-09 (vny)
+--------------------------------
+	+(src/omprep_mod.f90) minor modifications to the warning messages 
+	(some of them contained undefined strings - SSC-SPR-3472)
+Version 2.34.4 - 2005-03-02 (cv)
+--------------------------------	
+	+(src/omprep_mod.f90) Further Minor modification made 
+	 to fix SPR 3438 (CB)
+
+Version 2.34.3 - 2005-02-21 (VNY)
+--------------------------------	
+	+(src/omprep_mod.f90): The task
+	is adjusted to work woth the Engineering-4 data (SSC-SPR-3443)
+        Minor modification also made to fix SPR 3438 (CB)
+
+Version 2.34.2 - 2004-06-29 (VNY)
+---------------------------------
+	A bug is fixed, which was leading to a wrong window sizes 
+	in the DETSEC-keyword (SSC-SPR-3345).
+	
+Version 2.34.1 - 2004-01-27 (CB)
+------------------------------
+        String comparison between set and DUMMYTHX.FIT changed
+	to use string INDEX function (fixes SPR 3229).
+	
+Version 2.34 - 2003-11-21 (CB)
+------------------------------
+       DEPEND file ammended fro ssclib 3.0
+
+Version 2.33 - 2003-10-24 (VNY)
+------------------------------
+	The parameter modeset can be set to 4 in order to work with the grism 
+	images (filters GRISM1 or GRISM2 or, respectively 1000 and 200); 
+	the task is prepared to be used for processing grism 
+	data (SAS-SCR-116)
+	
+Version 2.32 - 2003-06-16 (VNY)
+--------------------------------
+	Added a check of the dummyTHXFlag before extracting
+	the exposure identifier by the routine GetExposureIdentifier
+	(fixes SSC-SPR-3132). If the THX-file is dummy, then the 
+	exposure identifier is extracted from PEH-file.
+	
+Version 2.31 - 2003-06-03  (CB) 
+--------------------------------
+         Added keyword DATATYPE tp output (fixes SPR 3125)
+	
+Version 2.30 - 2003-02-26  (CB) 
+--------------------------------
+         Uploaded into development track
+	
+
+Version 2.29.2 - 2002-12-12 (CB) 
+--------------------------------
+         Documentation ammended (fixes SPR 3055)
+	
+
+Version 2.29.1 - 2002-12-12 (CB) 
+--------------------------------
+         Fixes a bug that has come to light in Leicester pipeline testing.
+	
+Version 2.29 - 2002-10-17 (CB) 
+--------------------------------
+         Code tidied up
+	
+Version 2.28 - 2002-10-08 (CB) 
+--------------------------------
+          +(src/omprep_mod.f90) - Modified to store
+	  ccd frametime & dead fraction in image header
+	  for omdetect version 4.0
+	
+	
+Version 2.27 - 2002-10-03 (CB) 
+--------------------------------
+         Modified DEPEND file..
+	
+
+Version 2.26 - 2002-06-10 (CB) 
+--------------------------------
+         Modified config and depend file for param version 2.0.
+	
+Version 2.25.4 - 2002-05-28 (CB/SRR) 
+------------------------------------
+	Documentation updated.
+
+Version 2.25.3 - 2002-03-14 (CB) 
+--------------------------------
+	Documentation corrected.
+
+Version 2.25.2 - 2002-02-21 (CB) -
+      +(src/omprep_mod.f90) - Modified to output additional keywords for
+       SCR 84 and also the keyword "EXPIDSTR" (fixes SPRs 2269 & 2270).
+	
+Version 2.25.1 - 2002-01-28 (CB) -
+      Ammended configuration file (fixes SPR 2721)
+ 
+Version 2.25 - 2002-01-25 (CB) -
+      +(src/omprep_mod.f90) - Modified so that only 1 warning message
+      about negative-pixel values outputted (SPR 2706).     
+
+
+Version 2.24 - 2002-01-07 (CB) - DEPEND file modified for ssclib            
+
+Version 2.23 - (CB) - No changes - uploaded to keep Guiseppe happy.            
+
+Version 2.22.3 -            
+      +(src/omprep_mod.f90) 1-pixel difference in the calculation of
+       DETSEC parameter has been rectified. Check added to ensure exposure
+       time is not zero- if it is then time obtained fro getstartendexp-
+       if still zero program aborted (fixes SPR 2664) 	
+Version 2.22.2 - 2001-10-10 Further mod to DEPEND file to rectify SOC build problem.
+
+Version 2.22.1 - 2001-10-09 DEPEND file modified to rectify SOC build problem.
+
+Version 2.22 - 2001-09-25
+      +(src/omprep_mod.f90) Modified so that it  now picks up the BINBPE 
+      parameter directly from the image file (fixes SPR 2565). It also now
+      gets the exposure time directly from teh image file. Can now process
+      Rudi-5 images and engineering 2 and 4 data. Code tidied up.
+	
+	
+Version 2.21.1 - 2001-07-31
+      +(src/omprep_mod.f90) OAL_toAttributeMatrix call has been eliminated
+      (the MATRIX array was not used in the programme),
+      dependencies have been actualised. RA_PNT and DEC_PNT keywords 
+      changed to RA_SCX and DEC_SCX for FITS consistency.  
+
+Version 2.21 - 2001-07-25
+-------------------------
+       +(src/omprep_mod.f90) Program modified to process fast-imaging data
+       (for fast-chain- PHA column added to output file, TLMIN & TLMAX parameters changed
+       for evselect, DETNAM set to REDUNDANT and various checks added,
+       instrument mode integer variable added). Code tidied up.
+	
+Version 2.20 - 2001-06-18
+-------------------------
+       +(src/omprep_mod.f90) Keyword "BLANK" changed to "MISSPIX"- fits
+       has always complained about the former. Also, code modified for the
+       fast-chain- argument list to sub getstartendexp modified.
+
+Version 2.19.5 - 2001-03-07
+-------------------------
+       +(src/omprep_mod.f90) For IMI files, the routine now checks that
+       the actual image size equals that computed from the header
+       parameters "WINDOWDX", WINDOWDY", "BINAX1", "BINAX2" and the
+       binning parameter binBPE- if not a fatal error message is
+       displayed. Done to stop omichain terminating because of a data
+       problem (SPR 2245)
+	
+
+Version 2.19.4 - 2001-03-06
+-------------------------
+       +(src/omprep_mod.f90) Routine getExposureStartRow revised.
+	
+Version 2.19.3 - 2001-03-01
+-------------------------
+       +(doc/omprep_description.tex) List of error messages updated.
+	
+	
+	
+Version 2.19.2 - 2001-01-11
+-------------------------
+	+(src/omprep_mod.f90) Correction made to list of filters that
+	omprep will not process.
+	
+
+	
+Version 2.19.1 - 2001-01-10
+-------------------------
+	+(src/omprep_mod.f90) Filters "GRISM2" and "FILTER_MAGNI" added to the
+	list of filters that omprep will not process.
+	
+	
+Version 2.19 - 2000-12-14
+-------------------------
+	+(src/omprep_mod.f90) Timing attributes added to the data set (SPR 2085)
+	
+Version 2.18.7 - 2000-11-14
+-------------------------
+	+(src/omprep_mod.f90) DETNAM now set to REDUNDANT, instead of
+	PRIME, if chain equal to 1/
+
+
+	
+Version 2.18.4 - 2000-11-07
+-------------------------
+	+(src/omprep_mod.f90) Initialised "att" parameters to zero to
+	solve problem with omslewchain..
+
+
+Version 2.18.3 - 2000-11-01
+-------------------------
+	+(src/makefile) Changed ordering of libraries.
+
+Version 2.18.2 - 2000-11-01
+-------------------------
+	+(src/omprep_mod.f90) Check made to ensure that the filter is a
+	valid one - program aborts if not (SPR 2016).
+
+	
+Version 2.18.1 - 2000-10-18
+-------------------------
+	+(src/omprep_mod.f90) Several variables that were used when program
+	was running in the omichain, but not in the omslewchain (causing
+	the chain to crash), initialised - (SPR 1987).
+
+
+Version 2.18 - 2000-10-11
+-------------------------
+	+(src/omprep_mod.f90) Removed test write statements.
+
+Version 2.17 - 2000-10-11
+-------------------------
+	+(test) SSC-SPR-1978. Brought the data in the test harness
+	up-to-date. Data is taken from the reprocessed cycle 0070.
+
+Version 2.16 - 2000-10-02
+-------------------------
+	+(src/omprep_mod.f90) changed call to getstartendexp which now
+	returns the filter. Removed redundant code that determined the
+	filter from the HK file.
+
+Version 2.15 - 2000-09-19
+-------------------------
+	+(test/testomprep) changed 'export' statement.
+
+Version 2.14 - 2000-08-30
+-------------------------
+
+	+ (src/omprep_mod.f90) added additional code to deal with the case
+	when a tracking history file is not present. A dummy tmp_tracking file
+	is created in this case. The ZERODRIFT option is then implemented.
+	+ (src/omprep_mod.f90) implemented the above for the Slew option.
+	+ (src/omprep_mod.f90) added the keyword BLANK to the output image
+	files. The BLANK keyword  is required by OMFLATFIELD in order to
+	process the quality array.
+
+--------------------
+Version 2.13.3 - 2000-07-19 
+--------------
+
+	+ (src/omprep_mod.f90) added boolean parameter "slewtest" to
+	handle slew data.
+	
+
+--------------------
+Version 2.13.2 - 2000-06-21 (AMK)
+--------------
+
+	+ (src/omprep_mod.f90) (SSC-SPR-1864) added various OAL calls to determine the
+	exposure start time, end time and exposure length.
+	
+Version 2.13.1 - June 12th 2000 - (AMK)
+added info files top task - SPR 1766
+	
+Version 2.13.1 - June 12th 2000 
+Removed hardwiring of dimension of 10 for maximum number of guide stars
+although this was correct. WE saw some data with a maximum of 16. The code
+now works out the maximum dimension size from the data and uses this. 
+
+Version 2.13.1 - June 12th 2000 (AMK)
+Implemented calls to OAL_getodInfo and OAL_getAttitude to get telescope attitude. 
+
+version 2.13: 17th April 2000
+
+Ammended Documentation for fatal errors.
+SSC-SPR-1667
+	
+version 2.13: 13th April 2000
+
+Added code to support 'no tracking history' option.
+	
+version 2.12: 7 Jan 2000
+
+closed SPR 1410 - replaced remaining --odfdir in test harness	
+	
+version 2.11: 6 Jan 2000
+
+Added extra extension (RAW) to take copy of image array. This will remain
+unaltered by following tasks and be used by omdetect
+	
+version 2.10: 3 December 1999
+
+Added DETSEC and DETSIZE keywords to allow ds9 mosaicing. (Warning: Still some
+binning issues need solving with this)	
+	
+Version 2.9: 2 December 1999
+
+Added DISTRIBUTION (world) file
+Replaced old PEH file with new PEH configuration.	
+Changed --odfdir to --odf in test harness.
+	
+Version 2.8: 30 July 1999
+
+Update task to read Filter Wheel Position and Acquisition Mode from
+Periodic Housekeeping file.	
+	
+Version 2.7: 21 July 1999
+
+Task now writes SAMPTIME and BFASTID keywords to fastmode event list.	
+Task now calls getexposure instead of getstartendexp
+	
+Version 2.6: 8th June 1999
+
+Updated dependancies for V3.
+
+Version 2.5: 18 May 1999
+
+Removed dependancies on filename checking, used DAL call 'hasBlock' instead.
+Removed odfdir parameter and CAL call to open CCF.
+
+Version 2.4: 20 April 1999
+
+Added 'oalodf' directory to 'test' directory and change test command to use
+local odf.
+Changed parameters names to conform to new convention.
+
+Version 2.3: 12 April 1999
+
+'Spring clean' of code (tidy, comment and fix bugs).
+Changed input parameters to conform to new standards.
+Changed input to detect either image, fast mode or tracking history files.
+Added checks on input file types.
+Corrected exposure time calculation.
+Update testomprep and checkoutput for new dataset.
+
+Version 2.2: 26 March 1999
+
+Changed rvec(sciwin - 1, 0) -> rvec(sciwin, 0)
+
+Version 2.1: 10 Dec 1998
+
+Changed dependancies for mssllib-2.0
+
+Version 2.0: 3 Sep 1998
+
+Changed to deal with OM FAST mode event list ODF as well as imaging mode
+NB task parameters changed
+
+Version 1.7: 27th Aug 1998
+
+SPR 522 closed: omprep now looks for keywords in image extension of ODF
+unused keywords no longer read
+
+Version 1.6: 28 July 1998
+
+images moved to primary array
+
+Version 1.5: 7 July 1998
+
+SPR 477 closed: omprep.tex restored to original format
+
+Version 1.4: 16 June 1998
+
+SPR 432 closed: test harness now checks some keywords
+SPR 430 closed: psw comments deleted
+SPR 428 closed: bibliography calls removed from documentation
+SPR 427 closed: .par file changed
+
+Version 1.3: 21 May 1998
+
+DEPEND edited
+ChangeLog added
+
+Version 1.2: 8 May 1998
+
+Test harness changed
+
+Version 1.1: 27 April 1998
+
+SPR 247 closed: datestamp call removed
+
+Version 1.0: 20 March 1998
+
+Original version submitted to SOC

@@ -1,0 +1,378 @@
+<FILE>
+<CONFIG>
+
+<PARAM id="table" type="table" mandatory="yes">
+	<DESCRIPTION> Name of the table to be filtered </DESCRIPTION>
+</PARAM>
+
+<PARAM id="keepfilteroutput" type="bool" default="no">
+	<DESCRIPTION> Keep output of filtering process? </DESCRIPTION>
+	<CASE>
+		<ITEM value="no"> </ITEM>
+		<ITEM value="yes">
+			<PARAM id="withfilteredset" type="bool" default="no">
+				<DESCRIPTION> Create a filtered event list </DESCRIPTION>
+				<CASE>
+					<ITEM value="no"> </ITEM>
+					<ITEM value="yes">
+						<PARAM id="filteredset" type="dataset" default="filtered.fits">
+							<DESCRIPTION> Name of file for filtered event list </DESCRIPTION>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="destruct" type="bool" default="yes">
+	<DESCRIPTION> Destructive event selection? </DESCRIPTION>
+	<CASE>
+		<ITEM value="no">
+			<PARAM id="flagcolumn" type="string" default="EVFLAG">
+				<DESCRIPTION> Name of integer column for event flagging </DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="flagbit" type="int" default="-1">
+				<DESCRIPTION> Bit position in flagcolumn column to save select status </DESCRIPTION>
+				<CONSTRAINTS>
+					flagbit in [-1:31]
+				</CONSTRAINTS>
+			</PARAM>
+		</ITEM>
+		<ITEM value="yes"> </ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="filtertype" type="string" default="expression">
+	<DESCRIPTION> Type of filtering to use </DESCRIPTION>
+	<CASE>
+		<ITEM value="dataSubspace">
+			<PARAM id="dssblock" type="block" default="">
+				<DESCRIPTION> Name of block containing the Data Suspace specification to use for filtering </DESCRIPTION>
+			</PARAM>
+		</ITEM>
+		<ITEM value="expression">
+			<PARAM id="expression" type="string" default="true">
+				<DESCRIPTION> Filtering expression </DESCRIPTION>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="writedss" type="bool" default="yes">
+	<DESCRIPTION> Write data subspace information to the output files </DESCRIPTION>
+	<CASE>
+		<ITEM value="no"> </ITEM>
+		<ITEM value="yes">
+			<PARAM id="cleandss" type="bool" default="no">
+				<DESCRIPTION> Remove components from the data subspace which select no events </DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="updateexposure" type="bool" default="yes">
+				<DESCRIPTION> Update exposure information in the output files (XMM specific) </DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="filterexposure" type="bool" default="yes">
+				<DESCRIPTION> Filter exposure extensions with the GTIs which apply to them </DESCRIPTION>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="blockstocopy" type="string" list="yes">
+	<DESCRIPTION> Extentions to copy to the extracted data sets </DESCRIPTION>
+</PARAM>
+
+<PARAM id="attributestocopy" type="string" list="yes">
+	<DESCRIPTION> Attributes to copy from the input table to the output product table </DESCRIPTION>
+</PARAM>
+
+<PARAM id="energycolumn" type="string" default="PHA">
+	<DESCRIPTION> Name of col for energy information for spectra and light curves </DESCRIPTION>
+</PARAM>
+
+<PARAM id="withzcolumn" type="bool" default="no">
+	<DESCRIPTION> Use zcolumn for product accumulation </DESCRIPTION>
+	<CASE>
+		<ITEM value="no"> </ITEM>
+		<ITEM value="yes">
+			<PARAM id="zcolumn" type="string" default="WEIGHT">
+				<DESCRIPTION> Column of values to accumulate in an image, lightcurve, spectrum or histogram </DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="withzerrorcolumn" type="bool" default="no">
+				<DESCRIPTION> Use zerrorcolumn as the error on zcolumn </DESCRIPTION>
+				<CASE>
+					<ITEM value="no"> </ITEM>
+					<ITEM value="yes">			
+						<PARAM id="zerrorcolumn" type="string" default="EWEIGHT">
+							<DESCRIPTION> Column of the error on the zcolumn value for a lightcurve, spectrum or histogram </DESCRIPTION>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="ignorelegallimits" type="bool" default="no">
+	<DESCRIPTION> Ignore TLMIN/MAX values when extracting data from columns? </DESCRIPTION>
+</PARAM>
+
+<PARAM id="withimageset" type="bool" default="no">
+	<DESCRIPTION> Extract an image file </DESCRIPTION>
+	<CASE>
+		<ITEM value="no"> </ITEM>
+		<ITEM value="yes">
+			<PARAM id="imageset" type="dataset" default="image.fits">
+				<DESCRIPTION> Name of image file to extract </DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="xcolumn" type="string" default="RAWX">
+				<DESCRIPTION> Name of X coord column for image creation </DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="ycolumn" type="string" default="RAWY">
+				<DESCRIPTION> Name of Y coord column for image creation </DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="imagebinning" type="string" default="imageSize">
+				<DESCRIPTION> Use bin sizes or image sizes to determine binning factor </DESCRIPTION>
+				<CASE>
+					<ITEM value="binSize">
+						<PARAM id="ximagebinsize" type="real" default="1" mandatory="yes">
+							<DESCRIPTION> Binning factor for x axis in image creation </DESCRIPTION>
+							<CONSTRAINTS>
+								ximagebinsize in [0:]
+							</CONSTRAINTS>
+						</PARAM>
+
+						<PARAM id="yimagebinsize" type="real" default="1" mandatory="yes">
+							<DESCRIPTION> Binning factor for y axis in image creation </DESCRIPTION>
+							<CONSTRAINTS>
+								yimagebinsize in [0:]
+							</CONSTRAINTS>
+						</PARAM>
+					</ITEM>
+					<ITEM value="imageSize">
+						<PARAM id="squarepixels" type="bool" default="no">
+							<DESCRIPTION> Force x and y bin size to be the same when imagebinning=imageSize </DESCRIPTION>
+						</PARAM>
+
+						<PARAM id="ximagesize" type="int" default="600">
+							<DESCRIPTION> Image size in the x coordinate (used to determine binning factor) </DESCRIPTION>
+							<CONSTRAINTS>
+								ximagesize in [0:]
+							</CONSTRAINTS>
+						</PARAM>
+
+						<PARAM id="yimagesize" type="int" default="600">
+							<DESCRIPTION> Image size in the y coordinate (used to determine binning factor) </DESCRIPTION>
+							<CONSTRAINTS>
+								yimagesize in [0:]
+							</CONSTRAINTS>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+
+			<PARAM id="withxranges" type="bool" default="no">
+				<DESCRIPTION> Use min/max values for x axis image extraction </DESCRIPTION>
+				<CASE>
+					<ITEM value="no"> </ITEM>
+					<ITEM value="yes">
+						<PARAM id="ximagemin" type="real" default="1" mandatory="yes">
+							<DESCRIPTION> Lower limit of x axis for image extraction </DESCRIPTION>
+						</PARAM>
+
+						<PARAM id="ximagemax" type="real" default="640" mandatory="yes">
+							<DESCRIPTION> Upper limit of x axis for image extraction </DESCRIPTION>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+
+			<PARAM id="withyranges" type="bool" default="no">
+				<DESCRIPTION> Use min/max values for x axis image extraction </DESCRIPTION>
+				<CASE>
+					<ITEM value="no"> </ITEM>
+					<ITEM value="yes">
+						<PARAM id="yimagemin" type="real" default="1" mandatory="yes">
+							<DESCRIPTION> Lower limit of y axis for image extraction </DESCRIPTION>
+						</PARAM>
+
+						<PARAM id="yimagemax" type="real" default="640" mandatory="yes">
+							<DESCRIPTION> Upper limit of y axis for image extraction </DESCRIPTION>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+
+			<PARAM id="withimagedatatype" type="bool" default="no">
+				<DESCRIPTION> Use imagedatatype to set the type of image created </DESCRIPTION>
+				<CASE>
+					<ITEM value="no"> </ITEM>
+					<ITEM value="yes">
+						<PARAM id="imagedatatype" type="string" default="Real64">
+							<DESCRIPTION> Data type of the image to be created </DESCRIPTION>
+							<CASE>
+								<ITEM value="Int16"> </ITEM>
+								<ITEM value="Int32"> </ITEM>
+								<ITEM value="Int8"> </ITEM>
+								<ITEM value="Real32"> </ITEM>
+								<ITEM value="Real64"> </ITEM>
+							</CASE>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+
+			<PARAM id="withcelestialcenter" type="bool" default="no">
+				<DESCRIPTION> Shift the center of the image to the specified ra and dec </DESCRIPTION>
+				<CASE>
+					<ITEM value="no"> </ITEM>
+					<ITEM value="yes">
+						<PARAM id="raimagecenter" type="real" default="0" mandatory="yes">
+							<DESCRIPTION> Right ascension of the center of the image, in decimal degrees </DESCRIPTION>
+						</PARAM>
+
+						<PARAM id="decimagecenter" type="real" default="0" mandatory="yes">
+							<DESCRIPTION> Declination of the center of the image, in decimal degrees </DESCRIPTION>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="withspectrumset" type="bool" default="no">
+	<DESCRIPTION> Extract a spectrum file </DESCRIPTION>
+	<CASE>
+		<ITEM value="no"> </ITEM>
+		<ITEM value="yes">
+			<PARAM id="spectrumset" type="dataset" default="spectrum.fits">
+				<DESCRIPTION> Name of spectrum file to extract </DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="spectralbinsize" type="int" default="5">
+				<DESCRIPTION> Binning factor for spectrum creation </DESCRIPTION>
+				<CONSTRAINTS>
+					spectralbinsize in [1:]
+				</CONSTRAINTS>
+			</PARAM>
+
+			<PARAM id="withspecranges" type="bool" default="no">
+				<DESCRIPTION> Use min/max values for spectral channels </DESCRIPTION>
+				<CASE>
+					<ITEM value="no"> </ITEM>
+					<ITEM value="yes">
+						<PARAM id="specchannelmin" type="real" default="0" mandatory="yes">
+							<DESCRIPTION> Minimum channel for spectrum creation </DESCRIPTION>
+							<CONSTRAINTS>
+								specchannelmin in [0:]
+							</CONSTRAINTS>
+						</PARAM>
+
+						<PARAM id="specchannelmax" type="real" default="11999" mandatory="yes">
+							<DESCRIPTION> Maximum channel for spectrum creation </DESCRIPTION>
+							<CONSTRAINTS>
+								specchannelmax in [0:]
+							</CONSTRAINTS>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="withrateset" type="bool" default="no">
+	<DESCRIPTION> Extract a time series </DESCRIPTION>
+	<CASE>
+		<ITEM value="no"> </ITEM>
+		<ITEM value="yes">
+			<PARAM id="rateset" type="dataset" default="rate.fits">
+				<DESCRIPTION> Name of time series file to extract </DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="timecolumn" type="string" default="TIME">
+				<DESCRIPTION> Name of col for time information </DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="timebinsize" type="real" default="1">
+				<DESCRIPTION> Size of time bins for time series files </DESCRIPTION>
+				<CONSTRAINTS>
+					timebinsize in [0:]
+				</CONSTRAINTS>
+			</PARAM>
+
+			<PARAM id="withtimeranges" type="bool" default="no">
+				<DESCRIPTION> Use min/max values for time series extraction </DESCRIPTION>
+				<CASE>
+					<ITEM value="no"> </ITEM>
+					<ITEM value="yes">
+						<PARAM id="timemin" type="time" default="0" mandatory="yes">
+							<DESCRIPTION> Lower limit for time series </DESCRIPTION>
+						</PARAM>
+
+						<PARAM id="timemax" type="time" default="1000" mandatory="yes">
+							<DESCRIPTION> Upper limit for time series </DESCRIPTION>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+
+			<PARAM id="maketimecolumn" type="bool" default="no">
+				<DESCRIPTION> Include a time column in the time series extention </DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="makeratecolumn" type="bool" default="no">
+				<DESCRIPTION> Produce a lightcurve of rates rather than counts </DESCRIPTION>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="withhistogramset" type="bool" default="no">
+	<DESCRIPTION> Extract a general histogram </DESCRIPTION>
+	<CASE>
+		<ITEM value="no"> </ITEM>
+		<ITEM value="yes">
+			<PARAM id="histogramset" type="dataset" default="histo.fits">
+				<DESCRIPTION> Name of the histogram file to extract </DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="histogramcolumn" type="string" default="TIME">
+				<DESCRIPTION> Name of col for histogram generation </DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="histogrambinsize" type="real" default="1">
+				<DESCRIPTION> Size of bins for histogram files </DESCRIPTION>
+				<CONSTRAINTS>
+					histogrambinsize in [0:]
+				</CONSTRAINTS>
+			</PARAM>
+
+			<PARAM id="withhistoranges" type="bool" default="no">
+				<DESCRIPTION> Use min/max values for histogram extraction </DESCRIPTION>
+				<CASE>
+					<ITEM value="no"> </ITEM>
+					<ITEM value="yes">
+						<PARAM id="histogrammin" type="real" default="0" mandatory="yes">
+							<DESCRIPTION> Lower limit for histogram </DESCRIPTION>
+						</PARAM>
+
+						<PARAM id="histogrammax" type="real" default="1000" mandatory="yes">
+							<DESCRIPTION> Upper limit for histogram </DESCRIPTION>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+</CONFIG>
+</FILE>

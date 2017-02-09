@@ -1,0 +1,288 @@
+ChangeLog for rgsimplot
+===============================
+
+Version 1.17.3 - 2014-04-03 (EC)
+--------------------------------
+	- moved P0000010010R1001SPAIMG0000V.FTZ, P0000010010R1001ORDIMG0000V.FTZ
+	and rgssources.ds.safe from test/ to testprods/rgsimplot_data/
+
+Version 1.17.2 - 2013-06-03 (AI)
+--------------------------------
+	+ Upgrade to handle properly SRCLI RGS files in LAMBDA.
+	+ Backward compatibility to work also with SRCLI files in BETA_CORR.
+	+ Doc updated.
+	
+Version 1.17.1 - 2009-07-22 (CB)
+--------------------------------	
+	+src/Makefile- deleted ssc from Makefile
+	to fix gcc 4.3 build failure
+
+
+Version 1.17 - 2008-11-06 (CB)
+--------------------------------	
+	Modified so that it can plot sources
+	with any source number (previously
+	limited to a source number < 100)
+	
+Version 1.16 - 2008-09-15 (CB)
+--------------------------------	
+	Made a small modification to prevent
+ 	rare cases of negative RA secs appearing
+	
+Version 1.15 - 2006-10-24 (CB)
+--------------------------------	
+	Modified program that colour index 1
+	is not overridden, which resulted
+	in labels being drawn in the background colour
+	(fixes SPR 3631)
+Version 1.14.3 - 2005-11-18 (CB)
+--------------------------------	
+	Further mod to fix SSC-SPR-3545.
+Version 1.14.2 - 2005-11-18 (CB)
+--------------------------------	
+	Modified a warning call to fix SSC-SPR-3545.
+Version 1.14.1 - 2005-10-26 (VNY)
+--------------------------------	
+	Further fixing of the array-bound
+	erros (SSC-SPR-3523), which was not completely resolved 
+	during the previous upload
+	
+Version 1.14 - 2005-10-06 (CB) 
+---------------------------------
+        Made minor modification to fix array-bound error
+	(SPR  3523)
+Version 1.13.3 - 2004-05-18 (CB) 
+---------------------------------
+	Further modification to src Makefile fix run-time bus-error
+	problem on mac.
+Version 1.13.2 - 2004-05-18 (CB) 
+---------------------------------
+	Removed mssl from usedlibs line in src Makefile and use
+	getfilterid_mod from main module to fix run-time bus-error
+	problem on mac.
+	
+Version 1.13.1 - 2004-03-05 (CB) 
+----------------------------------
+	Documentation corrected (fixes SPRs 3050 & 30501)
+	
+Version 1.13 - 2002-10-02 (CB) DEPEND file 
+----------------------------------
+
+Version 1.12 - 2002-05-03 (CB) DEPEND file 
+
+
+Version 1.11.7 - 14-03-2002 (CB) 
+----------------------------------
+	Documentation corrected.
+	
+Version 1.11.6 - 11-03-2002 (CB) - X-label units radians abbreviated to rad (fixes SPR 2806).
+
+Version 1.11.5 - 05-03-2002 (CB) - Modified to plot the source LABEL
+         instead of the number (fixes SPR 2631).
+
+Version 1.11.4 - 28-02-2002 (CB) - Modified to ignore points in regions
+        that have values of 0,0, which caused spurious lines on plots 
+	(fixes SPR 2741).
+
+Version 1.11.3 - 26-02-2002 (CB) - Modified not to crash if there are no 
+	sources in the source-list file, but instead to issue a warning
+	(SPR 2786)
+
+Version 1.11.3 - 26-02-2002 (CB) - Modified not to crash if there are no 
+	sources in the source-list file, but instead to issue a warning
+	(SPR 2786)
+
+Version 1.11.2 - 26-02-2002 (CB) - Reverted back to previous code for
+drawing regions to fix fix SPR 2786 - region drawing to be looked at in
+the future. 
+
+Version 1.11.1 - 27-01-2002 (CB) - Code for drawing regions ammended 
+	and simplified (fixes SPR 2674). 
+	
+Version 1.11 - 23-11-2001 (CB) - Code for setting xmin & ymin image 
+	values ammended (fixes SPRs 2612, 2424 & 2399 - problem identified
+	and fixed by Dean Hinshaw).
+Version 1.10.1 - 25-10-2001 (CB) - Subroutine "EffectiveRange" ammended to
+deal properly with images containing pixel values less than 1.1 and
+sparsely-populated images(fixes SPR 2609).
+	
+	
+Version 1.10   - Bug fixed if more than 11 sources specified in source
+                 list. Warning message added if more than 11 sources 
+	         that program can only plot 11 fits regions in different 
+	         colours- rest drawn in black (fixes SPR 2575).
+	 
+Version 1.9.13 - 01-06-2001 (CB) Removed code to fix y-axes scales- since
+image not drawn in the proper place with respect to the axes - fixes SPR 2399.
+Version 1.9.12 - 16-05-2001 (CB) Fixed bug in formatting source declinations.
+Version 1.9.10 - 2001-05-02 (CB) Ammended code to read source information from
+rgsources version 4.0 (fixes SPR 2328)
+Version 1.9.9 - 2001-04-17 (DH) Remove code which rescales yBinWidth when
+	Ymin and Ymax change.  This was causing dispersion plots to be
+	'squashed' when the yaxis of the dispersion image exceeded 3000.
+Version 1.9.7 - 2001-03-28 (CB) Code checks to see if device=/gif and if
+sets text colour to white (fixes SPR 2303). Also call to plot the
+background mask temporarily removed becauses not quite correct. 
+Version 1.9.6 - 2001-03-21 (CB) Code modified to form extension name for
+spatial background (fixes SPR 2301).
+Version 1.9.5 - 2001-03-13 (CB) Background region drawn in either black or
+white, depending on device being used (SPR 2140)
+
+Version 1.9.4 - 2001-03-13 (CB) Program modified to plot the background
+region (SPR 2140)
+Version 1.9.3 - 2001-02-27 (CB) Test directory tidied up.
+Version 1.9.2 - 2001-02-27 (CB) Code ammended to fix SPR-2246.
+Version 1.9.1 - 2001-02-06 (CB) RA & DEC character size increased (SPR
+2226), code ammended for plotting fits region, bug in plotting negative
+decs rectified.
+Version 1.9 - 2001-02-31 (CB) Program modified to run from output produced
+by rgsregions. Minor amendments made to plot.
+Version 1.8 - 2000-12-13   (CB) Version number that is plotted on the
+graph corrected to 1.8. (CB)
+
+Version 1.7 - 2000-12-5   (CB) Drawing of colour image modified to
+eliminate problem of large pixel values distorting the image (SPR 2121)
+Version 1.6 - 2000-12-5   (CB) Error in drawing coordinates corrected,
+program version added, exposure ID corrected (SPR 2121)
+Version 1.5 - 2000-11-17  (CB) Colour-bar ammended (SPR 2036 & 2037). RA
+and Decs of sources added (SPR 2047).
+
+Version 1.5 - 2000-10-03  (CB) Code tidied up
+Version 1.4 -  2000-09-28 (CB)
+      +(src/rgsimplot_mod.f90) Code tidied up - 2 uncalled subroutines deleted.	
+Version 1.3 -  2000-09-27 (CB)
+      +(src/rgsimplot_mod.f90) 	Code modifiSed for drawing the colour scale
+      wedge  (SPR-1968). Parameter "sourceid" removed (SPR-1969)
+
+Version 1.2 -  2000-09-20 (CB)
+      +(src/rgsimplot_mod.f90) 	Parameter checks made before PGPLOT
+      device opened. Program modified so that if "attributes" "TELESCOPE",
+      etc, are not present in the FITS file the program doesn't crash.
+   
+Version 1.1  - 2000-07-04 (CB)
+      +(src/rgsimplot_mod.f90) 	Font sizes made larger & scaled to size of plot
+      (SSC-SPR-1683) & (SSC-SPR-1549)	
+      Tick marks scaled to size of plot  and placed on outside of graph to make them easier to see (SSC-SPR-1684)
+      Hardcopy parameter removed.
+      Bug in releasing files corrected (SSC-SPR-1546) 
+      Code added to prevent plot file overwriting an existing one if SAS_CLOBBER set to 0 (SSC-SPR-1546) 	
+      Checks added to make sure that paperxmin not equal to paperxmax and paperymin not equal to paperymax.
+      Parameter "hardcopy" removed. 	
+      Code tidied up.	
+      Program modified so that the user can specify which orders to be
+      plotted, or use the default of plotting all the available orders
+      (SSC-SPR-1182) & (SSC-SPR-1913)	
+      +(doc/rgsimplot_description.tex) Error message "Plot file already
+      exists" added. Parameter "colour" added to parameter list. 
+      Parameter "srcofinterest" changed to "sourceid".	
+      +(config/rgsimplot.par)
+      sourceid limited in range between 1 & 9999 (SSC-SPR-1543 & 1544).
+      Hardcopy parameter removed.
+      Parameter "srcofinterest" changed to "sourceid".
+      Parameter "orderlist" added to display user-specified orders
+      (SSC-SPR-1913) & (SSC-SPR-1881)	
+     	
+Version 1.0: 03 April 2000
+
+- changed test output to use message facility SPR 1547 (JES)
+- revised parameter handling SPR 1539, 1540, 1541, 1542 (JES)
+
+Version 0.10: 27th January 2000
+
+- Fixed task to read R2 extraction regions	
+- Fixed to read srcid field of extraction region name (SSC-SPR-1601)
+- Fixed to read order regions.
+	
+Version 0.9: 26th January 2000
+
+- Added parameter srcids - list of additional sources whose extraction
+  regions are to be plotted.	
+
+- Removed parameter imagetype and replaced with internal checking algorithm.
+	
+Version 0.8: 24th January 2000
+	
+- Keywords now read from Primary header of image
+- Region extension names modified
+	
+Version 0.7: 19th January 2000
+
+Documantation updated significantly and brought into line with new coding.
+Working test harness now available.	
+	
+Version 0.6: 6th January 2000	
+
+Updated task to comply with rgsregion 2.8 and rgsproc 0.33	
+	
+Version 0.5: 7th December 1999
+
+Added modifications for consistency with rgsregion
+	
+Version 0.4: 2nd December 1999
+
+Added DISTRIBUTION (world) file
+	
+Version 0.3 26 November 1999
+
+Jon's final ESTEC version	
+	
+Version 0.2: 5 November 1999
+
+Changed documentation(still needs updating)	
+	
+Version 0.1: 2 November 1999
+
+Redelivered as omimplot	
+
+Version 2.2: 13 Jan 1999
+
+SPR 909 closed: file production check fixed
+		Test data updated.
+	
+Version 2.1: 16 Oct 1998
+
+Changed for compatibility with mssllib V2.0
+
+Version 2.0: 16 Oct 1998
+
+SPR 564 closed: old style relationals replaced.
+                Line lengths altered.
+                INTENT added
+                DATA statements remain unchanged
+SPR 579 closed: Changed documentation
+SPR 580 closed: all plotting ranges changed to real from 
+                string and default value added to config file.
+                Errors added to source code.
+SPR 581 closed: parameter interface tightened.
+SPR 582 closed: Minimum value added to .par config file.
+SPR 584 closed: output filename control established
+SPR 585 closed: task more robust to pathological input files
+SPR 586 closed: Binning algorithm changed.
+SPR 587 closed: PGPLOT window params changed.
+SPR 594 closed: Plotting transformation matrices changed.
+
+SPR 583 accepted: DCR required on DP ICD
+
+Version 1.1: 28 Sep 1998
+
+SPR 546 closed:
+
+Updated parameter file
+
+in_file type f
+endisp_reg type F
+spatial_reg type F
+col_map type s and provided list of choices "LIN|SQRT|LOG"
+plot_file type f
+
+Version 1.0: 10 Sep 1998
+----------------------
+
+First version
+
+
+Version 0.1
+----------------------------
+
+- Directory structure created by pkgmaker.
+

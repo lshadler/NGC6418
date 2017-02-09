@@ -1,0 +1,476 @@
+ChangeLog for omatt
+===================
+
+Version 2.56.1 - 2016-01-12 (AI)
+------------------------------	
+	+ (src/omrotation_mod.f90)  use modules reordering to avoid error  
+	  with NAG fortran compiler 6.2
+	
+Version 2.56 - 2013-10-04 (VNY)
+------------------------------	
+	+(src/omastromcorrect_mod.f90) Accelerated
+	source matching for the large number of detected sources (>2000) 
+	by reducing the magnitude range of the mathced sources.
+Version 2.55.1 - 2013-08-02 (VNY) +(doc/omatt_description.tex) documentation 
+ 	updated.
+Version 2.55 - 2012-11-20 (VNY)
+-----------------------------	
+	+(src/getusno.cc) Fixed two syntaxis errors not revealed 
+	previously by a different C-compiler
+Version 2.54 - 2012-10-23 (VNY)
+--------------
+	+(src/callusno.cc) Protected against a possible crash when listing
+	the accessed CCF constituents
+Version 2.53 - 2012-10-23 (VNY)
+--------------
+ 	+(src/omastromcorrect_mod.f90) Added the functionality to 
+	generate a subset of the USNO catalogue if it was not
+	among the task input
+Version 2.52.1 - 2012-03-28 (EO) 
+--------------
+	+ src/Makefile: Added EXTERNALS = pgplot to ger rid of missing pgplot.
+
+Version 2.52 - 2012-03-08 (VNY)
+	+(src/omastromcorrect_mod.f90) Added the functionality
+	for working with the new subset of USNO catalogue 
+	(containing multiple extensions SSC-SPR-6691)
+Version 2.51 - 2012-03-05 (ATI)
+----------------------------------	
+	+src changes for variable boresight
+	
+Version 2.50  - 2010-01-25 (CB)
+----------------------------------
+	+doc Amended documentation
+
+Version 2.49.3  - 2009-06-12 (CB)
+----------------------------------
+	+src Initiliased logical variable status to false
+	for when no USNO catalogue available 
+	(further fix to SPR 6542)
+	
+Version 2.49.2  - 2009-06-01 (CB)
+----------------------------------
+	+src Amended so that POSCOROK
+	not set to true when no astrometry 
+	correction made (fixes SPR 6542)
+	
+Version 2.49.1  - 2009-05-27 (CB)
+----------------------------------
+	+doc Ammended to fix compilation
+	failure on cld.mpe.mpg.de
+Version 2.49  - 2009-05-06 (CB)
+-----------------------------------	
+        +src Initialised astrometry success boolean
+	variables to false, for when no correction attempted.
+	
+Version 2.48  - 2009-03-13 (CB, VNY)
+-----------------------------------	
+	Removed the calls to pgplot (to avoid failures on MAC-computers) 
+	and cleaned up in order to avoid the compillation warning messages  
+Version 2.47  - 2009-03-13 (CB)
+--------------------------------  	
+        Removed "SSCLIB" from DEPEND file.
+	Modified omrotation_mod.f90 to also rotate the
+	16-bit QUALITY image.
+	
+Version 2.46.2 - 2008-06-16 (VNY)  +(src/omatt_mod.f90)
+	A test-printing line was removed (continuation of the
+	bug-fixing corresponding to SSC-SPR-6478)
+Version 2.46.1 - 2008-06-16 (VNY)  +(src/omatt_mod.f90, omrotation_mod.f90)
+	A bug is fixed which was causing the setting of the POSCOROK
+	keyword in the header of the rotated image to TRUE when 
+	the number of matching sources was too small and the actual
+	value of this parameter must be FALSE (SSC-SPR-6478).
+Version 2.46 - 2008-04-21 (VNY) +(src/omatt_mod.f90, omrotation_mod.f90)
+	The value of the attribute RA_OFF is divided by cos(dec) 
+	- without this the mosaiced images would show a small 
+	shifts for high declinations.
+Version 2.45 - 2008-04-07 (VNY) 
+	+(src/omatt_mod.f90, omrotation_mod.f90)
+	Added two new attributes to the rotated (sky) image 
+        FITs file: RA_OFF and DEC_OFF (in arcseconds) to indicate 
+        the amount of astrometric correction applied to the image
+	(further improvement related to SSC-SPR-3707)
+Version 2.44 - 2008-02-15 (VNY)
+	+(src/omatt_mod.f90, omrotation_mod.f90)
+	Correcting the values of the attriburtes CRVAL1 and CRVAL2
+	of the sky (rotated) image in the case of the parameter
+	usecat=yes, which means that the calculated astrometry 
+	corrections of RA and DEC are applied not only to the source
+	coordinates in the source list, but also to the sky-image
+	(for its further correct mosaicing by the ommosaic task).
+	SSC-SPR-3707
+-------------------------------	
+Version 2.43 - 2007-03-09 (VNY)
+-------------------------------
+	Additional data for grism source positions is itroduced 
+	for calculation of the right ascensions and 
+	declinations for zero-order features for different combinations
+	of primary instruments, high/low resolution modes and 
+	grism filters (UV- or V-grism). Fixing SSC-SPR-3652.
+Version 2.42 - 2006-11-09 (VNY)
+------------------------------
+	modified to make the grism sources coordinates computation
+	more accurate (SSC-SPR-3633)
+Version 2.41 - 2006-05-30 (VNY)
+------------------------------
+	introduced the calculation of RA and DECs for Grisms 
+	(the modifications will be noticeable only when processing 
+	the observations with the grism filter since corresponding
+	flags are introduced in order to distinguish in between the 
+	other filters - old code - and the grism filters - the modified 
+	code). The changes correspond to SSC-SPR-3605.
+Version 2.40  - 2005-09-02 (CB)
+------------------  	
+        Made a minor modification to subroutine modifypositionangles
+	to prevent source position angles exceeding 180 degrees when
+	transformed to celestial equator coordinate system.
+Version 2.39.7  - 2005-06-06 (CB)
+------------------  	
+	Added check to prevent source position angles from exceeding 360 degrees.
+	
+Version 2.39.6  - 2005-05-23 (CB)
+------------------  	
+	Removed ssc from Makefile to fix build problem.
+	
+Version 2.39.5  - 2004-06-01 (CB)
+------------------  
+	A small correction to the configuration file has been made for SPR 3329.
+Version 2.39.4  - 2004-05-28 (CB)
+------------------  
+	Introduced paramters "maxradecerr" and "maxrmsres" to control
+	acceptance of astrometry fit (SPR 3329).
+Version 2.39.3  - 2004-03-16 (CB)
+------------------  
+	Small ammendmment made to omrotation_mod to fix bright pixels 
+	appearing edges of rotated image (fixes SPR 3276)
+Version 2.39.2  - 2004-03-15 (CB)
+------------------  
+	Documentation ammended
+	
+Version 2.39.1  - 2004-02-27 (CB)
+------------------  
+	Modification made to image rotation mod to prevent interpolation
+	at edges going wrong.
+	
+Version 2.39  - 2003-12-11 (CB)
+------------------  
+	Coorection made to image-rotation code
+
+Version 2.38  - 2003-12-10 (CB)
+------------------  
+	New cal routine om-inversedistortion implemented in image rotation
+	
+Version 2.37  - 2003-11-21 (CB)
+--------------  
+	DEPEND file updated for ssclib 3.0
+	
+Version 2.36  - 2003-07-11 (CB)
+--------------  
+	Removed some files that were causing a dependency check problem.
+	
+Version 2.35  - 2003-06-13 (CB) 
+--------------  
+         +(src/) Ammended omatt_mod.f90 to get various constants from
+	omconstants_mod stored in mssllib
+
+Version 2.34  - 2003-04-30 (CB) 
+--------------  
+       Uploaded to make use of mssllib 2.24
+	
+Version 2.33  - 2003-03-26 (CB) 
+--------------  
+       Removed spurious appmessage call in omatt_mod.f90
+	
+Version 2.32  - 2003-03-15 (CB) 
+--------------  
+       Modified to use the module omastron_mod in msslib to do the
+       astrometry correction- omsrclistcomb will shortly use the same module.
+	
+Version 2.31  - 2003-02-26 (CB) 
+--------------  
+       Uploaded into development track
+	
+Version 2.30.1  - 2002-12-04 (CB) 
+--------------  
+        Configuration file ammended.
+Version 2.30  - 2002-12-02 (CB) 
+--------------  
+        Parameter file ammended- added boolean, optional, parameter
+	"rotateimage" - default value "true" means create rotated image.
+        Parameter "ppsoswset" changed to an optional one. Parameter
+	"catdir" removed.
+	
+	 +(src/) Code ammended to implement parameter changes.         	
+Version 2.29  - 2002-10-18 (CB) 
+--------------  
+        Uploaded using old param file into release track
+	
+Version 2.28  - 2002-06-10 (CB) 
+--------------  
+	   Modified config and depend file for param version 2.0./
+	
+Version 2.27.1  - 2002-05-29 (CB) 
+-----------------
+	Documentation updated and minor improvement to astrometry
+	correction made. 
+
+
+Version 2.27  - 2002-01-08 (CB) Modified DEPEND file for ssclib
+--------------
+
+Version 2.26  - 2001-12-18 (CB)
+--------------
+        +(src/) Added the code to do the astrometry correction. Removed
+	code that reset parameter usecat to FALSE if it had been set to
+	TRUE. Parameter usecat default value changed to FALSE.
+	If usecat set to T then omatt will attempt to do an astrometric
+	fit and if successful will add corrected RA and DEC columns to the
+	sourcelist, and the fitted parameter values will be added to the
+	header. The catalogue file name is presently fixed at "usnocat.fit".
+	
+Version 2.25  - 2001-11-16
+--------------
+        +(src/) Removed code that adds an exposure image map to the
+	product file (fixes SPR 2639). Pixels in the rotated image outside the boundary
+	set to NULL so that ommosaic can work without the exposure map.
+	
+Version 2.24 - 2001-09-10
+--------------
+        +(src/) Correction to coordinate system to rectify position
+	discrepancy between source on rotated image and the overlaid
+	source positions (fixes SPR 2372)
+	
+Version 2.23 - 2001-06-14
+--------------
+        +(src/) Modified to output the spacecraft pointing directions
+	RA_SCX, DEC_SCX and PA. Also added pointing keywords RA_PNT and DEC_PNT
+
+Version 2.22 - 2001-04-04
+--------------
+           Version number ammended.
+	
+Version 2.21.4 - 2001-04-03
+--------------
+        +(src/) Boundary of rotated image calculated properly to fix SPR 2237.
+
+
+Version 2.21.3 - 2001-02-29
+--------------
+        +(src/) Warning message "Catalog not used"  changed to a message-(fixes SPR 2263)
+
+
+Version 2.21.2 - 2001-02-23
+--------------
+        +(src/) Checks added to ensure that indices of array oswimage stay
+	within the bounds (distortion correction problem-(fixes SPR 2248)
+
+
+Version 2.21.1 - 2001-02-07
+--------------
+        +(src/) Old versions of program deleted.
+	
+	
+Version 2.21   - 2001-02-02 (CB)
+--------------
+	+(src/omatt_mod.f90) Iterative loop added to compute pixel
+	coordinates of rotated image. Extra image added to PPSOW
+	file to store the exposure map.
+
+
+Version 2.20.6   - 2000-11-15 (CB)
+--------------
+	+(src/omatt_mod.f90) Some write statements removed.
+
+
+Version 2.20.3   - 2000-11-07 (CB)
+--------------
+	+(config/omatt.info) om added.
+
+
+Version 2.20.2   - 2000-10-13 (CB)
+--------------
+	+(src/omatt_description.f90) Fixed syntax error in the documentation.
+
+
+Version 2.20.1   - 2000-10-12 (AMK)
+--------------
+	+(src/omatt_description.f90) Fixed syntax error in the documentation.
+
+Version 2.20   - 2000-10-11 (AMK)
+--------------
+	+(src/omatt_description.f90) Removed test write statments.
+
+Version 2.19   - 2000-10-11 (AMK)
+--------------
+	+(doc/omatt_description.tex) SSC-SPR-1980. Corrected fatal message in the documentation.
+
+Version 2.18   - 2000-10-10 (CB)
+--------------
+	+(src/omatt_mod.f90) Changed program so that if parameter "usecat"
+	is TRUE then a warning message is displayed saying that the
+	catalogue is not yet available. usecat is then set to false.
+
+Version 2.17   - 2000-10-05 (AMK)
+--------------
+	+(src/omatt_mod.f90) Removed mssllib call getFilterId and replaced
+	it by OAL call filterIdToInt.
+
+Version 2.16   - 2000-09-29 (AMK)
+--------------
+	+(src/Makefile) Changed order of libraries
+
+
+===================
+Version 2.15   - 2000-09-26 (AMK)
+--------------
+	+(src/Makefile) Changed order of libraries
+	.
+Version 2.14   - 2000-09-07 (AMK)
+--------------
+	+(ChangeLog) Added -90 degree image rotation to correct for error in coordinate system.
+	Maths functions sin and cos replaced by dsin and dcos (double precision versions),
+	& some other changes to double precision made.
+	Output image corrected for image distortion.
+	Function "MissionTime" added to compute the difference between the
+	average of the start and end observations and the mission reference time, in seconds.
+	Function "FilterWavelength" added to give the filter wavelenth
+	(nanometers) for a given filter (presently U, B, V & R). There appears to be no CAL
+	routine for doing this. This is needed to get the correct
+	plate-scale.Unfortunately, the CAL call getplatescale returns 0.5
+	whatever the input wavelength- the value is therefore currently
+	fixed at 0.4765
+	Some code added to write standard coordinates to an output file for test purposes (temporary)
+	Some write statements deleted. The +ve signs for the distortion corrections changed to -ve.
+	Attitude matrix read in. Boresight calculation changed - uses [A*(B)^-1]*(1,0,0).	
+	
+Version 2.12.2 - 2000-06-22 (AMK)
+--------------
+	
+	+ (config/omatt.info) fixed keyword GROUPS (SSC-SPR-1857)
+	+ (src/omatt_mod.f90) Changed poserr to be consistent with 
+	arcsecs definition from OMDETECT.
+
+Version 2.12.1 - 2000-06-13 (AMK)
+--------------
+        + (config/omatt.info) added (SSC-SPR-1770).
+
+Version 2.12.1 2000-06-13 (AMK)
+--------------
+        + (src/omatt_mod.f90) Changed RA and DEC to 8 byte data as per specification.
+
+Version 2.12.1 2000-06-13 (AMK)
+--------------
+        + (src/omatt_mod.f90) Added Galactic coordinates to products.
+
+Version 2.12: 7th January 2000
+
+Removed wavelength field from cal call.	
+	
+Version 2.11.1 (Marco Beijersbergen, 1999-12-15)
+--------------
+- fixed obsolete DAL calls.
+
+Version 2.11: 8th December 1999
+
+Note Documentation will be updated shortly	
+
+Added rotation to source list coordinate output to account for satellite rollangle
+
+Dummy boresight matrix and dummy distortion applied to RA_PNT and DEC_PNT keywords
+	
+Altered the boresight matrix which was causing 180 deg. error in RA	
+
+Altered position of binning determination to make it more secure
+	
+Version 2.10: 2nd December 1999
+
+Added DISTRIBUTION (world) file.
+	
+Version 2.9: 30th November 1999
+
+Fixed WCS, boresight and image rotation for Sky FITS Image.
+Added WCS keywords to Fits Image.	
+	
+Version 2.8: 25th August 1999
+
+Updated SAOIMAGE RA and DEC display keywords CR* to acknowledge binning values. 	
+Updated Checkoutput.f90 to fix error relating to changes to CAL boresight call.
+
+Version 2.7: 8th June 1999
+
+Updated dependancies for V3.
+
+Version 2.6: 28 May 1999
+
+Updated parameter names.
+
+Version 2.5: 4 May 1999
+
+Updated DEPEND and src/Makefile for new structure of SAS
+Updated 'message' calls in code for new error library.
+
+Version 2.4: 26 March 1999
+
+removed accuracyLevel=LOW
+
+Version 2.3: 10 December 1998
+
+updated dependancy file RE:mssllib
+
+Version 2.2: 7th Oct 98
+
+message call changed to warning (line 725)
+
+Version 2.1: 17 Sept 1998
+
+intParameter("tol") changed to realParameter("tol") 
+appended || exit 1 after omatt command (test/testomatt)
+
+Version 2.0: 21st August 1998
+
+Several bug fixes
+USNO catalog used
+tested against DSS images
+all computations in real64
+
+SPR 402 closed: f90 interface to USNO SA1 implemented
+SPR 401 closed: f90 interface to USNO SA1 implemented
+
+Version 1.5: 28th July 1998
+
+images now in primary array
+
+Version 1.4: 16th June 1998
+
+SPR 400 closed: tmp filename now obtained via mssllib routine, getpid removed
+SPR 404 closed: checkoutput in test harness checks values
+SPR 403 closed: goto replaced
+SPR 398 closed: .par file changed
+SPR 397 closed: omatt.msg deleted
+SPR 396 closed: access permissions changed
+
+Version 1.3: 21 May 1998
+
+Changelog added
+DEPEND edited
+
+Version 1.2: 7 May 1998
+
+SPR 205 closed: Test harness updated
+SPR 216 closed: see 205
+
+Version 1.1: 27 April 1998
+
+SPR 206 closed: data set in test harness reduced
+SPR 208 closed: datestamp call removed
+SPR 209 closed: access privs changed
+SPR 210 closed: .par file included
+SPR 211 closed: fatal call changed to error
+SPR 212 closed: diagnostic output removed
+SPR 213 closed: boolean parameter workround removed
+SPR 215 closed: datestamp removed (see 208)
+
+Version 1.0: 20th March 1998
+
+Original version submitted to the SOC

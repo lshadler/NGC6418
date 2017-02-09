@@ -1,0 +1,251 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Membership of the Current Calibration File</TITLE>
+<META NAME="description" CONTENT="Membership of the Current Calibration File">
+<META NAME="keywords" CONTENT="cifbuild">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="cifbuild.css">
+
+<LINK REL="next" HREF="node14.html">
+<LINK REL="previous" HREF="node12.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node14.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+cifbuild (cifbuild-4.8) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node12.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="File Naming Convention"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="See also"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node22.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="cifbuild.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00036000000000000000"></A>
+<A NAME="s:membership"></A>
+<BR>
+Membership of the Current Calibration File
+</H2>
+
+<P>
+Here we address the issue of how to determine what calibration files
+make up the current calibration file for a given observation time.
+
+<P>
+Each calibration file has a validity start date and a
+  validity end date. These are indicated by the FITS keywords
+<A NAME="695"></A><TT>VALDATE</TT> and <A NAME="697"></A><TT>EVALDATE</TT>. A missing <A NAME="699"></A><TT>EVALDATE</TT> is
+  taken to mean <SPAN  CLASS="textit">no end of validity</SPAN>.
+
+<P>
+Given the naming convention above, a calibration file can be labeled
+with a quadruplet of the form <!-- MATH
+ $\{Fname, Issue, T_{start}, T_{end}\}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="202" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$\{Fname, Issue, T_{start}, T_{end}\}$"></SPAN>,
+where <!-- MATH
+ $Fname \equiv \textrm{ \textbf{scope}\_\textbf{calname}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="196" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$Fname \equiv \textrm{ \textbf{scope}\_\textbf{calname}}$"></SPAN>, and
+<SPAN CLASS="MATH"><IMG
+ WIDTH="35" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$T_{end}$"></SPAN> is optional.
+
+<P>
+New issues of a calibration file can enter the archive with any
+<SPAN CLASS="MATH"><IMG
+ WIDTH="43" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$T_{start}$"></SPAN>, any <SPAN CLASS="MATH"><IMG
+ WIDTH="35" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$T_{end}$"></SPAN>, and increasing issue numbers.
+
+<P>
+In the simplest case (no end of validity date), a new version of the
+calibration file -- call it <!-- MATH
+ $\{Fname, Issue^\prime,
+T_{start}^\prime\}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="169" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$\{Fname, Issue^\prime,
+T_{start}^\prime\}$"></SPAN>, will have <!-- MATH
+ $T_{start} < T_{start}^\prime$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="103" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$T_{start} &lt; T_{start}^\prime$"></SPAN> and
+<!-- MATH
+ $Issue < Issue^\prime$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="109" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$Issue &lt; Issue^\prime$"></SPAN> (figure&nbsp;<A HREF="#fig:ccf-ex-1">1</A>).
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<P><A NAME="fig:ccf-ex-1"></A></P><IMG
+ WIDTH="894" HEIGHT="679" BORDER="0"
+ SRC="img10.png"
+ ALT="\begin{figure}
+% latex2html id marker 326
+\begin{center}
+\leavevmode
+\epsfig{...
+...ne\_0001.ccf} and
+\textit{xmm\_ExampleTwo\_0002.ccf}}
+\end{center}\end{figure}">
+</DIV>
+
+<P>
+A more complex situation is illustrated in figure&nbsp;<A HREF="#fig:ccf-ex-2">2</A>.
+Here new versions are introduced to improve on past
+ calibrations. 
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<P><A NAME="fig:ccf-ex-2"></A></P><IMG
+ WIDTH="894" HEIGHT="675" BORDER="0"
+ SRC="img11.png"
+ ALT="\begin{figure}
+% latex2html id marker 335
+\begin{center}
+\leavevmode
+\epsfig{...
+...ne\_0001.ccf} and
+\textit{xmm\_ExampleTwo\_0005.ccf}}
+\end{center}\end{figure}">
+</DIV>
+
+<P>
+In figure&nbsp;<A HREF="#fig:ccf-ex-2a">3</A> we show an example where a CCF
+constituent has an end of validity date. In this case at the time <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.png"
+ ALT="$T$"></SPAN>
+the situation is the same as shown in figure&nbsp;<A HREF="#fig:ccf-ex-2">2</A>,
+whereas at the time <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="$T1$"></SPAN> the constituent
+<SPAN  CLASS="textit">xmm_ExampleTwo_005.ccf</SPAN> is no longer applicable.
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<P><A NAME="fig:ccf-ex-2a"></A></P><IMG
+ WIDTH="909" HEIGHT="694" BORDER="0"
+ SRC="img14.png"
+ ALT="\begin{figure}
+% latex2html id marker 346
+\begin{center}
+\leavevmode
+\epsfig{...
+...e\_0001.ccf} and
+\textit{xmm\_ExampleTwo\_0003.ccf}.}
+\end{center}\end{figure}">
+</DIV>
+
+<P>
+Within this scheme, at any time <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.png"
+ ALT="$T$"></SPAN> the applicable issue of the
+calibration file <SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.png"
+ ALT="$Fname$"></SPAN> is obtained by selecting among all files
+<!-- MATH
+ $\{Fname, Issue, T_{start} \le T, T_{end} \ge T\}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="267" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$\{Fname, Issue, T_{start} \le T, T_{end} \ge T\}$"></SPAN> the one
+with the higher issue number.
+
+<P>
+Should it become necessary, a new <SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img15.png"
+ ALT="$Fname$"></SPAN> can be introduced in the
+archive, as illustrated in figure&nbsp;<A HREF="#fig:ccf-ex-3">4</A>.
+
+<P>
+
+<DIV ALIGN="CENTER">
+
+<P><A NAME="fig:ccf-ex-3"></A></P><IMG
+ WIDTH="960" HEIGHT="675" BORDER="0"
+ SRC="img17.png"
+ ALT="\begin{figure}
+% latex2html id marker 359
+\begin{center}
+\leavevmode
+\epsfig{...
+...\_0003.ccf} and
+\textit{xmm\_ExampleThree\_0002.ccf}}
+\end{center}\end{figure}">
+</DIV>
+
+<P>
+With this scheme the number of constituents in the current calibration
+file is not fixed, and can be determined only when the time <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.png"
+ ALT="$T$"></SPAN> is
+specified.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node12.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="File Naming Convention"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="See also"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node22.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

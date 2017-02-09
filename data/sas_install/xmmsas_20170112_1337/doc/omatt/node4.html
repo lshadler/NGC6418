@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Astrometric correction</TITLE>
+<META NAME="description" CONTENT="Astrometric correction">
+<META NAME="keywords" CONTENT="omatt">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omatt.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="omatt.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omatt (omatt-2.56.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="omatt.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Catalogue file format"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omatt.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Astrometric correction</A>
+</H1>
+
+<P>
+Because the <SPAN  CLASS="textbf">RA</SPAN> and <SPAN  CLASS="textbf">Dec</SPAN> of the <SPAN  CLASS="textbf">OM</SPAN> pointing direction may not be exactly the same as
+the coordinates deduced from reference to a catalogue (differences of a few arcsecs in <SPAN  CLASS="textbf">RA</SPAN> and <SPAN  CLASS="textbf">Dec</SPAN>
+are typical), <SPAN  CLASS="textbf">omatt</SPAN> allows the user to determine these shifts and correct the source positions.
+
+<P>
+If the task parameter <SPAN  CLASS="textbf">usecat</SPAN> is set to true, and the parameter <SPAN  CLASS="textbf">catfile</SPAN> is set to the name of the fits
+catalogue file (or it has the default name usnocat.fit), <SPAN  CLASS="textbf">omatt</SPAN> will attempt to
+correct the computed source coordinates. The correction is deemed to be a success if the following
+criteria are met:
+
+<UL>
+<LI>A sufficient number of stars have been matched (if the number of input sources (n) is less than 30, max(4, n/4),
+      otherwise 10). 
+</LI>
+<LI>The computed offset errors are no greater than the value of the input parameter <SPAN  CLASS="textbf">maxradecerr</SPAN> (arcsecs). 
+</LI>
+<LI>The computed RMS residual value is no greater than the value of the input parameter <SPAN  CLASS="textbf">maxrmsres</SPAN> (arcsecs).
+</LI>
+</UL>
+
+<P>
+If successful, the columns <SPAN  CLASS="textbf">RA_CORR
+and DEC_CORR</SPAN> will contain the corrected RAs and DECs, respectively, the key-word <SPAN  CLASS="textbf">POSCOROK</SPAN> 
+will be set to  <SPAN  CLASS="textbf">true</SPAN> and the key-words <SPAN  CLASS="textbf">RAOFFSET, RAOFFERR, DEOFFSET, DEOFFERR, ROT_CORR,
+ROT_ERR, NMATCHES, RMSRESID</SPAN> will contain the computed RA offset, RA offset error, DEC offset,
+DEC offset error, rotation, rotation error, the number of sources used in the astrometric fit
+and the root-mean-square residual of the fit, respectively. If the fit was unsuccessful 
+then <SPAN  CLASS="textbf">POSCORROK</SPAN> will be set to <SPAN  CLASS="textbf">false</SPAN> and the columns <SPAN  CLASS="textbf">RA_CORR and DEC_CORR</SPAN> 
+will be set equal to the uncorrected values.
+
+<P>
+The user can use the task parameters <SPAN  CLASS="textbf">maxradecerr</SPAN> and <SPAN  CLASS="textbf">maxrmsres</SPAN> to change the settings
+that decide if an astrometric fit is okay (<SPAN  CLASS="textbf">POSCORROK=true</SPAN>) or not (<SPAN  CLASS="textbf">POSCORROK=false</SPAN>).  
+
+<P>
+Please note that from <SPAN  CLASS="textbf">SAS 7.2</SPAN> the astrometric fit does not allow for any rotation between the <SPAN  CLASS="textbf">OM</SPAN>
+and <SPAN  CLASS="textbf">USN0</SPAN> coordinate axes, since the computed rotations were never more than a few arc minutes- hence
+<SPAN  CLASS="textbf">ROT_CORR</SPAN> will always be zero.
+
+<P>
+From <SPAN  CLASS="textbf">SAS 13.0</SPAN> the task has a functionality to generate its own USNO subset catalogue, provided the
+WCSTOOLS package is installed on the user's local Linux machine. This functionality is controlled by
+using the usecat and catfile parameters: if the parameter usecat is set to `yes' 
+but the parameter catfile remains unspecified, then the task will attempt to generate a USNO
+catalogue subset with its default name usnocat.fit. If this attemt failes (e.g., due to the
+absence of the WSCTOLLS package on the local machine) then the USNO subset is not generated and the 
+aspect-correction routine is skipped, the ODF image and source list remaining uncorrected. 
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html71"
+  HREF="node5.html">Catalogue file format</A>
+<LI><A NAME="tex2html72"
+  HREF="node6.html">Astrometric Columns</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="omatt.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Catalogue file format"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Exposure division, variance and adaptive smoothing</TITLE>
+<META NAME="description" CONTENT="Exposure division, variance and adaptive smoothing">
+<META NAME="keywords" CONTENT="asmooth">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="asmooth.css">
+
+<LINK REL="next" HREF="node16.html">
+<LINK REL="previous" HREF="node14.html">
+<LINK REL="up" HREF="node14.html">
+<LINK REL="next" HREF="node16.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+asmooth (asmooth-2.30) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node14.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Correcting for exposure before"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Correcting for exposure before"></A>
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Smoothing of mosaics"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="asmooth.html">Home Page</A> / <A  HREF="node3.html">Description</A> / <A  HREF="node14.html">Correcting for exposure before</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00035100000000000000">
+Exposure division, variance and adaptive smoothing</A>
+</H3>
+
+<P>
+A further matter to consider is the effect of exposure correction on the variance map. Since variance is the square of standard deviation, the obvious thing to to is to divide the input variance image by the square of the exposure map <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.png"
+ ALT="$\epsilon$"></SPAN>. (Remember that, regardless of the value of <TT>readvarianceset</TT>, the task makes use of an internal variance image if either <TT>writevarianceset</TT>=`yes' or <TT>smoothstyle</TT>=`adaptive'.) For all choices of <TT>smoothstyle</TT> but `adaptive', this makes sense. However, recall that adaptive smoothing makes use of the input variance to calculate the signal-to-noise ratio (SNR) of the input image. From equation <A HREF="node11.html#snr0">3</A> one can see that correct division of variance by exposure squared produces the following equation for SNR:
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+SNR(O)_{x,y} = \frac{\sum_{i=-N}^{N} \sum_{j=-N}^{N} c_{i,j} \ (w_{x-i,y-j} / \epsilon_{x-i,y-j}) \ I_{x-i,y-j}}   {\sqrt{\sum_{i=-N}^{N} \sum_{j=-N}^{N} c_{i,j}^2 \ (w_{x-i,y-j}^2 / \epsilon^2_{x-i,y-j}) \ \sigma^2(I)_{x-i,y-j}}}.
+\end{equation}
+ -->
+<A NAME="snr1"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="snr1"></A><IMG
+ WIDTH="492" HEIGHT="63" BORDER="0"
+ SRC="img50.png"
+ ALT="\begin{displaymath}
+SNR(O)_{x,y} = \frac{\sum_{i=-N}^{N} \sum_{j=-N}^{N} c_{i,j}...
+...{x-i,y-j}^2 / \epsilon^2_{x-i,y-j}) \ \sigma^2(I)_{x-i,y-j}}}.
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">5</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+This treatment of variance will produce an image in which short-exposure areas are more heavily smoothed than long-exposure areas. Short-exposure areas will in other words exhibit broader spatial variation - they will appear more `out of focus'. This can be irritating. An alternative approach is provided via the parameter <TT>expmapuse</TT>. If this is set to `samesnr' (the default), equation <A HREF="#snr1">5</A> is employed. If <TT>expmapuse</TT> is instead set to `samesize', the input variance is divided by <!-- MATH
+ $\epsilon \times \textrm{max}(\epsilon)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="78" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.png"
+ ALT="$\epsilon \times \textrm{max}(\epsilon)$"></SPAN> instead of by <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img52.png"
+ ALT="$\epsilon^2$"></SPAN>. The effect on the output of the `samesize' selection is to leave areas of the image of shorter exposure with a similar distribution of spatial frequencies to, but larger noise brightness amplitude than, areas of longer exposure. Note that this ONLY affects the SNR calculation: if the variance of the output image is also desired, this is calculated according to equation <A HREF="node5.html#variance">2</A> in the standard way.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node14.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Correcting for exposure before"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Correcting for exposure before"></A>
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Smoothing of mosaics"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

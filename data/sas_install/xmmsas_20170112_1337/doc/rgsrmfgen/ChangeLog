@@ -1,0 +1,425 @@
+ChangeLog for rgsrmfgen
+===============================
+
+Version 1.15.6 - 2016-11-28 (AI)
+-----------
+	+ (src/calib.cc) Wrong initialization of correction vector removed.	
+
+Version 1.15.5 - 2016-11-23 (AI)
+-----------
+	+ (src/calib.cc) response vector passed by reference.
+	
+Version 1.15.4 - 2016-11-21 (AI)
+-----------
+	+ (src/calib.cc) "static" statement removed from effareacorr
+	variables.
+	+ (src/calib.cc) Initialization of effarecorr variables to 0
+
+Version 1.15.3 - 2016-11-03 (AI)
+-----------		
+	+ Implementation of the new effective area correction.
+	+ New parameter (witheffectiveareacorrection) added.
+	
+Version 1.15.2 - 2016-01-29 (AI)
+-----------		
+	+ Doc updated.
+	
+Version 1.15.1 - 2015-12-16 (AI)
+-----------		
+	+ Bug in LSF calculation when "witharffile" is set to yes 
+	fixed. SOC-SPR-7331 fixed
+	
+Version 1.15 - 2015-07-15 (AI)
+-----------			
+	+ Temporal cal rgs grating methods removed.
+	
+Version 1.14 - 2015-07-10 (AI)
+-----------			
+	+ This version introduces the ARF + RMF separation.
+	+ New parameters "witharffile" and "arfset" to enable the response
+	file separation.
+	+ Doc updated
+	
+Version 1.13.4 - 2013-04-23 (AI)
+-----------		
+	+ (src/calib.cc) Variable beta bin width value for LSF calculations
+	+ (src/rgsrmfgen.cc) betaEfficiency calculated for all input energies 
+	and using the exact input energy value.	
+	+ doc updated.
+	
+Version 1.13.3 - 2013-03-23 (AI)
+-----------	
+	+ (src/calib.cc) Usage of beta stride value for LSF calculations
+	
+Version 1.13.2 - 2013-02-22 (AI)
+-----------
+	+ (src/rgsrmfgen.cc) Bug trying to keep backward compatibility to beta channel fixed.
+	
+Version 1.13.1 - 2013-02-19 (AI)
+-----------
+	+ (src/calib.cc) Bug in the grating misalignment calculation fixed.
+	+ keV~Angstrom constant taken from caloalutils
+	
+Version 1.13 - 2012-12-17 (AI)
+-----------
+	+ New parameter "spectrumbinning" added to deal with calculations in lambda or beta space.
+	+ documentation updated.
+	
+Version 1.12 - 2012-12-17 (AI)
+-----------
+	+ The reproject method used to calculate the response matrix calculated in beta 
+	space into lambda space has been removed.	
+	+ Modifications in (src/calib.cc) code to deal with the new exposure maps and regions 
+	in lambda space. 
+	+ LSF components (broadening, nodeefficiency, vignetting) have been modified to run 
+	using exposure maps and regions in lambda space. These modifications are related to SOC-SPR-6688.
+	
+	
+Version 1.11.2 - 2010-04-15 (AI)
+-----------
+	+ (src/rgsrmfgen.cc) BETA_CHANNEL grid from event file calculated accordingly with the spectrum CHANNEL dimension.
+	+ (src/rgsrmfgen.cc) response array initalize to 0. Check array dimensions in betaEfficiency method.
+	
+Version 1.11.1 - 2010-04-08 (AI)
+-----------
+	+ (src/rgsrmfgen.cc) TCUNI keyword updated depending on dispersion units (rad or Angstrom).
+	
+Version 1.11 - 2010-02-25 (AI)
+-----------
+	+ (src/calib.cc) RGS rectification cal call implemented.
+	+ New parameter "withrectification" added.
+	
+Version 1.10.1 - 2008-05-23 (AI)
+-----------
+	+ New method that reprojects the response matrix calculated in beta 
+	space into lambda space.
+	+ Ebounds calculated base on a lambda grid in case the input spectrum  
+	was calculated in lambda.
+	
+Version 1.10 - 2006-05-22 (AI)
+-----------
+	+ (src/calib.cc) Parameter "neweffarecorr" changed for 
+	"dyneffarecorr". Parameter "corrType" removed. 
+	Documentation updated.
+	
+Version 1.9 - 2006-04-11 (AI)
+-----------
+	+ (src/calib.cc) New call to the CcdQuantumDataServer 
+	method "ccdCorrFactors(order)" added. This call allows cal to deal
+	with the new CCD correction factors.
+		
+Version 1.8 - 2006-02-22 (AI)
+-----------
+	+ config/rgsrmfgen.par keyword typo fixed.
+	
+Version 1.7 - 2006-02-22 (AI)
+-----------
+	+ New parameter "neweffareacorr" "corrtype" added. These parameters
+	enable the new effective area correction in the cal.
+	
+Version 1.6 - 2005-09-13 (CG)
+-----------
+	+ energy/wavelength conversion accuracy fixed - SPR 2549
+
+Version 1.5.3 - 2004-03-15 (CG)
+-------------
+	+ parameter name update in docu (ebins >> rows) 
+	
+Version 1.5.2 - 2004-02-06 (CG)
+-------------
+	+ bogus with executable permission
+	
+Version 1.5.1 - 2004-02-05 (CG)
+-------------
+	+ bug introduced in 1.5 (calib.cc - small angle scattering) fixed   
+	
+Version 1.5 - 2003-06-27 (CG)
+-----------
+	+ replacement from 1.4 now correct 
+	
+Version 1.4 - 2003-06-25 (CG)
+-----------
+	+ maximize replaced by STD max in calib.cc
+	
+Version 1.3 - 2003-04-22 (CG)
+-----------
+	+ few changes (required by gcc3.2) to improve standard C++ compliance 
+
+Version 1.2 - 2002-08-19 (UL)
+-----------
+	+ now DEPENDs on package sas
+	+ a few transparent changes to improve standard C++ compliance
+
+Version 1.1 - 2002-06-28 (JDR)
+-----------
+- replaced parameter --whichmirrorpsf with --withmirrorpsf and --withangdist
+
+Version 1.0 - 2002-06-25 (JDR)
+-----------
+- requires cal-3.142
+- switched roles of mirror PSF and grating misalignment distributions in
+  the convolutions to allow the mirror PSF to become optional
+- the user may supply a custom angular distribution to replace the mirror PSF
+- added a matrix editing mode
+- in HTR mode the background correction is silently disabled
+- changed standard file name tag to RSPMAT for future compatibility with PPS
+- progress messages are considerably less verbose
+- task description not yet updated
+
+Version 0.51 - 2002-05-09 (JDR)
+------------
+- requires param-2.0
+
+Version 0.50.2 - 2002-02-12 (JDR)
+--------------
+- task description updated with correct default for the --ebins parameter
+
+Version 0.50.1 - 2002-01-17 (JDR)
+--------------
+- supports arbitrary energy selection regions
+- bug fix: does not rely on implicit initialization of global variables
+
+Version 0.50 - 2002-01-16 (JDR)
+------------
+- changed default to --ebins=4000
+
+Version 0.49 - 2001-10-10 (JDR)
+------------
+- changed parameter name --set to --evlist and --sourceset to --srclist
+
+Version 0.48 - 2001-10-01 (JDR)
+------------
+- updated runtime default filenames
+
+Version 0.47 - 2001-08-30 (JDR)
+------------
+- replaced 0.678 with 1/0.678 in empiricalCrossLA()
+
+Version 0.46 - 2001-08-17 (JDR)
+------------
+- added parameter --fftdim to control the convolution size
+
+Version 0.45.2 - 2001-08-01 (JDR)
+--------------
+- the small angle LSF is computed more carefully: the convolution size
+  now hovers between 512 and 1024; runtime is a bit slower
+
+Version 0.45.1 - 2001-07-16 (JDR)
+--------------
+- DEPEND on rgslib and cal backed down to SAS 5.1 version, which is fine
+
+Version 0.45 - 2001-07-13 (JDR)
+------------
+- code fixed for OSF platform compiler
+
+Version 0.44 - 2001-07-11 (JDR)
+------------
+- hardwired lfactor value as 0.678 in empiricalCrossLA()
+- rgsrmfgen: fixed large-angle loss function formula
+- rgsmcrgen: removed temporary parameter --lfactor
+
+Version 0.43 - 2001-06-29 (JDR)
+------------
+- rgsrmfgen: optimized the convolutions (about five times faster)
+- rgsmcrgen: added temporary parameter --lfactor
+
+Version 0.42.1 - 2001-06-11 (JDR)
+--------------
+- added check for null bowing distribution
+
+Version 0.42 - 2001-06-08 (JDR)
+------------
+- rgsrmfgen: reorganized to further separate large and small angle treatment
+- rgsrmfgen: chip 1 CCD redistribution function used for all chips
+- added proprietary empiricalCrossLA (large angle scattering profile)
+
+Version 0.41 - 2001-05-10 (JDR)
+------------
+- added CAL LSF defocus distribution
+- replaced proprietary bin-size broadening distribution with CAL interface
+- rgsmcrgen: separate tensors for small and large angle scattering
+- rgsmcrgen: added proprietary large angle xdsp scattering distribution
+
+Version 0.40 - 2001-04-20 (JDR)
+------------
+- added CAL bowing figure distribution
+
+Version 0.39 - 2001-04-11 (JDR)
+------------
+- updated for rgssources-4.0
+
+Version 0.38 - 2001-04-06 (JDR)
+------------
+- fixed bug introduced in version 0.36 (corrupted LSF)
+
+Version 0.37 - 2001-03-23 (JDR)
+------------
+- replaced proprietary large-angle scattering distribution with CAL interface
+- requires rgslib-1.10
+
+Version 0.36 - 2001-03-09 (JDR)
+------------
+- replaced proprietary small-angle scattering distribution with CAL interface
+
+Version 0.35 - 2001-02-07 (JDR)
+------------
+- updated for and requires rgslib-1.5
+- replaced proprietary grating misalignment and mirror psf with CAL interface
+
+Version 0.34 - 2001-01-10 (JDR)
+------------
+- updated for and requires rgslib-1.4
+- replaced proprietary CCD quantum efficiencies with CAL interface
+
+Version 0.33.1 - 2000-11-06 (JDR)
+--------------
+- CAL state set by hand to eliminate spurious warnings
+
+Version 0.33 - 2000-11-03 (JDR)
+------------
+- requires rgslib-1.2
+
+Version 0.32.1 - 2000-10-27 (JDR)
+--------------
+- updated GROUPS
+
+Version 0.32 - 2000-09-25 (JDR)
+------------
+- MirrorDataServer --> EffectiveAreaDataServer (cal-3.81)
+ 
+Version 0.31 - 2000-09-22 (JDR)
+------------
+- updated default parameters for compatibility with rgsproc-0.82
+- parameters and errors now documented in task description
+
+Version 0.30 - 2000-09-15 JDR
+------------
+- changed default rgs1fudge to 1.5
+- fixed two bugs in the background correction logic
+- updated hard-coded parameters of LSF broad scattering component
+- removed internal calculation of FOV coordinates
+- rgsmcrgen: adopted CAL sign convention for RGS_XDSP angles
+- rgsmcrgen: workaround for theta<0 bug in CAL
+
+Version 0.29 - 2000-08-25 JDR
+------------
+- fixed bug in rgs1fudge (it was being applied to RGS2)
+
+Version 0.28 - 2000-08-25 JDR
+------------
+- compiles under gcc-2.95.2
+- fixed channel space compatibility test
+- fixed uninitialized variable in spatial mask filter
+- added --rgs1fudge for extra broadening in RGS1 only
+- separated LSF into broad and narrow components
+- rgsmcrgen: fixed sign error in offaxis angle conversion
+
+Version 0.27 - 2000-07-21 JDR
+------------
+- the background contribution is deducted (optionally)
+- added line-broadening convolution (finite bin-width effect)
+- exposure map is normalized for each node independently
+- compatible with count rate spectrum as per rgsspectrum
+- not compatible with count spectrum as per evselect
+
+Version 0.26 - 2000-07-11 JDR
+------------
+- changed --emax default to 2.8
+- now depends on dal-1.21
+
+Version 0.25 - 2000-07-06 JDR
+------------
+- now depends on rgslib-1.0
+
+Version 0.24.2 - 2000-06-15 JDR
+--------------
+- some hardcoded geometric constants replaced with CAL interface
+- added dataset attributes: SOURCEID, RFLORDER, BETA_REF, BETA_WID
+- fixed exposure map rebinning error
+
+Version 0.24.1 - 2000-06-01 JDR
+--------------
+- hardcoded RGA distribution data updated
+- replaced CAL mirror effectiveArea with intrinsicEffectiveArea
+- replaced proprietary self-vignetting function with CAL interface
+
+Version 0.24 - 2000-05-25 JDR
+------------
+- replaced proprietary cross-dispersion PSF with CAL interface
+- reorganized for code-sharing with rgsmcrgen
+- added rgsmcrgen: generates response tensors for monte carlo analysis
+
+Version 0.23 - 2000-05-10 JDR
+------------
+- output channels now defined by spectrum rebinning
+- external proprietary calibration database no longer used
+- hardcoded CCD layer thicknesses updated
+
+Version 0.22 - 2000-04-06 JDR
+------------
+- tied channel space definition to events table
+- improved parameter interface
+
+Version 0.21 - 2000-03-14 JDR
+------------
+- attempt to fix DEC platform build error: added string.h to prf.c includes
+
+Version 0.20 - 2000-03-10 JDR
+------------
+- extraction region table names changed by rgsregion
+
+Version 0.19 (JDR 2 February 2000)
+----------------------------------
+- replaced proprietary Henke data with CAL interface
+
+Version 0.18 (JDR 1 February 2000)
+----------------------------------
+- added selectlib to package dependencies
+
+Version 0.17 (JDR 28 January 2000)
+----------------------------------
+- class Convolver moved into slatec
+
+Version 0.16 (JDR 24 January 2000)
+----------------------------------
+- bypass computation of combined exposure and property maps
+- replaced Convolve3 with generalized Convolver
+
+Version 0.15 (JDR 11 January 2000)
+----------------------------------
+- removed exposure map normalization
+- moved ShapeScanner to rgslib
+- eliminated all Numerical Recipes code
+- replaced fitsio calls with DAL calls
+
+Version 0.14 (JDR 23 December 1999)
+-----------------------------------
+- apply crude normalization to exposure map
+
+Version 0.13 (JDR 22 December 1999)
+-----------------------------------
+- replaced sron_ccd_prf() with CAL Redist interface
+
+Version 0.12 (JDR 21 December 1999)
+-----------------------------------
+- updated for compatibility with selectlib-4.23
+
+Version 0.11 (JDR 17 December 1999)
+-----------------------------------
+- compatible with rgsregion-2.6 extension names and ra/dec units
+
+Version 0.10 (JDR 16 December 1999)
+-----------------------------------
+- first version ready for SAS integration, but not yet tested
+- still relies on proprietary calibration data
+
+Version 0.9 (JDR 8 December 1999)
+---------------------------------
+- Added scan converter for efficient region processing.
+- Conversion of prf interface in progress; task does nothing as yet.
+
+Version 0.8 (JDR 30 November 1999)
+----------------------------------
+- Directory structure created by pkgmaker.
+- Fresh start; only numutils subdirectory inherited from version 0.7.
+- Conversion of prf interface in progress; task does nothing as yet.

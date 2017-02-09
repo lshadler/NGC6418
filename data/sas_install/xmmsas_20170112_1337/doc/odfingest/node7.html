@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Housekeeping parameters</TITLE>
+<META NAME="description" CONTENT="Housekeeping parameters">
+<META NAME="keywords" CONTENT="odfingest">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="odfingest.css">
+
+<LINK REL="next" HREF="node8.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+odfingest (odfingest-3.30) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Instrument modes"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters for EMOS 1"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node35.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="odfingest.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00034000000000000000"></A>
+<A NAME="odfingest:description:housekeepingparameters"></A>
+<BR>
+Housekeeping parameters
+</H2>
+
+<P>
+This section lists the names of the housekeeping parameters extracted
+by <A NAME="1440"></A><A NAME="tex2html17"
+  HREF="../odfingest/index.html"><SPAN  CLASS="textbf">odfingest</SPAN></A>. They are grouped by instrument and type of
+housekeeping file. For each parameter there are up to five entries:
+
+<P>
+
+<UL>
+<LI>The parameter name.
+
+<P>
+Example: <TT>FILTER_WHEEL_POSITION</TT>.
+
+<P>
+This is the name used in the SOSF. This name should be used with the
+  OAL routines hasIppv,
+  getIppvString,
+  getIppvReal.
+
+<P>
+</LI>
+<LI>The DAL data type of the parameter.
+
+<P>
+Example: <TT>string</TT>.
+
+<P>
+String parameters should be retrieved with
+  getIppvString, all numeric
+  parameters should be retrieved with
+  getIppvReal.
+
+<P>
+</LI>
+<LI>The name of the column in the housekeeping file from which the
+  parameter is read.
+
+<P>
+Example: <TT>E1257</TT>.
+
+<P>
+Most column names match the housekeeping parameter names in the
+  XMM-Newton telemetry data base, but a few don't. Refer to the ODF
+  Interface Control Document for the details [<A
+ HREF="node34.html#ct:SOCODFICD">1</A>].
+
+<P>
+</LI>
+<LI>An additional <A HREF=../selectlib/node2.html>filter
+    expression</A>.
+
+<P>
+Example: <TT>subject to HBRID == 1</TT>.
+
+<P>
+The filter expression is applied to the housekeeping data before the
+  parameter value is read. This expression is used when a simple
+  filter in time is not sufficient to uniquely identify the parameter
+  value. This is in general true for the so-called <SPAN  CLASS="textit">non periodic
+    housekeeping data</SPAN>. Again, consult [<A
+ HREF="node34.html#ct:SOCODFICD">1</A>] for the
+  details.
+
+<P>
+</LI>
+<LI>The details of the translation between housekeeping values and
+  the values used in the SOSF.
+
+<P>
+Example:
+
+<P>
+<PRE>
+FILTER Uint16 [E1317]
+This parameter is translated as follows:
+Translator's name: EMOS1 Filter
+0 = Closed
+247 = CalThin1
+267 = Thin1
+514 = CalThin2
+534 = Thin2
+781 = CalMedium
+801 = Medium
+1047 = CalThick
+1067 = Thick
+1314 = CalOpen
+1334 = Open
+1580 = CalClosed
+</PRE>
+
+<P>
+The parameter <TT>FILTER</TT> is extracted from the housekeeping
+  column <TT>E1317</TT>. Its value is translated according to a lookup
+  table mapping housekeeping values to strings.
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Instrument modes"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters for EMOS 1"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node35.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

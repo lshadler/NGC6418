@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="epsplitproc">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epsplitproc.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="epsplitproc.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epsplitproc (epsplitproc-0.1.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="epsplitproc.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epsplitproc.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="epsplitproc:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+<A NAME="276"></A><A NAME="tex2html1"
+  HREF="../epsplitproc/index.html"><SPAN  CLASS="textbf">epsplitproc</SPAN></A>
+is a metatask that allows users to analyse large EPIC PN events files, that produce a <B>out of memory</B> error while running <A NAME="280"></A><A NAME="tex2html2"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>.
+
+<P>
+<A NAME="284"></A><A NAME="tex2html3"
+  HREF="../epsplotproc/index.html"><SPAN  CLASS="textbf">epsplotproc</SPAN></A>
+calls <A NAME="288"></A><A NAME="tex2html4"
+  HREF="../epsplitter/index.html"><SPAN  CLASS="textbf">epsplitter</SPAN></A>
+to split the original event file into parts depending on the <TT>slices</TT> parameter. Then the task creates a backup copy of the original event file (named original_file_name_BACKUP.FIT) located in the odf directory to keep it untouched. Once the backup copy has been created, the task creates softlinks between the diferent parts and the original event file. Then, <A NAME="293"></A><A NAME="tex2html5"
+  HREF="../epproc/index.html"><SPAN  CLASS="textbf">epproc</SPAN></A>
+is executed only for the exposure and ccd of the original file. Several <A NAME="297"></A><A NAME="tex2html6"
+  HREF="../epproc/index.html"><SPAN  CLASS="textbf">epproc</SPAN></A>
+product files are created (depending on the <TT>slices</TT> parameter) and all of them are finally merged running <A NAME="302"></A><A NAME="tex2html7"
+  HREF="../merge/index.html"><SPAN  CLASS="textbf">merge</SPAN></A>
+task.
+Finally, temporary files are removed and the backuped original event file is restored. 
+
+<P>
+<B>NOTE OF CAUTION!!!</B> This task deals with the ODF content; making file copies, creating soft links, removing files, etc. So, after the task execution, the user must check the ODF integrity.  It is possible that after any error during the task execution, the ODF content could be wrong and the user should have to restore manually the backuped file.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="epsplitproc.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

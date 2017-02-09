@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Detailed Description</TITLE>
+<META NAME="description" CONTENT="Detailed Description">
+<META NAME="keywords" CONTENT="hkgtigen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="hkgtigen.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+hkgtigen (hkgtigen-1.14.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Motivation"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="hkgtigen.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000">
+Detailed Description</A>
+</H2>
+For each instrument standard HK parameter validity ranges are stored in the
+corresponding CCF constituent <EM>HKParmInt</EM> [<A
+ HREF="node16.html#ct:SOCCCFICD">2</A>].
+The ranges
+are expressed in terms of boolean selection expressions as defined by
+the <A HREF=../selectlib/node1.html>selectlib</A> package. Each
+expression is indexed by a unique keyword which is the HK parameter
+name to which the expression applies. It can contain
+one or more occurrences of the character '@' which must be replaced
+with the parameter name to form a complete syntactically correct selection
+expression. As an example, the <EM>HKParmInt</EM> entry:
+<PRE>
+    PYRO_DOOR_RELEASE_MECHANISM_T:   (@ in [120, 273])
+</PRE>
+defines the valid range of the HK parameter
+<EM>PYRO_DOOR_RELEASE_MECHANISM_T</EM> to be 120 to 273 K. Different
+entries are combined by <A NAME="554"></A><A NAME="tex2html4"
+  HREF="../hkgtigen/index.html"><SPAN  CLASS="textbf">hkgtigen</SPAN></A>
+via the logical <EM>and</EM> operator
+(<TT>&amp;&amp;</TT>) to form a single boolean expression according to the syntax
+rules defined in package
+<A HREF=../selectlib/node1.html>selectlib</A>.
+
+<P>
+The HK parameter names are defined by the names of the corresponding
+columns in the periodic HK parameter tables of the ODF
+[<A
+ HREF="node16.html#ct:SOCODFICD">1</A>,<A
+ HREF="node16.html#ct:XMMPerHK">3</A>].
+Depending on the instrument, there is either one or two types
+of periodic HK files for each exposure. <A NAME="560"></A><A NAME="tex2html5"
+  HREF="../hkgtigen/index.html"><SPAN  CLASS="textbf">hkgtigen</SPAN></A>
+generates
+a single GTI set which is applicable to the entire observation period, i.e.,
+it must first construct a number of individual GTI sets (one per type of
+periodic HK file per exposure period) and subsequently merge all
+sets into one. For the construction of an actual GTI set from a given
+periodic ODF HK file the task <A NAME="564"></A><A NAME="tex2html6"
+  HREF="../tabgtigen/index.html"><SPAN  CLASS="textbf">tabgtigen</SPAN></A>
+is used. The merging of the individual GTI sets is done in task
+<A NAME="568"></A><A NAME="tex2html7"
+  HREF="../hkgtigen/index.html"><SPAN  CLASS="textbf">hkgtigen</SPAN></A>
+itself.
+
+<P>
+In more detail, when invoked for a particular instrument (see
+parameter <TT>instrument</TT>), <A NAME="573"></A><A NAME="tex2html8"
+  HREF="../hkgtigen/index.html"><SPAN  CLASS="textbf">hkgtigen</SPAN></A>
+performs the following
+operations to construct the single GTI data set:
+
+<OL>
+<LI>Retrieve all applicable validity
+    intervals for that instrument from the CCF via the
+<A HREF=../cal/node1.html>Calibration Access Layer (CAL)</A> and replace all
+    '@'-references with the actual HK parameter names.
+</LI>
+<LI>For each instrument exposure in the given ODF and each type of
+periodic HK file the following steps are carried out:
+    
+<OL>
+<LI>Construct a boolean expression containing validity ranges only
+for those HK parameters present in the current HK file
+</LI>
+<LI>Invoke the task <A NAME="577"></A><A NAME="tex2html9"
+  HREF="../tabgtigen/index.html"><SPAN  CLASS="textbf">tabgtigen</SPAN></A>
+with the constructed expression
+and the name of the current HK file. This generates a new GTI data set.
+    
+</LI>
+</OL>
+</LI>
+<LI>Merge all GTI sets constructed in step 2 into a single
+GTI data set which is applicable to the entire observation period.
+</LI>
+</OL>
+
+<P>
+<A NAME="581"></A><A NAME="tex2html10"
+  HREF="../hkgtigen/index.html"><SPAN  CLASS="textbf">hkgtigen</SPAN></A>
+provides a number of parameters to influence this
+algorithm.  For instance, the parameter <TT>parameters</TT> can contain
+the explicit list of HK parameter names on which the CAL should be
+queried for validity ranges. It is also possible to augment the list
+of validity ranges retrieved from the CAL with additional ones. For
+more information on this and other command line options see below.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Motivation"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

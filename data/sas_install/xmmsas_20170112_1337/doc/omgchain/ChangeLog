@@ -1,0 +1,101 @@
+ChangeLog for omgchain
+===============================
+
+Version 1.11.1 - 2014-09-30 (RDS) 
+--------------
+        +(src/omgchain.pl) Uses taskmain to handle command line options
+Version 1.11 - 2014-04-02 (EC)
+	- Moved test data (*0125910501*) to testprods/omgchain_data
+	- Removed other unused binary data
+Version 1.10 - 2010-07-20 (VNY) Protected against a bug in the 
+	pgplot program which is used in the task. This bug was
+	resulting in file name truncation and disappearance of
+	the files from the output directory (SSC-SPR-6622)
+Version 1.9 - 2008-09-17 (VNY) New parameter (removescatteredlight) 
+	is introduced to enable removing scattered light features
+	by the task omgprep
+Version 1.8 - 2008-05-01 (VNY) Modified the call to omgrism plot
+	in order to produce the PostScript file with spectra extraction
+	regions plotted over the grism rotated image
+Version 1.7 - 2007-11-02 (VNY) +(config/omgchain.par) Added a parameter
+	(addedregionfile) to enable the output of a new region file for
+	newly detected point sources (extra sources missing in the 
+	region file from omdetect)
+Version 1.6 - 2007-05-22 (VNY) +(config/omgchain.par) The default parameter
+	for the width of the spectrum extraction region was set to 8 pixels
+	because this is what actually was used in the task omgrism due to a
+	small bug. The bug was fixed in Omgrism-1.17 (accompanying the 
+	SSC-SPR-3660) so that omgchain is also adjusted to keep the spectrum
+	extraction region the same as before.  
+Version 1.5 - 2007-01-31 (VNY) 	The file names are modified such that 
+	they include the symbol with the observation mode idenifies 
+	(S, U or X). Previosly this symbol was fixed (S) since it was 
+	thought that the observations are always sheduled (fixing SSC-SPR-3646)
+Version 1.4 - 2006-11-09 (VNY) The parameters of the omatt task 
+	are modified to adjust to the changest in the OM GRISM tasks
+	improving the accuracy of the grism sources RA and DECs. 
+	Grism sky image is generated to visualise the sky positions
+	of the sources.
+Version 1.3 - 2006-06-09 (VNY) Using the possibility of analysing the 
+	image size and the extractability of spectra, which is provided
+	by omgprep-1.1.1 (SSC-SPR-3606)
+Version 1.2 - 2006-05-30 (VNY) Introducing a new task into the chain:
+	omatt, which will be able to produce the sky image and compute
+	the right ascentiona and declinations of the zero-orders
+	(SSC-SPR-3606). The version 2.41 of omatt is requires, as
+	well as the calibration file OM_ASTROMET_0012.CCF with the
+	corresponding untility in caloalutils-1.100.
+Version 1.1 - 2005-09-07 (VNY) Documentation corrected (SSC-SPR-3508),
+	the dependencies file is made consistent with the lates 
+	version of omgrism.
+Version 1.0.12 - 2005-06-09 (VNY) +(test/testomgchain) Test harness is 
+	optimised to fit in the time slot for tests
+Version 1.0.11 - 2005-05-23 (CB) Removed some commented-out line in perl script.
+Version 1.0.10 - 2005-05-23 (CB) Ammended DEPEND file to fix build failure.	
+Version 1.0.9 - 2004-09-08 (VNY) +(src/omgchain.pl) The spectra list file 
+	is generated for both values of the parameter extractfieldspectra.
+	That is, when extracting even a single (target) spectrum the 
+	the SPECLI-file will contain only one line. But having always 
+	the same set of the output files would simplify understanding 
+	the results by the user (SSC-SPR-3382).
+Version 1.0.8 - 2004-07-27 (VNY) +(src/omgchain.pl) Adjusted to use the
+	new parameters for the task omgrism (SSC-SPR=3365)
+Version 1.0.7 - 2004-07-15 (VNY) +(config/omgchain.par) Default options
+	for the spectra extraction region are changed from 3 to 6 pixels
+	(SSC-SPR-3355)
+Version 1.0.6 - 2004-06-29 (VNY) +(src/omgchain.pl) Correction in the 
+	subroutine GetODFDirectory in order to protect the task from 
+	failing during its test on Mac-machines	
+Version 1.0.5 - 2004-05-27 (VNY) +(test/testomgchain) Picking up
+	the SAS_ODF variable is modified to protect from the 
+	test failure on Mac-machines
+Version 1.0.4 - 2004-05-20 (VNY) Engineering-2 sub-window
+	files are sorted at the input according to their names in order to
+	ensure combining of these sub-windows into a single 
+	full-frame image (SSC-SPR-3324)
+Version 1.0.3 - 2004-02-24 (VNY) the use DAL statement is removed
+	since it is not necessary anymore
+Version 1.0.2 - 2004-02-03 (VNY) two optional parameters to be used 
+	by omgrismplot are included (plotflux and bkgdyscale)
+Version 1.0.1 - 2004-02-01 (VNY) Protected against crushing when the 
+	verbosity level is higher than seven. The input parameter
+	extractionmode is activated.
+Version 1.0 - 2003-12-04 (VNY) extraction of undetected spectra included
+Version 0.6 - 2003-12-02 (VNY) the parameters spectrumlength and 
+	      src2spectrum are removed as misleading
+Version 0.5 - 2003-11-18 (VNY) DEPEND file ammended to the new version
+	of ssclib (3.0) 
+Version 0.4 - 2003-11-10 (VNY) protected from crashing if no PS-files
+	      were found
+Version 0.3 - 2003-10-31 (VNY) the parameters for spectra extraction
+	      region are passed to omgrism
+Version 0.2 - 2003-10-29 (VNY) references to the input and output
+              directories are corrected
+	 
+Version 0.1 - 2003-10-27 (VNY) An additional parameter is introduced for 
+	      the task OMGPREP (in order to smooth the image); 2003-03-05 
+	      (VNY) Created using omfchain.pl and testompcomp.pl codes OMDETECT-4.1 
+	      instead of V3.6; 2002-09-27 (VNY) Testompcomp.pl code written 
+----------------------------
+
+- Directory structure created by pkgmaker.

@@ -1,0 +1,101 @@
+<!-- converted from XPI formatted "rgsfilter.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="mergedset" type="dataset" mandatory="yes" default="merged.ds">
+   <DESCRIPTION>
+    input combined event dataset
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="evlist" type="dataset" default="">
+   <DESCRIPTION>
+    output filtered event dataset
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="rejflags" type="string" list="yes"
+         default="BAD_SHAPE ON_NODE_INTERFACE ON_BADPIX NEXT_TO_BADPIX ON_WINDOW_BORDER BELOW_ACCEPTANCE">
+   <DESCRIPTION>event rejection flags</DESCRIPTION>
+   <CASE>
+    <ITEM value="BAD_SHAPE"		/>
+    <ITEM value="ON_NODE_INTERFACE"	/>
+    <ITEM value="ON_BADPIX"		/>
+    <ITEM value="NEXT_TO_BADPIX"	/>
+    <ITEM value="ON_WINDOW_BORDER"	/>
+    <ITEM value="BELOW_ACCEPTANCE"	/> 
+    <ITEM value="BAD_SHAPE ON_NODE_INTERFACE ON_BADPIX ON_WINDOW_BORDER BELOW_ACCEPTANCE"	/>
+    </CASE>
+   </PARAM>
+
+  <PARAM id="auxgtitables" type="table" list="yes" default="">
+   <DESCRIPTION>
+    OGIP compliant auxiliary GTI tables
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withexpmaps" type="bool" default="yes">
+   <DESCRIPTION>
+    enable construction of exposure maps
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withcombmap" type="bool" default="yes">
+   <DESCRIPTION>
+    generate the combined exposure map
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="expimageset" type="dataset" default="">
+   <DESCRIPTION>
+    output combined exposure map
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="driftbinsize" type="real" default="1">
+   <DESCRIPTION>
+    drift quantization width, arcseconds
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    driftbinsize in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+ <PARAM id="spectrumbinning" type="string" default="lambda">
+   <DESCRIPTION>
+    Dispersion binning method
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="lambda">
+    </ITEM>
+    <ITEM value="beta">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

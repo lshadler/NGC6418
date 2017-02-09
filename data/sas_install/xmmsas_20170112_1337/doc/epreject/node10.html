@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Usage</TITLE>
+<META NAME="description" CONTENT="Usage">
+<META NAME="keywords" CONTENT="epreject">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epreject.css">
+
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epreject (epreject-5.17) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Caveats: things to take"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epreject.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00034000000000000000"></A>
+<A NAME="epreject:description:usage"></A>
+<BR>
+<B>Usage</B>
+</H2>
+
+<P>
+Task <A NAME="510"></A><A NAME="tex2html18"
+  HREF="../epreject/index.html"><SPAN  CLASS="textbf">epreject</SPAN></A>
+is intended to be run immediately after 
+task <A NAME="514"></A><A NAME="tex2html19"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>, either in the PPS or alternatively as part of the
+offline analysis using the <A NAME="518"></A><A NAME="tex2html20"
+  HREF="../epchain/index.html"><SPAN  CLASS="textbf">epchain</SPAN></A>
+script. 
+Noise events flagged by <A NAME="522"></A><A NAME="tex2html21"
+  HREF="../epreject/index.html"><SPAN  CLASS="textbf">epreject</SPAN></A>
+may be physically removed
+from the event list,
+considerably reducing the file size of the event set. 
+The <A NAME="526"></A><A NAME="tex2html22"
+  HREF="../epchain/index.html"><SPAN  CLASS="textbf">epchain</SPAN></A>
+task parameters <TT>runepreject</TT>,
+<TT>sigma</TT>, <TT>badcolumnset</TT>, <TT>noiseparameters</TT>, and 
+<TT>screenrejected</TT> are available to control 
+the behavior of <A NAME="535"></A><A NAME="tex2html23"
+  HREF="../epreject/index.html"><SPAN  CLASS="textbf">epreject</SPAN></A>
+and the subsequent event filtering.
+Care should be taken that parameter <TT>screenlowthresh</TT> is set to
+a sufficiently low value (120 eV) to preserve the noise-screened
+low energy events in the final calibrated event set. A typical <A NAME="540"></A><A NAME="tex2html24"
+  HREF="../epchain/index.html"><SPAN  CLASS="textbf">epchain</SPAN></A>
+call to run <A NAME="544"></A><A NAME="tex2html25"
+  HREF="../epreject/index.html"><SPAN  CLASS="textbf">epreject</SPAN></A>
+would look like this (see <A NAME="548"></A><A NAME="tex2html26"
+  HREF="../epchain/index.html"><SPAN  CLASS="textbf">epchain</SPAN></A>
+task description for other epchain parameters):
+
+<P>
+<TT>epchain runepreject=yes screenrejected=yes screenlowthresh=120 ...</TT>
+
+<P>
+After running epchain, a noise screened low energy image may, e.g., 
+be created by the following call
+
+<P>
+<TT>evselect expression='PHA&gt;20 &amp;&amp; PI in (120:200)' ...</TT>
+
+<P>
+Note, that events with PHA values below 20 need to be removed to 
+create a clean image.
+
+<P>
+Sometimes offset maps are not available within the ODF/SDF - they may be been
+dumped instead in the observation before or after the one to be processed,
+with different ObsID.
+A work-around is implemented for <A NAME="552"></A><A NAME="tex2html27"
+  HREF="../epreject/index.html"><SPAN  CLASS="textbf">epreject</SPAN></A>
+via an ASCII list of corresponding offset maps
+outside the ODF/SDF. 
+
+<P>
+This is controlled via the parameter <TT>withoffsetlist</TT> (default ``N'')
+that takes precedence over parameter <TT>withoffsetmap</TT> if set to ``Y'': 
+it opens the file
+specified in parameter <TT>odilist</TT> and reads the ODI name to be used
+from there. The input list is an ASCII with 2-digit CCD number followed
+by a blank and then the path to the offset map for that CCD (there can be
+more than one offset map in that file so that the input file can be used
+for the whole observation processing in <A NAME="559"></A><A NAME="tex2html28"
+  HREF="../epchain/index.html"><SPAN  CLASS="textbf">epchain</SPAN></A>; 
+only the first entry for a particular CCD is used; 
+the order does not matter).
+
+<P>
+An example input file
+(you may call it 2462_9246200004_PNS00300ODI.ASC) useful
+for slew 9246200004 is listed below:
+
+<P>
+<PRE>
+01 /xmm/public/data/2462/0723780401/2462_0723780401_PNU40101ODI.FIT
+02 /xmm/public/data/2462/0723780401/2462_0723780401_PNU40102ODI.FIT
+03 /xmm/public/data/2462/0723780401/2462_0723780401_PNU40103ODI.FIT
+04 /xmm/public/data/2462/0723780401/2462_0723780401_PNU40104ODI.FIT
+05 /xmm/public/data/2462/0723780401/2462_0723780401_PNU40105ODI.FIT
+06 /xmm/public/data/2462/0723780401/2462_0723780401_PNU40106ODI.FIT
+07 /xmm/public/data/2462/0723780401/2462_0723780401_PNU40107ODI.FIT
+08 /xmm/public/data/2462/0723780401/2462_0723780401_PNU40108ODI.FIT
+09 /xmm/public/data/2462/0723780401/2462_0723780401_PNU40109ODI.FIT
+10 /xmm/public/data/2462/0723780401/2462_0723780401_PNU40110ODI.FIT
+11 /xmm/public/data/2462/0723780401/2462_0723780401_PNU40111ODI.FIT
+12 /xmm/public/data/2462/0723780401/2462_0723780401_PNU40112ODI.FIT
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Caveats: things to take"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="rgsrmfgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsrmfgen.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="rgsrmfgen.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsrmfgen (rgsrmfgen-1.15.6) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="rgsrmfgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsrmfgen.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="rgsrmfgen:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+<A NAME="479"></A><A NAME="tex2html2"
+  HREF="../rgsrmfgen/index.html"><SPAN  CLASS="textbf">rgsrmfgen</SPAN></A>
+creates an OGIP-compliant response matrix file, or files, as
+required for spectrum analysis within XSPEC.  Because a certain level
+of compatibility between the spectrum and response matrix is required,
+it is typical and convenient (but not required) to create the spectrum
+first and provide it as in input to the response generator.  The
+instrument's response within each incident (photon) energy bin is
+calculated for every dispersion channel.  The size of the matrix is
+determined, therefore, by the size of the spectrum and the number of
+incident energy bins (<TT>rows</TT>) specified on the command line.  A
+matrix of one hundred energy bins can be computed fairly quickly
+(about ten minutes) and is good for visual inspection, but is not good
+for analysis.  Two hundred fifty bins is a minimum for use with
+<A NAME="484"></A><A NAME="tex2html3"
+  HREF="../rgsfluxer/index.html"><SPAN  CLASS="textbf">rgsfluxer</SPAN></A>, and three thousand is probably acceptable for use with
+XSPEC.  Be prepared to wait a while, and for periodic progress updates
+set the verbosity level to five.
+
+<P>
+The new parameter <TT>witharffile</TT> can be used to create two
+separated redistribution matrix (RMFMAT) and effective area (ARFMAT)
+files. The user has to make sure that the task <A NAME="489"></A><A NAME="tex2html4"
+  HREF="../rgsfluxer/index.html"><SPAN  CLASS="textbf">rgsfluxer</SPAN></A>
+is
+used in one of the follwoing ways: 
+
+<UL>
+<LI>Run <A NAME="493"></A><A NAME="tex2html5"
+  HREF="../rgsfluxer/index.html"><SPAN  CLASS="textbf">rgsfluxer</SPAN></A>
+with
+redistribution matrix which contains the effective area (RSPMAT) file.
+
+<P>
+</LI>
+<LI>Run <A NAME="497"></A><A NAME="tex2html6"
+  HREF="../rgsfluxer/index.html"><SPAN  CLASS="textbf">rgsfluxer</SPAN></A>
+with redistribution matrix (RMFMAT) and the
+effecitve area (ARFMAT) file.
+</LI>
+</UL>
+
+<P>
+The metatask <A NAME="501"></A><A NAME="tex2html7"
+  HREF="../rgsproc/index.html"><SPAN  CLASS="textbf">rgsproc</SPAN></A>
+handles this situation automatically and
+run <A NAME="505"></A><A NAME="tex2html8"
+  HREF="../rgsfluxer/index.html"><SPAN  CLASS="textbf">rgsfluxer</SPAN></A>
+with the correct intput files depending of the
+user's choice.
+
+<P>
+If the <TT>dyneffareacorr</TT> is enabled, the <A NAME="510"></A><A NAME="tex2html9"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>
+calculates a
+correction to the effective area which is based on a Chebyshev
+polynomial parametrization of calibration data. This effective area
+correction is time dependent and around every six months, a new
+correction is added to CCF. Depending on the observation date, the
+<A NAME="514"></A><A NAME="tex2html10"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>
+interpolates between the two closest effective area
+correction epochs. If the observation date is later than the last
+available correction epoch, we use the latest one as the valid
+correction. If the observation date is earlier than the first
+available correction epoch, we use the first one.
+
+<P>
+The EFFAREACOOR CCF file has a new extension called RECTIFICATION that can 
+optionally be applied using the <TT>withrectification</TT> switch.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="rgsrmfgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

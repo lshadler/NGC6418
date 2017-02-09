@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Introduction</TITLE>
+<META NAME="description" CONTENT="Introduction">
+<META NAME="keywords" CONTENT="evproject">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="evproject.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+evproject (attcalc2-1.3.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Genesis of evproject"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Projecting the events"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="evproject.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000">
+Introduction</A>
+</H2>
+
+<P>
+The task <A NAME="671"></A><A NAME="tex2html17"
+  HREF="../evproject/index.html"><SPAN  CLASS="textbf">evproject</SPAN></A>
+does three things:
+
+<P>
+
+<OL>
+<LI>For each event in the input list, <A NAME="675"></A><A NAME="tex2html18"
+  HREF="../evproject/index.html"><SPAN  CLASS="textbf">evproject</SPAN></A>
+calculates an X and Y coordinate pair. These are the coordinates of the event on a plane which is tangent to the celestial sphere. The X axis of the tangent plane points in the direction of decreasing right ascension and the Y axis points in the direction of increasing declination. See section <A HREF="node6.html#evproject:description:projplane">3.3</A> or parameter <TT>tangdirstyle</TT> for a description of how the user can provide the direction of the tangent point to the program.
+
+<P>
+These X and Y coordinate values are stored as 4-byte integers in columns of the event list designated by the parameters <TT>xcol</TT> and <TT>ycol</TT>. The coordinates are both offset and scaled, the relevant information being stored according to the usual World Coordinate System conventions in WCS column attributes of the <TT>xcol</TT> and <TT>ycol</TT> columns. The scaling is such that an increment of 1 in either X or Y value corresponds to a tangent-plane distance equal to the arc length of 0.05 arcsec (same as for the <A NAME="684"></A><TT>DETX</TT> and <A NAME="686"></A><TT>DETY</TT> columns of the event list).
+
+<P>
+Note that the basic purpose of this projection is to make it easy to extract several images from different selections of the same events. Since the positions of all events on a projection plane are pre-calculated by <A NAME="688"></A><A NAME="tex2html19"
+  HREF="../evproject/index.html"><SPAN  CLASS="textbf">evproject</SPAN></A>, it is a simple matter to rebin these positions to form an image. In formal terms, the X and Y values already constitute an image, albeit with a very small pixel size.
+
+<P>
+</LI>
+<LI>The task calculates a nominally average spacecraft attitude (comprising right ascension and declination of the spacecraft -X axis and the position angle of the spacecraft -Z axis) and stores this in the event list header in keywords <A NAME="692"></A><TT>RA_PNT</TT>, <A NAME="694"></A><TT>DEC_PNT</TT> and <A NAME="696"></A><TT>PA_PNT</TT>.
+
+<P>
+</LI>
+<LI>In principle, due to residual instability of the spacecraft pointing, each event is associated with a slightly different spacecraft attitude. However, because the differences from one event to another are usually slight, and because it is time consuming to perform the coordinate-transform calculation with a different attitude for each event, it was found convenient to divide the duration of the exposure into <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$N$"></SPAN> unequal bins, each of these time bins being associated with a fixed attitude. The task generates these bins by following the attitude and starting a new bin at the point where the attitude diverges from the bin baseline value by more than a set threshold.
+
+<P>
+Note that the task can either perform this attitude binning itself (with the option to store the result in <TT>outbinnedattset</TT>) or it can make use of a binning scheme already prepared by task <A NAME="699"></A><A NAME="tex2html20"
+  HREF="../attbin/index.html"><SPAN  CLASS="textbf">attbin</SPAN></A>. See section <A HREF="node7.html#evproject:description:attsource">3.4</A> for details.
+
+<P>
+</LI>
+</OL>
+
+<P>
+These activities are described in more detail in the remaining subsections of section <A HREF="node3.html#evproject:description:description">3</A>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Genesis of evproject"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Projecting the events"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

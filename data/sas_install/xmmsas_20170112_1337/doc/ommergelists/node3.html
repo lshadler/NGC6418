@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="ommergelists">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ommergelists.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="ommergelists.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ommergelists (ommergelists-1.0.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="ommergelists.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ommergelists.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="ommergelists:description:description"></A>
+<BR>
+Description
+</H1>
+This program has originated due to the new <SPAN  CLASS="textbf">OM</SPAN>
+functionality of source-detection on mosaiced sky-images. 
+It matches the sources from the first input observation source-list file (ie 
+those detected from the individual exposure images) with those from
+the second input observation source-list file (ie those that have been 
+detected on the mosaiced sky-image), and propogates these matches into an output source-list
+with the following caveats:
+
+<OL>
+<LI>Any <SPAN  CLASS="textbf">unmatched</SPAN> sources from the second-list having a raw count-rate (including 
+the background) 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\leq$"></SPAN> <SPAN  CLASS="textbf">maxrawrate</SPAN> value are added to the output observation 
+source-list file. 
+
+<P>
+</LI>
+<LI>Often fields are imaged through more than one filter. An object exists in a source-list if it is
+detected through a minimum of one filter. Non-detections of the known source through other filters are not
+flagged. However, if the second source-list is constructed using, for example, a deeper mosaicked image then
+it can potentially contain new detections of a known source which has already been found in the shallow images
+of individual exposures, through different filters. Provided new detections in list 2 of known sources already
+found in other wavebands in list 1 have intrinsic + background count-rates <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\leq$"></SPAN> <SPAN  CLASS="textbf">maxrawrate</SPAN> then they are
+propogated into the new combined source-list. 
+
+<P>
+</LI>
+<LI>Deeper exposures provide a more significant detection and better constrained source properties. If there
+is a source match between the two lists through a specific filter, the properties of the most significant detection
+are adopted within the output list. An exception to this rule occurs if a source with intrinsic + background count-rate
+<!-- MATH
+ \begin{math}
+>
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$&gt;$"></SPAN> <SPAN  CLASS="textbf">maxrawrate</SPAN>. In these bright-source cases the properties derived or combined from individual images are adopted
+within the output list. This exception prevents systematic errors related to combining different CCD dead-times. frame-rates
+and coincidence-losses from propogating into the bright-source sample. 
+
+<P>
+</LI>
+</OL>
+
+<P>
+The <SPAN  CLASS="textbf">maxrawrate</SPAN> value is an optional input parameter, with a default value of 5 counts/sec; below this threshold 
+a coincidence-loss correction to photon rates is not required within photometric conversions. The reason why there is a maximum 
+raw-rate cut-off is due to the way <SPAN  CLASS="textbf">OM</SPAN> photometry is conducted. A
+coincidence loss correction is applied to the count-rates
+and this correction depends on the frame-time and dead-time fraction. These CCD properties vary from exposure to exposure and
+so coincidence-losses cannot be corrected in mosaicked images with the current SAS algorithms. By propogating only the faint sources
+from the second list into the output table we avoid systematic bright-source photometry error, while retaining the full potential size of the
+source sample within the output.
+
+<P>
+Since this cut-off is
+determined by the input parameter <SPAN  CLASS="textbf">maxrawrate</SPAN>, the
+user has complete control over what sources are retained. It should be noted
+that for the photometry of the sources detected on the mosaiced sky-images, no
+coincidence-loss correction will have been applied and the dead-fraction correction
+will have been incorporated into the exposure images. 
+
+<P>
+<SPAN  CLASS="textbf">Ommergelists</SPAN> will compare the celestial coordinates of the matched sources from both
+source-lists and compute mean <SPAN  CLASS="textbf">RA</SPAN> and <SPAN  CLASS="textbf">Dec</SPAN> offsets and add them to the
+coordinates of the second source-list to correct for any small differences in their origins
+(it will give a warning about any significant offsets indicating bad astrometry).
+
+<P>
+The program can also produce graphs comparing various properties of the common sources in the two
+lists, which can be a useful check for possible problems. It can also
+produce a <SPAN  CLASS="textbf">ds9</SPAN> region file that allows the new sources detected on the mosaiced
+sky images to be easily identified.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="ommergelists.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

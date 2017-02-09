@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="bkgfit">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="bkgfit.css">
+
+<LINK REL="next" HREF="node11.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="bkgfit.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+bkgfit (ebkgmap-2.9) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Goodness of fit:"></A>
+<A HREF="bkgfit.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="bkgfit.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="bkgfit:description:parameters"></A>
+<A NAME="533"></A>
+<tr valign=top bgcolor='silver'><td><b>poissonset</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the Poissonian image which it is desired to fit background to.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="540"></A>
+<tr valign=top bgcolor='silver'><td><b>fitsets</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset list</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    List of names of datasets, each of which is an image which represents one of the components of the background model to be fitted.
+    <br>&nbsp;</td></tr>
+
+<A NAME="547"></A>
+<tr valign=top bgcolor='silver'><td><b>fitstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>whole</td><td>whole|base|wholethenbase</td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>fitstyle</TT>=`whole', the pixels of <TT>poissonset</TT> may have any value, and a standard Poisson distribution is assumed. If <TT>fitstyle</TT>=`base', only pixels which have values below a truncation level are included in the fit: in this case the probability distribution is necessarily a (renormalized) Poisson distribution which extends only from zero to the truncation level. The second type of fit is useful if there are bright patches on the image which it is desired to exclude.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="560"></A>
+<tr valign=top bgcolor='silver'><td><b>truncationset</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>fitstyle</TT>=`base'. It should point to a dataset which has in its primary extension an image, of the same pixel dimensions as <TT>poissonset</TT>, <TT>fitsets</TT> or any other image input to the task. The task interprets this as an image of cutoff values: only those pixels of <TT>poissonset</TT> which have values below the corresponding value of <TT>truncationset</TT> will be fitted to the task; the probability distributions at those pixels being similarly truncated.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="577"></A>
+<tr valign=top bgcolor='silver'><td><b>withmaskset</b></td><td>no</td><td><A HREF=../param/node3.html>bool</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If `yes', the task reads the name of a mask image from <TT>maskset</TT>. Only unmasked pixels (that is, pixels for which the mask evaluates to TRUE) are fitted.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="586"></A>
+<tr valign=top bgcolor='silver'><td><b>maskset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>mask.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the mask image dataset.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="593"></A>
+<tr valign=top bgcolor='silver'><td><b>withinitcoeffs</b></td><td>no</td><td><A HREF=../param/node3.html>bool</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If `yes', the task reads starting values of the amplitudes <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$\mathbf{a}$"></SPAN> from <TT>initcoeffs</TT>. If <TT>withinitcoeffs</TT>=`no', the task estimates these itself.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="605"></A>
+<tr valign=top bgcolor='silver'><td><b>initcoeffs</b></td><td>no</td><td><A HREF=../param/node3.html>real list</A></td><td>1.0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    A list of starting values of the amplitudes <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$\mathbf{a}$"></SPAN>. This is only read if <TT>withinitcoeffs</TT>=`yes'. There must be the same number of elements in this list as in <TT>fitsets</TT>.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="617"></A>
+<tr valign=top bgcolor='silver'><td><b>outbkgmapset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>outset.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the output image dataset.
+    <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Goodness of fit:"></A>
+<A HREF="bkgfit.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,66 @@
+ChangeLog for lccorr_pcms
+===============================
+
+
+Open SPRs:
+----------
+3403, 3406, 3557, 3585, 3648
+
+Version 1.6.1 - 2009-05-12 (EO)
+-------------
+	+ Re-fixed DEPEND.
+
+Version 1.6 - 2009-05-11 (EO)
+-----------
+	+ Fixed DEPEND file.
+
+Version 1.5.1 - 2007-04-12 (MAS/LUX)
+----------------------
+- Changed exposure_map_pcms.f90 so as to fix SPR 3659 (wrong calculation of BKGRATIO, given as the header keyword in the output FITS).  Note that this bug only appears in this lccorr_pcms package (NOT in the lccorr package).
+- Set testFlag in one of the subroutines in exposure_map_pcms.f90 to be false, which was unintentionally true.
+- Upgraded routines related writeCubeData() in eexpchipmap_pcms_mod.f90.
+- In lccorr_pcms, added the comment for the BKGRATIO header keyword.
+	
+Version 1.5 - 2006-04-12 (MAS/LUX)
+----------------------
+- Changed exposure_map*.f90 so as to fix SPR 3596 (MOS pheripheral chips NOT processed when the central chip is in the timing mode).
+- Note: Now, instead of relying on CAL_getState() for getting the informaion of the CCDMODE, now it is got directly from the FITS header of the input file.
+- Note: This change has been made so far only in lccorr_pcms (not lccorr).
+
+Version 1.4.1 - 2006-04-10 (MAS/LUX)
+----------------------
+- Changed lc*_mod.f90 so as to fix SPR 3595 ('noSrcArea': error -> normal exit with warning)
+
+Version 1.4 - 2006-02-22 (IMS/LUX)
+----------------------
+- Changed exposure_aux.f90 in line with lccorr-2.27.
+- Dependency on ssclib increased to 3.29.
+
+Version 1.3 - 2005-12-01 (IMS/LUX)
+----------------------
+- Improved some error messages.
+- Added 2 lines of message output.
+- Fixed a bug: fine-scale pseudo-event filtering had been left commented out, so that areas of extraction regions were too small.
+- Fixed another bug: the hexadecimal parameter --flagmask was not being transmitted to the exposure-correction machinery.
+
+Version 1.2 - 2005-11-17 (IMS/LUX)
+----------------------
+- Parameter --withboresightfudge (default 'yes') added to lccorr_pcms and eexpchipmap_pcms (until sign of boresight psi is corrected).
+- DEPENDency on attcalc2, eimchip2sky and ssclib all brought up to date (1.2, 2.0 and 3.27 respectively).
+- Made other changes to eexpchipmap_pcms so it conforms with latest attcalc2 and eimchip2sky.
+
+Version 1.1 - 2005-11-07 (IMS/LUX)
+----------------------
+- Added a test harness.
+
+Version 1.0 - 2005-11-02 (IMS/LUX)
+----------------------
+- Contains versions of eexpchipmap and lccorr (but no other lccorr tasks) which have been kludged in an attempt to circumvent F95 compiler problems. This package was modified from lccorr-2.21.
+- Added new parameter --srcdeducestyle and rearranged the parameter tree structure (to help support --srcweightstyle='events').
+- Fixed a bug in exposure_map_pcms in which the task was failing if any CCD had no overlap from the src or bkg extraction region.
+- --srcweightstyle='events' is now supported.
+- Added new parameter --tempeventset to both lccorr_pcms and eexpchipmap_pcms.
+- Added two new parameters --srcregiontab and --bkgregiontab, plus necessary changes to lccorr_include.f90, lccorr_pcms_mod.f90, lccorr_corrector.f90 and exposure_map_pcms.f90 to make use of them. This is necessary to convey region filtering data to the exposure calculator.
+- Changed DEPEND of attcalc2 to 1.0 to overcome linux build problem.
+- DISTRIBUTION changed from world to ssc.
+

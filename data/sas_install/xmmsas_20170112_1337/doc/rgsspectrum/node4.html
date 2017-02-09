@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="rgsspectrum">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsspectrum.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="rgsspectrum.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsspectrum (rgsspectrum-2.8.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="rgsspectrum.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsspectrum.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="rgsspectrum:description:parameters"></A>
+<A NAME="604"></A>
+<tr valign=top bgcolor='silver'><td><b>evlist</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>evlist.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The input filtered event dataset.  It must contain the
+    <A NAME="612"></A><TT>EVENTS</TT> table and exposure map extensions.  Not modified.
+    All other file names required by this task are inferred by default
+    from this one.
+    <br>&nbsp;</td></tr>
+
+<A NAME="614"></A>
+<tr valign=top bgcolor='silver'><td><b>srclist</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The input source definition dataset.  It must contain the
+    <A NAME="625"></A><TT>SRCLIST</TT> table and the relevant selection region
+    extensions.  Not modified.  The default file name is inferred from
+    the input <TT>evlist</TT> name as: <TT>*SRCLI_????.*</TT> if there
+    are ten characters before the suffix, and otherwise just <TT>    srclist.*</TT>.
+    <br>&nbsp;</td></tr>
+
+<A NAME="628"></A>
+<tr valign=top bgcolor='silver'><td><b>source</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>&nbsp;</td><td>non-negative</td></tr>
+
+<tr valign=top><td colspan=5>
+    The <A NAME="639"></A><TT>INDEX</TT> number of an entry in the <A NAME="641"></A><TT>SRCLIST</TT>
+    table.  This determines the incidence angle and selection regions.
+    The default value, zero, indicates the <A NAME="643"></A><TT>SOURCEID</TT> attribute of
+    the <A NAME="645"></A><TT>EVENTS</TT> table.
+    <br>&nbsp;</td></tr>
+
+<A NAME="647"></A>
+<tr valign=top bgcolor='silver'><td><b>order</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>1</td><td>positive</td></tr>
+
+<tr valign=top><td colspan=5>
+    The reflection order number.  This determines the energy selection
+    region.
+    <br>&nbsp;</td></tr>
+
+<A NAME="654"></A>
+<tr valign=top bgcolor='silver'><td><b>withspectrum</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Enables output of the source spectrum (parameter
+    <TT>spectrumset</TT>).  The type of this spectrum is controlled by
+    parameter <TT>bkgcorrect</TT>.
+    <br>&nbsp;</td></tr>
+
+<A NAME="665"></A>
+<tr valign=top bgcolor='silver'><td><b>bkgcorrect</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Enables background-correction of the source spectrum.
+    <br>&nbsp;</td></tr>
+
+<A NAME="672"></A>
+<tr valign=top bgcolor='silver'><td><b>spectrumset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The output source spectrum dataset (OGIP-compliant format).
+    The default file name is inferred from the input <TT>evlist</TT> name
+    as: <TT>*SRSPEC<!-- MATH
+ $<\!\!order\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="66" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$&lt;\!\!order\!\!&gt;$"></SPAN><!-- MATH
+ $<\!\!source\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$&lt;\!\!source\!\!&gt;$"></SPAN>.*</TT> if there are
+    ten characters before the suffix, and otherwise just 
+    <TT>src<!-- MATH
+ $<\!\!source\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$&lt;\!\!source\!\!&gt;$"></SPAN>o<!-- MATH
+ $<\!\!order\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="66" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$&lt;\!\!order\!\!&gt;$"></SPAN>.pha</TT>.
+    <br>&nbsp;</td></tr>
+
+<A NAME="687"></A>
+<tr valign=top bgcolor='silver'><td><b>spectrumbinning</b></td><td>no</td><td><A HREF=../param/node3.html>choice</A></td><td>lambda</td><td>lambda beta</td></tr>
+
+<tr valign=top><td colspan=5>
+     Spectrum binning type. Used to accumulate the spectrum.
+    <br>&nbsp;</td></tr>
+
+<A NAME="694"></A>
+<tr valign=top bgcolor='silver'><td><b>withbkgset</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Enables output of the background spectrum (parameter <TT>bkgset</TT>).
+    <br>&nbsp;</td></tr>
+
+<A NAME="703"></A>
+<tr valign=top bgcolor='silver'><td><b>bkgset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The output background spectrum dataset (OGIP-compliant format).
+    The default file name is inferred from the input <TT>evlist</TT> name
+    as: <TT>*BGSPEC<!-- MATH
+ $<\!\!order\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="66" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$&lt;\!\!order\!\!&gt;$"></SPAN><!-- MATH
+ $<\!\!source\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$&lt;\!\!source\!\!&gt;$"></SPAN>.*</TT> if there are
+    ten characters before the suffix, and otherwise just 
+    <TT>bkg<!-- MATH
+ $<\!\!source\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$&lt;\!\!source\!\!&gt;$"></SPAN>o<!-- MATH
+ $<\!\!order\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="66" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$&lt;\!\!order\!\!&gt;$"></SPAN>.pha</TT>.
+    <br>&nbsp;</td></tr>
+
+<A NAME="718"></A>
+<tr valign=top bgcolor='silver'><td><b>rebin</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>1</td><td>positive</td></tr>
+
+<tr valign=top><td colspan=5>
+    The channel rebinning factor.  The events and exposure are
+    rebinned going into the histogram, which gives a more stable
+    result than if the full-resolution spectrum is rebinned later (a
+    very minor point).
+    <br>&nbsp;</td></tr>
+
+<A NAME="725"></A>
+<tr valign=top bgcolor='silver'><td><b>edgechannels</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>2</td><td>non-negative</td></tr>
+
+<tr valign=top><td colspan=5>
+    The number of channels at the edges of each chip to be marked as
+    bad in the output <A NAME="733"></A><TT>QUALITY</TT> column.  For reasons not well
+    understood at this time, the two channels at either edge of every
+    chip do not seem to be properly calibrated.
+    <br>&nbsp;</td></tr>
+
+<A NAME="735"></A>
+<tr valign=top bgcolor='silver'><td><b>exposed</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>0.1</td><td>0-1</td></tr>
+
+<tr valign=top><td colspan=5>
+    Channels with less than this fraction of full exposure are marked
+    as bad in the output <A NAME="743"></A><TT>QUALITY</TT> column.
+    <br>&nbsp;</td></tr>
+
+<A NAME="745"></A>
+<tr valign=top bgcolor='silver'><td><b>withfracexp</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Enables addition of the non-standard (but harmless)
+    <A NAME="753"></A><TT>FRAC_EXP</TT> column to the output spectra.  This is the
+    fraction of full exposure in each channel.
+    <br>&nbsp;</td></tr>
+
+<A NAME="755"></A>
+<tr valign=top bgcolor='silver'><td><b>badquality</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>1</td><td>0-5</td></tr>
+
+<tr valign=top><td colspan=5>
+    The <A NAME="763"></A><TT>QUALITY</TT> column value used to indicate a bad channel.
+    The default causes bad channels to be discarded automatically by
+    XSPEC.  Advanced users of XSPEC may prefer to change this for
+    diagnostic purposes.
+    <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="rgsspectrum.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,206 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Customisation</TITLE>
+<META NAME="description" CONTENT="Customisation">
+<META NAME="keywords" CONTENT="emchain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emchain.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emchain (emchain-11.19) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Bad pixels detection"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emchain.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00035000000000000000"></A>
+<A NAME="emchain:description:description:custom"></A>
+<BR>
+Customisation
+</H2>
+
+<P>
+Many options allow to run <A NAME="1000"></A><A NAME="tex2html44"
+  HREF="../emchain/index.html"><SPAN  CLASS="textbf">emchain</SPAN></A>
+on a subset of the data,
+restart from previous output, change the options of constituent tasks.
+
+<P>
+
+<UL>
+<LI>The <TT>exposures</TT>, <TT>instruments</TT> and <TT>ccds</TT> parameters
+      allow to run <A NAME="1007"></A><A NAME="tex2html45"
+  HREF="../emchain/index.html"><SPAN  CLASS="textbf">emchain</SPAN></A>
+on a subset of the data files
+      (select an explicit list of exposures, instruments or CCDs).
+
+<P>
+</LI>
+<LI>If <TT>addvigweight</TT>=Y, then <A NAME="1012"></A><A NAME="tex2html46"
+  HREF="../evigweight/index.html"><SPAN  CLASS="textbf">evigweight</SPAN></A>
+is called
+      to add a <A NAME="1016"></A><TT>WEIGHT</TT> column to the events list
+      (for extended source analysis).
+
+<P>
+</LI>
+<LI>All individual steps in emchain except <A NAME="1018"></A><A NAME="tex2html47"
+  HREF="../emframes/index.html"><SPAN  CLASS="textbf">emframes</SPAN></A>
+may be skipped
+      (<TT>withbadpix</TT>, <TT>withemevents</TT>, <TT>withattcalc</TT>,
+       <TT>withemenergy</TT>, <TT>runevlistcomb</TT>, <TT>applyccdgti</TT>,
+       <TT>makeflaregti</TT>). The whole loop over CCDs may be skipped
+      if <TT>runccdloop</TT>=N (the only available functionalities are
+      then those of Fig <A HREF="node5.html#emchain:description:description:main:merge">1</A>).
+
+<P>
+</LI>
+<LI>If <TT>runevlistcomb</TT>=N, the merged event files are not built
+      and the output is the collection of individual event and frame files.
+      For example, the event files are called eventnn.out.mos, where nn
+      is the same as <A NAME="1031"></A><TT>CCDNR</TT> of the merged file (10*node+ccd).
+      To avoid overwriting the files of one exposure with the next,
+      they are renamed eventnn.out.MkEEEE where k is 1 or 2 and EEEE
+      is <A NAME="1033"></A><TT>EXPIDSTR</TT> (exposure number including S or U).
+      They are not renamed if only one exposure is processed.
+      Note that all the files must be renamed manually back to *.out.mos to
+      allow restarting <A NAME="1035"></A><A NAME="tex2html48"
+  HREF="../emchain/index.html"><SPAN  CLASS="textbf">emchain</SPAN></A>
+from them (<TT>startfromodf</TT>=N).
+
+<P>
+</LI>
+<LI>If <TT>randomize</TT> does not contain the letter P,
+      <A NAME="1041"></A><A NAME="tex2html49"
+  HREF="../emevents/index.html"><SPAN  CLASS="textbf">emevents</SPAN></A>
+is run with <TT>randomizeposition</TT>=N.
+      If <TT>randomize</TT> does not contain the letter T,
+      <A NAME="1047"></A><A NAME="tex2html50"
+  HREF="../emevents/index.html"><SPAN  CLASS="textbf">emevents</SPAN></A>
+is run with <TT>randomizetime</TT>=N.
+      If <TT>randomize</TT> does not contain the letter E,
+      <A NAME="1053"></A><A NAME="tex2html51"
+  HREF="../emenergy/index.html"><SPAN  CLASS="textbf">emenergy</SPAN></A>
+is run with <TT>randomizeenergy</TT>=N.
+
+<P>
+</LI>
+<LI>Parameters may be passed to constituent tasks.
+      The syntax is 'taskname:paramname=soandso',
+      where 'paramname' is the parameter name for task 'taskname'.
+      This will be passed as 'paramname=soandso'
+      when calling 'taskname'.
+<BR>
+For example, 'emenergy:useccfdarkframe=Y' allows using
+      the CCF dark frame
+      for the CCD background correction (this corrects for variations
+      at the pixel scale, whereas the E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$_4$"></SPAN> data allows to correct for
+      variations on scales larger than 5 pixels).
+<BR>
+This syntax does not allow to specify different parameter values
+      on different occurrences of 'taskname' within <A NAME="1058"></A><A NAME="tex2html52"
+  HREF="../emchain/index.html"><SPAN  CLASS="textbf">emchain</SPAN></A>.
+
+The additional parameter will be passed on all occasions.
+<BR>
+Parameters specified in that way supersede possible settings
+      of the same parameters by <A NAME="1062"></A><A NAME="tex2html53"
+  HREF="../emchain/index.html"><SPAN  CLASS="textbf">emchain</SPAN></A>
+itself.
+
+<P>
+</LI>
+<LI>For calibration purposes (offsets' evolution),
+      or checking optical loading,
+      it can be useful to look at the background (base level) of a CCD.
+      If <TT>writeccdbackground</TT>=Y, then emchain writes one file per
+      CCD and per exposure, containing the CCD background (as determined
+      by <A NAME="1067"></A><A NAME="tex2html54"
+  HREF="../emenergy/index.html"><SPAN  CLASS="textbf">emenergy</SPAN></A>). This is similar to passing <TT>backgroundset</TT>
+
+to <A NAME="1072"></A><A NAME="tex2html55"
+  HREF="../emenergy/index.html"><SPAN  CLASS="textbf">emenergy</SPAN></A>, but allows to save all such files under a
+
+different name.
+
+<P>
+</LI>
+<LI><A NAME="1076"></A><A NAME="tex2html56"
+  HREF="../emchain/index.html"><SPAN  CLASS="textbf">emchain</SPAN></A>
+normally ignores data obtained with CCD read-out gain
+      set to low (/10). This behaviour may be overridden by setting
+      <TT>processlowgain</TT>=Y. Low gain data is then treated as if it was
+      normal data, and included in the merged events file in output,
+      in addition to normal data. Its <A NAME="1081"></A><TT>PI</TT> will still be wrong,
+      and the flare screening mechanism will not work normally
+      (because there are very few events at energy more than 100 keV
+      even during flares).
+
+<P>
+</LI>
+<LI>If <TT>fulloutput</TT>=Y, all columns originally present in the events
+      files (in the ODF) are preserved in the output file (this about
+      doubles the size of the file).
+
+<P>
+</LI>
+<LI>If intermediate files from a previous call to <A NAME="1084"></A><A NAME="tex2html57"
+  HREF="../emchain/index.html"><SPAN  CLASS="textbf">emchain</SPAN></A>
+still
+      exist (for example <TT>eventnn.in.mos</TT> files), <A NAME="1089"></A><A NAME="tex2html58"
+  HREF="../emchain/index.html"><SPAN  CLASS="textbf">emchain</SPAN></A>
+may use
+      them as a starting point instead of the ODF (<TT>startfromodf</TT>=N).
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Bad pixels detection"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

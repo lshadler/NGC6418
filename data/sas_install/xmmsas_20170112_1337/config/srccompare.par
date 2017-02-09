@@ -1,0 +1,84 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="srcspecset" type="dataset" default="srcspec.fits">
+   <DESCRIPTION>
+    Name of the dataset which contains the logN-logS specification for the list of simulated sources.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="simsrclistset" type="dataset" default="sim_src_list.fits">
+   <DESCRIPTION>
+    Name of the input list of simulated sources.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="detsrclisttab" type="table" default="det_src_list.fits:SRCLIST">
+   <DESCRIPTION>
+    Name of the input list of detected sources.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="srcidcol" type="string" default="SRC_NUM">
+   <DESCRIPTION>
+    Name of the det-src column containing a unique ID integer.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="fluxcol" type="string" default="FLUX">
+   <DESCRIPTION>
+    Name of the det-src column containing the flux values.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="fluxerrcol" type="string" default="FLUX_ERR">
+   <DESCRIPTION>
+    Name of the det-src column containing the uncertainties in the flux values.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="racol" type="string" default="RA">
+   <DESCRIPTION>
+    Name of the det-src column containing the source RAs (in decimal degrees).
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="deccol" type="string" default="DEC">
+   <DESCRIPTION>
+    Name of the det-src column containing the source decs (in decimal degrees).
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="radecerrcol" type="string" default="RADEC_ERR">
+   <DESCRIPTION>
+    Name of the det-src column containing the uncertainties in RA and dec.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="fluxstyle" type="string" default="simple">
+   <DESCRIPTION>
+    Controls how the flux values are transformed.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="simple">
+    </ITEM>
+    <ITEM value="root">
+    </ITEM>
+    <ITEM value="rand">
+     <PARAM id="randcol" type="string" default="LINF">
+      <DESCRIPTION>
+       Name of the det-src column containing the linear-transformed flux values.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="randerrcol" type="string" default="LINF_ERR">
+      <DESCRIPTION>
+       Name of the det-src column containing the uncertainties in the linear-transformed flux values.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

@@ -1,0 +1,2732 @@
+#! /usr/bin/perl -w
+#
+# NAME: emchain
+#
+# Developer: David Landriu, Jean Ballet     SAp, CEA Saclay
+#
+# List event files : as function of observation number and exposure
+#
+#
+###########################################
+require 5.005;
+use strict;
+
+# Define standard event rejection criterion (hexadecimal)
+# XMMEA_EM - OUT_OF_FOV - REJECTED_BY_GATTI
+my $rejectflag0 = "762aa000" ;
+
+# Declare and initialise parameters
+my ($gtiin,$goodpose,$instrume,$ccds,$badpixalgo,$rejectflag) ;
+my ($filterhk,$filteratt,$atttol,$onatthkgen,$onattcalc,$onbadpix,$onemevents);
+my ($stopatbadfind,$onemenergy,$fulloutput,$addweights,$stoponerror) ;
+my ($rejbadevts,$onlowgain,$keeptemp,$clobber,$withccdloop,$fromodf) ;
+my ($onevlistcomb,$withccdgti,$makeflaregti,$withflaregti,$timebin,$allmos) ;
+my ($randomize,$threshold,$findlowener,$withccdbkg,$getlenoise) ;
+&initParams() ;
+
+# Set the verbosity (only 1/0 setting)
+# Avoid calling SAS_VERBOSITY if unset
+my $verbose = (not exists $ENV{'SAS_VERBOSITY'} or $ENV{'SAS_VERBOSITY'} > 0) ;
+my $noisy = (exists $ENV{'SAS_VERBOSITY'} and $ENV{'SAS_VERBOSITY'} > 3) ;
+
+# Identify CCF file
+my $sasccf = "" ;
+$sasccf = $ENV{'SAS_CCF'} if ( exists $ENV{'SAS_CCF'}) ;
+my $indir="";      # ODF directory
+
+# Generic options sent to all SAS tasks
+my $generic = " -w 10" ;
+# Specific options sent to SAS tasks making use of OAL and CAL
+my $oaloptions = "" ;
+my $caloptions = "" ;
+
+my @tasklist = ("hkgtigen", "atthkgen", "badpix", "badpixfind",
+                "emeventsproj", "embadpixfind", "emframes", "emevents",
+                "gtialign", "gtimerge", "attcalc", "emenergy", "evlistcomb",
+                "ebadpixupdate", "evigweight", "emtaglenoise", "evselect",
+                "tabgtigen") ;
+my @taskparams = ("") ;
+
+# Read the parameters, perform some checks
+&getParams("ingtiset","exposures","instruments","ccds","processlowgain",
+           "withatthkgen","withattcalc","withemevents","withemenergy",
+           "withbadpix","badpixfindalgo","randomize", "addvigweight",
+           "fulloutput","rejectbadevents","rejectionflag","keepintermediate",
+           "startfromodf","runccdloop","runevlistcomb","applyccdgti",
+           "makeflaregti","applyflaregti","flaretimebin","flaremaxrate",
+           "globalflare","stoponerror","stopafterbadpixfind","clobber",
+           "filterhk","filteratt","atttol","lowenerbadpix",
+	   "writeccdbackground","addtaglenoise",
+           $gtiin, $goodpose, $instrume, $ccds, $onlowgain,
+	   $onatthkgen, $onattcalc, $onemevents, $onemenergy,
+           $onbadpix, $badpixalgo, $randomize, $addweights,
+           $fulloutput, $rejbadevts, $rejectflag, $keeptemp,
+           $fromodf, $withccdloop, $onevlistcomb, $withccdgti,
+           $makeflaregti, $withflaregti, $timebin, $threshold,
+           $allmos, $stoponerror, $stopatbadfind, $clobber,
+           $filterhk, $filteratt, $atttol, $findlowener,
+	   $withccdbkg,$getlenoise);
+
+# Transform boolean parameters
+my $varname="";
+foreach $varname ($onatthkgen, $onbadpix, $stopatbadfind, $findlowener,
+              $onemevents, $onattcalc, $onemenergy, $onlowgain, $addweights,
+              $fulloutput, $rejbadevts, $keeptemp, $fromodf, $withccdloop,
+              $onevlistcomb, $withccdgti, $makeflaregti, $withflaregti,
+              $allmos, $stoponerror, $clobber, $filterhk, $filteratt,
+	      $withccdbkg, $getlenoise) {
+  &getBoolean($varname) ;
+}
+
+# Transform string parameters into upper case
+foreach $varname ($randomize,$badpixalgo,$instrume,$goodpose) {
+  $varname = uc($varname) ;
+}
+
+# Accept EMOS and MOS within $instrume
+$instrume =~ s/EMOS/M/ ;
+$instrume =~ s/MOS/M/ ;
+
+# Set $sasccf (must be done after emchain options are known)
+  &setSASCCF($caloptions) ;
+
+# Parse CCD list parameter
+my @ccdlist = split(/ /,$ccds) ;
+
+# Parse exposure list parameter
+my $expselect = $goodpose ne "" ;
+my @explist = split(/ /,$goodpose) ;
+# Fill with leading 0s if need be
+foreach my $expos (@explist) {
+  while ( length($expos) < 3) { $expos = "0" . $expos }
+}
+
+# Define a general error status and an exposure-specific one
+my $status = 0 ; my $laststatus = 0 ;
+
+# Define criterion for GATTI flare screening
+# Corresponds to area in arcmin (Small Window is 3.7)
+my $areaCcdMin = 3 ;
+
+my ($dateobs,$dateend) ;
+my ($ccom,$ll,$expid,$eventim,$globts,$flarets,$flaregti) ;
+
+# The full list of merged events files goes into @allevfiles
+my (@allevfiles) ;
+# The list of selected merged events files goes into @evfiles
+my @evfiles = ("") ;
+if ( $withccdloop ) {
+# Full ODF analysis
+  &processOdf() ;
+} elsif ( $onevlistcomb ) {
+# Restart from intermediate files
+  &mergeEvents($expid,$eventim) ;
+  if ( -e $eventim ) { push(@evfiles,$eventim) }
+} else { @evfiles = findMergedFiles() }
+
+# Remove dummy first element in @evfiles
+shift(@evfiles) ;
+
+if ( $allmos ) {
+# Loop over all events lists (even those not selected)
+# for global flare screening
+  @allevfiles = glob("P*MIEVLI0000.FIT") ;
+# Revert to exposure-specific time-series and GTI if only one
+  $allmos = @allevfiles > 1 ;
+}
+
+# Final stages (after evlistcomb)
+if ( @evfiles == 0 && $verbose )  {
+  print "\nNo Imaging merged events list in output. \n" ;
+} elsif ( $allmos && $makeflaregti ) {
+# Get global bounds for timeseries
+  &firstStartLastStop($dateobs,$dateend) ;
+# When in error, firstStartLastStop may change $allmos
+  if ( $allmos ) {
+    foreach $eventim (@allevfiles) {
+# Build timeseries for one exposure (fixed time bin)
+      &makeFlareTs($eventim,$flarets,$dateobs,$dateend,$timebin) ;
+# Stack into global timeseries
+      &mergeTs($globts,$flarets) ;
+    }
+# Build single GTI file
+    &tsToGTI($globts,$flaregti) ;
+  }
+} elsif ( $allmos && $withflaregti ) {
+# Check that global flare GTI file exists
+  @allevfiles = glob("P*EMX000FBKGTI0000.FIT") ;
+  if ( @allevfiles == 0 )  {
+    print "\nemchain: warning(applyflaregti) !\n" ;
+    print "\nNo global flare GTI file. \n" ;
+    $withflaregti = 0 ;
+  } else { $flaregti = $allevfiles[0] }
+}
+
+foreach $eventim (@evfiles) {
+  if ( ! $allmos ) {
+    if ( $makeflaregti ) {
+# Build GTI for all exposures if not global mode
+      &makeFlareTs($eventim,$flarets) ;
+      &tsToGTI($flarets,$flaregti) ;
+    } else {
+# Check that the flare GTI file exists
+      $flaregti = $eventim ;
+      $flaregti =~ s/MIEVLI/FBKGTI/ ;
+    }
+  }
+  if ( $getlenoise ) {
+    $ccom = "emtaglenoise eventset=$eventim" ;
+    &sendCommand($ccom,5) ;
+  }
+  if ( $withflaregti ) { &applyFlareGTI($flaregti,$eventim) }
+  if ( $addweights ) {
+    $ccom = "evigweight ineventset=$eventim" ;
+    &sendCommand($ccom,5) ;
+  }
+# $flaregti must be undefined when calling tsToGTI for the name to be correct
+  if ( ! $allmos ) { undef($flaregti) }
+}
+
+# Delete all temporary files
+# laststatus is the exposure-specific error status
+if (! $keeptemp && $laststatus == 0) {
+  $ccom = "rm -f merged.*.mos errors" ;
+  if ($onevlistcomb) { $ccom .= " *.in.mos *.out.mos" }
+  $ccom .= " \n" ;
+  if ($verbose) {
+    print "\n" ;
+    print "CMD: $ccom" ;
+  }
+  $ll = `$ccom` ;
+}
+
+# Test general status
+if ($status > 0) {
+  die ("\nemchain: BEWARE: One or more of the tasks ended in error ! \n\n") }
+
+# Process files for one ODF
+sub processOdf {
+
+  my ($kk,$ccd,$areaccd,$ngtis,$iim) ;
+  my ($eventim,$inst,$obsid,$expid,$ccom,$ll,$badpix) ;
+  my ($flarets,$flaregti,$gtitables,$attfile,$attgti,$hkgti,$file1,$file2) ;
+  my (@tfic);
+
+# GTI entry to emframes
+  my $gtiout = "extgti.in.mos" ;
+
+# Tests on badpixalgo
+  if ( length($badpixalgo) > 2 ) { $badpixalgo = substr($badpixalgo,2) }
+  if ( $badpixalgo ne "EM" and $badpixalgo ne "EP" and $badpixalgo ne "NO" ) {
+    die "\nemchain: error(badpixalgo), "
+      . "badpixfindalgo may be only EM, EP or NO.\n" ;
+    }
+
+# Set ODF directory
+  &setSASODF($oaloptions) ;
+
+  if ( $fromodf ) { @tfic = findOdfExpos() }
+  else {
+    @tfic = glob("*.out.mos") ;
+    if ( @tfic == 0 ) { return }   # No intermediate file found
+    if ( getInstObsExp($tfic[0],$inst,$obsid,$expid) ) {
+      @tfic = ("") ;   # Dummy, so that next loop is executed once
+    } else { return }
+  }
+
+# Loop over exposures and instruments (MOS1/MOS2)
+  for ($kk=0; $kk<@tfic; $kk++) {
+
+    if ( $fromodf ) {
+      $obsid  = substr( $tfic[$kk],  5, 10) ;
+      $expid  = substr( $tfic[$kk], 18,  4) ;
+      $inst   = substr( $tfic[$kk], 16,  2) ;
+
+      if ($verbose) {
+	print "\n $kk: $tfic[$kk]\n" ;
+	print "Instrument: $inst  exposure: $expid\n" ;
+      }
+
+# Delete all temporary and output files
+      if ( $clobber ) {
+	$ccom = "rm -f *.in.mos *.out.mos merged.*.mos \n" ;
+	if ($verbose) { print "CMD: $ccom" }
+	$ll = `$ccom` ;
+      }
+
+# Call atthkgen once and for all, creating ATTTSR file for attcalc
+# Do not rerun if $onatthkgen is false and ATTTSR file already exists
+# SSC DP ICD - style output file name
+      $attfile = "P" . $obsid . "OBX000ATTTSR0000.FIT" ;
+      $attgti = "P" . $obsid . "OBX000ATTGTI0000.FIT" ;
+      if (! -e $attfile && $onattcalc) { $onatthkgen = 1 }
+      if ($onatthkgen) {
+	$ccom = "atthkgen atthkset=$attfile" ;
+	&sendCommand($ccom,3) ;
+
+# Avoid rerunning atthkgen on following exposures
+	$onatthkgen = 0 ;
+
+# Generate attitude GTI. Tolerance is $atttol in degrees
+	$ccom = "tabgtigen table=" . $attfile . ":ATTHK gtiset=$attgti "
+              . "expression=\"!isNull(DAHFPNT) && DAHFPNT<" . $atttol . "\" "
+              . "prefraction=0.0 postfraction=0.0" ;
+	&sendCommand($ccom,1) ;
+      }
+
+# Generate HK GTI
+      $hkgti = "P" . $obsid . $inst. "X000HK_GTI0000.FIT" ;
+      if (! -e $hkgti) {
+	$ccom = "hkgtigen instrument=emos" . substr($inst,1,1)
+              . " gtiset=$hkgti" ;
+	&sendCommand($ccom,7) ;
+      }
+
+# Merge external, HK and attitude GTIs
+      $ngtis = 0 ;
+      if ( -e $gtiin ) {
+	$ngtis++ ;
+	$gtitables = $gtiin ;
+      }
+      if ( $filteratt ) {
+	$ngtis++ ;
+	if ( $ngtis > 1 ) { $gtitables .= " " . $attgti }
+	else { $gtitables = $attgti }
+      }
+      if ( $filterhk ) {
+	$ngtis++ ;
+	if ( $ngtis > 1 ) { $gtitables .= " " . $hkgti }
+	else { $gtitables = $hkgti }
+      }
+      if ( $ngtis > 1 ) {
+	$ccom = "gtimerge tables=\"$gtitables\" mergemode=and " .
+                         "gtitable=$gtiout" . ":STDGTI" ;
+	&sendCommand($ccom,1) ;
+      } elsif ( $ngtis == 1 ) {
+	$ccom = "cp $gtitables $gtiout \n" ;
+	if ($verbose) { print "CMD: $ccom" }
+	$ll = `$ccom` ;
+      }
+    }
+
+    if ( $badpixalgo ne "NO" ) {
+# First simplified loop over all CCDs
+      foreach $ccd (@ccdlist) { &ccdLoop($tfic[$kk],$ccd,1) }
+
+# 1st call to bad pixels finder
+      &badPixLoop(1) ;
+
+# Build GTI for flare rejection (for that exposure only)
+      $areaccd = areaCcdFiles() ;
+      if ( $areaccd > $areaCcdMin ) {
+	&mergeEvents($expid, $eventim) ;
+	if ( -e $eventim ) {
+# Add new info about bad pixels (for very bright pixels)
+	  $badpix = join(" ",glob("badpix*.out.mos")) ;
+	  if ( length($badpix) > 0 ) {
+	    $ccom = "ebadpixupdate eventset=$eventim fromccf=N"
+                  . " badpixtables=\"$badpix\"" ;
+	    &sendCommand($ccom,5) ;
+	  }
+	  &makeFlareTs($eventim,$flarets) ;
+	  &tsToGTI($flarets,$flaregti) ;
+# Check whether GTI is indeed smaller than full interval and larger than 10%
+	  if ( testFlareGTI($flaregti,$eventim) > 0 ) {
+	    $ccom = "rm -f $flarets $flaregti \n" ;
+	    $ll = `$ccom` ;
+	  }
+	}
+	elsif ( $verbose ) { print "\nNo merged events list for badpixfind.\n"}
+      } elsif ( $verbose ) { print "\nNo CCD files with GATTI flagging.",
+                            " Flare detection not performed for badpixfind.\n"}
+
+# 2nd call to bad pixels finder
+      &badPixLoop(2) ;
+
+      if ( $stopatbadfind ) { exit }
+
+# Delete temporary files
+      if ( $areaccd > $areaCcdMin && $clobber && $onemevents ) {
+	$ccom = "rm -f merged.*.mos $eventim $flarets $flaregti \n" ;
+	if ($verbose) { print "CMD: $ccom" }
+	$ll = `$ccom` ;
+      }
+      if ( $clobber && $onemevents ) {
+	$ccom = "rm -f event*.out.mos \n" ;
+	if ($verbose) { print "CMD: $ccom" }
+	$ll = `$ccom` ;
+      }
+# $flaregti must be undefined when calling tsToGTI for the name to be correct
+      undef($flaregti) ;
+    }
+
+# Reset exposure-specific error status
+    $laststatus = 0 ;
+
+# Final loop over all CCDs
+    foreach $ccd (@ccdlist) { &ccdLoop($tfic[$kk],$ccd) }
+
+# Merge the event lists of all CCD/nodes
+    if ( $onevlistcomb ) {
+      &mergeEvents($expid,$eventim) ;
+      if ( -e $eventim ) { push(@evfiles,$eventim) }
+    } elsif ( $fromodf && @tfic>1 ) {
+# Rename the individual files to avoid overwriting by next exposure
+      foreach $file1 (glob("*.out.mos")) {
+	$iim = index($file1,'mos') ;
+	$file2 = substr($file1,0,$iim) . $inst . $expid ;
+	$ccom = "mv $file1 $file2 \n" ;
+	if ($verbose) { print "CMD: $ccom" }
+	$ll = `$ccom` ;
+      }
+    }
+  }
+}
+
+# findOdfExpos : Identify all relevant ODF files
+# Returns list of substrings identifying a particular exposure
+
+sub findOdfExpos {
+
+  my $nn=0; my $jj=0; my $ii=0; my $kk=0;
+  my $fichier=""; my $ext=""; my $tmpfic="";
+  my $ok=0; my $expos=0;
+  my @tfic=("");
+
+# Analyse the contents of the input directory
+  opendir(DIR, $indir) or
+    die "\nemchain: error(odf), can't opendir $indir: $!" ;
+  my @odffiles = readdir(DIR) ;
+  closedir DIR ;
+  if ($verbose) { print "\nList of files in working directory : \n" }
+
+  for ($kk=0; $kk<@odffiles; $kk++) {
+    $fichier = $odffiles[$kk] ;
+
+# Remove .gz suffix if any
+    $ext = substr($fichier, -3) ;
+    if ( uc($ext) eq ".GZ" ) { $fichier = substr($fichier, 0, -3) }
+
+# Weed out files with wrong length (not part of ODF)
+    if ( length($fichier) != 31 ) { next } ;
+
+# Weed out non-FITS files and non events files
+    $ext = substr($fichier, 26) ;
+    if ( $ext ne "E.FIT" && $ext ne "E.FTZ") { next } ;
+
+    if ($verbose) { print "$fichier ... " }
+
+# Select only those files coming from EMOS1 or EMOS2
+    $ext = substr($fichier, 16, 2);
+    $ii = index($instrume,$ext);
+    if ( $ii < 0 ) {
+      if ( $verbose ) { print "not $instrume\n" } ;
+      next ;
+    }
+
+# from one of the exposures requested
+    if ( $expselect ) {
+      $ext = substr( $fichier, 18, 4) ;
+      $ok = 0 ;
+      foreach $expos (@explist) {
+	$ii = index($ext,$expos) ;
+	$ok = $ok || ( $ii >= 0 ) ;
+      }
+      if ( ! $ok ) {
+	if ( $verbose ) { print "not exposure $goodpose\n" } ;
+	next ;
+      }
+    }
+
+# and in a scientific mode (Imaging, Timing, Reduced Imaging, Compr. Timing)
+    $ext = substr($fichier, 24, 2);
+    $ii = index("IM TI RI CT",$ext);
+    if ( $ii < 0 ) {
+      if ( $verbose ) { print "not IM TI RI CT\n" } ;
+      next ;
+    }
+
+    if ($verbose) { print "OK\n" } ;
+    $tmpfic = substr($fichier,0,22);
+    $jj = 0;
+    while ( ($jj < $nn) && ($tmpfic ne $tfic[$jj]) ) {$jj++;}
+    if ($jj==$nn) {
+      $tfic[$nn] = $tmpfic;
+      $nn++ ;
+    }
+  }
+
+  if ($nn==0) { die ("\nemchain: error(odffiles), No valid file was found" .
+                     " in $indir directory. \n") }
+
+  if ($verbose) { print "\n" }
+
+  return @tfic ;
+
+}
+
+# ccdLoop : Perform all operations pertaining to a single CCD
+# Input only:
+# 1st param: Prefix of ODF file names
+# 2nd param: CCD number
+# 3rd param: True if first loop for badpixfind
+
+sub ccdLoop {
+
+  my $fic           = $_[0] ;
+  my $ccd           = $_[1] ;
+  my $forbadpixfind = 0 ;
+  if ( $#_ > 1 ) { $forbadpixfind = $_[2] }
+
+# Local variables
+  my ($node,$nodeb,$imaging,$rimaging,$timing,$ctiming) ;
+  my ($extname,$event0,$event1,$event2,$eventb,$off,$inst,$obsid,$expid) ;
+  my ($frame2,$frameb,$aux,$ccx,$ccom,$ll,$gtiout,$gticcd,$attfile,$bad) ;
+  my ($evselexpr,$bkgout) ;
+  my (@allbad) ;
+
+# External GTI file (generated in processOdf). Used only if fromodf
+  my $hkgti = "extgti.in.mos" ;
+
+# Define temporary file names
+  my $hkgtialign = "hkgti.in.mos" ;
+
+  my $binodal = -1 ;
+
+# First loop over nodes (before emevents which requires both)
+  for ($node=0;$node<=1;$node++) {
+    if ($verbose) {
+      print "\n" ;
+      print "ccd: $ccd  node: $node" ;
+    }
+    $gticcd = "ccdgti" . $node . $ccd . ".in.mos" ;
+    $event1 = "event"  . $node . $ccd . ".in.mos" ;
+    $event2 = "event"  . $node . $ccd . ".out.mos" ;
+    $frame2 = "frame"  . $node . $ccd . ".out.mos" ;
+
+# Do not rerun if events file already exists, but keep for 2nd part
+    if ( -e $event2 ) {
+      if ($verbose) { print "\n$event2 already exists. Nothing done. \n" }
+      $binodal++ ;
+      next ;
+    }
+
+    if ( ! -e $frame2 || ! -e $event1 ) {
+
+# Define the name of the auxiliary file and counting mode file
+      $aux = checkgz($indir . $fic . "00AUX") ;
+      $ccx = checkgz($indir . $fic . "00CCX") ;
+
+# Get data type and input events file name. Loop if does not exist
+      if ( ! getType($indir.$fic.$ccd.$node, $event0,
+	             $imaging, $rimaging, $timing, $ctiming)) { next }
+
+      if ($verbose) {
+	print "\n" ;
+	print "event0 : $event0 \n\n";
+      }
+
+# Standard call to emframes (may modify events file)
+# Do not rerun if already done in a previous call for badpixfind
+      $ccom = "emframes auxiliaryset=$aux frameset=$frame2 " .
+              "odfeventset=$event0 outeventset=$event1 " .
+              "outgtiset=$gticcd" ;
+# Test whether the HK GTI file exists
+# If so call emframes with flagbadtimes option
+      if ( -e $hkgti ) { $ccom .= " flagbadtimes=Y ingtiset=$hkgti" }
+# Test whether a counting mode file exists
+# If so call emframes with countingset option
+      if ( -e $ccx ) { $ccom .= " countingset=$ccx" }
+      &sendCommand($ccom,7) ;
+    } elsif ( $verbose ) { print "\n" }
+
+# If output frames file was not created do not proceed forward
+    if ( ! -e $frame2 )  {
+      if ($verbose) { print "$frame2 not created. Jump to next CCD. \n" }
+      next ;
+    }
+
+# If low gain do not proceed forward
+    if (getKeyword($frame2."[1]","GAIN_CCD") eq "LOW") {
+      $ccom = "CCD $ccd was operated with low read-out gain." ;
+      print "\nemchain: warning(lowGain) !\n" ;
+      if ($onlowgain) {
+	print $ccom . "\n" ;
+	if ($ccd > 1) {
+	  print "The flare screening light curve will be wrong.\n\n" }
+      } else {
+	print $ccom . " Not processed.\n" ;
+	next ;
+      }
+    }
+
+# If output events file was not created do not proceed forward
+    if ( ! -e $event1 )  {
+      if ($verbose) { print "$event1 not created. Jump to next CCD. \n" }
+      next ;
+    }
+    if ( ! getInstObsExp($frame2,$inst,$obsid,$expid) ) { next }
+
+    $bad = "badpix" . $node . $ccd . ".out.mos" ;
+# Test whether there exists a bad pixels file (assumed to be called xxxBAD.FIT)
+# with same orbit/observation/exposure.
+    if ( ! -e $bad ) {
+      $bad = "P" . $obsid . $inst . $expid . "BADPIX" . $ccd . $node
+           . "00.FIT" ;
+    }
+# Try any orbit/observation/exposure. Take the first matching file.
+    if ( ! -e $bad ) {
+      @allbad = glob("P*${inst}????BADPIX${ccd}${node}00.FIT") ;
+      if ( $#allbad >= 0 ) { $bad = $allbad[0] }
+    }
+
+    if ( $onbadpix && ! $forbadpixfind ) {
+# Standard call to badpix
+      $ccom = "badpix eventset=$event1 withoutset=N windowfilter=Y" ;
+# Add local bad pixels file
+      if ( -e $bad ) { $ccom .= " badpixset=$bad" }
+      &sendCommand($ccom,7) ;
+    }
+    $binodal++ ;
+  }
+
+# Loop if no data at all for that CCD
+  if ( $binodal < 0 ) { return }
+
+# Second loop over nodes (starting with emevents which requires both)
+  for ($node=0;$node<=1;$node++) {
+
+    $gticcd = "ccdgti" . $node . $ccd . ".in.mos" ;
+    $event1 = "event"  . $node . $ccd . ".in.mos" ;
+    $event2 = "event"  . $node . $ccd . ".out.mos" ;
+    $frame2 = "frame"  . $node . $ccd . ".out.mos" ;
+    if ( ! -e $frame2 || ! -e $event1 ) { next }
+
+# Do not rewrite text if only one node is active
+    if ( $verbose) {
+      print "\n" ;
+      if ( $binodal > 0 ) { print "ccd: $ccd  node: $node\n" }
+    }
+
+# Get the mode (must be done after emframes to read CCDMODE keyword)
+    if ( ! getMode($frame2,$imaging,$rimaging,$timing,$ctiming)) { next }
+
+# Do nothing if not Imaging mode for badpixfind
+    if ( $forbadpixfind && ($timing || $ctiming) ) { next }
+
+# Standard call to emevents if events file does not exist already
+    if ( ! -e $event2 ) {
+      $ccom = "emevents odfeventset=$event1 eventset=$event2"
+            . " frameset=$frame2" ;
+# REJECT_E3 makes sense only in full imaging mode
+      if ( ! $imaging) { $ccom .= " rejectbade3=N" }
+# Test whether there exists a list of offset/variance files
+# If so call emevents with withoffvarsets option
+# Assume files all have the same extension (.gz, .GZ, .FTZ or .FIT)
+      foreach $ll ("FIT","FTZ","FIT.gz","FIT.GZ") {
+	$off = join(" ",glob("${indir}*${inst}????${ccd}${node}OVE.".$ll)) ;
+	if ( length($off) > 0 ) { last }
+      }
+      if ( length($off) > 0 ) {
+	$ccom .= " offvarsets=\"$off\"" }
+# SP_GATTI may not be called in Compressed Timing mode
+      if ( $ctiming) { $ccom .= " flagtruncatede1=N" }
+# Simple mode for badpixfind
+      if ( $forbadpixfind ) {
+	$ccom .= " analysepatterns=N flagbadpixels=N splitdiagonals=N"
+	       . " randomizeposition=N" ;
+# Flickering and wide bad rows could be unplugged to avoid missing repeaters
+#	     . " randomizeposition=N widthnexttorow=0 rejectflickering=N" ;
+      } else {
+# DIAGO is to be called only in Imaging mode
+	if ( $timing || $ctiming) { $ccom .= " splitdiagonals=N" }
+# EV_REC and CUT_BAD should not be called in Compressed Timing mode
+	if ( $ctiming) { $ccom .= " analysepatterns=N flagbadpixels=N" }
+# Add reference to second node if BINODAL
+	if ( $binodal ) {
+	  $nodeb = 1 - $node ;
+	  $eventb = "event" . $nodeb . $ccd . ".in.mos" ;
+	  $frameb = "frame" . $nodeb . $ccd . ".out.mos" ;
+	  $ccom .= " othereventset=$eventb otherframeset=$frameb" ;
+      }
+# Switch-off position randomization if not required
+	if (index($randomize,'P') == -1) {
+	  $ccom .= " randomizeposition=N" }
+      # Switch-on time randomization if required
+	if (index($randomize,'T') >= 0 && ($imaging || $rimaging)) {
+	  $ccom .= " randomizetime=Y" }
+      }
+      if ( $onemevents ) { &sendCommand($ccom,5) }
+    }
+
+# If output events file was not created do not proceed forward
+    if ( ! -e $event2 ) { next }
+
+# Build merged GTI file
+    $gtiout = "gti" . $node . $ccd . ".out.mos" ;
+    if ( ! $forbadpixfind && ! -e $gtiout ) {
+      if ( (-e $hkgti)  && (-e $frame2) ) {
+	$ccom = "rm -f $hkgtialign \n" ;
+	$ll = `$ccom` ;
+# Call gtialign (Imaging mode only)
+	if ( $imaging || $rimaging ) {
+	  $ccom = "gtialign gtitable=" . $hkgti . ":STDGTI eventset="
+                . $event2 . " outset=" . $hkgtialign ;
+	  &sendCommand($ccom,1) ;
+	}
+	else {
+	  $ccom = "cp $hkgti $hkgtialign \n" ;
+	  if ( $verbose ) { print "CMD: $ccom" }
+	  $ll = `$ccom` ;
+	}
+      }
+      if ( -e $hkgtialign ) {
+	$extname = "STDGTI" .  $node . $ccd ;
+	if ( -e $gticcd ) {
+# Merge the HK and CCD GTI files
+	  $ccom = "gtimerge tables=\"$hkgtialign $gticcd\" mergemode=and" .
+                          " gtitable=$gtiout" . ":" . $extname ;
+	  &sendCommand($ccom,1) ;
+	}
+	else {
+	  $ccom = "cp $hkgtialign $gtiout \n" ;
+	  if ( $verbose ) { print "CMD: $ccom" }
+	  $ll = `$ccom` ;
+# Rename the STDGTI extension
+	  $ccom = "fparkey $extname $gtiout EXTNAME" ;
+	  &sendCommand($ccom,0) ;
+	}
+      }
+      if ( (! -e $gtiout) && (-e $gticcd) ) {
+	$ccom = "cp $gticcd $gtiout \n" ;
+	if ( $verbose ) { print "CMD: $ccom" }
+	$ll = `$ccom` ;
+      }
+    }
+
+    if ( ! $forbadpixfind && $onattcalc ) {
+# Standard call to attcalc
+      $attfile = "P" . $obsid . "OBX000ATTTSR0000.FIT" ;
+      $ccom = "attcalc eventset=$event2 atthkset=$attfile" ;
+      &sendCommand($ccom,7) ;
+    }
+
+# Jump emenergy if for badpixfind and not imaging
+    if ( ! $forbadpixfind || $imaging ) {
+      $ccom = "emenergy ineventset=$event2" ;
+      if ( $forbadpixfind ) {
+	$ccom .= " correctcti=N correctgain=N randomizeenergy=N" ;
+      } else {
+# Switch-off energy randomization if not required
+	if ( index($randomize,'E') == -1 ) {
+	  $ccom .= " randomizeenergy=N" }
+# REJECT_E3E4 and background subtraction make sense only in full imaging mode
+	if ( ! $imaging ) { $ccom .= " getccdbkg=N rejectbade3e4=N" }
+# Background subtraction does not make sense for slew data
+	elsif ( getKeyword($event2."[0]","OBS_MODE") eq "SLEW" ) {
+	  $ccom .= " getccdbkg=N" }
+# Create CCD background file with proper name if required
+	elsif ( $withccdbkg ) {
+	  $bkgout = "P" . $obsid . $inst . $expid . "CCDBKG" . $ccd . $node
+           . "00.FIT" ;
+	  $ccom .= " backgroundset=$bkgout" ;
+	}
+      }
+      if ( $onemenergy ) { &sendCommand($ccom,5) }
+    }
+
+# Additional selection to weed out bad events before evlistcomb
+# (otherwise uses up a lot of memory for nothing)
+# updateexposure does not work on unmerged files.
+    if ( $rejbadevts || $forbadpixfind ) {
+      $evselexpr = "(FLAG & 0x$rejectflag) == 0" ;
+# Do not consider events below 100 eV for badpixfind
+#      if ( $forbadpixfind ) { $evselexpr .= " && PHA > 30" }
+      $ccom = "evselect table=$event2 destruct=Y keepfilteroutput=Y " .
+              "updateexposure=N expression=\"$evselexpr\"" ;
+      &sendCommand($ccom,1) ;
+    }
+
+# Call evigweight here if evlistcomb is not called
+    if ( $addweights && ! $onevlistcomb ) {
+      $ccom = "evigweight ineventset=$event2" ;
+      &sendCommand($ccom,5) ;
+    }
+  }
+}
+
+# Loop over CCDs looking for bad pixels
+# Input: 1 for initial run, 2 for incremental
+
+sub badPixLoop {
+
+  my $run = $_[0] ;
+
+  my $inst=""; my $expid=""; my $obsid=""; my $flaregti="";
+  my $onflare=0; my $ccd=0; my $node=0; my $event2="";
+
+# Look for event files corresponding to selected CCDs
+  my @evfiles = ("") ;
+  my $nccd = 0 ;
+  foreach $ccd (@ccdlist) {
+    for ($node=0;$node<=1;$node++) {
+      $event2 = "event" . $node . $ccd . ".out.mos" ;
+      if ( -e $event2 ) {
+	$evfiles[$nccd] = $event2 ;
+	$nccd++ ;
+      }
+    }
+  }
+
+  if ( $nccd > 0 ) {
+    if ( ! getInstObsExp($evfiles[0],$inst,$obsid,$expid) ) { return 0 }
+
+    if ( $run > 1 ) {
+      $flaregti = "P" . $obsid . $inst . $expid . "FBKGTI0000.FIT" ;
+      @evfiles = glob($flaregti) ;
+      if ( @evfiles == 1 ) {
+	$onflare = 1 ;
+	$flaregti = $evfiles[0] ;
+      } elsif ( @evfiles > 1 ) {
+	print "\nemchain: warning(badflareGTI) !\n" ;
+	print "Ambiguity on flare GTI file $flaregti. Not used.\n" ;
+      } elsif ( @evfiles == 0 && $verbose ) {
+	print "\nNo flare GTI file $flaregti found.\n" ;
+      }
+    }
+
+# Loop over all CCDs
+    foreach $ccd (@ccdlist) {
+      for ($node=0;$node<=1;$node++) {
+	if ( $run == 1 ) { &findBadPixels1($ccd,$node) }
+	elsif ( $onflare ) { &findBadPixels2($ccd,$node,$flaregti) }
+	else { &findBadPixels2($ccd,$node) }
+      }
+    }
+  } elsif ( $verbose ) {
+    print "\nNo event file event*.out.mos found.\n" ;
+  }
+}
+
+# Find the dark and bright pixels in one CCD/node, initial run
+# Input: CCD, node
+
+sub findBadPixels1 {
+
+  my $ccom=""; my $ll="";
+
+  my $ccd  = $_[0] ;
+  my $node = $_[1] ;
+  my $event0 = "event"  . $node . $ccd . ".out.mos" ;
+  my $bad    = "badpix" . $node . $ccd . ".out.mos" ;
+  my $evmap  = "evmap.in.mos" ;
+
+# If output events file was not created do not proceed forward
+# If bad pixels file already exists do not clobber
+  if ( -e $event0 && ! -e $bad ) {
+
+    if ( $badpixalgo eq "EM" ) {
+# Project events
+      $ccom = "emeventsproj eventset=$event0 rejectbadevents=Y"
+            . " evimageset=$evmap" ;
+      &sendCommand($ccom,5) ;
+# Specific MOS algorithm
+      $ccom = "embadpixfind evimageset=$evmap badpixset=$bad"
+            . " includedeadpixels=Y" ;
+      &sendCommand($ccom,5) ;
+    } else {
+# Call badpixfind with default (MOS) settings
+      $ccom = "badpixfind eventset=$event0 badpixset=$bad" ;
+      &sendCommand($ccom,5) ;
+    }
+  }
+}
+
+# Find the bad pixels in one CCD/node, incremental run
+# with flare GTI selection
+# Input: CCD, node, flare GTI file name
+
+sub findBadPixels2 {
+
+  my $ccom=""; my $ll=""; my $flaregti="";
+
+  my $ccd  = $_[0] ;
+  my $node = $_[1] ;
+  my $onflare = 0 ;
+  if ( $#_ > 1 ) { 
+    $flaregti =  $_[2] ;
+    $onflare = -e $flaregti ;
+  }
+  my $event0 = "event"  . $node . $ccd . ".out.mos" ;
+  my $bad    = "badpix" . $node . $ccd . ".out.mos" ;
+  my $event2 = "event.in.mos" ;
+  my $evmap  = "evmap.in.mos" ;
+
+# If output events file was not created do not proceed forward
+# Bad pixels file should already exist
+  if ( -e $event0 && -e $bad ) {
+
+# Flare GTI selection
+    if ( $onflare ) {
+      $ccom = "rm -f $event2 \n" ;
+      $ll = `$ccom` ;
+      $ccom = "evselect table=$event0 filteredset=$event2"
+            . " expression=\"GTI($flaregti,TIME)\""
+            . " keepfilteroutput=Y destruct=Y writedss=Y updateexposure=N" ;
+      &sendCommand($ccom,1) ;
+    } else { $event2 = $event0 }
+
+    if ( $badpixalgo eq "EM" ) {
+      if ( $onflare ) {
+# Call embadpixfind on list cleaned of flares to look for weaker features
+	$ccom = "emeventsproj eventset=$event2 rejectbadevents=Y"
+              . " evimageset=$evmap" ;
+	&sendCommand($ccom,5) ;
+	$ccom = "embadpixfind evimageset=$evmap badpixset=$bad"
+              . " finddead=N incremental=Y" ;
+	&sendCommand($ccom,5) ;
+      }
+# If required, additional search below 500 eV
+      if ( $findlowener ) {
+	$ccom = "evselect table=$event2 destruct=Y keepfilteroutput=Y"
+              . " expression=\"PHA < 150\"" ;
+	&sendCommand($ccom,1) ;
+	$ccom = "emeventsproj eventset=$event2 rejectbadevents=Y"
+	      . " evimageset=$evmap" ;
+	&sendCommand($ccom,5) ;
+	$ccom = "embadpixfind evimageset=$evmap badpixset=$bad"
+              . " finddead=N incremental=Y" ;
+	&sendCommand($ccom,5) ;
+      }
+    }
+    elsif ( $onflare ) {
+# Call badpixfind with default (MOS) settings
+# badpixfind does not have an incremental mode
+      $ccom = "badpixfind eventset=$event2 badpixset=$bad" ;
+      &sendCommand($ccom,5) ;
+    }
+  }
+}
+
+# Merge the event lists of all CCD/nodes
+# Input:  exposure (including S/U), leave blank if unknown
+# Output: imaging file name
+
+sub mergeEvents {
+
+  my ($obsid,$inst,$expid,$ccom,$ll) ;
+  my ($evselexpr,$evlist,$options,$eventti) ;
+  my $eventim = " " ;
+
+# Do not overwrite $expid
+  &prepareMerge($evlist,$evselexpr,$inst,$obsid,$expid) ;
+
+  if ( $evlist ne "" ) {
+    if ( defined($_[0]) ) {
+# Check consistency
+      if ( $_[0] ne $expid ) {
+	print "\nemchain: warning(badexposure) !\n" ;
+	print "EXPIDSTR = ", $expid,
+              " inconsistent with required exposure ", $_[0], "\n" ;
+	return 0 ;
+      }
+    }
+
+    my $tempim = "merged.img.mos" ;
+    my $tempti = "merged.tim.mos" ;
+
+# SSC DP ICD - style output file name
+    my $outfic = "P" . $obsid . $inst . $expid ;
+    $eventim = $outfic . "MIEVLI" . "0000.FIT" ;
+    $eventti = $outfic . "TIEVLI" . "0000.FIT" ;
+
+    if ( $verbose ) { print "\n" }
+
+    if ( ! $clobber && ( -e $tempim || -e $tempti ) ) {
+      if ( $verbose )
+	{ print "$tempim or $tempti already exists. evlistcomb not run.\n" }
+    } else {
+
+# Call evlistcomb
+      $ccom = "evlistcomb eventsets=\"$evlist\" maintable=\"EVENTS OFFSETS\""
+            . " imagingset=$tempim timingset=$tempti instrument=emos" ;
+
+# Keep all columns in original events list
+      if ( $fulloutput ) { $ccom = $ccom .
+        " emosimgcolnames=\"TIME RAWX RAWY DETX DETY X Y PHA" .
+        " PI FLAG PATTERN FRAME ENERGYE1 ENERGYE2 ENERGYE3 ENERGYE4 PERIPIX" .
+	" OFFSETX OFFSETY\"" .
+        " emosimgcoltypes=\"double int16 int16 int16 int16 int32 int32 int16" .
+        " int16 int32 int8 int32 int16 int16 int16 int16 int8" .
+        " int16 int16\"" .
+        " emostimcolnames=\"TIME RAWX PHA PI FLAG PATTERN FRAME RAWY" .
+        " PERIPIX DETX DETY X Y OFFSETX\"" .
+        " emostimcoltypes=\"double int16 int16 int16 int32 int8 int32 int16" .
+        " int8 int16 int16 int32 int32 int16\"" }
+      &sendCommand($ccom,1) ;
+    }
+
+# Generic evselect options
+    $options = " destruct=Y writedss=Y updateexposure=Y" .
+               " keepfilteroutput=Y cleandss=Y" .
+               " expression=\"$evselexpr\"" ;
+
+# Select good events in imaging mode if any
+    if ( -e $tempim ) {
+      if ( ! $clobber && -e $eventim ) {
+	if ( $verbose )
+	  { print "$eventim already exists. Not overwritten.\n" }
+      } else {
+	if ( $evselexpr eq "" ) {
+	  $ccom = "mv $tempim $eventim \n" ;
+	  if ( $verbose ) { print "CMD: $ccom" }
+	  $ll = `$ccom` ;
+	} else {
+	  $ccom = "evselect table=$tempim filteredset=$eventim" . $options ;
+	  &sendCommand($ccom,1) ;
+	}
+
+# Add CONTENT keyword
+	&addContent("EPIC MOS IMAGING MODE EVENT LIST",$eventim) ;
+
+# Add CCF extension.
+	if ( -e $sasccf ) {
+	  $ccom = "fappend $sasccf" . "[CALINDEX] $eventim" ;
+	  &sendCommand($ccom,0) ;
+	}
+      }
+    }
+
+# Select good events in timing mode if any
+    if ( -e $tempti ) {
+      if ( ! $clobber && -e $eventti ) {
+	if ( $verbose )
+	  { print "$eventti already exists. Not overwritten.\n" }
+      } else {
+	$ccom = "evselect table=$tempti filteredset=$eventti" . $options ;
+	&sendCommand($ccom,1) ;
+
+# Add CONTENT keyword
+	&addContent("EPIC TIMING MODE EVENT LIST",$eventti) ;
+
+# Add CCF extension. fappend much faster than dscopyblock
+	if ( -e $sasccf ) {
+	  $ccom = "fappend $sasccf" . "[CALINDEX] $eventti" ;
+	  &sendCommand($ccom,0) ;
+	}
+      }
+    }
+  } elsif ($verbose) { print "\nNo list found in current directory. " .
+                             "Cannot apply evlistcomb.\n" }
+
+  $_[1] = $eventim ;
+}
+
+# prepareMerge : Get list of available events files and prepare GTI selection
+# Outputs:
+# 1st param: list of available events files
+# 2nd param: GTI selection expression
+# 3rd param: instrument tag
+# 4th param: observation tag
+# 5th param: exposure tag
+
+sub prepareMerge {
+
+  my $ccd=0; my $node=0; my $gtiout=""; my $event2="";
+
+# Look for event files corresponding to selected CCDs
+  my @evfiles = ("") ;
+  my $nccd = 0 ;
+  foreach $ccd (@ccdlist) {
+    for ($node=0;$node<=1;$node++) {
+      $event2 = "event" . $node . $ccd . ".out.mos" ;
+      if ( -e $event2 ) {
+	$evfiles[$nccd] = $event2 ;
+	$nccd++ ;
+      }
+    }
+  }
+  $_[0] = join(" ",@evfiles) ;
+
+  if ( $nccd > 0 ) {
+    if ( ! getInstObsExp($evfiles[0],$_[2],$_[3],$_[4]) ) {
+      $_[0] = "" ;
+      return 0 ;
+    }
+  }
+
+  my $evselexpr = "(" ;
+
+# Loop over GTI files
+  if ( $withccdgti ) {
+    foreach $ccd (@ccdlist) {
+      for ($node=0;$node<=1;$node++) {
+	$gtiout = "gti" . $node . $ccd . ".out.mos" ;
+	if ( -e $gtiout ) {
+	  $evselexpr .= "(CCDNR==" . $node . $ccd
+	              . " && GTI(" . $gtiout . ",TIME)) || " ;
+	}
+      }
+    }
+  }
+
+# Remove the final " || " and add rejection flags for DSS
+  if ( length($evselexpr) > 1 ) { $evselexpr = substr($evselexpr,0,-4) . ")"
+  } else { $evselexpr = "" }
+  if ( $withccdloop && $rejbadevts ) {
+    if ( length($evselexpr) > 1 ) { $evselexpr .= " && " }
+    $evselexpr .= "((FLAG & 0x$rejectflag) == 0)" ;
+  }
+  $_[1] = $evselexpr ;
+}
+
+# findMergedFiles : Returns list of all relevant merged files
+# First element is always ""
+
+sub findMergedFiles {
+
+  my ($eventim,$ok,$ext,$expos) ;
+  my @tfic = ("") ;
+
+# Loop over all suitable files in current directory
+  if ( $verbose )  { print "\nLooking for merged events lists. \n" }
+  my @allevfiles = glob("P*MIEVLI0000.FIT") ;
+  foreach $eventim (@allevfiles) {
+    if ( $verbose )  { print "$eventim ... " }
+# Check standard length
+    if ( length($eventim) != 31 ) {
+      if ( $verbose )  { print "not 31 characters\n" }
+      next ;
+    }
+    $ext = substr( $eventim, 11, 2);     # Instrument
+    if ( index($instrume,$ext) < 0 ) {
+      if ( $verbose )  { print "not $instrume\n" }
+      next ;
+    }
+    if ( $expselect ) {
+      $ext = substr( $eventim, 13, 4) ;  # Exposure
+      $ok = 0 ;
+      foreach $expos (@explist) { $ok = $ok || ( index($ext,$expos) >= 0 ) }
+      if ( ! $ok ) {
+	if ( $verbose )  { print "not exposure $goodpose\n" }
+	next ;
+      }
+    }
+# Add to selected list if it passed all tests
+    if ( $verbose )  { print "OK\n" }
+    push(@tfic,$eventim) ;
+  }
+  if ( $verbose )  { print "\n" }
+
+  return @tfic ;
+}
+
+# makeFlareTs : Make flare screening time series for one exposure
+# Input  (1st parameter): Events list
+# Output (2nd parameter): Flare time series name
+# Input (3rd parameter, optional): Start of timeseries
+# Input (4th parameter, optional): End of timeseries
+# Input (5th parameter, optional): Binning for timeseries. If that argument
+#    is not present, start from $timebin and adjust according to areaCCD.
+
+sub makeFlareTs {
+
+  my $eventim = $_[0] ;
+
+  my $tempflare = "flarehist.in.mos" ;
+
+  my ($ccom,$evselexpr,$flarets,$timebin2,$curarea) ;
+
+# Construct time series file name
+  my $iim = index($eventim,'MIEVLI') ;
+  if ( $iim == -1 ) {
+# Non-standard file name
+    my $outfic = $eventim ;
+    if ( length($eventim) == 31 ) { $outfic = substr($eventim,0,17) }
+    $flarets  = $outfic . "FBKTSR0000.FIT" ;
+  } else {
+    $flarets  = $eventim ;
+    substr($flarets,$iim,6,"FBKTSR") ;
+  }
+  $_[1] = $flarets ;
+
+# Check that the input events list contains more than 1 event
+  if ( getStatistic($eventim,"TIME","numb") < 2 ) {
+    print "$eventim contains less than 2 events. ",
+          "Cannot build flare screening time series.\n" ;
+    return ;
+  }
+
+# Get area covered by events used for flare screening (in arcmin)
+  my @areas = areaCcds($eventim) ;
+  my $areaccd = 0 ;
+  foreach $curarea (@areas) { $areaccd += $curarea }
+# Normalize individual values for lccorr
+  if ( $areaccd > $areaCcdMin ) {
+    foreach $curarea (@areas) { $curarea /= $areaccd }
+  }
+
+  if ( $#_ > 3 ) { $timebin2 = $_[4] }
+  else {
+    $timebin2 = checkTimeBin($timebin,$areaccd) ;
+  }
+  if ( $timebin2 <= 0 )  { return }
+
+  if ( ! $clobber && -e $flarets ) {
+    if ( $verbose )
+      { print "$flarets already exists. Not overwritten.\n" }
+  } else {
+
+# Keep only single events within field of view flagged by Gatti
+    $evselexpr = "(PATTERN==0) && ((FLAG & 0x762b8000) == 0) && #XMMEA_22" ;
+#              . " && ((DETX,DETY) IN circle(36,-83,17018))" ;
+
+# EXPOSURE keyword does not work when central CCD is not present
+    $ccom = "evselect table=$eventim expression=\"$evselexpr\""
+          . " rateset=$flarets timebinsize=$timebin2"
+          . " updateexposure=N maketimecolumn=Y makeratecolumn=Y" ;
+    if ( $#_ > 1 ) { $ccom .= " timemin=$_[2] timemax=$_[3]" }
+    &sendCommand($ccom,1) ;
+
+# Get associated exposure (do not divide RATE by FRACEXP yet)
+# Should be done by lccorr to account properly for episodes
+# when 1 external CCD was off (counting mode, ...)
+    $ccom = "lccorr srctsset=$flarets eventset=$eventim"
+          . " treatvignet=N treatfiltertrans=N treatquantumeff=N"
+          . " srcweightstyle=user srcweightsnode0=\"@areas[0 .. 6]\""
+          . " outset=$tempflare applycorrections=N" ;
+    if ( @areas > 7 ) { $ccom .= " srcweightsnode1=\"@areas[7 .. 13]\"" }
+#    &sendCommand($ccom,5) ;
+# Replace input time series if everything went well
+# otherwise remove time series
+    if ( -f $tempflare ) {
+      $ccom = "mv $tempflare $flarets \n" ;
+      &sendCommand($ccom,0) ;
+    } else {
+      $ccom = "rm -f $flarets \n" ;
+#      $ll = `$ccom` ;
+#      print "lccorr ended in error. ",
+#            "Cannot build flare screening time series.\n" ;
+#      return ;
+    }
+    &addFracexp($eventim,$flarets) ;
+
+# Convert to cts/ks/arcmin2
+    &divRatErr($flarets,$areaccd) ;
+
+# Add CONTENT keyword
+    &addContent("EPIC FLARE BACKGROUND TIMESERIES",$flarets) ;
+  }
+}
+
+# addFracexp : Emulate lccorr in a simple way, adding FRACEXP column
+# Input  (1st parameter): Events list
+# Input  (2nd parameter): Flare time series
+
+sub addFracexp {
+
+  my $eventim = $_[0] ;
+  my $flarets = $_[1] ;
+
+  my ($ccom,$evselexpr,$ll,$colnum) ;
+
+# Define intermediate files
+  my $file1 = 'toto.in.mos' ;
+  my $file2 = 'toto.out.mos' ;
+
+# Read number of bins, time bin, start and end times in time series
+  my $dateobs = getKeyword($flarets."[1]","TSTART") ;
+  my $dateend = getKeyword($flarets."[1]","TSTOP") ;
+  my $tbin    = getKeyword($flarets."[1]","TIMEDEL") ;
+  my $nrows   = getKeyword($flarets."[1]","NAXIS2") ;
+
+# Build full time series with time step of one frame
+  my $tframe = 2.6 ;
+  $ccom = "evselect table=$eventim"
+        . " rateset=$file1 timebinsize=$tframe makeratecolumn=N"
+        . " timemin=$dateobs timemax=$dateend" ;
+  &sendCommand($ccom,1) ;
+
+# Truncate counts to 1
+  $ccom = "fcalc $file1 $file2 COUNTS \"MIN(COUNTS,1)\" clobber=Y"
+        . " rowrange=- copycol=Y copyall=Y" ;
+  &sendCommand($ccom,0) ;
+
+# Rebin into same bins as the flare timeseries
+# Write default parameters to overcome non-standard default in parameter file
+  $ccom = "lcurve nser=1 cfile1=$file2 window=- dtnb=$tbin nbint=$nrows"
+        . " itre=0 outfile=$file1 outfiletype=2 plot=N clobber=Y"
+        . " gapfill=0 forcestart=Y exposure=N spwinbefore=0 spwinafter=0"
+        . " rescale=$tframe offset=0 > /dev/null" ;
+  &sendCommand($ccom,0) ;
+
+# Add column to original time series
+# Column is called RATE1 in output of lcurve
+  $ccom = "faddcol $flarets $file1 RATE1" ;
+  &sendCommand($ccom,0) ;
+
+# Rename column from RATE1 to FRACEXP
+# Must be done after copy because FRACEXP already exists in output of lcurve
+  $ccom = "dsrename object=" . $flarets . ":RATE:RATE1 newname=FRACEXP" ;
+  &sendCommand($ccom,1) ;
+
+# Remove column units for FRACEXP
+  $colnum = columnNumber($flarets."[1]","FRACEXP") ;
+  open(FILE,">".$file1) ;
+  print FILE "- TUNIT".$colnum."\n" ;
+  close(FILE) ;
+  $ccom = "fmodhead " . $flarets . "[1] " . $file1 ;
+  &sendCommand($ccom,0) ;
+
+# Remove intermediate files
+  my $rcom = "rm -f $file1 $file2 \n" ;
+  $ll = `$rcom` ;
+}
+
+# divRatErr: Convert RATE and ERROR to cts/ks/arcmin2 and divide by FRACEXP
+# Input (1st parameter): timeseries filename
+# Input (2nd parameter): detector area in cm2
+
+sub divRatErr {
+
+  my $flarets = $_[0] ;
+  my $areaccd = $_[1] ;
+
+# Intermediate files
+  my $file1 = 'toto.in.mos' ;
+  my $file2 = 'toto.out.mos' ;
+
+  my ($ccom,$colnum) ;
+
+# fcalc does not generate nulls from 0/0 by itself
+# First set FRACEXP to null to avoid division by 0
+# Write default parameters to overcome non-standard default in parameter file
+  $ccom = "fcalc $flarets $file1 FRACEXP \"FRACEXP<0.01?#NULL:FRACEXP\""
+        . " clobber=Y rowrange=- copycol=Y copyall=Y" ;
+  &sendCommand($ccom,0) ;
+
+# Loop over columns RATE and ERROR
+  my @collist = ("RATE","ERROR") ;
+  foreach my $colname (@collist) {
+# Divide by total area of external CCDs within FOV
+# Multiply by 1000 to convert /s into /ks and divide by FRACEXP
+    $ccom = "fcalc $file1 $file2 $colname " . $colname . "/FRACEXP*1000/"
+          . $areaccd . " clobber=Y rowrange=- copycol=Y copyall=Y" ;
+    &sendCommand($ccom,0) ;
+    $ccom = "mv $file2 $file1" ;
+    &sendCommand($ccom,0) ;
+# Change column units
+    $colnum = columnNumber($file1."[1]",$colname) ;
+    $ccom = "fparkey \"cts/ks/arcmin2\" " . $file1 . "[1] TUNIT"
+          . $colnum . " add=Y" ;
+    &sendCommand($ccom,0) ;
+  }
+
+# Reset FRACEXP to 0
+  $ccom = "fcalc $file1 $flarets FRACEXP \"isnull(FRACEXP)?0.:FRACEXP\""
+        . " clobber=Y rowrange=- copycol=Y copyall=Y" ;
+  &sendCommand($ccom,0) ;
+
+# Add keyword to remember area value
+  $ccom = "fparkey $areaccd " . $flarets . "[1] IN_FOV add=Y"
+        . " comm=\"[arcmin2] Area within field of view\"" ;
+  &sendCommand($ccom,0) ;
+
+# Remove intermediate files
+  my $rcom = "rm -f $file1 $file2 \n" ;
+  $ll = `$rcom` ;
+}
+
+# mulRatErr: Convert RATE and ERROR to cts/s and multiply by FRACEXP
+# Input (1st parameter): timeseries filename
+# Output (2nd parameter): detector area in cm2 (read from IN_FOV keyword)
+
+sub mulRatErr {
+
+  my $file1 = $_[0] ;
+
+# Intermediate file
+  my $file2 = 'toto.out.mos' ;
+
+  my ($ccom,$colnum) ;
+
+# Read IN_FOV keyword and fill output argument
+  my $areaccd = getKeyword($file1."[1]","IN_FOV") ;
+  $_[1] = $areaccd ;
+
+# Loop over columns RATE and ERROR
+  my @collist = ("RATE","ERROR") ;
+  foreach my $colname (@collist) {
+# Multiply by total area of external CCDs within FOV
+# Divide by 1000 to convert /ks into /s and multiply by FRACEXP
+    $ccom = "fcalc $file1 $file2 $colname " . $colname . "*FRACEXP/1000*"
+          . $areaccd . " clobber=Y rowrange=- copycol=Y copyall=Y" ;
+    &sendCommand($ccom,0) ;
+# Set to 0 where it was null
+    $ccom = "fcalc $file2 $file1 $colname \"isnull(" . $colname . ")?0.:"
+          . $colname . "\" clobber=Y rowrange=- copycol=Y copyall=Y" ;
+    &sendCommand($ccom,0) ;
+# Change column units
+    $colnum = columnNumber($file1."[1]",$colname) ;
+    $ccom = "fparkey \"cts/s\" " . $file1 . "[1] TUNIT"
+          . $colnum . " add=Y" ;
+    &sendCommand($ccom,0) ;
+  }
+
+# Remove intermediate file
+  my $rcom = "rm -f $file2 \n" ;
+  $ll = `$rcom` ;
+}
+
+# mergeTs : Add flare screening time series to global one
+# In/Output  (1st parameter): Global timeseries
+# Input (2nd parameter): New flare time series
+
+sub mergeTs {
+
+  my $flarets = $_[1] ;
+
+  if ( ! -e $flarets ) {
+    if ( $verbose ) { print "$flarets does not exist. Not merged.\n" }
+    return ;
+  }
+
+# Define intermediate files
+  my $file = 'toto.in.mos' ;
+
+  my ($ccom,$globts,$keyname,$areaccd,$colname) ;
+
+  if ( defined($_[0]) ) {
+
+    $globts = $_[0] ;
+
+# Move new timeseries to temporary file
+    $ccom = "cp $flarets $file \n" ;
+    $ll = `$ccom` ;
+
+# Add cts rather than cts/arcmin2 for better statistical precision
+# Always keep CCD area from reference file
+# (the relative normalisation is in FRACEXP)
+    &mulRatErr($file,$areaccd) ;
+    &mulRatErr($globts,$areaccd) ;
+
+# Rename columns, prepare for faddcol
+    my @collist = ("RATE","ERROR","FRACEXP") ;
+    foreach $colname (@collist) {
+      $ccom = "dsrename object=" . $file . ":RATE:" . $colname ;
+      $colname .= "2" ;
+      $ccom .= " newname=" . $colname ;
+      &sendCommand($ccom,1) ;
+    }
+# In output, members of @collist have been appended "2"
+
+# Copy them to output file
+    $ccom = "faddcol $globts $file \"" . join(" ",@collist) . "\"" ;
+    &sendCommand($ccom,0) ;
+
+# Merge columns (cannot loop because ERROR is summed quadratically)
+    $ccom = "fcalc $globts $file RATE \"RATE+RATE2\" clobber=Y"
+          . " rowrange=- copycol=Y copyall=Y" ;
+    &sendCommand($ccom,0) ;
+    $ccom = "fcalc $file $globts ERROR \"SQRT(ERROR^2+ERROR2^2)\" clobber=Y"
+          . " rowrange=- copycol=Y copyall=Y" ;
+    &sendCommand($ccom,0) ;
+    $ccom = "fcalc $globts $file FRACEXP \"FRACEXP+FRACEXP2\" clobber=Y"
+          . " rowrange=- copycol=Y copyall=Y" ;
+    &sendCommand($ccom,0) ;
+    $ccom = "mv $file $globts \n" ;
+    $ll = `$ccom` ;
+
+# Remove secondary columns
+    foreach $colname (@collist) {
+      $ccom = "fdelcol " . $globts . "[1] " . $colname . " N Y" ;
+      &sendCommand($ccom,0) ;
+    }
+
+# Switch back to cts/ks/arcmin2
+    &divRatErr($globts,$areaccd) ;
+
+  } else {
+
+# Construct output time series file name if undefined
+    if ( length($flarets) == 31 ) {
+      $globts  = substr($flarets,0,11) . "EMX000FBKTSR0000.FIT" ;
+    } else {
+# Non-standard file name
+      $globts  = $flarets . ".glob" ;
+    }
+    $_[0] = $globts ;
+    if ( ! $clobber && -e $globts ) {
+      if ( $verbose )
+	{ print "$globts already exists. Not overwritten.\n" }
+    } else {
+# Copy input into output time series, leaving behind secondary extensions
+      $ccom = "fextract " . $flarets . "[1] " . $globts . " clobber=Y" ;
+      &sendCommand($ccom,0) ;
+
+# Copy selected keywords from primary header
+      foreach $keyname ("CONTENT","TELESCOP","OBS_ID",
+                           "OBJECT","OBSERVER","DATE") {
+	$ccom = "fparkey \"" . getKeyword($flarets."[0]",$keyname) . "\" "
+              . $globts . "[0] " . $keyname . " add=Y" ;
+	&sendCommand($ccom,0) ;
+      }
+
+# Write INSTRUME keyword
+      $ccom = "fparkey EMOS " . $globts . "[0] INSTRUME add=Y" ;
+      &sendCommand($ccom,0) ;
+
+# Remove exposure-specific keywords from extension header
+      open(FILE,">".$file) ;
+      foreach $keyname ("INSTRUME","FILTER","EXPOSURE") {
+	print FILE "- $keyname\n" ;
+      }
+      close(FILE) ;
+      $ccom = "fmodhead " . $globts . "[1] " . $file ;
+      &sendCommand($ccom,0) ;
+    }
+  }
+
+# Remove intermediate file
+  my $rcom = "rm -f $file \n" ;
+  $ll = `$rcom` ;
+}
+
+# tsToGTI : Make flare screening GTI from timeseries
+# Input  (1st parameter): Flare time series
+# In/Output  (2nd parameter): Flare GTI name
+
+sub tsToGTI {
+  my $flarets  = $_[0] ;
+  my ($evselexpr,$ccom,$flaregti) ;
+
+# Construct time series file name if undefined
+  if ( defined($_[1]) ) { $flaregti = $_[1] }
+  else {
+    my $iim = index($flarets,'FBKTSR') ;
+    if ( $iim == -1 ) {
+# Non-standard file name
+      my $outfic = $flarets ;
+      if ( length($flarets) == 31 ) { $outfic = substr($flarets,0,17) }
+      $flaregti  = $outfic . "FBKGTI0000.FIT" ;
+    } else {
+      $flaregti  = $flarets ;
+      substr($flaregti,$iim,6,"FBKGTI") ;
+    }
+    $_[1] = $flaregti ;
+  }
+
+  if ( ! $clobber && -e $flaregti ) {
+    if ( $verbose )
+      { print "$flaregti already exists. Not overwritten.\n" }
+  } elsif ( -e $flarets ) {
+    $evselexpr = "RATE<=$threshold" ;
+
+# Remove too short (one interval) GTIs
+    my $timemin = 1.5 * $timebin ;
+    $ccom = "tabgtigen table=$flarets expression=\"$evselexpr\""
+          . " gtiset=$flaregti mingtisize=$timemin" ;
+    &sendCommand($ccom,1) ;
+  }
+}
+
+# applyFlareGTI : Apply the flare screening GTI to the events lists
+# (both imaging and timing mode)
+# Input  (1st parameter): Flare GTI
+# Input  (2nd parameter): Event list (imaging mode)
+
+sub applyFlareGTI {
+
+  my $flaregti = $_[0] ;
+  my $eventim  = $_[1] ;
+
+  my ($eventti) ;
+
+# Construct Timing mode file name
+  my $iim = index($eventim,'MIEVLI') ;
+  if ( $iim == -1 ) {
+# Non-standard file name
+    my $outfic = $eventim ;
+    if ( length($eventim) == 31 ) { $outfic = substr($eventim,0,17) }
+    $eventti  = $outfic . "TIEVLI0000.FIT" ;
+  } else {
+    $eventti  = $eventim ;
+    substr($eventti,$iim,6,"TIEVLI") ;
+  }
+
+# Check whether flare GTI should be applied
+  my $check = 0 ;
+  if ( -e $eventim ) {
+    $check = testFlareGTI($flaregti,$eventim) ;
+  } elsif ( -e $eventti ) {
+    $check = testFlareGTI($flaregti,$eventti) ;
+  } else { $check = 1 }
+
+  if ( $check == 0 ) {
+# Generic evselect options
+    my $options = " withfilteredset=N destruct=Y updateexposure=Y" .
+                  " keepfilteroutput=Y writedss=Y cleandss=Y" .
+                  " expression=\"GTI(" . $flaregti . ",TIME) \"" ;
+
+# To Imaging file
+    if ( -e $eventim ) {
+      $ccom = "evselect table=$eventim" . $options ;
+      &sendCommand($ccom,1) ;
+    }
+
+# To Timing file
+    if ( -e $eventti ) {
+      $ccom = "evselect table=$eventti" . $options ;
+      &sendCommand($ccom,1) ;
+    }
+  }
+}
+
+# testFlareGTI : Test whether flare GTI should be applied
+# Returns 0 if yes,
+#         1 if useless (nothing screened out, or no or empty GTI file),
+#         2 if too strong (> 90%)
+# Input  (1st parameter): Flare GTI
+# Input  (2nd parameter): Event list (for TSTART/TSTOP)
+
+sub testFlareGTI {
+
+  my $flaregti = $_[0] ;
+  my $evlist = $_[1] ;
+  if ( ! -e $flaregti ) {
+    if ($verbose) { print "The GTI file $flaregti does not exist.\n" }
+    return 1 ;
+  }
+  if ( getKeyword($flaregti."[1]","NAXIS2") == 0 ) {
+    if ($verbose) { print "The GTI file $flaregti is empty.\n" }
+    return 1 ;
+  }
+
+# Check whether GTI is indeed smaller than full interval and larger than 10%
+# Define intermediate files using fcalc
+  my $file1 = 'toto.in.mos' ;
+  my $file2 = 'toto.out.mos' ;
+# Intermediate files must not exist
+  my $rcom = "rm -f $file2 \n" ;
+  my $ll = `$rcom` ;
+  $rcom = "cp $flaregti $file1 \n" ;
+  $ll = `$rcom` ;
+# Define hashes for START and STOP
+  my (%bounds) ;
+  my %oper = ('START'=>'max','STOP'=>'min');
+# Truncate START and STOP to eliminate portions out of current exposure
+# (read from events file)
+# This is why we can't use directly ONTIME from flare GTI file
+  my $check = 0 ;
+  my $code = 0 ;
+  foreach my $column ('START','STOP') {
+    $bounds{$column} = getKeyword($evlist."[1]","T".$column) ;
+    $ccom = "fcalc $file1 $file2 $column"
+          . " \"$oper{$column}($column,$bounds{$column})\""
+          . " rowrange=- copycol=Y copyall=N clobber=Y" ;
+    $ll = `$ccom` ;
+    my $check += $? ;
+    $rcom = "mv $file2 $file1 \n" ;
+    $ll = `$rcom` ;
+  }
+  if ( $check > 0 ) {
+    if ($verbose) { print "Incorrect GTI file $flaregti.\n" }
+    $code = 1 ;
+  } else {
+# Build intermediate file with additional length column
+    $ccom = "fcalc $file1 $file2 LENGTH \"STOP-START\""
+          . " rowrange=- copycol=Y copyall=N clobber=Y" ;
+    $ll = `$ccom` ;
+# Remove negative length intervals (when GTI is fully outside exposure)
+    $ccom = "fcalc $file2 $file1 LENGTH \"MAX(LENGTH,0)\""
+          . " rowrange=- copycol=Y copyall=N clobber=Y" ;
+    $ll = `$ccom` ;
+    my $ongti = getStatistic($file1,"LENGTH","sum") ;
+# Check whether GTI covers less than 10% of interval
+    my $ontime = getKeyword($evlist."[1]","ONTIME") ;
+# If nothing (TIMING mode) try CCD 2
+    if ( $ontime eq "" ) { $ontime = getKeyword($evlist."[1]","ONTIME02") }
+# If still nothing use TELAPSE
+    if ( $ontime eq "" ) { $ontime = getKeyword($evlist."[1]","TELAPSE") }
+    if ( $ongti < 0.1*$ontime ) {
+      if ($verbose) {
+	print "Less than 10% GTI left after standard flare screening: ",
+              100*$ongti/$ontime, " %\n" ;
+	print "Event list is left unscreened.\n" ;
+      }
+      $code = 2 ;
+# Check whether GTI covers full interval
+    } elsif ( $ongti > $ontime - 0.5*$timebin ) {
+      if ($verbose) { print "No flare was detected.\n" }
+      $code = 1 ;
+    }
+  }
+# Remove intermediate files
+  $rcom = "rm $file2 $file1 \n" ;
+  $ll = `$rcom` ;
+  return $code ;
+}
+
+# Find start and end times for all merged events list
+# Also increase time bin for flare screening if need be
+# Output (1st parameter): Start time
+# Output (2nd parameter): End time
+
+sub firstStartLastStop {
+
+  my ($dateobs,$dateend,$tstart,$tstop,$obsid,$obsref,$timebin2,$mintimebin) ;
+
+# Loop over all events lists in current directory
+  my @allevfiles = glob("P*MIEVLI0000.FIT") ;
+
+# Unplug verbosity for checkTimeBin
+  my $verbref = $verbose ;
+  $verbose = 0 ;
+
+  foreach my $eventim (@allevfiles) {
+
+# Test that events lists pertain to the same observation
+    $obsid = getKeyword($eventim."[0]","OBS_ID") ;
+    if ( $obsid eq "" ) {
+      print "\nemchain: warning(firstStartLastStop) !\n" ;
+      print "$eventim does not have an OBS_ID keyword \n" ;
+      print "Continuing as if globalflare=N.\n" ;
+      $allmos = 0 ;
+      return ;
+    }
+    if ( defined($obsref) ) {
+      if ( $obsref ne $obsid ) {
+	print "\nemchain: warning(firstStartLastStop) !\n" ;
+	print "All event files in current directory do not have " .
+              "the same OBS_ID $obsref $obsid \n" ;
+	print "Continuing as if globalflare=N.\n" ;
+	$allmos = 0 ;
+	return ;
+      }
+    } else { $obsref = $obsid }
+
+# Always start at DATE-OBS to synchronize time series between instruments
+# BEWARE: DATE-OBS is currently exposure start
+# Use TSTART while evselect does not accept any time format for timemin/max
+#	$dateobs = getKeyword($eventim."[0]","DATE-OBS") ;
+#	$dateend = getKeyword($eventim."[0]","DATE-END") ;
+    $tstart = getKeyword($eventim."[1]","TSTART") ;
+    $tstop  = getKeyword($eventim."[1]","TSTOP") ;
+    if ( $tstart eq "" || $tstop eq "" ) {
+      print "\nemchain: warning(firstStartLastStop) !\n" ;
+      print "$eventim does not have TSTART and TSTOP keywords \n" ;
+      print "Continuing as if globalflare=N.\n" ;
+      $allmos = 0 ;
+      return ;
+    }
+
+# Minimize start times and maximize end times
+    if ( defined($dateobs) ) {
+      if ( $tstart < $dateobs ) { $dateobs = $tstart }
+    } else { $dateobs = $tstart }
+    if ( defined($dateend) ) {
+      if ( $tstop > $dateend ) { $dateend = $tstop }
+    } else { $dateend = $tstop }
+
+# Minimize time bin. Negative means no GATTI flagging
+    $timebin2 = checkTimeBin($timebin,areaCcd($eventim)) ;
+    if ( defined($mintimebin) ) {
+      if ( $timebin2 > 0 && $timebin2 < $mintimebin )
+	{ $mintimebin = $timebin2 }
+    } else { $mintimebin = $timebin2 }
+  }
+
+# Reinstate verbosity
+  $verbose = $verbref ;
+
+  if ( $verbose ) {
+    print "Start and end times for flare screening timeries : " .
+          "$dateobs $dateend \n" ;
+  }
+
+# Set time bin negative (no time series created if no GATTI flagging)
+  if ( ! defined($mintimebin) ) {
+    if ( $verbose ) {
+      print "\nNo CCD files with GATTI flagging. ",
+            " Flare detection not performed.\n" ;
+    }
+    $mintimebin = -1 ;
+  }
+
+# Update time bin if need be
+  if ( $mintimebin > $timebin ) {
+    if ( $verbose ) {
+      print "\nTime bin too small for CCD area."
+          . " Increase to $mintimebin for flare screening.\n" ;
+    }
+    $timebin = $mintimebin ;
+  }
+
+# Return times
+  $_[0] = $dateobs ;
+  $_[1] = $dateend ;
+}
+
+# Get INSTRUME, OBS_ID and EXPIDSTR
+# Input  (1st parameter): File name
+# Output (2nd parameter): Instrument (M1 or M2)
+# Output (3rd parameter): OBS_ID (10 characters)
+# Output (4th parameter): EXPIDSTR (4 characters) = S/U + expid
+
+sub getInstObsExp {
+    my $extname = $_[0] . "[0]" ;
+    $_[1] = checkString(getKeyword($extname,"INSTRUME"),5,"INSTRUME") ;
+# Change EMOSn into Mn
+    if ( index($_[1],"EMOS") == 0 ) {
+      $_[1] = "M" . substr($_[1],4) ;
+    } else {
+      print "\nemchain: warning(badinstrument) !\n" ;
+      print "INSTRUME = ", $_[1], " in ", $extname, " is not EMOS" ;
+      return 0 ;
+    }
+    $_[2] = checkString(getKeyword($extname,"OBS_ID"),10,"OBS_ID") ;
+    $_[3] = checkString(getKeyword($extname,"EXPIDSTR"),4,"EXPIDSTR") ;
+}
+
+# getType : Identify data type from file name
+# Returns False if no data found
+# Input  (1st parameter): Name prefix (including directory)
+# Output (2nd parameter): Name of existing events file
+# Output (3rd to 6th)   : Logicals true if Imaging, Reduced Imaging,
+#                         Timing or Compressed Timing mode, respectively
+
+sub getType {
+
+# Look for all possible types of event lists
+  my $prefix = $_[0] ;
+  my $ime = checkgz($prefix . "IME") ;
+  my $rie = checkgz($prefix . "RIE") ;
+  my $tie = checkgz($prefix . "TIE") ;
+  my $cte = checkgz($prefix . "CTE") ;
+  $_[2] = -e $ime ;
+  $_[3] = -e $rie ;
+  $_[4] = -e $tie ;
+  $_[5] = -e $cte ;
+  if    ( $_[2] ) { $_[1] = $ime }
+  elsif ( $_[3] ) { $_[1] = $rie }
+  elsif ( $_[4] ) { $_[1] = $tie }
+  elsif ( $_[5] ) { $_[1] = $cte }
+  else {
+    if ($verbose) { print " : No data \n" }
+    return 0 ;
+  }
+  return 1 ;
+}
+
+# checkgz : Return file name + .FIT, .FTZ, .FIT.gz or .FIT.GZ if need be
+# Input : file name without extension
+# Return .FIT if file name does not exist
+
+sub checkgz {
+  my $firstname = $_[0] ;
+  my $fullname = $firstname . ".FIT" ;
+  foreach my $suffix ("FIT","FTZ","FIT.gz","FIT.GZ") {
+    if ( -e $firstname.".".$suffix ) {
+      $fullname = $firstname . "." . $suffix ;
+      last ;
+    }
+  }
+  return $fullname ;
+}
+
+# getMode : Identify data type from file keywords EDUMODE and CCDMODE
+# Returns False if no or incoherent such keywords
+# Input  (1st parameter): Name of existing frames or events file
+# Output (2nd to 5th)   : Logicals true if Imaging, Reduced Imaging,
+#                         Timing or Compressed Timing mode, respectively
+
+sub getMode {
+
+# Return immediately if file does not exist
+  if ( ! -e $_[0] ) { return 0 }
+
+# Initialize all logicals to False
+  my $kk=0;
+  for ($kk=1;$kk<=4;$kk++) { $_[$kk] = 0 }
+
+  my $extname = $_[0] . "[1]" ;
+
+  my $ccdmode = getKeyword($extname,"CCDMODE") ;
+  $_[3] = uc($ccdmode) eq "FASTUNCOMPRESSED" ;
+  $_[4] = uc($ccdmode) eq "FASTCOMPRESSED" ;
+
+# EDUMODE = 1 for Timing, 2 for Threshold, 3 for Imaging
+# May be set to 3 in Timing mode as well
+  if ( ($_[3]+$_[4]) == 0 ) {
+    my $edumode = getKeyword($extname,"EDUMODE") ;
+    $_[1] = $edumode == 3 ;
+    $_[2] = $edumode == 2 ;
+  }
+
+# Return error if none of the logicals was set
+  if ( ($_[1]+$_[2]+$_[3]+$_[4]) == 0 ) { 
+    if ($verbose) { print " : No mode identified for $_[0] \n" }
+    return 0 ;
+  } else { return 1 }
+}
+
+# areaCcd : Return total area within FOV of all CCDs with GATTI flagging on
+# in merged imaging file (from EXPOSUnn extensions)
+# Input: Merged events file name
+
+sub areaCcd {
+
+  my $infovarea = 0 ;
+
+  my @areas = areaCcds($_[0]) ;
+
+# Loop over all CCDs
+  foreach my $curarea (@areas) { $infovarea += $curarea }
+
+  return $infovarea ;
+}
+
+# areaCcds : Return area within FOV for each CCD with GATTI flagging on
+# If two nodes, return first node0 then node1 values (always 7 each)
+# in merged imaging file (from EXPOSUnn extensions)
+# Input: Merged events file name
+
+sub areaCcds {
+
+  my ($ccd,$node) ;
+  my ($extnum,$curarea) ;
+  my (@areas) ;
+
+# get list of extensions in file
+# colinfo=N in FTOOLS V5
+  my $ccom = "fstruct $_[0]" ;
+  my $fvers = `fversion | grep V5` ;
+  if ($? == 0) { $ccom = $ccom . " colinfo=N" }
+  my $extlist = `$ccom | grep EXPOSU` ;
+
+# Test whether dual node mode is used anywhere
+  my $nodemax = 0 ;
+  if ( index($extlist,"EXPOSU1") >= 0 ) { $nodemax = 1 }
+
+# Loop over all CCDs and nodes
+  for ($node=0;$node<=$nodemax;$node++) {
+    for ($ccd=1;$ccd<=7;$ccd++) {
+      $extnum = "EXPOSU" . $node . $ccd ;
+      $curarea = 0. ;
+      if (index($extlist,$extnum) >= 0) {
+	$extnum = $_[0] . "[" . $extnum . "]" ;
+	if ( getKeyword($extnum,"XMMEA_22") ne "") {
+	  $curarea = getKeyword($extnum,"IN_FOV") ;
+	  if ( $curarea eq "" ) {
+	    $curarea = 0 ;
+	    print "\nemchain: warning(noIN_FOV) ! No IN_FOV keyword ",
+	          "in $extnum. Regenerate.\n" ;
+	  }
+	}
+      }
+      push(@areas,$curarea) ;
+    }
+  }
+
+  return @areas ;
+}
+
+# areaCcdFiles : Return area within FOV of CCD-specific event files
+#                event*.out.mos, where GATTI flagging worked
+
+sub areaCcdFiles {
+
+  my $infovarea = 0 ;
+  my ($ccd,$node) ;
+  my ($event2,$curarea,$ccdmode) ;
+
+# Look for event files corresponding to selected CCDs
+# Sum area over nodes
+  foreach $ccd (@ccdlist) {
+    for ($node=0;$node<=1;$node++) {
+      $event2 = "event" . $node . $ccd . ".out.mos" ;
+      if ( -e $event2 ) {
+	$event2 .= "[1]" ;
+# Check mode is not Timing
+	$ccdmode = getKeyword($event2,"CCDMODE") ;
+	if (index($ccdmode,"FAST") < 0) {
+	  if ( getKeyword($event2,"XMMEA_22") ne "" ) {
+	    $curarea = getKeyword($event2,"IN_FOV") ;
+	    if ( $curarea ne "" ) {
+	      $infovarea += $curarea ;
+	    } else {
+	      print "\nemchain: warning ! No IN_FOV keyword in $event2. ",
+                    "Regenerate.\n" ;
+	    }
+	  }
+	}
+      }
+    }
+  }
+
+  return $infovarea ;
+}
+
+# checkTimeBin : Test whether the combination of time bin and area within FOV
+#                where GATTI flagging worked is enough for flare screening
+#                Abort if too small, increase time bin if moderately small
+# Input 1: Proposed time bin
+# Input 2: area within FOV
+
+sub checkTimeBin {
+
+  my $timebin2 = $_[0] ;
+  my $areaccd = $_[1] ;
+  if ( $areaccd < $areaCcdMin ) {
+    if ( $verbose ) {
+      print "\nNo CCD files with GATTI flagging. ",
+            " Flare detection not performed.\n" ;
+    }
+    $timebin2 = -1 ;
+  } elsif ( $areaccd*$timebin2 < 10000 ) {
+    $timebin2 = 10000/$areaccd ;
+    if ( $verbose ) {
+      print "\nTime bin too small for CCD area ($areaccd arcmin2)."
+          . " Increase to $timebin2 for flare screening.\n" ;
+    }
+  }
+  return $timebin2 ;
+}
+
+# hasColumn : True if column is present in file
+# Input 1: File name with extension (FTOOLS like)
+# Input 2: Column name
+
+sub hasColumn {
+
+# Check that the string appears in one column
+# Write outfile parameter to overcome non-standard default in parameter file
+  my $ccom = "flcol $_[0] outfile=STDOUT | grep $_[1]" ;
+  my $ll = `$ccom` ;
+  if ( $? > 0 ) { return 0 }
+
+# Loop over all candidate lines to look for exact match
+  my @linelist = split(/\n/,$ll) ;
+  my (@arglist) ;
+  foreach my $currow (@linelist) {
+    @arglist = split(/ /,trim($currow,3)) ;
+# The column name is the first value in each row
+    if ( $arglist[0] eq $_[1] ) { return 1 }
+  }
+# Return False if no exact match
+  return 0 ;
+}
+
+# getKeyword : Return the trimmed value of a FITS keyword
+# Input 1: File name with extension (FTOOLS like)
+# Input 2: Keyword name
+
+sub getKeyword {
+
+# Write outfile parameter to overcome non-standard default in parameter file
+  my $ccom = "fkeyprint $_[0] $_[1] outfile=STDOUT exact=Y | grep \"= \"" ;
+  my $line = `$ccom` ;
+  if ( $? > 0 ) { return "" }
+
+# Extract the keyword value
+  $line = substr($line,10) ;
+  $line = substr($line,0,index($line,"/")) ;
+
+# Special case for strings
+  my $i1 = index($line,"'") ;
+  my $i2 = rindex($line,"'") ;
+  if ( $i1 >= 0 ) { $line = substr($line,$i1+1,$i2-$i1-1) }
+
+# Trim the keyword value to the left and right (but not in the center)
+  return trim($line,3) ;
+}
+
+# columnNumber : Return the column number of a FITS column
+# Input 1: File name with extension (FTOOLS like)
+# Input 2: Column name (not case sensitive)
+
+sub columnNumber {
+
+# Write default parameters to overcome non-standard default in parameter file
+  my $ccom = "fcolpar $_[0] $_[1] exact=N" ;
+  my $line = `$ccom` ;
+  if ( $? > 0 ) {
+    print "\nemchain: warning(badcolname) !\n" ;
+    print "Column ",$_[1]," does not exist in ", $_[0], " \n" ;
+    return 0 ;
+  }
+
+# Extract the keyword value
+  $ccom = "pget fcolpar colnum" ;
+  chomp($line = `$ccom`) ;
+
+  return $line ;
+}
+
+# getStatistic : Return sum, mean, ... of a FITS column
+# Return 0 if input file is empty
+# Input 1: File name with extension (FTOOLS like)
+# Input 2: Column name
+# Input 3: Statistic name as in output of fstatistic (sum, mean, ...)
+
+sub getStatistic {
+
+# Write default parameters to overcome non-standard default in parameter file
+  my $ccom = "fstatistic $_[0] $_[1] - outfile=STDOUT"
+           . " maxval=INDEF minval=INDEF 2> /dev/null" ;
+  my $line = `$ccom` ;
+  if ( $? > 0 ) { return 0 }
+
+# Extract the keyword value
+  $ccom = "pget fstatistic $_[2]" ;
+  chomp($line = `$ccom`) ;
+
+  return $line ;
+}
+
+# checkString : check string length, either pad with "_" or truncate
+# Input 1: string
+# Input 2: expected length
+# Input 3: string name (for warning)
+
+sub checkString {
+  my $newstr = $_[0] ;
+  my $ll = length($_[0]) ;
+  my $kk = 0 ;
+  if ( $ll != $_[1] ) {
+    print "\nemchain: warning(badstring) !\n" ;
+    print "Non-standard ",$_[2]," = ", $_[0], " |\n" ;
+    if ( $ll < $_[1] ) { 
+      for ($kk=$ll;$kk<$_[1];$kk++) { $newstr .= "_" }
+    } else { $newstr = substr($newstr,0,$_[1]) }
+    print $_[2], " set to ", $newstr, "\n" ;
+  }
+return $newstr ;
+}
+
+# addContent : Add CONTENT keyword
+# fparkey much faster than dssetattr
+# Keep compatibility with FTOOLS 4.2 (no insert parameter)
+
+sub addContent {
+  my $ccom = "fparkey \"$_[0]\" $_[1]" . "[0] CONTENT add=Y" ;
+  my $fvers = `fversion | grep V5` ;
+  if ($? == 0) { $ccom .= " insert=DATE" }
+  &sendCommand($ccom,0) ;
+}
+
+# sendCommand : send command to the system
+# Uses $status from main level
+# Input 1: command to be sent
+# Input 2: bit-driven selection of options
+#          bit 0 (1) : add $generic SAS options
+#          bit 1 (2) : add OAL options
+#          bit 2 (4) : add CAL options
+
+sub sendCommand {
+
+  my $kk=0; my $ll=0; my $locstatus=0;
+
+  my $ccom = $_[0] ;
+
+# Isolate task name
+  $ll = index($ccom," ") ;
+  my $taskname = $ccom ;
+  if ( $ll > 0 ) { $taskname = substr($ccom,0,$ll) }
+
+# Add SAS-wide options if need be
+  if ( $#_ > 0 ) {
+    my $options = $_[1] ;
+    if ( $options >= 4) {
+      $ccom .= $caloptions ;
+      $options -= 4 ;
+    }
+    if ( $options >= 2) {
+      $ccom .= $oaloptions ;
+      $options -= 2 ;
+    }
+    if ( $options ) { $ccom = $ccom . $generic }
+  }
+
+# Add task-specific options
+# Identify task in list
+  for ($kk=0;$kk<@tasklist;$kk++) {
+    if ( $tasklist[$kk] eq $taskname ) { last }
+  }
+
+# Add task-specific options if task was identified in list
+  if ( $kk < @tasklist )  { $ccom = $ccom . $taskparams[$kk] }
+
+  $ccom = $ccom . "\n" ;
+  if ($verbose) {
+    print "CMD: $ccom" ;
+    if ( $noisy ) { print "++ \n" }
+  }
+  $ll = `$ccom` ;
+  $locstatus = $? ;
+  $status += $? ;
+  $laststatus += $? ;
+  if ($verbose) {
+    print $ll ;
+    if ( $noisy ) { print "++ \n" }
+  }
+  if ($locstatus > 0) {
+    $ll = "\nemchain: That task ended in error ! \n\n" ;
+    if ($stoponerror) { die ($ll) }
+    else {
+      if (! $verbose) { print "CMD: $ccom" }
+      print $ll ;
+    }
+  }
+}
+
+# getParams : command line parameter parser
+
+sub getParams {
+
+  my $nparams = ($#_ + 1) / 2 ;
+  my $param=""; my $value="";
+  my $kk=0;
+
+# Add blank to treat first and last parameters like all others
+# Convert all parameters into a single line of text
+  my $line = " " . "@ARGV" . " " ;
+
+# Deal with standard SAS parameters
+  &catchSASParams($line) ;
+
+# Look for specific emchain options
+  for ($kk=0; $kk<$nparams; $kk++) {
+    $param = " " . $_[$kk] . "=";
+    if ( extractParam($line,$param,$value) ) {
+      $_[$kk+$nparams] = $value ;
+      if ($verbose) { print "$_[$kk] = $_[$kk+$nparams] |\n" }
+    }
+  }
+
+# Retrieve task-specific parameters
+  &getTaskParams($line) ;
+
+# Check obsolete parameters
+  if ( length(trim($line,3)) > 0 ) { &checkObsolete($line) }
+
+# End in error if unrecognised parameters are present
+  if ( length(trim($line,3)) > 0 ) {
+    &initParams() ;   # Reset default values before calling showSyntax
+    &showSyntax() ;
+    die "\nemchain: error(badSyntax), "
+      . "unrecognised or duplicated parameters $line\n" ;
+  }
+}
+
+# catchSASParams: Change long version of SAS parameter names into short ones
+# Also fills $generic, $oaloptions and $caloptions
+# 1st argument (I/O): command line parameter (without SAS options in output)
+
+sub catchSASParams {
+
+  my $kk=0; my $ii=0; my $pp=0;
+  my $param1=""; my $param2=""; my $param=""; my $sasline=""; my $value="";
+
+# First convert long parameter names into short ones
+# List of short parameter names
+  my @shortParams = ("c",        "d",         "h",       "m",       "p",
+		     "t",        "V",         "v",       "w",       "o",
+		     "a",        "f",         "i") ;
+  for ($kk=0; $kk<@shortParams; $kk++) {
+    $shortParams[$kk] = " -" . $shortParams[$kk] . " " }
+
+# List of long parameter names
+  my @longParams = ("noclobber", "dialog",    "help",    "manpage", "param",
+		    "trace",     "verbosity", "version", "warning", "odf",
+		    "ccfpath",   "ccffiles",  "ccf") ;
+
+  for ($kk=0; $kk<@longParams; $kk++) {
+
+# Test " --" and "=" syntaxes
+    $param1 = " --" . $longParams[$kk] . " " ;
+    $param2 = " "   . $longParams[$kk] . "=" ;
+    foreach $param ($param1, $param2) {
+      $ii = index($_[0],$param) ;
+      if ( $ii > -1) {
+	$pp = $ii + length($param) ;
+	$_[0] = substr($_[0], 0, $ii) . $shortParams[$kk] . substr($_[0], $pp);
+      }
+    }
+  }
+
+# Look for '-v'
+  $ii = index($_[0]," -v ") ;
+  if ( $ii != -1) { &getVersion() }
+
+# Look for '-p' or '-h'
+  foreach $param (" -p ", " -h ") {
+    $ii = index($_[0],$param) ;
+    if ( $ii != -1) {
+      &showSyntax() ;
+      exit ;
+    }
+  }
+
+# Look for '-m'
+  $ii = index($_[0]," -m ") ;
+  if ( $ii != -1) { &getDoc() }
+
+# Catch unsupported SAS options, end in error
+  foreach $param ( " -c ", " -d " ) {
+    $ii = index($_[0],$param);
+    if ( $ii != -1) { die("emchain: Sorry, $param option is not supported.\n")}
+  }
+
+# Extract SAS options to be propagated to individual tasks
+  foreach $param ( " -t ", " -V ", " -w " ) {
+    if ( extractParam($_[0],$param,$value) ) {
+      $sasline .= $param . $value ;
+    }
+  }
+
+# Set the verbosity
+  &setVerbosity($sasline) ;
+
+# Pass all other parameters to all tasks
+  addGeneric($sasline,$generic) ;
+  if ($verbose) { print "Options passed to individual tasks: $generic |\n" }
+
+# Look for ' -c' (noclobber) option
+  $ii = index($generic," -c ") ;
+  if ( $ii > -1) { $clobber = 0 }
+
+# Extract OAL options to be propagated to individual tasks
+  foreach $param ( " -o " ) {
+    if ( extractParam($_[0],$param,$value) ) {
+      $oaloptions .= $param . $value ;
+    }
+  }
+  if ( $verbose && length($oaloptions)>0 ) {
+    print "OAL options: $oaloptions |\n" }
+
+# Extract CAL options to be propagated to individual tasks
+  foreach $param ( " -a ", " -f ", " -i " ) {
+    if ( extractParam($_[0],$param,$value) ) {
+      $caloptions .= $param . $value ;
+    }
+  }
+  if ( $verbose && length($caloptions)>0 ) {
+    print "CAL options: $caloptions |\n" }
+}
+
+# setVerbosity: Set $verbose and $noisy from -V option
+# Input: Command line
+
+sub setVerbosity {
+  my $ii = -1 ; my $pp=0; my $verbosity=0;
+  my $param = " -V ";
+  $ii = index($_[0],$param) ;
+  if ( $ii > -1) {
+    $ii += length($param) ;
+    $pp = nextParam($_[0],$ii) ;
+    $verbosity = trim(substr($_[0],$ii,$pp-$ii),1) ;
+    $verbose = $verbosity > 0 ;
+    $noisy = $verbosity > 3 ;
+  }
+}
+
+# setSASCCF: Set $sasccf (for writing CALINDEX extension) from -i option
+# Input: Command line
+
+sub setSASCCF {
+  my $ii = -1 ; my $pp=0;
+  my $param = " -i ";
+  $ii = index($_[0],$param) ;
+  if ( $ii > -1) {
+    $ii += length($param) ;
+    $pp = nextParam($_[0],$ii) ;
+    $sasccf = trim(substr($_[0],$ii,$pp-$ii),1) ;
+  }
+  if ( -d $sasccf ) { $sasccf .= "/ccf.cif" }
+
+# Stop if $sasccf is undefined and really useful
+  if ( ! -e $sasccf && $withccdloop ) {
+    die "\nemchain: error(ccf), $sasccf does not exist. \n" .
+        "runccdloop needs a valid CCF file. \n" .
+        "Set SAS_CCF environment variable or ccf (-i) parameter. \n";
+  }
+}
+
+# setSASODF: Set $indir (where files are to be found) from -o option
+# Input: Command line
+
+sub setSASODF {
+  my $ii = -1 ; my $pp=0;
+  my $dirline=""; my $curdir="";
+  my $param = " -o ";
+  $ii = index($_[0],$param) ;
+  if ( $ii > -1 ) {
+    $ii += length($param) ;
+    $pp = nextParam($_[0],$ii) ;
+    $indir = trim(substr($_[0],$ii,$pp-$ii),1) ;
+  } elsif ( exists $ENV{'SAS_ODF'} ) { $indir = $ENV{'SAS_ODF'} }
+
+# Stop if $indir is undefined and really useful
+  if ( $fromodf || $onattcalc || $onbadpix ) {
+    if ( ! -e $indir ) {
+      die "\nemchain: error(odf), $indir could not be found. \n"
+        . "startfromodf, badpix and attcalc need a valid ODF directory"
+        . " or summary file. \n"
+        . "Set SAS_ODF environment variable or odf (-o) parameter. \n";
+    }
+
+    if ( $fromodf && -f $indir ) {
+# Extract directory from summary file
+# First look for PATH line (SUM.SAS file)
+      my @dirline = split(/\n/,`cat $indir | grep PATH 2> errors`) ;
+      if ( @dirline > 0 ) {
+	$curdir = trim(substr($dirline[0],5),3) ;
+	if ( $curdir eq "." ) { $curdir = "" }
+      }
+      if ( $curdir eq "" ) {
+# Set ODF directory where the file resides
+	$ii = rindex($indir,"/") ;
+	if ( $ii > -1 ) { $curdir = substr($indir,0,$ii+1) }
+	else { $curdir = "." }
+      }
+      $indir = $curdir ;
+    }
+
+    if ( $fromodf ) {
+# $indir should end with /
+      if ( substr($indir,length($indir)-1) ne "/" ) { $indir .= "/" }
+      if ( $verbose ) { print "ODF directory = $indir \n" }
+    }
+  }
+}
+
+# getTaskParams : Isolate task-specific parameters
+# Input : string
+# Output in @taskparams list
+
+sub getTaskParams {
+
+  my $kk=0; my $ll=0; my $ll2=0; my $nn=0;
+  my $teststr=""; my $ccom=""; my $value="";
+  my @curparams=("");
+
+# Loop over task names
+  for ($kk=0;$kk<@tasklist;$kk++) {
+
+# Initialise to nothing
+    $taskparams[$kk] = "" ;
+    if ( length(trim($_[0],3)) <= 0 ) { next }
+
+# Look for task name followed by delimiter ':'
+    $teststr = " " . $tasklist[$kk] . ":" ;
+    $ll = index($_[0],$teststr) ;
+    if ( $ll >= 0 )  {
+# A specific parameter was detected for that task
+# Look for all parameters supported by that task
+      $ccom = $tasklist[$kk] . " -p 2> /dev/null \n" ;
+      $value = `$ccom` ;
+      @curparams = split(/\n/,$value) ;
+      for ($nn=0;$nn<@curparams;$nn++) {
+	$ll2 = index($curparams[$nn]," = ") ;
+	if ( $ll2 < 0 ) { next }
+	$curparams[$nn] = substr($curparams[$nn],0,$ll2) ;
+# Look for that parameter
+	$teststr = " " . $tasklist[$kk] . ":" . $curparams[$nn] . "=" ;
+	if ( extractParam($_[0],$teststr,$value) ) {
+# Add quotes if the parameter value contains blanks
+	  if ( index($value," ") > 0 ) { $value = "\"" . $value . "\"" }
+	  $taskparams[$kk] .= " " . $curparams[$nn] . "=" . $value ;
+	}
+      }
+      if ($verbose) { print "$tasklist[$kk] : $taskparams[$kk] |\n" }
+    }
+  }
+}
+
+# nextParam : Find location of next parameter in string
+# (identified by '=' or ' -')
+# Input 1: string
+# Input 2: position at which to start
+
+sub nextParam {
+  my $ll=0; my $mm=0;
+  $ll = index($_[0],"=",$_[1]);
+  if ( $ll == -1 )  { $ll = length($_[0]) }
+# Allow possibility of blanks within the parameter value (like M1 M2)
+  else  { $ll = rindex($_[0]," ",$ll) }
+  $mm = index(substr($_[0],0,$ll)," -",$_[1]);
+  if ( $mm > -1 )  { $ll = $mm }
+  return $ll ;
+}
+
+# extractParam : find value associated with a parameter string
+# returns 1 if parameter was found in input string, 0 otherwise
+# Argument 1  (I/O)  : command line, stripped of that parameter in output
+# Argument 2  (Input): parameter string
+# Argument 3 (Output): associated value
+
+sub extractParam {
+  my ($ii, $pp, $ll) ;
+  $ii = index($_[0],$_[1]) ;
+  if ( $ii != -1) {
+# Start at blank to allow nextParam to work with " -" immediately next
+    my $param = trim($_[1],1) ;
+    $pp = $ii + length($param) ;
+    $ll = nextParam($_[0],$pp) ;
+# Trim the parameter value
+    $_[2] = trim(substr($_[0],$pp,$ll-$pp),3) ;
+# Remove that part from the original chain
+    $_[0] = substr($_[0],0,$ii) . substr($_[0],$ll) ;
+    return 1 ;
+  } else { return 0 }
+}
+
+# getBoolean : Special treatment for boolean parameters
+# Test whether parameter value starts with 'n' or 'f'
+
+sub getBoolean {
+
+  my @novalue = ('n','f') ;
+  my $param = $_[0] ;
+  my $kk = 0 ;
+  if ($param) {
+    for ($kk=0; $kk<@novalue; $kk++) {
+      if (index($param,$novalue[$kk])     == 0) { $param = 0 }
+      if (index($param,uc($novalue[$kk])) == 0) { $param = 0 }
+    }
+    $_[0] = $param ;
+  }
+}
+
+# getVersion : get the version number of emchain
+
+sub getVersion {
+  my $ccom="";
+  print "\n" ;
+  chomp(my $sasdir = `which emchain`) ;
+  my $ii = index($sasdir,'/bin/emchain');
+  if ($ii == -1) { print "Sorry, directory structure of emchain $sasdir " .
+                   "could not be recognised.\n" ; }
+  else {
+    $sasdir = substr($sasdir,0,$ii) ;
+# Optimize to avoid searching whole directory if standard structure
+    $ccom = "packages/emchain/VERSION" ;
+    if ( ! -e $sasdir."/".$ccom ) {
+      $ccom = `cd $sasdir; find . -name VERSION | grep emchain` }
+    if ( length($ccom) == 0 ) {
+      print "Sorry, emchain's version number was not found in $sasdir.\n" .
+            "Please look in the package documentation.\n" ;
+    } else {
+      chomp(my $version = `cd $sasdir; cat $ccom`) ;
+      $ccom = $sasdir . "/RELEASE" ;
+      my $release = "" ;
+      if ( -e $ccom ) { chomp($release = `cat $ccom`) }
+      print "emchain $version [$release] \n" ;
+    }
+  }
+
+# Write the version of the constituent tasks
+  print "\n" ;
+  print "You are using the following task versions : \n" ;
+  my $task="";
+  foreach $task (@tasklist) {
+    $ccom = $task . " -v \n" ;
+    print `$ccom` ;
+  }
+  print "\n" ;
+  exit ;
+}
+
+# getDoc : call HTML doc of emchain
+
+sub getDoc {
+  my $ccom = '';
+  chomp(my $sasdir = `which emchain`) ;
+  my $ii = index($sasdir,'/bin/emchain');
+  if ($ii == -1) { die("emchain: Sorry, directory structure of emchain " .
+                       "$sasdir could not be recognised.\n") }
+  else {
+    $sasdir = substr($sasdir,0,$ii) ;
+# First try running netscape process
+    system("netscape -remote 'openURL($sasdir/doc/emchain/index.html)' 2> /dev/null") ;
+    if ( $? > 0 ) { system("netscape $sasdir/doc/emchain/index.html &") }
+  }
+  exit ;
+}
+
+# addGeneric : merge generic options (starting with -) with new ones
+# Input 1: string containing new generic options
+# Input 2: string containing old generic options, modified on output
+
+sub addGeneric {
+  my $kk=0; my $ii=0; my $option=""; my $optname=""; my $curopt="";
+  my @line=("");
+
+# Add blank to both chains if not present
+  for ($kk=0; $kk<=1; $kk++) {
+    if ( length($_[$kk]) > 0 and substr($_[$kk],0,1) ne " " ) {
+      $_[$kk] = " " . $_[$kk] } }
+
+# Split old generic options (split removes ' -')
+  my @defgen = split(/ -/,$_[1]) ;
+  $_[1] = $_[0] ;
+
+# Add options to new chain if not already present
+# (does not recognize multiple syntax options as one)
+  foreach $curopt (@defgen) {
+# Weed out empty or blank strings
+# Trim the parameter value
+    $option = trim($curopt,1) ;
+    if ( length($option) == 0 ) { next }
+    @line = split(' ',$option) ;
+# Add back ' -'
+    $optname = " -" . $line[0] ;
+    $ii = index($_[0],$optname);
+    if ( $ii == -1) { $_[1] .= " -" . $option }
+  }
+}
+
+# Trim a string of its leading and/or trailing blanks
+# Input 1 : string
+# Input 2 : 1=trailing; 2=leading; 3=both
+
+sub trim {
+  use integer ;
+  my $strcur = $_[0] ;
+  my $lead  = $_[1] / 2 ;
+  my $trail = $_[1] - $lead * 2 ;
+  if ( $lead ) {
+    while (index($strcur," ")==0 && length($strcur) > 0) {
+      $strcur = substr($strcur,1) }
+  }
+  if ( $trail ) {
+    while (rindex($strcur," ")==length($strcur)-1 && length($strcur) > 0) {
+      $strcur = substr($strcur,0,-1) }
+  }
+  return $strcur ;
+}
+
+# checkObsolete : command line parameter parser for error messages
+
+sub checkObsolete {
+
+# Explicit list of obsolete parameters and their replacements
+
+  my @obsolete = ("ccd",             "ccds",
+		  "exposure",        "exposures",
+		  "instrument",      "instruments",
+                  "keeprejected",    "rejectbadevents",
+                  "withbadpixfind",  "badpixfindalgo",
+                  "flaremaxcounts",  "flaremaxrate",
+		  "attitudelabel",   "attcalc:attitudelabel",
+		  "fixedra",         "attcalc:fixedra",
+		  "fixeddec",        "attcalc:fixeddec",
+		  "fixedposangle",   "attcalc:fixedposangle",
+		  "refpointlabel",   "attcalc:refpointlabel",
+		  "srcra",           "emframes:srcra",
+		  "srcdec",          "emframes:srcdec",
+                  "useccfdarkframe", "emenergy:useccfdarkframe") ;
+
+  my $nparams = @obsolete / 2 ;
+  my $param="";
+  my $kk=0; my $ok=1;
+
+# Look for obsolete options
+  for ($kk=0; $kk<$nparams; $kk++) {
+    $param = " " . $obsolete[2*$kk] . "=";
+    if ( index($_[0],$param) >= 0 ) {
+      $ok = 0 ;
+      print "\nParameter '$obsolete[2*$kk]' is deprecated.\n" ;
+      print "Please use '$obsolete[2*$kk+1]' instead (see doc).\n" ;
+    }
+  }
+
+# End in error if obsolete parameters were present
+    die unless $ok ;
+}
+
+# showSyntax : write list of parameters and default values
+
+sub showSyntax {
+  my @bool = ("NO","YES") ;
+  print "\nSyntax: \nemchain "
+      . "\n[  runccdloop=$bool[$withccdloop] <yes|no> "
+      . "\n   [  ccds=\"$ccds\" <CCD list (space separated)> "
+      . "\n      processlowgain=$bool[$onlowgain] <yes|no> "
+      . "\n      startfromodf=$bool[$fromodf] <yes|no> "
+      . "\n      [  odf=\$SAS_ODF <ODF directory> "
+      . "\n         exposures=all <exposure list (including S/U if need be)> "
+      . "\n         instruments=\"$instrume\" <instrument M1|M2> "
+      . "\n         filterhk=$bool[$filterhk] <yes|no> "
+      . "\n         withatthkgen=$bool[$onatthkgen] <yes|no> "
+      . "\n         filteratt=$bool[$filteratt] <yes|no> "
+      . "\n         atttol=$atttol <tolerance in degrees for attitude filtering> "
+      . "\n         ingtiset=$gtiin <external GTI file> ] "
+      . "\n      badpixfindalgo=$badpixalgo <use embadpixfind, badpixfind or nothing em|ep|no> "
+      . "\n      [  stopafterbadpixfind=$bool[$stopatbadfind] <yes|no> "
+      . "\n         lowenerbadpix=$bool[$findlowener] <yes|no> (em only) ] "
+      . "\n      withbadpix=$bool[$onbadpix] <yes|no> "
+      . "\n      randomize=$randomize <combination of letters P, T, E> "
+      . "\n      withemevents=$bool[$onemevents] <yes|no> "
+      . "\n      withattcalc=$bool[$onattcalc] <yes|no> "
+      . "\n      withemenergy=$bool[$onemenergy] <yes|no> "
+      . "\n      [  writeccdbackground=$bool[$withccdbkg] <yes|no> ] "
+      . "\n      rejectbadevents=$bool[$rejbadevts] <yes|no> "
+      . "\n      [  rejectionflag=$rejectflag <hexadecimal rejection flag (string)> ] ] "
+      . "\n   runevlistcomb=$bool[$onevlistcomb] <yes|no> "
+      . "\n   [  applyccdgti=$bool[$withccdgti] <yes|no> "
+      . "\n      fulloutput=$bool[$fulloutput] <yes|no> "
+      . "\n      keepintermediate=$bool[$keeptemp] <yes|no> ] "
+      . "\n   addtaglenoise=$bool[$getlenoise] <yes|no> "
+      . "\n   addvigweight=$bool[$addweights] <yes|no> "
+      . "\n   makeflaregti=$bool[$makeflaregti] <yes|no> "
+      . "\n   [  flaretimebin=$timebin <time bin in s for flare rejection> "
+      . "\n      flaremaxrate=$threshold <threshold on truncated singles/s> ] "
+      . "\n   applyflaregti=$bool[$withflaregti] <yes|no> "
+      . "\n   globalflare=$bool[$allmos] <yes|no> "
+      . "\n   stoponerror=$bool[$stoponerror] <yes|no> "
+      . "\n   clobber=$bool[$clobber] <yes|no> "
+      . "] \n"
+}
+
+# Initialise all parameters (global variables) to their default values
+
+sub initParams {
+  $gtiin="";      # external GTI file
+  $goodpose="";   # Exposure number
+  $instrume="M1 M2"; # Instrument (M1 or M2)
+  $ccds="1 2 3 4 5 6 7"; # CCD numbers
+  $filterhk=0;    # Apply the GTI from hkgtigen ?
+  $filteratt=0;   # Filter out intervals with bad attitude ?
+  $atttol=0.05;   # Tolerance for attitude filtering in degrees
+  $onatthkgen=0;  # Rerun atthkgen ?
+  $onattcalc=1;   # Run attcalc ?
+  $onbadpix=1;    # Run badpix ?
+  $onemevents=1;  # Run emevents ?
+  $badpixalgo="EM"; # Algorithm for badpixfind (em or ep)
+  $findlowener=1; # Additional run of embadpixfind below 500 eV ?
+  $stopatbadfind=0; # Stop after badpixfind for investigation ?
+  $onemenergy=1;  # Run emenergy ?
+  $withccdbkg=0;  # Write CCD background (one file per CCD) ?
+  $fulloutput=0;  # Propagate all columns (or only official ones) ?
+  $getlenoise=1;  # Call emtaglenoise ?
+  $addweights=0;  # Run evigweight ?
+  $stoponerror=0; # Stop on error or continue loop ?
+  $rejbadevts=1;  # Delete events flagged for rejection ?
+# Keep events out of the field of view and rejected by Gatti
+  $rejectflag=$rejectflag0; # Rejection flags
+  $onlowgain=0;   # Process low gain data ?
+  $keeptemp=0;    # Keep intermediate files ?
+  $clobber=1;     # Erase intermediate and output files ?
+  $withccdloop=1; # Loop over all raw CCD files ?
+  $fromodf=1;     # Use ODF files as input (or temporary files)
+  $onevlistcomb=1; # Merge individual CCD files (evlistcomb) ?
+  $withccdgti=1;  # Apply CCD GTIs ?
+  $randomize="PET"; # Randomize position, energy and/or time ?
+  $makeflaregti=1; # Build GTIs for proton flares ?
+  $withflaregti=0; # Apply flare GTIs ?
+  $timebin=52;    # Time binning to build histogram for flare rejection
+  $threshold=2.;  # Threshold on singles with truncated E1 (per ks/arcmin2)
+  $allmos=1;      # Build global flare time series for all MOS exposures ?
+}

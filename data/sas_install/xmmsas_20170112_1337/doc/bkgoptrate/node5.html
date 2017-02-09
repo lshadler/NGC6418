@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Practical behaviour and command-line parameters</TITLE>
+<META NAME="description" CONTENT="Practical behaviour and command-line parameters">
+<META NAME="keywords" CONTENT="bkgoptrate">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="bkgoptrate.css">
+
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+bkgoptrate (bkgfilter-1.7) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Theory"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="bkgoptrate.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000"></A>
+<A NAME="bkgoptrate:description:behaviour"></A>
+<BR>
+Practical behaviour and command-line parameters
+</H2>
+
+<P>
+This task reads the background time-series FITS-Table (<TT>tssettabname</TT>)
+for the specified X and Y columns (<TT>xcol</TT> and <TT>ycol</TT>)
+for TIME and RATE (or COUNT), respectively, searches for the optimum
+background count (or rate) per bin, then if found, prints the value
+(refered to <TT>BGOPTCUT</TT>, hereafter) to standard output (<TT>STDOUT</TT>).
+
+<P>
+If <TT>doinsertkwds</TT>=`yes',
+it also adds the two header attributes in the input time-series dataset:
+<TT>BGOPTCUT</TT> for the value <TT>BGOPTCUT</TT>
+and <TT>FRACTLFT</TT>
+for the fraction of the number of the resultant
+time bins to the original one<A NAME="tex2html2"
+  HREF="footnode.html#foot479"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A>.
+
+<P>
+If <TT>dooutputsntab</TT>=`yes', it also outputs the FITS file
+containing the table of the diagnostic information
+of the calculation (see Table&nbsp;<A HREF="#bkgoptrate:description:table:output_columns">1</A>),
+where the FITS and table names are specified in <TT>snsettabname</TT>.
+The further information is written in
+the hearder of the table extention (the first extention) of
+the FITS file (see Table&nbsp;<A HREF="#bkgoptrate:description:table:output_columns">1</A>).
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER">
+
+<A NAME="bkgoptrate:description:table:output_columns"></A><A NAME="221"></A>
+<TABLE CELLPADDING=3 BORDER="1">
+<CAPTION><STRONG>Table 1:</STRONG>
+The column names of the diagnostic output FITS file</CAPTION>
+<TR><TD ALIGN="LEFT">Keyword</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=369>Description</TD>
+</TR>
+<TR><TD ALIGN="CENTER" COLSPAN=2><SPAN><B>Table columns</B></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>BKGRATECUT</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=369>The trial threshold for the background in unit of counts/unitTime.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>BKGRAWCUT</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=369>The same as <TT>BKGRATECUT</TT> but in the `raw' unit; e.g., if the original is in unit of counts, `raw' unit is counts.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>BKGRATE</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=369>The maximum rate in the data in unit of counts/unitTime that satisfies the threshold of <TT>BKGRATECUT</TT>.  Therefore this value should be (very) slightly lower than the corresponding <TT>BKGRATECUT</TT>.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>SN_RATIO</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=369>Signal-to-noise ratio; n.b., this used to be <TT>S/N</TT> up to Ver.1.1.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>N_BIN</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=369>The number of bins that satisfy the threshold.</TD>
+</TR>
+<TR><TD ALIGN="CENTER" COLSPAN=2><SPAN><B>Header keywords in the Table extention</B></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>BGOPTCUT</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=369>As explained (Optimum threshold of the background rate).</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>FRACTLFT</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=369>As explained in the text; <TT>NBINOPT</TT>/<TT>NBINAFTF</TT> in the following notations.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>NBINOPT</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=369>The number of bins if <TT>BGOPTCUT</TT> is applied.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>NBINAFTF</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=369>The number of bins after the initial filtering is applied.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>NBINORIG</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=369>The number of the original bins.</TD>
+</TR>
+</TABLE>
+</DIV>
+<BR>
+
+<P>
+In practice, all the bins for Time are assumed to be the same in size,
+that is, duration.
+
+<P>
+This task uses a very simple minimization method;
+it finds the bin(s) that has the highest rate then calculate
+the S/N with those bins excluded, and compares with the previous S/N,
+namely the S/N with those bins included.  This procedure continues
+until the newly calculated S/N is lower than the the previous value,
+then it prints out the previous highest rate (NOT the count), or strictly speaking
+the value that is slightly higher than the previous highest rate
+(so that the users do not have to worry about whether to use
+``larger/smaller than'' or ``equal to or larger/smaller than''
+in the later processing).
+The assumption here is the S/N as a function of <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$Z^*$"></SPAN> is monotonic.
+
+<P>
+The unit of the time-series can be significant.  Users can
+specify it with <TT>tsstyle</TT>=(auto|rate|count).
+If it is ``auto'' (Default), this task determines <TT>tsstyle</TT>
+(1) according to <TT>ycol</TT> if specified,
+(2) or if not, this task searches for the name of the column
+of RATE, COUNT and COUNTS in this order and determines <TT>ycol</TT>
+first, then <TT>tsstyle</TT> accordingly.
+
+<P>
+Although the size of each time bin is assumed to be the same,
+it can be defined in the different column in the table
+(in the same FITS extension as the X(time) and Y(count) axes),
+typically <TT>FRACEXP</TT>,
+which can be explicitly specified with <TT>fracexpcol</TT>.
+
+<P>
+Users can also control how this task treats the <TT>FRACEXP</TT> column
+with <TT>fracexpstyle</TT>=(auto|calc|threshold|none).
+If <TT>fracexpstyle</TT>=<TT>none</TT> this task simply ignores <TT>FRACEXP</TT> column
+and assumes all the bins have the same duration<A NAME="tex2html4"
+  HREF="footnode.html#foot262"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A>.
+If <TT>fracexpstyle</TT>=<TT>threshold</TT>, then this task ignores
+the bins, of which <TT>FRACEXP</TT> is smaller than the user-specified
+parameter, <TT>fracexplower</TT>.
+If <TT>fracexpstyle</TT>=<TT>calc</TT>, then this task takes <TT>FRACEXP</TT>
+into account in the search.
+If <TT>fracexpstyle</TT>=<TT>auto</TT> (Default), then this task
+searches for the column <TT>fracexpcol</TT> (<TT>FRACEXP</TT> in default),
+and sets <TT>fracexpstyle</TT> to be (1) ``calc'' if found, else
+(2) ``none''.
+
+<P>
+Users can also specify the start and end times to consider
+in the search for the optimum background level with the parameters of
+<TT>starttime</TT> and <TT>endtime</TT>.
+
+<P>
+Users can also specify the bins to be ignored if the count (or rate) of
+the bin is lower than the value, <TT>lowercutoffcount</TT>.
+Note that the bins with negative count (or rate) or with undefined value
+are always ignored.
+
+<P>
+Users can also specify the ratio of the minimum time to be left
+where the further search stops, with <TT>mintimeratio</TT> (0.05 in default).
+Namely if the search for the optimum background cuts continues
+to the extent smaller than the fraction of <TT>mintimeratio</TT> (5% in default)
+in the exposure to the original exposure after all the other filtering is
+performed is left to be valid (in other words if over 95% in default of
+the exposure is regarded as high-background area), then this task stops
+further search for the optimum background level and instead raises an error
+(<TT>noThresholdFound</TT>).
+
+<P>
+Finally, if the large number of bins have the smallest and identical count,
+then chances are the maximum S/N is achieved when only those bins are used.
+For example, it is the case for the perfectly uniform time-series
+(although it must be an extremely rare case, if ever, with the real data).
+In that case, this task either (1) raises an error (<TT>noThresholdFound</TT>)
+preceded by a warning (<TT>recommendedLowerMinTimeRatio</TT>), or
+(2) returns the value slightly higher than the particular value
+preceded by a warning (<TT>regardLowestBinsAsOptimum</TT>)
+if all the time-bins are examined (due to a very small <TT>mintimeratio</TT> 
+given) and if those time-bins occupy more than a third of the number
+of entire time-bins.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Theory"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

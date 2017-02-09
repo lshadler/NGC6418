@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithmn</TITLE>
+<META NAME="description" CONTENT="Algorithmn">
+<META NAME="keywords" CONTENT="ommergelists">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ommergelists.css">
+
+<LINK REL="next" HREF="node12.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="ommergelists.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ommergelists (ommergelists-1.0.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="ommergelists.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Source-matching algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ommergelists.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="ommergelists:description:algorithm"></A>
+<BR>
+Algorithmn
+</H1>
+
+<P>
+The program is written in <SPAN  CLASS="textbf">c++</SPAN>. Within the following description of the algorithm, the term 'table' refers 
+to an XMM DAL (Data Acess Layer), API (Application Programmable Interface) structure that provides access (read, create or modify) 
+to a <SPAN  CLASS="textbf">FITS</SPAN> table.  
+
+<P>
+The program works in the following way:
+
+<P>
+
+<OL>
+<LI>Carry out the following tests on the input and output files given on the command-line
+
+<UL>
+<LI>Check that both input source-list files exist- if not stop the program with an
+error message.
+</LI>
+<LI>Check that both source-lists contain at least one source- if not issue a warning
+      and stop the program.
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI>Read in the <SPAN  CLASS="textbf">RA</SPAN> and <SPAN  CLASS="textbf">Dec</SPAN> values from the <SPAN  CLASS="textbf">RA_CORR </SPAN> and <SPAN  CLASS="textbf">DEC_CORR</SPAN> 
+columns, respectively,  in the <SPAN  CLASS="textbf">SRCLIST</SPAN> table (<SPAN  CLASS="textbf">srclist1</SPAN>) of the product observation source-list file obtained 
+from the non-sky exposure images.
+
+<P>
+</LI>
+<LI>Read in the <SPAN  CLASS="textbf">RA</SPAN> and <SPAN  CLASS="textbf">Dec</SPAN> values from the <SPAN  CLASS="textbf">RA_CORR </SPAN> and <SPAN  CLASS="textbf">DEC_CORR</SPAN> 
+columns, respectively,  in the <SPAN  CLASS="textbf">SRCLIST</SPAN> table (<SPAN  CLASS="textbf">srclist2</SPAN>) of the product observation source-list file obtained 
+from the mosaiced sky-images.
+
+<P>
+</LI>
+<LI>Produce a list of the sources that are found in both source-lists, by matching both lists using their celestial
+coordinates and using a maximum matching angular separation of <SPAN  CLASS="textbf">tolerance</SPAN>, where <SPAN  CLASS="textbf">tolerance</SPAN> is an input
+parameter and defaults to 2 arcsecs. <SPAN  CLASS="textbf">matchedIndex1</SPAN> will contain a list of the row numbers in <SPAN  CLASS="textbf">srclist1</SPAN>
+that have a match in <SPAN  CLASS="textbf">srclist2</SPAN>, <SPAN  CLASS="textbf">matchedIndex2</SPAN> a corresponding list of the row numbers in <SPAN  CLASS="textbf">srclist2</SPAN>
+that have a match in <SPAN  CLASS="textbf">srclist1</SPAN>  and <SPAN  CLASS="textbf">unmatchedIndex2</SPAN> a list of the row numbers in <SPAN  CLASS="textbf">srclist2</SPAN>
+that were not matched with any source in <SPAN  CLASS="textbf">srclist1</SPAN>.
+
+<P>
+</LI>
+<LI>Compute the <SPAN  CLASS="textbf">RA</SPAN> <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$\backslash$"></SPAN> <SPAN  CLASS="textbf">Dec</SPAN> offsets between the matched cooordinates of the two lists.
+
+<P>
+</LI>
+<LI>Create the output file with a <SPAN  CLASS="textbf">SRCLIST</SPAN> table (<SPAN  CLASS="textbf">srclist3</SPAN>) by copying <SPAN  CLASS="textbf">srclist1</SPAN> to <SPAN  CLASS="textbf">srclist3</SPAN>. 
+
+<P>
+</LI>
+<LI>Create a list of the <SPAN  CLASS="textbf">OM</SPAN> filters that are found in both tables (maybe less in <SPAN  CLASS="textbf">srclist2</SPAN>)
+
+<P>
+</LI>
+<LI>increase the size of the <SPAN  CLASS="textbf">srclist3</SPAN> by the size of <SPAN  CLASS="textbf">unmatchedIndex2</SPAN>. The column elements along each of these rows 
+are initially set to null (indicating that the element has no value attached to it) and will be populated with the  
+unmatched data in the next stage..
+
+<P>
+</LI>
+<LI>Loop through all the filters that are present in <SPAN  CLASS="textbf">srclist2</SPAN> and
+
+<P>
+
+<OL>
+<LI>For the current filter <SPAN  CLASS="textbf">FILT</SPAN>
+</LI>
+<LI>Load the source raw-count rate from column <SPAN  CLASS="textbf">FILT_RAW_RATE</SPAN> and significances from column <SPAN  CLASS="textbf">FILT_SIGNIFICANCE</SPAN> 
+in <SPAN  CLASS="textbf">srclist2</SPAN>.
+
+<P>
+</LI>
+<LI>Loop through from i=1 to i=the size of <SPAN  CLASS="textbf">matchedIndex2</SPAN>
+
+<OL>
+<LI>Set j to <SPAN  CLASS="textbf">matchedIndex1[i]</SPAN> and k to <SPAN  CLASS="textbf">matchedIndex2[i]</SPAN>.
+</LI>
+<LI>If source[k] in <SPAN  CLASS="textbf">srclist2</SPAN> has a non-null raw count-rate and a value no greater than 5 then-
+<SPAN  CLASS="textbf">EITHER</SPAN>
+
+<P>
+If the source parameters for source[j] in <SPAN  CLASS="textbf">srclist1</SPAN> have null values (ie not detected) 
+then set the values in <SPAN  CLASS="textbf">srclist3</SPAN> to the corresponding values in <SPAN  CLASS="textbf">srclist2</SPAN>.
+<SPAN  CLASS="textbf">OR</SPAN>
+</LI>
+<LI>If the significance of source[k] in <SPAN  CLASS="textbf">srclist2</SPAN> has a greater significance  
+then the source significance of source[j] in <SPAN  CLASS="textbf">srclist1</SPAN> then set the filter columns for filter <SPAN  CLASS="textbf">filt</SPAN>
+for row matchedIndex1[i] in <SPAN  CLASS="textbf">srclist3</SPAN> to the corresponding values in <SPAN  CLASS="textbf">srclist2</SPAN>.
+
+<P>
+</LI>
+</OL>
+
+<P>
+</LI>
+<LI>Loop through from i=1 to i=the size of <SPAN  CLASS="textbf">unmatchedIndex2</SPAN>
+
+<OL>
+<LI>Set j to unmatchedIndex2[i] 
+</LI>
+<LI>If the total raw count-rate of source[j] for filter FILT of <SPAN  CLASS="textbf">srclist2</SPAN> has a value no greater
+than the <SPAN  CLASS="textbf">maxrawrate</SPAN> value then set the parameters for the FILT columns in <SPAN  CLASS="textbf">srclist3</SPAN> to the corresponding values
+to the FILT columns in <SPAN  CLASS="textbf">srclist2</SPAN>.  
+</LI>
+</OL>
+
+<P>
+</LI>
+<LI>When a row is appended to the final table from the unmatched sources in source-list 2, and that row is 
+populated with all NULLS because the count-rates for all filters <!-- MATH
+ \begin{math}
+> \textbf{maxrawcountrate}
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="159" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&gt; \textbf{maxrawcountrate}$"></SPAN>, then the row is 
+deleted before the output table is written.
+
+<P>
+</LI>
+<LI>Delete the <SPAN  CLASS="textbf">RAW_RATE</SPAN> columns. <SPAN  CLASS="textbf">Note that omsrclistcomb added these columns to srclist2 because
+the input source-lists originated from mosaiced sky-images.</SPAN>
+
+<P>
+</LI>
+<LI>SRCID coming from the new merged mosaiced list are re-numbered and a new column (SRCMOS) containing the original mosaiced SRCID is created.
+
+<P>
+</LI>
+<LI>For each filter present, add a string column <SPAN  CLASS="textbf">FILT_SKY</SPAN> to <SPAN  CLASS="textbf">srclist3</SPAN>.
+      Each row of the new column will be set to <SPAN  CLASS="textbf">YES</SPAN> if the
+      data for that particular filter originated from a
+      mosaiced-image, or <SPAN  CLASS="textbf">NO</SPAN> otherwise.
+
+<P>
+</LI>
+</OL>
+</LI>
+<LI>Change SRCID values for merged sources and create SRCMOS column containing original source identifiers from mosaiced list.
+
+<P>
+</LI>
+<LI>Sort <SPAN  CLASS="textbf">srclist3</SPAN> into increasing <SPAN  CLASS="textbf">RA</SPAN> order.
+
+<P>
+</LI>
+<LI>If input parameter <SPAN  CLASS="textbf">plotfile</SPAN> has a valid name, draw graphs that compare various properties 
+of the matched sources in <SPAN  CLASS="textbf">srclist1</SPAN> and <SPAN  CLASS="textbf">srclist2</SPAN>. 
+
+<P>
+</LI>
+<LI>If input parameter <SPAN  CLASS="textbf">regionfile</SPAN> has a valid name, produce a <SPAN  CLASS="textbf">ds9</SPAN> region file
+that contains the matched sources (<SPAN  CLASS="textbf">red regions</SPAN>), those unique to <SPAN  CLASS="textbf">srclist2 (blue regions)</SPAN>
+and those unique to <SPAN  CLASS="textbf">srclist1 (green regions)</SPAN>.
+
+<P>
+</LI>
+</OL>
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html125"
+  HREF="node9.html">Source-matching algorithm</A>
+<LI><A NAME="tex2html126"
+  HREF="node10.html"><SPAN  CLASS="textbf">SRCLIST</SPAN> table sorting algorithm</A>
+<LI><A NAME="tex2html127"
+  HREF="node11.html">Notes</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="ommergelists.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Source-matching algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

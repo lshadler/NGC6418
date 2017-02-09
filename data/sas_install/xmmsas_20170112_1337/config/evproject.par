@@ -1,0 +1,159 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="eventset" type="dataset" mandatory="yes" default="">
+   <DESCRIPTION>
+    Input events set 
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="xcol" type="string" default="X">
+   <DESCRIPTION>
+    Name of output X column. 
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="ycol" type="string" default="Y">
+   <DESCRIPTION>
+    Name of output Y column. 
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="imagesize" type="angle" default="0.36">
+   <DESCRIPTION>
+    Image half-size (deg) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    imagesize in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="attsource" type="string" default="binned">
+   <DESCRIPTION>
+    Source of attitude information.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="binned">
+     <PARAM id="inbinnedattset" type="dataset" mandatory="yes">
+      <DESCRIPTION>
+       The dataset which contains the input binned attitude data. 
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="odf">
+     <PARAM id="odfattsource" type="string" default="ahf">
+      <DESCRIPTION>
+       Source of attitude information within the ODF.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="ahf">
+       </ITEM>
+       <ITEM value="om">
+       </ITEM>
+      </CASE>
+     </PARAM>
+
+     <PARAM id="pntkwdset" type="dataset" mandatory="yes">
+      <DESCRIPTION>
+       The dataset which contains the average s/c pointing keywords. 
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="maxdelta" type="real" default="0.02">
+      <DESCRIPTION>
+       A new attitude bin is started if the attitude jumps by more than this amount (arcsec). 
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="withmedianpnt" type="bool" default="yes">
+      <DESCRIPTION>
+       Whether to use/calculate median or mean pointing for the _PNT keywords. 
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="writebinnedatt" type="bool" default="no">
+      <DESCRIPTION>
+       Whether to write the binned attitude to file. 
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="yes">
+        <PARAM id="outbinnedattset" type="dataset" mandatory="yes">
+         <DESCRIPTION>
+          The dataset which is to contain the binned attitude data. 
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+       <ITEM value="no">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="fixed">
+     <PARAM id="attra" type="angle" mandatory="yes">
+      <DESCRIPTION>
+       FIXED attitude RA (deg) 
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       attra in [0.0:360.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="attdec" type="angle" mandatory="yes">
+      <DESCRIPTION>
+       FIXED attitude DEC (deg) 
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       attdec in [-90.0:90.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="attapos" type="angle" mandatory="yes">
+      <DESCRIPTION>
+       FIXED attitude (Astronimcal) Position Angle (deg) 
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       attapos in [-180.0:360.0]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="tangdirstyle" type="string" default="pnt">
+   <DESCRIPTION>
+    Source of tangent ray information.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="user">
+     <PARAM id="tangdirra" type="angle" mandatory="yes">
+      <DESCRIPTION>
+       RA of tangent ray (deg) (tangdirstyle=user) 
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       tangdirra in [0.0:360.0]
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="tangdirdec" type="angle" mandatory="yes">
+      <DESCRIPTION>
+       Dec of tangent ray (deg) (tangdirstyle=user) 
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       tangdirdec in [-90.0:90.0]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+    <ITEM value="nom">
+    </ITEM>
+    <ITEM value="obj">
+    </ITEM>
+    <ITEM value="pnt">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

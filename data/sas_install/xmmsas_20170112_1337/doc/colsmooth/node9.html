@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="colsmooth">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="colsmooth.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="colsmooth.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+colsmooth (colsmooth-1.7.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output."></A>
+<A HREF="colsmooth.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="colsmooth.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="colsmooth:description:parameters"></A>
+<A NAME="588"></A>
+<tr valign=top bgcolor='silver'><td><b>intable</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>inset.ds:SPECTRUM</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the fits dataset and table that contains the values to be smoothed.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="595"></A>
+<tr valign=top bgcolor='silver'><td><b>incolumn</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>RATE</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the column in <TT>intable</TT> that contains the values to be smoothed.
+    <br>&nbsp;</td></tr>
+
+<A NAME="604"></A>
+<tr valign=top bgcolor='silver'><td><b>withouttable</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    If `yes', the task attempts to write the smoothed values to column <TT>outcolumn</TT> (and, optionally, <TT>outerrorscolumn</TT>) of dataset <TT>outtable</TT>; if `no', the task overwrites the values in <TT>incolumn</TT>.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="619"></A>
+<tr valign=top bgcolor='silver'><td><b>outtable</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>outset.ds:SPECTRUM</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the fits dataset and table which will contain the smoothed values.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="626"></A>
+<tr valign=top bgcolor='silver'><td><b>outcolumn</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>RATE</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the column in <TT>outtable</TT> which will contain the smoothed values.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="635"></A>
+<tr valign=top bgcolor='silver'><td><b>witherrors</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    If `yes', the task looks for uncertainties in <TT>incolumn</TT> in the column designated by <TT>inerrorscolumn</TT>.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="646"></A>
+<tr valign=top bgcolor='silver'><td><b>inerrorscolumn</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>STAT_ERR</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the column in <TT>intable</TT> that contains the uncertainties to <TT>incolumn</TT>. Only read if <TT>witherrors</TT>=`yes'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="659"></A>
+<tr valign=top bgcolor='silver'><td><b>outerrorscolumn</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>STAT_ERR</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the column in <TT>outtable</TT> which will contain the uncertainties to the smoothed values in <TT>outcolumn</TT>. Only written if <TT>witherrors</TT>=`yes'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="672"></A>
+<tr valign=top bgcolor='silver'><td><b>convolverstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>tophat</td><td>set|tophat|gaussian|user</td></tr>
+
+<tr valign=top><td colspan=5>
+    Mode of entering the convolving function.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="679"></A>
+<tr valign=top bgcolor='silver'><td><b>convolvertable</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>convolver.ds:CONV</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>convolvertype</TT> = `set', the names of the dataset+table which contain the convolver are read from this parameter.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="688"></A>
+<tr valign=top bgcolor='silver'><td><b>convolvercolumn</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>CONV</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>convolvertype</TT> = `set', the name of the column which contains the convolver is read from this parameter.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="697"></A>
+<tr valign=top bgcolor='silver'><td><b>width</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>1</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$1&lt;=$"></SPAN><TT>width</TT></td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>convolvertype</TT> = `tophat', this parameter gives the width in channels of the top hat.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="708"></A>
+<tr valign=top bgcolor='silver'><td><b>sigma</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1.0</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$0&lt;$"></SPAN><TT>sigma</TT></td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>convolvertype</TT> = `gaussian', this parameter gives the characteristic width of the gaussian.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="719"></A>
+<tr valign=top bgcolor='silver'><td><b>convolver</b></td><td>no</td><td><A HREF=../param/node3.html>real list</A></td><td>'1.0'</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>convolvertype</TT> = `user', the task reads the convolver directly from the list of real numbers contained in this parameter.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="728"></A>
+<tr valign=top bgcolor='silver'><td><b>normalize</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    If `yes', the convolving function is normalised (ie, divided by the sum of all its values).
+    <br>&nbsp;</td></tr>
+
+  <A NAME="735"></A>
+<tr valign=top bgcolor='silver'><td><b>maskstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>none</td><td>set|expression|none</td></tr>
+
+<tr valign=top><td colspan=5>
+    Mode of entering the mask vector.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="742"></A>
+<tr valign=top bgcolor='silver'><td><b>masktable</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>mask.ds:MASK</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>masktype</TT> = `set', the names of the dataset+table which contain the mask are read from this parameter.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="751"></A>
+<tr valign=top bgcolor='silver'><td><b>maskcolumn</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>MASK</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>masktype</TT> = `set', the name of the column which contains the mask is read from this parameter.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="760"></A>
+<tr valign=top bgcolor='silver'><td><b>maskexpression</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>masktype</TT> = `expression', the task reads a selection expression from this parameter. Those rows of <TT>intable</TT> for which the expression evaluates to true cause the corresponding elements of the mask vector to be also set to true.  
+    <br>&nbsp;</td></tr>
+
+  <A NAME="771"></A>
+<tr valign=top bgcolor='silver'><td><b>fillholewidth</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>&nbsp;</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$0&lt;=$"></SPAN><TT>fillholewidth</TT></td></tr>
+
+<tr valign=top><td colspan=5>
+    Gaps in the mask of this width or less are interpolated.
+    <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output."></A>
+<A HREF="colsmooth.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

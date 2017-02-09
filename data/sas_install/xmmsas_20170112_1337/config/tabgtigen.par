@@ -1,0 +1,57 @@
+<!-- converted from XPI formatted "tabgtigen.par.xpi"-->
+<FILE>
+<CONFIG>
+
+<PARAM id="table" type="table" mandatory="yes">
+	<DESCRIPTION>
+		Name of input data set
+	</DESCRIPTION>
+</PARAM>
+
+<PARAM id="gtiset" type="table" default="gti.ds:STDGTI">
+	<DESCRIPTION>
+		Name of table to hold resulting GTI list
+	</DESCRIPTION>
+</PARAM>
+
+<PARAM id="expression" type="string" mandatory="yes">
+	<DESCRIPTION>
+		Boolean expression controlling the GTI creation
+	</DESCRIPTION>
+</PARAM>
+
+<PARAM id="timecolumn" type="string" default="TIME">
+	<DESCRIPTION>
+		Name of column containing time stamps in input table
+	</DESCRIPTION>
+</PARAM>
+
+<PARAM id="prefraction" type="real" default="0.5">
+	<DESCRIPTION>
+		Fraction of previous time interval to consider
+	</DESCRIPTION>
+	<CONSTRAINTS>
+		prefraction in [-1.:1.]
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="postfraction" type="real" default="0.5">
+	<DESCRIPTION>
+		Fraction of subsequent time interval to consider
+	</DESCRIPTION>
+	<CONSTRAINTS>
+		postfraction in [-1.:1.]
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="mingtisize" type="real" default="0.0">
+	<DESCRIPTION>
+		Minimum allowed GTI length.
+	</DESCRIPTION>
+	<CONSTRAINTS>
+		mingtisize>=0.
+	</CONSTRAINTS>
+	</PARAM>
+
+</CONFIG>
+</FILE>

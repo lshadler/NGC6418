@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Countrate estimation</TITLE>
+<META NAME="description" CONTENT="Countrate estimation">
+<META NAME="keywords" CONTENT="ewavelet">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ewavelet.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ewavelet (ewavelet-3.11.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="The detection threshold"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ewavelet.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000"></A>
+<A NAME="ewavelet:description:countrate"></A>
+<BR>
+Countrate estimation
+</H2>
+The wavelet detection routine is most and for all a <EM>detection</EM> routine.
+Countrates can, however, be estimated in a simple way, but with less accuracy
+than for example a maximum likelihood fitting method.
+
+<P>
+Countrates are estimated using a countrate image. This countrate image
+consists of the input image divided by the exposure map.
+Both the input image and the countrate image are convolved with the 
+Mexican Hat wavelet. If a maximum is found in the convolved input image, 
+a corresponding maximum in the convolved countrate image will be searched for.
+Multiplying this maximum correlation with <SPAN CLASS="MATH"><IMG
+ WIDTH="38" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.png"
+ ALT="$4\pi \sigma^2$"></SPAN> gives an estimate
+for the source countrate.
+
+<P>
+In a separate routine the best correlation for a given source for all 
+different wavelet scales will be compared and the most appropriate wavelet 
+scale will be used, in order to obtain the source countrate.
+In fact, we can do a little better than that: 
+correlation values at two different scales can be used to 
+infer a better estimate for the scale at which the correlation peaks. 
+From eq.&nbsp;(<A HREF="node3.html#correlation">5</A>) it can be derived that the best estimate 
+for the scale, <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img26.png"
+ ALT="$\sigma'$"></SPAN>, at which the wavelet correlation 
+peaks is:
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+\sigma' = \sqrt{
+\frac{\frac{\sigma_1}{\sigma_2}\sigma_2^2 - \sqrt{\frac{C_1}{C_2}}\sigma_1^2}
+{\sqrt{\frac{C_1}{C_2}} - \frac{\sigma_1}{\sigma_2}}  
+},
+\end{equation}
+ -->
+<A NAME="extent"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="extent"></A><IMG
+ WIDTH="164" HEIGHT="74" BORDER="0"
+ SRC="img27.png"
+ ALT="\begin{displaymath}
+\sigma' = \sqrt{
+\frac{\frac{\sigma_1}{\sigma_2}\sigma_2^2 ...
+..._1^2}
+{\sqrt{\frac{C_1}{C_2}} - \frac{\sigma_1}{\sigma_2}}
+},
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">6</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$\sigma_1$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.png"
+ ALT="$\sigma_2$"></SPAN> are here the two wavelet scales at
+which the source was detected, and
+<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$C_1$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$C_2$"></SPAN> are the corresponding wavelet correlation values.
+
+<P>
+Note that this algorithm is more like described by Damiani et al. 
+([<A
+ HREF="node19.html#ct:Damiani97a">2</A>]), than the algorithm in the Chandra wavelet code.
+
+<P>
+To estimate the error in the number of counts we have to calculate the
+variance, and for the error in eq.&nbsp;(<A HREF="#extent">6</A>) also the covariance,
+related to eq.&nbsp;(<A HREF="node3.html#correlation">5</A>).
+We assume here that the image to be analysed is a
+photon count image, i.e. the errors per pixel follow a Poisson distribution.
+For a Gaussian source shape we obtain for the covariance between wavelet
+scales <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$\sigma_1$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.png"
+ ALT="$\sigma_2$"></SPAN>:
+<BR>
+<DIV ALIGN="CENTER">
+
+<!-- MATH
+ \begin{eqnarray}
+\lefteqn{
+[(W_1W_2)*S]_{max} =}\nonumber\\\lefteqn{
+ \frac{N_{src}}{(2\pi)^3 \sigma_1^2\sigma_2^2a^2}
+\int_0^{\infty}\Bigl(2 - \frac{r^2}{\sigma_1^2}\Bigr)
+\Bigl(2 - \frac{r^2}{\sigma_2^2}\Bigr)
+\exp\bigl(-\frac{r^2}{2\sigma_1^2}-\frac{r^2}{2\sigma_2^2}\bigr) 
+\Bigl(N_{src}\exp\bigl(-\frac{r^2}{2 a^2}\bigr) + 2\pi a^2b\Bigl) 2\pi r dr = }\nonumber \\
+&& \frac{N_{src}}{2\pi^2(a^2\sigma_1^2 + a^2\sigma_2^2 + \sigma_1^2\sigma_2^2)} \Bigl( 2 - \frac{s^2}{\sigma_1^2}  - \frac{s^2}{\sigma_2^2} +  \frac{s^4}{\sigma_1^2\sigma_2^2}\Bigr) + \frac{4 \sigma_1^2\sigma_2^2 b}{\pi (\sigma_1^2 + \sigma_2^2)^3},
+\end{eqnarray}
+ -->
+<TABLE CELLPADDING="0" ALIGN="CENTER" WIDTH="100%">
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="LEFT" COLSPAN="3"><IMG
+ WIDTH="138" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$\displaystyle {
+[(W_1W_2)*S]_{max} =}$"></TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="LEFT" COLSPAN="3"><IMG
+ WIDTH="640" HEIGHT="57" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.png"
+ ALT="$\displaystyle {
+\frac{N_{src}}{(2\pi)^3 \sigma_1^2\sigma_2^2a^2}
+\int_0^{\infty...
+...\Bigl(N_{src}\exp\bigl(-\frac{r^2}{2 a^2}\bigr) + 2\pi a^2b\Bigl) 2\pi r dr = }$"></TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT">&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD ALIGN="LEFT" WIDTH="50%" NOWRAP><IMG
+ WIDTH="456" HEIGHT="57" ALIGN="MIDDLE" BORDER="0"
+ SRC="img34.png"
+ ALT="$\displaystyle \frac{N_{src}}{2\pi^2(a^2\sigma_1^2 + a^2\sigma_2^2 + \sigma_1^2\...
+..._2^2}\Bigr) + \frac{4 \sigma_1^2\sigma_2^2 b}{\pi (\sigma_1^2 + \sigma_2^2)^3},$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">7</SPAN>)</TD></TR>
+</TABLE></DIV>
+<BR CLEAR="ALL"><P></P>
+where <!-- MATH
+ $s^2 = 2a^2\sigma_1^2\sigma_2^2/(\sigma_1^2\sigma_2^2 + \sigma_2^2a^2 + a^2\sigma_1^2)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="254" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.png"
+ ALT="$s^2 = 2a^2\sigma_1^2\sigma_2^2/(\sigma_1^2\sigma_2^2 + \sigma_2^2a^2 + a^2\sigma_1^2)$"></SPAN>.
+
+<P>
+To calculate the variance we can simply set <!-- MATH
+ $\sigma_1 = \sigma_2 = \sigma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="88" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$\sigma_1 = \sigma_2 = \sigma$"></SPAN>:
+<BR>
+<DIV ALIGN="CENTER"><A NAME="variance"></A>
+<!-- MATH
+ \begin{eqnarray}
+\lefteqn{
+[W^2*S]_{max} =
+\frac{1}{2\pi\sigma^2}  \frac{1}{2\pi\sigma^2}  \frac{1}{2\pi a^2}  
+\int_0^{\infty}\Bigl(2 - \frac{r^2}{\sigma^2}\Bigr)^2 \exp\bigl(-\frac{r^2}{\sigma^2}\bigr) 
+\Bigl(N_{src}\exp\bigl(-\frac{r^2}{2 a^2}\bigr)+ 2\pi a^2b \Bigl)2\pi rdr =}\nonumber\\
+& &\frac{1}{2\pi\sigma^2} \frac{N_{src}}{2\pi a^2} \frac{1}{1 + \frac{1}{2}(\sigma/a)^2} \Bigl(2 - \frac{2}{1 + \frac{1}{2}(\sigma/a)^2}  + 
+\frac{1}{ (1+\frac{1}{2}(\sigma/a)^2)^2}  \Bigr) + \frac{b}{2\pi\sigma^2}.
+\end{eqnarray}
+ -->
+<TABLE CELLPADDING="0" ALIGN="CENTER" WIDTH="100%">
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="LEFT" COLSPAN="3"><IMG
+ WIDTH="654" HEIGHT="57" ALIGN="MIDDLE" BORDER="0"
+ SRC="img37.png"
+ ALT="$\displaystyle {
+[W^2*S]_{max} =
+\frac{1}{2\pi\sigma^2} \frac{1}{2\pi\sigma^2} \...
+...r)
+\Bigl(N_{src}\exp\bigl(-\frac{r^2}{2 a^2}\bigr)+ 2\pi a^2b \Bigl)2\pi rdr =}$"></TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT">&nbsp;</TD>
+<TD>&nbsp;</TD>
+<TD ALIGN="LEFT" WIDTH="50%" NOWRAP><IMG
+ WIDTH="487" HEIGHT="52" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$\displaystyle \frac{1}{2\pi\sigma^2} \frac{N_{src}}{2\pi a^2} \frac{1}{1 + \fra...
+...^2} +
+\frac{1}{ (1+\frac{1}{2}(\sigma/a)^2)^2} \Bigr) + \frac{b}{2\pi\sigma^2}.$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">8</SPAN>)</TD></TR>
+</TABLE></DIV>
+<BR CLEAR="ALL"><P></P>
+The error in the correlation is the square root of this expression.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="The detection threshold"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

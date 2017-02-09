@@ -1,0 +1,1222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="epchain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epchain.css">
+
+<LINK REL="next" HREF="node12.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="epchain.html">
+<LINK REL="next" HREF="node12.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epchain (epchain-8.76) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node10.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Examples"></A>
+<A HREF="epchain.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epchain.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="epchain:description:parameters"></A>
+
+<tr valign=top><td colspan=5>&nbsp;<br><BIG CLASS="LARGE"><B>General</B></BIG>&nbsp;</td></tr>
+<A NAME="epchain:description:parameters:general"></A>
+<A NAME="1695"></A>
+<tr valign=top bgcolor='silver'><td><b>odf</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>$SAS_ODF</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>input ODF directory name<br>&nbsp;</td></tr>
+
+<A NAME="1702"></A>
+<tr valign=top bgcolor='silver'><td><b>odfaccess</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>oal</td><td>oal/odf/name/all</td></tr>
+
+<tr valign=top><td colspan=5>how <A NAME="1710"></A><A NAME="tex2html58"
+  HREF="../oal/index.html"><SPAN  CLASS="textbf">oal</SPAN></A>
+should access the ODF<br>&nbsp;</td></tr>
+
+<A NAME="1714"></A>
+<tr valign=top bgcolor='silver'><td><b>schedule</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>S</td><td>S/U</td></tr>
+
+<tr valign=top><td colspan=5>exposure schedule flag, only used if
+          <TT>odfaccess</TT>=odf<br>&nbsp;</td></tr>
+
+<A NAME="1723"></A>
+<tr valign=top bgcolor='silver'><td><b>datamode</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>IMAGING</td><td>IMAGING, TIMING, BURST or ALL</td></tr>
+
+<tr valign=top><td colspan=5>
+           data modes to be processed<br>&nbsp;</td></tr>
+
+<A NAME="1730"></A>
+<tr valign=top bgcolor='silver'><td><b>exposure</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>exposure number to be processed, 
+           see <A NAME="1738"></A><A NAME="tex2html59"
+  HREF="../oal/index.html"><SPAN  CLASS="textbf">oal</SPAN></A>
+documentation<br>&nbsp;</td></tr>
+
+<A NAME="1742"></A>
+<tr valign=top bgcolor='silver'><td><b>ccds</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>1-12</td><td>1-12</td></tr>
+
+<tr valign=top><td colspan=5>list of CCDs to be processed, 
+           in a form like: 1,6-9,12 or 7,3,11<br>&nbsp;</td></tr>
+
+<A NAME="1749"></A>
+<tr valign=top bgcolor='silver'><td><b>keepintermediate</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>none</td><td>all/raw/cal/clean/
+<BR>[1]notmerged/none</td></tr>
+
+<tr valign=top><td colspan=5>
+           indicator which type of intermediate files should not be deleted,
+           default is to delete all intermediate files during or at the end of
+           the processing<br>&nbsp;</td></tr>
+
+<A NAME="1756"></A>
+<tr valign=top bgcolor='silver'><td><b>withdefaultcal</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>whether mode-dependent 
+           calibration-related settings should be used automatically, this will use for:
+<BR>
+BURST: <TT>withrdpha</TT>=``N'', 
+	          <TT>withxrlcorrection</TT>=``Y'', 
+		  <TT>runepreject</TT>=``Y'', 
+		  <TT>runepfast</TT>=``Y''
+<BR>
+TIMING: <TT>withrdpha</TT>=``Y'', 
+	          <TT>withxrlcorrection</TT>=``Y'', 
+		  <TT>runepreject</TT>=``Y'', 
+		  <TT>runepfast</TT>=``N''
+<BR>
+IMAGING: <TT>withrdpha</TT>=``N'', 
+	          <TT>withxrlcorrection</TT>=``N'', 
+		  <TT>runepreject</TT> as user-supplied, 
+		  <TT>runepfast</TT>=``N''<br>&nbsp;</td></tr>
+
+<A NAME="1787"></A>
+<tr valign=top bgcolor='silver'><td><b>usecanonicalnames</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>auto-create output filenames ?<br>&nbsp;</td></tr>
+
+<A NAME="1794"></A>
+<tr valign=top bgcolor='silver'><td><b>outset</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>events.fits</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>name of output events file if
+          <TT>usecanonicalnames</TT>=N<br>&nbsp;</td></tr>
+
+<A NAME="1803"></A>
+<tr valign=top bgcolor='silver'><td><b>ingtiset</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>name of input HK GTI file [not active yet]<br>&nbsp;</td></tr>
+
+<A NAME="1810"></A>
+<tr valign=top bgcolor='silver'><td><b>optloadingimage</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>creation of diagnostic 
+           ADU 20-30 sky image to assess optical loading<br>&nbsp;</td></tr>
+
+<A NAME="1817"></A>
+<tr valign=top bgcolor='silver'><td><b>optloadingimageset</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>optloading.img</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>name of
+           optical loading image<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><BIG CLASS="LARGE"><B>atthkgen</B></BIG>&nbsp;</td></tr>
+<A NAME="epchain:description:parameters:atthkgen"></A>
+<A NAME="1826"></A>
+<tr valign=top bgcolor='silver'><td><b>runatthkgen</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="1834"></A><A NAME="tex2html60"
+  HREF="../atthkgen/index.html"><SPAN  CLASS="textbf">atthkgen</SPAN></A>: run atthkgen?<br>&nbsp;</td></tr>
+
+<A NAME="1838"></A>
+<tr valign=top bgcolor='silver'><td><b>timestep</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1.0</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&gt;$"></SPAN>0.0s</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="1846"></A><A NAME="tex2html61"
+  HREF="../atthkgen/index.html"><SPAN  CLASS="textbf">atthkgen</SPAN></A>: 
+
+Duration (in sec) of `step' through 
+           attitude quality information<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><BIG CLASS="LARGE"><B>epframes</B></BIG>&nbsp;</td></tr>
+<A NAME="epchain:description:parameters:epframes"></A>
+<A NAME="1852"></A>
+<tr valign=top bgcolor='silver'><td><b>runepframes</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="1860"></A><A NAME="tex2html62"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: run epframes?<br>&nbsp;</td></tr>
+
+<A NAME="1864"></A>
+<tr valign=top bgcolor='silver'><td><b>withsrccoords</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>whether to use user-supplied values
+    for RA and DEC for TIMING and BURST modes, default is N.
+    See the <B>warning</B> in <A NAME="1874"></A><A NAME="tex2html63"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>
+(Sect.<A HREF="#epframes:description:parameters:general"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/crossref.png"></A>)<br>&nbsp;</td></tr>
+
+<A NAME="1878"></A>
+<tr valign=top bgcolor='silver'><td><b>srcra</b></td><td>no</td><td><A HREF=../param/node3.html>angle</A></td><td>0.0</td><td>0 .. 360</td></tr>
+
+<tr valign=top><td colspan=5>
+    source right ascension (J2000)<br>&nbsp;</td></tr>
+
+<A NAME="1885"></A>
+<tr valign=top bgcolor='silver'><td><b>srcdec</b></td><td>no</td><td><A HREF=../param/node3.html>angle</A></td><td>0.0</td><td>-90 .. +90</td></tr>
+
+<tr valign=top><td colspan=5>
+    source right ascension (J2000)<br>&nbsp;</td></tr>
+
+<A NAME="1892"></A>
+<tr valign=top bgcolor='silver'><td><b>withsrcrawy</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>whether to use user-supplied value
+    for source RAWY position for TIMING and BURST modes, default is N, if both
+    <TT>withsrccoords</TT>=N and <TT>withsrcrawy</TT>=N then the RA_OBJ and
+    DEC_OBJ from the ProposalInfo are used. See the <B>warning</B> at 
+    <TT>withsrccoords</TT>!<br>&nbsp;</td></tr>
+
+<A NAME="1906"></A>
+<tr valign=top bgcolor='silver'><td><b>srcposition</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>190</td><td>1-200</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="1914"></A><A NAME="tex2html64"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: source position 
+
+for TIMING and BURST mode (in RAWY pixel coordinates)<br>&nbsp;</td></tr>
+
+<A NAME="1918"></A>
+<tr valign=top bgcolor='silver'><td><b>withfinetime</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>whether to apply fine time correction
+    for TIMING and BURST modes by using source RAWY position, default is Y<br>&nbsp;</td></tr>
+
+<A NAME="1925"></A>
+<tr valign=top bgcolor='silver'><td><b>lowerthreshold</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>20</td><td>0-4095</td></tr>
+
+<tr valign=top><td colspan=5>disregard low-energy
+  events (with amplitudes <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$&lt;$"></SPAN> lowerthreshold [adu]) already at this stage, 
+  default <TT>lowerthreshold</TT>=0  preserves recommended (old) behavior. 
+  This may be useful when comparing early mission data with recent observations
+  as the setup was different (<TT>lowertreshold</TT>=23 instead of 20 now)<br>&nbsp;</td></tr>
+
+<A NAME="1936"></A>
+<tr valign=top bgcolor='silver'><td><b>wrongpixlimit</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>10</td><td>0-100</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="1944"></A><A NAME="tex2html65"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: allowed 
+
+percentage of `wrong' events before sending a warning<br>&nbsp;</td></tr>
+
+<A NAME="1948"></A>
+<tr valign=top bgcolor='silver'><td><b>mipmethod</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>onboard</td><td>none,sas,com,onboard</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="1956"></A><A NAME="tex2html66"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: method
+
+to handle MIPs in raw events data (mainly for commissioning phase)<br>&nbsp;</td></tr>
+
+<A NAME="1960"></A>
+<tr valign=top bgcolor='silver'><td><b>qualmax</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="1968"></A><A NAME="tex2html67"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: maximum allowed
+
+value of the quality flag to keep event in list 
+          (mainly for commissioning phase)<br>&nbsp;</td></tr>
+
+<A NAME="1972"></A>
+<tr valign=top bgcolor='silver'><td><b>ecntempqb1</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>-9999.9</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="1980"></A><A NAME="tex2html68"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+
+quadrant box temperature [deg C]
+    E_Cn_TEMPQB1 [F1576 F1676 F1776 F1876], 
+    (temporary parameter mainly for calibration,
+     overwritten by existing PAH file values)<br>&nbsp;</td></tr>
+
+<A NAME="1984"></A>
+<tr valign=top bgcolor='silver'><td><b>f1294</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>&nbsp;</td><td>0-31</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="1992"></A><A NAME="tex2html69"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+
+quadrant wait states [F1294],
+    defines the length of the Extended Full Frame Mode frame time,
+    typical values are 0, 3, or 5
+    (temporary parameter, overwritten by existing summary file values)<br>&nbsp;</td></tr>
+
+<A NAME="1996"></A>
+<tr valign=top bgcolor='silver'><td><b>f1118</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>Unknown</td><td>UNKNOWN Open Closed Thin1 Thin2 Medium 
+    Thick CalOpen CalClosed CalThin1 CalThin2 CalMedium CalThick</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2004"></A><A NAME="tex2html70"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: filter name
+
+(temporary parameter, overwritten by existing summary file values)<br>&nbsp;</td></tr>
+
+<A NAME="2008"></A>
+<tr valign=top bgcolor='silver'><td><b>anchop</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>&nbsp;</td><td>0-255</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2016"></A><A NAME="tex2html71"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>:
+
+An_CHOP [F1534 F1634 F1734 F1834]
+    (temporary parameter, overwritten by existing summary file values)<br>&nbsp;</td></tr>
+
+<A NAME="2020"></A>
+<tr valign=top bgcolor='silver'><td><b>automode</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>
+try to determine mode from the data itself [not implemented yet]<br>&nbsp;</td></tr>
+
+<A NAME="2027"></A>
+<tr valign=top bgcolor='silver'><td><b>autofilter</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>
+try to determine filter from the data itself [not implemented yet]<br>&nbsp;</td></tr>
+
+<A NAME="2034"></A>
+<tr valign=top bgcolor='silver'><td><b>odfok</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2042"></A><A NAME="tex2html72"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+
+assume a correct/complete ODF<br>&nbsp;</td></tr>
+
+<A NAME="2046"></A>
+<tr valign=top bgcolor='silver'><td><b>hkok</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2054"></A><A NAME="tex2html73"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+
+assume correct/complete HK files<br>&nbsp;</td></tr>
+
+<A NAME="2058"></A>
+<tr valign=top bgcolor='silver'><td><b>guessdeltap</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y,N</td></tr>
+
+<tr valign=top><td colspan=5>whether to estimate the shift of the
+     PN oscillator frequency due to temperature and ageing effects from HK data,
+     could be used to estimate <A NAME="2066"></A><TT>SAS_JUMP_TOLERANCE</TT> (divide by 6).<br>&nbsp;</td></tr>
+
+<A NAME="2068"></A>
+<tr valign=top bgcolor='silver'><td><b>showaux</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2076"></A><A NAME="tex2html74"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+increase internally verbosity for AUX-related output<br>&nbsp;</td></tr>
+
+<A NAME="2080"></A>
+<tr valign=top bgcolor='silver'><td><b>showccx</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2088"></A><A NAME="tex2html75"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+increase internally verbosity for CCX-related output<br>&nbsp;</td></tr>
+
+<A NAME="2092"></A>
+<tr valign=top bgcolor='silver'><td><b>showpmh</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2100"></A><A NAME="tex2html76"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+increase internally verbosity for PMH-related output<br>&nbsp;</td></tr>
+
+<A NAME="2104"></A>
+<tr valign=top bgcolor='silver'><td><b>showpah</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2112"></A><A NAME="tex2html77"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+increase internally verbosity for PAH-related output<br>&nbsp;</td></tr>
+
+<A NAME="2116"></A>
+<tr valign=top bgcolor='silver'><td><b>ancmcorr</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>512</td><td>0-4095</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2124"></A><A NAME="tex2html78"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+An_CMCORR F1525 F1625 F1725 F1825<br>&nbsp;</td></tr>
+
+<A NAME="2128"></A>
+<tr valign=top bgcolor='silver'><td><b>aneamipsel</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>1</td><td>0-63</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2136"></A><A NAME="tex2html79"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+An_EAMIPSEL F1536 F1636 F1736 F1836<br>&nbsp;</td></tr>
+
+<A NAME="2140"></A>
+<tr valign=top bgcolor='silver'><td><b>anmaxmip</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>63</td><td>0-4095</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2148"></A><A NAME="tex2html80"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+An_MAXMIP F1527 F1627 F1727 F1827<br>&nbsp;</td></tr>
+
+<A NAME="2152"></A>
+<tr valign=top bgcolor='silver'><td><b>anmip</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>3512</td><td>0-4095</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2160"></A><A NAME="tex2html81"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+An_MIP F1526 F1626 F1726 F1826<br>&nbsp;</td></tr>
+
+<A NAME="2164"></A>
+<tr valign=top bgcolor='silver'><td><b>ccfok</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2172"></A><A NAME="tex2html82"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+Is this correct/nominal ODF/SDF ?<br>&nbsp;</td></tr>
+
+<A NAME="2176"></A>
+<tr valign=top bgcolor='silver'><td><b>witheventmap</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2184"></A><A NAME="tex2html83"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+Create several event CCD maps ?<br>&nbsp;</td></tr>
+
+<A NAME="2188"></A>
+<tr valign=top bgcolor='silver'><td><b>eventmapset</b></td><td>no</td><td><A HREF=../param/node3.html>file</A></td><td>./eventmap##.dat</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2196"></A><A NAME="tex2html84"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+Name of output event CCD map file<br>&nbsp;</td></tr>
+
+<A NAME="2200"></A>
+<tr valign=top bgcolor='silver'><td><b>f1052</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>32400</td><td>0-32767</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2208"></A><A NAME="tex2html85"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+DTIMAUTRSTPREVAL coarse time reset [s]<br>&nbsp;</td></tr>
+
+<A NAME="2212"></A>
+<tr valign=top bgcolor='silver'><td><b>mipdist</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2220"></A><A NAME="tex2html86"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+Create MIPDIST columns and MIPHIST extension in output ?<br>&nbsp;</td></tr>
+
+<A NAME="2224"></A>
+<tr valign=top bgcolor='silver'><td><b>mipthreshold</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>3000</td><td>0-4095</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2232"></A><A NAME="tex2html87"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+maximum PHA for non-MIP events [adu]<br>&nbsp;</td></tr>
+
+<A NAME="2236"></A>
+<tr valign=top bgcolor='silver'><td><b>photonmapset</b></td><td>no</td><td><A HREF=../param/node3.html>file</A></td><td>./photonmap##.dat</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2244"></A><A NAME="tex2html88"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+Name of output photon CCD map file<br>&nbsp;</td></tr>
+
+<A NAME="2248"></A>
+<tr valign=top bgcolor='silver'><td><b>setupbpx</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>nom6</td><td>cal4/nom0/nom1/ nom2/nom3/nom4/ nom5/nom6/none</td></tr>
+
+<tr valign=top><td colspan=5>
+     setup for badpix/offset correction vector (used only if ccfok=N)<br>&nbsp;</td></tr>
+
+<A NAME="2255"></A>
+<tr valign=top bgcolor='silver'><td><b>showve</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2263"></A><A NAME="tex2html89"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>: 
+Display valid event intervals ? (not in use yet)<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><BIG CLASS="LARGE"><B>badpixfind</B></BIG>&nbsp;</td></tr>
+<A NAME="epchain:description:parameters:badpixfind"></A>
+<A NAME="2269"></A>
+<tr valign=top bgcolor='silver'><td><b>runbadpixfind</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2277"></A><A NAME="tex2html90"
+  HREF="../badpixfind/index.html"><SPAN  CLASS="textbf">badpixfind</SPAN></A>: run badpixfind?<br>&nbsp;</td></tr>
+
+<A NAME="2281"></A>
+<tr valign=top bgcolor='silver'><td><b>badpixset</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>./bpxf_##.fits</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2290"></A><A NAME="tex2html91"
+  HREF="../badpixfind/index.html"><SPAN  CLASS="textbf">badpixfind</SPAN></A>, 
+
+<A NAME="2294"></A><A NAME="tex2html92"
+  HREF="../badpix/index.html"><SPAN  CLASS="textbf">badpix</SPAN></A>: 
+
+path of bad pixel set, the substring ## will internally be 
+           replaced with the CCD number currently in use (two digits)<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><BIG CLASS="LARGE"><B>badpix</B></BIG>&nbsp;</td></tr>
+<A NAME="epchain:description:parameters:badpix"></A>
+<A NAME="2300"></A>
+<tr valign=top bgcolor='silver'><td><b>runbadpix</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2308"></A><A NAME="tex2html93"
+  HREF="../badpix/index.html"><SPAN  CLASS="textbf">badpix</SPAN></A>: run badpix?<br>&nbsp;</td></tr>
+
+<A NAME="2312"></A>
+<tr valign=top bgcolor='silver'><td><b>getuplnkbadpix</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2320"></A><A NAME="tex2html94"
+  HREF="../badpix/index.html"><SPAN  CLASS="textbf">badpix</SPAN></A>: 
+
+get uplinked bad pixels (from CCF)?<br>&nbsp;</td></tr>
+
+<A NAME="2324"></A>
+<tr valign=top bgcolor='silver'><td><b>getotherbadpix</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2332"></A><A NAME="tex2html95"
+  HREF="../badpix/index.html"><SPAN  CLASS="textbf">badpix</SPAN></A>: 
+
+get non-uplinked bad pixels (from CCF)?<br>&nbsp;</td></tr>
+
+<A NAME="2336"></A>
+<tr valign=top bgcolor='silver'><td><b>getnewbadpix</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2345"></A><A NAME="tex2html96"
+  HREF="../badpix/index.html"><SPAN  CLASS="textbf">badpix</SPAN></A>: 
+
+get new pixels from task <A NAME="2349"></A><A NAME="tex2html97"
+  HREF="../badpixfind/index.html"><SPAN  CLASS="textbf">badpixfind</SPAN></A>? 
+
+Not applicable (active) for TIMING and BURST mode<br>&nbsp;</td></tr>
+
+<A NAME="2353"></A>
+<tr valign=top bgcolor='silver'><td><b>emptyextension</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2361"></A><A NAME="tex2html98"
+  HREF="../badpix/index.html"><SPAN  CLASS="textbf">badpix</SPAN></A>: 
+
+create an empty BADPIX extension?<br>&nbsp;</td></tr>
+
+<A NAME="2365"></A>
+<tr valign=top bgcolor='silver'><td><b>windowfilter</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2373"></A><A NAME="tex2html99"
+  HREF="../badpix/index.html"><SPAN  CLASS="textbf">badpix</SPAN></A>: 
+
+just get pixels within input file X/Y window?<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><BIG CLASS="LARGE"><B>epreject</B></BIG>&nbsp;</td></tr>
+<A NAME="epchain:description:parameters:epreject"></A>
+<A NAME="2379"></A>
+<tr valign=top bgcolor='silver'><td><b>runepreject</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2387"></A><A NAME="tex2html100"
+  HREF="../epreject/index.html"><SPAN  CLASS="textbf">epreject</SPAN></A>: run epreject?<br>&nbsp;</td></tr>
+
+<A NAME="2391"></A>
+<tr valign=top bgcolor='silver'><td><b>badcolumnset</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>badcolumn.tab</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>optional bad column list (ascii)<br>&nbsp;</td></tr>
+
+<A NAME="2398"></A>
+<tr valign=top bgcolor='silver'><td><b>sigma</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>4.0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>sigma threshold for offset correction<br>&nbsp;</td></tr>
+
+<A NAME="2405"></A>
+<tr valign=top bgcolor='silver'><td><b>noiseparameters</b></td><td>no</td><td><A HREF=../param/node3.html>13 <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$\times$"></SPAN> real</A></td><td>0.98 12 <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$\times$"></SPAN> 1.0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>noise fraction parameters (cutoff parameter and 12 chip specific correction factors; only for expert use)<br>&nbsp;</td></tr>
+
+<A NAME="2412"></A>
+<tr valign=top bgcolor='silver'><td><b>withoffsetlist</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>enables use of list of offset maps to calculate energy shifts<br>&nbsp;</td></tr>
+
+<A NAME="2419"></A>
+<tr valign=top bgcolor='silver'><td><b>odilist</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>odilist.asc</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Name of optional ASCII file containing pairs of <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$&lt;$"></SPAN>ccd nr.<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&gt;$"></SPAN> <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$&lt;$"></SPAN>offset map file<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&gt;$"></SPAN> (one per line).
+    See Sect.<A HREF="node9.html#epchain:description:usage">3.6</A>.
+    <br>&nbsp;</td></tr>
+
+<A NAME="2427"></A>
+<tr valign=top bgcolor='silver'><td><b>withxrlcorrection</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>execute X-ray loading correction code (for TI+BU modes) ?<br>&nbsp;</td></tr>
+
+<A NAME="2434"></A>
+<tr valign=top bgcolor='silver'><td><b>withsoftflarescreening</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>execute soft flare screening code (for TI mode) ?<br>&nbsp;</td></tr>
+
+<A NAME="2441"></A>
+<tr valign=top bgcolor='silver'><td><b>softflarethreshold1</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>10.0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>threshold 1 for flare screening (unit: counts/0.1 s)<br>&nbsp;</td></tr>
+
+<A NAME="2448"></A>
+<tr valign=top bgcolor='silver'><td><b>softflarethreshold2</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1.0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>threshold 2 for flare screening<br>&nbsp;</td></tr>
+
+<A NAME="2455"></A>
+<tr valign=top bgcolor='silver'><td><b>softflaresmooth</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>BOX</td><td>BOX GAUSS FLARE</td></tr>
+
+<tr valign=top><td colspan=5>smoothing method
+          for flare screening<br>&nbsp;</td></tr>
+
+<A NAME="2462"></A>
+<tr valign=top bgcolor='silver'><td><b>softflareenergyrange</b></td><td>no</td><td><A HREF=../param/node3.html>2 <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$\times$"></SPAN> integer</A></td><td>40 50</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>energy range for flare screening (ADU)<br>&nbsp;</td></tr>
+
+<A NAME="2469"></A>
+<tr valign=top bgcolor='silver'><td><b>softflaresmoothparams</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>2.0 1.0 1.0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>smoothing parameters<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><BIG CLASS="LARGE"><B>epnoise</B></BIG>&nbsp;</td></tr>
+<A NAME="epchain:description:parameters:epnoise"></A>
+<A NAME="2478"></A>
+<tr valign=top bgcolor='silver'><td><b>runepnoise</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2486"></A><A NAME="tex2html101"
+  HREF="../epnoise/index.html"><SPAN  CLASS="textbf">epnoise</SPAN></A>: run epnoise?<br>&nbsp;</td></tr>
+
+<A NAME="2490"></A>
+<tr valign=top bgcolor='silver'><td><b>identifynoisyframes</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>Identify Noisy Frames<br>&nbsp;</td></tr>
+
+<A NAME="2497"></A>
+<tr valign=top bgcolor='silver'><td><b>sigmacut</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>3.0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>sigma cut for bright sources<br>&nbsp;</td></tr>
+
+<A NAME="2504"></A>
+<tr valign=top bgcolor='silver'><td><b>applyfilter</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>Keep output of filtering process?<br>&nbsp;</td></tr>
+
+<A NAME="2511"></A>
+<tr valign=top bgcolor='silver'><td><b>savemasks</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>Save CCDs mask to a file<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><BIG CLASS="LARGE"><B>epxrlcorr</B></BIG>&nbsp;</td></tr>
+<A NAME="epchain:description:parameters:epxrlcorr"></A>
+<A NAME="2520"></A>
+<tr valign=top bgcolor='silver'><td><b>runepxrlcorr</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2528"></A><A NAME="tex2html102"
+  HREF="../epxrlcorr/index.html"><SPAN  CLASS="textbf">epxrlcorr</SPAN></A>: run epxrlcorr?
+<BR>
+This task (for IMAGING modes) requires an offsetmap to be present in the ODF,
+  which was generally not the case in the first years (it would stop then).<br>&nbsp;</td></tr>
+
+<A NAME="2532"></A>
+<tr valign=top bgcolor='silver'><td><b>withxrlimage</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2540"></A><A NAME="tex2html103"
+  HREF="../epxrlcorr/index.html"><SPAN  CLASS="textbf">epxrlcorr</SPAN></A>: create a diagnostic X-ray loading image?<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><BIG CLASS="LARGE"><B>epevents</B></BIG>&nbsp;</td></tr>
+<A NAME="epchain:description:parameters:epevents"></A>
+<A NAME="2546"></A>
+<tr valign=top bgcolor='silver'><td><b>runepevents</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2554"></A><A NAME="tex2html104"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>: run epevents?<br>&nbsp;</td></tr>
+
+<A NAME="2558"></A>
+<tr valign=top bgcolor='silver'><td><b>withphotonmap</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2566"></A><A NAME="tex2html105"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>:
+
+whether to create diagnostic photon map file with 4 image extensions<br>&nbsp;</td></tr>
+
+<A NAME="2570"></A>
+<tr valign=top bgcolor='silver'><td><b>reemissionthresh</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2578"></A><A NAME="tex2html106"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>: 
+
+selection parameter: trigger threshold (in adu) for preceding events<br>&nbsp;</td></tr>
+
+<A NAME="2582"></A>
+<tr valign=top bgcolor='silver'><td><b>randomizeposition</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2590"></A><A NAME="tex2html107"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>: 
+
+yes, if the computation of physical camera detector coordinates
+           is done with randomization<br>&nbsp;</td></tr>
+
+<A NAME="2594"></A>
+<tr valign=top bgcolor='silver'><td><b>randomizeenergy</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2602"></A><A NAME="tex2html108"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>:
+
+yes, if the raw amplitudes should be randomized within a 
+           pulseheight bin<br>&nbsp;</td></tr>
+
+<A NAME="2606"></A>
+<tr valign=top bgcolor='silver'><td><b>gainctiaccuracy</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>2</td><td>0-2</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2614"></A><A NAME="tex2html109"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>:
+
+Accuracy of gain/cti correction<br>&nbsp;</td></tr>
+
+<A NAME="2618"></A>
+<tr valign=top bgcolor='silver'><td><b>patternanalysis</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2626"></A><A NAME="tex2html110"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>:
+
+no, if pattern recognition has been done already (future development)<br>&nbsp;</td></tr>
+
+<A NAME="2630"></A>
+<tr valign=top bgcolor='silver'><td><b>withoutoftime</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2639"></A><A NAME="tex2html111"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>:
+
+yes, if ``out-of-time events'' file should be created instead of 
+           ``normal events'' file (only meaningful for IMAGING modes) 
+           (considered as <EM>experimental</EM>)<br>&nbsp;</td></tr>
+
+<A NAME="2643"></A>
+<tr valign=top bgcolor='silver'><td><b>withctisrcpos</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2653"></A><A NAME="tex2html112"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>:
+
+yes, if not the RAWY coordinates but the source position SRCPOS should be 
+   used in the energy correction routines (only meaningful for IMAGING modes) 
+   (considered as <EM>experimental</EM>). 
+   See Sect.<A HREF="node5.html#epchain:description:description:outoftime">3.2</A>.<br>&nbsp;</td></tr>
+
+<A NAME="2657"></A>
+<tr valign=top bgcolor='silver'><td><b>withbackgroundgain</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2665"></A><A NAME="tex2html113"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>:
+
+yes, if background gain corrections should be applied
+   <br>&nbsp;</td></tr>
+
+<A NAME="2669"></A>
+<tr valign=top bgcolor='silver'><td><b>withpatternoffset</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2677"></A><A NAME="tex2html114"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>:
+
+yes, if pattern energy offset corrections should be applied
+   <br>&nbsp;</td></tr>
+
+<A NAME="2681"></A>
+<tr valign=top bgcolor='silver'><td><b>withctilongterm</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2689"></A><A NAME="tex2html115"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>:
+
+yes, if long-term CTI increase corrections should be applied<br>&nbsp;</td></tr>
+
+<A NAME="2693"></A>
+<tr valign=top bgcolor='silver'><td><b>ctilongtermsoft</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2702"></A><A NAME="tex2html116"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>:
+
+yes, if special soft energy function should be included in the long-term
+   CTI increase corrections
+   (considered as <EM>experimental</EM>)
+   <br>&nbsp;</td></tr>
+
+<A NAME="2706"></A>
+<tr valign=top bgcolor='silver'><td><b>ctilongtermy</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2714"></A><A NAME="tex2html117"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>:
+
+yes, if special Y dependence should be included in the long-term
+   CTI increase corrections<br>&nbsp;</td></tr>
+
+<A NAME="2718"></A>
+<tr valign=top bgcolor='silver'><td><b>withccdoffsets</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2727"></A><A NAME="tex2html118"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>:
+
+yes, if CCD offset corrections should be applied
+   (considered as <EM>experimental</EM>)
+   <br>&nbsp;</td></tr>
+
+<A NAME="2731"></A>
+<tr valign=top bgcolor='silver'><td><b>withtempcorrection</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2739"></A><A NAME="tex2html119"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>:
+
+yes, if temperature-gain corrections should be applied<br>&nbsp;</td></tr>
+
+<A NAME="2743"></A>
+<tr valign=top bgcolor='silver'><td><b>withgainburst</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2751"></A><A NAME="tex2html120"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>: 
+apply special gain if BURST mode ?<br>&nbsp;</td></tr>
+
+<A NAME="2755"></A>
+<tr valign=top bgcolor='silver'><td><b>withgaintiming</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2763"></A><A NAME="tex2html121"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>: 
+apply special gain if TIMING mode ?<br>&nbsp;</td></tr>
+
+<A NAME="2767"></A>
+<tr valign=top bgcolor='silver'><td><b>withgainff</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2775"></A><A NAME="tex2html122"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>: 
+apply special gain if FULL FRAME mode ?
+
+<br>&nbsp;</td></tr>
+
+<A NAME="2779"></A>
+<tr valign=top bgcolor='silver'><td><b>withgaineff</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2787"></A><A NAME="tex2html123"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>: 
+apply special gain if EXTENDED FULL FRAME mode ?
+
+<br>&nbsp;</td></tr>
+
+<A NAME="2791"></A>
+<tr valign=top bgcolor='silver'><td><b>withphagaincolumn</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2801"></A><A NAME="tex2html124"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>: 
+Whether to create intermediate column <A NAME="2805"></A><TT>PHA_GAIN</TT>.
+
+If set to ``Y" then <TT>propagatecolumns</TT> is reset to ``all".<br>&nbsp;</td></tr>
+
+<A NAME="2808"></A>
+<tr valign=top bgcolor='silver'><td><b>lowgainenergyscale</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2817"></A><A NAME="tex2html125"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>: 
+When switching on the energy correction for low-gain mode data
+
+then most of the events will fall outside the 2-byte-limit for the
+    <A NAME="2821"></A><TT>PI</TT> column (i.e. <SPAN CLASS="MATH"><IMG
+ WIDTH="60" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$&gt; 32757$"></SPAN>eV)
+    as the energy range is then about <SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$2-280$"></SPAN>keV; if one is interested in this
+    full range the setting ``N" should be used and energy values be multiplied
+    later with 18.4 to obtain ``real" event energies. Only effective for the
+    few low-gain mode exposures, of course.<br>&nbsp;</td></tr>
+
+<A NAME="2823"></A>
+<tr valign=top bgcolor='silver'><td><b>checksasmip</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>
+   yes, if the MIP rejection information obtained by task <A NAME="2831"></A><A NAME="tex2html126"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>
+shall be printed (only meaningful if on-board rejection is switched off,
+   i.e. for SW, TI, BU modes).
+   <br>&nbsp;</td></tr>
+
+<A NAME="2835"></A>
+<tr valign=top bgcolor='silver'><td><b>withrdpha</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>
+   yes, if a correction for rate-dependent PHA effects for TI and BU modes 
+   should be applied. The logical keyword <A NAME="2847"></A><TT>PHA_RDCO</TT> indicates whether
+   this correction has been applied or not. If applied, then the keyword
+   <A NAME="2849"></A><TT>PHA_RDCB</TT> gives the scaling factor <TT>B</TT> used in the correction,
+   derived from block <A NAME="2851"></A><TT>RDPHA_DERIV</TT> in the <TT>CTI.CCF</TT>.
+   <br>&nbsp;</td></tr>
+
+<A NAME="2853"></A>
+<tr valign=top bgcolor='silver'><td><b>rdphatimebinsize</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>100</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+   time-bin size for rate-dependent PHA correction for TI and BU modes [s]
+   <br>&nbsp;</td></tr>
+
+<A NAME="2860"></A>
+<tr valign=top bgcolor='silver'><td><b>withframecti</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>
+   yes, if TIME-derived frame numbers should be used in CTI correction for
+   non-imaging modes (TI, BU) instead of the ODF frame numbers. For 
+   FF, eFF, LW, SW modes internally always the TIME-derived frame numbers
+   instead of the dummy ODF numbers are used
+   (should not be changed).
+   <br>&nbsp;</td></tr>
+
+<A NAME="2867"></A>
+<tr valign=top bgcolor='silver'><td><b>testenergywidth</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>
+    yes, if use non-standard energy bin width (i.e., 1 eV instead of previously
+    used 5 eV binning in output PI column<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><BIG CLASS="LARGE"><B>attcalc</B></BIG>&nbsp;</td></tr>
+<A NAME="epchain:description:parameters:attcalc"></A>
+<A NAME="2876"></A>
+<tr valign=top bgcolor='silver'><td><b>runattcalc</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2884"></A><A NAME="tex2html127"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>: run attcalc?<br>&nbsp;</td></tr>
+
+<A NAME="2888"></A>
+<tr valign=top bgcolor='silver'><td><b>attitudelabel</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>ahf</td><td>ahf/fixed/om</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2896"></A><A NAME="tex2html128"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>: 
+
+source of attitude data<br>&nbsp;</td></tr>
+
+<A NAME="2900"></A>
+<tr valign=top bgcolor='silver'><td><b>refpointlabel</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>nom</td><td>nom/obj/pnt/user</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2908"></A><A NAME="tex2html129"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>: 
+
+source of celestial coordinates of central reference point<br>&nbsp;</td></tr>
+
+<A NAME="2912"></A>
+<tr valign=top bgcolor='silver'><td><b>fixedra</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2921"></A><A NAME="tex2html130"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>: 
+
+S/C's attitude (RA) in the equatorial, earth-centred
+           reference frame (if <TT>attitudelabel</TT>=fixed)<br>&nbsp;</td></tr>
+
+<A NAME="2926"></A>
+<tr valign=top bgcolor='silver'><td><b>fixeddec</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2935"></A><A NAME="tex2html131"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>: 
+
+S/C's attitude (DEC) in the equatorial, earth-centred
+           reference frame (if <TT>attitudelabel</TT>=fixed)<br>&nbsp;</td></tr>
+
+<A NAME="2940"></A>
+<tr valign=top bgcolor='silver'><td><b>fixedposangle</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2949"></A><A NAME="tex2html132"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>: 
+
+S/C's attitude (PA) in the equatorial, earth-centred
+           reference frame (if <TT>attitudelabel</TT>=fixed)<br>&nbsp;</td></tr>
+
+<A NAME="2954"></A>
+<tr valign=top bgcolor='silver'><td><b>nominalra</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2963"></A><A NAME="tex2html133"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>: celestial 
+
+coordinate RA of central reference point (if <TT>refpointlabel</TT>=user)<br>&nbsp;</td></tr>
+
+<A NAME="2968"></A>
+<tr valign=top bgcolor='silver'><td><b>nominaldec</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2977"></A><A NAME="tex2html134"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>: celestial 
+
+coordinate DEC of central reference point (if <TT>refpointlabel</TT>=user)<br>&nbsp;</td></tr>
+
+<A NAME="2982"></A>
+<tr valign=top bgcolor='silver'><td><b>imagesize</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>0.36</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="2990"></A><A NAME="tex2html135"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>: half-size of final image (in degrees)<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><BIG CLASS="LARGE"><B>time and exposure</B></BIG>&nbsp;</td></tr>
+<A NAME="epchain:description:parameters:epexposure"></A><A NAME="epchain:description:parameters:exposure"></A>
+<A NAME="2996"></A>
+<tr valign=top bgcolor='silver'><td><b>runepexposure</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="3004"></A><A NAME="tex2html136"
+  HREF="../epexposure/index.html"><SPAN  CLASS="textbf">epexposure</SPAN></A>: 
+Run epexposure ?<br>&nbsp;</td></tr>
+
+<A NAME="3008"></A>
+<tr valign=top bgcolor='silver'><td><b>screenexposure</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="3016"></A><A NAME="tex2html137"
+  HREF="../epexposure/index.html"><SPAN  CLASS="textbf">epexposure</SPAN></A>: 
+
+remove all columns in EXPOSUnn extensions that are beyond the ICD<br>&nbsp;</td></tr>
+
+<A NAME="3020"></A>
+<tr valign=top bgcolor='silver'><td><b>spatialexposure</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="3028"></A><A NAME="tex2html138"
+  HREF="../epexposure/index.html"><SPAN  CLASS="textbf">epexposure</SPAN></A>: 
+
+yes, if spatial exposure inhomogeneities (CCD columns)
+           should be determined and to be taken into account by
+           subsequent SAS tasks (not yet implemented)<br>&nbsp;</td></tr>
+
+<A NAME="3032"></A>
+<tr valign=top bgcolor='silver'><td><b>randomizetime</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="3040"></A><A NAME="tex2html139"
+  HREF="../epexposure/index.html"><SPAN  CLASS="textbf">epexposure</SPAN></A>: 
+
+yes, if the event arrival times should be randomized within a
+           readout frame<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><BIG CLASS="LARGE"><B>event screening</B></BIG>&nbsp;</td></tr>
+<A NAME="epchain:description:parameters:screening"></A>
+<A NAME="3046"></A>
+<tr valign=top bgcolor='silver'><td><b>screen</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>
+           reject all events with rejection flags and below low-energy threshold<br>&nbsp;</td></tr>
+
+<A NAME="3053"></A>
+<tr valign=top bgcolor='silver'><td><b>runscreen</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>
+           perform the screening (otherwise use existing files)<br>&nbsp;</td></tr>
+
+<A NAME="3060"></A>
+<tr valign=top bgcolor='silver'><td><b>screenlowthresh</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>150</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+           reject all events with lower (recombined) energies [eV]<br>&nbsp;</td></tr>
+
+<A NAME="3067"></A>
+<tr valign=top bgcolor='silver'><td><b>screenrejected</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>
+           reject all events with rejection flags (apply #XMMEA_EP in screening)<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><BIG CLASS="LARGE"><B>evlistcomb</B></BIG>&nbsp;</td></tr>
+<A NAME="epchain:description:parameters:evlistcomb"></A>
+<A NAME="3076"></A>
+<tr valign=top bgcolor='silver'><td><b>runevlistcomb</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="3084"></A><A NAME="tex2html140"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A>: run evlistcomb?<br>&nbsp;</td></tr>
+
+<A NAME="3088"></A>
+<tr valign=top bgcolor='silver'><td><b>memorymodel</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>high</td><td>low/highlow/high</td></tr>
+
+<tr valign=top><td colspan=5>memory model for task <A NAME="3096"></A><A NAME="tex2html141"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A>, all other tasks are controlled
+
+via SAS_MEMORY_MODEL [current SAS default: high]<br>&nbsp;</td></tr>
+
+<A NAME="3100"></A>
+<tr valign=top bgcolor='silver'><td><b>withmedianpnt</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="3109"></A><A NAME="tex2html142"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A>: Get median values from 
+
+<A NAME="3113"></A><A NAME="tex2html143"
+  HREF="../atthkgen/index.html"><SPAN  CLASS="textbf">atthkgen</SPAN></A>
+file (otherwise mean)?<br>&nbsp;</td></tr>
+
+<A NAME="3117"></A>
+<tr valign=top bgcolor='silver'><td><b>othertables</b></td><td>no</td><td><A HREF=../param/node3.html>list of uppercase strings</A></td><td>BADPIX EXPOSURE</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="3125"></A><A NAME="tex2html144"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A>: names of secondary tables or arrays to propagate<br>&nbsp;</td></tr>
+
+<A NAME="3129"></A>
+<tr valign=top bgcolor='silver'><td><b>epnimgcolnames</b></td><td>no</td><td><A HREF=../param/node3.html>list of uppercase strings</A></td><td>TIME RAWX RAWY DETX DETY X Y PHA PI FLAG PATTERN PAT_ID PAT_SEQ</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="3137"></A><A NAME="tex2html145"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A>: columns to propagate in main table (IMAGING mode)<br>&nbsp;</td></tr>
+
+<A NAME="3141"></A>
+<tr valign=top bgcolor='silver'><td><b>epnimgcoltypes</b></td><td>no</td><td><A HREF=../param/node3.html>list of strings</A></td><td>double int16 int16 int16 int16 int32 int32 int16 int16 int32 int8 int16 int8</td><td>int8/int16/int32/single/
+<BR>[1]double/boolean/string</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="3149"></A><A NAME="tex2html146"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A>: output type of IMAGING mode columns<br>&nbsp;</td></tr>
+
+<A NAME="3153"></A>
+<tr valign=top bgcolor='silver'><td><b>epntimcolnames</b></td><td>no</td><td><A HREF=../param/node3.html>list of uppercase strings</A></td><td>TIME RAWX RAWY DETX DETY X Y PHA PI FLAG PATTERN PAT_ID PAT_SEQ</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="3161"></A><A NAME="tex2html147"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A>: columns to propagate in main table (TIMING mode)<br>&nbsp;</td></tr>
+
+<A NAME="3165"></A>
+<tr valign=top bgcolor='silver'><td><b>epntimcoltypes</b></td><td>no</td><td><A HREF=../param/node3.html>list of strings</A></td><td>double int16 int16 int16 int16 int32 int32 int16 int16 int32 int8 int16 int8</td><td>int8/int16/int32/single/
+<BR>[1]double/boolean/string</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="3173"></A><A NAME="tex2html148"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A>: output type of TIMING mode columns<br>&nbsp;</td></tr>
+
+<A NAME="3177"></A>
+<tr valign=top bgcolor='silver'><td><b>propagatecolumns</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>auto</td><td>auto/imaging/subset/
+<BR>[1]icd/all</td></tr>
+
+<tr valign=top><td colspan=5>
+          how many columns should be propagated to the final event file
+          for TIMING and BURST modes: ``auto'' means values via 
+          <TT>epntimcoltypes</TT> and <TT>epntimcolnames</TT>, ``imaging'' uses
+          the values as for <TT>epnimgcolnames</TT> and <TT>epnimgcoltypes</TT>,
+          ``subset'' similar to ``imaging'' but without <A NAME="3196"></A><TT>X</TT>, <A NAME="3198"></A><TT>Y</TT>, 
+          and <A NAME="3200"></A><TT>PAT_SEQ</TT>, whereas ``icd'' uses only the columns
+          that are explicitly mentioned in the Data Products ICD, and ``all''
+          uses all output columns of <A NAME="3202"></A><A NAME="tex2html149"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>
+for IMAGING and TIMING
+          modes<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><BIG CLASS="LARGE"><B>final GTI screening</B></BIG>&nbsp;</td></tr>
+<A NAME="epchain:description:parameters:gti"></A>
+<A NAME="3208"></A>
+<tr valign=top bgcolor='silver'><td><b>runevselect</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5><A NAME="3216"></A><A NAME="tex2html150"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>: run evselect?<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><BIG CLASS="LARGE"><B>RDCTI correction</B></BIG>&nbsp;</td></tr>
+<A NAME="epchain:description:parameters:epfast"></A>
+<A NAME="3222"></A>
+<tr valign=top bgcolor='silver'><td><b>runepfast</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>
+           run <A NAME="3231"></A><A NAME="tex2html151"
+  HREF="../epfast/index.html"><SPAN  CLASS="textbf">epfast</SPAN></A>
+for rate-dependent CTI (RDCTI) corrections in TI+BU modes? 
+	   Ignored if <TT>withrdpha</TT>=``Y'' or if IMAGING mode.<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><BIG CLASS="LARGE"><B>pattern distribution</B></BIG>&nbsp;</td></tr>
+<A NAME="epchain:description:parameters:epatplot"></A>
+<A NAME="3238"></A>
+<tr valign=top bgcolor='silver'><td><b>withpatplot</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>
+           run <A NAME="3246"></A><A NAME="tex2html152"
+  HREF="../epatplot/index.html"><SPAN  CLASS="textbf">epatplot</SPAN></A>
+to create pattern plot and FLAG=0 masks<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br><BIG CLASS="LARGE"><B>background lightcurve</B></BIG>&nbsp;</td></tr>
+<A NAME="epchain:description:parameters:background"></A>
+<A NAME="3252"></A>
+<tr valign=top bgcolor='silver'><td><b>runbackground</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>create background lightcurve?<br>&nbsp;</td></tr>
+
+<A NAME="3259"></A>
+<tr valign=top bgcolor='silver'><td><b>withmask</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>use masks for lightcurve?<br>&nbsp;</td></tr>
+
+<A NAME="3266"></A>
+<tr valign=top bgcolor='silver'><td><b>maskset</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>./mask_##.fits</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+           path of point source mask set, the substring ## will internally be 
+           replaced with the CCD number currently in use (two digits).
+           Energy range: 0.2-10.0 keV.
+           Not applicable (active) for SMALL_WINDOW, TIMING, and BURST mode<br>&nbsp;</td></tr>
+
+<A NAME="3273"></A>
+<tr valign=top bgcolor='silver'><td><b>withhardmask</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>Y</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>
+      use hard energy band for maskset instead of soft ?<br>&nbsp;</td></tr>
+
+<A NAME="3280"></A>
+<tr valign=top bgcolor='silver'><td><b>hrdmskset</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>./hrdmask_##.fits</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+           same as above but for energy range 7.0-15.0 keV<br>&nbsp;</td></tr>
+
+<A NAME="3287"></A>
+<tr valign=top bgcolor='silver'><td><b>rateset</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>rate_bkg.fits</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>name of background lightcurve file<br>&nbsp;</td></tr>
+
+<A NAME="3294"></A>
+<tr valign=top bgcolor='silver'><td><b>specset</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>spec_bkg.fits</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>name of background spectrum file<br>&nbsp;</td></tr>
+
+<A NAME="3301"></A>
+<tr valign=top bgcolor='silver'><td><b>timebinsize</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>0.0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>time bin for background lightcurve [s],
+           if set to 0 then the task chooses default values according to the
+           instrument mode and energy range: <TT>withhardmask</TT>=Y 100[s]
+           for FF eFF modes, 200 for LW, 350 for SW, and 100 for TI BU modes, 
+           <TT>withhardmask</TT>=N 10[s]
+           for FF eFF modes, 20 for LW, 350 for SW, and 10[s] for TI BU modes<br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node10.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Examples"></A>
+<A HREF="epchain.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>getThetaPhiMaps</TITLE>
+<META NAME="description" CONTENT="getThetaPhiMaps">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node74.html">
+<LINK REL="previous" HREF="node72.html">
+<LINK REL="up" HREF="node60.html">
+<LINK REL="next" HREF="node74.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node72.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="rawToInst (rawToDet)"></A>
+<A HREF="node60.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Routines for performing coordinate"></A>
+<A HREF="node74.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="skyToCartesian"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node60.html">Routines for performing coordinate</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000613000000000000000">
+getThetaPhiMaps</A>
+</H2>
+
+<P>
+<PRE>
+  subroutine getThetaPhiMaps(wcs, scAttitude, timeStamp, thetaMap, phiMap)
+    type(WcsT),                   intent(in)  :: wcs
+    type(SpacecraftAttitudeType), intent(in)  :: scAttitude
+    real(double),                 intent(in)  :: timeStamp
+    real(double),                 intent(out) :: thetaMap(:,:),&amp;
+                                                 phiMap(size(thetaMap,1)&amp;
+                                                      , size(thetaMap,2))
+  end subroutine getThetaPhiMaps
+</PRE>
+
+<P>
+This subroutine returns two arrays in the sky image coordinate system defined by the WCS structure <SPAN CLASS="MATH"><IMG
+ WIDTH="30" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img68.png"
+ ALT="$wcs$"></SPAN>: one containing the <SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img73.png"
+ ALT="$theta$"></SPAN> and the other the <SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img72.png"
+ ALT="$phi$"></SPAN> value at that pixel; <SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img73.png"
+ ALT="$theta$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img72.png"
+ ALT="$phi$"></SPAN> being the instrument-mirror-centric TELCOORD-system polar coordinates.
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

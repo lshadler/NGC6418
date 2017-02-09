@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Examples</TITLE>
+<META NAME="description" CONTENT="Examples">
+<META NAME="keywords" CONTENT="emchain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emchain.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emchain (emchain-11.19) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Customisation"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="How to deal with"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emchain.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00036000000000000000">
+Examples</A>
+</H2>
+
+<P>
+<A NAME="1094"></A><A NAME="tex2html59"
+  HREF="../emchain/index.html"><SPAN  CLASS="textbf">emchain</SPAN></A>
+takes some time to run. It is usually better run as a batch job
+(at command). Here are a few examples of how to use it.
+They assume that the SAS_CCF environment variable was set to the relevant
+Calibration Index File.
+
+<P>
+
+<UL>
+<LI>Standard run (get calibrated event files from an ODF
+      located in your_odf_dir), sending the output to a log file:
+      <PRE>
+      emchain odf=your_odf_dir &gt; emchain.log 2&gt; emchain.err (sh shell)
+      emchain odf=your_odf_dir &gt; emchain.log &gt;&amp; emchain.err (csh shell)
+</PRE>
+
+<P>
+</LI>
+<LI>Same, but getting the bad pixels from the CCF instead of the data
+      and applying attitude and HK GTIs:
+      <PRE>
+      emchain odf=your_odf_dir badpixfindalgo=NO filteratt=Y filterhk=Y
+</PRE>
+
+<P>
+</LI>
+<LI>Select particular exposure, instrument and CCDs, keep intermediate files
+      and stop at first error:
+      <PRE>
+      emchain instruments=M2 exposures=S002 ccds='1 3 4' stoponerror=Y  \
+              keepintermediate=Y
+</PRE>
+
+<P>
+</LI>
+<LI>Keep events flagged for rejection and all original columns in the ODF,
+      apply user GTI and no <A NAME="1098"></A><TT>TIME</TT> randomization:
+      <PRE>
+      emchain rejectbadevents=N fulloutput=Y randomize='PE' ingtiset=hkgti.ds
+</PRE>
+
+<P>
+</LI>
+<LI>Rebuild the flare GTI files with different settings, keep them
+      exposure specific and add the <A NAME="1100"></A><TT>WEIGHT</TT> column:
+      <PRE>
+      emchain runccdloop=N runevlistcomb=N addvigweight=Y  \
+              globalflare=N flaretimebin=104 flaremaxrate=1.2
+</PRE>
+
+<P>
+</LI>
+<LI>Run <A NAME="1102"></A><A NAME="tex2html60"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>
+with fixed attitude:
+      <PRE>
+      emchain attcalc:attitudelabel=fixed attcalc:fixedra=204.6877  \
+              attcalc:fixeddec=-27.6984 attcalc:fixedposangle=59.378
+</PRE>
+
+<P>
+</LI>
+<LI>Specify source position manually
+      (instead of using <A NAME="1106"></A><TT>RA_OBJ</TT> and <A NAME="1108"></A><TT>DEC_OBJ</TT>) for Timing mode:
+      <PRE>
+      emchain emframes:withsrccoords=Y  \
+              emframes:srcra=204.6877 emframes:srcdec=-27.6984
+</PRE>
+
+<P>
+</LI>
+<LI>Run bad pixels finder on existing intermediate files:
+      <PRE>
+      rm badpix*.out.mos evmap.in.mos medmap.in.mos
+      emchain startfromodf=N clobber=N stopafterbadpixfind=Y
+</PRE>
+
+<P>
+</LI>
+<LI>Regenerate event files, using new bad pixels files
+      and intermediate files
+      (this will remove the intermediate files on successful output):
+      <PRE>
+      rm event*.out.mos
+      emchain startfromodf=N
+</PRE>
+
+<P>
+</LI>
+<LI>Relaunch <A NAME="1110"></A><A NAME="tex2html61"
+  HREF="../emchain/index.html"><SPAN  CLASS="textbf">emchain</SPAN></A>
+after an error which occurred on MOS 2,
+      exposure 4, using already existing intermediate files:
+      <PRE>
+      rm PooooooooooM2S004*.FIT 
+      emchain instruments=M2 exposures=4 clobber=N
+</PRE>
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Customisation"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="How to deal with"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

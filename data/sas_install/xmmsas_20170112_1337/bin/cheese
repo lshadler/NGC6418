@@ -1,0 +1,1140 @@
+#! /usr/bin/perl -w
+
+use SAS;
+require "esas_parameters_init.pl";
+require "esas_GVariables.pm";
+
+&init();
+
+&run();
+
+#========================================================================
+sub init() {
+#.. Create object to store parameters
+#.. Define Global Variables
+    use vars qw($gv);
+    
+    $gv = esas_GVariables->new();   
+    
+   #.. Init Program Parameters
+   &cheese_parameters_init(@ARGV);
+      
+
+   # $task    = "cheese";
+   # $version = "4.0";
+   # $date    = "2010-03-02";
+   # $author  = "S. L. Snowden";
+   # print "\n";
+   # print "Task: $task \n";
+   # print "Version: $version \n";
+   # print "Date: $date \n";
+   # print "Author: $author \n";
+
+   # Included in SAS: Date
+   # SAS Version: 
+   # A. Ibarra Ibaibarriaga
+}
+
+## @method void run()
+# Run Cheese
+# @return Void
+
+#========================================================================
+   sub run() {
+
+# Set the variables      
+
+      $nexp = 0;
+      foreach ( $gv->Cheese_prefixm ) {
+         $nexp = $nexp + 1;
+         $prefix[$nexp] = $_;
+         print "mos prefix $nexp: $prefix[$nexp]\n";
+      }
+   
+      $nexpp = 0;
+      foreach ($gv->Cheese_prefixp ) {         
+         $nexpp = $nexpp + 1;
+         $prefixp[$nexpp] = $_;
+         print "pn prefix $nexpp: $prefixp[$nexpp]\n";
+      }
+    
+      $verb  = $gv->Cheese_verb;
+      print "verb: $verb\n";
+      $scale = $gv->Cheese_scale;
+      print "scale: $scale\n";
+      $ratet = $gv->Cheese_rate;
+      $ratet  = 1.0e-14 * $ratet;
+      print "rate: $ratet\n";
+      $rates = $gv->Cheese_rates;
+      $rates  = 1.0e-14 * $rates;
+      print "rates: $rates\n";
+      $rateh = $gv->Cheese_rateh;
+      $rateh  = 1.0e-14 * $rateh;
+      print "rateh: $rateh\n";
+      $dist = $gv->Cheese_dist;
+      print "dist: $dist\n";
+      $mlmin = $gv->Cheese_mlmin;
+      print "mlmin: $mlmin\n";
+
+      $clobber = $gv->Cheese_clobber;
+      print "clobber: $clobber\n";
+   
+      $nb = 0;
+      foreach ( $gv->Cheese_elow ) {
+         $nb = $nb + 1;
+         $elow[$nb] = $_;
+      }
+      $nb = 0;
+      foreach ( $gv->Cheese_ehigh ) {
+         $nb = $nb + 1;
+         $ehigh[$nb] = $_;
+         print "Band $nb: $elow[$nb] $ehigh[$nb]\n";
+      }
+
+      open( JUNK_HNDL, ">>command.csh" );
+
+#  First create an attitude file if necessary
+
+      $affile = "atthk.fits";
+      if ( -r $affile ) {
+         print "attitude file already exists\n";
+         print "use the old file\n";
+         print "   \n";
+      } else {
+         $comm = "atthkgen atthkset=atthk.fits timestep=1 ";
+         print JUNK_HNDL "$comm\n";
+         print JUNK_HNDL "   \n";
+         print "$comm\n";
+         print "   \n";
+         system "$comm";
+      }
+
+#  Next extract the MOS images in soft and hard bands
+
+      for ($nn = 1 ; $nn <= $nexp ; $nn++ ) {
+         print "nn: $nn\n";
+         print "prefix: $prefix[$nn]\n";
+         if($nb == 1) {
+            $infile = "mos".$prefix[$nn]."-obj-im.fits";
+            if(-r $infile) {
+               print "Soft event image already exists: $infile\n";
+               if($clobber==1) {
+                  print "Clobber the existing file\n";
+                  print "   \n";
+                  $comm = "evselect table=mos".$prefix[$nn]."-clean.fits:EVENTS ".
+                     "withfilteredset=yes expression='(PATTERN<=12)&&(FLAG == 0)&&".
+                     "(PI in [".$elow[1].":".$ehigh[1]."])' ".
+                     "filtertype=expression imagebinning='imageSize' imagedatatype='Int32' ".
+                     "imageset=".$infile." squarepixels=yes ".
+                     "ignorelegallimits=yes withxranges=yes withyranges=yes ".
+                     "xcolumn='X' ximagesize=900 ximagemax=48400 ximagemin=3401 ".
+                     "ycolumn='Y' yimagesize=900 yimagemax=48400 yimagemin=3401 ".
+                     "updateexposure=yes filterexposure=yes verbosity=" . $verb;
+                  print JUNK_HNDL "$comm\n";
+                  print JUNK_HNDL "   \n";
+                  print "$comm\n";
+                  print "   \n";
+                  system "$comm";
+                  print "   \n";
+               } else {
+                  print "Use the existing file\n";
+               }
+            } else {
+               $comm = "evselect table=mos".$prefix[$nn]."-clean.fits:EVENTS ".
+                  "withfilteredset=yes expression='(PATTERN<=12)&&(FLAG == 0)&&".
+                  "(PI in [".$elow[1].":".$ehigh[1]."])' ".
+                  "filtertype=expression imagebinning='imageSize' imagedatatype='Int32' ".
+                  "imageset=".$infile." squarepixels=yes ".
+                  "ignorelegallimits=yes withxranges=yes withyranges=yes ".
+                  "xcolumn='X' ximagesize=900 ximagemax=48400 ximagemin=3401 ".
+                  "ycolumn='Y' yimagesize=900 yimagemax=48400 yimagemin=3401 ".
+                  "updateexposure=yes filterexposure=yes verbosity=" . $verb;
+               print JUNK_HNDL "$comm\n";
+               print JUNK_HNDL "   \n";
+               print "$comm\n";
+               print "   \n";
+               system "$comm";
+               print "   \n";
+            }
+         } else {
+            $infile = "mos".$prefix[$nn]."-obj-im.fits";
+            if(-r $infile) {
+               print "Total event image already exists: $infile\n";
+               if($clobber==1) {
+                  print "Clobber the existing file\n";
+                  print "   \n";
+                  $comm = "evselect table=mos".$prefix[$nn]."-clean.fits:EVENTS ".
+                     "withfilteredset=yes expression='(PATTERN<=12)&&(FLAG == 0)&&".
+                     "(PI in [".$elow[1].":".$ehigh[2]."])' ".
+                     "filtertype=expression imagebinning='imageSize' imagedatatype='Int32' ".
+                     "imageset=".$infile." squarepixels=yes ".
+                     "ignorelegallimits=yes withxranges=yes withyranges=yes ".
+                     "xcolumn='X' ximagesize=900 ximagemax=48400 ximagemin=3401 ".
+                     "ycolumn='Y' yimagesize=900 yimagemax=48400 yimagemin=3401 ".
+                     "updateexposure=yes filterexposure=yes verbosity=".$verb;
+                  print JUNK_HNDL "$comm\n";
+                  print JUNK_HNDL "   \n";
+                  print "$comm\n";
+                  print "   \n";
+                  system "$comm";
+                  print "   \n";
+               } else {
+                  print "Use the existing file\n";
+               }
+            } else {
+               $comm = "evselect table=mos".$prefix[$nn]."-clean.fits:EVENTS ".
+                  "withfilteredset=yes expression='(PATTERN<=12)&&(FLAG == 0)&&".
+                  "(PI in [".$elow[1].":".$ehigh[2]."])' ".
+                  "filtertype=expression imagebinning='imageSize' imagedatatype='Int32' ".
+                  "imageset=".$infile." squarepixels=yes ".
+                  "ignorelegallimits=yes withxranges=yes withyranges=yes ".
+                  "xcolumn='X' ximagesize=900 ximagemax=48400 ximagemin=3401 ".
+                  "ycolumn='Y' yimagesize=900 yimagemax=48400 yimagemin=3401 ".
+                  "updateexposure=yes filterexposure=yes verbosity=" . $verb;
+               print JUNK_HNDL "$comm\n";
+               print JUNK_HNDL "   \n";
+               print "$comm\n";
+               print "   \n";
+               system "$comm";
+               print "   \n";
+            }
+
+            $infile = "mos".$prefix[$nn]."-obj-im-s.fits";
+            if(-r $infile) {
+               print "Soft event image already exists: $infile\n";
+               if($clobber==1) {
+                  print "Clobber the existing file\n";
+                  print "   \n";
+                  $comm = "evselect table=mos".$prefix[$nn]."-clean.fits:EVENTS ".
+                     "withfilteredset=yes expression='(PATTERN<=12)&&(FLAG == 0)&&".
+                     "(PI in [".$elow[1].":".$ehigh[1]."])' ".
+                     "filtertype=expression imagebinning='imageSize' imagedatatype='Int32' ".
+                     "imageset=".$infile." squarepixels=yes ".
+                     "ignorelegallimits=yes withxranges=yes withyranges=yes ".
+                     "xcolumn='X' ximagesize=900 ximagemax=48400 ximagemin=3401 ".
+                     "ycolumn='Y' yimagesize=900 yimagemax=48400 yimagemin=3401 ".
+                     "updateexposure=yes filterexposure=yes verbosity=" . $verb;
+                  print JUNK_HNDL "$comm\n";
+                  print JUNK_HNDL "   \n";
+                  print "$comm\n";
+                  print "   \n";
+                  system "$comm";
+                  print "   \n";
+               } else {
+                  print "Use the existing file\n";
+               }
+            } else {
+               $comm = "evselect table=mos".$prefix[$nn]."-clean.fits:EVENTS ".
+                  "withfilteredset=yes expression='(PATTERN<=12)&&(FLAG == 0)&&".
+                  "(PI in [".$elow[1].":".$ehigh[1]."])' ".
+                  "filtertype=expression imagebinning='imageSize' imagedatatype='Int32' ".
+                  "imageset=".$infile." squarepixels=yes ".
+                  "ignorelegallimits=yes withxranges=yes withyranges=yes ".
+                  "xcolumn='X' ximagesize=900 ximagemax=48400 ximagemin=3401 ".
+                  "ycolumn='Y' yimagesize=900 yimagemax=48400 yimagemin=3401 ".
+                  "updateexposure=yes filterexposure=yes verbosity=" . $verb;
+               print JUNK_HNDL "$comm\n";
+               print JUNK_HNDL "   \n";
+               print "$comm\n";
+               print "   \n";
+               system "$comm";
+               print "   \n";
+            }
+      
+            $infile = "mos".$prefix[$nn]."-obj-im-h.fits";
+            if(-r $infile) {
+               print "Hard event image already exists: $infile\n";
+               if($clobber==1) {
+                  print "Clobber the existing file\n";
+                  print "   \n";
+                  $comm = "evselect table=mos".$prefix[$nn]."-clean.fits:EVENTS "
+                     . "withfilteredset=yes expression='(PATTERN<=12)&&(FLAG == 0)&&"
+                     . "(PI in [".$elow[2].":".$ehigh[2]."])' "
+                     . "filtertype=expression imagebinning='imageSize' imagedatatype='Int32' "
+                     . "imageset=".$infile." squarepixels=yes "
+                     . "ignorelegallimits=yes withxranges=yes withyranges=yes "
+                     . "xcolumn='X' ximagesize=900 ximagemax=48400 ximagemin=3401 "
+                     . "ycolumn='Y' yimagesize=900 yimagemax=48400 yimagemin=3401 "
+                     . "updateexposure=yes filterexposure=yes verbosity=" . $verb;
+                  print JUNK_HNDL "$comm\n";
+                  print JUNK_HNDL "   \n";
+                  print "$comm\n";
+                  print "   \n";
+                  system "$comm";
+                  print "   \n";
+               } else {
+                  print "Use the existing file\n";
+               }
+            } else {
+               $comm = "evselect table=mos".$prefix[$nn]."-clean.fits:EVENTS ".
+                     "withfilteredset=yes expression='(PATTERN<=12)&&(FLAG == 0)&&".
+                     "(PI in [".$elow[2].":".$ehigh[2]."])' ".
+                     "filtertype=expression imagebinning='imageSize' imagedatatype='Int32' ".
+                     "imageset=".$infile." squarepixels=yes ".
+                     "ignorelegallimits=yes withxranges=yes withyranges=yes ".
+                     "xcolumn='X' ximagesize=900 ximagemax=48400 ximagemin=3401 ".
+                     "ycolumn='Y' yimagesize=900 yimagemax=48400 yimagemin=3401 ".
+                     "updateexposure=yes filterexposure=yes verbosity=" . $verb;
+               print JUNK_HNDL "$comm\n";
+               print JUNK_HNDL "   \n";
+               print "$comm\n";
+               print "   \n";
+               system "$comm";
+               print "   \n";
+            }
+         }
+      }
+
+#  Next extract the pn images in the selected band eV band
+
+      for ($nnp = 1; $nnp <= $nexpp; $nnp++) {
+         print "nnp: $nnp\n";
+         print "prefixp: $prefixp[$nnp]\n";
+         if($nb == 1) {
+            $infile = "pn".$prefixp[$nnp]."-obj-im.fits";
+            if(-r $infile) {
+               print "PN soft image already exists: $infile\n";
+               if($clobber==1) {
+                  print "Clobber the existing file\n";
+                  print "   \n";
+                  $comm = "evselect table=pn".$prefixp[$nnp]."-clean.fits:EVENTS ".
+                     "withfilteredset=yes expression='(PATTERN<=12)&&(FLAG == 0)&&".
+                     "(PI in [".$elow[1].":".$ehigh[1]."])&&(DETY in [-16510:14345])' ".
+                     "filtertype=expression imagebinning='imageSize' imagedatatype='Int32' ".
+                     "imageset=".$infile." squarepixels=yes ".
+                     "ignorelegallimits=yes withxranges=yes withyranges=yes ".
+                     "xcolumn='X' ximagesize=900 ximagemax=48400 ximagemin=3401 ".
+                     "ycolumn='Y' yimagesize=900 yimagemax=48400 yimagemin=3401 ".
+                     "updateexposure=yes filterexposure=yes verbosity=".$verb;
+                  print JUNK_HNDL "$comm\n";
+                  print JUNK_HNDL "   \n";
+                  print "$comm\n";
+                  print "   \n";
+                  system "$comm";
+                  print "   \n";
+               } else {
+                  print "Use the existing file\n";
+               }
+            } else {
+               $comm = "evselect table=pn".$prefixp[$nnp]."-clean.fits:EVENTS ".
+                  "withfilteredset=yes expression='(PATTERN<=12)&&(FLAG == 0)&&".
+                  "(PI in [".$elow[1].":".$ehigh[1]."])&&(DETY in [-16510:14345])' ".
+                  "filtertype=expression imagebinning='imageSize' imagedatatype='Int32' ".
+                  "imageset=".$infile." squarepixels=yes ".
+                  "ignorelegallimits=yes withxranges=yes withyranges=yes ".
+                  "xcolumn='X' ximagesize=900 ximagemax=48400 ximagemin=3401 ".
+                  "ycolumn='Y' yimagesize=900 yimagemax=48400 yimagemin=3401 ".
+                  "updateexposure=yes filterexposure=yes verbosity=".$verb;
+               print JUNK_HNDL "$comm\n";
+               print JUNK_HNDL "   \n";
+               print "$comm\n";
+               print "   \n";
+               system "$comm";
+               print "   \n";
+            }
+         } else {
+            $infile = "pn".$prefixp[$nnp]."-obj-im.fits";
+            if(-r $infile) {
+               print "PN soft image already exists: $infile\n";
+               if($clobber==1) {
+                  print "Clobber the existing file\n";
+                  print "   \n";
+                  $comm = "evselect table=pn".$prefixp[$nnp]."-clean.fits:EVENTS ".
+                     "withfilteredset=yes expression='(PATTERN<=12)&&(FLAG == 0)&&".
+                     "(PI in [".$elow[1].":".$ehigh[2]."])&&(DETY in [-16510:14345])' ".
+                     "filtertype=expression imagebinning='imageSize' imagedatatype='Int32' ".
+                     "imageset=".$infile." squarepixels=yes ".
+                     "ignorelegallimits=yes withxranges=yes withyranges=yes ".
+                     "xcolumn='X' ximagesize=900 ximagemax=48400 ximagemin=3401 ".
+                     "ycolumn='Y' yimagesize=900 yimagemax=48400 yimagemin=3401 ".
+                     "updateexposure=yes filterexposure=yes verbosity=".$verb;
+                  print JUNK_HNDL "$comm\n";
+                  print JUNK_HNDL "   \n";
+                  print "$comm\n";
+                  print "   \n";
+                  system "$comm";
+                  print "   \n";
+               } else {
+                  print "Use the existing file\n";
+               }
+            } else {
+               $comm = "evselect table=pn".$prefixp[$nnp]."-clean.fits:EVENTS ".
+                  "withfilteredset=yes expression='(PATTERN<=12)&&(FLAG == 0)&&".
+                  "(PI in [".$elow[1].":".$ehigh[2]."])&&(DETY in [-16510:14345])' ".
+                  "filtertype=expression imagebinning='imageSize' imagedatatype='Int32' ".
+                  "imageset=".$infile." squarepixels=yes ".
+                  "ignorelegallimits=yes withxranges=yes withyranges=yes ".
+                  "xcolumn='X' ximagesize=900 ximagemax=48400 ximagemin=3401 ".
+                  "ycolumn='Y' yimagesize=900 yimagemax=48400 yimagemin=3401 ".
+                  "updateexposure=yes filterexposure=yes verbosity=".$verb;
+               print JUNK_HNDL "$comm\n";
+               print JUNK_HNDL "   \n";
+               print "$comm\n";
+               print "   \n";
+               system "$comm";
+               print "   \n";
+            }
+            $infile = "pn".$prefixp[$nnp]."-obj-im-s.fits";
+            if(-r $infile) {
+               print "PN soft image already exists: $infile\n";
+               if($clobber==1) {
+                  print "Clobber the existing file\n";
+                  print "   \n";
+                  $comm = "evselect table=pn".$prefixp[$nnp]."-clean.fits:EVENTS ".
+                     "withfilteredset=yes expression='(PATTERN<=12)&&(FLAG == 0)&&".
+                     "(PI in [".$elow[1].":".$ehigh[1]."])&&(DETY in [-16510:14345])' ".
+                     "filtertype=expression imagebinning='imageSize' imagedatatype='Int32' ".
+                     "imageset=".$infile." squarepixels=yes ".
+                     "ignorelegallimits=yes withxranges=yes withyranges=yes ".
+                     "xcolumn='X' ximagesize=900 ximagemax=48400 ximagemin=3401 ".
+                     "ycolumn='Y' yimagesize=900 yimagemax=48400 yimagemin=3401 ".
+                     "updateexposure=yes filterexposure=yes verbosity=".$verb;
+                  print JUNK_HNDL "$comm\n";
+                  print JUNK_HNDL "   \n";
+                  print "$comm\n";
+                  print "   \n";
+                  system "$comm";
+                  print "   \n";
+               } else {
+                  print "Use the existing file\n";
+               }
+            } else {
+               $comm = "evselect table=pn".$prefixp[$nnp]."-clean.fits:EVENTS ".
+                  "withfilteredset=yes expression='(PATTERN<=12)&&(FLAG == 0)&&".
+                  "(PI in [".$elow[1].":".$ehigh[1]."])&&(DETY in [-16510:14345])' ".
+                  "filtertype=expression imagebinning='imageSize' imagedatatype='Int32' ".
+                  "imageset=".$infile." squarepixels=yes ".
+                  "ignorelegallimits=yes withxranges=yes withyranges=yes ".
+                  "xcolumn='X' ximagesize=900 ximagemax=48400 ximagemin=3401 ".
+                  "ycolumn='Y' yimagesize=900 yimagemax=48400 yimagemin=3401 ".
+                  "updateexposure=yes filterexposure=yes verbosity=".$verb;
+               print JUNK_HNDL "$comm\n";
+               print JUNK_HNDL "   \n";
+               print "$comm\n";
+               print "   \n";
+               system "$comm";
+               print "   \n";
+            }
+
+            $infile = "pn".$prefixp[$nnp]."-obj-im-h.fits";
+            if(-r $infile) {
+               print "PN hard image already exists: $infile\n";
+               if($clobber==1) {
+                  print "Clobber the existing file\n";
+                  print "   \n";
+                  $comm = "evselect table=pn".$prefixp[$nnp]."-clean.fits:EVENTS ".
+                     "withfilteredset=yes expression='(PATTERN<=12)&&(FLAG == 0)&&".
+                     "(PI in [".$elow[2].":".$ehigh[2]."])&&(DETY in [-16510:14345])' ".
+                     "filtertype=expression imagebinning='imageSize' imagedatatype='Int32' ".
+                     "imageset=".$infile." squarepixels=yes ".
+                     "ignorelegallimits=yes withxranges=yes withyranges=yes ".
+                     "xcolumn='X' ximagesize=900 ximagemax=48400 ximagemin=3401 ".
+                     "ycolumn='Y' yimagesize=900 yimagemax=48400 yimagemin=3401 ".
+                     "updateexposure=yes filterexposure=yes verbosity=".$verb;
+                  print JUNK_HNDL "$comm\n";
+                  print JUNK_HNDL "   \n";
+                  print "$comm\n";
+                  print "   \n";
+                  system "$comm";
+                  print "   \n";
+               } else {
+                  print "Use the existing file\n";
+               }
+            } else {
+               $comm = "evselect table=pn".$prefixp[$nnp]."-clean.fits:EVENTS ".
+                  "withfilteredset=yes expression='(PATTERN<=12)&&(FLAG == 0)&&".
+                  "(PI in [".$elow[2].":".$ehigh[2]."])&&(DETY in [-16510:14345])' ".
+                  "filtertype=expression imagebinning='imageSize' imagedatatype='Int32' ".
+                  "imageset=".$infile." squarepixels=yes ".
+                  "ignorelegallimits=yes withxranges=yes withyranges=yes ".
+                  "xcolumn='X' ximagesize=900 ximagemax=48400 ximagemin=3401 ".
+                  "ycolumn='Y' yimagesize=900 yimagemax=48400 yimagemin=3401 ".
+                  "updateexposure=yes filterexposure=yes verbosity=".$verb;
+               print JUNK_HNDL "$comm\n";
+               print JUNK_HNDL "   \n";
+               print "$comm\n";
+               print "   \n";
+               system "$comm";
+               print "   \n";
+            }
+         }
+      }
+
+#  Set the parameter name lists
+
+      if ($nexp >= 1) {
+         for ($nn = 1; $nn <= $nexp; $nn++) {
+            if($nb == 1) {
+               if ($nn == 1) {
+                  $imlist = "mos". $prefix[$nn]."-obj-im.fits";
+                  $evtlist = "mos".$prefix[$nn]. "-clean.fits ";
+                  $piminlist = $elow[1];
+                  $pimaxlist = $ehigh[1];
+                  $ecflist   = "1.2";
+               } else {
+                  $imlist = $imlist." mos".$prefix[$nn]."-obj-im.fits ";
+                  $evtlist   = $evtlist . " mos".$prefix[$nn]."-clean.fits ";
+                  $piminlist = $piminlist." ".$elow[1];
+                  $pimaxlist = $pimaxlist." ".$ehigh[1];
+                  $ecflist   = $ecflist . " 1.2";
+               }
+            } else {
+               if ($nn == 1) {
+                  $imlist = "mos". $prefix[$nn]."-obj-im-s.fits ". 
+                     "mos".$prefix[$nn]."-obj-im-h.fits";
+                  $evtlist = "mos".$prefix[$nn]. "-clean.fits ";
+                  $piminlist = $elow[1]." ".$elow[2];
+                  $pimaxlist = $ehigh[1]." ".$ehigh[2];
+                  $ecflist   = "1.2 1.2";
+               } else {
+                  $imlist = $imlist." mos".$prefix[$nn]."-obj-im-s.fits ". 
+                     "mos" . $prefix[$nn] . "-obj-im-h.fits";
+                  $evtlist   = $evtlist . " mos".$prefix[$nn]."-clean.fits ";
+                  $piminlist = $piminlist." ".$elow[1]." ".$elow[2];
+                  $pimaxlist = $pimaxlist." ".$ehigh[1]." ".$ehigh[2];
+                  $ecflist   = $ecflist . " 1.2 1.2";
+               }
+            }
+         }
+      }
+
+      if ($nexpp >= 1) {
+         for ($nnp = 1 ; $nnp <= $nexpp ; $nnp++ ) {
+            if($nb == 1) {
+               if ($nnp == 1) {
+                  $ootevtlist = "pn".$prefixp[$nnp]."-clean-oot.fits";
+                  if ($nexp >= 1) {
+                     $evtlist = $evtlist." pn".$prefixp[$nnp]."-clean.fits";
+                     $imlist = $imlist." pn". $prefixp[$nnp]."-obj-im.fits";
+                     $piminlist = $piminlist." ".$elow[1];
+                     $pimaxlist = $pimaxlist." ".$ehigh[1];
+                     $ecflist = $ecflist." 3.2";
+                  } else {
+                     $evtlist = "pn".$prefixp[$nnp]."-clean.fits";
+                     $imlist = "pn".$prefixp[$nnp]."-obj-im-s.fits";
+                     $piminlist = $elow[1];
+                     $pimaxlist = $ehigh[1];
+                     $ecflist   = "3.2";
+                  }
+               } else {
+                  $evtlist = $evtlist." pn".$prefixp[$nnp]."-clean.fits";
+                  $ootevtlist = $ootevtlist." pn".$prefixp[$nnp]."-clean-oot.fits";
+                  $imlist = $imlist." pn".$prefixp[$nnp]."-obj-im-s.fits";
+                  $piminlist = $piminlist." ".$elow[1];
+                  $pimaxlist = $pimaxlist." ".$ehigh[1];
+                  $ecflist = $ecflist . " 3.2";
+               }
+            } else {
+               if ($nnp == 1) {
+                  $ootevtlist = "pn".$prefixp[$nnp]."-clean-oot.fits ";
+                  if ($nexp >= 1) {
+                     $evtlist = $evtlist." pn".$prefixp[$nnp]."-clean.fits ";
+                     $imlist = $imlist." pn". $prefixp[$nnp]."-obj-im-s.fits ". 
+                        "pn".$prefixp[$nnp]."-obj-im-h.fits";
+                     $piminlist = $piminlist." ".$elow[1]." ".$elow[2];
+                     $pimaxlist = $pimaxlist." ".$ehigh[1]." ".$ehigh[2];
+                     $ecflist = $ecflist." 3.2 3.2";
+                  } else {
+                     $evtlist = "pn".$prefixp[$nnp]."-clean.fits ";
+                     $imlist = "pn".$prefixp[$nnp]."-obj-im-s.fits ". 
+                        "pn".$prefixp[$nnp]."-obj-im-h.fits";
+                     $piminlist = $elow[1]." ".$elow[2];
+                     $pimaxlist = $ehigh[1]." ".$ehigh[2];
+                     $ecflist   = "3.2 3.2";
+                  }
+               } else {
+                  $evtlist = $evtlist." pn".$prefixp[$nnp]."-clean.fits ";
+                  $ootevtlist = $ootevtlist." pn".$prefixp[$nnp]."-clean-oot.fits ";
+                  $imlist = $imlist." pn".$prefixp[$nnp]."-obj-im-s.fits ". 
+                     "pn".$prefixp[$nnp]."-obj-im-h.fits";
+                  $piminlist = $piminlist." ".$elow[1]." ".$elow[2];
+                  $pimaxlist = $pimaxlist." ".$ehigh[1]." ".$ehigh[2];
+                  $ecflist = $ecflist . " 3.2 3.2";
+               }
+            }
+         }
+      }
+
+#  Call edetect_chain
+
+      $infile = "emllist.fits";
+      if(-r $infile) {
+         print "ML Source List Exists: $infile\n";
+         if($clobber==1) {
+            print "Clobber: Run edetect_chain\n";
+            print "   \n";
+            print "imlist: $imlist\n";
+            print JUNK_HNDL "imlist: $imlist\n";
+            print "evtlist: $evtlist\n";
+            print JUNK_HNDL "evtlist: $evtlist\n";
+            print "ootevtlist: $ootevtlist\n";
+            print JUNK_HNDL "ootevtlist: $ootevtlist\n";
+            print "ecflist: $ecflist\n";
+            print JUNK_HNDL "ecflist: $ecflist\n";
+            print "piminlist: $piminlist\n";
+            print JUNK_HNDL "piminlist: $piminlist\n";
+            print "pimaxlist: $pimaxlist\n";
+            print JUNK_HNDL "pimaxlist: $pimaxlist\n";
+
+            $comm = "edetect_chain imagesets='".$imlist."' eventsets='".$evtlist."' attitudeset=atthk.fits ".
+               "pimin='".$piminlist."' pimax='".$pimaxlist."' witheexpmap=yes likemin=10 ecf='".$ecflist."' ".
+               "eboxl_likemin=15 eboxm_likemin=15 ebox_withdetmask=yes ebox_withexpimage=yes esp_scut=0.01 ".
+               "esp_withootset=yes esp_ooteventset='".$ootevtlist."' esp_nsplinenodes=20 eml_ecut=15 eml_scut=15 ".
+               "eml_withtwostage=yes eml_withthreshold=yes eml_threshold=15 esen_mlmin=10 eml_list=emllist.fits";
+
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+            print "   \n";
+            print JUNK_HNDL "$comm\n";
+            print JUNK_HNDL "   \n";
+         } else {
+           print "Use the existing file\n";
+         }
+      } else {
+         print "Run edetect_chain\n";
+         $comm = "edetect_chain imagesets='".$imlist."' eventsets='".$evtlist."' attitudeset=atthk.fits ".
+            "pimin='".$piminlist."' pimax='".$pimaxlist."' witheexpmap=yes likemin=10 ecf='".$ecflist."' ".
+            "eboxl_likemin=15 eboxm_likemin=15 ebox_withdetmask=yes ebox_withexpimage=yes esp_scut=0.01 ".
+            "esp_withootset=yes esp_ooteventset='".$ootevtlist."' esp_nsplinenodes=20 eml_ecut=15 eml_scut=15 ".
+            "eml_withtwostage=yes eml_withthreshold=yes eml_threshold=15 esen_mlmin=10 eml_list=emllist.fits";
+          print "$comm\n";
+         print "   \n";
+         system "$comm";
+         print "   \n";
+         print JUNK_HNDL "$comm\n";
+         print JUNK_HNDL "   \n";
+      }
+
+#  Make masks for the MOS
+
+      for ($nn = 1; $nn <= $nexp; $nn++) {
+         if ($nb > 1) { 
+            $infile = "mos".$prefix[$nn]."-mask-im-s.fits";
+            if(-r $infile) {
+               print "Soft band mask already exists: $infile\n";
+               if($clobber==1) {
+                  print "Clobber the existing file\n";
+                  print "   \n";
+                  $comm = "emask detmaskset=".$infile." ".
+                     "expimageset=mos".$prefix[$nn]."-obj-im-sexp.fits ".
+                     "threshold1=0.1 threshold2=0.5 verbosity=".$verb;
+                  print JUNK_HNDL "$comm\n";
+                  print JUNK_HNDL "   \n";
+                  print "$comm\n";
+                  print "   \n";
+                  system "$comm";
+                  print "   \n";
+               } else {
+                  print "Use the existing file\n";
+               }
+            } else {
+               $comm = "emask detmaskset=".$infile." ".
+                  "expimageset=mos".$prefix[$nn]."-obj-im-sexp.fits ".
+                  "threshold1=0.1 threshold2=0.5 verbosity=".$verb;
+               print JUNK_HNDL "$comm\n";
+               print JUNK_HNDL "   \n";
+               print "$comm\n";
+               print "   \n";
+               system "$comm";
+               print "   \n";
+            }  
+
+            $infile = "mos".$prefix[$nn]."-mask-im-h.fits";
+            if(-r $infile) {
+               print "Soft band mask already exists: $infile\n";
+               if($clobber==1) {
+                  print "Clobber the existing file\n";
+                  print "   \n";
+                  $comm = "emask detmaskset=".$infile." ".
+                     "expimageset=mos".$prefix[$nn]."-obj-im-hexp.fits ".
+                     "threshold1=0.1 threshold2=0.5 verbosity=".$verb;
+                  print JUNK_HNDL "$comm\n";
+                  print JUNK_HNDL "   \n";
+                  print "$comm\n";
+                  print "   \n";
+                  system "$comm";
+                  print "   \n";
+               } else {
+                  print "Use the existing file\n";
+               }
+            } else {
+               $comm = "emask detmaskset=".$infile." ".
+                  "expimageset=mos".$prefix[$nn]."-obj-im-hexp.fits ".
+                  "threshold1=0.1 threshold2=0.5 verbosity=".$verb;
+               print JUNK_HNDL "$comm\n";
+               print JUNK_HNDL "   \n";
+               print "$comm\n";
+               print "   \n";
+               system "$comm";
+               print "   \n";
+            }
+
+            $infile = "mos".$prefix[$nn]."-mask-im.fits";
+            if(-r $infile) {
+               print "Total band mask already exists: $infile\n";
+               if($clobber==1) {
+                  print "Clobber the existing file\n";
+                  print "   \n";
+                  $comm = "emask detmaskset=".$infile." ".
+                     "expimageset=mos".$prefix[$nn]."-obj-im-hexp.fits ".
+                     "threshold1=0.1 threshold2=0.5 verbosity=".$verb;
+                  print JUNK_HNDL "$comm\n";
+                  print JUNK_HNDL "   \n";
+                  print "$comm\n";
+                  print "   \n";
+                  system "$comm";
+                  print "   \n";
+               } else {
+                  print "Use the existing file\n";
+               }
+            } else {
+               $comm = "emask detmaskset=".$infile." ".
+                  "expimageset=mos".$prefix[$nn]."-obj-im-hexp.fits ".
+                  "threshold1=0.1 threshold2=0.5 verbosity=".$verb;
+               print JUNK_HNDL "$comm\n";
+               print JUNK_HNDL "   \n";
+               print "$comm\n";
+               print "   \n";
+               system "$comm";
+               print "   \n";
+            }
+
+#  Create mask with only one band 
+
+         } else {
+            $infile = "mos".$prefix[$nn]."-mask-im.fits";
+            if(-r $infile) {
+               print "Total band mask already exists: $infile\n";
+               if($clobber==1) {
+                  print "Clobber the existing file\n";
+                  print "   \n";
+                  $comm = "emask detmaskset=".$infile." ".
+                     "expimageset=mos".$prefix[$nn]."-obj-imexp.fits ".
+                     "threshold1=0.1 threshold2=0.5 verbosity=".$verb;
+                  print JUNK_HNDL "$comm\n";
+                  print JUNK_HNDL "   \n";
+                  print "$comm\n";
+                  print "   \n";
+                  system "$comm";
+                  print "   \n";
+               } else {
+                  print "Use the existing file\n";
+               }
+            } else {
+               $comm = "emask detmaskset=".$infile." ".
+                  "expimageset=mos".$prefix[$nn]."-obj-imexp.fits ".
+                  "threshold1=0.1 threshold2=0.5 verbosity=".$verb;
+               print JUNK_HNDL "$comm\n";
+               print JUNK_HNDL "   \n";
+               print "$comm\n";
+               print "   \n";
+               system "$comm";
+               print "   \n";
+            }
+         }
+      }
+
+#  Make masks for the PN
+
+      for ($nnp = 1; $nnp <= $nexpp; $nnp++) {
+         if ($nb > 1) { 
+            $infile = "pn".$prefixp[$nnp]."-mask-im-s.fits";
+            if(-r $infile) {
+               print "PN soft mask already exists: $infile\n";
+               if($clobber==1) {
+                  print "Clobber the existing file\n";
+                  print "   \n";
+                  $comm = "emask detmaskset=".$infile." ".
+                     "expimageset=pn".$prefixp[$nnp]."-obj-im-sexp.fits ".
+                     "threshold1=0.1 threshold2=0.5 verbosity=".$verb;
+                  print JUNK_HNDL "$comm\n";
+                  print JUNK_HNDL "   \n";
+                  print "$comm\n";
+                  print "   \n";
+                  system "$comm";
+                  print "   \n";
+               } else {
+                  print "Use the existing file\n";
+               }
+            } else {
+               $comm = "emask detmaskset=".$infile." ".
+                  "expimageset=pn".$prefixp[$nnp]."-obj-im-sexp.fits ".
+                  "threshold1=0.1 threshold2=0.5 verbosity=".$verb;
+               print JUNK_HNDL "$comm\n";
+               print JUNK_HNDL "   \n";
+               print "$comm\n";
+               print "   \n";
+               system "$comm";
+               print "   \n";
+            }
+
+            $infile = "pn".$prefixp[$nnp]."-mask-im-h.fits";
+            if(-r $infile) {
+               print "PN soft mask already exists: $infile\n";
+               if($clobber==1) {
+                  print "Clobber the existing file\n";
+                  print "   \n";
+                  $comm = "emask detmaskset=".$infile." ".
+                     "expimageset=pn".$prefixp[$nnp]."-obj-im-hexp.fits ".
+                     "threshold1=0.1 threshold2=0.5 verbosity=".$verb;
+                  print JUNK_HNDL "$comm\n";
+                  print JUNK_HNDL "   \n";
+                  print "$comm\n";
+                  print "   \n";
+                  system "$comm";
+                  print "   \n";
+               } else {
+                  print "Use the existing file\n";
+               }
+            } else {
+               $comm = "emask detmaskset=".$infile." ".
+                  "expimageset=pn".$prefixp[$nnp]."-obj-im-hexp.fits ".
+                  "threshold1=0.1 threshold2=0.5 verbosity=".$verb;
+               print JUNK_HNDL "$comm\n";
+               print JUNK_HNDL "   \n";
+               print "$comm\n";
+               print "   \n";
+               system "$comm";
+               print "   \n";
+            }
+
+            $infile = "pn".$prefixp[$nnp]."-mask-im.fits";
+            if(-r $infile) {
+               print "PN total mask already exists: $infile\n";
+               if($clobber==1) {
+                  print "Clobber the existing file\n";
+                  print "   \n";
+                  $comm = "emask detmaskset=".$infile." ".
+                     "expimageset=pn".$prefixp[$nnp]."-obj-im-hexp.fits ".
+                     "threshold1=0.1 threshold2=0.5 verbosity=".$verb;
+                  print JUNK_HNDL "$comm\n";
+                  print JUNK_HNDL "   \n";
+                  print "$comm\n";
+                  print "   \n";
+                  system "$comm";
+                  print "   \n";
+               } else {
+                  print "Use the existing file\n";
+               }
+            } else {
+               $comm = "emask detmaskset=".$infile." ".
+                  "expimageset=pn".$prefixp[$nnp]."-obj-im-hexp.fits ".
+                  "threshold1=0.1 threshold2=0.5 verbosity=".$verb;
+               print JUNK_HNDL "$comm\n";
+               print JUNK_HNDL "   \n";
+               print "$comm\n";
+               print "   \n";
+               system "$comm";
+               print "   \n";
+            }
+
+#  Make mask for only one band
+
+         } else {
+            $infile = "pn".$prefixp[$nnp]."-mask-im.fits";
+            if(-r $infile) {
+               print "PN soft mask already exists: $infile\n";
+               if($clobber==1) {
+                  print "Clobber the existing file\n";
+                  print "   \n";
+                  $comm = "emask detmaskset=".$infile." ".
+                     "expimageset=pn".$prefixp[$nnp]."-obj-imexp.fits ".
+                     "threshold1=0.1 threshold2=0.5 verbosity=".$verb;
+                  print JUNK_HNDL "$comm\n";
+                  print JUNK_HNDL "   \n";
+                  print "$comm\n";
+                  print "   \n";
+                  system "$comm";
+                  print "   \n";
+               } else {
+                  print "Use the existing file\n";
+               }
+            } else {
+               $comm = "emask detmaskset=".$infile." ".
+                  "expimageset=pn".$prefixp[$nnp]."-obj-imexp.fits ".
+                  "threshold1=0.1 threshold2=0.5 verbosity=".$verb;
+               print JUNK_HNDL "$comm\n";
+               print JUNK_HNDL "   \n";
+               print "$comm\n";
+               print "   \n";
+               system "$comm";
+               print "   \n";
+            }
+         }
+      }
+
+#  Create the background regions selection expression
+
+      for ( $nn = 1 ; $nn <= $nexp ; $nn++ ) {
+         if($nb > 1) {
+            $det = substr( $prefix[$nn], 0, 1 ) + 1;
+            $comm = "region eventset=mos".$prefix[$nn]."-clean.fits ".
+               "operationstyle=global srclisttab=emllist.fits:SRCLIST ".
+               "expression='(FLUX >= ".$rates.")&&(DET_ML >= ".$mlmin.")&&".
+               "(ID_BAND == 1)&&(DIST_NN >= ".$dist. ")' ".
+               "bkgregionset=mos".$prefix[$nn]."-bkg_region-det-s.fits ".
+#               "bkgfraction=".$scale." radiusstyle=enfrac ".
+               "energyfraction=".$scale." radiusstyle=enfrac ".
+               "outunit=detxy verbosity=".$verb;
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+            print "   \n";
+            print JUNK_HNDL "$comm\n";
+            print JUNK_HNDL "   \n";
+            $comm = "region eventset=mos".$prefix[$nn]."-clean.fits ".
+               "operationstyle=global srclisttab=emllist.fits:SRCLIST ".
+               "expression='(FLUX >= ".$rateh.")&&(DET_ML >= ".$mlmin.")&&".
+               "(ID_BAND == 2)&&(DIST_NN >= ".$dist. ")' ".
+               "bkgregionset=mos".$prefix[$nn]."-bkg_region-det-h.fits ".
+#               "bkgfraction=".$scale." radiusstyle=enfrac ".
+               "energyfraction=".$scale." radiusstyle=enfrac ".
+               "outunit=detxy verbosity=".$verb;
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+            print "   \n";
+            print JUNK_HNDL "$comm\n";
+            print JUNK_HNDL "   \n";
+            $comm = "region eventset=mos".$prefix[$nn]."-clean.fits ".
+               "operationstyle=global srclisttab=emllist.fits:SRCLIST ".
+               "expression='(DIST_NN >= ".$dist.")&&(FLUX >= ".$rates.")".
+               "&&(DET_ML >= ".$mlmin.")&&(ID_BAND == 1)' ".
+               "bkgregionset=mos".$prefix[$nn]."-bkg_region-sky-s.fits  ".
+               "radiusstyle=enfrac bkgratestyle=col nosrcellipse=yes ".
+#               "bkgfraction=".$scale." outunit=xy verbosity=".$verb;
+               "energyfraction=".$scale." outunit=xy verbosity=".$verb;
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+            print "   \n";
+            print JUNK_HNDL "$comm\n";
+            print JUNK_HNDL "   \n";
+            $comm = "region eventset=mos".$prefix[$nn]."-clean.fits ".
+               "operationstyle=global srclisttab=emllist.fits:SRCLIST ".
+               "expression='(DIST_NN >= ".$dist.")&&(FLUX >= ".$rateh.")".
+               "&&(DET_ML >= ".$mlmin.")&&(ID_BAND == 2)' ".
+               "bkgregionset=mos".$prefix[$nn]."-bkg_region-sky-h.fits  ".
+               "radiusstyle=enfrac bkgratestyle=col nosrcellipse=yes ".
+#               "bkgfraction=".$scale." outunit=xy verbosity=".$verb;
+               "energyfraction=".$scale." outunit=xy verbosity=".$verb;
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+            print "   \n";
+            print JUNK_HNDL "$comm\n";
+            print JUNK_HNDL "   \n";
+         }
+
+         $comm = "region eventset=mos".$prefix[$nn]."-clean.fits ".
+            "operationstyle=global srclisttab=emllist.fits:SRCLIST ".
+            "expression='(FLUX >= ".$ratet.")&&(DET_ML >= ".$mlmin.")".
+            "&&(DIST_NN >= ".$dist. ")&&(ID_BAND == 0)' ".
+            "bkgregionset=mos".$prefix[$nn]."-bkg_region-det.fits  ".
+#            "bkgfraction=".$scale." radiusstyle=enfrac ".
+            "energyfraction=".$scale." radiusstyle=enfrac ".
+            "outunit=detxy verbosity=".$verb;
+         print "$comm\n";
+         print "   \n";
+         system "$comm";
+         print "   \n";
+         print JUNK_HNDL "$comm\n";
+         print JUNK_HNDL "   \n";
+         $comm = "region eventset=mos".$prefix[$nn]."-clean.fits ".
+            "operationstyle=global srclisttab=emllist.fits:SRCLIST ".
+            "expression='(DIST_NN >= ".$dist.")&&(DET_ML >= ".$mlmin.")".
+            "&&(FLUX >= ".$ratet.")&&(ID_BAND == 0)' ".
+            "bkgregionset=mos".$prefix[$nn]."-bkg_region-sky.fits ".
+            "radiusstyle=enfrac bkgratestyle=col nosrcellipse=yes ".
+#            "bkgfraction=".$scale." outunit=xy verbosity=".$verb;
+            "energyfraction=".$scale." outunit=xy verbosity=".$verb;
+         print "$comm\n";
+         print "   \n";
+         system "$comm";
+         print "   \n";
+         print JUNK_HNDL "$comm\n";
+         print JUNK_HNDL "   \n";
+
+#  Create the masks for the MOS
+
+         if ($nb > 1) {
+            $comm = "make_mask inimage=mos".$prefix[$nn]."-obj-im-s.fits ".
+               "inmask=mos".$prefix[$nn]."-mask-im-s.fits ".
+               "outmask=mos".$prefix[$nn]."-cheese-s.fits ".
+               "reglist=mos".$prefix[$nn]."-bkg_region-sky-s.fits";
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+            print "   \n";
+            print JUNK_HNDL "$comm\n";
+            print JUNK_HNDL "   \n";
+            $comm = "make_mask inimage=mos".$prefix[$nn]."-obj-im-h.fits ".
+               "inmask=mos".$prefix[$nn]."-mask-im-h.fits ".
+               "outmask=mos".$prefix[$nn]."-cheese-h.fits ".
+               "reglist=mos".$prefix[$nn]."-bkg_region-sky-h.fits";
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+            print "   \n";
+            print JUNK_HNDL "$comm\n";
+            print JUNK_HNDL "   \n";
+         }
+
+#  For the full band
+
+         $comm = "make_mask inimage=mos".$prefix[$nn]."-obj-im.fits ".
+            "inmask=mos".$prefix[$nn]."-mask-im.fits ".
+            "outmask=mos".$prefix[$nn]."-cheese.fits ".
+            "reglist=mos".$prefix[$nn]."-bkg_region-sky.fits";
+         print "$comm\n";
+         print "   \n";
+         system "$comm";
+         print "   \n";
+         print JUNK_HNDL "$comm\n";
+         print JUNK_HNDL "   \n";
+      }
+
+#  Do it again (create region files) for the pn
+
+      for ( $nnp = 1 ; $nnp <= $nexpp ; $nnp++ ) {
+         if ($nb > 1) {
+            $det = 1;
+            $comm = "region eventset=pn".$prefixp[$nnp]."-clean.fits ".
+               "operationstyle=global srclisttab=emllist.fits:SRCLIST ".
+               "expression='(DIST_NN >= ".$dist.")&&(FLUX >= ".$rates.")".
+               "&&(DET_ML >= ".$mlmin.")&&(ID_BAND == 1)' ".
+#               "&&(ID_INST == ".$det.")&&(ID_BAND == 1)' ".
+               "bkgregionset=pn".$prefixp[$nnp]."-bkg_region-det-s.fits ".
+               "energyfraction=".$scale." radiusstyle=enfrac ".
+               "outunit=detxy verbosity=".$verb;
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+            print "   \n";
+            print JUNK_HNDL "$comm\n";
+            print JUNK_HNDL "   \n";
+            $comm = "region eventset=pn".$prefixp[$nnp]."-clean.fits ".
+               "operationstyle=global srclisttab=emllist.fits:SRCLIST ".
+               "expression='(DIST_NN >= ".$dist.")&&(FLUX >= ".$rateh.")".
+               "&&(DET_ML >= ".$mlmin.")&&(ID_BAND == 2)' ".
+               "bkgregionset=pn".$prefixp[$nnp]."-bkg_region-det-h.fits ".
+               "energyfraction=".$scale." radiusstyle=enfrac ".
+               "outunit=detxy verbosity=".$verb;
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+            print "   \n";
+            print JUNK_HNDL "$comm\n";
+            print JUNK_HNDL "   \n";
+            $comm = "region eventset=pn".$prefixp[$nnp]."-clean.fits ".
+               "operationstyle=global srclisttab=emllist.fits:SRCLIST ".
+               "expression='(DIST_NN >= ".$dist.")&&(FLUX >= ".$rates.")".
+               "&&(DET_ML >= ".$mlmin.")&&(ID_BAND == 1)' ".
+               "bkgregionset=pn".$prefixp[$nnp]."-bkg_region-sky-s.fits ".
+               "radiusstyle=enfrac bkgratestyle=col nosrcellipse=yes ".
+               "energyfraction=".$scale." outunit=xy verbosity=".$verb;
+#               "bkgfraction=".$scale." outunit=xy verbosity=".$verb;
+
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+            print "   \n";
+            print JUNK_HNDL "$comm\n";
+            print JUNK_HNDL "   \n";
+            $comm = "region eventset=pn".$prefixp[$nnp]."-clean.fits ".
+               "operationstyle=global srclisttab=emllist.fits:SRCLIST ".
+               "expression='(DIST_NN >= ".$dist.")&&(FLUX >= ".$rateh.")".
+               "&&(DET_ML >= ".$mlmin.")&&(ID_BAND == 2)' ".
+               "bkgregionset=pn".$prefixp[$nnp]."-bkg_region-sky-h.fits ".
+               "radiusstyle=enfrac bkgratestyle=col nosrcellipse=yes ".
+               "energyfraction=".$scale." outunit=xy verbosity=".$verb;   
+#               "bkgfraction=".$scale." outunit=xy verbosity=".$verb;   
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+            print "   \n";
+            print JUNK_HNDL "$comm\n";
+            print JUNK_HNDL "   \n";
+         }
+
+#  Full band
+
+         $comm = "region eventset=pn".$prefixp[$nnp]."-clean.fits ".
+            "operationstyle=global srclisttab=emllist.fits:SRCLIST ".
+            "expression='(DIST_NN >= ".$dist.")&&(DET_ML >= ".$mlmin.")".
+            "&&(FLUX >= ".$ratet.")&&(ID_BAND == 0)' ".
+            "bkgregionset=pn".$prefixp[$nnp]."-bkg_region-det.fits  ".
+            "energyfraction=".$scale." radiusstyle=enfrac ".
+            "outunit=detxy verbosity=".$verb;
+         print "$comm\n";
+         print "   \n";
+         system "$comm";
+         print "   \n";
+         print JUNK_HNDL "$comm\n";
+         print JUNK_HNDL "   \n";
+         $comm = "region eventset=pn".$prefixp[$nnp]."-clean.fits ".
+            "operationstyle=global srclisttab=emllist.fits:SRCLIST ".
+            "expression='(DIST_NN >= ".$dist.")&&(DET_ML >= ".$mlmin.")".
+            "&&(FLUX >= ".$ratet.")&&(ID_BAND == 0)' ".
+            "bkgregionset=pn".$prefixp[$nnp]."-bkg_region-sky.fits ".
+            "radiusstyle=enfrac bkgratestyle=col nosrcellipse=yes ".
+            "energyfraction=".$scale." outunit=xy verbosity=".$verb;
+#            "bkgfraction=".$scale." outunit=xy verbosity=".$verb;
+         print "$comm\n";
+         print "   \n";
+         system "$comm";
+         print "   \n";
+         print JUNK_HNDL "$comm\n";
+         print JUNK_HNDL "   \n";
+
+#  Create the masks for the PN
+
+         if($nb > 1) {
+            $comm = "make_mask inimage=pn".$prefixp[$nnp]."-obj-im-s.fits ".
+               "inmask=pn".$prefixp[$nnp]."-mask-im-s.fits ".
+               "outmask=pn".$prefixp[$nnp]."-cheese-s.fits ".
+               "reglist=pn".$prefixp[$nnp]."-bkg_region-sky-s.fits";
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+            print "   \n";
+            print JUNK_HNDL "$comm\n";
+            print JUNK_HNDL "   \n";
+            $comm = "make_mask inimage=pn".$prefixp[$nnp]."-obj-im-h.fits ".
+               "inmask=pn".$prefixp[$nnp]."-mask-im-h.fits ".
+               "outmask=pn".$prefixp[$nnp]."-cheese-h.fits ".
+               "reglist=pn".$prefixp[$nnp]."-bkg_region-sky-h.fits";
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+            print "   \n";
+            print JUNK_HNDL "$comm\n";
+            print JUNK_HNDL "   \n";
+         }
+
+#  Full band
+#
+         $comm = "make_mask inimage=pn".$prefixp[$nnp]."-obj-im.fits ".
+            "inmask=pn".$prefixp[$nnp]."-mask-im.fits ".
+            "outmask=pn".$prefixp[$nnp]."-cheese.fits ".
+            "reglist=pn".$prefixp[$nnp]."-bkg_region-sky.fits";
+         print "$comm\n";
+         print "   \n";
+         system "$comm";
+         print "   \n";
+         print JUNK_HNDL "$comm\n";
+         print JUNK_HNDL "   \n";
+
+#  Get rid of a few more extra files
+
+         system "rm -f filtered.fits";
+         system "rm -f *sen.fits";
+         system "rm -f *bkg.fits";
+         system "rm -f *smap.fits";
+         system "rm -f *exp.fits";
+         system "rm -f *immask.fits";
+         system "rm -f *smask.fits";
+         system "rm -f *hmask.fits";
+      }
+   }

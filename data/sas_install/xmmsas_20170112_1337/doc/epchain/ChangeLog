@@ -1,0 +1,1050 @@
+ChangeLog for epchain
+===============================
+open SPRs:
+- none
+
+Version 8.76 - 2016-07-15 (MJF)
+-------------------------------
+- (src/epchain): added parameter "withxrlimage" (task "epxrlcorr", default "N")
+   that controls creation of a diagnostic X-ray loading image image (SCR-7114)
+- (config/epchain.*): as above
+- (doc/epchain_description.tex): as above
+- (DEPEND): needs `epxrlcorr-1.0'
+
+Version 8.75 - 2015-04-01 (MJF)
+-------------------------------
+- (src/epchain): allow input list of offset maps (instead of the ones
+  identified by the OAL, or sometimes not identified ;-)
+  This is useful in the case when the offset maps were dumped before or after
+  the observation with different ObsID (e.g., early mission data, slews, ...)
+  Moreover, this new feature enables calibration work without changing contents
+  of ODF/SDF data or CCF files. The new interface is used in task "epreject".
+  This is controlled via new boolean parameter "withoffsetlist" (default "N")
+  that takes precendence over "withoffsetmap" if set to "Y": it opens the file
+  specified in new parameter "odilist" and reads the ODI name to be used
+  from there. The input list is an ASCII with 2-digit CCD number followed
+  by a blank and then the path to the offset map for that CCD (there can be
+  more than one offset map in that file so that the input file can be used
+  for the whole observation processing; only the first entry for a particular
+  CCD is used; the order does not matter). (SCR-7284)
+- (config/epchain.*): as above
+- (doc/epchain_description.tex): as above
+- (DEPEND): needs `epreject-5.16'
+
+Version 8.74.5 - 2014-11-11 (MJF)
+---------------------------------
+- (src/epchain): uniquely convert booleans to 0/1
+
+Version 8.74.4 - 2014-11-04 (MJF)
+---------------------------------
+- (src/epchain): added new parameter "withdefaultcal" (default "Y") that
+   uses default values properly for each of the instrument modes, and thus
+   overwriting the mode-independent" constituent task parameter defaults:
+   withrdpha (epevents), withxrlcorrection (epreject), runepreject, runepfast
+   (SCR-7254)
+- (config/epchain.*): as above
+- (doc/epchain_description.tex): as above
+
+Version 8.74.3 - 2014-09-29 (MJF)
+---------------------------------
+- (src/epchain): changed default "ctilongtermsoft=Y" (SCR-7194)
+- (config/epchain.par): as above
+- (doc/epchain_description.tex): as above
+
+Version 8.74.2 - 2014-09-26 (MJF)
+---------------------------------
+- (src/epchain): changed default "withpatternoffset=Y" (SCR-7195)
+- (config/epchain.par): as above
+- (doc/epchain_description.tex): as above
+
+Version 8.74.1 - 2014-09-23 (MJF)
+---------------------------------
+- (src/epchain): changed default "withbackgroundgain=Y" (SCR-7192)
+- (config/epchain.par): as above
+- (doc/epchain_description.tex): as above
+
+Version 8.74 - 2014-05-31 (MJF)
+-------------------------------
+- (src/epchain): added new parameter "withpatternoffset" (default "N")
+- (config/epchain.*): as above
+- (doc/epchain_description.tex): as above
+- (DEPEND): needs `epevents-6.49'
+closed SCRs:
+- SCR-7195: PN Single-Double pattern energy offset
+
+Version 8.73 - 2014-05-30 (MJF)
+-------------------------------
+- (src/epchain): added new parameter "withbackgroundgain" (default "N")
+- (config/epchain.*): as above
+- (doc/epchain_description.tex): as above
+- (DEPEND): needs `epevents-6.48'
+closed SCRs:
+- SCR-7192: PN quiescent background dependent gain
+
+Version 8.72 - 2014-05-03 (MJF)
+-------------------------------
+- (src/epchain): added simple support for "-d" and "--d" options
+
+Version 8.71 - 2014-05-02 (MJF)
+-------------------------------
+- (src/epchain): changed default of parameter "withrdpha" to "Y" and changed
+   default of parameter "runepfast" to "N"
+- (config/epchain.par): as above
+- (doc/epchain_description.tex): as above
+closed SCRs:
+- SPR-7181: Change default of input parameters once RDPHA is default correction
+
+Version 8.70 - 2014-01-17 (MJF)
+-------------------------------
+- (src/epchain): call "eprejectti" instead of "epreject" for "TI mode soft
+  flare screening"
+- (test/epchain_test_TI): added test for "withsoftflarescreening=Y"
+- (DEPEND): needs `eprejectti-0.1'
+
+Version 8.69.6 - 2014-01-14 (MJF)
+---------------------------------
+- (src/epchain): fixed typo related to "runepnoise=Y" if run on more than 1 CCD
+- (test/epchain_test_eFF): test with "runepnoise=Y" now run on: ccds="4,7"
+
+Version 8.69.5 - 2013-12-02 (MJF)
+---------------------------------
+- (src/epchain): changed default of parameter "withrdpha" to "N" and changed
+   default of parameter "runepfast" to "Y"
+- (config/epchain.par): as above
+- (doc/epchain_description.tex): as above
+
+Version 8.69.4 - 2013-11-29 (MJF)
+---------------------------------
+- (src/epchain): changed default of parameter "withrdpha" to "Y"
+- (doc/epchain_description.tex): as above
+- (src/epchain): completed/structured parameter listing (for options -h or -p)
+- (config/epchain.*): completed parameter listing (if called via "sas" GUI)
+
+Version 8.69.3 - 2013-11-27 (MJF)
+---------------------------------
+- (src/epchain): update parameter listing, re-enable options -v -h -p
+- (src/epchain): do not run epfast if "withrdpha=Y" and issue warning
+- (config/epchain.*): update parameter listing
+
+Version 8.69.2 - 2013-11-27 (MJF)
+---------------------------------
+- (src/epchain): make "evlistcomb" to propagate flag keywords related to
+  REJ, XRL, and RDPHA corrections to EVENTS extension of final event file
+- (test/Makefile): changed order of tests (i.e., TI mode is now last one)
+
+Version 8.69.1 - 2013-10-29 (MJF)
+---------------------------------
+- (src/epchain): fixed typo in call to "epfast"
+
+Version 8.69 - 2013-10-28 (MJF)
+-------------------------------
+- (src/epchain): changed parameter "withrdcti" to "withrdpha"
+- (src/epchain): added new parameter "rdphatimebinsize" (default "100")
+- (src/epchain): added (temporarily) new parameter "runepfast" (default "N")
+- (config/epchain.*): as above
+- (doc/epchain_description.tex): as above
+- (test/epchain_test_TI): changed parameter "withrdcti" to "withrdpha"
+- (DEPEND): needs `epevents-6.47'
+closed SCRs:
+- SPR-7133: Change the name of the parameter running the RDPHA 
+- SPR-7134: Running RDCTI ("epfast") shall be an option in "epchain"
+- SPR-7139: The RDHA correction shall be applied in time intervals of "rdphatimebinsize" seconds
+
+Version 8.68.2 - 2013-06-05 (MJF)
+---------------------------------
+- (src/epchain): ensure that "rawevents_##.dat" files are present at second
+  call to epnoise (if "runepnoise=Y")
+- (test/epchain_test_eFF): new (formal) test with "runepnoise=Y"
+closed SPR:
+- SPR-7112: parsing of epnoise
+
+Version 8.68.1 - 2013-04-05 (MJF)
+---------------------------------
+- (src/epchain): added new parameter "runepxrlcorr=N"
+- (src/epchain): optional call to "epxrlcorr" added
+- (config/epchain.*): as above
+- (doc/epchain_description.tex): as above
+- (test/epchain_test_eFF): new (formal) test with "runepxrlcorr=Y"
+- (DEPEND): needs `epxrlcorr-0.1'
+
+Version 8.68 - 2013-02-18 (MJF)
+-------------------------------
+- (src/epchain): changed default of `epevents' parameter "testenergywidth=Y"
+- (src/epchain): added new `epframes' parameter "guessdeltap=N"
+- (doc/epchain_description.tex): as above
+- (config/epchain.*): as above
+- (DEPEND): needs `epframes-8.97'
+
+Version 8.67 - 2013-01-31 (MJF)
+-------------------------------
+- (src/epchain): added new `epevents' parameters "checksasmip=N" and
+   "withrdcti=N"
+- (doc/epchain_description.tex): as above
+- (DEPEND): needs `epevents-6.45'
+
+Version 8.66 - 2012-08-14 (MJF)
+-------------------------------
+- (src/epchain): added "epexposure" to output list of task constituents
+- (src/epchain): changed default "randomizetime" from "N" to "Y"
+- (src/epchain): changed default "spatialexposure" from "N" to "Y"
+- (config/epchain.*): as above
+- (doc/epchain_description.tex): as above
+
+Version 8.65 - 2012-03-23 (MJF)
+-------------------------------
+- (src/epchain): new `epreject' parameter "withxrlcorrection=N"
+- (src/epchain): new `epnoise' parameter "noisecut=2"
+- (config/epchain.*): as above
+- (doc/epchain_description.tex): as above
+- (DEPEND): needs `epreject-5.14'
+- (DEPEND): needs `epnoise-0.7'
+
+Version 8.64 - 2011-12-02 (MJF)
+-------------------------------
+- (src/epchain): call to "epnoise" added (keep `epreject')
+- (config/epchain.*): added optional parameters "runepnoise"
+- (doc/epchain_description.tex): as above
+- (doc/epchain_description.tex): changed note on OOT file creation
+- (DEPEND): needs `epnoise-0.3'
+
+Version 8.63 - 2008-04-08 (HBrunner)
+------------------------------------
+- (doc/epchain_description.tex) note on OOT file creation added
+
+Version 8.62 - 2007-11-21 (MJF)
+-------------------------------
+- (src/epchain): changed default "withtempcorrection" from "N" to "Y"
+- (config/epchain.*): as above
+- (doc/epchain_description.tex): as above
+
+Version 8.61 - 2007-10-29 (MJF)
+-------------------------------
+- (src/epchain): allow "withframecti=Y" call to task `epevents'
+- (doc/epchain_description.tex): as above
+- (test/epchain_test_TI): added "withframecti=Y"
+
+Version 8.60 - 2006-02-07 (HB)
+------------------------------
+
+- (src/epchain): corrected error when run running epchain for 
+	         specific exposures in odfaccess=oal mode;
+	         closed SSC-SPR-3565	         
+
+Version 8.59 - 2005-10-26 (HB)
+------------------------------
+
+- upload of 8.58 failed; trying again
+
+Version 8.58 - 2005-10-24 (HB)
+------------------------------
+
+- (DEPEND):      task versions updated	
+- (src/epchain): negative verbosity in badpixfind call prevented;	
+	         SSC-SPR-3503 closed
+
+Version 8.57.1 - 2005-06-13 (HB)
+--------------------------------
+
+- (DEPEND): epreject version nr. changed to 5.7 	
+	
+Version 8.57 - 2005-05-30 (HB)
+------------------------------	
+
+- (src/epchain): new options "odfaccess=all" and "datamode=ALL" to process 
+	         all exposures or all exposures with the selected mode
+	         in one call to epchain (previous versions only processed
+	         one exposure); "saslocate" call removed (SSC-SPR-3454)
+- (doc/epchain_description.tex): new options added
+
+Version 8.56 - 2005-03-31 (MJF)
+---------------------------------
+- (src/epchain): allow "withoffsetmap=Y" call to task `epreject'
+- (src/epchain): reduce verbosity of calls to background `badpixfind' calls
+
+Version 8.55 - 2004-12-06 (MJF)
+-------------------------------
+- (src/epchain): column PHA_GAIN added to list of columns which can be
+  copied to final event list; useful mainly for calibration purposes;
+  default behaviour unchanged
+- (src/epchain): added new parameters of "epevents", "withphagaincolumn=N" and
+  "lowgainenergyscale=N"; default behaviour unchanged
+- (src/epchain): call "epevents" with "withgaineff=Y" as new default (old: "N")
+- (config/epchain.*): as above
+- (doc/epchain_description.tex): as above
+- (DEPEND): needs `epevents-6.42'
+
+Version 8.54 - 2004-11-02 (HB)
+-------------------------------	
+
+- (src/epchain): parameter "set" added to call of task epreject; needed
+	         to support new functionality of epreject-5.4
+
+Version 8.53 - 2004-09-19 (MJF)
+-------------------------------
+- (src/epchain): added special mode-dependent gain correction for FF and eFF modes
+- (config/epchain.*): added optional parameters "withgainff" and "withgaineff",
+   defaults are "N" (i.e. keep current behaviour and do not use new calls)
+- (doc/epchain_description.tex): as above
+- (DEPEND): needs `epevents-6.40', added `epreject-5.1'
+
+Version 8.52.4 - 2004-04-16 (HB)
+--------------------------------	
+
+- (src/epchain): column PHA_CTI added to list of columns which can
+	         be copied to the output event list; needed for
+	         slew data analysis; does not change the default 
+	         behaviour of epchain
+
+Version 8.52.3 - 2004-03-16 (HB)
+--------------------------------
+
+- (doc/epchain_description.tex): missing parameters added
+- (config/epchain.lyt): missing parameters added	
+
+Version 8.52.2 - 2004-01-21 (HB)
+--------------------------------	
+
+- (doc/epchain_description.tex): task epreject added to description 
+- (src/epchain): added quotes to vector-valued parameters on epreject
+	         command line (SSC-SPR-3235)
+
+Version 8.52.1 - 2004-01-15 (HB)
+--------------------------------
+
+- (src/epchain): removed unneeded 'use DAL' statement 	
+- (DEPEND): dependency on dal removed
+
+Version 8.52 - 2003-12-11 (HB)
+-------------------------------
+
+- (src/epchain): soft flare screening parameters propagated to epreject;
+	         events with flare flag screened from event list if
+	         withsoftflarescreening=Y (turned off by default)
+
+Version 8.51 - 2003-12-07 (HB)
+-------------------------------
+
+- (src/epchain): propagates new epframes (v.8.65) and epreject (v.5.1) parameters
+
+Version 8.50 - 2003-09-15 (MJF)
+-------------------------------
+- (src/epchain): copy all CCF entries to event file CALINDEX extension, not
+  only XMM XRT3 EPN
+- (src/epchain): updated calling sequence for task `epexposure'
+- (DEPEND): needs `epexposure-0.6'
+
+Version 8.49 - 2003-08-28 (MJF)
+-------------------------------
+- (src/epchain): removed obsolete parameter "ctilongtermpar",
+         values are already read from CCF file EPN_CTI_####.CCF
+- (config/epchain.*): as above
+- (doc/epchain_description.tex): as above
+- (src/epchain): enable compressed input files (FIT.gz + FTZ)
+
+Version 8.48 - 2003-05-21 (HB)
+--------------------------------
+
+- (src/epchain) printout of SAS command line changed back to
+	        "SAS::message" to assure correct output order
+	
+Version 8.47 - 2003-05-20 (HB)
+--------------------------------
+
+- (src/epchain) SAS task status now correctly passed to Perl (again); 
+	        status test changed from ">" to "!="
+	
+Version 8.46.1 - 2003-03-12 (HB)
+--------------------------------
+
+supports epreject-0.5	
+	
+Version 8.46 - 2003-03-12 (HB)
+--------------------------------
+	
+- (src/epchain) SAS task now executed via Perl system command
+	        instead of ` ` 
+- (src/epchain)	parameter outfile=STDOUT added to fkeyprint call  
+	
+Version 8.45 - 2003-03-10 (HB)
+--------------------------------
+
+Last upload failed: new version number required
+	
+Version 8.44 - 2003-03-10 (HB)
+--------------------------------
+
+- (src/epchain) routine getParam modifed to counteract recent 
+	        "weird" behaviour of the SAS/Perl infractructure
+- (src/epchain) maximum size of SAS task output set to 30000 bytes
+- (src/epchain) support for experimental SAS task epreject added 
+	        (currently for MPE internal use only)	 
+		
+Version 8.43 - 2003-02-14 (MJF)
+-------------------------------
+- (src/epchain): call `epframes' with parameter "lowerthreshold"
+- (config/epchain.*): new parameter "lowerthreshold"
+- (doc/epchain_description.tex): new parameter "lowerthreshold"
+- (DEPEND): needs `epframes-8.56'
+
+Version 8.42 - 2003-02-13 (HB)
+------------------------------
+
+- (src/epchain): pedal calls for fits keyword reading replaced with ftools 
+	         based code
+- (src/epchain): SAS::message calls modified to comply with sasperl-1.7	
+	
+Version 8.41 - 2003-01-14 (MJF)
+-------------------------------
+- (src/epchain): call `epframes' with parameter "withfinetime"
+- (config/epchain.*): new parameter "withfinetime"
+- (doc/epchain_description.tex): new parameter "withfinetime"
+- (DEPEND): needs `epframes-8.54'
+
+Version 8.40 - 2002-12-13 (HB)
+------------------------------	
+
+- (src/epchain): additional creation of background spectrum if runbackground=yes;
+                 background lightcurve is now always created in hard energy
+                 band (7.0-15 keV)
+- (par/epchain.par): new task parameter `hrdmskset', `specset'; parameter
+                `withhardmask' removed 
+- (doc/epchain_description.tex): description updated to reflect changes 	 
+	
+Version 8.39 - 2002-11-21 (HB)
+------------------------------	
+
+- (src/epchain): optional creation of  ADU 20-30 sky image to assess
+	         optical loading (controlled by boolean parameter
+	         "optloadingimage"; default: don't create image)
+- (par/epchain.par): new parameter: "optloadingimage", "optloadingimageset"
+- (doc/epchain_description.tex): description of new parameter added	
+	
+Version 8.38 - 2002-11-11 (MJF)
+-------------------------------
+- (src/epchain): changed `badpixfind' values for "backgroundrate" (0.0001 ->
+  0.00011) and "hienergythresh" (10.0 -> 12.0 keV)
+- (src/epchain): calls `epexposure' instead of `dsrm' to remove EXPOSURE
+  extension columns
+- (DEPEND): needs `epexposure-0.4'
+
+Version 8.37 - 2002-09-21 (MJF)
+-------------------------------
+- (config/epchain.par): fixed typo
+- (doc/epchain_description.tex): changed \subsection{} to \taskparametersnote{}
+  in the parameters section, however, the new sub-parts now do not have an
+  automatic number anymore due to infrastructure definition
+closed SPR:
+- SSC-SPR-2962: HTML parameter documentation broken
+
+Version 8.36 - 2002-09-20 (MJF)
+-------------------------------
+- (src/epchain): define canonical file names for "withctisrcpos=Y"
+- (doc/epchain_description.tex): as above
+
+Version 8.35 - 2002-09-19 (MJF)
+-------------------------------
+- (src/epchain): option for alternative out-of-time event handling
+- (config/epchain.*): new parameters "withctisrcpos" (default: N) and "outset"
+- (doc/epchain_description.tex): as above
+- (DEPEND): needs `epevents-6.34'
+
+Version 8.34 - 2002-08-13 (MJF)
+-------------------------------
+- (src/epchain): added "DLIMAP" to the extensions to be kept by `evlistcomb'
+
+Version 8.33 - 2002-07-10 (MJF)
+-------------------------------
+- (config/epchain.par): changed default of "keepintermediate": "cal" -> "none"
+- (doc/epchain_description.tex): as above
+- (DEPEND): added "sas" as required by new infrastructure (sas-1.302)
+
+Version 8.32 - 2002-05-27 (MJF)
+-------------------------------
+- (config/epchain.par): updated for `param-2.0'
+- (DEPEND): needs `param-2.0', updated all other entries to latest,
+   added 'dscalc-2.3' and 'tabgtigen-2.9' and 'daltools-1.2'
+
+Version 8.31 - 2002-04-18 (MJF)
+-------------------------------
+- (src/epchain): simplified "screenlowthresh" expression as there are no
+   negative PI values anymore since "epevents-6.30.3"
+- (src/epchain): new parameter "screenrejected" (default: N) to apply #XMMEA_EP
+- (config/epchain.*): as above
+- (doc/epchain_description.tex): as above
+
+Version 8.30 - 2002-04-12 (MJF)
+-------------------------------
+- (src/epchain): updated `epevents' long-term CTI handling
+- (DEPEND): needs `epevents-6.31'
+
+Version 8.29.8 - 2002-03-25 (MJF)
+---------------------------------
+- (src/epchain): stop with error if non-existing exposure should be processed,
+  the check for this was not active for setting "odfaccess=oal" [SSC-SPR-2818]
+- (doc/epchain_description.tex): added three more examples
+closed SPR:
+- SSC-SPR-2818: Warning "Use of uninitialized value" should give error
+
+Version 8.29.7 - 2002-03-19 (MJF)
+---------------------------------
+- (doc/epchain_description.tex): corrected a few typos
+
+Version 8.29.6 - 2002-03-15 (MJF)
+---------------------------------
+- (doc/epchain_description.tex): corrected error labels
+
+Version 8.29.5 - 2002-03-05 (MJF)
+---------------------------------
+- (src/epchain): activated a few engineering parameters for `epframes' to
+   prepare for ODFs from the Commissioning Phase
+- (src/epchain): re-adjusted default "timebinsize"; 
+   - withhardmask=Y (7-15 keV):
+       100 [s] for FF + eFF modes, 200 for LW, 350 for SW, 100 for TI + BU modes
+   - withhardmask=N (0.2-10 keV):
+       10 [s] for FF + eFF modes, 20 for LW, 350 for SW, 10 for TI + BU modes
+- (doc/epchain_description.tex): see above
+
+Version 8.29.4 - 2002-03-01 (MJF)
+---------------------------------
+- (src/epchain): added some high verbosity level messages
+- (src/epchain): addition to parameter "propagatecolumns" [SSC-SPR-2734]:
+   if "all" then all `epevents' output columns are propagated to IMAGING and
+   TIMING mode event lists [default: "auto"]
+- (src/epchain): if "timebinsize=0" [default: 0] then the task choses default
+   values for lightcurve according to the instrument mode and energy range: 
+   - withhardmask=Y (7-15 keV):
+       100 [s] for FF eFF LW modes, 200 [s] for SW TI BU modes
+   - withhardmask=N (0.2-10 keV):
+       20 [s] for FF eFF LW modes, 100 [s] for SW TI BU modes
+- (doc/epchain_description.tex): see above
+
+Version 8.29.3 - 2002-02-21 (MJF)
+---------------------------------
+- (src/epchain): make changes introduced by SSC-SPR-2734 (`epchain-8.29.1')
+   user-friendly backwards compatible via new parameter "propagatecolumns":
+   the setting "imaging" enables the old setting where the TI and BU mode files
+   had the same columns as for imaging modes. Default is "auto" which sets the
+   propagated columns according to the datamode (as of version 8.29.1)
+- (doc/epchain_description.tex): see above
+
+Version 8.29.2 - 2002-02-18 (MJF)
+---------------------------------
+- (src/epchain): fully enabled `usecanonicalnames=Y' setting [SSC-SPR-2106]
+- (doc/epchain_description.tex): explain `usecanonicalnames=Y' output filenames
+
+Version 8.29.1 - 2002-02-05 (MJF)
+---------------------------------
+- (src/epchain): reduce number of columns for TI and BU mode event files
+- (doc/epchain_description.tex): adapt "Output files" section accordingly
+closed SPR:
+- SSC-SPR-2734: too many default columns for TI and BU modes
+
+Version 8.29 - 2002-01-23 (MJF)
+-------------------------------
+- (src/epchain): update calling sequence for `epframes'
+- (DEPEND): needs `epframes-8.46' and `eptestdata-0.4'
+
+Version 8.28 - 2002-01-16 (MJF)
+-------------------------------
+- (src/epchain): update calling sequence for `epevents'
+- (DEPEND): needs `epevents-6.30'
+
+Version 8.27 - 2002-01-15 (MJF)
+-------------------------------
+- (src/epchain): enable background mask for SW mode
+- (doc/epchain_description.tex): modified `badpixfind' calls in flow chart
+- (doc/epchain_description.tex): added optional files to output files section
+- (test/*): use in-orbit ODF (eptestdata/epodf_BU_TI/0029_*) for BU and TI modes
+
+Version 8.26 - 2002-01-10 (MJF)
+-------------------------------
+- (src/epchain): renamed `eppatplot' to `epatplot'
+- (doc/epchain_description.tex): as above
+- (DEPEND): needs `epatplot-1.0'
+
+Version 8.25 - 2002-01-09 (MJF)
+-------------------------------
+- (src/epchain): update calling sequence for `epframes'
+- (src/epchain): optional call to `eppatplot' with final event list as input,
+   default "withpatplot=N" (no call)
+- (DEPEND): needs `eppatplot-1.7'
+
+Version 8.24 - 2001-12-19 (MJF)
+-------------------------------
+- (test/epchain_test_IM): change input ODF to Rev.146 in-orbit data
+- (test/checkoutput_IM.f90): adapt checks accordingly
+- (DEPEND): needs `eptestdata-0.3'
+
+Version 8.23 - 2001-12-14 (MJF)
+-------------------------------
+- (src/epchain): for "withhardmask=Y" use explicit high-energy pattern/energy 
+  default expression when creating background lightcurve
+- (src/epchain): merge offset column extensions OFFSETS into one extension
+- (DEPEND): needs `evlistcomb-4.17' (made all other entries at least SAS-5.2.1)
+
+Version 8.22 - 2001-12-13 (MJF)
+-------------------------------
+- (src/epchain): ensure that PATH read from SUM.SAS file ends with a slash
+- (src/epchain): renamed offset column extension to be merged
+- (DEPEND): needs `epframes-8.37' (renamed OFFSETCO -> OFFSETS)
+closed SPR:
+- SSC-SPR-2578: Wrong parse of SAS_ODF [PATH from SUM.SAS file]
+
+Version 8.21 - 2001-09-15 (MJF)
+-------------------------------
+- (src/epchain): call `badpix' and `dscopyblock' in low memory mode which makes
+  the chain faster for large event files
+
+Version 8.20 - 2001-09-01 (MJF)
+-------------------------------
+- (src/epchain): add line "use 5.005;" to match SAS installation requirements
+- (src/epchain): add creation of background GTI file (via `tabgtigen')
+- (src/epchain): new parameter "flaremaxrate" for background GTI creation
+- (src/epchain): new parameter "usecanonicalname" to autocreate output names,
+  not fully implemented yet
+- (src/epchain): update calling sequences for `epframes' and `epevents'
+- (DEPEND): needs `epframes-8.35' and `epevents-6.22'
+
+Version 8.19 - 2001-06-18 (MJF)
+-------------------------------
+- (src/epchain): give certain messages also for SAS_VERBOSITY=0 (-v, -p)
+- (src/epchain): if SAS_ODF is ASCII file then try to extract PATH from
+  this file, if not found then keep the current behaviour (i.e. assume that
+  summary file is in ODF directory)
+closed SPRs:
+- SSC-SPR-2432: epchain --h or --p (and -v) does not work
+- SSC-SPR-2431: epchain does not read PATH from SUM.SAS file
+
+Version 8.18.4 - 2001-06-01 (MJF)
+---------------------------------
+- (src/epchain): corrected execution rights
+- (doc/epchain_description.tex): new section "incomplete ODFs", corrected typos
+
+Version 8.18.3 - 2001-05-25 (MJF)
+---------------------------------
+- (src/epchain): drop selection RAWY>10
+
+Version 8.18.2 - 2001-05-07 (MJF)
+---------------------------------
+- (src/epchain): avoid follow-up error messages in case of missing files
+- (src/epchain): use "SAS::message" etc. instead of "print" [SSC-SPR-2375]
+closed SPR:
+- SSC-SPR-2375: use "SAS::message" etc. instead of "print" 
+
+Version 8.18.1 - 2001-05-03 (MJF)
+---------------------------------
+- (src/epchain): for TI and BU mode use ``emptyextension=Y'' [SSC-SPR-2244]
+
+Version 8.18 - 2001-04-23 (MJF)
+-------------------------------
+- (src/epchain): remove now obsolete evselect parameter `calculatebackscale=N'
+
+Version 8.17 - 2001-04-10 (MJF)
+-------------------------------
+- (src/epchain): renamed parameter `crmap' to `witheventmap' [SSC-SPR-1723]
+- (src/epchain): new optional parameter `withphotonmap'
+- (config/epchain.*): new optional parameters
+- (doc/epchain_description.tex): new optional parameters
+- (badpixfinddata): removed obsolete directory
+- (test/epchain_test_*): link to files in `eptestdata'
+- (DEPEND): depend on epevents-6.14 + epframes-8.27 + eptestdata-0.2
+
+Version 8.16.2 - 2001-03-15 (MJF)
+---------------------------------
+- (src/epchain): for TI and BU mode use ``getuplnkbadpix=N'' [SSC-SPR-2244]
+- (src/epchain): new optional parameter ``withtempcorrection'' (default NO) to
+   enable test and verification of additional gain and CTI corrections, 
+   considered as ``temporary'' and ``experimental'' [epevents-6.12.2]
+- (src/epchain): new optional parameter ``withhardmask'' (default NO) to
+   use energy band 7-15 keV instead of 0.16-10 keV to create background mask
+- (src/epchain): updated parameter values for background mask determination
+- (config/epchain.*): add new optional parameters
+- (doc/epchain_description.tex): new optional parameters
+- (DEPEND): updated
+closed SPR:
+- SSC-SPR-2244: Uplinked bad pixel problem for pn TIMING and BURST mode
+
+Version 8.16.1 - 2001-02-14 (MJF)
+---------------------------------
+- (src/epchain): corrected execution rights
+- (src/epchain): do not try to use masks for background lightcurve if no
+  unmasked pixel is left for some reason (avoid null selection) 
+  [this was already checked for but at a too late place in the chain]
+
+Version 8.16 - 2001-01-22 (MJF)
+-------------------------------
+- (src/epchain): new parameter ``withoutoftime'' to enable analysis of
+  out-of-time events, considered as ``experimental'' [SOC-SCR-25]
+- (config/epchain.*): add new parameter ``withoutoftime''
+- (doc/epchain_description.tex): add subsection about out-of-time events,
+  restructured parameter section
+- (DEPEND): depend on epevents-6.11
+
+Version 8.15.8 - 2000-12-12 (MJF)
+---------------------------------
+- (src/epchain): updated parameter values for badpixfind calls
+closed SPR:
+- SSC-SPR-2147: New recommended parameter values for task badpixfind
+
+Version 8.15.7 - 2000-11-23 (MJF)
+---------------------------------
+- (doc/epchain_description.tex): updated output file section (background
+                lightcurve and masks) and added examples subsection
+closed SPR:
+- SSC-SPR-2106: rate_bkg.fits undescribed
+
+Version 8.15.6 - 2000-11-15 (MJF)
+---------------------------------
+- (src/epchain): background rate to account for masked area and time bin
+- (src/epchain): activate "odfaccess=name"
+- (doc/epchain_description.tex): updated flow chart
+closed SPR:
+- SSC-SPR-2075: background lightcurve does not use size of masked area
+- SSC-SPR-2078: Parameter "odfaccess=name" not active
+
+Version 8.15.5 - 2000-11-11 (GV/SOC)
+--------------
+	+ (src/epchain) write CONTENT to primary header instead of
+	  EVENTS extension.
+
+Version 8.15.4 - 2000-11-06 (MJF)
+---------------------------------
+- (src/epchain): write CONTENT keyword (not done by `evlistcomb' anymore)
+                 (SSC-SPR-2010)
+
+Version 8.15.3 - 2000-10-28 (MJF)
+---------------------------------
+- (src/epchain): changed filename field from IMEVLI to PIEVLI
+- (test/checkoutput_IM.f90): updated filename and CONTENT
+closed SPR:
+- SSC-SPR-2010: Wrong file names for event files
+
+Version 8.15.2 - 2000-10-25 (MJF)
+---------------------------------
+- (doc/epchain_description.tex): extended subsection about flare screening
+- (src/epchain): updated `epframes' call
+closed SPR:
+- SSC-SPR-1999: call of constituent tasks not updated
+
+Version 8.15.1 - 2000-10-19 (MJF)
+---------------------------------
+- (src/epchain): adapted `attcalc' call (SSC-SPR-1990)
+
+Version 8.15   - 2000-10-10 (MJF)
+---------------------------------
+- resubmitted version 8.14.1
+
+Version 8.14.1 - 2000-10-10 (MJF)
+---------------------------------
+- (src/epchain): do not use results of `badpixfind' for TI and BU mode
+- (src/epchain): do not use masks for SW TI BU mode background lightcurve
+- (doc/epchain_description.tex): updated parameters and background section
+closed SPRs:
+- SSC-SPR-1976: should not use badpixfind results for TI and BU modes
+
+Version 8.14  - 2000-10-09 (MJF)
+---------------------------------
+- (src/epchain): create background lightcurve for later flare screening
+
+Version 8.13  - 2000-10-06 (MJF)
+---------------------------------
+- (src/epchain): write pn-related CCF entries (EPN XMM XRT3) as extension
+- (test/epchain_test_*): change parameters in call of `epchain'
+
+Version 8.12  - 2000-10-05 (MJF)
+---------------------------------
+- (src/epchain): use results of `badpixfind' (new parameter values) by default
+- (config/epchain.par): default value changed: getnewbadpix=N -> Y
+
+Version 8.11  - 2000-09-29 (MJF)
+---------------------------------
+- (test/check_output_*.f90): altered FILTER check from "NONE" to "UNKNOWN"
+
+Version 8.10  - 2000-09-25 (MJF)
+---------------------------------
+- (src/epchain): re-install correct privileges (go+x)
+
+Version 8.9  - 2000-09-22 (MJF)
+---------------------------------
+- (DEPEND): updated version numbers (e.g. epframes, evselect etc)
+- (src/epchain): allow input of summary file itself as ODF
+- (test/checkoutput_*.f90): update TIMEDEL existence check
+
+Version 8.8  - 2000-08-25 (MJF)
+---------------------------------
+- (DEPEND): updated dependencies (e.g. "epevents-6.9")
+- (src/epchain): changed default "imagesize" (0.34 -> 0.36) [SSC-SPR-1950]
+- (src/epchain): call evselect with "updateexposure=Y" [SSC-SPR-1920]
+- (src/epchain): reduce size of EXPOSUnn extensions at end of chain
+- (src/epchain): adapted parameter interface (e.g. "randomizeenergy")
+- (config/epchain.*): corrected info file, adapted to changed parameters
+
+closed SPRs:
+- SSC-SPR-1950: Default for imagesize
+- SSC-SPR-1920: Does not fill the ONTIMEnn and LIVETInn keywords
+
+Version 8.7.7  - 2000-06-30 (MJF)
+---------------------------------
+- (doc/epchain_description.tex): describe all parameters separately
+
+closed SPR:
+- SSC-SPR-1900: Split parameter description
+
+Version 8.7.6  - 2000-06-26 (MJF)
+---------------------------------
+- (doc/epchain_description.tex): \param{} -> \tt{} for outdated parameters etc.
+- (src/epchain): special care of list parameters (e.g. epnimgcolnames)
+
+Version 8.7.5  - 2000-06-24 (MJF)
+---------------------------------
+- (test/epchain_test_IM): fix Linux test harness failure with original ODF 
+- (test/epchain_test_*): remove `printenv` in test harness
+- (src/epchain): add "odfexpand" to constituents for option "-v"
+- (src/epchain): insert switch to remove intermediate files
+
+Version 8.7.4  - 2000-06-21 (MJF)
+---------------------------------
+- (src/epchain): change screening to |PI| > 150
+
+Version 8.7.3  - 2000-06-16 (MJF)
+---------------------------------
+- (DEPEND): updated dependencies, added `tools-1.34' (odfexpand)
+- (src/epchain): screen eventlist (PI > 150 eV), new warning(notInODF)
+- (doc/epchain_description.tex): updated error/warning section
+
+closed SPRs:
+- SSC-SPR-1710: Problems handling window mode data (OAL is updated)
+
+Version 8.7.2  - 2000-06-15 (MJF)
+---------------------------------
+- (src/epchain): fixed failure of test harness with low verbosity
+- (src/epchain): added `-v' and `-p' to recognized options
+- (doc/epchain_description.tex): updated comments section
+
+closed SPR:
+- SSC-SPR-1820: epchain -v does not return a version number
+
+Version 8.7.1  - 2000-06-14 (MJF)
+---------------------------------
+- minor changes in verbosity of output, replace empty lines by string "++"
+- remove (large) recombined intermediate file at the end of the chain
+- updated documentation, updated test harness for TI and BU mode
+- prepare fix of SSC-SPR-1710 (requires updated OAL)
+
+closed SPRs:
+- SSC-SPR-1677: Operation from GUI and AHF usage: 
+  avoid problem in gui-1.24 (SOC-SPR-1381) by removing empty output lines
+- SSC-SPR-1734: Minimum X value below TLMIN6: 
+  fixed with attcalc-4.22.1
+
+Version 8.7  - 2000-05-29 (MJF)
+-------------------------------
+- output file now has GTI extensions, updated test harness + DEPEND
+- run badpixfind but do not use results by default
+
+Version 8.6  - 2000-05-08 (MJF)
+-------------------------------
+- adopt new ChangeLog header line style
+- added `epframes.info' to config subdirectory and Makefile
+- added `-w 10' to task constituent calls
+- added task `evselect' to constituents
+- output filenames now conform with XMM-SOC-ICD-0006-SSC
+- added test harness for TIMING and BURST mode
+- added ONBOARD mip rejection method
+- updated DEPEND
+
+closed SPRs:
+- SSC-SPR-1198: Harness files do not contain data for TIMING and BURST mode        
+- SSC-SPR-1329: Warning messages (mostly CAL-related)
+- SSC-SPR-1571: no exposure keyword in PN images
+
+Version 8.5    (07.03.00)
+----------------------------
+- new parameter "mipdist" (epframes-8.6)
+
+Version 8.4    (23.02.00)
+----------------------------
+- changed parameters according to epframes (epframes 8.5)
+- fixed config files (Makefile, par, lyt)
+
+Version 8.3    (21.02.00)
+----------------------------
+- changed parameters according to epevents (epevents 8.2)
+
+Version 8.2    (17.02.00)
+----------------------------
+- fixed DEPEND (epframes 8.2)
+
+Version 8.1    (15.02.00)
+----------------------------
+- new optional parameter "memorymodel" for task "evlistcomb"
+- more parameters for task "evlistcomb"
+
+Version 8.0    (21.01.00)
+----------------------------
+- changed implementation from C-shell to Perl script
+- extended parameter interface
+- added basic GUI interface
+- removed obsolete task epreject
+- changes according to new versions of tasks epframes, badpixfind,
+  badpix, epevents
+- extended documentation about OAL exposure numbers
+
+closed SPRs:
+- SSC-SPR-1447: bad exposure number
+
+Version 7.2    (26.01.00)
+----------------------------
+- added optional run of task "badpixfind"
+
+Version 7.1    (18.01.00)
+----------------------------
+- fixed error output
+
+Version 7.0    (17.01.00)
+----------------------------
+- new command line parameters to modify randomization_on 
+  and to toggle use of badpixfind results 
+- updated for new epframes version
+
+closed SPRs:
+- SSC-SPR-1392: epchain should use randomisation by default
+- SSC-SPR-1400: randomization_on parameter should be set to true
+- SSC-SPR-1386: epchain should work with no special bad pixels files 
+
+Version 6.8    (04.12.99)
+----------------------------
+- removed test on existence and setting of DETNAM attribute
+
+Version 6.7    (30.11.99)
+----------------------------
+- test harness does no longer test setting of the EXP_ID attribute
+  (too fragile as it now contains also info on OBS_ID)
+- changed SAS_ODFDIR to SAS_ODF in epchain script and test harness
+
+Version 6.6    (11.10.99)
+----------------------------
+- updated for evlistcomb-4.0
+
+closed SPR:
+- SSC-SPR-1251: test harness fails on linux
+
+Version 6.5    (29.09.99)
+----------------------------
+- removed test on the setting of OBS_ID (too fragile)
+
+Version 6.4    (24.09.99)
+----------------------------
+- fixed test harness exit status
+
+Version 6.3    (18.09.99)
+----------------------------
+- doc updated for new LaTeX macros
+- test harness reference file has been removed
+
+closed SPRs:
+- SSC-SPR-1242: test harness fails
+- SSC-SPR-1143: Negative PI values in merged_events.dat
+
+Version 6.2    (03.09.99)
+----------------------------
+- removed tests on the settings of DATE-OBS and DATE-END (too fragile)
+- new reference file in the test harness: scisimmultimode changed
+
+open SPRs:
+- SSC-SPR-1143: Negative PI values in merged_events.dat
+- SSC-SPR-1198: Harness files do not contain data for TIMING and BURST mode
+
+Version 6.1    (02.09.99)
+----------------------------
+- new reference file in the test harness: scisimmultimode changed 
+
+Version 6.0    (01.09.99)
+----------------------------
+- includes atthkgen task
+- new command line parameters to specify exposure number and name of 
+  output merged data set 
+- uses testodf/scisimmultimode for the test harness
+
+closed SPR:
+- SSC-SPR-1201: EPCHAIN sends warnings when not all CCD are selected
+
+Version 5.0    (03.08.99)
+----------------------------
+- introduced new command line parameter to specify directory where
+  badpixfind data files are kept
+
+Closed SPR:
+- SSC-SPR-1148: hard wired calibration etc interfaces
+
+Version 4.0    (02.08.99)
+----------------------------
+- introduced new command line parameter to epchain to choose between IMAGING,
+  TIMING and BURST mode input data
+- epevents has new parameter "randomization_on"
+- another update of the test harness 
+
+Version 3.1    (28.06.99)
+----------------------------
+- update of the test harness (to account for cal changes)
+
+Version 3.0    (16.06.99)
+----------------------------
+- updated for changes in ep* tasks
+- new merged_events.ref reference file in test
+
+Version 2.3    (31.05.99)
+----------------------------
+- new merged_events.ref reference file in test
+
+Version 2.2    (28.05.99)
+----------------------------
+- epchain documentation fixed for \newcommand{\column}
+
+Version 2.1    (27.05.99)
+----------------------------
+- updated for new task parameter names
+
+Version 2.0    (21.04.99)
+----------------------------
+- updated for new task parameter names
+- include offset file for epframes: epchain/offset/OFFSET_EPN.fits
+- changed order of events in epodf/ODF files: FRAME, RAWY, RAWX
+
+Version 1.4    (10.12.98)
+----------------------------
+- removed checks for differences between test output and reference file
+  in respect to X, Y, detX and detY columns (while the CCF is not settled)
+
+Version 1.3    (08.12.98)
+----------------------------
+- updated documentation and test harness
+- new odf example input data
+
+Version 1.2    (23.11.98)
+----------------------------
+- changed place where attcalc is called to have a common MOS/PN approch
+  in both mini-pipelines epchain and emchain.
+- updated for renamed BADPIX extension column BADPIXTYPE -> TYPE
+  !!! evlistcomb_2.1 has not yet been updated - I am using
+  !!! a predelivery version of evlistcomb_2.2
+
+closed SPRs:
+- SSC-SPR-0830: fails on Odf::Odf - Odf summary file has been updated 
+	
+Version 1.1    (03.11.98)
+----------------------------
+- minor updates as tasks have been updated after SAS V2 I&T procedure 
+- SASVERBOSITY will not be changed by epchain
+- new ODF example file with RAWX, RAWY coordinates and overall CCD
+  numbering in agreement with SciSim and CAL standards
+
+Version 1.0
+----------------------------
+- updated version for new pn task deliveries
+- new epodf_short ODF example file which can be processed with 
+  epframes v1.8 (and oal2.2)
+
+Version 0.1
+----------------------------
+- First version submitted to SOC

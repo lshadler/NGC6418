@@ -1,0 +1,200 @@
+<!-- converted from XPI formatted "omgchain.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="inpdirectory" type="string" default="">
+   <DESCRIPTION>
+    Name of input file directory: 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="outdirectory" type="string" default="">
+   <DESCRIPTION>
+    Name of output file directory: 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="comment" type="string" default="">
+   <DESCRIPTION>
+    Comment for the output
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="nsigma" type="real" default="2.0">
+   <DESCRIPTION>
+    Number of sigma for the detection algorithm
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    nsigma in [0.:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="combine" type="bool" default="yes">
+   <DESCRIPTION>
+    Condition for combining the Engineering-2 sub-windows
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="removescatteredlight" type="bool" default="no">
+   <DESCRIPTION>
+    Condition for removing the background scattered light features
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="spectrumhalfwidth" type="real" default="-8.0">
+   <DESCRIPTION>
+    Half-width of the spectrum extraction area  (in pixels, if negative, and in FWHWs otherwise)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    spectrumhalfwidth in [-20.:20.]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="bkgoffsetleft" type="real" default="6.0">
+   <DESCRIPTION>
+    Offset for the left background extraction area (in pixels, if negative, and in FWHWs otherwise)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    bkgoffsetleft in [0.:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="bkgwidthleft" type="real" default="-8.0">
+   <DESCRIPTION>
+    Width for the left background extraction area (in pixels, if negative, and in FWHWs otherwise) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    bkgwidthleft in [-40.:40.]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="bkgoffsetright" type="real" default="6.0">
+   <DESCRIPTION>
+    Offset for the right background extraction area (in pixels, if negative, and in FWHWs otherwise)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    bkgoffsetright in [0.:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="bkgwidthright" type="real" default="-8.0">
+   <DESCRIPTION>
+    Width of the background right extraction area (in pixels, if negative, and in FWHWs otherwise)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    bkgwidthright in [-40.:40.]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="spectrumsmoothlength" type="int" default="0">
+   <DESCRIPTION>
+    Length of the smoothing window for the extracted spectra (in pixels)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    spectrumsmoothlength in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="mod8correction" type="int" default="1">
+   <DESCRIPTION>
+    Condition for removing the modulo-8 noise: 0-do not correct, 1-correct,
+    2-use flat field for mapping, 3-use flat field for multiplying
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    mod8correction in [0:3]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="extractionmode" type="int" default="0">
+   <DESCRIPTION>
+    Type of the spectum extraction algorithm (0 is normal, 1 is optimal, etc.)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    extractionmode in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="plotbinsize" type="int" default="1">
+   <DESCRIPTION>
+    Size of spectrum wavelength bins for the output plot (in Angstroems) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    plotbinsize in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="plotflux" type="int" default="2">
+   <DESCRIPTION>
+    Flag for plotting either count-rates (0), fluxes (1) or both (2)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    plotflux in [0:2]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="scalebkgplot" type="bool" default="no">
+   <DESCRIPTION>
+    Use the background plot scale different from that of the spectrum : 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="extractfieldspectra" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    Extracts all the available spectra in the current field
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="outspectralistset" type="file"  default="">
+   <DESCRIPTION>
+    Name of the output spectra list file 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="addedregionfile" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    Creates a region file with additional (newly detected) point sources
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>
+
+
+

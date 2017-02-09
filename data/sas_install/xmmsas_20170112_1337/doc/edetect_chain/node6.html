@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Examples</TITLE>
+<META NAME="description" CONTENT="Examples">
+<META NAME="keywords" CONTENT="edetect_chain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="edetect_chain.css">
+
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+edetect_chain (edetect_chain-3.15) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use of edetect_chain"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="edetect_chain.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00033000000000000000">
+Examples</A>
+</H2>
+
+<P>
+1. Simultaneous detection run on the 5 standard energy bands of the MOS1 detector:
+
+<P>
+<PRE>
+edetect_chain imagesets=''M1IMAGE_1000.FIT M1IMAGE_2000.FIT M1IMAGE_3000.FIT 
+                          M1IMAGE_4000.FIT M1IMAGE_5000.FIT'' \
+              eventsets=M1EVLI.FIT \
+              attitudeset=atthk.dat \
+              pimin=''200 500 1000 2000 4500'' \
+              pimax=''500 1000 2000 4500 12000'' \
+              ecf=''1.8118 1.8837 0.75057 0.15077 1.42326''
+</PRE>
+
+<P>
+Note: Here we use  energy conversion factors for the thin filter  (see the
+  2XMM and 3XMM documentations at
+<BR>  <A NAME="tex2html43"
+  HREF="http://xmmssc-www.star.le.ac.uk/Catalogue/2XMM/UserGuide_xmmcat.html#EmldetFit">http://xmmssc-www.star.le.ac.uk/Catalogue/2XMM/UserGuide_xmmcat.html#EmldetFit</A>
+,
+<BR><A NAME="tex2html44"
+  HREF="http://xmmssc-www.star.le.ac.uk/Catalogue/3XMM-DR4/UserGuide_xmmcat.html#ProblECFs">http://xmmssc-www.star.le.ac.uk/Catalogue/3XMM-DR4/UserGuide_xmmcat.html#ProblECFs</A>
+; 
+<BR>
+in particular
+<BR>  <A NAME="tex2html45"
+  HREF="http://xmmssc-www.star.le.ac.uk/Catalogue/3XMM-DR4/UserGuide_xmmcat.html#TabECFs">http://xmmssc-www.star.le.ac.uk/Catalogue/3XMM-DR4/UserGuide_xmmcat.html#TabECFs</A>
+<BR>
+for other ecf values).
+<BR>
+The default value of the ecf parameter is 1.0 (in units of <SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$10^{11}$"></SPAN> counts
+
+cm<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^2$"></SPAN> erg<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$^{-1}$"></SPAN>),
+using the default value will lead to incorrect values in the <A NAME="881"></A><TT>FLUX</TT> columns
+of the <A NAME="883"></A><A NAME="tex2html46"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+and <A NAME="887"></A><A NAME="tex2html47"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+output source lists. 
+
+<P>
+2.  Simultaneous detection run on energy bands 2 and 3 and all EPIC  detectors,
+use event set PNEVLI.FIT to calculate background due to out-of-time events:
+
+<P>
+<PRE>
+edetect_chain imagesets=''M1IMAGE_2000.FIT M1IMAGE_3000.FIT 
+                           M2IMAGE_2000.FIT M2IMAGE_3000.FIT
+                           PNIMAGE_2000.FIT PNIMAGE_3000.FIT'' 
+               eventsets=''M1EVLI.FIT M2EVLI.FIT PNEVLI.FIT'' \
+               attitudeset=atthk.dat \
+               pimin=''500 2000 500 2000 500 2000'' \
+               pimax=''2000 4500 2000 4500 2000 4500'' \
+               esp_withootset=yes  \
+               esp_ooteventset=PNEVLI.FIT
+</PRE>
+
+<P>
+Note: The calculation of the background due to out-of-time events is only used for EPIC PN data,
+the events set given in <TT>esp_ooteventset</TT> has to be an EPIC PN event list and should 
+have the same <A NAME="892"></A><TT>TIME</TT> and <A NAME="894"></A><TT>FLAG</TT> selections as the EPIC PN input images. 
+
+<P>
+3. Simultaneous detection run on PN images 2 and 3, using emldetect to determine the extent of 
+the sources:
+
+<P>
+<PRE>
+edetect_chain imagesets=''PNIMAGE_2000.FIT PNIMAGE_3000.FIT'' 
+               eventsets=PNEVLI.FIT \
+               attitudeset=atthk.dat \
+               eml_fitextent=yes \
+               pimin=''500 2000'' \
+               pimax=''2000 4500'' \
+               esp_nsplinenodes=12 \
+               eml_fitextent=yes \
+               eml_ecut=15.
+</PRE>
+
+<P>
+Note: The parameter <TT>eml_ecut</TT> determines the cutout radius of the sub-image used
+for the ML fit. The image cut-out radius <TT>eml_ecut</TT> is given in pixels.
+
+<P>
+4. Simultaneous detection run on 15 input images. Use a 2 component model
+   for background fitting. This model is a linear combination of the exposure map and the unvignetted exposure map.
+   Set emldetect to fit the extent of each source 
+   and allow 2-PSF fitting. In order to save computing time, select
+   the 'two stage' option: only if a source is detected as extended in a first fit,
+   2-PSF fitting is applied. Also a threshold of <A NAME="898"></A><TT>LIKE</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$ &gt; 30$"></SPAN> is set, only for these sources
+   2-PSF fitting is used. 
+
+<P>
+<PRE>
+edetect_chain imagesets='' PNIMAGE_1000.FIT PNIMAGE_2000.FIT PNIMAGE_3000.FIT PNIMAGE_4000.FIT PNIMAGE_5000.FIT
+                           M1IMAGE_1000.FIT M1IMAGE_2000.FIT M1IMAGE_3000.FIT M1IMAGE_4000.FIT M1IMAGE_5000.FIT
+                           M2IMAGE_1000.FIT M2IMAGE_2000.FIT M2IMAGE_3000.FIT M2IMAGE_4000.FIT M2IMAGE_5000.FIT'' 
+               eventsets=''M1EVLI.FIT M2EVLI.FIT PNEVLI.FIT'' \
+               attitudeset=atthk.dat \
+               pimin=''200 500 1000 2000 4500 200 500 1000 2000 4500 200 500 1000 2000 4500'' \
+               pimax=''500 1000 2000 4500 12000 500 1000 2000 4500 12000 500 1000 2000 4500 12000'' \
+               esp_withootset=yes \
+               esp_ooteventset=PNEVLI.FIT \
+               esp_fitmethod=''model'' \
+               eml_fitextent=yes \
+               eml_nmulsou=2 \
+               eml_withtwostage=yes \
+               eml_withthreshold=yes \
+               eml_threshold=30
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use of edetect_chain"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

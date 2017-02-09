@@ -1,0 +1,350 @@
+ChangeLog for epicproc
+----------------------
+
+Version 2.21 - 2016-08-26 (RDS)
+-------------- 		
+	+ DEPEND - updated
+
+Version 2.20 - 2015-12-09 (AI)
+-------------- 		
+	+ mos doc updated (SOC-SPR-7100)
+	
+Version 2.19 - 2015-12-01 (AI)
+-------------- 		
+	+ doc updated (SOC-SPR-7264)
+	
+Version 2.18 - 2014-11-17 (AI)
+-------------- 		
+	+ epproc layout file changed
+	
+Version 2.17.4 - 2014-11-02 (AI)
+-------------- 		
+	+ Doc updated 
+	
+Version 2.17.3 - 2014-10-32 (AI)
+-------------- 		
+	+ New parameter "withdefaultcal". This paramter overrules the default 
+	parameter values for: withrdpha(epevents) withxrlcorrection(epreject) 
+	runepreject and runepfast. SOC-SCR-7253 implemented
+	
+Version 2.17.2 - 2014-10-24 (AI)
+-------------- 		
+	+ propagate REJ_CORR keyword to the final event list if epreject 
+	was enabled. SOC-SPR-7247 fixed
+	
+Version 2.17.1 - 2014-09-15 (AI)
+-------------- 	
+	+ Default parameter values for: "withbackgroundgain",
+	"withpatternoffset" set to "yes"
+	+ added new parameter "ctilongtermsoft" 
+	+ doc updated
+	+ SOC-SPR-7227 closed
+	
+Version 2.17 - 2014-06-05 (AI)
+-----------
+	+ added new parameter "withbackgroundgain"
+	+ added new parameter "withpatternoffset" 
+	+ Doc updated
+	+ DEPEND file updated
+	
+Version 2.16 - 2014-05-05 (AI)
+-----------
+	+ Default parameter values for "runepfast" and "withrdpha" changed.
+	+ Doc updated.
+
+Version 2.15 - 2014-04-30 (AI)
+-----------
+	+ eprejectti task call added to epproc.
+	+ doc updated
+	
+Version 2.14.4 - 2013-11-29 (AI)
+-----------
+	+ Default value for "runepfast" set to yes.
+	+ Doc updated.
+	
+Version 2.14.3 - 2013-11-28 (AI)
+-----------
+	+ noise reduction correction not applied in epreject if epnoise
+	is enabled.
+	
+Version 2.14.2 - 2013-11-27 (AI)
+-----------
+	+ if parameter  "withrdpha" is set to true and the epfast task is also 
+	enabled, epproc does not run epfast and it throws a warning messages saying that 
+	epfast will not run.
+	
+Version 2.14.1 - 2013-11-26 (AI)
+-----------		
+	+ Keyword PHA_RDCO properly propagated to the final event list in case 
+	"epevents" task is called with the parameter "withrdpha" set to yes.
+	+ Keyword REJ_CORR properly propagated to the final event list in case 
+	"epreject" task is called with the parameter "withxrlcorrection" set to yes.
+	
+Version 2.14 - 2013-10-29 (AI)
+-----------	
+	+ (src/Epproc.cc) new call to epfast
+	+ changed parameter "withrdcti" to "withrdpha" 
+	+ Added new parameter to epevents call  "rdphatimebinsize"
+	+ documentation updated
+	
+Version 2.13.4 - 2013-06-03 (AI)
+-----------	
+	+ Remove temporal pile-up intermediate files if not requested
+	+ Keyword XRL_CORR properly propagated to the final event list in case 
+	"epxrlcorr" task is enabled
+	
+Version 2.13.3 - 2013-04-04 (AI)
+-----------	
+	+ New parameters added
+	+ epproc timing test updated with new SAS_JUMP_TOLERANCE
+	value
+	+ doc updated
+	
+Version 2.13.2 - 2013-03-20 (AI)
+-----------
+	+ New optical loading task epxrlcorr included.
+	+ New parameter pileuptempfile added. This parameters
+	stores the output of epevents.
+	 
+	
+Version 2.13.1 - 2013-03-19 (AI)
+-----------
+        + Parameter patternanalysis added to epproc proc.
+
+Version 2.13 - 2012-10-18 (RDS)
+-----------	
+	+ (pn/Epproc.cc) Introduction of the testenergywidth parameter which
+			 is passed to epevents (SCR-338) 
+	
+Version 2.12.2 - 2012-07-10 (AI)
+-----------	
+	+ (lib/EpicProc.cc) epnoise parameter typo fixed.
+	
+Version 2.12.1 - 2012-03-29 (AI)
+-----------	
+	+ New parameters withxrlcorrection (epreject) and noisecut epnoise. SOC-SPR-6698 fixed
+	+ Doc updated.
+
+Version 2.12 - 2012-01-19 (AI)
+-----------	
+	+ (pn/Epproc.cc) Only run epnoise if the flag "runepnoise" is enabled.
+	
+Version 2.11 - 2011-09-14 (AI)
+-----------
+	+ (lib/Epicproc.cc) Check the instrument before calling epnoise (only EPN)
+	
+Version 2.10 - 2011-09-13 (AI)
+-----------
+	+ epreject dependency removed
+	+ epnoise call added
+	
+Version 2.9.20 - 2009-09-03 (AI)
+-----------
+	+ Fixes to make epicproc gcc-4.3 compliant.
+	
+Version 2.9.19 - 2008-05-14 (AI)
+-----------
+	+ randomizetime parameter added to runepexposure extension.
+
+Version 2.9.18 - 2007-11-14 (AI)
+-----------
+	+ (doc/epproc.par) Default "withtempcorrection" parameter value set to YES
+
+Version 2.9.17 - 2007-10-22 (AI)
+-----------
+	+ (lib/EpicProc.cc) removed unwanted debug lines.
+	
+Version 2.9.16 - 2007-07-05 (AI)
+-----------
+	+ New parameter "withtempcorrection" added. SOC-SPR-1721 fixed
+	
+Version 2.9.15 - 2007-06-27 (AI)
+-----------
+	+ New parameter "ontimepha" added to MOS pipeline to enable or
+ 	disable the MOS timing correction. SOC-SPR-2718 closed.
+	
+Version 2.9.14 - 2007-06-27 (AI)
+-----------
+	+ (pn/Epproc.cc) epntimcoltypes vector upgraded. Close SOC-SPR-2716) 
+	
+Version 2.9.13 - 2006-06-23 (AI)
+-----------
+	+(lib/EpicProc.cc, config/epproc.par, config/emproc.par) New parameter "rungtimerge" added to 
+	the "Filter and Merge" section. By default set to "no".
+	+Documentation updated.
+	
+Version 2.9.12 - 2006-02-22 (AI)
+-----------
+	+ "runhkgtigen" parameter default value set to "yes". 
+	
+Version 2.9.11 - 2005-11-29 (AI)
+--------------
+	+ (doc/pn/epproc_description.tex, 
+	doc/mos/emproc_description.tex) Problem with "latex2html" fixed.
+
+Version 2.9.10 - 2005-08-03 (AI)
+-----------
+	+ (Epicproc.cc) Check the instrument name in the "evlistcomb" call. 
+	Fixed SPR-SOC-2625.  
+
+Version 2.9.9 - 2005-07-22 (AI)
+-----------
+        + New two parameters added to emproc: correctcti and correctgain.
+	Both parameters belong to emenergy task. SPR-SOC-2623 fixed.
+	
+Version 2.9.8 - 2005-06-13 (AI)
+-----------
+	+ (Proc.cc) The signal call to trap SIGABRT doesn't work in 
+	Mac OSX 10.3. Both epproc and emproc applications  hang at execution 
+	time and the processes remain consuming computer resources. We have introduced
+	a MACOSX macro statement to fix the problem in this architecture.
+	
+Version 2.9.7 - 2005-06-09 (AI)
+-----------
+	+ Major upgrade of epproc and emproc done in order to add 
+	the same functionality as epchain and emchain.
+	+ Method that is not longer shared between both tasks: processExposure.
+	+ Epproc.cc: 
+	epreject task has been added to the process. 
+	New parameter "runepreject" added (set to no by default).
+	epexposure task has been added to the process.
+	New parameter runepexposure added (set to "yes" by default).
+	Some of the default values for the parameters were changed.
+	Documentation updated.
+	+ Emproc.cc:
+	The main CCD process has been completely updated 
+	(see flow chart in the documentation). 
+	New parameter "embadpixfindalgo" added. This parameter allows 
+	the user to select  "embadpixfind" task or "badpixfind" task.
+	New methods added to handle with bad pix search using "embadpixfind" algorithm 
+	(The methods are: badpixelsSearch, findFinalBadPixels)
+	New functionality added for GATTI flare screening. 
+	(The methods are: mergeIntermediateResults, badPixupdate, makeFlareTs, 
+	addFracExp, tsToGTI, testFlareGTI)
+	emeventsproj, embadpixfind, ebapixupdate, tabgtigen, tasks have added to the process.
+	New parameter "findlowener" to enable an additional run of 
+	"embadpixfind" below 500 eV (set to "yes" by default).
+	Documentation updated.
+	
+Version 2.9.6 - 2005-01-12 (AI)
+-----------
+	+ Documentation updated.
+
+Version 2.9.5 - 2004-12-22 (AI)
+-----------
+	+ New parameter analyzingSciSimdata added to analyze SciSim data. 
+	
+Version 2.9.4 - 2004-10-05 (AI)
+-----------
+	+ CALINDEX check test removed from checkpn.cc, checkpn_timing.cc, 
+	checkpn_burst.cc.
+
+Version 2.9.3 - 2004-07-05 (AI)
+-----------
+        + epproc runs evlistcomb with the "maintable" parameter set to 
+	  "EVENTS OFFSETS", in stead of, "EVENTS" (SOC-SPR-2538).
+
+Version 2.9.2 - 2004-06-15 (AI)
+-----------
+        + Removed perl script: checkmos, checkpn, checkpn_timing, checkpn_burst, due 
+	  to the MAC errors (pedal dependency). In stead, we have created 
+	  new c++ programs.
+
+Version 2.9.1 - 2004-03-15 (AI)
+-----------
+        + Documentation updated: parameters overhauled.
+
+Version 2.9 - 2003-12-10 (AI)
+-----------
+	+ New library included in pn/Makefile (libeputils) for static builds.
+
+Version 2.8 - 2003-12-05 (AI)
+-----------
+	+ Perl scripts checkpn, checkpn_timing, checkpn_burst updated.
+
+Version 2.7 - 2003-11-21 (AI)
+-----------
+	+ DEPEND file updated.
+
+Version 2.6 - 2003-10-31 (AI)
+-----------
+	+ changed USEDLIBS in Makefile (pn and mos) for static builds.
+
+Version 2.5 - 2003-10-30 (AI)
+-----------
+	+ No changes. Only re-uploaded.
+
+Version 2.4 - 2003-10-29 (AI)
+-----------
+	+ Perl scripts checkpn, checkpn_timing, checkpn_burst updated.
+
+Version 2.3 - 2003-10-22 (EO)
+-----------
+	+ Check dependencies fails if not emenergy-8.0 and emevents-8.0 
+	  in DEPEND file.
+
+Version 2.2 - 2003-08-05 (GV)
+-----------
+	+ Import a couple of changes that had been made to the RT
+	  version (1.0.6), but not yet moved to the DT namely:
+	+ (EpicProc.cc) make sure external CCDs are always processed when
+	  MOS is in timing mode.
+	+ timing modes processed by default (both PN and MOS)
+	+ documentation updated.
+
+Version 2.1 - 2003-06-26 (GV)
+-----------
+	+ (Epproc.cc) PATTERN column in event list files changed from
+	int32 to int8, SOC-SPR-2423.
+	
+Version 2.0 - 2002-10-07 (GV)
+-----------
+	+ (Emproc.cc) no longer make use of the parameters cosmicsize,
+	cosmicoutoverin (emframes), e3thresholds (emevents), e3e4ellipse
+	(emenergy) as the corresponding tasks now read them from the CCF.
+	(SOC-SPR-2342)
+	+ (EpicProc.cc) make sure hkgtigen is invoked with the correct
+	instrument. (SOC-SPR-2341)
+	
+Version 1.2 - 2002-09-20 (GV)
+-----------
+	+ Now it works with gcc-3.1.
+	
+Version 1.1 - 2002-05-13 (GV)
+-----------
+	+ Updated for param 2.0
+	
+
+Version 1.0.4 - 2002-04-02 (GV)
+-------------
+	+ More documentation  updates.
+	+ Compact a little parameter dialog.
+	
+Version 1.0.3 - 2002-03-28 (GV)
+-------------
+	+ Documentation updated.
+	
+Version 1.0.2 - 2002-03-26 (GV)
+-------------	
+	+ Factorize out more code: badpixfind is now common between emproc
+	and epproc.
+	+ Clean up parameter files by removing unused parameters.
+	+ (Proc.cc) make all sub-tasks execute as system calls instead of
+	subroutines in order to work around a problem that could not be
+	fixed for 5.3.0.
+	+ New lyt files.
+
+
+Version 1.0.1 - 2002-03-11 (GV)
+-------------
+	+ DEPEND updated.
+
+Version 1.0 - 2002-03-10 (GV)
+-----------
+	+ merge of proclib, epproc, emproc
+
+	
+ChangeLog for emproc
+ChangeLog for epproc
+ChangeLog for proclib
+	

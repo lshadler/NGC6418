@@ -1,0 +1,358 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="emenergy">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emenergy.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="emenergy.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emenergy (emenergy-8.8) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="emenergy.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emenergy.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="emenergy:description:description"></A>
+<BR>
+Description
+</H1>
+<A NAME="530"></A><A NAME="tex2html1"
+  HREF="../emenergy/index.html"><SPAN  CLASS="textbf">emenergy</SPAN></A>
+is the task which prepares the spectral analysis
+of EPIC-MOS data.
+It adds a quality flag to all events, prepares the (optical) background map,
+computes the best <A NAME="534"></A><TT>PHA</TT> energy from all information available, 
+corrects for charge transfer losses
+and translates it into <A NAME="536"></A><TT>PI</TT>.
+The CCDBKG subroutine cannot be applied to slew data.
+
+<P>
+<A NAME="538"></A><A NAME="tex2html2"
+  HREF="../emenergy/index.html"><SPAN  CLASS="textbf">emenergy</SPAN></A>
+calls (in order) the following subroutines, all of which
+can be individually switched off:
+
+<UL>
+<LI>EVFLAG
+flags all events whose pattern could not be fully recognized on-board
+because of the proximity of: 
+<BR>
+1- a border of the CCD (<A NAME="542"></A><TT>CLOSE_TO_CCD_BORDER</TT>) 
+<BR>
+2- the left or lower border of the current window
+   (<A NAME="544"></A><TT>CLOSE_TO_CCD_WINDOW</TT>). In window mode, the right
+   and upper borders are analysed including the lines/columns next to them. 
+<BR>
+3- a pixel declared as bad in the on-board library
+   (<A NAME="546"></A><TT>CLOSE_TO_ONBOARD_BADPIX</TT>) 
+<BR>
+4- a line (<A NAME="548"></A><TT>CLOSE_TO_BADROW</TT>) or column (<A NAME="550"></A><TT>CLOSE_TO_BADCOL</TT>)
+   deactivated through a large offset (voluntarily or not) 
+<BR>
+5- a dead pixel/line/column (<A NAME="552"></A><TT>CLOSE_TO_DEADPIX</TT>) 
+<BR>
+6- a bright pixel not declared in the on-board library
+   (<A NAME="554"></A><TT>CLOSE_TO_BRIGHTPIX</TT>) 
+<BR>
+Only bad pixels immediately next to the main pixel of the event
+(not diagonal) justify flagging.
+If the CCD is read through
+both nodes (known from the window keywords) then the limit between
+nodes must be flagged as well (<A NAME="556"></A><TT>CLOSE_TO_NODE_BOUNDARY</TT>). <BR>
+In case 5 (missing data) of dead pixels at distance 2, 
+then <A NAME="558"></A><TT>PERIPIX</TT> should be incremented for the CCDBKG task. Single events
+in that case would not be flagged at all. Similarly
+in case 4 (wrong data) at distance 2, then <A NAME="560"></A><TT>PERIPIX</TT> should
+be incremented by 8 (to deactivate the event for CCDBKG).
+<BR>
+In TIMING mode there are no bad pixels, only bad columns. 
+In Compressed Timing mode, events for which <A NAME="562"></A><TT>RAWX</TT> and <A NAME="564"></A><TT>PATTERN</TT>
+were not known are flagged as <A NAME="566"></A><TT>UNKNOWN_RAWX_PATTERN</TT>.
+<BR>
+The flag value allows to identify the reason for flagging
+(using binary coding as described in <A NAME="568"></A><A NAME="tex2html3"
+  HREF="../evatt/index.html"><SPAN  CLASS="textbf">evatt</SPAN></A>,
+explicited in the <A NAME="572"></A><TT>XMMEA_nn</TT> keywords).
+The flags set by EVFLAG are informative (contrary to
+those set in <A NAME="574"></A><A NAME="tex2html4"
+  HREF="../emevents/index.html"><SPAN  CLASS="textbf">emevents</SPAN></A>
+which are mostly rejection flags). 
+The flagged events should be used or not
+depending on the type of study. For spectral applications aiming at the
+best resolution and most reliable energies it is safer to reject them.
+The effective area should then reflect that.
+For detection purposes they can be included to improve the statistics.
+<BR>
+Finally, the events outside the field of view are flagged 
+(<A NAME="578"></A><TT>OUT_OF_FOV</TT>) to allow easily removing them from sky maps.
+They are useful to estimate the particle background, though.
+</LI>
+<LI>CCDBKG
+prepares the CCD background map used by MAKE_E to correct the energies.
+By default (no outside information required) a map of the CCD background 
+can be formed by averaging E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$_4$"></SPAN>/(16-<A NAME="580"></A><TT>PERIPIX</TT>)
+for all events encompassing a pixel in their 5x5 area.
+Only unflagged events should be considered.
+Large events (<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$&gt;$"></SPAN> 2 pixels) are not suitable because
+the charge leakage into E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$_4$"></SPAN> is usually non-negligible.
+Events at distance 1 or less from the borders include under/overscans
+in the outer corona and should not be used.
+Events with <A NAME="582"></A><TT>PERIPIX</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$&gt;$"></SPAN> <TT>maxperipix</TT> are not used either.
+The default (<TT>maxperipix</TT>=0, no other event in the outer corona) 
+is rather strict to ensure the best quality, and may be relaxed
+in the case of a piled-up source to <TT>maxperipix</TT>=2. 
+Events with <SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$E_1 &lt;$"></SPAN> <TT>minenergy</TT> are also not used.
+This is because a fraction of low energy events are noise events with
+a wrong value of E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$_4$"></SPAN> (rejected by REJECT_E3E4 down the line).
+<BR>
+The map is built in <A NAME="588"></A><TT>RAWX</TT>/<A NAME="590"></A><TT>RAWY</TT> coordinates.
+To check for possible time variations CCDBKG outputs E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$_4$"></SPAN> averaged
+over the CCD (or window) as a function of time. <BR>
+If <TT>fillccdbkg</TT>=yes then the off-source areas of the CCD (where less
+than <TT>fillminnumber</TT> good events contribute) are replaced
+by the sum of averages over the current line and current column (off-source),
+minus the full average. This is equivalent to replacing the integer
+offsets onboard by real (higher precision) ones.
+This filling procedure is applied separately to the areas of the CCD
+within the field of view and outside the field of view.
+<BR>
+To make the background determination more robust, REJECT_E3E4 is called
+a first time (with no background map) before CCDBKG to remove the most
+obvious noise events, and a 3 sigma clipping is applied to E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$_4$"></SPAN> locally
+(with respect to a first estimate of the background).
+<BR>
+This procedure does not apply in REDUCED IMAGING mode (no E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$_4$"></SPAN> information),
+nor in TIMING mode.
+
+<P>
+In parallel (<TT>useccfdarkframe</TT> parameter) one can use
+the background map
+from the average dark frame in the CCF (of better spatial resolution).
+All the E<SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$_i$"></SPAN> are then corrected for the difference between the dark map
+and the local offset, before building the internal background map
+(as described above) and building the <A NAME="595"></A><TT>PHA</TT> energy (in MAKE_E).
+This allows to correct CCD defects at the pixel scale (whereas E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$_4$"></SPAN>
+is an average over 16 pixels around the X-ray hit).
+<BR>
+Another option is to use a specific background map instead
+if data in DIAGNOSTIC mode have been recorded prior to the
+scientific exposures (not PPS).
+The decimal digits of the reference background (in ADU) are subtracted
+from <A NAME="597"></A><TT>PHA</TT> and <A NAME="599"></A><TT>PI</TT> correctly, but not from the E<SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$_i$"></SPAN> (integers).
+Consequently if the <A NAME="601"></A><TT>PHA</TT> column is regenerated later from
+the same events list it will lose the decimal precision.
+</LI>
+<LI>REJECT_E3E4 (IMAGING mode, not reduced IMAGING).
+Some instrumental effects result in wrong events associated with
+pathological charge values next to it. 
+This information is known through the E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$_3$"></SPAN> and E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$_4$"></SPAN> data.
+The REJECT_E3 procedure in <A NAME="603"></A><A NAME="tex2html5"
+  HREF="../emevents/index.html"><SPAN  CLASS="textbf">emevents</SPAN></A>
+rejected part of that noise.
+An additional way to reject it is to reject all events 
+whose E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$_3$"></SPAN>/E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$_1$"></SPAN> and E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$_4$"></SPAN>/E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$_1$"></SPAN> (after CCD background subtraction) 
+lie outside the normal cloud, specified as an ellipse in that plane
+(the ellipse parameters are in the E3E4ELLIPSE_n fields of 
+the <TT>XMM_MISCDATA</TT> CCF file).
+This is done with flag <A NAME="608"></A><TT>BAD_E3E4</TT>, 
+and has little effect on true X-rays 
+(10% loss at 100 eV, <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$&lt;$"></SPAN> 1% above 150 eV).
+<BR>
+This test cannot be applied directly next to rows or columns with 
+a large offset (taken from the <A NAME="610"></A><TT>OFFSETS</TT> extension).
+In that case E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$_3$"></SPAN> is first corrected for the large offset.
+E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$_4$"></SPAN> can be corrected as well if the offset is not too large
+(such that E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$_4$"></SPAN> was truncated at -16384) and <A NAME="612"></A><TT>PERIPIX</TT>=0
+(otherwise one cannot know how many pixels of the bad row/column
+were counted in E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$_4$"></SPAN>). If E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$_4$"></SPAN> cannot be corrected it is set to 0 for
+the test (<I>i.e.</I> the test bears only on E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$_3$"></SPAN>/E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$_1$"></SPAN>).
+</LI>
+<LI>MAKE_E
+computes a single energy <A NAME="614"></A><TT>PHA</TT> (in ADU) for each event from a weighted
+sum of the E<SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$_i$"></SPAN>, and the residual background <SPAN CLASS="MATH"><IMG
+ WIDTH="71" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$Bkg(x,y)$"></SPAN> computed in CCDBKG,
+assumed not to vary with time (<I>i.e.</I> the time series
+output from CCDBKG is not used). This is performed via CAL_mosPhaBuild,
+described in <A NAME="616"></A><A NAME="tex2html6"
+  HREF="../calmosalgo/index.html"><SPAN  CLASS="textbf">calmosalgo</SPAN></A>.
+If large offsets (from the <A NAME="620"></A><TT>OFFSETS</TT> extension) exist next to the event,
+E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$_1$"></SPAN> and E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$_2$"></SPAN> are corrected for that before being sent to CAL_mosPhaBuild.
+<BR>
+Events with reconstructed <A NAME="622"></A><TT>PHA</TT> above the upper EMDH threshold
+are flagged as <A NAME="624"></A><TT>OUTSIDE_THRESHOLDS</TT>.
+MAKE_E adds <A NAME="626"></A><TT>TLMIN</TT>/<A NAME="628"></A><TT>TLMAX</TT> keywords to the <A NAME="630"></A><TT>PHA</TT> column.
+By default, randomisation over 1 ADU is performed on E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$_1$"></SPAN> before building PHA.
+Randomisation may be switched off using <TT>randomizeenergy</TT>.
+<BR>
+In Timing and compressed timing mode, given that the ADU channels are not 
+uniform in size, a spectral redistribution can be applied (control by 
+<TT>ontimepha</TT>) to smear out this effect.
+<BR>
+In TIMING mode MAKE_E does nothing but the randomisation
+(the sum was already performed in flight).
+</LI>
+<LI>CTI_CORR.
+Charge transfer losses will inevitably appear at some level
+over time due to radiation damage. They occur as the lines
+are transferred, first to the frame store area, then to the reading
+register, and as the pixels are transferred along the reading register.
+Knowledge will undoubtedly accumulate with time on this phenomenon.
+In theory, charge losses could be local, could depend on energy and on
+count rate. This is performed via CAL_mosCtiCorrect.The result is written into <A NAME="634"></A><TT>PI</TT>, so that <A NAME="636"></A><TT>PHA</TT> 
+always remains uncorrected for CTI.
+<BR>
+In Timing mode <A NAME="638"></A><TT>RAWY</TT> does not correspond to the vertical position
+on the CCD, but to time. The CTI correction should be called assuming
+the source position, given by the <A NAME="640"></A><TT>SRC_RAWY</TT> keyword.
+In Compressed Timing mode, the source position should be taken from
+the <A NAME="642"></A><TT>SRC_RAWX</TT> keyword when <A NAME="644"></A><TT>RAWX</TT> is unknown
+(events flagged as <A NAME="646"></A><TT>UNKNOWN_RAWX_PATTERN</TT>).
+</LI>
+<LI>ENERGY.
+The energy of each event in ADU units (from MAKE_E or CTI_CORR)
+is converted into pulse invariant (<A NAME="648"></A><TT>PI</TT>) units.
+This is performed via CAL_mosGainCorrect.Events with reconstructed <A NAME="650"></A><TT>PI</TT> above the upper EMDH threshold
+(converted into PI) are flagged as <A NAME="652"></A><TT>OUTSIDE_THRESHOLDS</TT>.
+ENERGY adds <A NAME="654"></A><TT>TLMIN</TT>/<A NAME="656"></A><TT>TLMAX</TT> keywords to the <A NAME="658"></A><TT>PI</TT> column.
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="emenergy.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

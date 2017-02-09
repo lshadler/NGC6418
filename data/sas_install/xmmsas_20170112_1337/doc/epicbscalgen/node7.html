@@ -1,0 +1,271 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="epicbscalgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epicbscalgen.css">
+
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epicbscalgen (ccftools-1.35.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Computational scheme"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Practical examples and hints"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epicbscalgen.html">Home Page</A> / <A  HREF="node3.html">Description</A> / <A  HREF="node4.html">Computational scheme</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00031300000000000000">
+Algorithm</A>
+</H3>
+The basic idea is to minimize the difference between the true source
+coordinates and the ones computed by the <A NAME="533"></A><A NAME="tex2html8"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+as
+a function of the three angles. More explicitly, the following
+steps are carried out:
+
+<OL>
+<LI><SPAN CLASS="MATH"><IMG
+ WIDTH="43" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$n=0$"></SPAN>
+
+<P>
+</LI>
+<LI>Set <!-- MATH
+ $(\phi_0, \theta_0, \psi_0) = (0, 0, 0)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="151" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$(\phi_0, \theta_0, \psi_0) = (0, 0, 0)$"></SPAN>, i.e. assume perfect
+alignment between the star tracker/spacecraft and instrument boresight frame
+in Fig.&nbsp;1.
+
+<P>
+</LI>
+<LI>run the task <A NAME="537"></A><A NAME="tex2html9"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>
+on the event list
+	<SPAN CLASS="MATH"><IMG
+ WIDTH="52" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$EL_{n-1}$"></SPAN> producing a new event list <SPAN CLASS="MATH"><IMG
+ WIDTH="36" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$EL_n$"></SPAN> with sky coordinates
+	corresponding to the tuple <!-- MATH
+ $(\phi_n, \theta_n, \psi_n)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="84" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$(\phi_n, \theta_n, \psi_n)$"></SPAN>.
+
+<P>
+</LI>
+<LI>accumulate a sky image <SPAN CLASS="MATH"><IMG
+ WIDTH="50" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.png"
+ ALT="$IMG_n$"></SPAN> from event list <SPAN CLASS="MATH"><IMG
+ WIDTH="36" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$EL_n$"></SPAN>
+	with task <A NAME="541"></A><A NAME="tex2html10"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+<P>
+</LI>
+<LI>run <A NAME="545"></A><A NAME="tex2html11"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+on <SPAN CLASS="MATH"><IMG
+ WIDTH="50" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.png"
+ ALT="$IMG_n$"></SPAN> which gives a list of source positions
+	in absolute sky coordinates <!-- MATH
+ $(\alpha_i, \delta_i)_n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="60" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$(\alpha_i, \delta_i)_n$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="88" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$i=1,\ldots,N$"></SPAN>
+
+<P>
+</LI>
+<LI>identify the reference sources in the new source list and compute
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+\epsilon_n = \sum_{i=1}^N (\alpha_i^{\mbox{ref}}-\alpha_i)^2
++ (\delta_i^{\mbox{ref}}-\delta_i)^2
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="238" HEIGHT="56" BORDER="0"
+ SRC="img17.png"
+ ALT="\begin{displaymath}
+\epsilon_n = \sum_{i=1}^N (\alpha_i^{\mbox{ref}}-\alpha_i)^2
++ (\delta_i^{\mbox{ref}}-\delta_i)^2
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">1</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+</LI>
+<LI>if <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$\epsilon_n$"></SPAN> is small enough the sought set of angles is found:
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+(\phi_n, \theta_n, \psi_n)
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="77" HEIGHT="28" BORDER="0"
+ SRC="img19.png"
+ ALT="\begin{displaymath}
+(\phi_n, \theta_n, \psi_n)
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">2</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+else
+
+<UL>
+<LI>compute new angles for the next iteration
+<P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{eqnarray*}
+n &=& n + 1\\
+       \phi_n &=& \phi_{n-1} + \Delta\phi_n\\
+       \theta_n &=& \theta_{n-1} + \Delta\theta_n\\
+       \psi_n  &=& \psi_{n-1} + \Delta\psi_n
+\end{eqnarray*}
+ -->
+<IMG
+ WIDTH="149" HEIGHT="99" BORDER="0"
+ SRC="img20.png"
+ ALT="\begin{eqnarray*}
+n &amp;=&amp; n + 1\\
+\phi_n &amp;=&amp; \phi_{n-1} + \Delta\phi_n\\
+\the...
+...{n-1} + \Delta\theta_n\\
+\psi_n &amp;=&amp; \psi_{n-1} + \Delta\psi_n
+\end{eqnarray*}"></DIV>
+<BR CLEAR="ALL"><P></P>
+<BR CLEAR="ALL"><P></P>
+</LI>
+<LI>set boresight angles to <!-- MATH
+ $(\phi_n, \theta_n, \psi_n)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="84" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$(\phi_n, \theta_n, \psi_n)$"></SPAN> via the CAL
+</LI>
+<LI>goto 3
+</LI>
+</UL>
+endif
+</LI>
+</OL>
+Thus, the procedure is a minimization of the sum of squares of the
+absolute deviations of the reference source positions from the true
+values in the 3-dimensional parameter space of the boresight misalignment
+angles. The actual minimization scheme employed is the Nelder-Mead Simplex
+method[<A
+ HREF="node16.html#ct:nr">3</A>] which uses only function evaluations. It has been
+found that the Simplex scheme is much better suited than conventional
+conjugate gradient methods which often fail to efficiently find
+the direction to the global minimum. The dependency of <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$\epsilon$"></SPAN>
+on the third angle <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$\psi$"></SPAN>, i.e., the calibration around the optical axis,
+has been found to be fairly weak. For the sake of efficiency, the
+search for the global minimum has therefore been split into two stages:
+
+<OL>
+<LI>Minimization of <!-- MATH
+ $\epsilon=\epsilon(\phi, \theta, \psi=\mbox{const})$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="150" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$\epsilon=\epsilon(\phi, \theta, \psi=\mbox{const})$"></SPAN>
+with a fairly relaxed stopping criterion.
+</LI>
+<LI>Starting from the local minimum found in step 1, full minimization
+of <!-- MATH
+ $\epsilon=\epsilon(\phi, \theta, \psi)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="93" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$\epsilon=\epsilon(\phi, \theta, \psi)$"></SPAN> with a more stringent
+stopping criterion.
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Computational scheme"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Practical examples and hints"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

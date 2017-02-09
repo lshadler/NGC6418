@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Spectrum Extraction</TITLE>
+<META NAME="description" CONTENT="Spectrum Extraction">
+<META NAME="keywords" CONTENT="evselect">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="evselect.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+evselect (evselect-3.62) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Event List Output"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Extraction Stage (extractor)"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Image Extraction"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node25.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="evselect.html">Home Page</A> / <A  HREF="node3.html">Description</A> / <A  HREF="node6.html">Extraction Stage (extractor)</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00032300000000000000">
+Spectrum Extraction</A>
+</H3>
+
+<P>
+Spectrum extraction is turned on by setting the parameter <TT>spectrumset</TT>, which
+specifies the name of the output spectrum file.  A spectrum,
+as defined here, is an OGIP compliant <A NAME="tex2html10"
+  HREF="http://heasarc.gsfc.nasa.gov/docs/heasarc/fits.html">FITS</A> file, made by histogramming the
+energy column of an input table.  The energy column must be integer-valued, and any
+specified binning factor or energy ranges must be integer-valued as well. The column 
+to histogram is specified with the parameter <TT>energycolumn</TT>.  More general
+histogramming of real-valued columns can be performed using the histogram extraction
+utility in <A NAME="1069"></A><A NAME="tex2html11"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>.  If a real-valued column is fed to the spectrum extractor,
+then a warning is issued, and all values in the column are truncated to integers
+before being accumulated into a spectrum.  Note that the parameter <TT>energycolumn</TT>
+is also used in light curve extraction (see below).
+
+<P>
+<A NAME="1074"></A><A NAME="tex2html12"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+performs true binning of spectral files, as opposed to OGIP grouping.
+The binning factor is set via the parameter <TT>spectralbinsize</TT>,
+which is set to 10 by default.  The energy range for the spectrum is
+determined in one of three ways.  First, if the parameters
+<TT>specchannelmin</TT> and <TT>specchannelmax</TT> are set, they are used for the
+spectral range.  If these values are not set, then the input data set
+is queried for the <A NAME="1081"></A><TT>TLMIN</TT> and <A NAME="1083"></A><TT>TLMAX</TT> attributes of the energy column, and if
+available these are used for the energy range.  Finally, if no other
+information is available, then the actual range of the energy column data
+itself is used as the minimum and maximum values for extraction of the
+spectrum.  Note that if <TT>specchannelmin</TT> or <TT>specchannelmax</TT>
+exceed the allowed data range set by <A NAME="1087"></A><TT>TLMIN</TT> and <A NAME="1089"></A><TT>TLMAX</TT>, then a
+warning message is issued, and the range is adjusted to be within the allowed
+limits.  If the parameter <TT>ignorelegallimits</TT> is set to true, then the keywords
+<A NAME="1092"></A><TT>TLMIN</TT> and <A NAME="1094"></A><TT>TLMAX</TT> are ignored, that is they are treated as if their values are
+not set.  All range and binning parameters are in the units of the column
+from which the data is being extracted.
+
+<P>
+As the energy range and binning factor of the spectrum is needed by down-stream
+software (for example to produce an RMF file), this information is written to
+keywords in the spectrum file, using a WCS style specification.  The keyword
+<A NAME="1096"></A><TT>SPECPIX</TT> gives the value of the reference channel in the spectrum.  The
+keyword <A NAME="1098"></A><TT>SPECVAL</TT> then is set to the value of the energy column which
+corresponds to the center of the spectrum's reference channel.  The keyword
+<A NAME="1100"></A><TT>SPECDELT</TT> is set to the binning factor.
+
+<P>
+For XMM only data, one can produce a spectrum of rates rather than
+counts, using the exposure information available in the XMM event
+files.  In this case a ``weight'' column must also be specified, and
+is used to specify the weight given to each event in the event list.
+This is activated by setting the name of the weighting column using
+the parameter <TT>zcolumn</TT>.  An error on the weight can also be
+specified using the <TT>zerrorcolumn</TT> parameter.  If this parameter
+is not set, then the error on the weight is set to the value of the
+weight itself.  Each weight is divided by the exposure time for the
+particular CCD from which the event originated, and these values are
+summed on a bin by bin basis to create the spectrum of rates.  See the
+section on exposure information for more details on how the CCD
+exposures are calculated.
+
+<P>
+<A NAME="1104"></A><A NAME="tex2html13"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+does not calculate the <A NAME="1108"></A><TT>BACKSCAL</TT> keyword, but simply sets
+its value to unity.  The task <A NAME="1110"></A><A NAME="tex2html14"
+  HREF="../backscale/index.html"><SPAN  CLASS="textbf">backscale</SPAN></A>
+calculates a proper value for this 
+keyword.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Event List Output"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Extraction Stage (extractor)"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Image Extraction"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node25.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

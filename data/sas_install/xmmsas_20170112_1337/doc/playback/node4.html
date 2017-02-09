@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Examples</TITLE>
+<META NAME="description" CONTENT="Examples">
+<META NAME="keywords" CONTENT="playback">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="playback.css">
+
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+playback (playback-1.4) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="playback.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000"></A>
+<A NAME="playback:desription:examples"></A>
+<BR>
+Examples
+</H2>
+
+<P>
+In the following we use the data set <TT>test.ds</TT> created as follows:
+
+<P>
+
+<UL>
+<LI><TT>dscreatedataset name='test.ds'</TT>
+</LI>
+<LI><TT>dsaddtable name='table' rows=10 set='test.ds</TT>
+</LI>
+<LI><TT>dssetattr to=test.ds%HELLO -type=string -value="hello ccb"</TT>
+</LI>
+</UL>
+
+<P>
+</SMALL></SMALL>
+<OL>
+<LI><TT>playback -sets=test.ds</TT> displays:
+
+<P>
+
+<P>
+<PRE>
+playback:- # --------------------------
+playback:- # SAS commands from test.ds:
+playback:- # --------------------------
+playback:- dscreatedataset name='test.ds' # (daltools-0.27) [xmmsas_20001001_1900]
+playback:- dsaddtable label='' name='table' position=-1 rows=10 set='test.ds' withlabel=no withposition=no # (daltools-0.27) [xmmsas_20001001_1900]
+playback:- dssetattr label='' to='test.ds%HELLO' type='string' units='' value='hello ccb' # (daltools-0.27) [xmmsas_20001001_1900]
+</PRE>
+
+<P>
+<TT>playback -sets=test.ds -showhistory=yes</TT> displays:
+
+<P>
+<PRE>
+playback:- # --------------------------
+playback:- # SAS commands from test.ds:
+playback:- # --------------------------
+playback:- dscreatedataset name='test.ds' # (daltools-0.27) [xmmsas_20001001_1900]
+playback:- dsaddtable label='' name='table' position=-1 rows=10 set='test.ds' withlabel=no withposition=no # (daltools-0.27) [xmmsas_20001001_1900]
+playback:- dssetattr label='' to='test.ds%HELLO' type='string' units='' value='hello ccb' # (daltools-0.27) [xmmsas_20001001_1900]
+playback:- # -----------------------------
+playback:- # History records from test.ds:
+playback:- # -----------------------------
+playback:- # Created by dscreatedataset (daltools-0.27) [xmmsas_20001001_1900] at 2
+playback:- # 000-10-02T10:05:25.000
+playback:- # Modified by dsaddtable (daltools-0.27) [xmmsas_20001001_1900] at 2000-
+playback:- # 10-02T10:05:58.000
+playback:- # Modified by dssetattr (daltools-0.27) [xmmsas_20001001_1900] at 2000-1
+playback:- # 0-02T11:08:50.000
+</PRE>
+<P>
+<SMALL CLASS="TINY">
+</LI>
+<LI>To extract the list of SAS tasks that were used to create
+  <TT>test.ds</TT> type (for a Bourne-like Unix shell):
+</SMALL>
+<P>
+<SMALL CLASS="TINY"><TT>playback -sets=test.ds -withscriptfile=yes -scriptfile=myscript</TT>
+</SMALL>
+<P>
+<SMALL CLASS="TINY">that writes into <TT>myscript</TT> the fllowing:
+</SMALL>
+<P>
+<SMALL CLASS="TINY"></SMALL><PRE>
+ # --------------------------
+ # SAS commands from test.ds:
+ # --------------------------
+ dscreatedataset name='test.ds' # (daltools-0.27) [xmmsas_20001001_1900]
+ dsaddtable label='' name='table' position=-1 rows=10 set='test.ds' withlabel=no withposition=no # (daltools-0.27) [xmmsas_20001001_1900]
+ dssetattr label='' to='test.ds%HELLO' type='string' units='' value='hello ccb' # (daltools-0.27) [xmmsas_20001001_1900]
+</PRE><SMALL CLASS="TINY"></SMALL>
+<P>
+<SMALL CLASS="TINY"><SMALL CLASS="TINY">
+</LI>
+</OL>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

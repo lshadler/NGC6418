@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="omdetect">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omdetect.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="omdetect.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omdetect (omdetect-5.36.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="omdetect.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node45.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omdetect.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="omdetect:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+The primary purpose of <SPAN  CLASS="textbf">omdetect</SPAN> is to perform source-detection on either <SPAN  CLASS="textbf">OM IMAGING</SPAN> (images produced by <SPAN  CLASS="textbf">ommodmap</SPAN>), 
+<SPAN  CLASS="textbf">FAST</SPAN> or <SPAN  CLASS="textbf">GRISM</SPAN> mode product images. From version <SPAN  CLASS="textbf">5.17</SPAN> it also performs upon images produced by <SPAN  CLASS="textbf">ommosaic</SPAN>. 
+For <SPAN  CLASS="textbf">GRISM</SPAN> images the sources are  the zero and first order spectra. For <SPAN  CLASS="textbf">OM IMAGING</SPAN> mode data it also performs 
+photometry on the detected sources and sets source flags. Its primary output file is a <SPAN  CLASS="textbf">FITS</SPAN> file containing 
+a <SPAN  CLASS="textbf">SRCLIST</SPAN> table that contains various parameters of the detected sources.
+
+<P>
+The following provides an overall description of how <SPAN  CLASS="textbf">omdetect</SPAN> works in the <SPAN  CLASS="textbf">IMAGING</SPAN> mode.
+
+<P>
+The image is first loaded into memory from the <SPAN  CLASS="textbf">PRIMARY</SPAN> FITS block in the file and also the <SPAN  CLASS="textbf">QUALITY</SPAN> image.
+For image files produced by <SPAN  CLASS="textbf">ommodmap</SPAN> the latter image will have been constructed by <SPAN  CLASS="textbf">omcosflag</SPAN> and provides a map of where 
+bad-pixels are. For image files produced by <SPAN  CLASS="textbf">ommosaic</SPAN>, the <SPAN  CLASS="textbf">QUALITY</SPAN> image contains additional information about
+pixel-quality issues. <SPAN  CLASS="textbf">Omdetect's</SPAN> detection algorithms will ignore any  
+image pixel in which the corresponding quality-pixel is 1 (ie a bad pixel) and during the photometry stage it will 
+use it to set bit 0 of the source-quality flag for sources containing one or more bad pixels. 
+
+<P>
+<SPAN  CLASS="textbf">Omdetect</SPAN> computes a background image in order to identify pixels that may be part
+of a source. It uses two different algorithms for detecting <SPAN  CLASS="textbf">point-like</SPAN>  and <SPAN  CLASS="textbf">extended</SPAN> sources and 
+a source is classified as either one from a comparison of its computed width with  that of the <SPAN  CLASS="textbf">PSF</SPAN> for the <SPAN  CLASS="textbf">OM</SPAN> filter width. 
+<SPAN  CLASS="textbf">Omdetect</SPAN> uses two internal 2-d integer images  to record the pixels that are assigned to <SPAN  CLASS="textbf">point-like</SPAN> and <SPAN  CLASS="textbf">extended</SPAN> 
+sources (the <SPAN  CLASS="textbf">plevel</SPAN> and <SPAN  CLASS="textbf">elevel</SPAN> images, respectively).
+
+<P>
+The point-source detection algorithm is run first, and for each pixel higher than a specified value above the  
+local background value various checks are made to see if the pixel could be part of a 
+source. If a likely source is found its position and shape parameters are computed by moments and its classification is determined.
+Usually the source will be classified as <SPAN  CLASS="textbf">point-like</SPAN> (since this algorithm is tuned for such sources) and the pixels on the <SPAN  CLASS="textbf">plevel</SPAN> 
+image that are assigned to the source are set equal to the source number.  Occasionally the source will be classified
+as <SPAN  CLASS="textbf">extended</SPAN> and then the pixels on the <SPAN  CLASS="textbf">elevel</SPAN> image that are assigned to the source are set equal to the source number. 
+The algorithm makes many passes over the image, using a number of different source-identification algorithms tuned to 
+pick up different types of <SPAN  CLASS="textbf">point-like</SPAN> sources (eg sources surrounded by mod-8 pattern, sources that have close neighbours), to 
+pick up as many sources as possible. This algorithm largely overcomes the problem of locating sources contaminated
+by scattered light features. The pixels are examined in the order of decreasing pixel
+brightness, and this overcomes other problems due to strong mod-8 patterns, etc.
+
+<P>
+The extended-source detection algorithm works by examining groups of pixels above a background threshold. Various
+checks are made to ensure that the group of pixels is not just part of a <SPAN  CLASS="textbf">mod-8 pattern</SPAN>
+or part of a <SPAN  CLASS="textbf">scattered-light feature</SPAN>. If a likely source is found, its position 
+and shape parameters are computed by moments and it is classified as either <SPAN  CLASS="textbf">point-like</SPAN> or <SPAN  CLASS="textbf">extended</SPAN>.
+Usually the source will be classified as the latter, and the <SPAN  CLASS="textbf">elevel</SPAN> image pixels assigned to the source are set 
+equal to the source number. Occasionally a faint source may be classified as <SPAN  CLASS="textbf">point-like</SPAN>, and in this case 
+the <SPAN  CLASS="textbf">pelevel</SPAN> image pixels assigned to the source are set  equal to the source number. When the detection process is 
+finished a check is made on <SPAN  CLASS="textbf">extended sources</SPAN> to see if they can be split into two or more sources.
+
+<P>
+Having obtained a list of sources, comprising of various parameters such as positions,
+extension flags and shapes, aperture-photometry is then performed on each source to
+produce a count-rate for each source that is consistent with the <SPAN  CLASS="textbf">OM
+calibration</SPAN> procedure. <SPAN  CLASS="textbf">Omdetect</SPAN> does not compute instrumental magnitudes from
+these count-rates, and <SPAN  CLASS="textbf">ommag</SPAN> needs to be run using the output source-list
+to accomplish this. Flags are also added to make the user aware of any potential
+problems with the photometry of a particular source.   
+
+<P>
+An output source-list file is produced containing source positions, parameters measuring their size and shape, 
+source count-rates, various other photometry parameters and source flags. A count-rate limit is 
+written to the source list file header (keyword CRLIMIT) reflecting the mean 5 
+sigma above background detection threshold for the image. When the input image is a <SPAN  CLASS="textbf">mosaiced sky-image</SPAN>, 
+the <SPAN  CLASS="textbf">SRCLIST</SPAN> table in the ouput file will contain columns for the <SPAN  CLASS="textbf">RA</SPAN> and <SPAN  CLASS="textbf">DEC</SPAN> coordinates. These
+coordinates will have been computed using the <SPAN  CLASS="textbf">CRPIX1</SPAN><SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\backslash$"></SPAN><SPAN  CLASS="textbf">CRPIX2</SPAN>
+and the <SPAN  CLASS="textbf">CRVAL1</SPAN><SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\backslash$"></SPAN><SPAN  CLASS="textbf">CRVAL2</SPAN> values in the header of the input image file.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="omdetect.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node45.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

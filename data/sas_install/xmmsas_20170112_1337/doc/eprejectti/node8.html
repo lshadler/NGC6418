@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Usage</TITLE>
+<META NAME="description" CONTENT="Usage">
+<META NAME="keywords" CONTENT="eprejectti">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eprejectti.css">
+
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eprejectti (eprejectti-0.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Caveats: things to take"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eprejectti.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000">
+<B>Usage</B></A>
+</H2>
+
+<P>
+Task <A NAME="388"></A><A NAME="tex2html4"
+  HREF="../eprejectti/index.html"><SPAN  CLASS="textbf">eprejectti</SPAN></A>
+is intended to be run immediately after 
+task <A NAME="392"></A><A NAME="tex2html5"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>, either in the PPS or alternatively as part of the
+offline analysis using the <A NAME="396"></A><A NAME="tex2html6"
+  HREF="../epchain/index.html"><SPAN  CLASS="textbf">epchain</SPAN></A>
+script. 
+
+<P>
+The <A NAME="400"></A><A NAME="tex2html7"
+  HREF="../epchain/index.html"><SPAN  CLASS="textbf">epchain</SPAN></A>
+task parameters <TT>runeprejectti</TT>,
+<TT>sigma</TT>, <TT>badcolumnset</TT>, <TT>noiseparameters</TT>,and 
+<TT>screenrejected</TT> are available to control 
+the behavior of <A NAME="409"></A><A NAME="tex2html8"
+  HREF="../eprejectti/index.html"><SPAN  CLASS="textbf">eprejectti</SPAN></A>
+and the subsequent event filtering.
+Care should be taken that parameter <TT>screenlowthresh</TT> is set to
+a sufficiently low value (120 eV) to preserve the noise-screened
+low energy events in the final calibrated event set. A typical <A NAME="414"></A><A NAME="tex2html9"
+  HREF="../epchain/index.html"><SPAN  CLASS="textbf">epchain</SPAN></A>
+call to run <A NAME="418"></A><A NAME="tex2html10"
+  HREF="../eprejectti/index.html"><SPAN  CLASS="textbf">eprejectti</SPAN></A>
+would look like this (see <A NAME="422"></A><A NAME="tex2html11"
+  HREF="../epchain/index.html"><SPAN  CLASS="textbf">epchain</SPAN></A>
+task description for other epchain parameters):
+
+<P>
+<TT>epchain runeprejectti=yes ...</TT>
+
+<P>
+After running epchain, a noise screened low energy image may, e.g., 
+be created by the following call
+
+<P>
+<TT>evselect expression='PHA&gt;20 &amp;&amp; PI in (120:200)' ...</TT>
+
+<P>
+Note, that events with PHA values below 20 need to be removed to 
+create a clean image.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Caveats: things to take"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

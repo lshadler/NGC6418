@@ -1,0 +1,73 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="input" type="table">
+   <DESCRIPTION>Name of input Attitude History File</DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="track" type="table">
+   <DESCRIPTION>Name of input Ephmeris File</DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="output" type="table">
+   <DESCRIPTION>Name of output Attitude History File</DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="minstable" type="real" default="30.0">
+   <DESCRIPTION>Minimum duration of stable pointing to decimate</DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="granularity" type="real" default="30.0">
+   <DESCRIPTION>Duration of decimated stable pointing bins</DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withrefatt" type="bool" default="no">
+   <DESCRIPTION>User-defined reference attitude</DESCRIPTION>
+
+   <CASE>
+
+    <ITEM value="no"></ITEM>
+
+    <ITEM value="yes">
+
+     <PARAM id="refra" type="real" default="-999">
+      <DESCRIPTION>Right ascension of the user-defined reference attitude [decimal degrees]</DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="refdec" type="real" default="-999">
+      <DESCRIPTION>Declination of the user-defined reference attitude [decimal degrees]</DESCRIPTION>
+     </PARAM>
+
+    </ITEM>
+
+   </CASE>
+
+  </PARAM>
+
+  <PARAM id="creatediagnostics" type="bool" default="no">
+   <DESCRIPTION>Create diagnostics file</DESCRIPTION>
+
+   <CASE>
+
+    <ITEM value="no"></ITEM>
+
+    <ITEM value="yes">
+
+     <PARAM id="diagfile" type="table" default="attmovediag.ds">
+      <DESCRIPTION>Diagnostics file to create</DESCRIPTION>
+     </PARAM>
+
+    </ITEM>
+
+   </CASE>
+
+  </PARAM>
+
+
+ </CONFIG>
+
+</FILE>
+
+
+
+

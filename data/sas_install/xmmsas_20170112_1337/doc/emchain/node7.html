@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Bad pixels detection</TITLE>
+<META NAME="description" CONTENT="Bad pixels detection">
+<META NAME="keywords" CONTENT="emchain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emchain.css">
+
+<LINK REL="next" HREF="node8.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emchain (emchain-11.19) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Flare rejection"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Customisation"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emchain.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00034000000000000000"></A>
+<A NAME="emchain:description:description:badpix"></A>
+<BR>
+Bad pixels detection
+</H2>
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="emchain:description:description:badpix:search"></A><A NAME="728"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 3:</STRONG>
+Organisation of the EPIC-MOS chain: Bad pixels search. 
+Same conventions as in Fig <A HREF="node5.html#emchain:description:description:main:merge">1</A></CAPTION>
+<TR><TD><IMG
+ WIDTH="712" HEIGHT="661" BORDER="0"
+ SRC="img4.png"
+ ALT="\begin{figure}\centerline{\psfig{figure=imaging2.eps,width=\textwidth}}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+In most cases relying on the bad pixels
+registered in the CCF is not enough. This is because
+the CCF stores only the bright pixels of relatively high occurrence,
+but bright pixels at a low level may be a nuisance as well.
+<BR>
+If <TT>badpixfindalgo</TT>=EM (default) or EP, 
+the whole analysis of one exposure 
+(Fig <A HREF="node5.html#emchain:description:description:main:merge">1</A>)
+is run first with <A NAME="952"></A><A NAME="tex2html34"
+  HREF="../emevents/index.html"><SPAN  CLASS="textbf">emevents</SPAN></A>
+and <A NAME="956"></A><A NAME="tex2html35"
+  HREF="../emenergy/index.html"><SPAN  CLASS="textbf">emenergy</SPAN></A>
+in a simplified mode,
+and skipping <A NAME="960"></A><A NAME="tex2html36"
+  HREF="../badpix/index.html"><SPAN  CLASS="textbf">badpix</SPAN></A>
+and <A NAME="964"></A><A NAME="tex2html37"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>.
+Then one of two bad pixel finding algorithms is called 
+(Fig <A HREF="#emchain:description:description:badpix:search">3</A>), depending on
+<TT>badpixfindalgo</TT>.
+
+<UL>
+<LI>If <TT>badpixfindalgo</TT> is set to 'EP',
+      <A NAME="970"></A><A NAME="tex2html38"
+  HREF="../badpixfind/index.html"><SPAN  CLASS="textbf">badpixfind</SPAN></A>
+is called. This is a conservative algorithm
+      which will find clear-cut bright pixels or columns.
+</LI>
+<LI>If <TT>badpixfindalgo</TT> is not set or set to 'EM',
+      <A NAME="975"></A><A NAME="tex2html39"
+  HREF="../embadpixfind/index.html"><SPAN  CLASS="textbf">embadpixfind</SPAN></A>
+is called. This is a more sensitive algorithm
+      which will detect bad pixels, segments of columns or rows down
+      to the statistical limit of Poisson counts.
+</LI>
+</UL>
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="emchain:description:description:badpix:flares"></A><A NAME="730"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 4:</STRONG>
+Organisation of the EPIC-MOS chain: 
+Flare screening between first and second bad pixels searches. 
+Same conventions as in Fig <A HREF="node5.html#emchain:description:description:main:merge">1</A></CAPTION>
+<TR><TD><IMG
+ WIDTH="717" HEIGHT="605" BORDER="0"
+ SRC="img5.png"
+ ALT="\begin{figure}\centerline{\psfig{figure=imaging3.eps,width=\textwidth}}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+If part of the exposure is affected by flares, this can seriously reduce
+the power of the bad pixels search (flares act as noise for the bad pixels 
+and make detecting them more difficult).
+Therefore an intermediate flare screening 
+(like in Sect. <A HREF="node6.html#emchain:description:description:flares">3.3</A>)
+is necessary (Fig <A HREF="#emchain:description:description:badpix:flares">4</A>).
+The bright pixels (which can perturb the flare screening) are 
+flagged using <A NAME="979"></A><A NAME="tex2html40"
+  HREF="../ebadpixupdate/index.html"><SPAN  CLASS="textbf">ebadpixupdate</SPAN></A>.
+The resulting files are used to generate Good Time Intervals outside flares. 
+Those Good Time Intervals
+are exposure specific whatever the value of <TT>globalflare</TT>.
+Then the bad pixel search is run a second time on the data outside flares,
+in incremental mode.
+
+<P>
+For <TT>badpixfindalgo</TT>=EM (or not set), the algorithm is called
+a third time (incrementally) on energies below 500 eV
+(and after flare screening), unless <TT>lowenerbadpix</TT>=N.
+This sometimes detects bad pixels more easily, because most appear
+at low energy.
+
+<P>
+The resulting bad pixels file 
+is then used by <A NAME="986"></A><A NAME="tex2html41"
+  HREF="../badpix/index.html"><SPAN  CLASS="textbf">badpix</SPAN></A>
+in the main pass on the data 
+(Fig <A HREF="node5.html#emchain:description:description:main:merge">1</A>).
+Bad pixels declared in the CCF are read as well, and merged with those
+found in the local search.
+This second pass restarts just after <A NAME="990"></A><A NAME="tex2html42"
+  HREF="../emframes/index.html"><SPAN  CLASS="textbf">emframes</SPAN></A>.
+The <TT>stopafterbadpixfind</TT> parameter allows to stop <A NAME="995"></A><A NAME="tex2html43"
+  HREF="../emchain/index.html"><SPAN  CLASS="textbf">emchain</SPAN></A>
+before the main pass, to investigate in detail how the bad pixels
+detection worked.
+
+<P>
+If <TT>badpixfindalgo</TT> is set to NO, then the first loop is not done
+and the bright pixels are read from the CCF.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Flare rejection"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Customisation"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>mask-filter</TITLE>
+<META NAME="description" CONTENT="mask-filter">
+<META NAME="keywords" CONTENT="selectlib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="selectlib.css">
+
+<LINK REL="next" HREF="node20.html">
+<LINK REL="previous" HREF="node18.html">
+<LINK REL="up" HREF="node17.html">
+<LINK REL="next" HREF="node20.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+selectlib (selectlib-4.74.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node18.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="gti-filter"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="File-based filters"></A>
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="region-filter"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node30.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="selectlib.html">Home Page</A> / <A  HREF="node2.html">Description</A> / <A  HREF="node17.html">File-based filters</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION000212200000000000000">
+<TT>mask</TT>-filter</A>
+</H3>
+<TT>mask(x.msk,<EM>x0</EM>,<EM>y0</EM>,<EM>x</EM>,<EM>y</EM>)</TT>
+is true if the value of the mask image shifted by <SPAN CLASS="MATH"><IMG
+ WIDTH="57" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img50.png"
+ ALT="$(x0,y0)$"></SPAN>
+in the data set <TT>x.msk</TT> at the location <SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.png"
+ ALT="$(x,y)$"></SPAN> is not equal to zero.
+
+<P>
+If the specified mask image contains the
+<A
+ HREF="node29.html#ct:WCSFITS">World-Coordinate-System (WCS)</A> attributes 
+<A NAME="1387"></A><TT>CRPIX<EM>x</EM></TT>, <A NAME="1394"></A><TT>CRVAL<EM>x</EM></TT>, <A NAME="1401"></A><TT>CDELT<EM>x</EM></TT> with
+<TT><EM>x</EM></TT> being either 1 or 2, image coordinate values are computed
+from the respective integer pixel numbers <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img52.png"
+ ALT="$n$"></SPAN> as
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+r_i(n) = (n - 
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="365" HEIGHT="28" BORDER="0"
+ SRC="img53.png"
+ ALT="\begin{displaymath}
+r_i(n) = (n - \index{Attributes!CRPIX}{\tt CRPIX}_i) \times...
+... CDELT}_i + \index{Attributes!CRVAL}{\tt CRVAL}_i,\qquad i=1,2
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">1</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+This effectively defines the pixel size in the mask image as
+<!-- MATH
+ $$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="124" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img54.png"
+ ALT="$\index{Attributes!CDELT1}{\tt CDELT1} \times \index{Attributes!CDELT2}{\tt CDELT2}$"></SPAN>.
+If symbolic names have been specified in the <TT>mask</TT> filter command
+as <TT><EM>x</EM></TT> and <TT><EM>y</EM></TT> and the corresponding columns in the
+processed table have associated WCS-attributes
+<A NAME="1422"></A><TT>TCRPX<EM>x</EM></TT>, <A NAME="1429"></A><TT>TCRVL<EM>x</EM></TT>, and <A NAME="1436"></A><TT>TCDLT<EM>x</EM></TT> respectively
+the actual coordinate values are calculated as above. This effectively
+defines the table pixel size as <!-- MATH
+ $y$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="124" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img55.png"
+ ALT="$\index{Attributes!TCDLT}{\tt TCDLT}x \times \index{Attributes!TCDLT}{\tt TCDLT}y$"></SPAN>.
+The mask filter expression then evaluates to true for each ``table pixel''
+if it has no overlap with any image mask pixel.
+
+<P>
+Mask images are ordinary rectangular arrays of any
+integral type supported by the <A NAME="1444"></A><A NAME="tex2html9"
+  HREF="../dal/index.html"><SPAN  CLASS="textbf">dal</SPAN></A>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node18.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="gti-filter"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="File-based filters"></A>
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="region-filter"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node30.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

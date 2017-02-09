@@ -1,0 +1,64 @@
+ChangeLog for esources
+===============================
+
+Open SPRs:
+----------
+Nil
+
+Version 1.4.1 - 2011-01-26 (MAS/LUX)
+----------------------------
+- Cleaned up junk.
+- Now the test harness uses only those data from {\tt testprods}.  Some codes in the test harness are modified accordingly.
+- The input event files are not modified the slightest any more (a part of which used to be modified in HISTORY etc).  See the reference for detail.
+	
+Version 1.4 - 2010-08-30 (MAS/LUX)
+----------------------------
+- Closed SCR-286 (*_FLAG are copied to the output file).
+- DEPENDency on testprods added (ver.1.22), fitsutils added (ver.1.1).
+- Most test data files in test/prod/ but one (source-list) are deleted, which are now imported from the testprods/ package.
+	
+Version 1.3.1 - 2009-05-13 (EO)
+-------------
+	+ Refixed DEPEND file.
+
+Version 1.3 - 2009-05-11 (EO)
+-----------
+	+ Fix DEPEND file.
+
+Version 1.2 - 2006-08-23 (MAS/LUX)
+----------------------------
+- Close SSC-SPR-3626 (EP_CTS is not calculated when ONTIME is Null).
+- Close SSC-SPR-3627 (In calculating EP_CTS and bin-width, DET_ML and MaskFrac are now taken into account).
+- Fixed a bug which gave not-correct startTimes/stopTimes.
+- Now MOS2 is given a higher priority than MOS1 in calculating the bin-width.
+- Remove function intToHex(intArg), intToHex_20051028(intArg).
+- The test harness with the use of "prod/P0117890901EPX000OBSMLI0000.fits:SRCLIST".  test/prod/ directory created.
+	
+Version 1.1.3 - 2006-05-07 (IMS/JBO)
+----------------------------
+- Error text upgrades.
+- Task description written.
+
+Version 1.1.2 - 2005-12-01 (IMS/LUX)
+----------------------------
+- The task now (optionally) sets the SPECTRA and TSERIES flag columns of the input source list to indicate those sources chosen for source-specific products. This has necessitated a new parameter --setflags.
+
+Version 1.1.1 - 2005-11-07 (IMS/LUX)
+----------------------------
+- Now also transcribes the EP_1_ML_ID column value if it is available.
+
+Version 1.1 - 2005-11-07 (IMS/LUX)
+----------------------------
+- Test harness added.
+
+Version 1.0 - 2005-11-02 (IMS/LUX)
+----------------------------
+- Fixed a bug which was writing backward hex numbers plus nonsense to the file.
+- Added new parameter --instweights.
+- Task now writes src counts for each instrument and the equivalent epic counts.
+- Task now writes RA_CORR and DEC_CORR columns.
+- Task was trying to read source list columns PN_SCTS etc whereas the real names are PN_CTS etc. This now fixed.
+- Task was trying to read TSTART, TSTOP keywords from event list dataset header rather than (the correct) EVENTS table header. This now fixed.
+- Task now checks for null values in *_ONTIME columns as well as *_CTS columns.
+- Directory structure created by pkgmaker.
+

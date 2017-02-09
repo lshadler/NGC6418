@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="dsslib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="dsslib.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="dsslib.html">
+<LINK REL="up" HREF="dsslib.html">
+<LINK REL="next" HREF="node2.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+dsslib (dsslib-5.10) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="dsslib.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Home Page"></A>
+<A HREF="dsslib.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Data Subspace Expression Parser"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="dsslib.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00010000000000000000"></A>
+<A NAME="dsslib:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+The data subspace stores in a <A NAME="tex2html1"
+  HREF="http://heasarc.gsfc.nasa.gov/docs/heasarc/fits.html">FITS</A>file the filtering criteria used to
+select the data in that file.  In our case what we are really talking
+about is storing in an event list file the selection criteria used
+to select the events in that file.  This information will also be
+stored in data products produced from these event lists, but the DSS
+specification essentially refers back to the event list used to create
+the products, and it is probably easiest to think of it in terms of an
+event list.
+
+<P>
+We can think of each of the columns in an event list as an axes in a
+multi-dimensional data space.  Thus each event (row) represents a
+point in this space.  When you filter an event list, what you are
+doing is specifying one or more volumes in the data space into which
+data points must lie.  This is the data subspace (DSS) for this filtered
+event list.  So what one must specify in the data subspace is what
+axes (columns) are filtered on, and what restrictions were applied to
+each of those axes.
+
+<P>
+In the nomenclature used in the API, a data subspace is made of one or
+more components, each component specify a volume in data space.  Each
+component is made up of one or more filters, each filter specifying a
+data axis, and the filtering criteria for this axis.  Another way to
+think of this is that each filter represents a boolean expression for
+a particular value.  Then a data component is a set of logically ANDed
+filters, and a data subspace is a set of logically ORed components.
+It is assumed that if a particular axis does not have a filter
+specified, then all values for that axis are allowed.
+
+<P>
+Several types of data filters are supported.  The simplest is a range
+filter, which specifies a list of valid ranges for a data value.  Bit
+mask filters are supported, which conceptually are just a special case
+of the range filter.  The special case of GTI filters are also
+supported.
+
+<P>
+We also support two-dimensional filters, which specify a geometrical
+region.  In this case it is necessary to specify those data axes which
+represent the <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$X$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$Y$"></SPAN> axes for the region.  These axes are called the
+components of the 2-d filter (note difference in usage of the word
+component here versus above).  The 2-d system itself is also considered
+to be a DSS axis.
+
+<P>
+The most common use of 2-d filters is for coordinate systems (<TT>X-Y
+</TT>, <TT>DETX-DETY </TT>, etc).  Special conventions are detailed in
+[<A
+ HREF="node5.html#asc:keywords">1</A>], whereby a certain 2-d axis name implies it has
+certain component names.  For example, if the axis name is <TT>POS</TT>,
+then by convention it is a <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$2D$"></SPAN> axis with components <TT>X</TT> and <TT>Y</TT>.  I reproduce below the table from [<A
+ HREF="node5.html#asc:keywords">1</A>] detailing
+the conventions:
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">Component names</TD>
+<TD ALIGN="LEFT">Default composite name</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>X,Y</TT></TD>
+<TD ALIGN="LEFT"><TT>POS</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>*X,*Y</TT></TD>
+<TD ALIGN="LEFT"><TT>*</TT>, for all <TT>*</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>RA,DEC</TT></TD>
+<TD ALIGN="LEFT"><TT>EQPOS</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>GLON,GLAT</TT></TD>
+<TD ALIGN="LEFT"><TT>GALPOS</TT></TD>
+</TR>
+</TABLE>
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html29"
+  HREF="node2.html">Data Subspace Expression Parser</A>
+<UL>
+<LI><A NAME="tex2html30"
+  HREF="node3.html">Tips and Grouping of Region Functions</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="dsslib.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Home Page"></A>
+<A HREF="dsslib.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Data Subspace Expression Parser"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

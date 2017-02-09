@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="badpix">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="badpix.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="badpix.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+badpix (badpix-2.32.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="badpix.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="badpix.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="badpix:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+<A NAME="390"></A><A NAME="tex2html2"
+  HREF="../badpix/index.html"><SPAN  CLASS="textbf">badpix</SPAN></A>
+collects together
+pixels identified as containing no useful data, and uses this information to
+produce a badpix extension table to either the input raw events file or a
+copy thereof. Note that no alteration of the actual events extension is
+performed.
+
+<P>
+A very important point regarding the bad pixels is that there are
+essentially <EM>three separate</EM> (though not exclusive) sets of bad
+pixels that must be dealt with. These are (1) the bad pixels uplinked to
+the satellite and eliminated on-board, (2) the bad pixels identified in
+the CCF but not uplinked, and (3) the additional bad pixels associated
+with the particular observation in question. Sets (1) and (2) are 
+contained within the CCF (and in the case of MOS, within the ODF iteself - 
+see below), and <A NAME="394"></A><A NAME="tex2html3"
+  HREF="../badpix/index.html"><SPAN  CLASS="textbf">badpix</SPAN></A>
+deals with these
+first two sets of bad pixels, though, if a file exists containing any
+badpix set (3) information (created using the task
+<A NAME="398"></A><A NAME="tex2html4"
+  HREF="../badpixfind/index.html"><SPAN  CLASS="textbf">badpixfind</SPAN></A>), then this information is accessed
+in addition (if requested).
+
+<P>
+What <A NAME="402"></A><A NAME="tex2html5"
+  HREF="../badpix/index.html"><SPAN  CLASS="textbf">badpix</SPAN></A>
+does is to create the badpix extension to the input
+raw events file (or to a copy thereof), 
+and fill this with the information regarding any or all
+of the badpix sets (1), (2) and (3) (from the
+<A NAME="406"></A><A NAME="tex2html6"
+  HREF="../badpixfind/index.html"><SPAN  CLASS="textbf">badpixfind</SPAN></A>
+output file).
+
+<P>
+The user will be able to specify which set(s) of bad pixels should be
+used to construct the badpix extension (whether just (1), just (2), just
+(3), or any combination of these). Once this has been decided upon, the
+badpix extension is constructed and appended to the input raw events
+file (or a copy), and filled with the relevant information. 
+
+<P>
+In cases where a <A NAME="410"></A><A NAME="tex2html7"
+  HREF="../badpixfind/index.html"><SPAN  CLASS="textbf">badpixfind</SPAN></A>
+file is accessed (badpix set (3)), and 
+either or both of the CCF badpix sets (1 and/or 2), duplicity checking and 
+purging of the <A NAME="414"></A><A NAME="tex2html8"
+  HREF="../badpixfind/index.html"><SPAN  CLASS="textbf">badpixfind</SPAN></A>
+pixels is performed (see comments).
+
+<P>
+Command switches also exist to append a purely empty <A NAME="418"></A><TT>BADPIX</TT> table, or 
+to append a <A NAME="420"></A><TT>BADPIX</TT> table containing only those pixels within the input file
+X/Y window (see parameters and comments). 
+
+<P>
+In the case of MOS, the task accesses the uplinked (set 1) bad pixels from 
+the actual ODF data files of the observation in question. These are then used 
+in preference to any uplinked (set 1) bad pixels found within the CCF. 
+Non-uplinked (set 2) MOS bad pixels are taken from the CCF. 
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="badpix.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

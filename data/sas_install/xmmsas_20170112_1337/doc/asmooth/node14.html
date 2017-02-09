@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Correcting for exposure before smoothing</TITLE>
+<META NAME="description" CONTENT="Correcting for exposure before smoothing">
+<META NAME="keywords" CONTENT="asmooth">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="asmooth.css">
+
+<LINK REL="previous" HREF="node13.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node15.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+asmooth (asmooth-2.30) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node13.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Weighting and masking"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Exposure division, variance and"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="asmooth.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00035000000000000000"></A>
+  <A NAME="asmooth:description:expmaps"></A>
+<BR>
+Correcting for exposure before smoothing
+</H2>
+
+<P>
+Different sections of an image may have different exposure. Few problems are likely to be encountered where the exposure gradient is small compared to the characteristic width of the convolver. Sharp variations in exposure (such as occur for example in image mosaics) will however become blurred through the smoothing. The obvious remedy for this is to divide the input image by the exposure map before smoothing. This facility is provided in <A NAME="1143"></A><A NAME="tex2html9"
+  HREF="../asmooth/index.html"><SPAN  CLASS="textbf">asmooth</SPAN></A>
+through the parameters <TT>withexpimageset</TT> and <TT>expimageset</TT>.
+
+<P>
+Clearly, the division by exposure cannot be done at pixels where the exposure map is zero-valued. The task handles such pixels by setting the corresponding pixels of the weight image to zero. (Whether or not the user explicitly supplies a weight image, an internal weight image is always constructed; the difference being that if <TT>withweightset</TT>=`no', the entire internal weight image is initially set equal to 1.) Note that this also takes care of `droop' at image edges in the same way as is described in section <A HREF="node13.html#asmooth:description:weights">3.4</A>; however the output image may still contain noise at places where the exposure gradient is very large. The only way to avoid such noise is to supply the exposure map also as a weight image.
+
+<P>
+If you wish to create a background map in counts per pixel from an XMM exposure in which the exposure time varies significantly between CCDs, then you will need to remultiply the the output image by the exposure map; if however you wish to create a mosaic from several different cameras or pointings, you may wish not to do so. For this reason, remultiplication by the exposure map has been made optional via the <TT>remultiply</TT> parameter.
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html225"
+  HREF="node15.html">Exposure division, variance and adaptive smoothing</A>
+<LI><A NAME="tex2html226"
+  HREF="node16.html">Smoothing of mosaics</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node13.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Weighting and masking"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Exposure division, variance and"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

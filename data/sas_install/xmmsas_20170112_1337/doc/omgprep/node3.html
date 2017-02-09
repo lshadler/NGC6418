@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="omgprep">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omgprep.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="omgprep.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omgprep (omgprep-1.10) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="omgprep.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omgprep.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="omgprep:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+This tasks clones the OM Imaging Mode Data Image File with the Grism-1
+or Grism-2 filter for subsequent pipeline processing. 
+The image file is prepared for extraction of spectra produced by grisms:
+first the distortion correction is applied, then the image is 
+rotated by the angle corresponding to the grism filter in order
+to align spectra with respect to the pixel columns (for optimisation
+of spectra extraction).
+
+<P>
+Values for additional FITS header keywords necessary for the creation of 
+SSC Data products by subsequent pipeline tasks are taken directly from the
+OM Priority Window Data Auxiliary File, the OM Periodic and Non-Periodic 
+Housekeeping Files and from the OM Observation Summary File through the ODF 
+Access Layer(OAL) and stored in the Primary Header of the output files.
+
+<P>
+The task first reads the binning factors (BINAX1 and BINAX2) from the
+FITS header, along with the BPE binning flag (BINBPE) and the <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$x$"></SPAN> and
+<SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$y$"></SPAN> size of the OSW window (in centroided pixels) along with the <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$x$"></SPAN>
+and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$y$"></SPAN> offsets of the window. The pixel coordinates of the OSW source
+list are then converted to the PIXCOORD reference frame (2048 by 2048
+centroided pixels).
+
+<P>
+The OM optics have a small amount of distortion, and the CAL call
+omDistortion is used to get the offsets of the pixel position from a
+linear scale. These offsets are then applied to the pixel positions. A
+call to GetPlateScale (CAL) is subsequently used to convert from pixels to
+radians. The center of the detector, i.e. the position of the OM
+boresight is pixel 1023.5, 1023.5.
+
+<P>
+The shift and add process is all performed relative to a reference
+frame (used to find the tracking stars), so a call to OAL_getAttitude
+is used, with the time of the reference exposure, to get the
+spacecraft attitude. The CAL Boresight routine is used to obtain the
+boresight offset matrix, which is applied to the s/c attitude to get
+the OM boresight direction.
+The final section of the code takes the OM OSW image and rotates 
+it in order to align the spectra with respect to the pixel columns.
+ If needed, the scattered light features can be removed from 
+the background by using the parameter <I>removescatteredlight=yes/no</I>.
+Please, note that using this parameter essentially increases the 
+working time of the task (up to 10 minutes for large images).
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="omgprep.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

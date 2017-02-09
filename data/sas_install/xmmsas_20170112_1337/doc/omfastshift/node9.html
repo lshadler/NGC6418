@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Comments</TITLE>
+<META NAME="description" CONTENT="Comments">
+<META NAME="keywords" CONTENT="omfastshift">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omfastshift.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="omfastshift.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omfastshift (omfastshift-1.25.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithm"></A>
+<A HREF="omfastshift.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Future developments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omfastshift.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00090000000000000000"></A>
+<A NAME="omfastshift:description:comments"></A>
+<BR>
+Comments
+</H1>
+
+<P>
+
+<UL>
+<LI>FAST mode data is not binned by the DPU. The drifts from the ODF OM
+Tracking History Auxiliary File need to be corrected for BPE only.
+
+<P>
+</LI>
+<LI>All events are assumed to occur in the centre of their pixel. The
+output integer pixel coordinate value is the integer truncation of the real
+coordinate value.
+
+<P>
+</LI>
+<LI>For FAST mode, in addition to a tracking frame time, a FAST mode time
+slice (FMTS) is defined with duration <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$\sim$"></SPAN> SAMPTIME*10ms, where
+SAMPTIME is integer (i.e. integer multiples of a CCD frame)
+
+<P>
+</LI>
+<LI>Each event is tagged with a time stamp (FTCOARSE+FTFINE) corresponding
+to the specific FMTS integration within each tracking frame
+integration, in which each event occurred.  This allows the possibility
+to apply a `fine shift' to each event corresponding to the spacecraft
+drift, after each FMTS integration.
+
+<P>
+</LI>
+<LI>omfastshift produces by default a corrected event list in
+which all events within a FMTS are shifted back to the reference frame
+using drifts calculated from a linear interpolation of the tracking
+frame drifts in the OM Tracking History auxiliary data file.  
+
+<P>
+</LI>
+<LI>A corrected event list in which all events within a tracking frame are
+shifted back to the reference frame using the tracking frame drifts
+can be called for by the setting flag interp_flag = F on the command
+line
+
+<P>
+</LI>
+<LI>It is worth noting that there exists cases in which a FMTS crosses a
+tracking frame boundary. Although events may belong to two tracking
+frames, all events within the FMTS are given the same event timestamp
+and are treated equivalently.
+
+<P>
+</LI>
+<LI>The drift-corrected OM FAST mode event list contains 4 additional
+columns: the corrected X and Y pixel coordinates and OBT time for each event 
+and a flag denoting whether the shift-corrected event falls within the
+defined science window.  This flag is necessary since the s/c drift causes
+the science window to sample a region of the sky larger than the science 
+window. When these events are drift-corrected they may fall outside
+the GO defined science window area.  A value of WIN_FLAG=0 is given for all
+events outside the science window, and WIN_FLAG=1 for all events in
+the science window.
+
+<P>
+</LI>
+<LI>TLMIN and TLMAX are required by <SMALL>EVSELECT</SMALL>.
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithm"></A>
+<A HREF="omfastshift.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Future developments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

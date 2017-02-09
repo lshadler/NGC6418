@@ -1,0 +1,166 @@
+<FILE>
+<CONFIG>
+
+<PARAM id="image" type="string" default="">
+	<DESCRIPTION> A name of a fits file that was generated from xmmselect/evselect </DESCRIPTION>
+</PARAM>
+
+<PARAM id="useodf" type="bool" default="no">
+	<DESCRIPTION> A boolean switch determining whether the procedure uses ODF </DESCRIPTION>
+</PARAM>
+			
+<PARAM id="region" type="string" default="">
+	<DESCRIPTION> Region specification in form of '(DETX, DETY) IN circle(0, 0, 2000)' that indicates the coordinats type and region type and size </DESCRIPTION>
+</PARAM>
+
+<PARAM id="instrument" type="string" default="">
+        <DESCRIPTION> instrument value: XMM(SC), XRT1(X1), XRT2(X2), XRT3(X3), EMOS1(M1), EMOS2(M2), EPN(PN), ERM(RM), RGS1(R1), RGS2(R2), OM </DESCRIPTION>
+        <CASE>
+		<ITEM value=""/>
+                <ITEM value="XMM"/>
+                <ITEM value="SC"/>
+                <ITEM value="XRT1"/>
+                <ITEM value="X1"/>
+                <ITEM value="XRT2"/>
+                <ITEM value="X2"/>
+                <ITEM value="XRT3"/>
+                <ITEM value="X3"/>
+                <ITEM value="EMOS1"/>
+                <ITEM value="M1"/>
+                <ITEM value="EMOS2"/>
+                <ITEM value="M2"/>
+                <ITEM value="EPN"/>
+                <ITEM value="PN"/>
+                <ITEM value="ERM"/>
+                <ITEM value="RM"/>
+                <ITEM value="RGS1"/>
+                <ITEM value="R1"/>
+                <ITEM value="RGS2"/>
+                <ITEM value="R2"/>
+                <ITEM value="OM"/>
+        </CASE>
+</PARAM>
+
+<PARAM id="ccdnr" type="int" default="0">
+	<DESCRIPTION> CCD number for interested area. Only useful for RAWX/RAWY coordinates </DESCRIPTION>
+</PARAM>
+
+<PARAM id="node" type="string" default="PRIMARY">
+        <DESCRIPTION> CCD readout node: PRIMARY, REDUNDANT </DESCRIPTION>
+	<CASE>
+		<ITEM value="PRIMARY"/>
+        	<ITEM value="REDUNDANT"/>
+	</CASE>
+</PARAM>
+
+<PARAM id="cammode" type="string" default="PrimeFullWindow">
+        <DESCRIPTION> camera mode. See Xmm.h for details </DESCRIPTION>
+</PARAM>
+
+<PARAM id="filter" type="string" default="Open">
+        <DESCRIPTION> filter option. See Xmm.h for details </DESCRIPTION>
+</PARAM>
+
+<PARAM id="ccdtemp" type="real" default="120.0">
+        <DESCRIPTION> CCD temperature (K) </DESCRIPTION>
+</PARAM>
+
+<PARAM id="camtemp" type="real" default="120.0">
+        <DESCRIPTION> camera temperature (K) </DESCRIPTION>
+</PARAM>
+
+<PARAM id="temptrack" type="bool" default="no">
+        <DESCRIPTION> en/disable retrieving temperature from HK data </DESCRIPTION>
+</PARAM>
+
+<PARAM id="starttime" type="time" default="1999-12-10T14:32:00.000">
+        <DESCRIPTION> exposure start time </DESCRIPTION>
+</PARAM>
+
+<PARAM id="duration" type="real" default="0">
+        <DESCRIPTION> exposure duration time </DESCRIPTION>
+</PARAM>
+
+<PARAM id="level" type="string" default="MEDIUM">
+        <DESCRIPTION> accuracy level: LOW, MEDIUM, EXTENDED, HIGH, ELLBETA </DESCRIPTION>
+        <CASE>
+                <ITEM value="LOW"/>
+                <ITEM value="MEDIUM"/>
+                <ITEM value="EXTENDED"/>
+                <ITEM value="HIGH"/>
+		<ITEM value="ELLBETA"/>
+        </CASE>
+</PARAM>
+
+<PARAM id="parameter" type="int" default="0">
+        <DESCRIPTION> auxiliary parameter, always 0. Used in the future </DESCRIPTION>
+</PARAM>
+
+<PARAM id="random" type="bool" default="yes">
+        <DESCRIPTION> en/disable randomize </DESCRIPTION>
+</PARAM>
+
+<PARAM id="binning" type="int" default="0">
+        <DESCRIPTION> on-chip-binning factor </DESCRIPTION>
+</PARAM>
+
+<PARAM id="ccf" type="string" default="">
+	<DESCRIPTION> user supplied CCF file name </DESCRIPTION>
+</PARAM>
+
+<PARAM id="ccflog" type="bool" default="no">
+        <DESCRIPTION> print out CCF Access Log </DESCRIPTION>
+</PARAM>
+
+<PARAM id="energy" type="real" list="yes" default="3000.0">
+        <DESCRIPTION> energy value. Note that there is a minimum-maximum range </DESCRIPTION>
+        <CONSTRAINTS> energy in [100:15000] </CONSTRAINTS>
+</PARAM>
+
+<PARAM id="weight" type="real" list="yes" default="1.0">
+        <DESCRIPTION> energy weighting to construct summation PSF </DESCRIPTION>
+</PARAM>
+
+<PARAM id="theta" type="real" default="-1.0">
+        <DESCRIPTION> off-axis angle in arcsec. Note that there is a minimum-maximum range </DESCRIPTION>
+        <CONSTRAINTS> theta in [-1:1800] </CONSTRAINTS>
+</PARAM>
+
+<PARAM id="phi" type="angle" default="-1.0">
+        <DESCRIPTION> azimuth angle
+                      (theta/phi) are given in the TELCOORD refernce system indicating location of the PSF center
+        </DESCRIPTION>
+        <CONSTRAINTS> phi in [-1:360) </CONSTRAINTS>
+</PARAM>
+
+<PARAM id="rotate" type="angle" default="-1">
+	<DESCRIPTION> rotate the PSF with a certain angle. Don't change the default unnecessaryly. </DESCRIPTION>
+        <CONSTRAINTS> rotate in [-1:360) </CONSTRAINTS>
+</PARAM>
+
+<PARAM id="coortype" type="string" default="">
+        <DESCRIPTION> the coordinate type of the output PSF </DESCRIPTION>
+        <CASE>
+		<ITEM value=""/>
+		<ITEM value="XY"/>
+		<ITEM value="DET"/>
+		<ITEM value="RAW"/>
+	</CASE>
+</PARAM>
+
+<PARAM id="xsize" type="int" default="0">
+        <DESCRIPTION> PSF width in pixels, 0 means decided by the imageset </DESCRIPTION>
+        <CONSTRAINTS> xsize in [0:1024] </CONSTRAINTS>
+</PARAM>
+
+<PARAM id="ysize" type="int" default="0">
+        <DESCRIPTION> PSF height in pixels, 0 means decided by the imageset </DESCRIPTION>
+        <CONSTRAINTS> ysize in [0:1024] </CONSTRAINTS>
+</PARAM>
+
+<PARAM id="output" type="string" default="">
+        <DESCRIPTION> file name of the PSF </DESCRIPTION>
+</PARAM>
+
+</CONFIG>
+</FILE>

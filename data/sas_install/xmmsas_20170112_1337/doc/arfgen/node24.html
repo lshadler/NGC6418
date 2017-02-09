@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Conversion to DET coordinates</TITLE>
+<META NAME="description" CONTENT="Conversion to DET coordinates">
+<META NAME="keywords" CONTENT="arfgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="arfgen.css">
+
+<LINK REL="previous" HREF="node23.html">
+<LINK REL="up" HREF="node23.html">
+<LINK REL="next" HREF="node25.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+arfgen (arfgen-1.93.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node23.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Source Position"></A>
+<A HREF="node23.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Source Position"></A>
+<A HREF="node25.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Encircled energy correction"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node44.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="arfgen.html">Home Page</A> / <A  HREF="node14.html">Description</A> / <A  HREF="node23.html">Source Position</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00064100000000000000">
+Conversion to DET coordinates</A>
+</H3>
+
+<P>
+The internal coordinate system used by <A NAME="1345"></A><A NAME="tex2html37"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+is DET,
+so if the input coordinate system is EQPOS, POS or TEL, 
+a conversion to DET is performed.
+If the input system is POS, it is firstly converted to EQPOS.
+To perform this intermediate conversion, 
+the nominal pointing position is required.
+This is taken from the global attributes 
+<A NAME="1349"></A><TT>REFXCRVL</TT> and <A NAME="1351"></A><TT>REFYCRVL</TT> of the spectrum dataset.
+
+<P>
+The conversion from EQPOS to DET in general 
+requires knowledge of the spacecraft attitude.
+By default the task uses the mean pointing position contained within
+the spectrum header in the <B>RA_PNT, DEC_PNT, PA_PNT</B>
+keywords. This is expected to be accurate enough in most
+cases. An alternative approach is to use 
+the attitude from the OAL corresponding to
+the start of the observation by specifying  <TT>useodfatt</TT>=true. 
+In this case, as the OAL is used by
+<A NAME="1354"></A><A NAME="tex2html38"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>
+and for the coordinate conversion,
+the environment variable <A NAME="1358"></A><TT>SAS_ODF</TT>,
+or the task parameter <TT>odf</TT>
+need to be set to the appropriate ODF directory in order
+for the conversion to be correct. 
+
+<P>
+It is recommended to use DET coordinates 
+if the mean attitude over the exposure period
+differs significantly from the start attitude, say by more than 
+30 arcseconds.
+
+<P>
+An intermediate stage of the conversion from equatorial to
+detector coordinates is via the telescope position (theta, phi).
+The source position may be input directly in terms of theta, phi
+by setting <TT>sourcecoords</TT>=TEL, <TT>sourcex</TT>=theta and 
+<TT>sourcey</TT>=phi. In this case, <TT>sourcex</TT>=0 <TT>sourcey</TT>=0
+refers to the optical axis.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node23.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Source Position"></A>
+<A HREF="node23.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Source Position"></A>
+<A HREF="node25.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Encircled energy correction"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node44.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

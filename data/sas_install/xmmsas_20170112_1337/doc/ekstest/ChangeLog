@@ -1,0 +1,227 @@
+ChangeLog for ekstest
+===============================
+
+Open SPRs:
+
+Version 2.7 - 2016-08-26 (EO)
+-----------
+	+ src/Makefile: After changing the preprocessor policy for all Fortran
+	  compilations, added code here to allow for inclussion of 
+	  NAG Fortran specific modules.
+	+ DEPEND: Updated to sas-1.573. 
+
+
+Version 2.6 - 2016-08-25 (EO)
+-----------
+	+ src/ekstest_mod.f90: Added an "ifdef NAGf90Fortran - endif"
+	  preprocessor directive around "use f90_unix_proc" to allow its
+	  loading only when NAG Fortran compiler is used. 
+	+ DEPEND: Requires sas 1.572.
+
+
+Version 2.5.1 - 2014-10-24 (RDS)
+----------------------------
+	Documentation update (lccorr -> epiclccorr) - SPR-7233
+
+
+Version 2.5 - 2012-06-21 (NW)
+-----------
+
+	This version now tests for the case where all the good bins have
+	counts equal to 0.0. If this is the case, the variability tests
+	are not carried out. A warning is raised and 'NULL' values are
+	entered into the keywords.  This closes SPR 6732.  A warning is
+	also raised in ekstest is run with the chi-squared test and the
+	fractional variability amplitude test, as in this case, the
+	fractional variability is calculated for the total
+	(source+background) lightcurve.  FVar and FVarErr are now also set
+	to -1 if (S_squared - SigmaErr_squared) is equal to zero. This
+	closes SPR  6723.  A new parameter has also been added,
+	netlightcurve, so that the user can choose whether to carry out
+	the fractional variability amplitude test on the net or total
+	lightcurve.  The documentation has been revised to include the
+	changes.
+	
+
+Version 2.4.1 - 2012-04-04 (NW)
+-----------
+
+	A new test, the fractional varability amplitude test, in response
+	to SCR 329, has been added, with the results FVar and FVarErr,
+	which are the fractional varability amplitude and the error on
+	this value.  Also, the keywords written into the headers with the
+	test results, now carry a 'NULL' value if there were too few bins
+	for the test to be carried out, in response to SPR 6494.  The
+	documentation has also been updated to outline the test and
+	explain the 'NULL' value for the keywords.
+
+
+Version 2.4 - 2010-01-18 (EO)
+-----------
+	+ src/ekstest_mod.f90: Included use f90_unix_proc to provide support for the
+	  use of system subroutine (to execute shell commands).
+	  The support comes through the use of NAG supported modules as they are provided
+	  in the NAG library subdirectory.
+	  To fullfil dependencies it is necessary to include the keyword NAGSUPMODS = yes 
+	  in the src/Makefile.
+
+Version 2.3.1 - 2009-05-12 (EO)
+-------------
+	+ Re-fixed DEPEND.
+
+Version 2.3 - 2009-05-11 (EO)
+-----------
+	+ Fixed DEPEND file.
+
+Version 2.2.5 -  2006-08-11 (NW)
+----------------------------
+
+      Changes made to the chi-squared test (now similar to IMS's lcchi2).
+
+
+Version 2.2.4 -  2006-06-13 (NW)
+----------------------------
+
+      Change made to the chi-squared test (documented in the documentation 
+      and the commented in the source code) as the reduced chi^2 values were 
+      somewhat shifted from the expectation values in tests made with 2XMM.
+       
+
+Version 2.2.3 -  2006-03-14 (NW)
+----------------------------
+
+      Changed the version of ssclib in the DEPEND file for the release 
+      track version.
+       
+
+Version 2.2.2 -  2006-03-07 (NW)
+----------------------------
+
+       Following SSC-SPR-3591 and tests carried out by AS and NAW it appears 
+       that the incommplete gamma function available in the ssclib gives more 
+       consistent results than the gamma_function_Q used originally in this 
+       task and thus is now used in ekstest. 
+
+
+Version 2.2.1 -  2006-02-03 (NW)
+----------------------------
+
+       Shortened the comments to the keywords:  KVSVSTAT, KVSVPROB, 
+	CHI2PROB, FLARE, VARIATIO to have less than 40 characters, 
+	following SPR-3578, where it was noted that the the comments 
+	were too long for the available space.
+	
+
+Version 2.2 -  2005-09-14 (NW)
+----------------------------
+
+        Modified the chi-squared test as it was producing a negative 
+	chi-squared statistics and thus incorrect probabilities, in 
+	response to SSC-SPR-3516, Task generates negative chi-sq statistic.
+	This occurred for datasets that were almost uniquely negative.  
+	To rectify the problem, when calculating the chi-squared statistic, 
+	the (O-E)**2 is divided by the absolute value of the Expected value.
+	
+	
+Version 2.1 -  2005-04-19 (NW)
+----------------------------
+
+        Updated the documentation to make it clear that no variability
+ 	tests are carried out if there are insufficient good bins.
+		
+Version 2.0 -  2004-11-26 (NW)
+----------------------------
+
+	Added several new variability tests (flare and variation tests)
+	along with parameters to control these tests.  The chi-squared
+	test has been modified by S. Mateos.  The documentation has been
+	rewritten.
+
+Version 1.3.6 -  2004-09-03 (NW)
+----------------------------
+
+	Small code change so that ekstest deals with the NULLS in the same
+	way as elcplot (version 1.2.6).
+
+Version 1.3.5 -  2004-08-13 (NW)
+----------------------------
+
+        Small code change - now keeps background counts = 0.0 as well.
+
+Version 1.3.4 -  2004-08-10 (NW)
+----------------------------
+
+	Added missing line necessary to stop the new header information
+	being written into the given input file (only written to a new
+	file).  Also changed error calculation for the total counts, when
+	they are recovered from the net and background counts.
+
+Version 1.3.3 -  2004-08-09 (NW)
+----------------------------
+
+	This version makes sure that ONLY the NULL values are taken out
+	and not the 0.0 values as well.  Ekstest also tests to make sure
+	that total counts are not negative (whatever the nature of the
+	input file) and also raises an error if no screen output is
+	requested and nor is a new output file specified.  The
+	documentation has also been updated.
+	
+
+Version 1.3.2 -  2004-08-02 (NW)
+----------------------------
+
+	This version now keeps all negative net counts.  
+
+
+Version 1.3.1 -  2004-07-27 (NW)
+----------------------------
+
+        The kolmogorov-smirnov test code has been revised (now based on
+	numerical recipes code) and a new boolean parameter (twodists) has
+	been introduced so that the user can choose to carry out a two
+	distribution KS-test (counts verses background) or a single
+	distribution KS-test (net counts).  Some warnings have been
+	revised.  The documentation has been updated.
+	
+
+Version 1.3 -  2004-07-01 (NW)
+----------------------------
+
+	- Ekstest can now write a new file (with the results contained in
+	the header of the new file rather than the original file) and/or
+	write the results to the screen. The documentation has also been
+	updated.
+
+Version 1.2 -  2004-06-14 (NW)
+----------------------------
+
+	- Updated DEPEND file so that ekstest builds correctly.
+
+Version 1.1 -  2004-05-28 (NW)
+----------------------------
+
+	- Made the GTI file parameter an optional one as well as checking
+	whether the input file contains the background subtracted
+	lightcurve or the unsubtracted lightcurve.  If it is background
+	subtracted ekstest calculates the unsubtracted lightcurve (and the
+	associated errors) to use for the variability test.  Also changed
+	the Makefile and the test so that both the test harness and the
+	dependency checks are passed in the SAS build, as well as updated
+	the documentation.
+
+
+	
+Version 1.0 -  2004-05-19 (NW)
+----------------------------
+
+	- Ekstest, a version of lcplot which contains only the variability
+	tests and namely the kolmogorov-smirnov test, where the results
+	are written directly into the header information.
+	
+
+
+	
+Version 0.1 -  2004-05-14 (NW)
+----------------------------
+- Directory structure created by pkgmaker.
+

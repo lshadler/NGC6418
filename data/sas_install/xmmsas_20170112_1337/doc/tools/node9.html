@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>satvelsrc: SATellite VELocity in SouRCe direction</TITLE>
+<META NAME="description" CONTENT="satvelsrc: SATellite VELocity in SouRCe direction">
+<META NAME="keywords" CONTENT="tools">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="tools.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+tools (tools-1.67) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="whatatt: WHAT ATTitude at"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="tcsfix: Time Correlation Spacecraft"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="tools.html">Home Page</A> / <A  HREF="node2.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00027000000000000000"></A>
+<A NAME="tools:satvelsrc"></A>
+<BR>
+satvelsrc: SATellite VELocity in SouRCe direction
+</H2>
+
+<UL>
+<LI>SYNOPSIS
+<DIV><TT>
+<BR>
+satvelsrc withsrccoord=yes|no srcra=&lt;ra&gt; srcdec=&lt;dec&gt; withorthosrc=yes|no
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tdelt=&lt;tdelt&gt; withmjdoffset=yes|no mjdoffset=&lt;intmjd&gt;
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;withexplicittimes=yes|no tfrom=&lt;t0&gt; tto=&lt;t1&gt;
+<BR></TT></DIV>
+</LI>
+<LI>DESCRIPTION
+<BR><TT>satvelsrc</TT> computes as a function of time the component of the
+spacecraft velocity vector in the direction of given celestial source.
+The source coordinates are obtained from the summary file in the ODF
+being pointed at by the environment variable
+<DIV><TT>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;SAS_ODF
+<BR></TT></DIV>
+or named via the generic command line parameters <TT>-o</TT> or
+<TT>-odfdir</TT> (see <A NAME="442"></A><A NAME="tex2html5"
+  HREF="../taskmain/index.html"><SPAN  CLASS="textbf">taskmain</SPAN></A>
+for
+details). The specification of an ODF directory on the command line
+has a higher precedence than any environment setting.
+The source coordinates obtained from the ODF can be overridden with
+the command line paramters <TT>withsrccoord=yes srcra=&lt;ra&gt; srcdec=&lt;dec&gt;</TT>
+and <TT>withorthosrc=yes</TT> defines a fictitious source in the direction
+perpendicular to the orbital plane. In this case the velocity component
+should be constantly zero at all times which is an important check
+for the integrity of the orbit file in the ODF.
+
+<P>
+The velocity is printed as a function of time (units: days - integer part
+of MJD) in units of km/s in steps of <TT>tdelt</TT> to <TT>stdout</TT>.
+The time range is automatically chosen to be the duration of the
+observation but can also be explicitly given via the command line
+parameters <TT>withexplicittimes=yes tfrom=&lt;t0&gt; tto=&lt;t1&gt;</TT>.
+The parameters <TT>withmjdoffset=yes mjdoffset=&lt;intmjd&gt;</TT> define
+an integer MJD number by which all times will be offset with - if omitted
+the values shall be computed from the start of the observation.
+</LI>
+<LI>REFERENCE
+<BR></LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="whatatt: WHAT ATTitude at"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="tcsfix: Time Correlation Spacecraft"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

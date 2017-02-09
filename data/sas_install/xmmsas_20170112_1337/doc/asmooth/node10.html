@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Multi-convolver smoothing</TITLE>
+<META NAME="description" CONTENT="Multi-convolver smoothing">
+<META NAME="keywords" CONTENT="asmooth">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="asmooth.css">
+
+<LINK REL="next" HREF="node11.html">
+<LINK REL="previous" HREF="node9.html">
+<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+asmooth (asmooth-2.30) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Single square-box convolver"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Ways of specifying the"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Adaptive smoothing"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="asmooth.html">Home Page</A> / <A  HREF="node3.html">Description</A> / <A  HREF="node6.html">Ways of specifying the</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00033400000000000000"></A>
+    <A NAME="asmooth:description:multi"></A>
+<BR>
+Multi-convolver smoothing
+</H3>
+
+<P>
+<TT>smoothstyle</TT>=`withset'.
+
+<P>
+In this mode, different parts of the image may be smoothed by different convolvers. A list or library of convolvers is required, also an `index' image which shows those parts of the image to be smoothed by each convolver. These are supplied in the form of a FITS dataset, as described in section <A HREF="node20.html#asmooth:description:outputfiles">7</A>. Separate parameters <TT>inconvolversarray</TT> and <TT>inindeximagearray</TT> are provided for the convolver list and the index image, so these may be stored either in the same dataset or in two different datasets. The image <TT>inindeximagearray</TT> must have the same dimensions as <TT>inset</TT>, and the maximum value of <TT>inindeximagearray</TT> must not exceed the number of convolvers in <TT>inconvolversarray</TT>.
+
+<P>
+Regardless of the value of <TT>withweightset</TT> (see section <A HREF="node13.html#asmooth:description:weights">3.4</A> for the use of weight and mask images), the convolution within each index `patch' is always a weighted convolution, the weight being 1 (or <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$1 \times$"></SPAN> the <TT>weightset</TT> image if this is supplied) within the patch allocated to that convolver and 0 outside it. Likewise, the result of each patch convolution is masked by the patch (ANDed with the <TT>outmaskset</TT> mask if this is supplied) before being added to the output image. In future a parameter may be provided to allow the user to switch off this patch weighting and masking if desired.
+
+<P>
+If the user desires the convolvers to be normalized, the <TT>normalizeset</TT> parameter should be set.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Single square-box convolver"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Ways of specifying the"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Adaptive smoothing"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

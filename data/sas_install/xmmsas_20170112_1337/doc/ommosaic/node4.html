@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Sky-images- Astrometry</TITLE>
+<META NAME="description" CONTENT="Sky-images- Astrometry">
+<META NAME="keywords" CONTENT="ommosaic">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ommosaic.css">
+
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ommosaic (ommosaic-2.8.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ommosaic.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+Sky-images- Astrometry</A>
+</H2>
+
+<P>
+<SPAN  CLASS="textbf">Omatt</SPAN> produces the sky-images and computes the celestial coordinates of the sources. Additionally, in 
+order to  correct for any small  error in the <SPAN  CLASS="textbf">OM</SPAN> pointing direction, leading to small <SPAN  CLASS="textbf">RA</SPAN> and <SPAN  CLASS="textbf">Dec</SPAN> offsets, 
+it can also try to correct the source coordinates for these offsets by using the USNO-B catalogue.
+If this astrometry correction is successful, <SPAN  CLASS="textbf">omatt</SPAN> will set a FITS key-word <SPAN  CLASS="textbf">POSCOROK</SPAN> to <SPAN  CLASS="textbf">TRUE</SPAN> in the headers 
+of the source-list and sky-image files and <SPAN  CLASS="textbf">RAOFFSET</SPAN> and <SPAN  CLASS="textbf">DEOFFSET</SPAN> to the computed <SPAN  CLASS="textbf">RA</SPAN>
+and <SPAN  CLASS="textbf">Dec</SPAN> offsets. The values of <SPAN  CLASS="textbf">CRVAL1</SPAN> and <SPAN  CLASS="textbf">CRVAL2</SPAN> will also be corrected. 
+If it fails,  <SPAN  CLASS="textbf">POSCOROK</SPAN> will be set to <SPAN  CLASS="textbf">FALSE</SPAN> and the other key-words to zero.
+
+<P>
+For each input sky-image <SPAN  CLASS="textbf">ommosaic</SPAN> will check the <SPAN  CLASS="textbf">POSCOROK</SPAN> keyword and if it equal to <SPAN  CLASS="textbf">FALSE</SPAN>,
+if possible it will correct the reference pixel coordinates (<SPAN  CLASS="textbf">CRVAL1</SPAN> and <SPAN  CLASS="textbf">CRVAL2</SPAN>) by interpolation or extrapolation 
+using the successful correction values. It will add the FITS keyword <SPAN  CLASS="textbf">POSINTRP</SPAN> to the sky-image header, and it will be set to <SPAN  CLASS="textbf">TRUE</SPAN> 
+if an interpolation/extrapolation has been done, or <SPAN  CLASS="textbf">FALSE</SPAN> otherwise. The keywords <SPAN  CLASS="textbf">RA_OFF</SPAN> and <SPAN  CLASS="textbf">DEC_OFF</SPAN> will also be added giving the 
+interpolated/extrapolated values (0.0 if no interpolation or extrapolation).
+
+<P>
+When <SPAN  CLASS="textbf">ommosaic</SPAN> is run with its parameter <SPAN  CLASS="textbf">mincorr</SPAN> set to 0.0 (default value- no image-alignment attempted) the astrometric accuracy
+of the computed stacked image will be determined by the accuracies of the individual reference-pixel coordinates (<SPAN  CLASS="textbf">CRVAL1</SPAN> and <SPAN  CLASS="textbf">CRVAL2</SPAN>),
+which in turn will depend on the accuracies of the computed astrometric correction values. A single bad computed <SPAN  CLASS="textbf">RA</SPAN> or <SPAN  CLASS="textbf">Dec</SPAN>
+offset can have an adverse effect on the stacked image and astrometry. Therefore, in order to try to warn the user of any possible 
+problems, <SPAN  CLASS="textbf">ommosaic</SPAN> will analyse the computed <SPAN  CLASS="textbf">RA</SPAN> and <SPAN  CLASS="textbf">Dec</SPAN> offsets (using a <SPAN  CLASS="textbf">MAD</SPAN> test described later on) and warn the user
+of any possible discrepant values.
+
+<P>
+If none of the input sky images had a successful astrometric correction (<SPAN  CLASS="textbf">POSCOROK=false</SPAN>), then
+the keyword <SPAN  CLASS="textbf">POSCOROK</SPAN> in the <SPAN  CLASS="textbf">FITS</SPAN> header of the output image will be set to <SPAN  CLASS="textbf">FALSE</SPAN>.
+In this case the <SPAN  CLASS="textbf">astrometry</SPAN> contains the uncertainty due to the unknown error in the <SPAN  CLASS="textbf">OM</SPAN> pointing direction.
+
+<P>
+If at least one of input sky images had a successful astrometric correction (<SPAN  CLASS="textbf">POSCOROK=true</SPAN>), then
+the keyword <SPAN  CLASS="textbf">POSCOROK</SPAN> in the <SPAN  CLASS="textbf">FITS</SPAN> header of the output image will be set to <SPAN  CLASS="textbf">TRUE</SPAN> and
+the keywords <SPAN  CLASS="textbf">RAOFFSET</SPAN> and <SPAN  CLASS="textbf">DEOFFSET</SPAN> to the mean <SPAN  CLASS="textbf">RAOFFSET</SPAN> and <SPAN  CLASS="textbf">DEOFFSET</SPAN> values
+from all the input images, respectively (some of which may have been computed by interpolation or extrapolation.) 
+
+<P>
+<SPAN  CLASS="textbf">However, a successful astrometric correction may have been done by omsrclistcomb.</SPAN>- this is because there
+may be exposure source-lists  containing too few sources for an astrometric correction to be performed
+by <SPAN  CLASS="textbf">omatt</SPAN> (particularly in the UV) , but in the observation source-list produced by <SPAN  CLASS="textbf">omsrclistcomb</SPAN> there
+may be sufficient sources for a successful correction.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

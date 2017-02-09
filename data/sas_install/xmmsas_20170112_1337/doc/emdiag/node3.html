@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="emdiag">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emdiag.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="emdiag.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emdiag (emdiag-4.0.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="emdiag.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emdiag.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="emdiag:description:description"></A><A NAME="470"></A>
+<BR>
+Description
+</H1><A NAME="tex2html1"
+  HREF="../emdiag/index.html"><SPAN  CLASS="textbf">emdiag</SPAN></A>
+emulates the on-board computation 
+of the line and column offsets.
+It also emulates event analysis, and provides a masked CCD map,
+suitable to build a reference dark frame. 
+Window keywords are accepted allowing to restrict the whole line of analysis
+to a part of the CCD map.
+
+<P>
+Two different coordinate systems are used in <A NAME="474"></A><A NAME="tex2html2"
+  HREF="../emdiag/index.html"><SPAN  CLASS="textbf">emdiag</SPAN></A>:
+
+<UL>
+<LI>The on-board coordinate system, used also in the ODF, runs
+from 0 to 609 (along <A NAME="478"></A><TT>RAWX</TT>) and 0 to 601 (along <A NAME="480"></A><TT>RAWY</TT>). 
+It includes under and overscans. All ODF files (diagnostic map, 
+offset/variance table, event list) refer to this system.
+In addition event coordinates (in the event list) are offset by (+2,+2).
+</LI>
+<LI>The CCD coordinate system used in the SAS (PIXCOORD in <A NAME="482"></A><A NAME="tex2html3"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>), 
+runs from 1 to 600
+along both <A NAME="486"></A><TT>RAWX</TT> and <A NAME="488"></A><TT>RAWY</TT> and does not include 
+the under/overscans.
+All output maps (masked CCD map, bright pixels map), the bad pixels
+and the input window parameters refer to that system.
+</LI>
+</UL>
+
+<P>
+<A NAME="490"></A><A NAME="tex2html4"
+  HREF="../emdiag/index.html"><SPAN  CLASS="textbf">emdiag</SPAN></A>
+calls (in order) the following subroutines, all of which
+can be individually switched off:
+
+<UL>
+<LI>OFFSET
+emulates the on-board algorithm calculating the line and column offsets.
+It analyses the CCD locally to mask out high pixels (bad pixels,
+X-rays, cosmic-rays) standing out by more than <TT>nsigmas</TT> times 
+the local dispersion above the local median,
+and works only on that part of the CCD in view of the sky.
+The reference distribution to check each pixel is taken from the 16 pixels 
+at distance 2 (in <A NAME="495"></A><TT>RAWX</TT> or <A NAME="497"></A><TT>RAWY</TT>) 
+from the current pixel.
+<BR>
+If <TT>selectfov</TT> is set, a second pass will be performed, removing
+all pixels outside the field of view. This provides a better estimate
+of the offsets for the lines/columns within the field of view.
+<BR>
+The variance of the resulting map (with respect to that constructed
+from the line and column offsets, and limited to the field of view if 
+<TT>selectfov</TT>=yes) is written in the <A NAME="501"></A><TT>CCDVAR</TT> keyword.
+<BR>
+The emulation also accepts as input a masked CCD map
+(with high pixels set to 0, output of a first run of <A NAME="503"></A><A NAME="tex2html5"
+  HREF="../emdiag/index.html"><SPAN  CLASS="textbf">emdiag</SPAN></A>).Pixels bad or set to 0 are then not used to compute the offsets.
+Because the on-board offset computation does not efficiently
+remove cosmic-ray patches, thhis is the way to get 
+good offsets and variance.
+</LI>
+<LI>EDUSOFT
+performs on the ground the same pattern recognition performed
+in flight in IMAGING (or TIMING) mode, and outputs the same information
+(<A NAME="507"></A><TT>RAWX</TT>, <A NAME="509"></A><TT>RAWY</TT>, <A NAME="511"></A><TT>ENERGYE1</TT>, <A NAME="513"></A><TT>ENERGYE2</TT>, 
+<A NAME="515"></A><TT>ENERGYE3</TT>, <A NAME="517"></A><TT>ENERGYE4</TT>, <A NAME="519"></A><TT>PATTERN</TT> and <A NAME="521"></A><TT>PERIPIX</TT>).
+If the diagnostic map was obtained in window mode (no overscan), 
+no event may be found
+in the last two lines and columns (as in flight).
+The line and column offsets are taken either from an offset/variance
+file (if <TT>offsets</TT> is ``read'')
+or from the result of the OFFSET subroutine.
+Beyond that, EDUSOFT rejects events with <A NAME="524"></A><TT>ENERGYE1</TT> + <A NAME="526"></A><TT>ENERGYE2</TT>
+above the upper EMDH threshold or below the lower EMDH threshold.
+In output, all pixels of the map belonging to events recognized by EDUSOFT
+are masked out (<I>i.e.</I> set to 0, not a valid value 
+because of the electronic offset), except patterns 30 and 31
+(usually associated with cosmic-rays).
+</LI>
+<LI>THRESH
+subtracts from the map the line and column offsets taken either 
+from an offset/variance file or from the OFFSET result (like EDUSOFT).
+Then it looks for all events above the EMDH lower threshold.
+It creates optionally a map of all selected pixels (offset subtracted).
+If EDUSOFT was run before, this map will not contain any valid X-ray event.
+In output, all selected pixels are set to 0 in the masked CCD map
+(not offset subtracted).
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="emdiag.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

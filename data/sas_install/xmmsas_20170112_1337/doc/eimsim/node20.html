@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Perform source detection</TITLE>
+<META NAME="description" CONTENT="Perform source detection">
+<META NAME="keywords" CONTENT="eimsim">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eimsim.css">
+
+<LINK REL="next" HREF="node21.html">
+<LINK REL="previous" HREF="node19.html">
+<LINK REL="up" HREF="node14.html">
+<LINK REL="next" HREF="node21.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eimsim (eimsim-2.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node19.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Make a random, Poisson-distributed"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="The task eimsim"></A>
+<A HREF="node21.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Transform the flux coordinate"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node29.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eimsim.html">Home Page</A> / <A  HREF="node4.html">Description</A> / <A  HREF="node14.html">The task eimsim</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00043600000000000000"></A>
+<A NAME="eimsim:description:detect"></A>
+<BR>
+Perform source detection
+</H3>
+
+<P>
+This function may be performed alone by calling the script with <TT>entrystage</TT> and <TT>finalstage</TT>=`detect'.
+
+<P>
+This is the core of the simulation process: the detection of `sources' in the simulated images. Exactly how this is performed is up to the user - ie the user can write their own detection script, and arrange very easily for this to be called by <A NAME="1469"></A><A NAME="tex2html92"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>. In this way, several different schemes can be compared. At present, the <A NAME="1473"></A><A NAME="tex2html93"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+package contains two example detection scripts: <A NAME="1477"></A><A NAME="tex2html94"
+  HREF="../eimsimdetect1xmm/index.html"><SPAN  CLASS="textbf">eimsimdetect1xmm</SPAN></A>
+and <A NAME="1481"></A><A NAME="tex2html95"
+  HREF="../eimsimdetect2xmm/index.html"><SPAN  CLASS="textbf">eimsimdetect2xmm</SPAN></A>, corresponding to the respective `prep' scripts and template sets. The name of the detection script can be supplied to parameter <TT>dettask</TT> of <A NAME="1486"></A><A NAME="tex2html96"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>, although a more robust way is available, as described in section <A HREF="node11.html#eimsim:description:detchoice">4.2.5</A> of the package documentation.
+
+<P>
+A user-written detection script must supply the detected sources in a FITS binary table called <A NAME="1490"></A><TT>SRCLIST</TT>. There must be no more than 1 row per source. The table must contain columns as follows:
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>
+<DIV ALIGN="CENTER">
+
+</DIV>
+Name</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>Data type</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>Units</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1492"></A><TT>SRC_NUM</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>4-byte int</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1494"></A><TT>FLUX</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>erg cm<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$^{-2}$"></SPAN> s<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$^{-1}$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1496"></A><TT>FLUX_ERR</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>erg cm<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$^{-2}$"></SPAN> s<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$^{-1}$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1498"></A><TT>RA</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>8-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>decimal deg</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1500"></A><TT>DEC</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>8-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>decimal deg</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1502"></A><TT>RADEC_ERR</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>arcseconds</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1504"></A><TT>DETEC_PNULL</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>&nbsp;</TD>
+</TR>
+</TABLE>
+
+<P>
+Column <A NAME="1506"></A><TT>SRC_NUM</TT> is an positive-valued integer which is unique to the source. Note that, for 1xmm and 2xmm detection schemes, the name of the output source ID column is hard-wired into <A NAME="1508"></A><A NAME="tex2html97"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+or <A NAME="1512"></A><A NAME="tex2html98"
+  HREF="../srcmatch/index.html"><SPAN  CLASS="textbf">srcmatch</SPAN></A>, whichever is relevant; <A NAME="1516"></A><TT>SRC_NUM</TT> contains these identical values; the column is just given a new, common name for convenience. The `original' column name is written to the keyword <A NAME="1518"></A><TT>ID_COL</TT>.
+
+<P>
+Note that the <A NAME="1520"></A><TT>FLUX</TT> and <A NAME="1522"></A><TT>FLUX_ERR</TT> values should be valid for the same energy band as the simulated sources. This band is defined by the <A NAME="1524"></A><TT>E_MIN</TT> and <A NAME="1526"></A><TT>E_MAX</TT> keywords of the <A NAME="1528"></A><TT>FLUX_SCALES</TT> table in the source template file.
+
+<P>
+Column <A NAME="1530"></A><TT>DETEC_PNULL</TT> records the probability <!-- MATH
+ $P_\mathrm{null}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="36" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img44.png"
+ ALT="$P_\mathrm{null}$"></SPAN> that the source is detected by chance. At present, both <A NAME="1532"></A><A NAME="tex2html99"
+  HREF="../eimsimdetect1xmm/index.html"><SPAN  CLASS="textbf">eimsimdetect1xmm</SPAN></A>
+and <A NAME="1536"></A><A NAME="tex2html100"
+  HREF="../eimsimdetect2xmm/index.html"><SPAN  CLASS="textbf">eimsimdetect2xmm</SPAN></A>
+take, for each source, the value of <A NAME="1540"></A><TT>DET_ML</TT> from the row with <A NAME="1542"></A><TT>ID_INST</TT>==0 and <A NAME="1544"></A><TT>ID_BAND</TT>==0, and process it as follows to get <A NAME="1546"></A><TT>DETEC_PNULL</TT>:
+<PRE>
+  DETEC_PNULL = exp(-DET_ML).
+</PRE>
+
+<P>
+Task <A NAME="1548"></A><A NAME="tex2html101"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+calls the supplied detection script using the same command-line format as for sas tasks, viz:
+<PRE>
+  &lt;detection task&gt; obsidroots='&lt;list&gt;' refband=2 &lt;etc&gt;
+</PRE>
+The full list of parameters supplied to this command line is as follows:
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>
+<DIV ALIGN="CENTER">
+
+</DIV>
+Parameter</TD>
+<TD ALIGN="CENTER">Passed in from eimsim</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Comment</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>obsidroots</TD>
+<TD ALIGN="CENTER">yes</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>refband</TD>
+<TD ALIGN="CENTER">yes</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>prdssubdir</TD>
+<TD ALIGN="CENTER">yes</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>simopsubdir</TD>
+<TD ALIGN="CENTER">yes</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>simgensubdir</TD>
+<TD ALIGN="CENTER">yes</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>astest</TD>
+<TD ALIGN="CENTER">yes</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>srcspecset</TD>
+<TD ALIGN="CENTER">yes</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>srclistset</TD>
+<TD ALIGN="CENTER">no</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Name of the output source list</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>streamnumber</TD>
+<TD ALIGN="CENTER">yes</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>idnumber</TD>
+<TD ALIGN="CENTER">yes</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>entrystage</TD>
+<TD ALIGN="CENTER">no</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>passed in from eimsim parameter -detentrystage</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>finalstage</TD>
+<TD ALIGN="CENTER">no</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>passed in from eimsim parameter -detfinalstage</TD>
+</TR>
+</TABLE>
+
+<P>
+In order to avoid cross-talk when running several simulations in parallel, any intermediate files written by the detection script should have names which contain both the stream and id numbers. In addition, it is helpful to construct the detection script so that it has an optional entry point named `cleanup'. The function of this portion of the detection script should be just to delete all intermediate files. In other words, the detection script should be so designed, that it deletes all its intermediate files if invoked as follows:
+
+<P>
+<PRE>
+  &lt;detection task&gt; entrystage=cleanup
+</PRE>
+
+<P>
+If you opt to use one of the supplied detection scripts instead of writing your own, PLEASE NOTE that the 1xmm and 2xmm detection schemes employed different energy band definitions and different versions of non-<A NAME="1552"></A><A NAME="tex2html102"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+sas tasks. You can obtain the correct band scheme by making use of the relevant template file in <TT>$SAS_DIR/lib/data/eimsimdata/</TT>. The filenames have 1xmm or 2xmm in them so it is not hard to tell which to use. The non-<A NAME="1556"></A><A NAME="tex2html103"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+sas task versions are as follows:
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>
+<DIV ALIGN="CENTER">
+
+</DIV>
+Task</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>1XMM version</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>2XMM version</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>emask</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>2.7</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>2.9</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>eboxdetect</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>4.13.1</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>4.15.2</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>emldetect</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>4.32.1</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>4.44.25</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>esplinemap</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>4.0.3</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>4.4</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>srcmatch</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>3.15.1</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>not used</TD>
+</TR>
+</TABLE>
+
+<P>
+The matching det prep tasks will check these versions and issue a warning if the incorrect ones are found.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node19.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Make a random, Poisson-distributed"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="The task eimsim"></A>
+<A HREF="node21.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Transform the flux coordinate"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node29.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

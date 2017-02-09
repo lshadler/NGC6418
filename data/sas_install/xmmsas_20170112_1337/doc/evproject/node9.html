@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Binning up the attitude</TITLE>
+<META NAME="description" CONTENT="Binning up the attitude">
+<META NAME="keywords" CONTENT="evproject">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="evproject.css">
+
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+evproject (attcalc2-1.3.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Calculating the PNT keywords"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="evproject.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00036000000000000000"></A>
+<A NAME="evproject:description:attbinning"></A>
+<BR>
+Binning up the attitude
+</H2>
+
+<P>
+When <A NAME="786"></A><A NAME="tex2html30"
+  HREF="../evproject/index.html"><SPAN  CLASS="textbf">evproject</SPAN></A>
+is pointed to the ODF as the source for information on the changes in spacecraft attitude over the exposure duration (<TT>attsource</TT>=`odf'), it automatically bins up the attitude wander in order to shorten the processing time. Each bin is associated with a start time (which is equal to the end time of the previous bin, if there is one), and end time (which is equal to the start time of the following bin, if there is one) and an attitude. The binning is done as follows. For each event time, <A NAME="791"></A><A NAME="tex2html31"
+  HREF="../evproject/index.html"><SPAN  CLASS="textbf">evproject</SPAN></A>
+attempts to obtain the s/c attitude via an <A NAME="795"></A><A NAME="tex2html32"
+  HREF="../oal/index.html"><SPAN  CLASS="textbf">oal</SPAN></A>
+call. This call is either successful or unsuccessful. <A NAME="799"></A><A NAME="tex2html33"
+  HREF="../evproject/index.html"><SPAN  CLASS="textbf">evproject</SPAN></A>
+begins a new attitude bin if any of the following occur:
+
+<P>
+
+<UL>
+<LI>if the <A NAME="803"></A><A NAME="tex2html34"
+  HREF="../oal/index.html"><SPAN  CLASS="textbf">oal</SPAN></A>
+call is being made for the first time;
+
+<P>
+</LI>
+<LI>if the present call was successful but the preceding call was unsuccessful;
+
+<P>
+</LI>
+<LI>if the present call was unsuccessful but the preceding call was successful;
+
+<P>
+</LI>
+<LI>if the call was successful, but the returned attitude varies by more than a set amount from the `baseline attitude'.
+
+<P>
+</LI>
+</UL>
+
+<P>
+It can thus be seen that each bin duration spans <A NAME="807"></A><A NAME="tex2html35"
+  HREF="../oal/index.html"><SPAN  CLASS="textbf">oal</SPAN></A>
+calls which were either all successful or all unsuccessful. The attitude of each new `successful' bin is set to the baseline attitude. The baseline attitude is initially set to the attitude returned by the first succesful <A NAME="811"></A><A NAME="tex2html36"
+  HREF="../oal/index.html"><SPAN  CLASS="textbf">oal</SPAN></A>
+call. If the attitude returned by any subsequent successful <A NAME="815"></A><A NAME="tex2html37"
+  HREF="../oal/index.html"><SPAN  CLASS="textbf">oal</SPAN></A>
+call diverges from the baseline by more than set limits (item 4 in the list above), the baseline attitude is altered. However usually only one of the components of the baseline attitude is altered at a time. This comes about as follows. There are separate limits on each of the three attitude components (RA, dec and position angle). If any component of the momentary attitude diverges from the same component of the baseline attitude by more than the respective limit, that component of the baseline attitude is set to the momentary value; components which have not wandered out of bounds are left unaltered. Note also that a change of bin due to change of success of <A NAME="819"></A><A NAME="tex2html38"
+  HREF="../oal/index.html"><SPAN  CLASS="textbf">oal</SPAN></A>
+call does not in itself alter the baseline. If a new bin starts because the <A NAME="823"></A><A NAME="tex2html39"
+  HREF="../oal/index.html"><SPAN  CLASS="textbf">oal</SPAN></A>
+calls have returned to the successful state, the attitude assigned to the new bin is the baseline value, which is also the attitude of the last `successful' bin.
+
+<P>
+This binning scheme is perhaps a little complicated, but has been chosen so as to adhere as closely as possible to the original <A NAME="827"></A><A NAME="tex2html40"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>
+scheme. However note that (i) <A NAME="831"></A><A NAME="tex2html41"
+  HREF="../evpproject/index.html"><SPAN  CLASS="textbf">evpproject</SPAN></A>
+does not quite adhere to the same scheme, and (ii) the component limits are calculated in a different way to <A NAME="835"></A><A NAME="tex2html42"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>
+(see below).
+
+<P>
+The limits on attitude wander are defined via the parameter <TT>maxdelta</TT>, which is in arcseconds. The RA limit <SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$\Delta \alpha$"></SPAN> is set to
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+\Delta \alpha = maxdelta / \cos(\delta),
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="166" HEIGHT="28" BORDER="0"
+ SRC="img5.png"
+ ALT="\begin{displaymath}
+\Delta \alpha = maxdelta / \cos(\delta),
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+where <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$\delta$"></SPAN> is the <A NAME="840"></A><TT>DEC_PNT</TT> value. The declination limit is just set to <TT>maxdelta</TT>, and the position angle (apos) limit <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$\Delta p$"></SPAN> is set to 
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+\Delta p = maxdelta \times 60 \times 180 / \pi / R_{\rm {arcmin}},
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="267" HEIGHT="28" BORDER="0"
+ SRC="img8.png"
+ ALT="\begin{displaymath}
+\Delta p = maxdelta \times 60 \times 180 / \pi / R_{\rm {arcmin}},
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+where <!-- MATH
+ $R_{\rm {arcmin}} = 15.0$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="104" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$R_{\rm {arcmin}} = 15.0$"></SPAN> is the nominal radius of the field of view of the XMM EPIC cameras.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Calculating the PNT keywords"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

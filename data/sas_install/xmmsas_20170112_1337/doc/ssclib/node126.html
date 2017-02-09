@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>integrateRanges</TITLE>
+<META NAME="description" CONTENT="integrateRanges">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node127.html">
+<LINK REL="previous" HREF="node125.html">
+<LINK REL="up" HREF="node121.html">
+<LINK REL="next" HREF="node127.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node125.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="correctRanges"></A>
+<A HREF="node121.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Routines which act on"></A>
+<A HREF="node127.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="andRangesPair"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node100.html">DSS utilities</A> / <A  HREF="node121.html">Routines which act on</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00095500000000000000">
+integrateRanges</A>
+</H3>
+
+<P>
+This is a function to perform numerical integration of y(x) (using the trapezoid rule) over a set of discrete ranges specified via the xRanges argument.
+
+<P>
+NOTE! (i) The values in the vector x() should be in increasing order.  (ii) The ranges may occur in any order, but are otherwise assumed to be well-formed. (iii) If any upper range bound is undefined, the upper x value is used instead for that range bound; likewise for undefined lower bounds.
+
+<P>
+!*** should change it so that the ranges are required to be well-formed. This would make the routine less general but makes the accepted properties of ranges simpler.
+
+<P>
+<PRE>
+  interface integrateRanges
+    function integrateRangesScalar(x, y, xRange) result(approxIntegral)
+      real(single), intent(in) :: x(:), y(size(x))
+      type(RangeT), intent(in) :: xRange
+      real(single) :: approxIntegral
+    end function integrateRangesScalar
+
+    function integrateRangesVector(x, y, xRanges) result(approxIntegral)
+      real(single), intent(in) :: x(:), y(size(x))
+      type(RangeT), intent(in) :: xRanges(:)
+      real(single) :: approxIntegral
+    end function integrateRangesVector
+  end interface
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

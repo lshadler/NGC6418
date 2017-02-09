@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Running the program</TITLE>
+<META NAME="description" CONTENT="Running the program">
+<META NAME="keywords" CONTENT="omdetect">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omdetect.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="omdetect.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omdetect (omdetect-5.36.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Parameters"></A>
+<A HREF="omdetect.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node45.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omdetect.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00050000000000000000">
+Running the program</A>
+</H1>
+
+<P>
+The parameter <SPAN  CLASS="textbf">nsigma (default value=2</SPAN> controls the minimum detection threshold,
+<SPAN  CLASS="textbf">ie</SPAN> all pixels with a value greater than or equal to <SPAN  CLASS="textbf">background value + nsigma <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$\times$"></SPAN> background noise</SPAN>
+will be considered to be part of a possible source. For values greater than  <SPAN  CLASS="textbf">2</SPAN>, the part of the
+algorithm that searches for very "faint" sources is bypassed, and when you are only
+interested in the relativley bright sources then it is a good idea to set this parameter
+to <SPAN  CLASS="textbf">2.01</SPAN>, which will significantly decrease the execution time (this will cause the algorithms
+that specifically look for very faint sources to be bypassed).
+
+<P>
+The parameter <SPAN  CLASS="textbf">minsignificance (default value=2)</SPAN> controls what sources are
+kept in the source-list- all detected sources with a computed significance less than or equal to <SPAN  CLASS="textbf">minsignificance</SPAN> are
+discarded. If this parameter is set to <SPAN  CLASS="textbf">0</SPAN> then all the detected sources will be kept
+in the source-list. Of course, the lower the value of minsignificance the more spurious
+sources may be in the source-list. If it is thought that there are too many spurious sources, then
+it is a good idea to re-run <SPAN  CLASS="textbf">omdetect</SPAN> with a <SPAN  CLASS="textbf">minsignificance</SPAN> value of <SPAN  CLASS="textbf">3</SPAN>, or maybe even <SPAN  CLASS="textbf">4</SPAN>.
+
+<P>
+The parameter <SPAN  CLASS="textbf">detectextended</SPAN> determines if the algorithm is to search  
+for ``large'' extended sources (<SPAN  CLASS="textbf">true</SPAN>),
+or not (<SPAN  CLASS="textbf">false</SPAN>). If you are not interested in such sources, a considerable 
+amount of computing time can be saved if this 
+parameter is set to <SPAN  CLASS="textbf">false</SPAN>.
+
+<P>
+Setting the parameter <SPAN  CLASS="textbf">psfphotometryenabled</SPAN> to <I>yes</I> would make this task
+to PSF-fit the 2D-image profiles of those sources that have close neighbours 
+(which mean that the point-spread functions of these neighbours overlap). 
+The photometry of these sources would then be based on the fitting parameters.
+With this feature enabled, an additional source-list table will be generated,
+contaning sources with their photometry based on PSF-fitting. 
+Such a fitting, however, consumes a large amount of computing time,
+so the use of the parameter <SPAN  CLASS="textbf">psfphotometryenabled</SPAN> must be taken with 
+certain care.      
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Parameters"></A>
+<A HREF="omdetect.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node45.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

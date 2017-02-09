@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Details about the pattern recognition</TITLE>
+<META NAME="description" CONTENT="Details about the pattern recognition">
+<META NAME="keywords" CONTENT="epevents">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epevents.css">
+
+<LINK REL="next" HREF="node17.html">
+<LINK REL="previous" HREF="node15.html">
+<LINK REL="up" HREF="node13.html">
+<LINK REL="next" HREF="node17.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epevents (epevents-6.50.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node15.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Pattern related information"></A>
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Output Files"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Classification of the patterns"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epevents.html">Home Page</A> / <A  HREF="node13.html">Output Files</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00073000000000000000"></A>
+<A NAME="epevents:description:outputfiles:patterndetails"></A>
+<BR>
+Details about the pattern recognition
+</H2>
+
+<P>
+<A NAME="1481"></A><A NAME="tex2html28"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>
+performs a pattern analysis to identify and 
+characterize split events: the 
+charge distribution in split events is analysed and the detected patterns 
+are described by four parameters:
+<OL>
+<LI><A NAME="1485"></A><TT>PAT_TYP</TT>: 
+PATTERN TYPE, the absolute value identifies the pattern, 
+i.e. the number of pixels which belong to the pattern:
+single (1), double (2), triple (3), quadruple (4), ...
+negative if amplitude of the corresponding pixel should be ignored (e.g. if
+not main pixel or or also main pixel if it is at an edge). 
+NULL value is set for trailing events 
+which are excluded from the pattern analysis and MIPs.
+</LI>
+<LI><A NAME="1487"></A><TT>PAT_IND</TT>: 
+PATTERN INDEX, running number of pattern within a frame,
+starting with 1. All pixels within a pattern share the same (absolute value
+of) <A NAME="1489"></A><TT>PAT_IND</TT> so this parameter is needed to identify split partners. 
+For the pixel of a pattern with the highest PHA this value is positive; for
+the others it is negative. Unresolved patterns (e.g. those with
+<A NAME="1491"></A><TT>PAT_TYP</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$&gt;4$"></SPAN>) contain only negative values. 
+Singles are not regarded as patterns and thus have <A NAME="1493"></A><TT>PAT_IND</TT>=0.
+</LI>
+<LI><A NAME="1495"></A><TT>PAT_ORI</TT>: 
+PATTERN ORIENTATION, zero for singles and unresolved 
+patterns; otherwise for valid patterns a three-digit code, with the last digit 
+specifying the orientation of the pattern and the first two the position of 
+the pixel in the pattern; the pattern is inserted into a <SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$3\times3$"></SPAN> pixel array
+with the main pixel (having the highest PHA value) at the center (2,2):
+
+<UL>
+<LI>first digit: x position of the pixel on the pattern
+</LI>
+<LI>second digit: y position of the pixel on the pattern
+</LI>
+<LI>third digit: orientation of the pattern:
+
+<UL>
+<LI>for doubles: neighbouring pixel (i.e. pixel with smaller PHA than the main
+pixel) to the right (1), bottom (2), left (3),  
+top (4) with respect to the local maximum in the pattern
+</LI>
+<LI>for triples: L-shaped distribution with the line of symmetry towards: 
+lower right (1), lower left (2), upper left (3), upper right (4)
+</LI>
+<LI>for quadruples: square-shaped distribution, offset towards: 
+lower right (1), lower left (2), upper left (3), upper right (4)
+</LI>
+</UL>
+</LI>
+</UL>
+All coordinates refer to a chip-oriented coordinate system (ix,iy) with the 
+CAMEX at bottom, seen from the X-ray source, i.e. the x coordinate is 
+running towards the right and the y coordinate upwards, with the CAMEX at 
+y = 0.
+</LI>
+<LI><A NAME="1497"></A><TT>PAT_SEQ</TT>: 
+PATTERN SEQUENCE, distance (in pixels) to neighbouring 
+event in the same frame and column (along the readout direction) towards
+the CAMEX. <A NAME="1499"></A><TT>PAT_SEQ</TT> = 0 indicates the first pixel read in a column.
+This information is used to determine the CTI as a function of the 
+frame history - the charge shift during the readout of earlier events 
+effects the CTI of the actual event.
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node15.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Pattern related information"></A>
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Output Files"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Classification of the patterns"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

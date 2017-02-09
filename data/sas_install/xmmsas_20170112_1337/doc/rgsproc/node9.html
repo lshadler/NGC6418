@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>rgssources</TITLE>
+<META NAME="description" CONTENT="rgssources">
+<META NAME="keywords" CONTENT="rgsproc">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsproc.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node7.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsproc (rgsproc-1.34.7) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="rgsoffsetcalc"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="hkgtigen"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="rgsframes"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node33.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsproc.html">Home Page</A> / <A  HREF="node3.html">Description</A> / <A  HREF="node7.html">hkgtigen</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00032200000000000000">
+rgssources</A>
+</H3>
+
+<P>
+<A NAME="1602"></A><A NAME="tex2html30"
+  HREF="../rgssources/index.html"><SPAN  CLASS="textbf">rgssources</SPAN></A>
+creates the source list and adds to it the
+ <A NAME="1606"></A><TT>SRCLIST</TT> table.  The extraction region extensions are added in
+ the fourth stage (``spectra'') by <A NAME="1608"></A><A NAME="tex2html31"
+  HREF="../rgsregions/index.html"><SPAN  CLASS="textbf">rgsregions</SPAN></A>.  The
+
+<A NAME="1612"></A><TT>SRCLIST</TT> table is initialized with a variety of known or
+ supposed source positions for which off-axis angles are calculated
+ with respect to a particular reference pointing.  One of these is
+ selected to be the primary source (<A NAME="1614"></A><TT>PRIMESRC</TT>), which is the
+ nominal target source used later for the aspect-drift corrections and
+ for fluxing in the final stage.  If a user-defined source position is
+ provided (parameter <TT>withsrc</TT>) it automatically becomes the
+ primary source; otherwise <A NAME="1617"></A><A NAME="tex2html32"
+  HREF="../rgssources/index.html"><SPAN  CLASS="textbf">rgssources</SPAN></A>
+selects the primary
+ source on its own (see <TT>primestyle</TT>=auto in the task
+ description).  Selected sources are also imported from the EPIC
+ source catalog, if provided (parameter <TT>withepicset</TT>).  The
+ default reference pointing is the one computed earlier by
+ <A NAME="1623"></A><A NAME="tex2html33"
+  HREF="../attfilter/index.html"><SPAN  CLASS="textbf">attfilter</SPAN></A>
+(parameter <TT>attstyle</TT>=expmedian), and it
+ is not recommended to override this setting.  Currently the
+ aspect-drift corrections are computed using an approximate formula
+ that assumes only small excursions from the reference pointing.
+
+<P>
+Do not restart <A NAME="1628"></A><A NAME="tex2html34"
+  HREF="../rgsproc/index.html"><SPAN  CLASS="textbf">rgsproc</SPAN></A>
+at this stage (``events'') for the
+ purpose of adding more user-defined sources to the <A NAME="1632"></A><TT>SRCLIST</TT>
+ table.  Running the pipeline over from scratch is not necessary and
+ besides the new source will be added to a fresh source list rather
+ than the existing one.  Instead, invoke <A NAME="1634"></A><A NAME="tex2html35"
+  HREF="../rgssources/index.html"><SPAN  CLASS="textbf">rgssources</SPAN></A>
+directly to
+ update the existing source list and then restart <A NAME="1638"></A><A NAME="tex2html36"
+  HREF="../rgsproc/index.html"><SPAN  CLASS="textbf">rgsproc</SPAN></A>
+at
+ the second stage (``angles'') after a change of primary source or at
+ the fourth stage (``spectra'') after adding new spectrum sources or
+ changing the background region.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="rgsoffsetcalc"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="hkgtigen"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="rgsframes"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node33.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

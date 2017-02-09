@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Detailed description.</TITLE>
+<META NAME="description" CONTENT="Detailed description.">
+<META NAME="keywords" CONTENT="implot">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="implot.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+implot (implot-2.19) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Quick start."></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Source selection."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node21.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="implot.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000"></A>
+<A NAME="implot:description:description"></A>
+<BR>
+Detailed description.
+</H2>
+
+<P>
+This task takes FITS image datasets, eg those arising from EPIC or OM observations, and produces image files in any of the file formats supported by the local version of PGPLOT. This can be set by the user via the parameter <TT>device</TT>. The default value of <TT>device</TT> is /XS (Xserver), but alternative outputs (depending on what drivers have been installed with PGPLOT) can be used, for example /XW for x-windows, /GIF, /JPEG, /PS for Postscript, and /CPS for Colour Postscript. The Data Products ICD specifies that graphics products should be in PNG format, but this may not be supported by available versions of PGPLOT. A temporary fix is to produce GIF images and convert these to PNG using a separate utility.
+
+<P>
+The FITS image is first scaled and (optionally) truncated in intensity and size. Either a colour-coded image or a contour map image can be produced, depending on the value of <TT>imagestyle</TT>.
+
+<P>
+The scaling or image transfer function is controled by the parameter <TT>zscaletype</TT>, which can have values `linear', `log' or `sqrt'.
+
+<P>
+If it is desired to truncate the brightest and faintest values in the image, the user should set <TT>withzclip</TT>=yes (the default). The truncation values are submitted via the parameters <TT>zhistolo</TT> and <TT>zhistohi</TT>, each of which is restricted to the range 0 to 1. The way these work is perhaps best conveyed by an example. Suppose <TT>zhistohi</TT> is set to 0.85. The brightness values are sorted and the brightness level that separates the fainter 85% of the pixels is calculated. This level is then defined as the maximum brightness to be displayed, and all brighter pixels are set to this level. The working of <TT>zhistolo</TT> is similar but of course inverted.
+
+<P>
+A new feature in <A NAME="781"></A><A NAME="tex2html2"
+  HREF="../implot/index.html"><SPAN  CLASS="textbf">implot</SPAN></A>
+2.0 is the ability to show only a subset of the image. The previous versions `cut away' any blank border area, showing only those rows and columns of the image which contained at least 1 non-zero-valued pixel; this facility is retained, although it is now controllable via the parameter <TT>trimborder</TT>. The default for this is `yes' however and I imagine that the user could comfortably forget about it except in exceptional circumstances. The image may now be further truncated in <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$x$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$y$"></SPAN> via the parameters <TT>withxyclip</TT>, <TT>xfraclo</TT>, <TT>xfrachi</TT>, <TT>yfraclo</TT> and <TT>yfrachi</TT>. If <TT>withxyclip</TT>=yes, the task shows (filling the whole field available) only that fraction of the image (minus its blank borders, if <TT>trimborder</TT> has been left at `yes') between <TT>xfraclo</TT> and <TT>xfrachi</TT> etc is displayed. This amounts to a zoom facility.
+
+<P>
+The colour map (for colour-coded image output, <TT>imagestyle</TT>=`image') is choosable via the parameter <TT>colourmap</TT>. Its valid values are as follows:
+
+<UL>
+<LI>-1: Inverted greyscale, ie faint=white, bright=black. This is useful for hardcopy where it may not be desirable always to use up toner in printing large areas of featureless black background.
+</LI>
+<LI>1: Greyscale, ie faint=black, bright=white.
+</LI>
+<LI>2: `Rainbow.'
+</LI>
+<LI>3: `Heat.'
+</LI>
+<LI>4: `IRAF.'
+</LI>
+<LI>5: `AIPS.'
+</LI>
+<LI>6: `TJP.'
+</LI>
+<LI>7: `CGP.'
+</LI>
+</UL>
+
+<P>
+Note that 0 is not a valid colour map index.
+
+<P>
+The default colour map is number 7 which is a rainbow with the addition of black for the very lowest level, shading into white at the highest levels.
+
+<P>
+If <TT>imagestyle</TT>=`contour' has been chosen the output is a contour map. The spacing between contours may be controlled in one of two ways, either by specifying that separation directly (<TT>contourstyle</TT>=`separation', <TT>contourseparation</TT>) or by specifying the number of contours between mininum and maximum image values (<TT>contourstyle</TT>=`number', <TT>ncontours</TT>).
+
+<P>
+Images may be annotated with various ancillary information, all of which can be controlled with input parameters. The available annotations are:
+
+<P>
+
+<OL>
+<LI>Frame and text information: each image can be labeled with the FITS keywords reporting the instrument, observation, exposure, target, date, and principal investigator, if the appropriate information can be found in the file. This facility is invoked via the parameter <TT>withframe</TT>.
+
+<P>
+</LI>
+<LI>Coordinate Grid: if selected with <TT>gridstyle</TT>=`grid', a sky coordinates (RA, DEC) grid is plotted over the image; <TT>gridstyle</TT>=`ticks' causes only the RA and Dec tick marks around the edge of the plot to be drawn. Note that, for these annotations to be possible, the image must contain the appropriate WCS keywords.
+
+<P>
+</LI>
+<LI>Annotated sources: if <TT>withsrclisttab</TT>=y (the default) and the appropriate source-list dataset+table (containing columns <A NAME="806"></A><TT>RA</TT> and <A NAME="808"></A><TT>DEC</TT>, with the values in decimal degrees) is specified using <TT>srclisttab</TT>, a small circle or ellipse is drawn around the position of each selected source. The interface is now fairly versatile: a subset of sources can be selected for plotting; the radii of the circles can be varied in several ways; and labels can be added to the circles. These facilities are described in more detail in the following subsections.
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Quick start."></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Source selection."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node21.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="specadd">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="specadd.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="specadd.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+specadd (specadd-1.14) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="specadd.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="specadd.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="specadd:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+<A NAME="320"></A><A NAME="tex2html2"
+  HREF="../specadd/index.html"><SPAN  CLASS="textbf">specadd</SPAN></A>
+creates a multiple X-ray spectrum <A NAME="tex2html3"
+  HREF="http://heasarc.gsfc.nasa.gov/docs/heasarc/fits.html">FITS</A> file by stacking or  
+putting together (``adding'') two single spectrum files. It can also be used to
+add a single spectrum file to an already existing multiple spectrum
+file.
+
+<P>
+This type of spectral files is particularly useful when the user wants
+to simultaneously analyse different observations of the same object
+carried out with the same instrument or with different instruments. It
+would be easier to handle a large number of spectral datasets if they
+form a single data file than if they reside in different spectral
+files. For example, ten observations (performed with the same
+instrument and at the same observing mode) of a source taken at
+different epochs would require to handle ten different spectral files
+to be able to attach a different response file to every epoch. This would happen also if the user wants to analyse the spectra of a source taken with different instruments (example MOS1 and MOS2). 
+
+<P>
+With a multiple spectrum file all the spectra could be stored together
+(in a unique file) since the response files (ancilliary and redistribution
+matrix) and background files are attached to every single
+spectrum.
+
+<P>
+The Data extension for a multiple spectral dataset stores one single
+spectrum per row, instead of one channel per row as it is the case of
+single spectrum files. It has at least the three mandatory columns:
+<A NAME="326"></A><TT>SPEC_NUM</TT> (scalar giving the reference number of the spectrum
+in the particular row), <A NAME="328"></A><TT>CHANNEL</TT> (variable length array column
+containing channel numbers for the spectra in the <A NAME="330"></A><TT>COUNTS</TT>
+column),<A NAME="332"></A><TT>COUNTS</TT> (variable length array column with the count
+values observed in each channel). Other columns (<A NAME="334"></A><TT>STAT_ERR</TT>
+(variable length array column giving the statistical error of
+<A NAME="336"></A><TT>COUNTS</TT>), <A NAME="338"></A><TT>ROWID</TT>, <A NAME="340"></A><TT>QUALITY</TT>,
+<A NAME="342"></A><TT>GROUPING</TT>,<A NAME="344"></A><TT>BACKFILE</TT>, <A NAME="346"></A><TT>BACKSCAL</TT>, <A NAME="348"></A><TT>CORRFILE</TT>,
+<A NAME="350"></A><TT>CORRSCAL</TT>, <A NAME="352"></A><TT>RESPFILE</TT>, <A NAME="354"></A><TT>ANCRFILE</TT>, <A NAME="356"></A><TT>ANCRFILE</TT>) 
+are optional and they can be substituted by keywords if all the
+spectra share these values (i.e., same background file, same response
+file, etc.). This is the default case for <A NAME="358"></A><TT>STAT_ERR</TT>. Provided
+that none of the input spectra have this column, the output multiple
+spectral file will substitute it by a keyword <A NAME="360"></A><TT>POISSERR</TT>=T within
+the extension header. <A NAME="362"></A><A NAME="tex2html4"
+  HREF="../specadd/index.html"><SPAN  CLASS="textbf">specadd</SPAN></A>
+will keep the remaining optional
+and mandatory columns as columns to provide the highest
+flexibility. This will allow the user, for example, to attach a
+different response or background file to each of the spectra being
+considered.
+
+<P>
+The resulting multiple spectrum file that can be read into <A NAME="tex2html5"
+  HREF="http://heasarc.gsfc.nasa.gov/lheasoft/xanadu/xspec/index.html">Xspec</A>V.10
+and higher.
+
+<P>
+<SPAN  CLASS="textbf">Example:</SPAN> there are three observations of a source with three different instruments the user wants to analyse simultaneously (it is left to the user the decision of which type of simultaneous analysis is scientifically correct). The observations were carried out with MOS1 (specm1.fits), MOS2 (specm2.fits) and PN (specpn.fits). The single spectra should have their ANCRFILE, RESPFILE keywords filled out with their respective response matrices so that <A NAME="368"></A><A NAME="tex2html6"
+  HREF="../specadd/index.html"><SPAN  CLASS="textbf">specadd</SPAN></A>
+can write these names in the appropriate columns.
+
+<P>
+The first step would be adding two of the single spectrum files into a multiple spectrum file. Then the third single spectrum and this newly created file could be added together.
+
+<P>
+<PRE>
+specadd sets=''specm1.fits specm2.fits'' useoldsumset=false sumset=''specm1m2.fits''
+
+specadd sets=''specpn.fits'' useolsumset=true oldsumset=''specm1m2.fits'' 
+sumset=''specm1m2pn.fits''
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="specadd.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

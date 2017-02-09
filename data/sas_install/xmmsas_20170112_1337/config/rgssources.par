@@ -1,0 +1,303 @@
+<!-- converted from XPI formatted "rgssources.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="filemode" type="string" default="modify">
+   <DESCRIPTION>
+    Filemode: create new rgs source list or edit an existing one.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="create">
+    </ITEM>
+
+    <ITEM value="modify">
+     <PARAM id="changeprime" type="bool" default="no">
+      <DESCRIPTION>
+       Enable a change in the number of the prime source.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="changeattitude" type="bool" default="no">
+      <DESCRIPTION>
+       Enable a change in the attitude.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="srclist" type="dataset" mandatory="yes" default="rgsset.ds">
+   <DESCRIPTION>
+    The name of the rgs source list.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="instexpid" type="string" default="">
+   <DESCRIPTION>
+    Instrument/exposure ID string (the filename of any ODF constituent may be used).
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="writeobskwds" type="bool" default="yes">
+   <DESCRIPTION>
+    Write observation-specific keywords to the header.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="writeexpkwds" type="bool" default="yes">
+   <DESCRIPTION>
+    Write exposure-specific keywords to the header.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="clobberonlabel" type="bool" default="no">
+   <DESCRIPTION>
+    If two source labels are the same, delete the second source.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="primestyle" type="string" default="label">
+   <DESCRIPTION>
+    Style for designating the prime source.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="auto">
+    </ITEM>
+
+    <ITEM value="brightest">
+    </ITEM>
+
+    <ITEM value="index">
+     <PARAM id="primeindex" type="int" default="1">
+      <DESCRIPTION>
+       Index of prime source.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       primeindex in [1:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="label">
+     <PARAM id="primelabel" type="string" default="PROPOSAL">
+      <DESCRIPTION>
+       Label of source to make the prime source.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="expr">
+     <PARAM id="primeexpression" type="string" default="">
+      <DESCRIPTION>
+       Column expression to calculate index of prime source.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="attstyle" type="string" default="expmedian">
+   <DESCRIPTION>
+    Style for entering (or calculating) the attitude.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="mean">
+     <PARAM id="meanset" type="dataset" default="atthk.dat">
+      <DESCRIPTION>
+       Name of the attitude history file.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="median">
+     <PARAM id="medianset" type="dataset" default="atthk.dat">
+      <DESCRIPTION>
+       Name of the attitude history file.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="start">
+    </ITEM>
+
+    <ITEM value="user">
+     <PARAM id="attra" type="angle" default="0" mandatory="yes">
+      <DESCRIPTION>
+       Right Ascension (decimal degrees) of the attitude.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       attra in [0.0:360.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="attdec" type="angle" default="0" mandatory="yes">
+      <DESCRIPTION>
+       Declination  (decimal degrees) of the attitude.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       attdec in [-90.0:90.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="attapos" type="angle" default="0" mandatory="yes">
+      <DESCRIPTION>
+       Position angle (decimal degrees) of the attitude.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       attapos in [0.0:360.0]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="expmedian">
+     <PARAM id="expmediantable" type="table" default="attgti.ds:STDGTI">
+      <DESCRIPTION>
+       Name of the filtered attitude history table.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="addusersource" type="bool" default="no">
+   <DESCRIPTION>
+    Add a source with user-defined position, rate etc.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="label" type="string" default="USER">
+      <DESCRIPTION>
+       Label for the user-defined source.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="rate" type="real" default="0">
+      <DESCRIPTION>
+       Rate value (if known) for the user-defined source.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       rate in [0.0:]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="userasprime" type="bool" default="no">
+      <DESCRIPTION>
+       Set the prime source to the user-added source.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="process" type="bool" default="no">
+      <DESCRIPTION>
+       Set the PROCESS flag for the user-added source.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="bkgexclude" type="bool" default="yes">
+      <DESCRIPTION>
+       Set the BKG_EXCLUDE flag for the user-added source.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="positionstyle" type="string" default="radec">
+      <DESCRIPTION>
+       Style for entering the position of the user-defined source.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="radec">
+        <PARAM id="ra" type="angle" default="0" mandatory="yes">
+         <DESCRIPTION>
+          Right Ascension (decimal degrees) of the user-defined source.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          ra in [0.0:360.0]
+         </CONSTRAINTS>
+        </PARAM>
+
+        <PARAM id="dec" type="angle" default="0" mandatory="yes">
+         <DESCRIPTION>
+          Declination (decimal degrees) of the user-defined source.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          dec in [-90.0:90.0]
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+
+       <ITEM value="wrtatt">
+        <PARAM id="deltaxdsp" type="real" default="0" mandatory="yes">
+         <DESCRIPTION>
+          Cross-dispersion offset (arcmin) of the user-defined source from the pointing.
+         </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="deltadisp" type="real" default="0" mandatory="yes">
+         <DESCRIPTION>
+          Dispersion-direction offset (arcmin) of the user-defined source from the pointing.
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withepicset" type="bool" default="no">
+   <DESCRIPTION>
+    Add sources from an epic-derived source list.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="epicset" type="dataset" default="">
+      <DESCRIPTION>
+       Name of the epic-derived source list.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="epiclabelprefix" type="string" default="EPIC">
+      <DESCRIPTION>
+       Prefix for epic-source labels.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="doconfusion" type="bool" default="no">
+      <DESCRIPTION>
+       Flag sources which are confused in the epic camera plane.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="instweights" list="yes" type="real" default="3.5 1.0 1.0">
+      <DESCRIPTION>
+       Epic count rates are averaged according to these weight values.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="flagepicsrcoutoffov" type="bool" default="no">
+      <DESCRIPTION>
+       If yes, flag the EPIC sources falling out of FOV (not drop them).
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="enablefilter" type="bool" default="no">
+   <DESCRIPTION>
+    Enable spatial filtering of epic sources.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="bandids" list="yes" type="int" default="2 3">
+   <DESCRIPTION>
+    Energy band IDs for (EPIC) sources (recommended: 2 for 1XMM and 2,3 for 2XMM and after).
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withboresightfudge" type="bool" default="yes">
+   <DESCRIPTION>
+    Flip the sign of the boresight euler%psi. This parameter should be removed after the boresight is fixed. 
+   </DESCRIPTION>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

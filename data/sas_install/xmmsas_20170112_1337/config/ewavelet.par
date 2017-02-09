@@ -1,0 +1,153 @@
+<!-- converted from XPI formatted "ewavelet.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="imageset" type="dataset" mandatory="yes" default="image.fits">
+   <DESCRIPTION>
+    Input image
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="srclistset" type="dataset" default="ewavlist.fits">
+   <DESCRIPTION>
+    Output source list
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="expmapset" type="dataset" default="expmap.fits">
+   <DESCRIPTION>
+    Input exposure map
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="useexpmap" type="bool" default="yes">
+   <DESCRIPTION>
+    Use the exposure map?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="minscale" type="real" default="2">
+   <DESCRIPTION>
+    Minimum wavelet scale
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    minscale in [1.0:16.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="maxscale" type="real" default="8">
+   <DESCRIPTION>
+    Maximum wavelet scale
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    maxscale in [2.0:32.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="threshold" type="real" default="5">
+   <DESCRIPTION>
+    Detection probablity threshold
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    threshold in [3.0:7.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="edgethreshold" type="real" default="4">
+   <DESCRIPTION>
+    Threshold to supress detections near edges
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    edgethreshold in [0.0:10.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="niter" type="int" default="2">
+   <DESCRIPTION>
+    Number of iterations
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    niter in [2:4]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="makerecon" type="bool" default="no">
+   <DESCRIPTION>
+    Make a reconstruction of the image?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="recimageset" type="dataset" default="reconstruction.fits">
+   <DESCRIPTION>
+    Name of reconstructed image
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="savebkgrnd" type="bool" default="no">
+   <DESCRIPTION>
+    Save the last background map to disk?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="bkgrndset" type="dataset" default="background.fits">
+   <DESCRIPTION>
+    Background map name
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withinputlist" type="bool" default="no">
+   <DESCRIPTION>
+    Create reconstruction or background from input list?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+  	<PARAM id="inputlist" type="dataset" default="ewavlist.fits">
+   		<DESCRIPTION>
+    		Input source list
+   		</DESCRIPTION>
+   		<CONSTRAINTS>
+    		true
+   		</CONSTRAINTS>
+  	</PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+ </CONFIG>
+</FILE>

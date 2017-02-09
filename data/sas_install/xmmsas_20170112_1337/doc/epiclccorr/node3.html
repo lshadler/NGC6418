@@ -1,0 +1,210 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="epiclccorr">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epiclccorr.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="epiclccorr.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epiclccorr (epiclccorr-1.21.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="epiclccorr.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Extraction region over more"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epiclccorr.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="epiclccorr:description:description"></A>
+<BR>
+Description
+</H1>
+The aim of this task (<A NAME="419"></A><A NAME="tex2html1"
+  HREF="../epiclccorr/index.html"><SPAN  CLASS="textbf">epiclccorr</SPAN></A>) is to correct <I>EPIC</I>
+source TS produced by <A NAME="423"></A><A NAME="tex2html2"
+  HREF="../eveselect/index.html"><SPAN  CLASS="textbf">eveselect</SPAN></A>
+for the following effects:
+<BR>
+<P>
+
+<UL>
+<LI><B>Absolute Corrections</B>: Corrections due to events lost
+      through inefficiencies of various sorts in the mirror-detector
+      system. We will consider these corrections as energy dependent:
+      
+<UL>
+<LI>Vignetting
+</LI>
+<LI>Bad pixels
+</LI>
+<LI>Chip
+      gaps
+</LI>
+<LI>PSF
+</LI>
+<LI>Quantum Efficiency 
+</LI>
+</UL> This will
+      give the Count Rate which would have been detected by this
+      camera with this filter, if it had been observed on-axis with an
+      infinity extraction radius. As such the final Count Rates may be
+      converted to fluxes using tools such as PIMMS.
+</LI>
+<LI><B>Relative Corrections</B>: Corrections which vary with time:
+	
+<UL>
+<LI>Dead Time.
+</LI>
+<LI>GTIs.
+</LI>
+<LI>Exposure.
+</LI>
+<LI>background counts.
+	
+</LI>
+</UL>
+</LI>
+<LI><B>Background Substraction</B>:
+</LI>
+</UL>
+
+<P>
+Optionally, an <I>EPIC</I> background TS can be supplied and in this
+case the initial source TS will be also background corrected (<B>backscale</B> correction included ). The first version of
+<A NAME="427"></A><A NAME="tex2html3"
+  HREF="../epiclccorr/index.html"><SPAN  CLASS="textbf">epiclccorr</SPAN></A>
+will only accept background TS with exactly the same
+start and stop time and bin size as in the source TS. The background
+TS will be corrected for relative effects related to the geometrical
+area of the source TS.  The results of the background corrected rates
+and errors are stored in columns <A NAME="431"></A><TT>BACKV</TT> and
+<A NAME="433"></A><TT>BACKE</TT> in the output file. Bear in mind that a big background
+area will slow down epiclccorr run.
+<BR>
+<P>
+<A NAME="435"></A><A NAME="tex2html4"
+  HREF="../epiclccorr/index.html"><SPAN  CLASS="textbf">epiclccorr</SPAN></A>
+also needs as input the event file used to create both 
+source and background time series.
+
+<P>
+<A NAME="439"></A><A NAME="tex2html5"
+  HREF="../epiclccorr/index.html"><SPAN  CLASS="textbf">epiclccorr</SPAN></A>
+will perform the <B>Absolute corrections</B> making
+use of the <A NAME="443"></A><A NAME="tex2html6"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+and <A NAME="447"></A><A NAME="tex2html7"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+SAS tasks. A broad energy
+spectrum (50 eV energy bin) will be created using the Data SubSpace
+(DSS) expressions and it will be passed to <A NAME="451"></A><A NAME="tex2html8"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+SAS
+task. This task takes calibration information provided by the CAL,
+performs the necessary corrections for instrumental factors, such us,
+Vignetting, Bad Pixels, Chip Gaps, PSF, filter transmission, Quantum
+Efficiency, to get the corresponding <B>Absolute Correction</B> for the
+source TS.  If the extraction region is too complex, <A NAME="455"></A><A NAME="tex2html9"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+can
+fail trying to calculate the source position from the DSS. In this
+case, the <TT>withsourcepos</TT> parameter must be used, and the user
+must introduce the source coordinates. 
+<BR>
+<P>
+<A NAME="460"></A><A NAME="tex2html10"
+  HREF="../epiclccorr/index.html"><SPAN  CLASS="textbf">epiclccorr</SPAN></A>
+output also contains the following extensions:
+
+<UL>
+<LI><A NAME="464"></A><TT>SRC_GTIS</TT>. This extension contains GTIs which cover all the non-null <A NAME="466"></A><TT>RATE</TT> values.
+
+<P>
+</LI>
+<LI><A NAME="468"></A><TT>BKG_GTIS</TT>. This extension (only present if <TT>withbkgset</TT>=`yes') contains GTIs which cover all the non-null <A NAME="471"></A><TT>BACKV</TT> values.
+</LI>
+</UL>
+
+<P>
+<A NAME="473"></A><A NAME="tex2html11"
+  HREF="../epiclccorr/index.html"><SPAN  CLASS="textbf">epiclccorr</SPAN></A>
+is also compatible with the output of <A NAME="477"></A><A NAME="tex2html12"
+  HREF="../barycen/index.html"><SPAN  CLASS="textbf">barycen</SPAN></A>
+task.
+
+<P>
+The following corrections will not be included in the first version:
+
+<UL>
+<LI>source spectrum time variability.
+</LI>
+<LI>Out of Time Events.
+</LI>
+<LI>pileup.
+</LI>
+</UL>
+
+<P>
+The <B>relative corrections</B> will be performed by designing and
+coding specific algorithms for each instrument <I>EPICMOS</I> and
+<I>EPICPN</I> and each mode. A detailed description can be found in
+section <A HREF="#relativecorrections"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/crossref.png"></A>.
+<BR>
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html74"
+  HREF="node4.html">Extraction region over more than one CCD</A>
+<LI><A NAME="tex2html75"
+  HREF="node5.html">Absolute Corrections</A>
+<LI><A NAME="tex2html76"
+  HREF="node6.html">Relative Corrections</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="epiclccorr.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Extraction region over more"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

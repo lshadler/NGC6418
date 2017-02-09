@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>User defined ranges</TITLE>
+<META NAME="description" CONTENT="User defined ranges">
+<META NAME="keywords" CONTENT="specgroup">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="specgroup.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node5.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+specgroup (specgroup-1.6) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Grouping options and examples"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Grouping options and examples"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="withRegularBins"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node26.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="specgroup.html">Home Page</A> / <A  HREF="node5.html">Grouping options and examples</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00041000000000000000">
+User defined ranges</A>
+</H2>
+The spectrum may be grouped using a fixed set of ranges in channel
+space, e.g.:
+
+<P>
+<BR>
+<IMG
+ WIDTH="617" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="\begin{code}{\em
+specgroup spectrumset=srcspec.ds groupedset=SpecGrp.ds ranges=''1:10,11:50''
+}\end{code}">
+<BR>
+
+<P>
+which will produce two groups: the first from spectral channel  
+1 to spectral channel 10 and the
+second from spectral channel 11 to 50. The rest of the spectrum will 
+remain ungrouped. Note that the spectral channel refers to the channel
+number contained in the <EM>CHANNEL</EM> array in the spectrum. This is not
+necessarily the same as the bin number of the spectrum.
+
+<P>
+The ranges can also be defined in photon energy units (KEV), e.g.:
+
+<P>
+<BR>
+<IMG
+ WIDTH="745" HEIGHT="33" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="\begin{code}{\em
+specgroup spectrumset=srcspec.ds groupedset=SpecGrp.ds ranges=''0.0:0.4,1.0:2.0''
+units=KEV rmfset=m1.rmf
+}\end{code}">
+<BR>
+
+<P>
+which will produce a group containing spectral bins with <I>central</I> 
+energies between 0.0 and 0.4 keV and another with central energies between
+1.0 and 2.0 keV. The conversion between spectral channel and photon energy
+is given in the <EM>EBOUNDS</EM> extension of an OGIP compliant response file
+(see George et al....). Therefore if ranges are given in keV a redistribution
+matrix (RMF) must be supplied otherwise the error, <EM>NoRMFsupplied</EM>
+will be issued.
+
+<P>
+This option may be used in conjunction with the regular binning option
+and/or one of the statistical options.
+In which case the range grouping is applied first and the subequent options
+are applied to the remaining ungrouped bins.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Grouping options and examples"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Grouping options and examples"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="withRegularBins"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node26.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

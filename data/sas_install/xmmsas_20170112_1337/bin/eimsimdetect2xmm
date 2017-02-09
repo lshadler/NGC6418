@@ -1,0 +1,978 @@
+#! /usr/bin/perl -w
+#
+#
+# main for SAS perl tasks.
+#
+require 5;
+use strict;
+use Getopt::Long;
+Getopt::Long::Configure ("pass_through");
+use SAS::error;
+## At build time the following strings (enclosed in --, that is
+## -string-) are replaced:
+##  sasperl  -> This is taken from the PERL variable defined by configure
+##  taskname
+##  version
+##  release
+##  aka
+## Make sure they do not occur anywhere else in main.pl unless you
+## want them to be replaced.
+##  taskname also occurs at the end of main.pl
+##
+my $name = "eimsimdetect2xmm";
+SAS::error::client($name);
+my $VERSION = "2.3";
+my $RELEASE = "xmmsas_20170112_1337-16.0.0";
+my $AKA = "16.0.0";
+
+## 
+## Standard options: these follow taskmain.
+##
+## -a|--ccfpath <dir1>[:<dir2>...] --> SAS_CCFPATH
+## -f|--ccffiles <f1> [<f2>...] --> cannot be implemented
+## -c|--noclobber --> SAS_CLOBBER
+## -d|--dialog --> tool(sasdialog)
+## -h|--help --> tool(listparams)
+## -i|--ccf <cif> --> SAS_CCF
+## -m|--manpage --> sashelp
+## -o|--odf <sumfile> --> SAS_ODF
+## -V|--verbosity <level> -- SAS_VERBOSITY
+## -v|--version --> local implementation
+##
+## Getopt::Long provides support for short versions with single "-" except for -v.
+## Therefore all short versions were automatically included either with first letter
+## or via an alias as for -a, -i, -o and -V.
+##
+## -v deserves special care due to the existence of support for $version within the
+## Getopt module. Therefore -v is treated specially. 
+
+my ($ccfpath, $noclobber, $dialog, $help, $ccf, $manpage, $odf, $verbosity, $version);
+
+exit(1) unless
+    GetOptions("ccfpath|a=s"    => \$ccfpath,
+	       "noclobber"      => \$noclobber,
+	       "dialog"         => \$dialog,
+	       "help"           => \$help,
+	       "ccf|i=s"        => \$ccf,
+	       "manpage"        => \$manpage,
+	       "odf|o=s"        => \$odf,
+	       "verbosity|V=i"  => \$verbosity,
+	       "version"        => \$version,
+	      );
+
+my $arg;
+foreach $arg (@ARGV) {
+  $version=1 if ( $arg =~ "-v" );
+}
+
+$ENV{SAS_CCFPATH}   = $ccfpath if($ccfpath);
+$ENV{SAS_CLOBBER}   = 0 if($noclobber);
+$ENV{SAS_CCF}       = $ccf if($ccf);
+$ENV{SAS_ODF}       = $odf if($odf);
+$ENV{SAS_VERBOSITY} = $verbosity if($verbosity);
+
+use SAS::param;
+
+
+if($version){
+    print "$name-$VERSION [$RELEASE-$AKA]\n";
+    exit(0);
+}
+if($manpage){
+    system("sashelp --doc=$name");
+    my $x = $? >> 8; # perldoc -f system
+    exit($x);
+}
+if($help){
+    system("listparams $name");
+    my $x = $? >> 8;
+    exit($x);
+}
+if($dialog){
+    system("sasdialog $name");
+    my $x = $? >> 8;
+    exit($x);
+}
+
+&eimsimdetect2xmm();
+
+# This perl task is designed to be called from eimsim. You should not run it from the command line, but instead submit its name to eimsim via the --dettask parameter.
+#
+# Note that 2XMM is expected (as of 12 Oct 2006) to make use of the following task versions:
+#	emask-2.9
+#	eboxdetect-4.15.2
+#	emldetect-4.44.24
+#	esplinemap-4.4
+
+package main;
+
+sub makeProds;
+sub runModule;
+
+my ($command, $instKwd);
+
+sub eimsimdetect2xmm  {
+
+  use SAS;
+  use English;
+  use Carp;
+#  use vars qw($testflag $name $version $author $date $currentModule $currentInst $currentStream $currentExpid %moduleStatus %expIds %bit_nums @orderedListOfModules);
+  use vars qw($currentModule $currentInst $currentStream $currentExpid $ecf_ref %evlists %expIds %moduleStatus $id_str %inst_lc2uc %inst_uc2lc %newFiles $obsid @orderedListOfModules $prod_dir $prod_subdir $pseudoprod_dir $pseudoprod_subdir $simgen_subdir $simop_dir $simop_subdir $template_set $testFlag);
+  use ModuleResources qw(exception findFile ignore info start success);
+########### is everything but findFile unnecessary??
+
+  use ExpDetectPrep qw(numberOfStreams evaluateRules performAction);
+  use ExpDetect     qw(numberOfStreams evaluateRules performAction);
+  use eimsimperlsubs;
+
+  # Prints all output to stderr:
+  select(STDERR);
+
+  #......................................................................
+  # Read and check parameters:
+
+  my $num_entries = parameterCount('obsidroots');
+SAS::error('noObsIds', "There must be at least one member in the "
+."list --obsidroots") if ($num_entries <= 0);
+
+### Just for the present, because we can't yet combine source lists from different obs:
+SAS::error('notYetAvailable', "Sorry, can't yet combine source lists from more than 1 observation.") if ($num_entries > 1);
+
+  my @obsid_roots = ();
+  foreach my $i (0 .. $num_entries-1) {
+    $obsid_roots[$i] = stringParameter('obsidroots', $i)
+  }
+
+  $testFlag          = booleanParameter('astest');
+
+  my $first_stage    = stringParameter('entrystage');
+  my $last_stage     = stringParameter('finalstage');
+  my $ref_band       = stringParameter('refband');
+  $prod_subdir       = stringParameter('prdssubdir');
+  $simop_subdir      = stringParameter('simopsubdir');
+  $simgen_subdir     = stringParameter('simgensubdir');
+  $pseudoprod_subdir = stringParameter('pseudoprodsubdir');
+  my $raw_det_list   = stringParameter('srclistset');
+  my $stream_num     = intParameter('streamnumber');
+  my $id_number      = intParameter('idnumber');
+  $template_set      = stringParameter('srcspecset');
+
+  $stream_num =~ s/^0+//; # chop off any leading zeros
+  $id_number  =~ s/^0+//; # chop off any leading zeros
+  my $stream_num_str = '0'x(2-length($stream_num))."$stream_num";
+  my $id_number_str  = '0'x(4-length($id_number)) ."$id_number";
+  $id_str = "S$stream_num_str"."F$id_number_str";
+
+  #......................................................................
+  # Read ECF data from template file.
+  #
+  if (!-d "$simgen_subdir") {
+    SAS::warning('noGenericSimOutputSubdir', "Directory $simgen_subdir "
+      ."not found; I'll try to mkdir it.");
+SAS::error('mkdirFailed', "Couldn't mkdir $simgen_subdir.")
+    if (system("mkdir -p $simgen_subdir"));
+SAS::error('noSimOutputSubdir', "Directory $simgen_subdir not found.")
+    if (!-d "$simgen_subdir");
+  }
+
+  my $temp_ascii = "$simgen_subdir/Sim_temp_$id_str.txt";
+
+  my $sim_fluxDensityToFlux ;
+  ($ecf_ref, $sim_fluxDensityToFlux)
+    = &eimsimperlsubs::readEcfs($template_set, $temp_ascii, $testFlag);
+  my @ecf_info = @{$ecf_ref};
+SAS::error('noEcfsFound', "No ECF entries were returned by readEcfs.")
+  if (@ecf_info <= 0);
+
+SAS::error('badEcfStructure', "No instrument data returned in the ECF hash.")
+  if (!defined($ecf_info[0]{'instrums'}));
+
+  #......................................................................
+  # Check the product structure and obtain hashes of obsids, instruments and bands from it:
+
+  my ($obsid_ref, $used_bands_ref, $filters_ref)
+    = &eimsimperlsubs::checkProds($prod_subdir, @obsid_roots);
+  my %obsids = %{$obsid_ref};
+  my @used_bands = @{$used_bands_ref};
+  my %filters = %{$filters_ref};
+
+  # Check that all bands, and all combos of instrument/filter, are present in the ecf hash:
+  #
+  my ($instexpids_ref, $band_to_i_ref)
+    = &eimsimperlsubs::checkBandInstFilt($used_bands_ref, $filters_ref, $ecf_ref);
+  my %instexpids = %{$instexpids_ref};
+  my %band_to_i = %{$band_to_i_ref};
+
+  %inst_uc2lc = (
+    'M1'=>'emos1',
+    'M2'=>'emos2',
+    'PN'=>'epn',
+    'R1'=>'rgs1',
+    'R2'=>'rgs2',
+    'OM'=>'om',
+    'EP'=>'epic',
+    'OB'=>'obs'
+  );
+  %inst_lc2uc = (
+    'emos1' => 'M1',
+    'emos2' => 'M2',
+    'epn'   => 'PN',
+    'rgs1'  => 'R1',
+    'rgs2'  => 'R2',
+    'om'    => 'OM',
+    'epic'  => 'EP',
+    'obs'   => 'OB'
+  );
+
+  #......................................................................
+  # Set up all file names and other variables:
+
+  my $kwd_file = "$simop_subdir/Sim_kwds_$id_str.txt";
+
+  my %cifs = ();
+  my %final_src_lists = ();
+  my %sim_images = ();
+  my %sim_images_ref = ();
+  foreach my $obsid_root (@obsid_roots) {
+    my $prod_dir  = "$obsid_root/$prod_subdir";
+    my $simop_dir = "$obsid_root/$simop_subdir";
+
+    $obsid = $obsids{$obsid_root};
+
+    $cifs{$obsid} = "$prod_dir/P$obsid".  "OBX000CALIND0000.FIT";
+###    $final_src_lists{$obsid}      = "$simop_dir/Sim_$id_str"."_finalSrcList.fits";
+$final_src_lists{$obsid} = $raw_det_list;
+
+    foreach my $instexpid (@{$instexpids{$obsid}}) {
+      $sim_images_ref{$obsid}{$instexpid}
+        = "$simop_dir/P$id_str$instexpid"."IMAGE_$ref_band"."000.FIT";
+      foreach my $band (@used_bands) {
+        $sim_images{$obsid}{$instexpid}{$band}
+          = "$simop_dir/P$id_str$instexpid"
+          ."IMAGE_$band"."000.FIT";
+      }
+      my $band = '9';
+      $sim_images{$obsid}{$instexpid}{$band}
+        = "$simop_dir/P$id_str$instexpid"
+        ."IMAGE_$band"."000.FIT";
+    }
+  }
+
+  %newFiles = (); # this is filled up on the fly. Every time the ModuleResources::findFile is called, it stores the file name in the appropriate entry of %newFiles.
+
+  #......................................................................
+  # Read ECF info from the sim images and setup ecf and band lists and arrays:
+
+  my %ecfs = ();
+  my %ranges = ();
+  my %inst_uc_lists = ();
+  my %filter_lists = ();
+
+  foreach my $obsid_root (@obsid_roots) {
+    $obsid = $obsids{$obsid_root};
+
+    foreach my $instexpid (@{$instexpids{$obsid}}) {
+#      my $inst_uc = substr($instexpid, 0, 2);
+      foreach my $band (@used_bands) {
+        my $i = $band_to_i{$band};
+        my @band_ranges = @{$ecf_info[$i]{'edges'}};
+        $ranges{$obsid}{$instexpid}{$band} = [@band_ranges];
+#
+#        my %filter_lists = %{$ecf_info[$i]{'instrums'}};
+#        my $filter = $filters{$obsid}{$instexpid};
+#        my $ecf = $filter_lists{$inst_uc}{$filter};
+
+        my $ecf = 999; # default
+#        if (!$testFlag) {
+        if (!$testFlag && $first_stage ne 'cleanup') {
+          my $imageset = $sim_images{$obsid}{$instexpid}{$band};
+SAS::error('noSimImage', "Couldn't find $imageset.") if (!-e "$imageset");
+
+          $ecf = &eimsimperlsubs::readFITSKeyword($imageset, 'ECF');
+          $ecf = sprintf "%9.6f", $ecf;
+          $ecf =~ s/^\s+//;
+        }
+
+        $ecfs{$obsid}{$instexpid}{$band} = $ecf;
+      }
+    }
+
+    my @inst_uc_list = ();
+    my @filter_list = ();
+    foreach my $instexpid (@{$instexpids{$obsid}}){
+      my $inst_uc = substr($instexpid, 0, 2);
+SAS::error('noFilterThisInst', "Couldn't find a filter for instexpid $instexpid.")
+      if (!defined($filters{$obsid}{$instexpid}));
+
+      push @inst_uc_list, $inst_uc;
+      push @filter_list, $filters{$obsid}{$instexpid};
+    }
+    $inst_uc_lists{$obsid} = \@inst_uc_list;
+    $filter_lists{$obsid} = \@filter_list;
+  }
+
+  @orderedListOfModules = (
+    {'name'=>'ExpDetectPrep',	  'doaction'=>1},
+    {'name'=>'ExpDetect',	  'doaction'=>1},
+  );
+
+  #......................................................................
+  # Decide where to go:
+
+  if ($first_stage eq 'main') {
+    goto MAINN;
+  } elsif($first_stage eq 'addkwds') {
+    goto ADDKWDS;
+  } elsif($first_stage eq 'ratetoflux') {
+    goto RATETOFLUX;
+  } elsif ($first_stage eq 'cleanup') {
+    goto CLEANUP;
+  } else {
+SAS::error('badEntryStage', "Unrecognized entry stage $first_stage.");
+  }
+
+  #......................................................................
+  # Start main routine:
+
+  MAINN:
+
+  %moduleStatus = ();
+
+  # eimsim doesn't make a band 9 image, but expDetect requires one, so just
+  # bodge something up:
+  #
+  foreach my $obsid_root (@obsid_roots) {
+    $obsid = $obsids{$obsid_root};
+
+    my $cif = $cifs{$obsid};
+SAS::error('noCif', "Couldn't find CIF $cif.") if (!-e "$cif");
+    $ENV{'SAS_CCF'} = "$cif";
+
+    foreach my $instexpid (@{$instexpids{$obsid}}) {
+      my $ref_image = $sim_images_ref{$obsid}{$instexpid};
+      my $image_9   = $sim_images{    $obsid}{$instexpid}{'9'};
+      $command = "cp $ref_image $image_9";
+SAS::error('cpToBand9ImageFailed', "Couldn't bodge up a band-9 image.")
+      if (&run("$command"));
+    }
+  }
+
+  foreach my $obsid_root (@obsid_roots) {
+    $obsid = $obsids{$obsid_root};
+
+#print "obsid_root=$obsid_root\n\n";
+
+    if (&makeProds($obsid_root, $obsid)) {
+SAS::error('makeProdsFailed', "Couldn't run the detect modules.")
+    }
+  }
+
+  goto ENDD if ($last_stage eq 'main');
+
+
+  # . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  ADDKWDS:
+  print "*************** start ADDKWDS ****************\n\n";
+
+  #......................................................................
+  # Now add extension LOGNLOGS; columns STREAM_N, FIELD_N; keywords *_ECF,
+  # SKY_AREA.
+
+  foreach my $obsid_root (@obsid_roots) {
+#    my $obsid = $obsids{$obsid_root};
+    $obsid = $obsids{$obsid_root};
+
+#    my $obs_src_list = $obs_src_lists{$obsid};
+#    my $obs_src_list = $newFiles{'epic observation ml source list'}
+#      {'epic'}{'X000'}{'0'}{'000'};
+$prod_dir       = "$obsid_root/$prod_subdir";
+$pseudoprod_dir = "$obsid_root/$pseudoprod_subdir";
+$simop_dir      = "$obsid_root/$simop_subdir";
+my $obs_src_list = findFile(
+  class => 'product'
+  , instrument => 'epic'
+  , content => 'EPIC observation ml source list'
+);
+SAS::error('noEpicSrcListSet', "Couldn't find $obs_src_list")
+    if (!$testFlag && !-e "$obs_src_list");
+
+#    $command = "newcolgen "
+#    ."tab=$obs_src_list".":SRCLIST "
+#    ."newcolumnlist='STREAM_N FIELD_N' "
+#    ."newcolvaluelist='$stream_num $id_number' "
+#    ;
+#
+#SAS::error('addColsFailed', "Couldn't add stream & field numbers to "
+#."list of detected sources.")
+#    if (&run("$command"));
+
+    open(KWDS, ">$kwd_file") if (!$testFlag);
+
+    my $max_inst_id = 0;
+    foreach my $instexpid (@{$instexpids{$obsid}}) {
+      my $inst_uc = substr($instexpid, 0, 2);
+
+      if      ($inst_uc eq 'PN') {
+        $instKwd = 'IDINST_1';
+        if ($max_inst_id < 1) {$max_inst_id = 1;}
+      } elsif ($inst_uc eq 'M1') {
+        $instKwd = 'IDINST_2';
+        if ($max_inst_id < 2) {$max_inst_id = 2;}
+      } elsif ($inst_uc eq 'M2') {
+        $instKwd = 'IDINST_3';
+        if ($max_inst_id < 3) {$max_inst_id = 3;}
+      } else {
+SAS::error('badInstrument', "Didn't recognize instrument code $inst_uc.")
+      }
+
+      print KWDS "$instKwd = $inst_uc\n" if (!$testFlag);
+
+      my $max_band_id = 0;
+      foreach my $band (@used_bands) {
+        if ($max_band_id < $band) {$max_band_id = $band;}
+
+        my $ecf = $ecfs{$obsid}{$instexpid}{$band};
+
+        print KWDS "$inst_uc"."_$band"."_ECF = $ecf \/[10^-11 "
+          ."counts cm^2 erg^-1] Flux to rate\n" if (!$testFlag);
+
+#print "obsid=$obsid\n";
+#print "instexpid=$instexpid\n";
+#print "band=$band\n";
+#my $ranges_ref = $ranges{$obsid}{$instexpid}{$band};
+#print "ranges_ref=$ranges_ref\n";
+
+        my @band_ranges = @{$ranges{$obsid}{$instexpid}{$band}};
+        if (!defined($band_ranges[0])) {
+SAS::error('noBandRanges', "*****.")
+        } elsif (@band_ranges == 1) {
+          my $elo = $band_ranges[0]{'lo'};
+          my $ehi = $band_ranges[0]{'hi'};
+
+          print KWDS "$inst_uc"."_$band"."_ELO = $elo \/[eV]\n" if (!$testFlag);
+          print KWDS "$inst_uc"."_$band"."_EHI = $ehi \/[eV]\n" if (!$testFlag);
+
+        } else {
+          my $num_ranges = @band_ranges;
+
+          print KWDS "$inst_uc"."_$band"."_NER = $num_ranges \/ Number "
+            ."of subranges in energy band $band\n" if (!$testFlag);
+
+          foreach my $i (0 .. $#band_ranges) {
+            my $range = $i + 1;
+            my $elo = $band_ranges[$i]{'lo'};
+            my $ehi = $band_ranges[$i]{'hi'};
+
+            print KWDS "$inst_uc"."_$band"."ELO$range = $elo \/[eV]\n" if (!$testFlag);
+            print KWDS "$inst_uc"."_$band"."EHI$range = $ehi \/[eV]\n" if (!$testFlag);
+          }
+        }
+      } # end loop $band
+
+      print KWDS "$inst_uc"."_NBNDS = $max_band_id \/Max ID_BAND this "
+        ."instrument\n" if (!$testFlag);
+    } # end loop $instexpid
+
+    print KWDS "N_INSTR = $max_inst_id \/Max value of ID_INST\n" if (!$testFlag);
+
+my $mlset = $obs_src_list;
+my $pix_delta_x = &eimsimperlsubs::readFITSKeyword($mlset, 'TCDELT1');
+my $pix_delta_y = &eimsimperlsubs::readFITSKeyword($mlset, 'TCDELT2');
+SAS::error('getPixelDimsFailed', "Couldn't retrieve pixel dimensions.")
+    if ($pix_delta_x == 0 || $pix_delta_y == 0);
+
+    foreach my $instexpid (@{$instexpids{$obsid}}) {
+      my $inst_uc = substr($instexpid, 0, 2);
+      my $inst_lc = $inst_uc2lc{$inst_uc};
+      my $sky_area;
+
+      if (!$testFlag) {
+#        my $mlset = $mlsets{$obsid}{$instexpid};
+#SAS::error('noMlSrcListSet', "Couldn't find $mlset")
+#        if (!-e "$mlset");
+#
+#        my $pix_delta_x = &eimsimperlsubs::readFITSKeyword($mlset, 'TCDELT1');
+#        my $pix_delta_y = &eimsimperlsubs::readFITSKeyword($mlset, 'TCDELT2');
+###SAS::error('getPixelDimsFailed', "Couldn't retrieve pixel dimensions.")
+#        if ($pix_delta_x == 0 || $pix_delta_y == 0);
+
+#        my $detmaskset = $detmasksets{$obsid}{$instexpid};
+#my $detmaskset = $newFiles{'epic detection mask'}
+#      {$inst_lc}{'X000'}{'1'}{'000'};
+#my $detmaskset= "$simop_dir/Sim_$inst_uc"."X000_edetectMask.fits";
+my $detmaskset= findFile(
+  class => 'product'
+  , instrument => $inst_lc
+  , content => 'EPIC DETECTION MASK'
+);
+SAS::error('noDetMaskSet', "Couldn't find $detmaskset")
+        if (!-e "$detmaskset");
+
+        $command = "fimgstat "
+        ."infile=$detmaskset "
+        ."threshlo=INDEF "
+        ."threshup=INDEF "
+        ;
+
+        my @lines = `$command | grep sum`;
+
+SAS::error('getAreaDetMaskFailed', "Couldn't get area of detmask.")
+        if (!defined($lines[0]));
+
+        my $n_mask_pixels;
+        if ($lines[0] =~ /=\s*(\d+)/) {
+          $n_mask_pixels = $1;
+        } else {
+SAS::error('getAreaDetMaskFailed', "Couldn't get area of detmask.");
+        }
+
+        $sky_area = abs($n_mask_pixels * $pix_delta_x * $pix_delta_y);
+      } else { # $testFlag is set
+        $sky_area = 999;
+      }
+
+      print KWDS "$inst_uc"."_SKY_A = $sky_area \/[deg^2] Area of "
+        ."detection mask.\n" if (!$testFlag);
+    }
+
+    close(KWDS) if (!$testFlag);
+
+    $command = "fmodhead "
+    ."infile=$obs_src_list'[SRCLIST]' "
+    ."tmpfil=$kwd_file"
+    ;
+
+SAS::error('addKeywordsFailed', "Couldn't add keywords from file $kwd_file.")
+    if (&run("$command"));
+
+  } # end foreach my $obsid_root
+
+  goto ENDD if ($last_stage eq 'addkwds');
+
+
+  # . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+  RATETOFLUX:
+  print "************** start RATETOFLUX **************\n\n";
+
+# NOTE! Due to reasons outlined in script sections LISTCONVERT and ADDBOXCOLS above, NULL values are present in columns ML_ID_SRC, BOX_ID_SRC, and all columns copied from the eboxdetect list, where ID_INST==0. Within the present section, this leads to NULL values throughout for all eboxdetect columns added.
+
+  foreach my $obsid_root (@obsid_roots) {
+#    my $obsid = $obsids{$obsid_root};
+    $obsid = $obsids{$obsid_root};
+
+#    my $obs_src_list = $obs_src_lists{$obsid};
+#    my $obs_src_list = $newFiles{'epic observation ml source list'}
+#      {'epic'}{'X000'}{'0'}{'000'};
+$prod_dir       = "$obsid_root/$prod_subdir";
+$pseudoprod_dir = "$obsid_root/$pseudoprod_subdir";
+$simop_dir      = "$obsid_root/$simop_subdir";
+my $obs_src_list = findFile(
+  class => 'product'
+  , instrument => 'epic'
+  , content => 'EPIC observation ml source list'
+);
+SAS::error('noObservationSrcListSet', "Couldn't find $obs_src_list.")
+    if (!$testFlag && !-e "$obs_src_list");
+
+    my $raw_det_list = $final_src_lists{$obsid};
+    my @filter_list = @{$filter_lists{$obsid}};
+    my @inst_uc_list = @{$inst_uc_lists{$obsid}};
+
+    $command = "eratetoflux "
+    ."srcspecset=$template_set "
+    ."insrclistset=$obs_src_list "
+    ."outsrclistset=$raw_det_list "
+    ."idcol=ML_ID_SRC "
+    ."filters='".join(' ', @filter_list)."' "
+    ."instrums='".join(' ', @inst_uc_list)."' "
+    ."bands='".join(' ', @used_bands)."' "
+    ;
+
+SAS::error('eratetofluxFailed', "Couldn't convert rates to fluxes.")
+    if (&run("$command"));
+  }
+
+  goto ENDD if ($last_stage eq 'ratetoflux');
+
+
+  CLEANUP:
+
+  &cleanup($kwd_file);
+  foreach my $obsid_root (@obsid_roots) {
+    foreach my $instexpid (@{$instexpids{$obsid}}) {
+      my $band = '9';
+      &cleanup($sim_images{$obsid}{$instexpid}{$band});
+    }
+  }
+
+#  foreach my $content (keys(%newFiles)) {
+######### this won't work unless ExpDetectPrep and ExpDetect are called first to set up all the hash entries!
+#    my %inst_hash = %{$newFiles{$content}};
+#    foreach my $inst (keys(%inst_hash)) {
+#      my %expid_hash = %{$inst_hash{$inst}};
+#      foreach my $expid (keys(%expid_hash)) {
+#        my %band_hash = %{$expid_hash{$expid}};
+#        foreach my $band (keys(%band_hash)) {
+#          my %srcid_hash = %{$band_hash{$band}};
+#          foreach my $srcid (keys(%srcid_hash)) {
+#            my $file = $srcid_hash{$srcid};
+#            &cleanup($file);
+#          }
+#        }
+#      }
+#    }
+#  } # end foreach $obsid_root (@obsid_roots)
+
+
+  foreach my $obsid_root (@obsid_roots) {
+    $obsid = $obsids{$obsid_root};
+#print "obs_id=$obsid\n";
+
+    $prod_dir       = "$obsid_root/$prod_subdir";
+    $pseudoprod_dir = "$obsid_root/$pseudoprod_subdir";
+    $simop_dir      = "$obsid_root/$simop_subdir";
+
+    foreach my $module_ref (@orderedListOfModules) {
+      my $modname = $$module_ref{name};
+#print "modname=$modname\n";
+die "Oops" if (&deleteNewModuleFiles($modname, @used_bands));
+    }
+  }
+
+  ENDD:
+
+#print "\n   >>> FINISHED! <<<\n";
+exit 0;
+}
+
+  #---------------------------------------------------------------------
+  sub cleanup {
+  #---------------------------------------------------------------------
+
+    my ($filename) = @_;
+
+    if (-e "$filename"){
+      $command = "rm $filename";
+SAS::error('rmFailed', "Couldn't delete $filename.")
+      if (&run("$command"));
+  return 1;
+    } else {
+  return 0;
+    }
+
+  }
+
+  #---------------------------------------------------------------------
+  sub run {
+  #---------------------------------------------------------------------
+  # $testFlag should be defined globally.
+
+    my ($command) = @_;
+    my $status = 0;
+    my ($commandtxt) = $command;
+
+    print "\ninvoke ". $command . "\n\n";
+    #SAS::message($SAS::AppMsg, $SAS::VerboseMsg, "invoke $command\n");
+    #$commandtxt = s/["]/\\"/g;
+    #SAS::message($SAS::AppMsg, $SAS::VerboseMsg, "invoke $commandtxt\n");
+    #$commandtxt = s/["]/'/g;	#"
+    #SAS::message($SAS::AppMsg, $SAS::VerboseMsg, "invoke ". $commandtxt ."\n");
+    if (!$testFlag) {
+      $status = system($command);
+    }
+
+  return $status;
+  }
+
+
+  #----------------------------------------------------------------------
+  sub makeProds {
+  #----------------------------------------------------------------------
+
+    my ($obsid_root, $obsid) = @_;
+
+    my @insts_uc = keys(%inst_uc2lc);
+
+    my $instExpHash_ref = &eimsimperlsubs::getInstExpHash($obsid_root, $prod_subdir, $obsid, \@insts_uc);
+    my %instExpHash = %{$instExpHash_ref};
+
+    $prod_dir       = "$obsid_root/$prod_subdir";
+    $pseudoprod_dir = "$obsid_root/$pseudoprod_subdir";
+    $simop_dir      = "$obsid_root/$simop_subdir";
+
+    %expIds = ();
+    %evlists = ();
+    foreach my $inst_uc (@insts_uc) {
+      my %inst_hash = %{$instExpHash{$inst_uc}};
+      my @exps = keys(%inst_hash);
+      my $inst_lc = $inst_uc2lc{$inst_uc};
+      $expIds{$inst_lc} = \@exps;
+
+      foreach my $expid (@exps) {
+        my $evlist='';
+        if ($inst_uc eq 'PN') {
+          $evlist = "$prod_dir/P$obsid$inst_uc$expid"."PIEVLI0000.FIT";
+        } else {
+          $evlist = "$prod_dir/P$obsid$inst_uc$expid"."MIEVLI0000.FIT";
+        }
+SAS::error('noEvListSet', "Couldn't find $evlist") if (!-e "$evlist");
+        $evlists{$inst_lc}{$expid} = $evlist;
+      }
+    }
+
+    $moduleStatus{MakePNImage}{epn}  {1} = 'complete';
+    $moduleStatus{MakePNImage}{emos1}{1} = 'complete';
+    $moduleStatus{MakePNImage}{emos2}{1} = 'complete';
+    $moduleStatus{MakeMOSImage}{epn}  {1} = 'complete';
+    $moduleStatus{MakeMOSImage}{emos1}{1} = 'complete';
+    $moduleStatus{MakeMOSImage}{emos2}{1} = 'complete';
+#$moduleStatus{ExpDetectPrep}{epn}  {1} = 'complete';
+#$moduleStatus{ExpDetectPrep}{emos1}{1} = 'complete';
+#$moduleStatus{ExpDetectPrep}{emos2}{1} = 'complete';
+
+    foreach my $module_ref (@orderedListOfModules) {
+      my $modname = $$module_ref{name};
+      my $doaction = $$module_ref{doaction};
+  return 1 if (&runModule($modname, $doaction));
+    }
+
+  return 0;
+  }
+
+  #----------------------------------------------------------------------
+  sub runModule {
+  #----------------------------------------------------------------------
+
+    no strict "refs";
+
+    my ($moduleName, $doaction) = @_;
+
+    my $str = " start module $moduleName ";
+    my $total_n_stars = 46 - length($str);
+    my $n_lh_stars = int($total_n_stars/2);
+    my $n_rh_stars = $total_n_stars - $n_lh_stars;
+
+#    print "*************** start BOXLOCAL ***************\n\n";
+    $str = ('*'x$n_lh_stars).$str.('*'x$n_rh_stars);
+    print "\n$str\n\n";
+#          123456789 123456789 123456789 123456789 123456789
+#print "\n#############\nmoduleName=$moduleName\n\n";
+#    if (!-e "$moduleName.pm") {
+#      print "ERROR! Can't find $moduleName.pm.\n\n";
+#  return 2;
+#    }
+
+    $currentModule = ${$moduleName."::name"};
+if ($currentModule eq $moduleName){ print "module found.\n\n";}
+    my @insts = @{$moduleName."::instList"};
+print "About to cycle through insts\n";
+    foreach my $inst (@insts) {
+print "\n  inst=$inst\n";
+      $currentInst = $inst;
+
+      my $numStreams = &{$moduleName."::numberOfStreams"}();
+print "  numStreams=$numStreams\n";
+      foreach my $stream (1 .. $numStreams) {
+print "\n    stream=$stream\n";
+        $currentStream = $stream;
+#        $currentExpid = $expIds{$inst}{$stream};
+
+        &{$moduleName."::evaluateRules"};
+        my $status
+          = $moduleStatus{$currentModule}{$currentInst}{$currentStream};
+print "\n    evaluateRules status=$status\n";
+
+      next if ($status eq 'ignored' || $status eq 'complete');
+  return 1 if ($status ne 'queued');
+
+        if ($doaction) {
+print "\n    Now running module:\n";
+          &{$moduleName."::performAction"};
+        } else {
+          $moduleStatus{$currentModule}{$currentInst}{$currentStream} = 'complete';
+        }
+        $status
+          = $moduleStatus{$currentModule}{$currentInst}{$currentStream};
+
+  return 1 if ($status eq 'exception');
+      }
+    }
+
+  return 0;
+  }
+
+  #----------------------------------------------------------------------
+  sub deleteNewModuleFiles {
+  #----------------------------------------------------------------------
+
+    no strict "refs";
+
+    my ($moduleName, @used_bands) = @_;
+
+    my $tempset = findFile(
+      class => 'intermediate'
+      , content => 'Generic temporary dataset'
+    );
+    &cleanup($tempset);
+
+    $currentModule = ${$moduleName."::name"};
+if ($currentModule eq $moduleName){ print "module $currentModule found.\n\n";}
+    my @insts = @{$moduleName."::instList"};
+#print "About to cycle through insts\n";
+    foreach my $inst (@insts) {
+#print "\n  inst=$inst\n";
+      $currentInst = $inst;
+
+#      my $numStreams = &{$moduleName."::numberOfStreams"}();
+#print "  numStreams=$numStreams\n";
+#      foreach my $stream (1 .. $numStreams) {
+#print "\n    stream=$stream\n";
+
+      my $maskIm = findFile(
+	class => 'product'
+        , instrument => $inst
+        , content => 'EPIC DETECTION MASK'
+      );
+      &cleanup($maskIm);
+      my $boxList = findFile(
+        class => 'product'
+        , instrument => $inst
+        , content => 'EPIC OBSERVATION box-local source list'
+      );
+      &cleanup($boxList);
+      my $tempImage = findFile(
+        class => 'intermediate'
+        , instrument => $inst
+        , content => 'temporaryImage'
+      );
+      &cleanup($tempImage);
+      my $mboxList = findFile(
+        class => 'product'
+        , instrument => $inst
+        , content => 'EPIC observation box-map source list'
+      );
+      &cleanup($mboxList);
+      my $mlList = findFile(
+        class => 'product'
+        , instrument => $inst
+        , content => 'EPIC observation ml source list'
+      );
+      &cleanup($mlList);
+      my $mlListXid = findFile(
+        class => 'intermediate'
+        , instrument => $inst
+        , content => 'ml XID source list'
+      );
+      &cleanup($mlListXid);
+
+      foreach my $band (@used_bands) {
+        my $mergedRawim = findFile(
+          class => 'intermediate'
+          , instrument => $inst
+          , band => $band
+          , content => 'merged image'
+        );
+        &cleanup($mergedRawim);
+        my $mergedExpim = findFile(
+          class => 'intermediate'
+          , instrument => $inst
+          , band => $band
+          , content => 'merged exposure map'
+        );
+        &cleanup($mergedExpim);
+        my $mergedFlatExpim = findFile(
+          class => 'intermediate'
+          , instrument => $inst
+          , band => $band
+          , content => 'merged non-vig exp map'
+        );
+        &cleanup($mergedFlatExpim);
+        my $mergedFilteredList = findFile(
+          class => 'intermediate'
+          , instrument => $inst
+          , band => $band
+          , content => 'image merged event list'
+        );
+        &cleanup($mergedFilteredList);
+        my $addedExpim = findFile(
+          class => 'intermediate'
+          , instrument => $inst
+          , band => $band
+          , content => 'added exposure map'
+        );
+        &cleanup($addedExpim);
+        my $bkgFile = findFile(
+          class => 'product'
+          , instrument => $inst
+          , band => $band
+          , content => 'EPIC merged background map'
+        );
+        &cleanup($bkgFile);
+        $bkgFile = findFile(
+          class => 'intermediate'
+          , instrument => $inst
+          , band => $band
+          , content => 'merged background map'
+          , format => 'FITS'
+        );
+        &cleanup($bkgFile);
+        my $senseFile = findFile(
+          class => 'product'
+          , instrument => $inst
+          , band => $band
+          , content => 'EPIC OBSERVATION SENSITIVITY MAP'
+        );
+        &cleanup($senseFile);
+      } # end loop over bands.
+
+      my $mergedRawim = findFile(
+        class => 'intermediate'
+        , instrument => $inst
+        , band => 9
+        , content => 'merged image'
+      );
+      &cleanup($mergedRawim);
+      my $addedExpim = findFile(
+        class => 'intermediate'
+        , instrument => $inst
+        , band => 9
+        , content => 'added exposure map'
+      );
+      &cleanup($addedExpim);
+      my $mergedExpim = findFile(
+        class => 'intermediate'
+        , instrument => $inst
+        , band => 9
+        , content => 'merged exposure map'
+      );
+      &cleanup($mergedExpim);
+
+      foreach my $band (8, 9) {
+        my $bkgFile = findFile(
+          class => 'intermediate'
+          , instrument => $inst
+          , band => $band
+          , content => 'merged background map'
+          , format => 'FITS'
+        );
+        &cleanup($bkgFile);
+      }
+    } # end loop over insts
+
+    my $idx = 0;
+    my $fileExists = 1;
+    while ($fileExists) {
+      my $nextFile=findFile(
+        class => 'intermediate',
+        content => 'Intermediate merged event list',
+        src_num => $idx
+      );
+
+      $fileExists = &cleanup($nextFile);
+
+      ++$idx;
+    }
+
+  return 0;
+  }
+

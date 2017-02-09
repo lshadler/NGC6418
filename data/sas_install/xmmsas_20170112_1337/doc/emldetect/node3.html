@@ -1,0 +1,685 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="emldetect">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emldetect.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="emldetect.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emldetect (emldetect-7.0.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="emldetect.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="References"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emldetect.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="emldetect:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+For an input list of <A NAME="863"></A><A NAME="tex2html4"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+source locations, simultaneous
+  maximum likelihood PSF fits to the source count distribution are performed
+  in all energy bands of each EPIC instrument. A description of the main
+  properties of the detection algorithm may be found in Cruddace, Hasinger,
+  Schmitt (1988) and an overview of <A NAME="867"></A><A NAME="tex2html5"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+and its use in the
+  XMM-Newton catalogue pipelines
+  at <A NAME="tex2html6"
+  HREF="http://xmmssc-www.star.le.ac.uk/Catalogue/2XMM/UserGuide_xmmcat.html#EmldetFit">http://xmmssc-www.star.le.ac.uk/Catalogue/2XMM/UserGuide_xmmcat.html#EmldetFit</A>.
+
+<P>
+<SPAN  CLASS="textbf">Input images.</SPAN>
+  Input images per instrument and energy band plus the corresponding exposure
+  images, background images, and detection masks are supplied as lists of file
+  names. The task is designed for a maximum of five energy bands and three
+  EPIC instruments. It is technically possible to run <A NAME="871"></A><A NAME="tex2html7"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+for up
+  to six energy bands, but users are encouraged not to use more than five
+  because of the low count numbers in narrow-band images. All input images and
+  accompanying exposure images, background images, and detection masks must
+  have identical orientation and binning and must be supplied in a consistent
+  order.
+
+<P>
+<SPAN  CLASS="textbf">Fit parameters.</SPAN>
+  Main free fit parameters are: the source location (image
+  coordinates <A NAME="875"></A><TT>X_IMA</TT>, <A NAME="877"></A><TT>Y_IMA</TT>), source extent (Gaussian sigma
+  or beta model core radius), and source count rates in each energy band for
+  each telescope. The source location and source extent are constrained to the
+  same best-fit value in <EM>all</EM> energy bands per EPIC instrument whereas
+  the source count rates are adjusted to their individual best-fit value in
+  <EM>each</EM> energy band per EPIC instrument. Derived parameters are: total
+  source count rate, likelihood of detection (all-EPIC and in each energy band),
+  likelihood of source extent, and up to four hardness ratios (default: four).
+
+<P>
+<SPAN  CLASS="textbf">Output source table.</SPAN>
+  A summary of all the columns in the output source list can be found in
+  Table&nbsp;<A HREF="node8.html#emldetect:description:tab:2">2</A> in
+  Section&nbsp;<A HREF="node8.html#emldetect:description:outputfiles">8</A> on the output files.  For
+  each detected source, the table contains one row for each energy band for
+  each instrument. The individual source rows are identified through the
+  column entries <A NAME="879"></A><TT>ID_INST</TT> and <A NAME="881"></A><TT>ID_BAND</TT> in the output
+  table. <A NAME="883"></A><TT>ID_INST</TT> refers to the EPIC instrument (<SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$1$"></SPAN>: PN, <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$2$"></SPAN>: MOS1,
+  <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$3$"></SPAN>: MOS2, <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$0$"></SPAN>: summary row). <A NAME="885"></A><TT>ID_BAND</TT> is the energy band number as
+  defined by the ordering of the energy bands, i.e.: the ordering of the input
+  images given as command-line arguments to <A NAME="887"></A><A NAME="tex2html8"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>. The upper and
+
+lower bounds of each energy band are available in the header
+  keywords <A NAME="894"></A><TT><I>aa_n</I>_ELO</TT> and <A NAME="901"></A><TT><I>aa_n</I>_EHI</TT> where <I>aa</I>
+  stands for the EPIC camera (PN, M1, or M2) and <I>n</I> stands for the energy
+  band number as given in the table column <A NAME="905"></A><TT>ID_BAND</TT>.  Additional
+  keywords <A NAME="907"></A><TT>N_INST</TT> and <A NAME="912"></A><TT><I>aa</I>_BNDS</TT> specify the number of EPIC
+  cameras and the number of energy bands for each EPIC camera. For the
+  definition of the basic energy bands used in the pipeline processing,
+  see
+<BR><A NAME="tex2html9"
+  HREF="http://xmmssc-www.star.le.ac.uk/Catalogue/3XMM-DR4/UserGuide_xmmcat.html#TabBands">http://xmmssc-www.star.le.ac.uk/Catalogue/3XMM-DR4/UserGuide_xmmcat.html#TabBands</A>.
+<BR>
+An <A NAME="916"></A><TT>ID_BAND</TT> value of <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$0$"></SPAN> refers to the summary rows of each source,
+  which list combined results per instrument and in total. The summary rows
+  over the energy bands for each instrument contain sums of the entries in the
+  individual energy bands where appropriate (counts, count rates, fluxes, and
+  detection likelihoods). In the EPIC summary row per source
+  with <A NAME="918"></A><TT>ID_INST</TT>=0, those spatial parameters are repeated that are
+  identical for all energy bands (positions and extent values). The other
+  columns are set to NULL.
+
+<P>
+<SPAN  CLASS="textbf">PSF fitting.</SPAN> 
+  Simultaneous fitting of data from different instruments (i.e., EPIC pn and
+  MOS data) or different exposures is supported.  The PSF fitting may either
+  be performed in single-source or in multi-source mode. In multi-source mode,
+  neighbouring sources with overlapping PSFs are fitted
+  simultaneously. Detection likelihoods are optimized for all the overlapping
+  sources simultaneously, and detection likelihoods per source are calculated
+  and written to the column <A NAME="920"></A><TT>DET_ML</TT> of the output source
+  table. Selection of sources for simultaneous fitting is controlled by the
+  distance parameter <TT>scut</TT> and by the parameter <TT>nmaxfit</TT> that
+  gives the maximum number of sources to be fit simultaneously
+  (<SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$1 \leq$"></SPAN> <TT>nmaxfit</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$\leq 10$"></SPAN>). Sources fit simultaneously are
+  identified in the output table through the <A NAME="925"></A><TT>ID_CLUSTER</TT> table
+  column. It is also possible to fit several PSFs for each input source
+  position by setting the parameter <TT>nmulsou</TT> to the corresponding value
+  (<SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$1 \leq$"></SPAN> <TT>nmulsou</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$\leq 3$"></SPAN>, <TT>nmaxfit</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$*$"></SPAN><TT>nmulsou</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$\leq 10$"></SPAN>).
+
+<P>
+Two parameters determine the image region on which a source fit is
+  performed: The parameter <TT>ecut</TT> determines the size of the subimage
+  around each source used for fitting. The parameter <TT>scut</TT> determines
+  the radius around each source, in which other input sources are considered
+  for multi-PSF fitting, if the parameter <TT>nmulsou</TT> is
+  <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$&gt;1$"></SPAN>. Both <TT>ecut</TT> and <TT>scut</TT> are given as encircled energy
+  fractions of the calibration PSF. The actual radii in pixel units therefore
+  change slightly with energy band and source position.
+  Alternatively, <TT>ecut</TT> and <TT>scut</TT> can be given as a fixed value
+  in units of image pixels (if <TT>ecut</TT> or <TT>scut</TT> is <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$&gt;1$"></SPAN>). The
+  actual value for the cutout radius of each source is listed in the
+  column <A NAME="940"></A><TT>CUTRAD</TT> of the output source list.
+
+<P>
+Starting with SAS 10.0 and <A NAME="942"></A><A NAME="tex2html10"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+version 5.1, a full 2d
+  parametrization of the EPIC PSF as a function of instrument, energy, and
+  off-axis angle is introduced (<A NAME="tex2html11"
+  HREF="http://xmm2.esac.esa.int/docs/documents/CAL-SRN-0263-1-3.ps.gz">Release
+  Notes</A>). The
+
+PSF model can be chosen via the parameter <TT>psfmodel</TT>. Up to version
+  5.17.1, the medium-accuracy PSF (<TT>psfmodel</TT>=medium) is used by
+  default. The analytical 2d PSF (<TT>psfmodel</TT>=ellbeta) is the default
+  PSF model from version 5.17.2 on. The slew-mode PSF for EPIC/pn
+  (<TT>psfmodel</TT>=slew) has been introduced with <A NAME="950"></A><A NAME="tex2html12"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>-6.0
+
+and <A NAME="954"></A><A NAME="tex2html13"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>-3.231.
+
+<P>
+<SPAN  CLASS="textbf">Extent fitting.</SPAN>
+  If the parameter <TT>fitextent</TT> is set to ``yes'', the point spread
+  function will be convolved with a source extent model, that can be set to
+  either a Gaussian profile or a <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$\beta$"></SPAN>-model profile via the
+  parameter <TT>extentmodel</TT>.  In the case of <TT>extentmodel</TT>=beta, the
+  surface brightness is calculated as
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+f(x,y)=\left(1+\frac{(x-x_0)^2+(y-y_0)^2}{r_c^2}\right)^{-3/2}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="296" HEIGHT="50" BORDER="0"
+ SRC="img11.png"
+ ALT="\begin{displaymath}f(x,y)=\left(1+\frac{(x-x_0)^2+(y-y_0)^2}{r_c^2}\right)^{-3/2} \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+The value of the core radius <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$r_c$"></SPAN> is written to the column <A NAME="961"></A><TT>EXT</TT> of
+  the output source list. In the case of a Gaussian extent model, <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="$\sigma$"></SPAN> is
+  written to the column <A NAME="963"></A><TT>EXT</TT>, instead. Note that the source extent can
+  only be determined reliably for relatively bright objects. If the likelihood
+  of the source extent falls below the threshold given via <TT>dmlextmin</TT>
+  (default: <SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$10.0$"></SPAN>), point source parameters are derived.
+
+<P>
+From version 4.27 on, the extent likelihood values (<A NAME="966"></A><TT>EXT_ML</TT>) are
+  corrected for the number of input images with the formalism described below
+  in the paragraph on Detection likelihoods.
+
+<P>
+From version 4.32 on, the maximum value of the extent fit parameter can be
+  given via the task parameter <TT>maxextent</TT>. The unit is image
+  pixels. Large values of <TT>maxextent</TT> can lead to spurious detection of
+  extended sources in some cases. With the parameter <TT>minextent</TT>, the
+  minimum extent can be specified that is still considered to be
+  significant. If the best fit extent is less than <TT>minextent</TT>, a point
+  source model will be adopted for the source.
+
+<P>
+<SPAN  CLASS="textbf">Detection likelihoods.</SPAN>
+  All detection likelihoods are transformed to equivalent likelihoods <SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$L_2$"></SPAN>
+  (column <A NAME="972"></A><TT>DET_ML</TT> of the output source table), corresponding to the
+  case of two free parameters to allow comparison between detection runs with
+  different numbers of free parameters (i.e., when different numbers of
+  input images are used):
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+L_2 = -\ln (1-P(\frac{\nu}{2},L')) \;\;\;
+     {\rm with} \;\;\;  L' = \sum_{i=1}^n L_i 
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="302" HEIGHT="53" BORDER="0"
+ SRC="img16.png"
+ ALT="\begin{displaymath}L_2 = -\ln (1-P(\frac{\nu}{2},L')) \;\;\;
+{\rm with} \;\;\; L' = \sum_{i=1}^n L_i \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+where <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.png"
+ ALT="$P$"></SPAN> is the incomplete Gamma function, <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$n$"></SPAN> is the number of energy
+  bands involved, <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$\nu$"></SPAN> is the number of degrees of freedom of the fit (<SPAN CLASS="MATH"><IMG
+ WIDTH="71" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$\nu =
+3+n$"></SPAN> if the task parameter <TT>fitextent</TT> is true and the extent
+  likelihood of the detection is larger than zero, and <SPAN CLASS="MATH"><IMG
+ WIDTH="71" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$\nu = 2+n$"></SPAN> otherwise),
+  and <SPAN CLASS="MATH"><IMG
+ WIDTH="74" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$L_i = C_i/2$"></SPAN> with <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.png"
+ ALT="$C$"></SPAN> as defined by Cash (1979). <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$n$"></SPAN> is 1 for the
+  individual energy-band detection likelihoods of a single observation that
+  are listed in source table rows with <A NAME="975"></A><TT>ID_BAND</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$&gt;$"></SPAN> 0, and <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$n$"></SPAN> is
+  equal to the total number of energy bands in the <A NAME="977"></A><TT>ID_BAND</TT>=0 summary
+  rows.  The equivalent detection likelihoods obey the simple relationship
+  <!-- MATH
+ $L_2 = - \ln(p)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="92" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="$L_2 = - \ln(p)$"></SPAN>, where <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$p$"></SPAN> is the probability for a random Poissonian
+  fluctuation to have caused the observed source counts.Note that for very small numbers of source counts (less than <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.png"
+ ALT="$\approx 9$"></SPAN>
+  counts, Cash 1979), this relation has to be treated with caution.
+  Therefore, it will only give a rough estimate of the number of expected
+  spurious sources.
+
+<P>
+<BR>
+<DIV ALIGN="CENTER">
+<A NAME="emldetect:description:tab:1"></A><A NAME="846"></A>
+<TABLE CELLPADDING=3 BORDER="1" ALIGN="CENTER">
+<CAPTION><STRONG>Table 1:</STRONG>
+Default band assignments of hardness ratios <A NAME="982"></A><TT>HR</TT><I>i</I> for the EPIC
+  instruments and default energy intervals during pipeline processing
+  (cf. <A NAME="tex2html1"
+  HREF="http://xmmssc-www.star.le.ac.uk/Catalogue/3XMM-DR4/UserGuide_xmmcat.html#TabBands">3XMM-DR4 catalogue
+  description</A>).</CAPTION>
+<TR><TD ALIGN="CENTER"><SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.png"
+ ALT="$i$"></SPAN></TD>
+<TD ALIGN="CENTER"><SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$n$"></SPAN></TD>
+<TD ALIGN="CENTER"><SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$m$"></SPAN></TD>
+<TD ALIGN="CENTER">Pipeline energy bands [keV]</TD>
+</TR>
+<TR><TD ALIGN="CENTER">1</TD>
+<TD ALIGN="CENTER">1</TD>
+<TD ALIGN="CENTER">2</TD>
+<TD ALIGN="CENTER">0.2 - 0.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.5 - 1.0&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="CENTER">2</TD>
+<TD ALIGN="CENTER">2</TD>
+<TD ALIGN="CENTER">3</TD>
+<TD ALIGN="CENTER">0.5 - 1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.0 - 2.0&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="CENTER">3</TD>
+<TD ALIGN="CENTER">3</TD>
+<TD ALIGN="CENTER">4</TD>
+<TD ALIGN="CENTER">1.0 - 2.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.0 - 4.5&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="CENTER">4</TD>
+<TD ALIGN="CENTER">4</TD>
+<TD ALIGN="CENTER">5</TD>
+<TD ALIGN="CENTER">2.0 - 4.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.5 - 12.0</TD>
+</TR>
+</TABLE>
+</DIV>
+<BR>
+
+<P>
+<SPAN  CLASS="textbf">Hardness ratios.</SPAN>
+  If detection over several energy bands is performed, up to four hardness
+  ratios <A NAME="989"></A><TT>HR<I>i</I></TT> are calculated from the source count rates in the
+  individual bands (default: four). The hardness ratios are defined as
+  follows:
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+
+ -->
+
+<IMG
+ WIDTH="111" HEIGHT="41" BORDER="0"
+ SRC="img30.png"
+ ALT="\begin{displaymath}\index{Columns!HR{\it i}}{\tt HR{\it i}} = \frac{B_m - B_n}{B_m + B_n} \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+where <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.png"
+ ALT="$B$"></SPAN> denotes the count rates in energy bands <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$n$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$m$"></SPAN>, respectively.
+  The energy bands <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$n$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$m$"></SPAN> used to calculate the hardness ratios can be
+  specified for each instrument via the
+  parameters <TT>hrpndef</TT>, <TT>hrm1def</TT>, and <TT>hrm2def</TT>. The
+  default band assignments (identical for all instruments) are given in
+  Table&nbsp;<A HREF="#emldetect:description:tab:1">1</A>. The band numbers <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$n$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img29.png"
+ ALT="$m$"></SPAN> are
+  assigned to the individual bands by numbering the corresponding input images
+  in the order in which they are given on the command line. It is therefore
+  important that the ordering of the input images is consistent with the
+  contents of <TT>hrdef</TT> to obtain meaningful hardness ratios.
+
+<P>
+<SPAN  CLASS="textbf">Fluxes and energy conversion factors.</SPAN>
+  EPIC count rates and errors are converted to fluxes and flux errors by means
+  of energy conversion factors (ECF = count rate / flux), given in units
+  of 1e11 ctscmcm/erg via the
+  parameter <TT>ecf</TT> per image, i.e. per camera and per energy
+  band. Fluxes and flux errors per instrument in the output source list are
+  the sum of the values for each energy band. All-EPIC fluxes are
+  error-weighted means.  The parameter <TT>ecf</TT> defaults to 1.0, which
+  means that <SPAN  CLASS="textit">the default output fluxes of   </SPAN><A NAME="1006"></A><A NAME="tex2html14"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A> <SPAN  CLASS="textit">are not true source fluxes</SPAN>. Users need to supply
+
+appropriate energy conversion factors for their input images, depending on
+  the instrumental setup - camera, filter, response -, the event selection
+  expression - in particular: patterns and energy band -, and the assumed
+  spectral shape of the sources. New ECFs were derived for the 3XMM catalogue,
+  are listed
+  at  <A NAME="tex2html15"
+  HREF="http://xmmssc-www.star.le.ac.uk/Catalogue/3XMM-DR4/UserGuide_xmmcat.html#TabNewECFs">http://xmmssc-www.star.le.ac.uk/Catalogue/3XMM-DR4/UserGuide_xmmcat.html#TabNewECFs</A>, 
+
+and can be adopted for input images obtained with the same setup as
+  described in the 3XMM documentation.  In general, ECFs are estimated from
+  spectral analyses of large source samples (or single sources), fitting or
+  assuming a spectral shape and calculating count rates and fluxes for a given
+  response e.g. within xspec. For the method, see Mateos et al. (2009),
+  Section 3.5 of Rosen et al. (2016), and the technical
+  note  <A NAME="tex2html16"
+  HREF="http://xmmssc-www.star.le.ac.uk/Catalogue/2XMM/CAL-TN-0023-v2.0.ps">http://xmmssc-www.star.le.ac.uk/Catalogue/2XMM/CAL-TN-0023-v2.0.ps</A>, 
+
+and for examples the section ``EPIC flux to count rate conversion'' of the
+  XMM-Newton Users Handbook
+  at  <A NAME="tex2html17"
+  HREF="http://xmm.esac.esa.int/external/xmm_user_support/documentation/uhb/epicfluxtocr.html">http://xmm.esac.esa.int/external/xmm_user_support/documentation/uhb/epicfluxtocr.html</A>.
+
+<P>
+<SPAN  CLASS="textbf">OOT correction.</SPAN>
+  All EPIC PN source count rates and fluxes written to the <A NAME="1010"></A><A NAME="tex2html18"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+source list are corrected for photons that arrive during readout of the PN
+  CCDs and therefore are not detected on the nominal source position
+  (out-of-time events).
+<BR>  <A NAME="1014"></A><A NAME="tex2html19"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A> <SPAN  CLASS="textit">v4.5 to 4.27:</SPAN> Correction factors of 1.0626 for
+
+PrimeFullWindow mode and of 1.0223 for the PrimeFullWindowExtended mode are
+  applied by <A NAME="1018"></A><A NAME="tex2html20"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>. Data taken in other observing modes are left
+
+uncorrected.
+<BR>  <A NAME="1022"></A><A NAME="tex2html21"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A> <SPAN  CLASS="textit">v4.28 onwards:</SPAN> From <A NAME="1026"></A><A NAME="tex2html22"
+  HREF="../eexpmap/index.html"><SPAN  CLASS="textbf">eexpmap</SPAN></A>
+v3.31 on, the
+
+OOT events correction is applied to the exposure maps in all observing
+  modes. <A NAME="1030"></A><A NAME="tex2html23"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+reads the keyword OOTCORR from the <A NAME="tex2html24"
+  HREF="http://heasarc.gsfc.nasa.gov/docs/heasarc/fits.html">FITS</A> header of
+
+the exposure maps. If OOTCORR is existing and set to ``true'', no further
+  correction is applied by <A NAME="1036"></A><A NAME="tex2html25"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>.
+
+<P>
+<SPAN  CLASS="textbf">CPU saving.</SPAN>
+  Since both multi-PSF fitting and extent fitting are CPU intensive, two
+  methods exist to reduce the CPU requirements of an <A NAME="1040"></A><A NAME="tex2html26"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+run
+  using multi-PSF fitting.  With the option <TT>withthreshold</TT>, the user
+  can limit the application of multi-PSF fitting (as specified
+  by <TT>nmulsou</TT>) to sources exceeding a certain threshold. The threshold
+  is set by the parameter <TT>threshold</TT>. The corresponding input column is
+  defined via the parameter <TT>threshcolumn</TT>, which can
+  be <A NAME="1048"></A><TT>LIKE</TT>, <A NAME="1050"></A><TT>SCTS</TT>, or <A NAME="1052"></A><TT>RATE</TT>.
+
+<P>
+The second method to save CPU time for combined extent and multi-PSF fitting
+  is provided by the option <TT>withtwostage</TT>, which is used in combination
+  with <TT>fitextent</TT>=''true'' and <TT>nmulsou</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$&gt;1$"></SPAN>.
+  If <TT>withtwostage</TT> is set to ``true'', <A NAME="1058"></A><A NAME="tex2html27"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+will perform
+  the fit for each source in two stages: In the first stage, <EM>one</EM>
+  extended source is fitted to the source.  Only if the extent is significant,
+  the second stage will be performed, and a multi-PSF fit with one extended
+  source and <TT>nmulsou</TT> - 1 point sources is applied.
+  The <TT>withtwostage</TT> option avoids misidentification of close pairs of
+  point sources as extended sources in most cases and significantly reduces
+  CPU time.
+
+<P>
+<SPAN  CLASS="textbf">Position errors.</SPAN>  The final stage of the source detection process
+  is done via ML-fitting of the PSF-shape at the given detector position to
+  the observed photon distribution utilizing the <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.png"
+ ALT="$C$"></SPAN>-statistics. The best
+  fitting X-ray position is determined at the minimum value of <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.png"
+ ALT="$C$"></SPAN>, and the
+  <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img32.png"
+ ALT="$1\sigma$"></SPAN> errors in right ascension and declination are derived at
+  <!-- MATH
+ $C=C_\mathrm{min}+1$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="98" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.png"
+ ALT="$C=C_\mathrm{min}+1$"></SPAN>. The two-dimensional positional error RADEC_ERR,
+  written to the output source list, is calculated as square root of the
+  quadratic sum of the errors in R.A. and Dec.It translates into a one-dimensional <SPAN CLASS="MATH"><IMG
+ WIDTH="30" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.png"
+ ALT="$\sigma=$"></SPAN>RADEC_ERR<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.png"
+ ALT="$/\sqrt{2}$"></SPAN>, if
+  symmetric errors in R.A. and Dec are assumed. Individual position errors in
+  image coordinates can be accessed via the X_IMA_ERR and Y_IMA_ERR
+  columns in the output source list.
+
+<P>
+<SPAN  CLASS="textbf">XID band.</SPAN>
+  The XID energy band (0.5 - 4.5 keV) of the X-ray
+  Follow-up &amp; Identification Programme is marked by <A NAME="1064"></A><TT>ID_BAND</TT>=9 and
+  will be present if the input parameter <TT>withxidband</TT> has been set to
+  true.  The keyword <A NAME="1067"></A><TT>XID_BND</TT> indicates whether XID band information is
+  present in the source table.  Note that the energy bands which constitute
+  the XID band have to be specified for each instrument separately using the
+  parameters <TT>xidpndef</TT>, <TT>xidm1def</TT>, <TT>xidm2def</TT>. Default
+  values are the input bands <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$2$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$3$"></SPAN>, and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.png"
+ ALT="$4$"></SPAN>, as defined
+  in <A NAME="1072"></A><TT>ID_BAND</TT> column.
+
+<P>
+From v4.42.5 on, an alternative method to treat the XID band has been
+  introduced: With the parameter <TT>xidfixed</TT> set, <A NAME="1075"></A><A NAME="tex2html28"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+can be
+  run on one XID band image per instrument using an <A NAME="1079"></A><A NAME="tex2html29"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+output
+  list as input source list. Positions and source extent values will be kept
+  fixed, and only fluxes and detection likelihoods are determined.  In this
+  case, the input images (science images, exposure maps, background images)
+  for the desired band (e.g. 0.5 - 4.5 keV) have to be prepared beforehand.
+  The parameters <TT>xidpndef</TT>, <TT>xidm1def</TT>, <TT>xidm2def</TT>
+  determine which energy bands from the input source list are used to provide
+  the <SPAN  CLASS="textit">start values</SPAN> for the fit.  Note that when using this method,
+  the parameter <TT>withxidband</TT> should be set to ``no'', and the
+  parameter <TT>ecf</TT> is used to set the energy conversion factors (see
+  paragraph on ECFs).
+
+<P>
+<SPAN  CLASS="textbf">Mosaic images.</SPAN>
+  From version 5.0 onward, the parameter <TT>imagebuffersize</TT>
+  is implemented. The main purpose of this parameter isto make the processing of mosaic-pointings more efficient, where the
+  mosaicked sky image will contain large areas without photon data. The value
+  of <TT>imagebuffersize</TT> characterizes the memory that is allocated for
+  each individual image and is given in image pixels: <TT>imagebuffersize</TT>
+  is (at least) the size of the sub-image per pointing that contains non-zero
+  pixels (Fig. <A HREF="#emldetect:description:fig:1">1</A>).  Its default is <SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img37.png"
+ ALT="$640$"></SPAN>,
+  which is the side length of a typical pipeline-produced EPIC image with a
+  bin size of <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img36.png"
+ ALT="$4$"></SPAN>arcsec.
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="emldetect:description:fig:1"></A><A NAME="819"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 1:</STRONG>
+Use of parameter <TT>imagebuffersize</TT>.
+</CAPTION>
+<TR><TD><IMG
+ WIDTH="256" HEIGHT="293" BORDER="0"
+ SRC="img38.png"
+ ALT="\begin{figure}\centering
+\psfig{figure=imagebuffersize.eps,height=6.5cm}
+\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="emldetect.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="References"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="catcorr">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="catcorr.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="catcorr.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+catcorr (catcorr-0.9.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="catcorr.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Statistical method"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="catcorr.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="catcorr:description:description"></A>
+<BR>
+Description
+</H1>
+The task <TT>catcorr</TT> replaces both <TT>eposcorr</TT> and <TT>evalcorr</TT>, but it
+requires another task <TT>catprep</TT> to be run first to extract from the three
+reference catalogues a small list of sources in the field of view of the
+current observation.  This extracted list is a FITS file which can be made
+available as a data product to any user who might wish to run <TT>catcorr</TT>
+again with different parameters.
+
+<P>
+Since <TT>catcorr</TT> is used in the pipeline before any data quality assessment is 
+performed, there is no information on whether the current fields are affected
+by problems such as very bright central sources, large extended sources, or 
+various telescope artfacts.  
+For this reason <TT>catcorr</TT> includes an initial rather basic attempt to detect 
+an excess of spurious detections by finding whether any of them lie on what
+appear to be straight lines running through the centre of the field.  Such 
+lines are usually composed of mostly spurious detections, and so they are
+marked internally as of <SPAN  CLASS="textit">bad</SPAN> quality and not used in the cross-matching.  
+Other detections ignored are those with RADEC_ERR exactly zero (a defect of 
+source-finding) or those with RADEC_ERR over 3.0 arc-seconds, 
+or with EP_EXTENT above 0.1 arc-seconds.  Unless the number of <SPAN  CLASS="textit">good</SPAN> 
+X-ray detections in the list exceeds the minimum specified by parameter 
+<TT>mingood</TT> then the correction procedure is abandoned for this observation.
+
+<P>
+The matching procedure uses each of the reference catalogues separately: a
+statistic is computed which measures the overall goodness of fit between the 
+set of XMM detections and the best matching reference source positions, allowing
+for the probability of positional coincidences. 
+Only a proportion of the XMM sources will have counterparts and of course this 
+proportion is unknown.  Provided a reasonable number, perhaps five, appear to 
+have counterparts, the following procedure appears to be reliable.
+Given the typical densities of X-ray and optical objects there may be a few 
+false matches but not enough to affect the results significantly.
+The cross-matching 
+is repeated while the position of the XMM frame is shifted by small increments
+in RA and DEC and rotated slightly about the centre of the field.  A function 
+minimisation routine due to Nelder and Mead (Computer Journal, January 1965, 
+pp 308-313) is used is used to find the shift and rotation parameters which 
+optimise the overall goodness of fit.  This routine is similar in algorithm
+to routine AMOEBA which appears in <SPAN  CLASS="textit">Numerical Recipes</SPAN>, but the 
+routine used here was originally
+from Rothamstead Research Establishment.   
+
+<P>
+The reference catalogue which
+produces the highest maximum goodness of fit is adopted, provided it exceeds 
+the minimum fit (parameter <TT>minfit</TT>) and the resulting absolute offset 
+measured in arc-seconds does not exceed the parameter <TT>maxoffset</TT>.
+This positional shift and rotation are then applied to 
+all detetections in the OBSMLI 
+file, and two new columns called RA_CORR and DEC_CORR are put in the FITS 
+table (or updated if they already exist).  The postion shifts and standard
+errors in them, and the goodness of fit, are inserted in the file as FITS headers.
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html56"
+  HREF="node4.html">Statistical method</A>
+<LI><A NAME="tex2html57"
+  HREF="node5.html">Reference catalogues</A>
+<LI><A NAME="tex2html58"
+  HREF="node6.html">Temporary Astrometric Correction</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="catcorr.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Statistical method"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

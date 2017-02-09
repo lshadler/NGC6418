@@ -1,0 +1,458 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="evselect">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="evselect.css">
+
+<LINK REL="next" HREF="node17.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="evselect.html">
+<LINK REL="next" HREF="node17.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+evselect (evselect-3.62) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node15.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Usage Examples"></A>
+<A HREF="evselect.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node25.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="evselect.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="evselect:user:parameters"></A>
+
+<tr valign=top><td colspan=5>&nbsp;<br>Event List Parameters&nbsp;</td></tr>
+
+<A NAME="1313"></A>
+<tr valign=top bgcolor='silver'><td><b>table</b></td><td>yes</td><td><A HREF=../param/node3.html>table specifier</A></td><td>&nbsp;</td><td>event list table specifier</td></tr>
+
+<tr valign=top><td colspan=5>A table specifier which must point to an event list table in a data set. It 
+must be in either of the forms <TT>setname</TT> or <TT>setname:tableid</TT> where 
+<TT>setname</TT> must be the name of an existing data set and <TT>tableid</TT> the 
+name of a table in the specified data set. If the first form, <TT>setname</TT>, 
+is used, the event data are sought in the <EM>first</EM> block of the named data set.<br>&nbsp;</td></tr>
+<A NAME="1331"></A>
+<tr valign=top bgcolor='silver'><td><b>filteredset</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td><TT>filtered.fits</TT></td><td>valid file name</td></tr>
+
+<tr valign=top><td colspan=5>The name of the file to which the filtered event list is to be written.  If this
+parameter is set, then <TT>keepfilteroutput</TT> is automatically set to true.<br>&nbsp;</td></tr>
+<A NAME="1342"></A>
+<tr valign=top bgcolor='silver'><td><b>keepfilteroutput</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>true<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\mid$"></SPAN>false</td></tr>
+
+<tr valign=top><td colspan=5>A boolean switch determining whether the result of the filtering
+process is to be kept or not. In the former case, the parameters
+<TT>flagcolumn</TT> and <TT>filteredset</TT> specify the form of the output
+from the filtering stage (see <A HREF="node8.html#evselect:user:filteringmodes">above</A>). <br>&nbsp;</td></tr>
+
+<A NAME="evselect:user:parameter:flagcolumn"></A><A NAME="1357"></A>
+<tr valign=top bgcolor='silver'><td><b>flagcolumn</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>``EVFLAG''</td><td>column name</td></tr>
+
+<tr valign=top><td colspan=5>The name of the integer column used to
+store the selection status of a table row in
+<A HREF="node8.html#evselect:user:filteringmodes">non-destructive</A> filtering mode, which is activated
+if this parameter is set.
+If the column does not exist, it will be
+created with type <EM>int8</EM>,
+otherwise the existing column will be re-used.
+If a table with a flag column
+which has been added by a previous non-destructive <A NAME="1380"></A><A NAME="tex2html31"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A> run
+is subsequently filtered in
+<A HREF="node8.html#evselect:user:filteringmodes">destructive mode</A>
+the flag column gets deleted at the end of the filtering process.
+In case the flag column has not been created by <A NAME="1384"></A><A NAME="tex2html32"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>, the
+bit specified by the parameter
+<A HREF="#evselect:user:parameter:flagbit"><TT>flagbit</TT></A>
+is cleared at the end.<br>&nbsp;</td></tr>
+
+<A NAME="evselect:user:parameter:flagbit"></A><A NAME="1390"></A>
+<tr valign=top bgcolor='silver'><td><b>flagbit</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>-1</td><td>-1-31</td></tr>
+
+<tr valign=top><td colspan=5>In <A HREF="node8.html#evselect:user:filteringmodes">non-destructive</A> filtering mode: the position of the
+bit in the integer column named via the
+<A HREF="#evselect:user:parameter:flagcolumn"><TT>flagcolumn</TT></A> parameter used to store the
+row selection status. 0 signifies the least- and the default value -1
+the most-significant bit (i.e. 31 for <EM>int32</EM>, 15 for <EM>int16</EM>,
+7 for <EM>int8</EM>) respectively. This bit being <EM>set</EM> flags an event as
+<EM>selected</EM>.<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br>Filtering Parameters&nbsp;</td></tr>
+
+<A NAME="1418"></A>
+<tr valign=top bgcolor='silver'><td><b>expression</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>``true''</td><td>valid filter expression according to
+<A NAME="1427"></A><A NAME="tex2html33"
+  HREF="../selectlib/index.html"><SPAN  CLASS="textbf">selectlib</SPAN></A>
+syntax rules</td></tr>
+
+<tr valign=top><td colspan=5>This is the expression controlling the filtering
+process. It's length is in principal unlimited, please note however, that
+this is not true for the length of a command line in most UNIX shells.
+With this limit being in the range of several kByte, it should not pose a
+real problem in practice, though.  This parameter and the <TT>dssblock</TT> parameter cannot be
+used at the same time.  If both are specified, the one listed on the command line first
+takes precedence.<br>&nbsp;</td></tr>
+<A NAME="1432"></A>
+<tr valign=top bgcolor='silver'><td><b>dssblock</b></td><td>no</td><td><A HREF=../param/node3.html>block specifier</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>Specifies a block containing data subspace
+information.  This is converted into a filter expression which is used to filter
+the event list.  Note that this parameter and the <TT>expression</TT> parameter cannot be
+used at the same time.  If both are specified, the one listed on the command line first
+takes precedence.<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br>General Output Product Parameters&nbsp;</td></tr>
+
+<A NAME="1442"></A>
+<tr valign=top bgcolor='silver'><td><b>writedss</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>true</td><td>true<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\mid$"></SPAN>false</td></tr>
+
+<tr valign=top><td colspan=5>Controls the
+writing of data subspace information to the output data files.<br>&nbsp;</td></tr>
+<A NAME="1449"></A>
+<tr valign=top bgcolor='silver'><td><b>cleandss</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>true<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\mid$"></SPAN>false</td></tr>
+
+<tr valign=top><td colspan=5>Controls the
+use of data subspace cleaning, which deletes components from the
+data subspace which select no events from the event list.  Recommended
+for use by experts only.<br>&nbsp;</td></tr>
+<A NAME="1456"></A>
+<tr valign=top bgcolor='silver'><td><b>updateexposure</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>true</td><td>true<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\mid$"></SPAN>false</td></tr>
+
+<tr valign=top><td colspan=5>Update exposure information in event lists
+and in spectrum files.  For the event lists this means
+that new values of the keywords LIVETIME, LIVETI<I>nn</I>,
+ONTIME, and ONTIME<I>nn</I> will be calculated, where 
+<I>nn</I> is the CCD number.
+For spectrum files, the EXPOSURE keyword is calculated;
+note that this part of evselect is XMM specific<br>&nbsp;</td></tr>
+<A NAME="1466"></A>
+<tr valign=top bgcolor='silver'><td><b>filterexposure</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>true</td><td>true<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\mid$"></SPAN>false</td></tr>
+
+<tr valign=top><td colspan=5>Filter EXPOSU<I>nn</I> extentions of an EPIC event list
+with the same time filters applied to events in the corresponding
+CCD; XMM specific.<br>&nbsp;</td></tr>
+<A NAME="1474"></A>
+<tr valign=top bgcolor='silver'><td><b>blockstocopy</b></td><td>no</td><td><A HREF=../param/node3.html>string list</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>List of extensions in the input data set to be copied to any
+extracted data product file.  This does not apply to output event lists.<br>&nbsp;</td></tr>
+<A NAME="1481"></A>
+<tr valign=top bgcolor='silver'><td><b>attributestocopy</b></td><td>no</td><td><A HREF=../param/node3.html>string list</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>List of attributes in the input table to be copied to any
+extracted data product table or array.<br>&nbsp;</td></tr>
+<A NAME="1488"></A>
+<tr valign=top bgcolor='silver'><td><b>energycolumn</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td><A NAME="1496"></A><TT>PHA</TT></td><td>name of existing column</td></tr>
+
+<tr valign=top><td colspan=5>Name of energy column, used for spectral extraction and for determining the energy range
+for light curve extraction.<br>&nbsp;</td></tr>
+<A NAME="1498"></A>
+<tr valign=top bgcolor='silver'><td><b>zcolumn</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td><A NAME="1506"></A><TT>WEIGHT</TT></td><td>name of existing column</td></tr>
+
+<tr valign=top><td colspan=5>Column from which to populate
+image, spectrum or light curve values.<br>&nbsp;</td></tr>
+<A NAME="1508"></A>
+<tr valign=top bgcolor='silver'><td><b>zerrorcolumn</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td><A NAME="1518"></A><TT>EWEIGHT</TT></td><td>name of existing column</td></tr>
+
+<tr valign=top><td colspan=5>Column containing the
+error on the <TT>zcolumn</TT> value, used to calculate errors for extracted products when accumulating
+using the <TT>zcolumn</TT> column.<br>&nbsp;</td></tr>
+<A NAME="1522"></A>
+<tr valign=top bgcolor='silver'><td><b>ignorelegallimits</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>true<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\mid$"></SPAN>false</td></tr>
+
+<tr valign=top><td colspan=5>If true, ignore the
+<A NAME="1531"></A><TT>TLMIN</TT> and <A NAME="1533"></A><TT>TLMAX</TT> keywords when determining column extraction ranges.<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br>Image Extraction Parameters&nbsp;</td></tr>
+
+<A NAME="1536"></A>
+<tr valign=top bgcolor='silver'><td><b>imageset</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td><TT>image.fits</TT></td><td>file name</td></tr>
+
+<tr valign=top><td colspan=5>Name of the image product file.<br>&nbsp;</td></tr>
+<A NAME="1545"></A>
+<tr valign=top bgcolor='silver'><td><b>xcolumn</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td><A NAME="1553"></A><TT>RAWX</TT></td><td>name of existing column</td></tr>
+
+<tr valign=top><td colspan=5>Name of column with spatial X-coordinates (for image creation and spectral area determintation).<br>&nbsp;</td></tr>
+<A NAME="1555"></A>
+<tr valign=top bgcolor='silver'><td><b>ycolumn</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td><A NAME="1563"></A><TT>RAWY</TT></td><td>name of existing column</td></tr>
+
+<tr valign=top><td colspan=5>Name of column with spatial Y-coordinates (for image creation and spectral area determintation).<br>&nbsp;</td></tr>
+<A NAME="1565"></A>
+<tr valign=top bgcolor='silver'><td><b>squarepixels</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>true<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\mid$"></SPAN>false</td></tr>
+
+<tr valign=top><td colspan=5>When <TT>ximagesize</TT> and <TT>yimagesize</TT> are set, forces the <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$x$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$y$"></SPAN> bin sizes to be the same.
+The larger of the two bin sizes is used.<br>&nbsp;</td></tr>
+<A NAME="1576"></A>
+<tr valign=top bgcolor='silver'><td><b>ximagesize</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>600</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$&gt;0$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>If set, the size of the image (ie. number of image pixels) along the <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$x$"></SPAN> axis; for extraction
+using integer valued columns, the extracted image size may be somewhat smaller than
+the requested image size.<br>&nbsp;</td></tr>
+<A NAME="1583"></A>
+<tr valign=top bgcolor='silver'><td><b>ximagebinsize</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$&gt;0$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>If set, the binning factor for <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$x$"></SPAN> axis in image creation<br>&nbsp;</td></tr>
+<A NAME="1590"></A>
+<tr valign=top bgcolor='silver'><td><b>yimagesize</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>600</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$&gt;0$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>If set, the size of the image (ie. number of image pixels) along the <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$y$"></SPAN> axis; for extraction
+using integer valued columns, the extracted image size may be somewhat smaller than
+the requested image size.<br>&nbsp;</td></tr>
+<A NAME="1597"></A>
+<tr valign=top bgcolor='silver'><td><b>yimagebinsize</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$&gt;0$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>If set, the binning factor for <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$y$"></SPAN> axis in image creation.<br>&nbsp;</td></tr>
+<A NAME="1604"></A>
+<tr valign=top bgcolor='silver'><td><b>ximagemin</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>If set, the lower limit of <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$x$"></SPAN> coordinate for image extraction.<br>&nbsp;</td></tr>
+<A NAME="1611"></A>
+<tr valign=top bgcolor='silver'><td><b>ximagemax</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>640</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>If set, the upper limit of <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$x$"></SPAN> coordinate for image extraction.<br>&nbsp;</td></tr>
+<A NAME="1618"></A>
+<tr valign=top bgcolor='silver'><td><b>yimagemin</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>If set, the lower limit of <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$y$"></SPAN> coordinate for image extraction.<br>&nbsp;</td></tr>
+<A NAME="1625"></A>
+<tr valign=top bgcolor='silver'><td><b>yimagemax</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>640</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>If set, the upper limit of <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$y$"></SPAN> coordinate for image extraction.<br>&nbsp;</td></tr>
+<A NAME="1632"></A>
+<tr valign=top bgcolor='silver'><td><b>imagedatatype</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>Real64</td><td>Int8<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\mid$"></SPAN>Int16<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\mid$"></SPAN>Int32<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\mid$"></SPAN>Real32<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\mid$"></SPAN>Real64</td></tr>
+
+<tr valign=top><td colspan=5>Data type to use for the output image.  If not set, <A NAME="1640"></A><A NAME="tex2html34"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+decides for itself what data
+type to use.<br>&nbsp;</td></tr>
+<A NAME="1644"></A>
+<tr valign=top bgcolor='silver'><td><b>raimagecenter</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>If set, right ascension for the center of the output image, in decimal
+degrees.<br>&nbsp;</td></tr>
+<A NAME="1651"></A>
+<tr valign=top bgcolor='silver'><td><b>decimagecenter</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>If set, declination for the center of the output image, in decimal
+degrees.<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br>Spectrum Extraction Parameters&nbsp;</td></tr>
+
+<A NAME="1659"></A>
+<tr valign=top bgcolor='silver'><td><b>spectrumset</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td><TT>spectrum.fits</TT></td><td>file name</td></tr>
+
+<tr valign=top><td colspan=5>Name of the spectrum product file.<br>&nbsp;</td></tr>
+<A NAME="1668"></A>
+<tr valign=top bgcolor='silver'><td><b>spectralbinsize</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>10</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$&gt;=1$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>Binning factor for spectrum creation.<br>&nbsp;</td></tr>
+<A NAME="1675"></A>
+<tr valign=top bgcolor='silver'><td><b>specchannelmin</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>&nbsp;</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.png"
+ ALT="$&gt;=0$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>If set, the minimum channel number to consider for spectrum creation.<br>&nbsp;</td></tr>
+<A NAME="1682"></A>
+<tr valign=top bgcolor='silver'><td><b>specchannelmax</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>4095</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.png"
+ ALT="$&gt;=0$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>If set, the maximum channel number to consider for spectrum creation.<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br>Rate Extraction Parameters&nbsp;</td></tr>
+
+<A NAME="1690"></A>
+<tr valign=top bgcolor='silver'><td><b>rateset</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td><TT>rate.fits</TT></td><td>file name</td></tr>
+
+<tr valign=top><td colspan=5>Name of the time series product file.<br>&nbsp;</td></tr>
+<A NAME="1699"></A>
+<tr valign=top bgcolor='silver'><td><b>timecolumn</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td><A NAME="1707"></A><TT>TIME</TT></td><td>name of existing column</td></tr>
+
+<tr valign=top><td colspan=5>Name of column for time coordinate (to be used in rates files creation).<br>&nbsp;</td></tr>
+<A NAME="1709"></A>
+<tr valign=top bgcolor='silver'><td><b>timebinsize</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$&gt;0$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>Size of time bins for the time series files.<br>&nbsp;</td></tr>
+<A NAME="1716"></A>
+<tr valign=top bgcolor='silver'><td><b>timemin</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>If set, the earliest time to consider in time series file creation.<br>&nbsp;</td></tr>
+<A NAME="1723"></A>
+<tr valign=top bgcolor='silver'><td><b>timemax</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1000</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>If set, the latest time to consider in time series file creation.<br>&nbsp;</td></tr>
+<A NAME="1730"></A>
+<tr valign=top bgcolor='silver'><td><b>maketimecolumn</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>true<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\mid$"></SPAN>false</td></tr>
+
+<tr valign=top><td colspan=5>If true, include a time column in the <A NAME="tex2html35"
+  HREF="http://heasarc.gsfc.nasa.gov/docs/heasarc/fits.html">FITS</A> table when creating a time series.
+If false, the table will only include a <A NAME="1740"></A><TT>COUNTS</TT> column and the necessary
+keywords to deduce the time for each bin.<br>&nbsp;</td></tr>
+<A NAME="1742"></A>
+<tr valign=top bgcolor='silver'><td><b>makeratecolumn</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>true<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\mid$"></SPAN>false</td></tr>
+
+<tr valign=top><td colspan=5>If true, produces a lightcurve containing a <A NAME="1752"></A><TT>RATE</TT>, rather than a
+<A NAME="1754"></A><TT>COUNTS</TT> column.  An <A NAME="1756"></A><TT>ERROR</TT> column is also produced.<br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br>Histogram Extraction Parameters&nbsp;</td></tr>
+
+<A NAME="1759"></A>
+<tr valign=top bgcolor='silver'><td><b>histogramset</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td><TT>histo.fits</TT></td><td>file name</td></tr>
+
+<tr valign=top><td colspan=5>File name for the histogram.<br>&nbsp;</td></tr>
+<A NAME="1768"></A>
+<tr valign=top bgcolor='silver'><td><b>histogramcolumn</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td><A NAME="1776"></A><TT>TIME</TT></td><td>column name</td></tr>
+
+<tr valign=top><td colspan=5>Name of the column from which to extract the histogram.<br>&nbsp;</td></tr>
+<A NAME="1778"></A>
+<tr valign=top bgcolor='silver'><td><b>histogrambinsize</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$&gt;0$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>Binning factor for histogram extraction.<br>&nbsp;</td></tr>
+<A NAME="1785"></A>
+<tr valign=top bgcolor='silver'><td><b>histogrammin</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>If set, the lower limit for histogram extraction.<br>&nbsp;</td></tr>
+<A NAME="1792"></A>
+<tr valign=top bgcolor='silver'><td><b>histogrammax</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1000</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>If set, the upper limit for histogram extraction.<br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node15.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Usage Examples"></A>
+<A HREF="evselect.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node25.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

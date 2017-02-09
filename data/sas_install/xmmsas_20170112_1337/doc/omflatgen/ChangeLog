@@ -1,0 +1,119 @@
+ChangeLog for omflatgen
+=======================
+Version 1.12.2 - 2009-07-20 (CB) 
+----------------------------
+	+src Deleted ssc from  MakeFile to
+	fix gcc4 build failure (forgot to
+	actually do it before)
+
+Version 1.12.1 - 2009-07-20 (CB) 
+----------------------------
+	+src Deleted sscllib from  MakeFile to
+	fix gcc4 build failure
+
+Version 1.12 - 2003-11-28 (CB) 
+-----------------------------
+	Ammended program checkoutput in test directory to fix static build
+	test failure.
+	
+Version 1.11 - 2003-11-21 (VNY) DEPEND file updated to match the 
+	new ssclib version
+
+Version 1.10 - 2002-09-26 (VNY) DEPEND file updated
+-----------	
+Version 1.8.1 - 2002-05-29 (CB/SRR)
+___________
+	Documentation updated
+	
+Version 1.8 - 2001-01-08 (CB)
+___________
+	DEPEND file ammended.
+	
+Version 1.7 - 2000-12-19 (CB)
+	+ (src/omflatgen_mod.f90) Code that was to use slew data removed.
+	+ (config/omflatgen.info) Optional parameters IndexSet and signoise removed.
+	
+        + (doc/omflatgen_description.tex) - Documentation updated (SPR 2652)
+
+Version 1.6 - 2001-11-22 (JBa)
+
+        + (doc/omflatgen_description.tex): fixed documentation
+
+Version 1.5 - 2000-13-07 (CB)
+	+(config/omflatgen.src) Attribute "CONTENT = OM OSW FLAT FIELD"
+	changed to "CONTENT = OM FLATFIELD" (SPR 2127)
+
+
+Version 1.4.1 - 2000-11-07 (CB)
+	+(config/omflatgen.info) "om" added.
+Version 1.4 - 2000-10-03 (CB) Changed "DEPEND" file to correct "make
+check" error.
+	
+Version 1.3 - 2000-09-26 (CB) 
+        + (src/omflatgen_mod.f90) Program now computes the signal-to-noise
+	ratio for each pixel of the final flatfield image and stores it in
+	the output fits file. The minimum, maximum and median
+	signal-to-noise ratios are also calculated and stored.
+        + (doc/omflatgen_description.tex) - Above change documented.
+	
+
+Version 1.2 - 2000-09-21 (CB) 
+        + (src/omflatgen_mod.f90) Program now uses as many slew
+	observations as are necessary to construct a flatfield with the
+	required signal-to-noise ratio.
+	+ (src/omflatgen.par) Parameter "nslews" removed and parameter
+	"signoise" added.
+        + (doc/omflatgen_description.tex) - Above change documented.
+	
+	
+Version 1.1 - 2000-07-21 (CB)
+	+ (src/omflatgen_mod.f90) Program modified so that a flatfield can
+	be produced by a call to "CAL_omPixelSenseVariation" - the default
+	if no index file is specified. 
+
+	+ (doc/omflatgen_description.tex) - Above change documented.
+
+
+Version 1.0 - 2000-06-21 (CB)
+-----------
+	
+	+ (src/omflatgen_mod.f90) - Modified so that the full file names
+	are constructed properly from the entries in the index file. 
+	(SSC-SPR-1847) - Code added to ensure that the 4 flatfield files for each slew
+	(obtained from the archive file) are used in the order of increasing
+	windowX0. Config file ammended so that the parameter "nslews" (the number
+	of slews) has to lie within the range 1-500. Program now issues a warning
+	message if any pixels with zero or negative counts are found in the slew files. 
+
+	+ (config/omflatgen.info) Added
+	
+Version 0.4: 14 Jan 2000
+
+Code to remove lamp illumination implimented. However relevent CAL call is
+not yet available.
+
+Warning on number of slews included.	
+	
+Version 0.3: 5 Jan 2000
+
+Added optional "number of slews" parameter	
+	
+Open SPRs :
+
+SPR 1103 : Missing slew produces cryptic error message.
+SPR 1102 : All zeroes or negative numbers undetected.
+SPR 1101 : Task doesn't check slews are from same OBS/EXP/OSW.
+SPR 1100 : Input and output files missing keywords.
+SPR 1099 : Coding standards.
+SPR 1098 : Run time errors and nslew error.
+SPR 1097 : Parameters in task description don't match *.par file.
+SPR 1096 : DAL does accept string columns, file needs FITS input.
+SPR 1095 : More description in omflatgen task description needed.
+
+Version 0.1: 19 August 1999
+
+SPR 1094 closed: Removed spurious files from src.
+
+Version 0.1: 30 June 1999
+
+Original version submitted to the SOC

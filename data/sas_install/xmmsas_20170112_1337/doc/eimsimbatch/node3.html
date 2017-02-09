@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Basic functioning</TITLE>
+<META NAME="description" CONTENT="Basic functioning">
+<META NAME="keywords" CONTENT="eimsimbatch">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eimsimbatch.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eimsimbatch (eimsim-2.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors and cleaning up"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eimsimbatch.html">Home Page</A> / <A  HREF="node2.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00021000000000000000">
+Basic functioning</A>
+</H2>
+
+<P>
+The functions of <A NAME="521"></A><A NAME="tex2html15"
+  HREF="../eimsimbatch/index.html"><SPAN  CLASS="textbf">eimsimbatch</SPAN></A>
+are best illustrated by example. Suppose you follow the cookbook example described in the <A NAME="525"></A><A NAME="tex2html16"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+documentation, which involves running <A NAME="529"></A><A NAME="tex2html17"
+  HREF="../eimsimbatch/index.html"><SPAN  CLASS="textbf">eimsimbatch</SPAN></A>
+with all its parameters left at default. What this will achieve is a single invocation of <A NAME="533"></A><A NAME="tex2html18"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>, and thus a single output source list which records the detections in just 1 set of images. There are not likely to be more than 100 or so detections in this list unless you have used a large number of different image templates in the input set, which memory-wise is an inefficient thing to do. A better thing to do is specify some number of iterations via the <TT>nfields</TT> parameter, eg
+
+<P>
+<PRE>
+  eimsimbatch nfields=100
+</PRE>
+
+<P>
+This will generate an ensemble of 100 lists of detections from the same starting set of template images, which will be merged together into one if you then subsequently run <A NAME="538"></A><A NAME="tex2html19"
+  HREF="../eimsimreduce/index.html"><SPAN  CLASS="textbf">eimsimreduce</SPAN></A>
+as the cookbook advises. The <A NAME="542"></A><A NAME="tex2html20"
+  HREF="../eimsimbatch/index.html"><SPAN  CLASS="textbf">eimsimbatch</SPAN></A>
+task achieves this by calling <A NAME="546"></A><A NAME="tex2html21"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+<TT>nfields</TT> times, with the supplied value of the -idnumber parameter of <A NAME="551"></A><A NAME="tex2html22"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+starting at 1 and incrementing to <TT>nfields</TT>. The -idnumber value is written by <A NAME="556"></A><A NAME="tex2html23"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+to the column <A NAME="560"></A><TT>FIELD_N</TT> of the output source lists.
+
+<P>
+Suppose you decide that you would like to add another 100 runs to the ensemble. You might be tempted to simply repeat the last <A NAME="562"></A><A NAME="tex2html24"
+  HREF="../eimsimbatch/index.html"><SPAN  CLASS="textbf">eimsimbatch</SPAN></A>
+command. DO NOT DO THIS - you will just overwrite your previous 100 files. The correct way to do it is as follows:
+
+<P>
+<PRE>
+  eimsimbatch nfields=100 startatn=101
+</PRE>
+
+<P>
+Ok, now you get serious - you decide that nothing less than <SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$10^4$"></SPAN> runs will satisfy you. Running <SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$10^4$"></SPAN> sequential invocations of <A NAME="566"></A><A NAME="tex2html25"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>, at about 10 min per, will take quite a while however. You can get around this if there is more than one processor available to you. Suppose you have 5 processors. Assign each processor a stream number, ssh to remote nodes if you need to, and on each one, set the following command going:
+
+<P>
+<PRE>
+  eimsimbatch nfields=2000 streamnumber=&lt;1 to 5&gt;
+</PRE>
+
+<P>
+You may run all these 5 streams from the same directory if your hardware setup allows this: all tasks in package <A NAME="570"></A><A NAME="tex2html26"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+have been designed to avoid crosstalk by including the stream number and id (ie, field) number in all relevant file names. 
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors and cleaning up"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

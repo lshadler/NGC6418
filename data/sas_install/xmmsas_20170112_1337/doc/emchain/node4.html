@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Generalities</TITLE>
+<META NAME="description" CONTENT="Generalities">
+<META NAME="keywords" CONTENT="emchain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emchain.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emchain (emchain-11.19) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Main loop"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emchain.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000"></A>
+<A NAME="emchain:description:description:generalities"></A>
+<BR>
+Generalities
+</H2>
+
+<P>
+By default all events flagged for rejection during the chain
+are physically removed from the output file (to save space)
+except those <A NAME="783"></A><TT>OUT_OF_FOV</TT> (useful for cosmic-ray background
+subtraction) and <A NAME="785"></A><TT>REJECTED_BY_GATTI</TT> (used for proton flare rejection).
+To keep all events in output set <TT>rejectbadevents</TT>=N.
+To use a different mask on <A NAME="788"></A><TT>FLAG</TT> set <TT>rejectionflag</TT>
+to another hexadecimal value (binary flags are described in <A NAME="791"></A><A NAME="tex2html2"
+  HREF="../evatt/index.html"><SPAN  CLASS="textbf">evatt</SPAN></A>,
+and in the header of the <A NAME="795"></A><TT>EVENTS</TT> table of the event lists).
+
+<P>
+All text output is sent to standard error, and may be redirected 
+to a file (very useful to investigate problems).
+It is good practice to look at the warnings sent by the tasks
+and <A NAME="797"></A><A NAME="tex2html3"
+  HREF="../emchain/index.html"><SPAN  CLASS="textbf">emchain</SPAN></A>
+itself.
+If the SAS_VERBOSITY environment variable is set to 1,
+<A NAME="801"></A><A NAME="tex2html4"
+  HREF="../emchain/index.html"><SPAN  CLASS="textbf">emchain</SPAN></A>
+will tell which tasks it called. If SAS_VERBOSITY is set to 4
+(suggested value), its constituent tasks will provide useful information.
+Larger values of SAS_VERBOSITY may result in large output files.
+If SAS_VERBOSITY=0, <A NAME="805"></A><A NAME="tex2html5"
+  HREF="../emchain/index.html"><SPAN  CLASS="textbf">emchain</SPAN></A>
+will be mute, except for warnings
+and error messages.
+
+<P>
+All files are recognized by their name.
+Input files are looked for in the directory entered 
+via the <TT>odf</TT> parameter or the SAS_ODF environment variable,
+which must also contain the general ODF files (attitude, time, summary file).
+Output files are created in the current directory.
+Intermediate files are removed at the end, unless <TT>keepintermediate</TT>=Y
+or an error occurred.
+Intermediate and output files are overwritten unless <TT>clobber</TT>=Y.
+
+<P>
+If one constituent task ends in error, <A NAME="812"></A><A NAME="tex2html6"
+  HREF="../emchain/index.html"><SPAN  CLASS="textbf">emchain</SPAN></A>
+will continue
+anyway with the next CCD, exposure or instrument unless <TT>stoponerror</TT>=Y.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Main loop"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

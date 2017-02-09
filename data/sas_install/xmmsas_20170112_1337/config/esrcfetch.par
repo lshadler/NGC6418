@@ -1,0 +1,74 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="intable" type="table" mandatory="yes">
+   <DESCRIPTION>
+    Name of input source list dataset+table.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="outtable" type="table" default="emlset.ds:SRCLIST">
+   <DESCRIPTION>
+    Name of output source list dataset+table.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="inidcol" type="string" default="BOX_ID_SRC">
+   <DESCRIPTION>
+    Name of the intable source ID column.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="outidcol" type="string" default="ML_ID_SRC">
+   <DESCRIPTION>
+    Name of the outtable source ID column.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="infocols" list="yes" type="string" default="">
+   <DESCRIPTION>
+    Names of the columns in the intable from which to fetch data.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="flagsplit" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to flag intable sources which are present more than once in outtable.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="flagcol" type="string" default="FLAG">
+      <DESCRIPTION>
+       Name of the flag column.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="flagbit" type="int" default="0">
+      <DESCRIPTION>
+       Bit of the flag column to set.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       flagbit in [0:31]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withintnull" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to provide a null value for integer columns.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="intnull" type="int" default="-99">
+      <DESCRIPTION>
+       Null value for integer columns.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

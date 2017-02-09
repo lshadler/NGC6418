@@ -1,0 +1,115 @@
+<!-- converted from XPI formatted "epicbscalgen.par.xpi"-->
+<FILE>
+<CONFIG>
+
+<PARAM id="eventtable" type="dataset" mandatory="yes" default="">
+	<DESCRIPTION>Input event list</DESCRIPTION>
+</PARAM>
+
+<PARAM id="withrefsrclist" type="bool" default="no">
+	<DESCRIPTION>Source list with reference coordinates given?</DESCRIPTION>
+	<CASE>
+		<ITEM value="no"/>
+		<ITEM value="yes">
+			<PARAM id="refsrclist" type="dataset">
+				<DESCRIPTION>Source list with reference sources (eboxdetect format)</DESCRIPTION>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="xcolumn" type="string" default="X">
+	<DESCRIPTION>X column name</DESCRIPTION>
+</PARAM>
+
+<PARAM id="ycolumn" type="string" default="Y">
+	<DESCRIPTION>Y column name</DESCRIPTION>
+</PARAM>
+
+<PARAM id="binx" type="int" default="50">
+	<DESCRIPTION>size of spatial bin in X</DESCRIPTION>
+	<CONSTRAINTS>
+		binx in [1:200]
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="biny" type="int" default="50">
+	<DESCRIPTION>size of spatial bin in Y</DESCRIPTION>
+	<CONSTRAINTS>
+		biny in [1:200]
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="nruns" type="int" default="1">
+	<DESCRIPTION>number of detection runs in eboxdetect</DESCRIPTION>
+	<CONSTRAINTS>
+		nruns in [1:4]
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="likemin" type="real" default="15">
+	<DESCRIPTION>minimum detection likelihood</DESCRIPTION>
+	<CONSTRAINTS>
+		likemin in [1.0:20.0]
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="sourceradius" type="real" default="0.01">
+	<DESCRIPTION>size of circle around source [deg]</DESCRIPTION>
+	<CONSTRAINTS>
+		sourceradius in [.0001:2.]
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="runshowdetect" type="bool" default="yes">
+	<DESCRIPTION>Run showdetect in each iteration?</DESCRIPTION>
+	<CASE>
+		<ITEM value="no"/>
+		<ITEM value="yes"/>
+	</CASE>
+</PARAM>
+
+<PARAM id="phi" type="real" default="0">
+	<DESCRIPTION>initial guess for BS angle phi-180deg [arcsec]</DESCRIPTION>
+	<CONSTRAINTS>
+		phi in [-3600:3600.]
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="theta" type="real" default="0">
+	<DESCRIPTION>initial guess for BS angle theta [arcsec]</DESCRIPTION>
+	<CONSTRAINTS>
+		theta in [-3600.:3600.]
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="psi" type="real" default="0">
+	<DESCRIPTION>initial guess for BS angle psi [deg]</DESCRIPTION>
+	<CONSTRAINTS>
+		psi in [-3.:3.]
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="tol1" type="real" default="1.e-1">
+	<DESCRIPTION>tolerance for stopping criterion in stage 1</DESCRIPTION>
+	<CONSTRAINTS>
+		tol1 in [1.e-10:1.e-1]
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="tol2" type="real" default="1.e-4">
+	<DESCRIPTION>tolerance for stopping criterion in stage 2</DESCRIPTION>
+	<CONSTRAINTS>
+		tol2 in [1.e-10:1.e-2]
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="maxiter" type="int" default="1000">
+	<DESCRIPTION>Maximum number of iteration</DESCRIPTION>
+	<CONSTRAINTS>
+		maxiter in [0:1000]
+	</CONSTRAINTS>
+</PARAM>
+
+</CONFIG>
+</FILE>

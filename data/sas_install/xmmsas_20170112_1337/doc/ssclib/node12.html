@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Return the indices (i,j) for the input axes (x,y) of an array</TITLE>
+<META NAME="description" CONTENT="Return the indices (i,j) for the input axes (x,y) of an array">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node13.html">
+<LINK REL="previous" HREF="node11.html">
+<LINK REL="up" HREF="node10.html">
+<LINK REL="next" HREF="node13.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node11.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Return the axes (array)"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Integer (index) scalar integers"></A>
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Calculate the indices(i,j) on"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node6.html">General-purpose array-processing utilities</A> / <A  HREF="node10.html">Integer (index) scalar integers</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00024200000000000000"></A>
+    <A NAME="ssclib:description:getIndicesFromAxes"></A>
+<BR>
+Return the indices (i,j) for the input axes (x,y) of an array
+</H3>
+
+<P>
+The inverse function of <TT>getAxesFromIndices</TT>
+(See Section&nbsp;<A HREF="node11.html#ssclib:description:getAxesFromIndices">2.4.1</A>).
+
+<P>
+<PRE>
+  interface getIndicesFromAxes
+    function getIndicesFromAxesDouble(axes, iLbound, iUbound, lEdge, uEdge) result(indices)
+      real(double), intent(in) :: axes(:)
+      integer,      intent(in) :: iLbound(size(axes)), iUbound(size(axes))
+      real(double), intent(in)           :: lEdge(size(axes))
+      real(double), intent(in), optional :: uEdge(size(axes))
+      real(double) :: indices(size(axes))	! result
+    end function getIndicesFromAxesDouble
+
+    function getIndicesFromAxesSingle(axes, iLbound, iUbound, lEdge, uEdge) result(indices)
+      real(single), intent(in) :: axes(:)
+      integer,      intent(in) :: iLbound(size(axes)), iUbound(size(axes))
+      real(single), intent(in)           :: lEdge(size(axes))
+      real(single), intent(in), optional :: uEdge(size(axes))
+      real(single) :: indices(size(axes))	! result
+    function getIndicesFromAxesSingle
+
+    function getIndicesFromAxesEdgesDouble(axes, aryEdgesInfo) result(indices)
+      real(double), intent(in) :: axes(:)
+      type(AryEdgesInfoT), intent(in) :: aryEdgesInfo
+      real(double) :: indices(size(axes))	! result
+    end function getIndicesFromAxesEdgesDouble
+
+    function getIndicesFromAxesEdgesSingle(axes, aryEdgesInfo) result(indices)
+      real(single), intent(in) :: axes(:)
+      type(AryEdgesInfoT), intent(in) :: aryEdgesInfo
+      real(single) :: indices(size(axes))	! result
+    end function getIndicesFromAxesEdgesSingle
+  end interface
+</PRE>
+
+<P>
+Indices, though the returned values here may be Real, mean
+the index for the given array, therefore for an array
+<PRE>
+  ary(int(returned_i), int(returned_j))
+</PRE>
+will give something significant in the Fortran code.
+Axes are arbitrary and give the frame, which may mean something physical.
+
+<P>
+If uEdge is not given, it is assumed that the width of axes is
+the same as the size of the array (= <TT>abs(iUbound-iLbound)</TT> for each axis).
+
+<P>
+The following is a few examples.
+
+<P>
+<DL>
+<DT><STRONG>Case 1</STRONG></DT>
+<DD>The indices for the axes (x,y)=(3.0, 3.0) in the array
+  (1:5, 1:5) with the edge (0.5:5.5, 0.5:5.5) is (3, 3).
+</DD>
+<DT><STRONG>Case 2</STRONG></DT>
+<DD>The indices for the axes (x,y)=(5.0, 5.0) in the array
+  (1:5, 1:5) with the edge (2.5:7.5, 2.5:7.5) is (3, 3).
+</DD>
+<DT><STRONG>Case 3</STRONG></DT>
+<DD>The indices for the axes (x,y)=(5.0, 5.0) in the array
+  (1:5, 1:5) with the edge (0.0:10, 0.0:10) is (3,3).
+</DD>
+<DT><STRONG>Case 4</STRONG></DT>
+<DD>The indices for the axes (x,y)=(-5, -5) in the array
+  (1:5, 1:5) with the edge (-10:0.0, -10:0.0) is (3, 3).
+</DD>
+<DT><STRONG>Case 5</STRONG></DT>
+<DD>The indices for the axes (x,y)=(5.0, 5.0) in the array
+  (3:7, 3:7) with the edge (0.0:10, 0.0:10) is (5, 5).
+</DD>
+</DL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node11.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Return the axes (array)"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Integer (index) scalar integers"></A>
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Calculate the indices(i,j) on"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

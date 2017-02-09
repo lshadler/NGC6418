@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>readColDataToFixed</TITLE>
+<META NAME="description" CONTENT="readColDataToFixed">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node85.html">
+<LINK REL="previous" HREF="node83.html">
+<LINK REL="up" HREF="node80.html">
+<LINK REL="next" HREF="node85.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node83.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="addOrOpenColumn"></A>
+<A HREF="node80.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="An additional layer over"></A>
+<A HREF="node85.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="readColDataToPtr"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node80.html">An additional layer over</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00074000000000000000"></A>
+    <A NAME="ssclib:description:readColDataToFixed"></A>
+<BR>
+readColDataToFixed
+</H2>
+
+<P>
+This is similar in intention to readArrayData (subsection <A HREF="node82.html#ssclib:description:readArrayData">7.2</A>). The interface below covers most combinations.
+
+<P>
+<PRE>
+  interface readColDataToFixed
+    subroutine readColToFixedNameReal32(tab, colName, colData)
+      type(TableT), intent(in)  :: tab
+      character(*), intent(in)  :: colName
+      real(single), intent(out) :: colData(:)
+    end subroutine readColToFixedNameReal32
+
+    subroutine readColToFixedNameReal64(tab, colName, colData)
+      type(TableT), intent(in)  :: tab
+      character(*), intent(in)  :: colName
+      real(double), intent(out) :: colData(:)
+    end subroutine readColToFixedNameReal64
+
+    subroutine readColToFixedNameInt8(tab, colName, colData)
+      type(TableT),  intent(in)  :: tab
+      character(*),  intent(in)  :: colName
+      integer(int8), intent(out) :: colData(:)
+    end subroutine readColToFixedNameInt8
+
+    subroutine readColToFixedNameInt16(tab, colName, colData)
+      type(TableT),   intent(in)  :: tab
+      character(*),   intent(in)  :: colName
+      integer(int16), intent(out) :: colData(:)
+    end subroutine readColToFixedNameInt16
+
+    subroutine readColToFixedNameInt32(tab, colName, colData)
+      type(TableT),   intent(in)  :: tab
+      character(*),   intent(in)  :: colName
+      integer(int32), intent(out) :: colData(:)
+    end subroutine readColToFixedNameInt32
+
+    subroutine readColToFixedNameStr(tab, colName, colData)
+      type(TableT),  intent(in)  :: tab
+      character(*),  intent(in)  :: colName
+      character(*),  intent(out) :: colData(:)
+    end subroutine readColToFixedNameStr
+
+    subroutine readColToFixedNameBool(tab, colName, colData)
+      type(TableT),  intent(in)  :: tab
+      character(*),  intent(in)  :: colName
+      logical(bool), intent(out) :: colData(:)
+    end subroutine readColToFixedNameBool
+
+    subroutine readColToFixedCol2dReal32(col, colData)
+      type(ColumnT), intent(in)  :: col
+      real(single),  intent(out) :: colData(:,:)
+    end subroutine readColToFixedCol2dReal32
+
+    subroutine readColToFixedCol2dReal64(col, colData)
+      type(ColumnT), intent(in)  :: col
+      real(double),  intent(out) :: colData(:,:)
+    end subroutine readColToFixedCol2dReal64
+
+    subroutine readColToFixedColReal32(col, colData)
+      type(ColumnT), intent(in)  :: col
+      real(single),  intent(out) :: colData(:)
+    end subroutine readColToFixedColReal32
+
+    subroutine readColToFixedColReal64(col, colData)
+      type(ColumnT), intent(in)  :: col
+      real(double),  intent(out) :: colData(:)
+    end subroutine readColToFixedColReal64
+
+    subroutine readColToFixedColInt8(col, colData)
+      type(ColumnT), intent(in)  :: col
+      integer(int8), intent(out) :: colData(:)
+    end subroutine readColToFixedColInt8
+
+    subroutine readColToFixedColInt16(col, colData)
+      type(ColumnT),  intent(in)  :: col
+      integer(int16), intent(out) :: colData(:)
+    end subroutine readColToFixedColInt16
+
+    subroutine readColToFixedColInt32(col, colData)
+      type(ColumnT),  intent(in)  :: col
+      integer(int32), intent(out) :: colData(:)
+    end subroutine readColToFixedColInt32
+
+    subroutine readColToFixedColStr(col, colData)
+      type(ColumnT), intent(in)  :: col
+      character(*),  intent(out) :: colData(:)
+    end subroutine readColToFixedColStr
+
+    subroutine readColToFixedColBool(col, colData)
+      type(ColumnT), intent(in)  :: col
+      logical(bool), intent(out) :: colData(:)
+    end subroutine readColToFixedColBool
+  end interface
+</PRE>
+
+<P>
+The rules for conversion between datatypes are the same as for readArrayData (subsection <A HREF="node82.html#ssclib:description:readArrayData">7.2</A>). There is at present no conversion between non-string data and a string-valued `colData' argument.
+
+<P>
+Note that the argument `colData' is NOT a pointer and thus should be made the same size as the column to be read in the calling program.
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

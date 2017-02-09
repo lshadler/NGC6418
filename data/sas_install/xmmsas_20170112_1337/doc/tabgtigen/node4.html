@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="tabgtigen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="tabgtigen.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="tabgtigen.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+tabgtigen (tabgtigen-2.12.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="tabgtigen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="tabgtigen.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="tabgtigen:user:parameters"></A><A NAME="325"></A>
+<tr valign=top bgcolor='silver'><td><b>table</b></td><td>yes</td><td><A HREF=../param/node3.html>name of existing table</A></td><td>&nbsp;</td><td>input table specifier</td></tr>
+
+<tr valign=top><td colspan=5>a table specifier which must point to a table in
+a data set. 
+It must be in either of the three forms <TT>setname</TT>, <TT>setname+tableid</TT> or
+<TT>setname[tableid]</TT> where <TT>setname</TT> must be the name of an existing
+data set and
+<TT>tableid</TT> an identifier of a table in that data set.
+If the first form, <TT>setname</TT>, is used, the table data are sought in the
+<EM>first</EM> block of the named data set. <TT>tableid</TT> can either be an
+identifier starting with a letter which must then be the name of a table in
+the specified data set or a simple number which is directly interpreted as a
+block sequence number (starting from 1).<br>&nbsp;</td></tr>
+
+<A NAME="347"></A>
+<tr valign=top bgcolor='silver'><td><b>expression</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>valid boolean expression according to
+above syntax rules</td></tr>
+
+<tr valign=top><td colspan=5>the boolean expression controlling the creation
+of the GTI file<br>&nbsp;</td></tr>
+
+<A NAME="354"></A>
+<tr valign=top bgcolor='silver'><td><b>gtiset</b></td><td>no</td><td><A HREF=../param/node3.html>table specifier</A></td><td>gti.ds:ALLGTI</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+The name of the resulting output GTI table - can be the name of
+an already existing table (which will get overwritten) or the name
+of a new one in an existing or new data set.
+<br>&nbsp;</td></tr>
+
+<A NAME="361"></A>
+<tr valign=top bgcolor='silver'><td><b>timecolumn</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>TIME</td><td>name of existing column</td></tr>
+
+<tr valign=top><td colspan=5>name of the column in the input data set containing the time stamps<br>&nbsp;</td></tr>
+
+<A NAME="368"></A>
+<tr valign=top bgcolor='silver'><td><b>prefraction</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>0.5</td><td>-1.0-1.0</td></tr>
+
+<tr valign=top><td colspan=5>the fraction of the previous time interval to be included in the current
+GTI. A value of 1.0 means to include the whole interval. The default
+is to take half of the time interval as if the state change
+occurred between the sample instants. Please note: For the adjustment of
+the very START time there is no previous time interval to consider - the
+subsequent one is taken instead.<br>&nbsp;</td></tr>
+
+<A NAME="375"></A>
+<tr valign=top bgcolor='silver'><td><b>postfraction</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>0.5</td><td>-1.0-1.0</td></tr>
+
+<tr valign=top><td colspan=5>the fraction of the subsequent time interval to be included in the current
+GTI. A value of 1.0 means to include the whole interval. The default
+is to take half of the time interval as if the state change
+occurred between the sample instants. Please note: For the adjustment of
+the last STOP time there is no following time interval to consider - the
+previous one is taken instead.<br>&nbsp;</td></tr>
+
+<A NAME="382"></A>
+<tr valign=top bgcolor='silver'><td><b>mingtisize</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$&gt;=0$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+The output GTI table shall not contain GTIs with durations less than
+this limit. Its value shall be echoed in attribute <A NAME="392"></A><TT>MINGTISZ</TT> together with
+a new attribute <A NAME="394"></A><TT>SUMSHORT</TT> (the sum of all GTIs shorter than
+<TT>mingtisize</TT>).
+<br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="tabgtigen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="ekstest">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ekstest.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="ekstest.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ekstest (ekstest-2.7) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="ekstest.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ekstest.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="ekstest:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+<A NAME="506"></A><A NAME="tex2html5"
+  HREF="../ekstest/index.html"><SPAN  CLASS="textbf">ekstest</SPAN></A>
+reads the <A NAME="tex2html6"
+  HREF="http://heasarc.gsfc.nasa.gov/docs/heasarc/fits.html">FITS</A> file containing the EPIC source and
+background time series' produced by <A NAME="512"></A><A NAME="tex2html7"
+  HREF="../epiclccorr/index.html"><SPAN  CLASS="textbf">epiclccorr</SPAN></A>
+or <A NAME="516"></A><A NAME="tex2html8"
+  HREF="../elcbuild/index.html"><SPAN  CLASS="textbf">elcbuild</SPAN></A>
+and its associated Good Timing Interval (GTI) file produced by
+<A NAME="520"></A><A NAME="tex2html9"
+  HREF="../tabgtigen/index.html"><SPAN  CLASS="textbf">tabgtigen</SPAN></A>, if required. It eliminates all bins that contain
+null or negative values as well as those that are not in the GTIs, if
+the GTI file is provided.  It can perform any or all of the following
+variability tests on the light curve to determine whether the source
+is variable, however if insufficient good bins remain, no variability
+tests are carried out.
+
+<P>
+
+<UL>
+<LI>a <B>Kolmogorov-Smirnov test</B> carried out either on: the cumulative
+probability functions of the observed count distribution and the
+observed background distribution; or the cumulative probability
+function of the observed net count distribution and the cumulative
+time distribution.  It then writes the Kolmogorov-Smirnov statistic,
+the probability that the source is not variable and the number of good
+bins used to determine these values into the header of the input file
+or into the header of a new file and/or to the screen.  Keywords with 'NULL' values indicate that there were too few bins for the test to be carried out. It must be
+noted that only the Kolmogorov-Smirnov test with the cumulative
+probability function of the observed net count distribution and the
+cumulative time distribution can be carried out at the same time as
+the other tests.
+
+<P>
+</LI>
+<LI>a <B>chi-squared probability of constancy test</B> on the source+background  light curve.  It then writes the chi-squared statistic, the
+probability that the source is not variable and the number of good
+bins used to determine these values into the header of the input file
+or into the header of a new file  and/or to the screen.  Keywords with 'NULL' values indicate that there were too few bins for the test to be carried out.
+
+<P>
+</LI>
+<LI>a <B>fractional variability amplitude test</B> on either the net 
+light curve or the total (source+background) lightcurve (Edelson et. al., 2002, ApJ, 568, 610, Vaughan et. al., 2003, MNRAS, 345, 1271 and see Sec.&nbsp;<A HREF="node10.html#ekstest:description:comments">9</A>).  The user can choose whether to use the net or total lightcurve via the boolean parameter 'netlightcurve', unless the chi-squared test is run at  the same time, in which case <A NAME="524"></A><A NAME="tex2html10"
+  HREF="../ekstest/index.html"><SPAN  CLASS="textbf">ekstest</SPAN></A>
+will automatically use the total lightcurve.  A warning is raised however in this case. <A NAME="528"></A><A NAME="tex2html11"
+  HREF="../ekstest/index.html"><SPAN  CLASS="textbf">ekstest</SPAN></A>
+writes the fractional varability amplitude (F<SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$_{var}$"></SPAN>) and the error on this value, along with the number of good
+bins used to determine these values into the header of the input file
+or into the header of a new file  and/or to the screen. A value of -1 indicates that the noise of the data is much greater than the scatter of the data.  Keywords with 'NULL' values indicate that there were too few bins for the test to be carried out.
+
+<P>
+</LI>
+<LI>a <B>flare test</B> on the net lightcurve.  This searches for 
+the highest peak in the lightcurve, which is over a threshold value
+provided by the user (given in sigma above the median value of the
+lightcurve), with an integer number of consecutive bins over the same
+threshold, also given by the user.  The average sigma of the flare,
+above the median value of the lightcurve along with the number of good
+bins in the lightcurve are written either into the header of the input
+file or into the header of a new file and/or to the screen.  Keywords with 'NULL' values indicate that there were too few bins for the test to be carried out.
+
+<P>
+</LI>
+<LI>a <B>variation test</B> between the beginning and the end of the
+lightcurve.  The user provides the percentage of the lightcurve to be
+used at each end and the difference in sigma between the mean values
+of the two ends along with the number of good bins in the lightcurve
+are written either into the header of the input file or into the
+header of a new file and/or to the screen.  Keywords with 'NULL' values indicate that there were too few bins for the test to be carried out.
+
+<P>
+</LI>
+</UL>
+
+<P>
+The input <A NAME="tex2html12"
+  HREF="http://heasarc.gsfc.nasa.gov/docs/heasarc/fits.html">FITS</A> files must contain (net) count rates, background count
+rates and the associated errors. The time series must follow a regular
+binning scheme (i.e. equispaced time bins) [<A
+ HREF="node11.html#ct:SSCPROICD">1</A>]. The
+bin width is given by the keyword <A NAME="534"></A><TT>TIMEDEL</TT>.
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html104"
+  HREF="node4.html">Examples</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="ekstest.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

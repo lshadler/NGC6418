@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="omlcbuild">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omlcbuild.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="omlcbuild.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omlcbuild (omlcbuild-1.40) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="omlcbuild.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omlcbuild.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="omlcbuild:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+   subroutine omlcbuild
+
+     read parameters
+
+     if requested the use of the Imaging-window background:
+        
+	get handle on the Imaging-mode window file
+	
+	remove all the source from this image
+        
+	calculate the average value of the remaining pixels
+        and use this value as the background estimate  
+
+     loop i=0, nSources
+
+       get handle on source rates file
+
+       get handle on source region file
+       if (exposure IDs are different) issue warning
+
+       get handle on background rates file
+
+       get handle on background region file
+       if (exposure IDs are different) issue warning
+
+       if (exposure ID source != exposure ID background) call fatal
+
+       get source extraction radius = s_radius
+
+       get CAL coincidence loss correction radius = cal_radius
+
+       get photometry radius = ph_radius 
+
+       calculate the instrumental limiting magnitude from the 
+       detection limit count rate 
+ 
+       compute area of source region = s_area
+	
+       compute area of background region = b_area
+
+       tStart = max(tBack[0], tSource[0])
+       eEnd = min(tBack[nBack-1], tSource[nSource-1]
+       tDel = (tEnd - tStart)/(nSource-1)
+
+       determine the PSF fraction within the source extraction region
+       determine the PSF fraction within the `background` extraction region
+
+       loop i = 0, nTimeBins
+
+         newTime = tStars + i * tDel
+
+         linear interp to get background rate for each source bin
+         compute source rate error
+         compute background rate error
+
+	 if the use of the Imaging-mode background is requested,
+	 use the earlier calculated background value, 
+         
+	 otherwise:
+
+	    set up equations for counts recorded in each region. These allow 
+	    for (point) source contamination of the `background` region:
+	    C(S+B) = PSF(S+B) *S   +   NPIX(S+B) * Bpix
+	    C(B)   = PSF(B)   *S   +   NPIX(B)   * Bpix
+
+	    solve these for S, the source counts over the coincidence loss (CL) 
+	    region (ie the CAL aperture) and for Bpix, the background counts 
+	    per pixel. 
+
+	 scale background to the CAL aperture area:
+         bkgnd count rate = background count rate * cal_radius area / s_area 
+
+	 recombine these bkgnd and source rates (now determined for the 
+         CAL aperture)
+
+         apply CL correction to the source+bkgnd rate
+
+         apply CL correction to the bkgnd rate
+
+         CL corrected source rate = source+bkgnd rate - bkgnd rate
+
+	 correct result for dead time
+        
+	 correct for PSF beyond the 12 pixel Cal aperture (mainly for UV)
+
+	 compute the source magnitude and insert it into the source 
+         list table
+ 
+         perform the variability tests on rebinned net source 
+         counts ($\chi^2$ and Kolmogorov-Smirnov statistics) by
+
+            calculating the mean count rate and variance;
+            
+            testing the null hypothesis (the source is not variable) by:
+              - processing a $\chi^2$ fit  between the count distribution
+                and constant distribution whose value is equal to the 
+                observed mean count
+              - processing the Kolmogorov-Smirnov test between the 
+                cumulative probability functions of the observed count 
+                distributions and theoretical Gaussian distribution whose
+                mean and variance are both equal to the observed 
+                mean count.            
+
+            calculate the maximal deviation of the light curve 
+            from its mean value and express this value 
+            in the number of r.m.s. $\sigma_1$.
+
+        introduce the variability tests data into the source list table
+
+       end loop
+
+     write time keywords to header
+
+     write output rates file
+
+     release handle and memory
+
+   end loop
+
+   end subroutine omlcbuild
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

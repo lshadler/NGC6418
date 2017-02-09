@@ -1,0 +1,60 @@
+<!-- saved settings for task ""-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="cattab" type="table" mandatory="yes">
+   <DESCRIPTION>
+    Catalogue set FITS filename (+Table-name, separated with a colon).
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="srclisttab" type="table" mandatory="yes">
+   <DESCRIPTION>
+    Input (and possibly output) source-list FITS filename (+Table-name, separated with a colon) of an observation.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withnewsrclist" type="bool" default="yes">
+   <DESCRIPTION>
+    Whether to create a new source-list FITS file (or overwrite the input one).
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="newsrclistset" type="dataset" mandatory="yes">
+      <DESCRIPTION>
+       Output source-list FITS filename of the observation.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="no">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withobsid" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to specify the OBS-ID explicitly.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="obsid" type="int" mandatory="yes">
+      <DESCRIPTION>
+       OBS-ID.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="no">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

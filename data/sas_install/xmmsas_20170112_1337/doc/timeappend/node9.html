@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="timeappend">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="timeappend.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="timeappend.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+timeappend (timeappend-1.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="timeappend.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="timeappend.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="timeappend:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<UL>
+<LI>Copy table referenced by parameter <TT>table</TT>
+	      to output dataset (specified by parameter <TT>outset</TT>)
+</LI>
+<LI>If <TT>withsettings</TT> is false, write dummy attributes <A NAME="532"></A><TT>CCDID</TT>, <A NAME="534"></A><TT>CCDNODE</TT> and (if instrument is EPN) <A NAME="536"></A><TT>QUADRANT</TT>, and set OAL state using the i/p event list.
+		Otherwise, set the state 
+		according to the parameters 
+		<TT>instrument</TT>, 
+		<TT>datamode</TT>,
+		<TT>node</TT>, 
+                and <TT>expnr</TT>.
+
+<P>
+</LI>
+<LI>Access <A NAME="542"></A><TT>FRAME</TT> and <A NAME="544"></A><TT>CCDID</TT> columns
+		of i/p table. If the instrument is EPN, access
+		the <A NAME="546"></A><TT>QUADRANT</TT> column as well.
+
+<P>
+</LI>
+<LI>Create a new table of the same name as the original in o/p dataset. Create a <A NAME="548"></A><TT>TIME</TT> column in new table.
+
+<P>
+</LI>
+<LI>For each row of i/p table
+		
+<UL>
+<LI>Get the CCD number: in the case of the MOS/RGS,
+			read the <A NAME="550"></A><TT>CCDID</TT> value. In the case
+			of PN, combine the <A NAME="552"></A><TT>CCDID</TT>
+			and <A NAME="554"></A><TT>QUADRANT</TT> values into a single
+			CCD number.
+</LI>
+<LI>Group the CCD number and FRAME info into
+			a structure, and add this to a linked list.
+
+<P>
+</LI>
+</UL>
+</LI>
+<LI>End row loop
+
+<P>
+</LI>
+<LI>Sort CCD/FRAME linked list in order of CCD number.
+
+<P>
+</LI>
+<LI>Group linked list in blocks of constant CCD number
+
+<P>
+</LI>
+<LI>For each block of constant CCD number
+		
+<UL>
+<LI>Set OAL state for CCD Number
+</LI>
+<LI>Call OAL to convert FRAME values
+				in block into UTC TIME (Using
+				the C++ equivalents of the F90
+				calls OAL_frameCounterToObt 
+				and OAL_obtToTimeTag)
+		
+</LI>
+</UL>
+</LI>
+<LI>End block loop
+
+<P>
+</LI>
+<LI>Write out linked list to <A NAME="556"></A><TT>TIME</TT> column.
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="timeappend.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

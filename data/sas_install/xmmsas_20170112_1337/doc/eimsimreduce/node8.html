@@ -1,0 +1,303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Generate some `completeness' histograms</TITLE>
+<META NAME="description" CONTENT="Generate some `completeness' histograms">
+<META NAME="keywords" CONTENT="eimsimreduce">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eimsimreduce.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eimsimreduce (eimsim-2.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Same for column FLUX"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="What's the difference between"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eimsimreduce.html">Home Page</A> / <A  HREF="node2.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00023000000000000000"></A>
+<A NAME="eimsimreduce:description:completeness"></A>
+<BR>
+Generate some `completeness' histograms
+</H2>
+
+<P>
+This function may be performed alone by calling the script with <TT>entrystage</TT> and <TT>finalstage</TT>=`completeness'.
+
+<P>
+The main aim of this function is to produce a histogram which shows the fraction of the simulated sources which have been detected, as a function of the flux of the simulated source. One expects this to be close to 1 in the bright limit, but to fall to zero towards the faint end. The flux at which the detected fraction falls to about 1/2 can be considered the sensitivity of the detection technique which was employed. See figure <A HREF="#fig:eimsimreduce:description:c5">3</A> for an example of a plot of cumulative completeness.
+
+<P>
+Note that any sensitivity figure obtained in this fashion represents an average across the entire mosaiced field of view. Typically the exposure and detected background flux vary greatly over such a mosaic. If precise sensitivity figures are desired it would probably be better to use artificial exposure and background templates, in which the pixel values for each instrument and energy band were either constant<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$&gt;$"></SPAN>0 or 0. The non-zero area would also need to be the same shape and extent for each instrument.
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="fig:eimsimreduce:description:c5"></A><A NAME="256"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 3:</STRONG>
+
+   Cumulative completeness (100 runs, 2xmm detection).
+   </CAPTION>
+<TR><TD><IMG
+ WIDTH="610" HEIGHT="1" BORDER="0"
+ SRC="img22.png"
+ ALT="\begin{figure}\centerline{\psfig{figure=Completeness5.eps,angle=-90,width=0.9\textwidth}}
+\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+The first step performed by the present function is to make a histogram of the occurrence of simulated sources as a function of <SPAN CLASS="MATH"><IMG
+ WIDTH="44" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$\log_{10}($"></SPAN><A NAME="704"></A><TT>SIM_FLUX</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$)$"></SPAN>. All the available lists of simulated sources are harvested in this step. The columns created are
+
+<P>
+
+<UL>
+<LI><A NAME="706"></A><TT>LOG10_SF_LO</TT>, <SPAN CLASS="MATH"><IMG
+ WIDTH="38" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="$\log_{10}$"></SPAN> of the lower edge of the bin.
+</LI>
+<LI><A NAME="708"></A><TT>LOG10_SF_HI</TT>, <SPAN CLASS="MATH"><IMG
+ WIDTH="38" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="$\log_{10}$"></SPAN> of the upper edge of the bin. The bins all have equal widths in <SPAN CLASS="MATH"><IMG
+ WIDTH="38" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="$\log_{10}$"></SPAN> space.
+</LI>
+<LI><A NAME="710"></A><TT>N_SIM</TT>, the total number of `detectable' simulated sources (ie, those for which <A NAME="712"></A><TT>INV_SENSY</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$&gt;0$"></SPAN>) which have fluxes that fall within the bin.
+</LI>
+<LI><A NAME="714"></A><TT>NET_FLUX</TT>, sum of <A NAME="716"></A><TT>SIM_FLUX</TT> within the histogram bin.
+</LI>
+</UL>
+
+<P>
+Some possibly useful additional columns are next calculated from these:
+
+<P>
+
+<UL>
+<LI><A NAME="718"></A><TT>N_SIM_ERR</TT>: Square root of <A NAME="720"></A><TT>N_SIM</TT>.
+</LI>
+<LI><A NAME="722"></A><TT>N_SIM_INT</TT>: Reverse-cumulative total of <A NAME="724"></A><TT>N_SIM</TT> (ie, sum of <A NAME="726"></A><TT>N_SIM</TT> in this plus all brighter bins).
+</LI>
+<LI><A NAME="728"></A><TT>DENS_SIM</TT>: Average sky-density (in deg<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.png"
+ ALT="$^{-2}$"></SPAN>) of (detectable) sim sources. This is <A NAME="730"></A><TT>N_SIM</TT> divided by <A NAME="732"></A><TT>SKY_AREA</TT> divided by the number <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$N$"></SPAN> of source lists which were merged. <A NAME="734"></A><TT>SKY_AREA</TT>, which is read from the keyword of that name in the lists of detected sources, is the area in square degrees of the non-zero parts of the mosaiced maps of reciprocal sensitivity, which were constructed as part of <A NAME="736"></A><A NAME="tex2html20"
+  HREF="../eimsimprep/index.html"><SPAN  CLASS="textbf">eimsimprep</SPAN></A>.
+</LI>
+<LI><A NAME="740"></A><TT>DENS_SIM_ERR</TT>: Error in <A NAME="742"></A><TT>DENS_SIM</TT>.
+</LI>
+<LI><A NAME="744"></A><TT>DENS_SIM_INT</TT>: Reverse-cumulative total of <A NAME="746"></A><TT>DENS_SIM</TT>.
+</LI>
+<LI><A NAME="748"></A><TT>FLUX_DENS_INT</TT>: Forward-cumulative total of <A NAME="750"></A><TT>NET_FLUX</TT>, divided by the sky area.
+</LI>
+<LI><A NAME="752"></A><TT>SIM_FLUX_LO</TT>: <A NAME="754"></A><TT>SIM_FLUX</TT> at the lower edge of the bin (10.0**<A NAME="756"></A><TT>LOG10_SF_LO</TT>). This should be used as the <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$x$"></SPAN>-value when plotting any `reverse-cumulative' quantity on the <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$y$"></SPAN>-axis.
+</LI>
+<LI><A NAME="758"></A><TT>SIM_FLUX_MID</TT>: <A NAME="760"></A><TT>SIM_FLUX</TT> at the middle of the bin. This should be used as the <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$x$"></SPAN>-value when plotting any `differential' quantity on the <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$y$"></SPAN>-axis.
+</LI>
+<LI><A NAME="762"></A><TT>SIM_FLUX_HI</TT>: <A NAME="764"></A><TT>SIM_FLUX</TT> at the upper edge of the bin (10.0**<A NAME="766"></A><TT>LOG10_SF_HI</TT>). This should be used as the <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$x$"></SPAN>-value when plotting any `forward-cumulative' quantity on the <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$y$"></SPAN>-axis.
+</LI>
+</UL>
+
+<P>
+Now it is time to tally up the detections. However, we need now to make a distinction between detections which are likely to be `genuine' and those which are not. `Genuine' is a somewhat slippery concept in present application, but we do have a quantity which we can use to get a handle on it, namely the probability <A NAME="768"></A><TT>MATCH_PNULL</TT> that the match between a detection and its matching simulated source could have occurred by chance. We define a cutoff value of <A NAME="770"></A><TT>MATCH_PNULL</TT> and declare that all those detections for which <A NAME="772"></A><TT>MATCH_PNULL</TT> falls below the cutoff are genuine, and the others not. The cutoff is under user control via the parameter <TT>probcutoff</TT> of <A NAME="775"></A><A NAME="tex2html21"
+  HREF="../eimsimreduce/index.html"><SPAN  CLASS="textbf">eimsimreduce</SPAN></A>. Detected sources for which <A NAME="779"></A><TT>SIM_INV_SENSY</TT> = 0 are also screened out at this stage.
+
+<P>
+The situation is actually even a little bit more complicated, due to the fact that, although we may be fairly confident that genuine detections have small values of <A NAME="781"></A><TT>MATCH_PNULL</TT>, spurious detections have values which are evenly spread between 0 and 1. This means that our initial tally of detections with <A NAME="783"></A><TT>MATCH_PNULL</TT> below the cutoff <!-- MATH
+ $P_\mathrm{cut}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.png"
+ ALT="$P_\mathrm{cut}$"></SPAN> comprises not the total number <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img30.png"
+ ALT="$R$"></SPAN> of reliable detections, out of a total <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img31.png"
+ ALT="$A$"></SPAN>, but <!-- MATH
+ $R^\prime = R + P_\mathrm{cut} \times (A - R)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="178" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$R^\prime = R + P_\mathrm{cut} \times (A - R)$"></SPAN> - ie there are some black sheep among the white. <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img30.png"
+ ALT="$R$"></SPAN> is thus calculated from <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img33.png"
+ ALT="$R^\prime$"></SPAN> as
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+R = \frac{R^\prime - P_\mathrm{cut} A}{1 - P_\mathrm{cut}}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="112" HEIGHT="43" BORDER="0"
+ SRC="img34.png"
+ ALT="\begin{displaymath}
+R = \frac{R^\prime - P_\mathrm{cut} A}{1 - P_\mathrm{cut}}
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+and
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+\sigma_R^2 = \frac{R^\prime + P_\mathrm{cut}^2 A}{(1 - P_\mathrm{cut})^2}.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="124" HEIGHT="45" BORDER="0"
+ SRC="img35.png"
+ ALT="\begin{displaymath}
+\sigma_R^2 = \frac{R^\prime + P_\mathrm{cut}^2 A}{(1 - P_\mathrm{cut})^2}.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+The next batch of columns to be calculated are as follows:
+
+<P>
+
+<UL>
+<LI><A NAME="785"></A><TT>N_ALL_DET</TT>: All detections (same bin edges as for the simulated sources).
+</LI>
+<LI><A NAME="787"></A><TT>N_ALL_DET_ERR</TT>: Square root of <A NAME="789"></A><TT>N_ALL_DET</TT>.
+</LI>
+<LI><A NAME="791"></A><TT>N_ALL_DET_INT</TT>: Reverse-cumulative total of <A NAME="793"></A><TT>N_ALL_DET</TT>.
+</LI>
+<LI><A NAME="795"></A><TT>N_TRUE_DET</TT>: `Genuine' detections, as given by the formula above.
+</LI>
+<LI><A NAME="797"></A><TT>N_TRUE_DET_ERR</TT>: Uncertainty in <A NAME="799"></A><TT>N_TRUE_DET</TT>, as given by the formula above.
+</LI>
+<LI><A NAME="801"></A><TT>N_TRUE_DET_INT</TT>: Reverse-cumulative total of <A NAME="803"></A><TT>N_TRUE_DET</TT>.
+</LI>
+<LI><A NAME="805"></A><TT>DENS_DET</TT>: Average sky-density (in deg<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img27.png"
+ ALT="$^{-2}$"></SPAN>) of reliable detections, derived in the same fashion as column <A NAME="807"></A><TT>DENS_SIM</TT>.
+</LI>
+<LI><A NAME="809"></A><TT>DENS_DET_ERR</TT>: Uncertainty in <A NAME="811"></A><TT>DENS_DET</TT>.
+</LI>
+<LI><A NAME="813"></A><TT>DENS_DET_INT</TT>: Reverse-cumulative total of <A NAME="815"></A><TT>DENS_DET</TT>.
+</LI>
+</UL>
+
+<P>
+The desired result is then calculated and expressed in the final three columns:
+
+<P>
+
+<UL>
+<LI><A NAME="817"></A><TT>COMP_RATIO</TT>: <A NAME="819"></A><TT>DENS_DET</TT>/<A NAME="821"></A><TT>DENS_SIM</TT>.
+</LI>
+<LI><A NAME="823"></A><TT>COMP_RATIO_ERR</TT>: Error in <A NAME="825"></A><TT>COMP_RATIO</TT>.
+</LI>
+<LI><A NAME="827"></A><TT>COMP_RATIO_INT</TT>: <A NAME="829"></A><TT>DENS_DET_INT</TT>/<A NAME="831"></A><TT>DENS_SIM_INT</TT>.
+</LI>
+</UL>
+
+<P>
+A last function of this task is to append to the output dataset a table named <A NAME="833"></A><TT>THEORY</TT>, which is a version of the <A NAME="835"></A><TT>SRCSPECS</TT> table of the sim source specification template designed to make it easy to compare the theoretical logN-logS of the simulated sources with the actual logN-logS. You can do this for example using the ftool fv. If you plot first <A NAME="837"></A><TT>DENS_SIM_INT</TT> against <A NAME="839"></A><TT>SIM_FLUX_INT</TT>; then overlay this with a second plot, of <A NAME="841"></A><TT>THEORY</TT> columns <A NAME="843"></A><TT>DENSITY</TT> against <A NAME="845"></A><TT>FLUX</TT>; then change the axes scales to log-log; you will see what I mean.
+
+<P>
+PLEASE NOTE if you do this that the real distribution will very often appear not to match the theoretical logN-logS very well at the bright end of the scale. Such deviations appear more significant than they really are, because the brain expects the values in adjacent flux bins to be statistically independent, which is not true of a cumulative plot. A comparison of differential plots is often much more satisfying.
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html162"
+  HREF="node9.html">What's the difference between <TT>DETEC_PNULL</TT> and <TT>MATCH_PNULL</TT>?</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Same for column FLUX"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="What's the difference between"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

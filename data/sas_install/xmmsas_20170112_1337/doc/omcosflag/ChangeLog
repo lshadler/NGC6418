@@ -1,0 +1,245 @@
+ChangeLog for omcosflag
+=======================
+
+Version 1.33 - 2014-04-02 (EC)
+	- Remove unused binaries from test/
+	- Improve testomcosflag by removing outputs
+Version 1.32 - 2013-07-10 (VNY)
+	+(src/omcosflag_mod.f90) further protection  against 
+	the possibility of geting a wrong binning factor; 
+	fixed a mistake in the check of the windowDX size as 
+	its value is always unbinned and cannot be used for 
+	checking the binning factor. The task version 1.32 
+	is equivelent to 1.29.3.
+Version 1.31 - 2013-06-39 (VNY)
+	+(src/omcosflag_mod.f90) Protected against the possibility of 
+	calculating a wrong binning factor for some OM images, which
+	was leading to the output quality map having wrong sizes
+	(continuation of solving the problem reported in SSC-SPR-7109);
+	the task version 1.31 is equivalent to 1.29.2
+Version 1.30 - 2013-05-21 (VNY)
+	+(src/omcosflag_mod.f90)
+	Fixed a bug leading to a subscript error message for the quality array
+	of some full-frame high-resolution images
+	(SSC-SPR-7109)		
+Version 1.29  -  2010-01-25  (CB)
+--------------------------	
+	+src Removed some test 
+        write statements  
+
+
+Version 1.28.2  -  2009-07-20  (CB)
+--------------------------	
+	+src Deleted ssc from MakeFile
+	to fix gcc4 build problem (forgot
+	to actually do it before)
+
+Version 1.28.1  -  2009-07-20  (CB)
+--------------------------	
+	+src Deleted sscllib from MakeFile
+	to fix gcc4 build problem
+
+Version 1.28  -  2009-03-18  (CB)
+--------------------------	
+	Removed "ssclib" from DEPEND file
+	(seems to have been in twice)
+
+
+Version 1.27  -  2009-03-12  (CB)
+--------------------------	
+	Removed "sscllib" from DEPEND file
+	Changed QUALITY image to 16-bit for
+	new SAS 9 functionality. 
+
+Version 1.26  -  2007-03-05  (CB)
+--------------------------	
+	Added a rooutine to check for very bright
+	isolated pixels, which are flagged as
+	"bad pixels".
+
+
+Version 1.25.2  -  2005-06-07  (CB)
+--------------------------	
+	Replaced a forall statement by do statement to fix
+	run-time crash on xmm-ssc
+
+Version 1.25.1  -  2004-05-28  (CB)
+--------------------------	
+	Modified to check image for columns of zero-count
+	pixels and set quality flag accordingly (fixes SPR 3327)
+
+Version 1.25  -  2003-11-21  (CB)
+--------------------------	
+	DEPEND file ammended for ssclib 3.0
+	
+Version 1.24  -  2003-11-03  (CB) 
+--------------------------	
+	Fixed bug causing quality array to be set incorrectly (SPR 3161)
+
+Version 1.23  -  2003-02-27  (CB) 
+--------------------------	
+	Uploaded into development track
+
+	
+Version 1.22  -  2003-02-26  (CB) 
+--------------------------	
+	Uploaded into development track
+
+	
+Version 1.21.6 2002-12-05  Corrected ZERODRIFT warning message
+_________________________	
+	
+Version 1.21.5 2002-12-05  (CB) Changed ZERODRIFT warning to message 
+	                    (SPR 3036)
+_________________________	
+	
+	
+Version 1.21.4 2002-05-28  (CB/SRR) updated documentation
+_________________________	
+	
+Version 1.21.3 2002-02-18  (CB) DEPEND file ammended to fix SPR 2755. 
+_____________________________	
+
+Version 1.21.2 2002-02-18  (CB) DEPEND file ammended to fix SPR 2755. 
+_____________________________	
+
+Version 1.21.1 - 2002-01-27 (CB)
+_______________________________
+	Configuration file ammended (fixes SPR 2719)
+
+Version 1.21 - 2002-01-08 (CB) 
+------------ 
+	DEPEND file modified for ssclib.
+
+Version 1.20 - 2001-12-13 (CB) No changes - uploaded to keep Guiseppe happy
+------------ 
+
+Version 1.19.2 - 2001-10-18 (CB)
+------------ 
+	+(src/omcosflag_mod.f90) Check added to stop 2nd subscript of
+	 array binnedBadPixMap  going out of range. Fixes SPR ?.  
+
+Version 1.19.1 - 2001-07-12 (CB)
+------------ 
+	+(src/omcosflag_mod.f90) Check added to stop 2nd subscript of
+	array qualArrayP going out of range by 1. Fixes a problem that
+	occurred  with cycle 122 data run at Leicester (program runs okay
+	on this data at MSSL).  
+
+
+	
+Version 1.19 - 2001-06-18 (CB)
+------------ 
+	+(src/omcosflag_mod.f90) Modified to check the image array
+	for "missing" and "negative-valued" pixels and to modify the
+	quality-map array accordingly. Also modified to use the new 
+	version of "getStartendExposure" in mssllib.
+
+Version 1.18.1 - 2000-11-07 (CB)
+------------ 
+	+(config/omcosflag.info) "om" added.
+
+
+Version 1.18 - 2000-08-30 (AMK)
+------------ 
+	+(src/omcosflag_mod.f90) Initialise qualArrayP and corrected
+	the initialisation of the quality array.
+
+Version 1.17.4 - 2000-06-21 (AMK)
+--------------
+	+ (config/omcosflag.info) - modified (SSC-SPR-1858)
+	
+Version 1.17.3 - 2000-06-14 (AMK)
+	+ (doc/omcosflag_description.tex) - corrected error messaging 
+	(SSC-SPR-1781)
+	+ (src/omcosflag_mod.f90) - introduced new keyword
+	'deAllocationError' for warnings.
+Version 1.17.2 - 2000-06-13 (AMK)
+--------------
+	+ (doc/omcosflag_description.tex) - changed `fatal' to 'error'
+	SSC-SPR-1771
+	
+Version 1.17.1: 9th June 2000 (AMK)
+Added clean-up for allocated memory
+Checked and corrected implementation of bad pixel map
+	
+Version 1.15: 11th April 2000
+
+Modified 'zero drift' algorithm 	
+	
+Version 1.14: 2nd March 2000
+
+Modified algorithm to cope with no drift file	
+	
+Version 1.13: 16th December 1999
+
+Updated test harness wrt new CCF for bad pixels
+
+Added new parameter timeSample	
+	
+Version 1.12: 2nd December 1999
+
+Added DISTRIBUTION (world) file	
+	
+Version 1.11: 8th June 1999
+
+Updated dependancies for V3.
+
+Version 1.10: 18th May 1999
+
+Removed CAL call to open CCF.
+Changed fatal datamode message.
+
+Version 1.9: 14th May 1999
+
+Update shift and add process.
+
+Version 1.8: 20th April 1999
+
+'Spring clean' of code (tidy, comment and fix bugs). 
+Changed input parameters to conform to new standards.
+Added checks on input file types.
+Update testomcosflag and checkoutput for new dataset.
+
+Version 1.7: 26th March 1999
+
+removed accuracyLevel=LOW
+
+Version 1.6: 10th December 1998
+	
+updated Dependancy file RE: mssllib
+	
+Version 1.5: 28th July 1998
+
+images moved to primary array
+
+Version 1.4: 16th June 1998
+
+SPR 407 closed: test harness now checks values
+SPR 406 closed: .par file changed
+SPR 405 closed: permissions changed
+
+Version 1.3: 21 May 1998
+
+ChangeLog added
+DEPEND edited
+
+
+Version 1.2: 7 May 1998
+
+SPR 217 closed: Test harnesses updated
+SPR 223 closed: see 217
+
+
+Version 1.1: 27 April 1998
+
+SPR 218 closed: access privs changed
+SPR 219 closed: .par file included
+SPR 221 closed: obselete comments and workrounds removed
+SPR 222 closed: datestamp removed
+
+
+Version 1.0: 20 March 1998
+
+Original version submitted to the SOC
+

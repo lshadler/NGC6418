@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>OGIP spectral products</TITLE>
+<META NAME="description" CONTENT="OGIP spectral products">
+<META NAME="keywords" CONTENT="xmmselect">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="xmmselect.css">
+
+<LINK REL="previous" HREF="node25.html">
+<LINK REL="up" HREF="node24.html">
+<LINK REL="next" HREF="node27.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+xmmselect (xmmselect-2.65.12) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node25.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Fix expression"></A>
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Product extraction"></A>
+<A HREF="node27.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Typical usage scenarios"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node37.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="xmmselect.html">Home Page</A> / <A  HREF="node3.html">Description</A> / <A  HREF="node14.html">Detailed layout of GUI</A> / <A  HREF="node24.html">Product extraction</A></DIV>
+<!--End of Navigation Panel-->
+
+<H4><A NAME="SECTION00033620000000000000">
+OGIP spectral products</A>
+</H4>
+<BR><A NAME="xmmselect:guilayout:specprod"></A>Unlike the other product categories the generation of spectral products
+yields more than one output data set, viz.:
+
+<UL>
+<LI>OGIP spectrum for selected source region
+</LI>
+<LI>OGIP spectrum for selected background region
+</LI>
+<LI>Redistribution Matrix File (RMF) corresponding to source spectrum
+</LI>
+<LI>Auxiliary Response File (ARF) corresponding to source spectrum
+</LI>
+</UL>
+These are created by the task <A NAME="1021"></A><A NAME="tex2html69"
+  HREF="../especget/index.html"><SPAN  CLASS="textbf">especget</SPAN></A>
+which in turn is a wrapper
+around <A NAME="1025"></A><A NAME="tex2html70"
+  HREF="../rmfgen/index.html"><SPAN  CLASS="textbf">rmfgen</SPAN></A>
+and <A NAME="1029"></A><A NAME="tex2html71"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>. Please consult the description
+of those package to learn more about functionality, flow of operations,
+and limitations. The primary input to <A NAME="1033"></A><A NAME="tex2html72"
+  HREF="../especget/index.html"><SPAN  CLASS="textbf">especget</SPAN></A>
+is an image data
+set and two spatial selection expressions which need to mark an
+extraction region around a point source and a source-free background
+region. These can be generated with <A NAME="1037"></A><A NAME="tex2html73"
+  HREF="../xmmselect/index.html"><SPAN  CLASS="textbf">xmmselect</SPAN></A>
+in a convenient
+manner:
+
+<OL>
+<LI>create an image in detector or sky coordinates as described above
+</LI>
+<LI>when the image is displayed in <A NAME="tex2html74"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A> mark a normal circular region
+around the source of interest
+</LI>
+<LI>mark another (not necessarily circular) region that shall comprise
+only background events. In order that <A NAME="1043"></A><A NAME="tex2html75"
+  HREF="../xmmselect/index.html"><SPAN  CLASS="textbf">xmmselect</SPAN></A>
+can distinguish the
+source from the background region, the latter must be assigned the
+<A NAME="tex2html76"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A> attribute <EM>Background</EM>. To do that, double click on
+the region marker and in the upcoming dialog select ``Property''
+and ``Background''. When done the border line style should change
+from solid to dashed.
+<BR>
+Be sure that no ``exclude'' regions have been selected.
+
+<P>
+</LI>
+<LI>click on <B><EM>OGIP Spectral Products</EM></B>. At this point <A NAME="1050"></A><A NAME="tex2html77"
+  HREF="../xmmselect/index.html"><SPAN  CLASS="textbf">xmmselect</SPAN></A>
+shall read the two regions from <A NAME="tex2html78"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A> and perform some basic checks
+for correctness (e.g. there is exactly one source and one background
+region). In case this fails informative error messages with suggested
+corrective actions shall be presented. If the two regions could be
+successfully read <A NAME="1056"></A><A NAME="tex2html79"
+  HREF="../especget/index.html"><SPAN  CLASS="textbf">especget</SPAN></A>
+is directly called with the necessary
+inputs unless the option to invoke
+<A HREF="node15.html#xmmselect:menu:products">eregionanalyse on source image</A>
+is active. In this case there is an additional step which aims at
+optimizing the position and extent of the source extraction region
+before it is passed to <A NAME="1060"></A><A NAME="tex2html80"
+  HREF="../especget/index.html"><SPAN  CLASS="textbf">especget</SPAN></A>. This is done by running
+<A NAME="1064"></A><A NAME="tex2html81"
+  HREF="../eregionanalyse/index.html"><SPAN  CLASS="textbf">eregionanalyse</SPAN></A>
+on the source region. Its primary output is an
+optimized source region which shall be displayed as a white circle marker
+on the image. In addition a dialog box with some numerical results
+from the <A NAME="1068"></A><A NAME="tex2html82"
+  HREF="../eregionanalyse/index.html"><SPAN  CLASS="textbf">eregionanalyse</SPAN></A>
+run will be shown:
+<DIV ALIGN="CENTER">
+<A NAME="xmmselect:regoptdiag:figure"></A><!-- MATH
+ $\epsfig{file=regoptdiag.epsi,width=.6\textwidth}$
+ -->
+<IMG
+ WIDTH="430" HEIGHT="178" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.png"
+ ALT="\epsfig{file=regoptdiag.epsi,width=.6\textwidth}">
+<BR>
+<BR>
+<BR></DIV>
+<DIV CLASS="centerline" ID="par2303" ALIGN="CENTER">
+<DIV ALIGN="CENTER">
+Figure: Dialog with results of source region optimization
+process</DIV></DIV>
+<DIV ALIGN="CENTER">
+</DIV>
+The dialog gives the option to proceed in three possible ways:
+
+<OL>
+<LI>Use optimized region
+<BR>
+The initially user-defined source region will be replaced by the new
+optimized region
+</LI>
+<LI>Use initial region
+<BR>
+The optimized region will be erased from the image and execution proceeds
+with the initially defined region
+</LI>
+<LI>Start over
+<BR>
+All regions will be deleted from the image - new initial selections
+for source and background regions must be made
+</LI>
+</OL>
+In the first and second case <A NAME="1072"></A><A NAME="tex2html83"
+  HREF="../especget/index.html"><SPAN  CLASS="textbf">especget</SPAN></A>
+is eventually invoked with
+the appropriate input.
+</LI>
+</OL>
+Please note that the production of an RMF with <A NAME="1076"></A><A NAME="tex2html84"
+  HREF="../especget/index.html"><SPAN  CLASS="textbf">especget</SPAN></A>
+is
+a computationally intensive task and can take
+several tens of minutes on a moderately loaded workstation. There is
+however the option to skip the RMF-generation stage (please
+consult <A NAME="1080"></A><A NAME="tex2html85"
+  HREF="../especget/index.html"><SPAN  CLASS="textbf">especget</SPAN></A>
+documentation for a description) in which
+case the task should run to completion within minutes.
+If it finishes successfully the generated source spectrum shall be shown via
+<A NAME="1084"></A><A NAME="tex2html86"
+  HREF="../dsplot/index.html"><SPAN  CLASS="textbf">dsplot</SPAN></A>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node25.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Fix expression"></A>
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Product extraction"></A>
+<A HREF="node27.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Typical usage scenarios"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node37.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,284 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="emchain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emchain.css">
+
+<LINK REL="next" HREF="node17.html">
+<LINK REL="previous" HREF="node15.html">
+<LINK REL="up" HREF="emchain.html">
+<LINK REL="next" HREF="node17.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emchain (emchain-11.19) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node15.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Intermediate Files"></A>
+<A HREF="emchain.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emchain.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00090000000000000000"></A>
+<A NAME="emchain:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+   subroutine emchain
+
+      Read parameters.
+
+      if startfromodf then call processOdf
+      else if runevlistcomb then call mergeEvents
+
+      if makeflaregti then
+         Loop over the *MIEVLI0000.FIT files
+            call makeFlareTS
+            if globalflare  call mergeTS  else  call tsToGTI
+         end loop
+         if globalflare  call tsToGTI
+      endif
+
+      Loop over the *MIEVLI0000.FIT files
+         if addtaglenoise call emtaglenoise
+         if withflaregti  call applyFlareGTI
+         if addvigweight  call evigweight ineventset=eventfile
+      end loop
+
+      if not keepintermediate then  rm -f *.in.mos *.out.mos merged.*.mos
+
+   end subroutine emchain
+
+   subroutine processOdf
+
+      Set SAS_ODF to odf (for OAL).
+
+      Call atthkgen if no tracking history file or withatthkgen is true.
+      Call tabgtigen with expression='!isNull(DAHFPNT) &amp;&amp; DAHFPNT&lt;atttol'
+      Call hkgtigen if no HK GTI is present.
+      gtiin = 'extgti.in.mos'
+      Call gtimerge gtitable=$gtiin on attitude GTI (if filteratt),
+                     HK GTI (if filterhk) and user GTI (if present)
+
+      Look in odf for ODF files pertaining to selected instrument,
+      ending in IME, TIE, RIE or CTE.FIT (possibly .gz or .FTZ).
+      Deduce all exposures present.
+
+      Loop over selected exposures
+         if badpixfindalgo ne 'NO' then
+            call ccdLoop (forbadpixfind=Y)
+            call badpixLoop (no flare screening)
+            call mergeEvents
+            call ebadpixpixupdate
+            call buildFlareGTI
+            call badpixLoop (with flare screening and low energy run)
+         endif
+
+         call ccdLoop (forbadpixfind=N)
+         if runevlistcomb then call mergeEvents
+      end loop over exposures
+
+   end subroutine processOdf
+
+   subroutine ccdLoop
+
+      Loop over selected CCDs and nodes
+
+         Identify event file name event0 ending in IME, TIE, RIE or CTE.FIT.
+         Deduce ccd and node.
+
+         aux = substring($event0 - last 9 characters) // '00AUX.FIT'
+         gtiout = 'gti' // node // ccd // '.out.mos'
+         frameout = 'frame' // node // ccd // '.out.mos'
+         emframes auxiliaryset=frame.in odfeventset=$event0 \
+                  frameset=$frameout writegtiset=Y outgtiset=$gtiout
+         if ($gtiin exists) then
+            flagbadtimes=Y ingtiset=$gtiin
+
+         if (not processlowgain and GAIN_CCD='LOW') next
+
+         bad = 'badpix' // node // ccd // '.out.mos'
+         if $bad does not exist then
+            bad = 'P*' // instrument // '*BADPIX' // ccd // node // '00.FIT'
+
+         if withbadpix and not forbadpixfind then
+            badpix eventset=$event0 withoutset=Y outset=event.in windowfilter=Y
+            if ($bad exists) then
+               getuplnkbadpix=Y getotherbadpix=N getnewbadpix=Y badpixset=$bad
+         else
+            cp $event0 event.in.mos
+         endif
+
+         eventout = 'event' // node // ccd // '.out.mos'
+         off = odf // * // instrument // * // ccd // node // 'OVE.FIT'
+         emevents withframeset=Y frameset=$frameout odfeventset=event.in \
+                  eventset=$eventout
+         if ($off exists) then  withoffvarsets=Y offvarsets=$off
+         if not randomizeP then  randomizeposition=N
+         if     randomizeT then  randomizetime=Y
+         if forbadpixfind then  analysepatterns=N flagbadpixels=N \
+                                splitdiagonals=N randomizeposition=N
+
+         if ($gtiin exists) then
+            gtialign gtitable=$gtiin:STDGTI eventset=$eventout \
+                     outset=hkgti.in.mos
+            extname = 'STDGTI' // node // ccd
+            gtimerge tables="hkgti.in.mos ccdgti.in.mos" mergemode=and \
+                     gtitable=$gtiout:$extname
+
+         if withattcalc and not forbadpixfind then
+            attcalc eventset=$eventout
+
+         emenergy ineventset=$eventout
+         if not imaging mode then  getccdbkg=N
+         if not randomizeE then    randomizeenergy=N
+         if forbadpixfind then     correctcti=N correctgain=N randomizeenergy=N
+         bkg = 'P'//obsid//instrument//expid//'CCDBKG'//ccd//node//'00.FIT'
+         if writeccdbackground then backgroundset=$bkg
+
+         if rejectbadevents or forbadpixfind then
+            evselect table=$eventout destruct=Y keepfilteroutput=Y \
+                     expression="(FLAG &amp; 0x$rejectionflag) == 0"
+
+      end loop over CCDs and nodes
+
+   end subroutine ccdLoop
+
+   subroutine badpixLoop
+
+      Loop over selected CCDs and nodes
+
+         eventout = 'event' // node // ccd // '.out.mos'
+         bad = 'badpix' // node // ccd // '.out.mos'
+
+         evselect table=$eventout withfilteredset=Y filteredset=event.in.mos  \
+                  keepfilteroutput=Y  destruct=Y writedss=Y updateexposure=Y \
+                  expression="TIME in GTI($gtiflare)"
+
+         if badpixfindalgo == 'EM' then
+            emeventsproj eventset=event.in.mos rejectbadevents=Y  \
+                         evimageset=evmap.in.mos
+            embadpixfind evimageset=evmap.in.mos badpixset=$bad
+
+            if (lowenerbadpix) select PHA &lt; 150 and run again incrementally
+         else
+            badpixfind eventset=event.in.mos thresholdlabel=rate \
+                       badpixset=$bad  \
+                       hithresh=0.005 narrowerthanpsf=3.0 backgroundrate=1.E-5
+         endif
+
+      end loop over CCDs and nodes
+
+      if stopafterbadpixfind  stop
+
+   end subroutine badpixLoop
+
+   subroutine mergeEvents
+
+      evlistcomb eventsets='event*.out.mos' imagingset=merged.img.mos \
+                 timingset=merged.tim.mos maintable='EVENTS OFFSETS'
+      if fulloutput then
+         emosimgcolnames="TIME RAWX RAWY DETX DETY X Y PHA PI FLAG PATTERN
+             FRAME ENERGYE1 ENERGYE2 ENERGYE3 ENERGYE4 PERIPIX OFFSETX OFFSETY"
+         emosimgcoltypes="double int16 int16 int16 int16 int32 int32 int16
+             int16 int32 int8 int32 int16 int16 int16 int16 int8 int16 int16"
+      endif
+
+      if applyccdgti then
+         Loop over gti*.out.mos files
+         expr = expr // '|| (CCDNR==' //node//ccd // ' &amp;&amp; GTI($gtiout,TIME))'
+      endif
+
+      eventim = 'P' // obsid // instrument // expid // 'MIEVLI0000.FIT'
+      evselect table=merged.img.mos withfilteredset=Y filteredset=$eventim \
+               expression=$expr destruct=Y keepfilteroutput=Y
+
+      fparkey "EPIC MOS IMAGING MODE EVENT LIST" $eventim[0] CONTENT \
+         add=Y insert=DATE"
+      fappend $sasccf[CALINDEX] $eventim
+
+      if (merged.tim exists) then
+         eventti = 'P' // obsid // instrument // expid // 'TIEVLI00001.FIT'
+         evselect table=merged.tim.mos withfilteredset=Y filteredset=$eventti \
+                  expression=$expr destruct=Y keepfilteroutput=Y
+         fparkey "EPIC TIMING MODE EVENT LIST" $eventti[0] CONTENT \
+            add=Y insert=DATE"
+         fappend $sasccf[CALINDEX] $eventti
+      endif
+
+   end subroutine mergeEvents
+
+   subroutine makeFlareTs
+      expr = "(PATTERN==0) &amp;&amp; ((FLAG &amp; 0x762b8000) == 0) &amp;&amp; #XMMEA_22"
+      flarets = 'P' // obsid // instrument // expid // 'FBKTSR0000.FIT'
+      check that expected counts per bin in quiet conditions is &gt; 10,
+         otherwise increase $flaretimebin
+      evselect table=$eventim expression=$expr updateexposure=N \
+               withrateset=Y rateset=$flarets timebinsize=$flaretimebin \
+               timecolumn=TIME maketimecolumn=Y makeratecolumn=Y
+      add FRACEXP column (currently done by looking at full timeseries)
+      divide by CCD area (IN_FOV keyword) and FRACEXP
+   end subroutine makeFlareTs
+
+   subroutine mergeTs
+      globts = 'P' // obsid // 'EMX000FBKTSR0000.FIT'
+      if $globts exists then
+         multiply by CCD area and FRACEXP
+         merge columns of $flarets and $globts:
+         RATE    = RATE1 + RATE2
+         ERROR   = SQRT(ERROR1**2 + ERROR2**2)
+         FRACEXP = FRACEXP1 + FRACEXP2
+         divide by CCD area and FRACEXP
+      endif else then
+         cp $flarets $globts
+      endelse
+   end subroutine mergeTs
+
+   subroutine tsToGTI
+      gtiflare = timeseries prefix //  'FBKGTI0000.FIT'
+      tabgtigen table=$flarets expression="RATE&lt;$flaremaxrate" \
+                gtiset=$gtiflare
+      evselect table=$gtiflare writedss=N updateexposure=N keepfilteroutput=Y \
+               expression="(STOP - START) &gt; 1.5*$flaretimebin"
+   end subroutine tsToGTI
+
+   subroutine applyFlareGTI
+      expr = "GTI($gtiflare,TIME)"
+      evselect table=$eventim destruct=Y keepfilteroutput=Y expression=$expr
+      evselect table=$eventti destruct=Y keepfilteroutput=Y expression=$expr
+   end subroutine applyFlareGTI
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

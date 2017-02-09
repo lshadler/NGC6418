@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="rgsfilter">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsfilter.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="rgsfilter.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsfilter (rgsfilter-1.18.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Combined Exposure Map"></A>
+<A HREF="rgsfilter.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsfilter.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="rgsfilter:description:parameters"></A>
+<A NAME="811"></A>
+<tr valign=top bgcolor='silver'><td><b>mergedset</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>merged.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  The input combined event list.  It must contain the <A NAME="824"></A><TT>EVENTS</TT>
+  table, and for each <A NAME="826"></A><TT>EXPOSU0n</TT> table that it contains it must
+  also contain the <A NAME="828"></A><TT>REJPIX0n</TT> and <A NAME="830"></A><TT>REJPIX1n</TT> pair of
+  tables.  For exposure map generation the <A NAME="832"></A><TT>BADPIX0n</TT> and
+  <A NAME="834"></A><TT>BADPIX1n</TT> pair of tables is also required.  This dataset is
+  not modified.
+  <br>&nbsp;</td></tr>
+
+<A NAME="836"></A>
+<tr valign=top bgcolor='silver'><td><b>evlist</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  The output event list, a filtered copy of the input <TT>mergedset</TT>.
+  The default file name is inferred from the input <TT>mergedset</TT> name
+  as: <TT>*EVENLI????.*</TT> if there are ten characters before the
+  suffix, and otherwise just <TT>evlist.*</TT>.
+  <br>&nbsp;</td></tr>
+
+<A NAME="849"></A>
+<tr valign=top bgcolor='silver'><td><b>auxgtitables</b></td><td>no</td><td><A HREF=../param/node3.html>list of tables</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  A list of OGIP compliant auxiliary GTI tables for filtering the
+  event list in conjunction with its internal <A NAME="857"></A><TT>STDGTI0n</TT> tables.
+  <br>&nbsp;</td></tr>
+
+<A NAME="859"></A>
+<tr valign=top bgcolor='silver'><td><b>rejflags</b></td><td>no</td><td><A HREF=../param/node3.html>list of strings</A></td><td>``BAD_SHAPE ON_NODE_INTERFACE ON_BADPIX NEXT_TO_BADPIX
+       ON_WINDOW_BORDER BELOW_ACCEPTANCE''</td><td>BAD_SHAPE  <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$\mid\,$"></SPAN> ON_NODE_INTERFACE  <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$\mid\,$"></SPAN> ON_BADPIX
+      <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$\mid\,$"></SPAN> NEXT_TO_BADPIX  <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$\mid\,$"></SPAN> ON_WINDOW_BORDER  <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$\mid\,$"></SPAN> BELOW_ACCEPTANCE</td></tr>
+
+<tr valign=top><td colspan=5>
+  A list of rejection flags for filtering the events.  See
+  <A NAME="867"></A><A NAME="tex2html12"
+  HREF="../rgsevents/index.html"><SPAN  CLASS="textbf">rgsevents</SPAN></A>
+for the meaning of each flag.
+  <br>&nbsp;</td></tr>
+
+<A NAME="871"></A>
+<tr valign=top bgcolor='silver'><td><b>withexpmaps</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  If true, an exposure map for each node is added to the output
+  dataset, overwriting any previous versions of the maps.  The maps
+  are constructed to be consistent with the filtering of the events.
+  Chips without an <A NAME="880"></A><TT>EXPOSU0n</TT> table in the event list are not
+  considered.  <I>Requires Spectroscopy mode data.</I>
+  <br>&nbsp;</td></tr>
+
+<A NAME="882"></A>
+<tr valign=top bgcolor='silver'><td><b>withcombmap</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  If true, parameter <TT>expimageset</TT> specifies a second output
+  dataset in which the combined exposure map is placed as the primary
+  image.  <I>Requires <TT><TT>withexpmaps</TT>=true</TT>.</I>
+  <br>&nbsp;</td></tr>
+
+<A NAME="895"></A>
+<tr valign=top bgcolor='silver'><td><b>expimageset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  The output combined exposure map.  The default file name is inferred
+  from the input <TT>mergedset</TT> name as: <TT>*EXPMAP????.*</TT> if
+  there are ten characters before the suffix, and otherwise just
+  <TT>expmap.*</TT>.  <I>Requires <TT><TT>withcombmap</TT>=true</TT>.</I>
+  <br>&nbsp;</td></tr>
+
+<A NAME="910"></A>
+<tr valign=top bgcolor='silver'><td><b>driftbinsize</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1</td><td>0-</td></tr>
+
+<tr valign=top><td colspan=5>
+  The size in arcseconds of the square bins used to group frames
+  according to their aspect drift in dispersion and cross-dispersion.
+  <I>Requires <TT><TT>withexpmaps</TT>=true</TT>.</I>
+  <br>&nbsp;</td></tr>
+
+<A NAME="921"></A>
+<tr valign=top bgcolor='silver'><td><b>spectrumbinning</b></td><td>no</td><td><A HREF=../param/node3.html>choice</A></td><td>lambda</td><td>lambda beta</td></tr>
+
+<tr valign=top><td colspan=5>
+     dispersion direction binning type. Used to accumulate the exposure maps.
+    <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Combined Exposure Map"></A>
+<A HREF="rgsfilter.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

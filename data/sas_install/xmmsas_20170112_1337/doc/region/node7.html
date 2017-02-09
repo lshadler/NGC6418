@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Specifying source region shapes and sizes</TITLE>
+<META NAME="description" CONTENT="Specifying source region shapes and sizes">
+<META NAME="keywords" CONTENT="region">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="region.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+region (region-7.13) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Source selection"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="The contour method of"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="region.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00034000000000000000"></A>
+  <A NAME="region:description:radius"></A>
+<BR>
+Specifying source region shapes and sizes
+</H2>
+
+<P>
+The basic source region shape is a circle. There are three ways to assign the radius, specified via the parameter <TT>radiusstyle</TT>:
+
+<P>
+
+<UL>
+<LI><TT>radiusstyle</TT>=`userfixed'. The user should supply the radius via the parameter <TT>fixedradius</TT>, at present in units of arcseconds.
+
+<P>
+If <TT>outunit</TT>=`xy', the smaller of the XY-system pixel dimensions in arcseconds provides the conversion factor to convert this radius to sky-image pixel coordinates.
+
+<P>
+</LI>
+<LI><TT>radiusstyle</TT>=`enfrac'. In this choice, the task uses for the source region radius that value which encloses <TT>energyfraction</TT> of the total flux under the Point Spread Function (PSF).
+
+<P>
+Note that in this case, regardless of the value of <TT>outunit</TT>, the initial circle must be drawn in the DETXY system, since the PSF is returned in this system. However if <TT>outunit</TT>=`xy' this involves a reprojection onto another image plane. In theory, locii which appear circular in the DETXY projection plane appear in general as ellipses in another projection plane (and pixellization scheme). At present the effect of this reprojection on the source region contours is ignored and circles are retained. The scalar conversion between circle radii in the two coordinate systems is performed by taking the smaller of the XY-system pixel dimensions in DETXY coordinates as the conversion factor. In most cases the effect of this approximation is expected to be insignificant. This issue may be dealt with more rigorously in a later version of the task.
+
+<P>
+</LI>
+<LI><TT>radiusstyle</TT>=`contour'. In this choice, the task calculates an elliptical locus which approximates the contour of the PSF at a given flux value. This procedure is described more fully in the following subsection (<A HREF="node8.html#region:description:contour">3.4.1</A>). Note that in this choice the distortion caused by transform from the instrument-centric PSF frame to a sky-centric XY frame <SPAN  CLASS="textit">is</SPAN> taken into account.
+
+<P>
+</LI>
+</UL>
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html141"
+  HREF="node8.html">The contour method of calculating source region shape</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Source selection"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="The contour method of"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

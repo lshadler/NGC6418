@@ -1,0 +1,496 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="arfgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="arfgen.css">
+
+<LINK REL="next" HREF="node34.html">
+<LINK REL="previous" HREF="node14.html">
+<LINK REL="up" HREF="arfgen.html">
+<LINK REL="next" HREF="node34.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+arfgen (arfgen-1.93.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node32.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="A cross-region ARF"></A>
+<A HREF="arfgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node34.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node44.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="arfgen.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00070000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="arfgen:description:parameters"></A>
+<A NAME="1459"></A>
+<tr valign=top bgcolor='silver'><td><b>spectrumset</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>spectrum.ds</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+	Name of input spectrum dataset.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1466"></A>
+<tr valign=top bgcolor='silver'><td><b>arfset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>ancillaryfile.ds</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+	Name of output ancillary response dataset.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1473"></A>
+<tr valign=top bgcolor='silver'><td><b>withrmfset</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+	If set, the ARF energy grid is defined by the RMF dataset
+	specified by <TT>rmfset</TT>.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1482"></A>
+<tr valign=top bgcolor='silver'><td><b>rmfset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>responsefile.ds</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+	Name of input response dataset. Used only if
+	<TT>withrmfset</TT> is set to <TT>true</TT>.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1493"></A>
+<tr valign=top bgcolor='silver'><td><b>detmaptype</b></td><td>no</td><td><A HREF=../param/node3.html>choice</A></td><td>flat</td><td>dataset flat psf</td></tr>
+
+<tr valign=top><td colspan=5>
+	The origin of the detector map: if set to <TT>dataset</TT>,
+	then the user must specify the name of that dataset,
+	and the table name of the map though <TT>detmaparray</TT>.
+	If it is set to <TT>flat</TT> or <TT>psf</TT>, then the parameters <TT>detxoffset</TT>, <TT>detyoffset</TT>, <TT>detxbins</TT> and <TT>detybins</TT>
+	define the detector map grid. In addition, <TT>psfenergy</TT>
+	needs also to be set if <TT>detmaptype</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$=$"></SPAN> <TT>psf</TT>.
+<br>&nbsp;</td></tr>
+
+<A NAME="1522"></A>
+<tr valign=top bgcolor='silver'><td><b>detmaparray</b></td><td>no</td><td><A HREF=../param/node3.html>array</A></td><td>detmapfile.ds:</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+	Name of detector map dataset and array in the DAL compound notation. 
+	Only used of <TT>detmaptype</TT> is set to <TT>dataset</TT>.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1533"></A>
+<tr valign=top bgcolor='silver'><td><b>withdetbounds</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+	For <TT>psf</TT> or <TT>flat</TT> detector maps.
+	If <TT>true</TT> 
+	then the bounds of the internal detector map are taken from
+	the parameters <TT>detxoffset</TT> and <TT>detyoffset</TT>.
+	Otherwise, the bounds are taken from the DSS information
+	in the spectrum dataset.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1550"></A>
+<tr valign=top bgcolor='silver'><td><b>detxoffset</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1200</td><td><!-- MATH
+ $\rm0 <= detxoffset <= 30000$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="186" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\rm0 &lt;= detxoffset &lt;= 30000$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+	Used if <TT>detmaptype</TT> is set to <TT>psf</TT> or <TT>flat</TT>.
+	This defines the half-width of 
+	the detector map in DET coordinates.
+	For example, if the source x-coordinate is <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$x$"></SPAN>,
+	the x-bounds are [<SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$x-$"></SPAN><TT>detxoffset</TT>,
+         <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$x+$"></SPAN><TT>detxoffset</TT>].
+    <br>&nbsp;</td></tr>
+
+<A NAME="1567"></A>
+<tr valign=top bgcolor='silver'><td><b>detyoffset</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1200</td><td><!-- MATH
+ $\rm0 <= detyoffset <= 30000$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="185" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$\rm0 &lt;= detyoffset &lt;= 30000$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+	Used if <TT>detmaptype</TT> is set to <TT>psf</TT> or <TT>flat</TT>.
+	This defines the half-height of 
+	the detector map in DET coordinates.
+	For example, if the source y-coordinate is <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$y$"></SPAN>,
+	the y-bounds are [<SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$y-$"></SPAN><TT>detyoffset</TT>,<SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$y+$"></SPAN><TT>detyoffset</TT>].
+    <br>&nbsp;</td></tr>
+
+<A NAME="1584"></A>
+<tr valign=top bgcolor='silver'><td><b>withdetbins</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+	For <TT>psf</TT> or <TT>flat</TT> detector maps.
+	If <TT>true</TT> 
+	then the number of bins of the internal detector map are taken from
+	the parameters <TT>detxbins</TT> and <TT>detybins</TT>.
+	Otherwise, the number of bins are calculated automatically.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1601"></A>
+<tr valign=top bgcolor='silver'><td><b>detxbins</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>5</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$\rm\geq 1$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+	Used if <TT>detmaptype</TT> is set to <TT>psf</TT> or <TT>flat</TT>.
+	This is the number of bins along the x-axis of the map.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1614"></A>
+<tr valign=top bgcolor='silver'><td><b>detybins</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>5</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$\rm\geq 1$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+	Used if <TT>detmaptype</TT> is set to <TT>psf</TT> or <TT>flat</TT>.
+	This is the number of bins along the y-axis of the map.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1627"></A>
+<tr valign=top bgcolor='silver'><td><b>psfenergy</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>2.0</td><td><!-- MATH
+ $\rm0 \leq psfenergy \leq 30$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="136" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$\rm0 \leq psfenergy \leq 30 $"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+	Used if <TT>detmaptype</TT> is set to <TT>psf</TT>. 
+	This is the energy, in keV, at which the PSF model
+	used to construct the detector map is taken.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1638"></A>
+<tr valign=top bgcolor='silver'><td><b>filterdss</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>true</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+	If <TT>true</TT>, the raw detector map and the bad pixel lists
+	are filtered using the DSS information
+	stored in the spectrum dataset. If <TT>false</TT>,
+	every pixel in the raw detector map
+	is propagated to the filtered map and every bad pixel is used in
+        the area calculation. This is a debugging parameter and should not
+        be set to false under normal conditions.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1649"></A>
+<tr valign=top bgcolor='silver'><td><b>withfilteredset</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+	If <TT>true</TT>, the filtered detector map
+	is written out to a permanent dataset, the
+	name of which is taken from the parameter
+	<TT>filteredset</TT>.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1660"></A>
+<tr valign=top bgcolor='silver'><td><b>filteredset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>filteredpixellist.ds</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+	Name of output filtered detector map. Used only if
+	<TT>withfilteredset</TT> is set to <TT>true</TT>.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1671"></A>
+<tr valign=top bgcolor='silver'><td><b>withsourcepos</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+	If <TT>true</TT>, the source position must be
+	specified via the parameters <TT>sourcecoords</TT>,
+	<TT>sourcex</TT>, <TT>sourcey</TT>. Otherwise,
+	the source position is taken from the 
+	centre of the source region defined in the data subspace
+	of the input spectrum.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1686"></A>
+<tr valign=top bgcolor='silver'><td><b>sourcecoords</b></td><td>no</td><td><A HREF=../param/node3.html>choice</A></td><td>eqpos</td><td>eqpos pos tel det</td></tr>
+
+<tr valign=top><td colspan=5>
+	Used if <TT>withsourcepos</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$=$"></SPAN> <TT>true</TT>.
+	The coordinate system for which the source position, specified
+	by the parameter <TT>sourcex</TT> and <TT>sourcey</TT>, is defined.
+	If <TT>sourcecoords</TT> is set to <TT>eqpos</TT>, then <TT>sourcex, sourcey</TT>
+	correspond to RA and DEC respectively in decimal degrees. 
+	If <TT>sourcecoords</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$=$"></SPAN> <TT>pos</TT>, then <TT>sourcex, sourcey</TT> correspond
+	to POS coordinates. 
+	(Note that the POS coordinates are defined relative to a norminal pointing position;
+	this is taken from the global attributes <A NAME="1721"></A><TT>REFXCRVL</TT> and <A NAME="1723"></A><TT>REFYCRVL</TT> of
+	the spectrum dataset.)
+	If <TT>sourcecoords</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$=$"></SPAN> <TT>tel</TT>, then <TT>sourcex, sourcey</TT> correspond to the telescope coordinates theta (arcseconds) and phi (radians).
+	If <TT>sourcecoords</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$=$"></SPAN> <TT>det</TT>, then <TT>sourcex, sourcey</TT> are
+	the x and y positions of the source centre, in DET coordinates.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1731"></A>
+<tr valign=top bgcolor='silver'><td><b>sourcex</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+       (Used if <TT>withsourcepos</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$=$"></SPAN> <TT>true</TT>)
+       The x-position of source centre, 
+	in terms of the coordinate system specified in <TT>sourcecoords</TT>.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1744"></A>
+<tr valign=top bgcolor='silver'><td><b>sourcey</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+       (Used if <TT>withsourcepos</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$=$"></SPAN> <TT>true</TT>)
+       The y-position of source centre, 
+	in terms of the coordinate system specified in <TT>sourcecoords</TT>.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1757"></A>
+<tr valign=top bgcolor='silver'><td><b>extendedsource</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+	Informs <A NAME="1765"></A><A NAME="tex2html56"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+as to whether the source is extended
+	or point-like. This is currently only used for the
+	encircled energy correction. 
+    <br>&nbsp;</td></tr>
+
+<A NAME="1769"></A>
+<tr valign=top bgcolor='silver'><td><b>useodfatt</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+        whether the full attitude file should be used from the
+        OAL. If this is set to false then attitude is taken from the
+        mean pointing position in the spectrum header.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1776"></A>
+<tr valign=top bgcolor='silver'><td><b>withbadpixcorr</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>true</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+        states whether CCD gap and bad pixel corrections
+        are wanted.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1783"></A>
+<tr valign=top bgcolor='silver'><td><b>badpixlocation</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>"notSpecified"</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+        The name of the file containing the bad pixel locations.
+        Usually, this will be the event file from which the
+        spectral dataset was constructed.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1790"></A>
+<tr valign=top bgcolor='silver'><td><b>badpixelresolution</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>0.5</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+        This is the resolution that the program uses to calculate the
+        encircled energy correction and to search for
+        pixels which are outside the field-of-view or off the edge of 
+        the CCDs. If the <TT>extendedsource</TT> parameter is set <I>true</I>
+        then this value is defaulted to 2.0 arcseconds. Reducing the number,
+        in this case, to 1.0 arcseconds will improve
+        the accuracy of the calculation at the expense of execution time.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1800"></A>
+<tr valign=top bgcolor='silver'><td><b>ignoreoutoffov</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  Whether area outside the field of view should be excluded
+  in the arfgen calculation.
+  <br>&nbsp;</td></tr>
+
+<A NAME="1807"></A>
+<tr valign=top bgcolor='silver'><td><b>modeleffarea</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>true</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+	  If <TT>true</TT>, the effective area data from the CAL is taken into consideration
+          when generating the ARF.
+	<br>&nbsp;</td></tr>
+
+<A NAME="1816"></A>
+<tr valign=top bgcolor='silver'><td><b>modelquantumeff</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>true</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+		If <TT>true</TT>, the quantum efficiency data from the CAL is taken into consideration
+		when generating the ARF.
+	<br>&nbsp;</td></tr>
+
+<A NAME="1825"></A>
+<tr valign=top bgcolor='silver'><td><b>modelfiltertrans</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>true</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+		If <TT>true</TT>, the filter transmission data from the CAL is taken into consideration
+		when generating the ARF.
+	<br>&nbsp;</td></tr>
+
+<A NAME="1834"></A>
+<tr valign=top bgcolor='silver'><td><b>modelee</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>true</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+  		If it is point-like 
+		(<TT>extendedsource</TT>=false), a model of the PSF positioned
+		at a point specified by <TT>sourcex</TT> 
+		and <TT>sourcey</TT> is generated, and the fraction of
+		the model situated within the region defined by
+		the DSS information is computed.
+
+There is currently no encircled energy correction 
+		implementation for extended sources.
+	<br>&nbsp;</td></tr>
+
+<A NAME="1847"></A>
+<tr valign=top bgcolor='silver'><td><b>psfmodel</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>ELLBETA</td><td>ELLBETA,EXTENDED,HIGH</td></tr>
+
+<tr valign=top><td colspan=5>
+                The point spread function (PSF) model to use when calculating 
+		the encircled energy correction.
+        <br>&nbsp;</td></tr>
+
+<A NAME="1854"></A>
+<tr valign=top bgcolor='silver'><td><b>modelootcorr</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>true</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+                The ARF will be decreased by a mode-dependent percentage
+                if <TT>modelootcorr</TT>=true and if the pipeline version
+                used to create the spectrum is older than 18 June 2001.
+        <br>&nbsp;</td></tr>
+
+<A NAME="1863"></A>
+<tr valign=top bgcolor='silver'><td><b>eegridfactor</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>50</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$\rm\ge 1$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+		Used if <TT>modelee</TT> is set to <TT>true</TT>.
+		This is the factor which to oversample
+		the ARF energy grid in order to perform
+		the energy correction efficiently:
+		The larger the factor,
+		the faster the execution time, but the less
+		accurate the correction.
+	<br>&nbsp;</td></tr>
+
+<A NAME="1874"></A>
+<tr valign=top bgcolor='silver'><td><b>setbackscale</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+        states whether the BACKSCAL value in the input 
+        spectrum should be set to the calculated source region
+        area.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1881"></A>
+<tr valign=top bgcolor='silver'><td><b>keeparfset</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>true</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+        whether the calculated ARF file should be kept or deleted.
+        This option is included for the benefit of the <A NAME="1889"></A><A NAME="tex2html57"
+  HREF="../backscale/index.html"><SPAN  CLASS="textbf">backscale</SPAN></A>
+metatask which sets the BACKSCAL value in the input spectrum.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1893"></A>
+<tr valign=top bgcolor='silver'><td><b>crossregionarf</b></td><td>yes</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+        whether across-region ARF should be calculated.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1900"></A>
+<tr valign=top bgcolor='silver'><td><b>crossreg_spectrumset</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>
+	Name of spectrum containing the input region.
+    <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node32.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="A cross-region ARF"></A>
+<A HREF="arfgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node34.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node44.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,122 @@
+<!-- XMM SAS parameter file for attfilter -->
+<FILE>
+<CONFIG>
+
+<PARAM id="attset" type="dataset" default="atthk.dat">
+	<DESCRIPTION>
+		Input attitude time series data set created by atthkgen
+	</DESCRIPTION>
+	<CONSTRAINTS>
+		true
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="timecol" type="string" default="TIME">
+	<DESCRIPTION>
+		Name of column in &lt;attset&gt; containing time tags
+	</DESCRIPTION>
+	<CONSTRAINTS>
+		true
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="racol" type="string" default="AHFRA">
+	<DESCRIPTION>
+		Name of column in &lt;attset&gt; containing Right Ascension values of S/C pointing direction
+	</DESCRIPTION>
+	<CONSTRAINTS>
+		true
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="deccol" type="string" default="AHFDEC">
+	<DESCRIPTION>
+		Name of column in &lt;attset&gt; containing Declination values of S/C pointing direction
+	</DESCRIPTION>
+	<CONSTRAINTS>
+		true
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="apacol" type="string" default="AHFPA">
+	<DESCRIPTION>
+		Name of column in &lt;attset&gt; containing Astronomical POsition angle values of S/C attitude
+	</DESCRIPTION>
+	<CONSTRAINTS>
+		true
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="instexpid" type="string" mandatory="yes" default="R1U571">
+	<DESCRIPTION>
+		Instrument-exposure identifier of exposure in current ODF
+	</DESCRIPTION>
+	<CONSTRAINTS>
+		<![CDATA[strlen(instexpid)==6&&(instexpid[0:1]=="M1"||instexpid[0:1]=="M2"||instexpid[0:1]=="PN"||instexpid[0:1]=="R1"||instexpid[0:1]=="R2"||instexpid[0:1]=="OM")&&(instexpid[2:2]=="S"||instexpid[2:2]=="U")&&instexpid[3:]>="001"&&instexpid[3:]<="999"]]>
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="gtitable" type="table" default="attgti.ds:STDGTI">
+	<DESCRIPTION>
+		Name of output GTI table
+	</DESCRIPTION>
+	<CONSTRAINTS>
+		true
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="onlylastatt" type="bool" default="no">
+	<DESCRIPTION>
+		Take only last 100 attitude points
+	</DESCRIPTION>
+</PARAM>
+
+<PARAM id="filtertype" type="string" default="cone">
+	<DESCRIPTION>
+		Switch to determine type of attitude data filter
+	</DESCRIPTION>
+	<CASE>
+		<ITEM value="cone"/>
+		<ITEM value="pyramid"/>
+		<ITEM value="user">
+			<PARAM id="expression" type="string" default="">
+				<DESCRIPTION>
+					User-supplied attitude data filtering expression
+				</DESCRIPTION>
+				<CONSTRAINTS>
+					true
+				</CONSTRAINTS>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="tolangles" type="string" list="yes" default="#ARCMIN">
+	<DESCRIPTION>
+		List of tolerance angles as selectlib expressions
+	</DESCRIPTION>
+	<CONSTRAINTS>
+		true
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="mingtisize" type="real" default="10.">
+	<DESCRIPTION>
+		Minimum length of Good-Time-Intervals [s]
+	</DESCRIPTION>
+	<CONSTRAINTS>
+		mingtisize>0
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="maxfracshort" type="real" default=".1">
+	<DESCRIPTION>
+		Maximum allowed fraction of short Good-Time-Intervals
+	</DESCRIPTION>
+	<CONSTRAINTS>
+		maxfracshort in [0:1)
+	</CONSTRAINTS>
+</PARAM>
+
+</CONFIG>
+</FILE>

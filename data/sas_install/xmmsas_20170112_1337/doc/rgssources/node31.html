@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Elaborations.</TITLE>
+<META NAME="description" CONTENT="Elaborations.">
+<META NAME="keywords" CONTENT="rgssources">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgssources.css">
+
+<LINK REL="previous" HREF="node30.html">
+<LINK REL="up" HREF="node28.html">
+<LINK REL="next" HREF="node32.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgssources (rgssources-6.2.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node30.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Old-format source list."></A>
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Adding further sources."></A>
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgssources.html">Home Page</A> / <A  HREF="node19.html">Examples.</A> / <A  HREF="node28.html">Adding further sources.</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00064300000000000000">
+Elaborations.</A>
+</H3>
+
+<P>
+If you know the position of your source with respect to the instrument pointing direction but not its ra and dec, you may want to specify the position instead via the <TT>deltadisp</TT> and <TT>deltaxdsp</TT> parameters, viz:
+
+<P>
+<PRE>
+  rgssources srclist=rgssrclist.ds addusersource=yes positionstyle=wrtatt
+deltadisp=&lt;displacement of user src in dispersion direction from attitude&gt;
+deltaxdsp=&lt;ditto cross-dispersion direction&gt;
+</PRE>
+
+<P>
+Both the <TT>delta*</TT> parameters have units of arcminutes. Such entries in the source list have their column <A NAME="1762"></A><TT>FIXED_ON_SKY</TT> values set false. This means that their values for <A NAME="1764"></A><TT>RA</TT> and <A NAME="1766"></A><TT>DEC</TT> may be altered by subsequent invocations of <A NAME="1768"></A><A NAME="tex2html55"
+  HREF="../rgssources/index.html"><SPAN  CLASS="textbf">rgssources</SPAN></A>, but columns <A NAME="1772"></A><TT>DELTA_DISP</TT>, <A NAME="1774"></A><TT>DELTA_XDSP</TT>, <A NAME="1776"></A><TT>FOV_PHI</TT>, and <A NAME="1778"></A><TT>FOV_R</TT> will never be altered. The opposite holds for sources which have been entered with a defined ra and dec; these have <A NAME="1780"></A><TT>FIXED_ON_SKY</TT> equal to true.
+
+<P>
+Note that you need to explicitly set the parameter <TT>positionstyle</TT> to `wrtatt' for this style of user-source input - its default value is `radec'.
+
+<P>
+If you want to change the attitude you must explicitly set the parameter <TT>changeattitude</TT>. Just providing values for <TT>att*</TT> parameters for example won't have any effect. A change of attitude to a user-specified value can be achieved by:
+
+<P>
+<PRE>
+  rgssources srclist=rgssrclist.ds changeattitude=yes attapos=&lt;position
+angle of instrument pointing&gt; attdec=&lt;etc&gt; attra=&lt;etc&gt;
+</PRE>
+
+<P>
+Note that in this case the atthkfile is not needed. Other ways to respecify the attitude might however require it. In these cases the task will fail with an error if <TT>atthkset</TT> is not filled. Note also that a recalculation of the attitude can only be done if the exposure number is known and if the user has access to the ODF. The exposure number may not be present in the source list header if the source list originated in an older format. In this case, if <A NAME="1786"></A><A NAME="tex2html56"
+  HREF="../rgssources/index.html"><SPAN  CLASS="textbf">rgssources</SPAN></A>
+is not able to deduce the exposure number from the file name (which has to be in either PPS or <A NAME="1790"></A><A NAME="tex2html57"
+  HREF="../rgsproc/index.html"><SPAN  CLASS="textbf">rgsproc</SPAN></A>
+standard format for this to be possible), then you must supply this value to parameter <TT>instexpid</TT>, whether you have <TT>writeexpkwds</TT> set or not.
+
+<P>
+Be warned that changing the attitude will have two effects: firstly all the <A NAME="1796"></A><TT>DELTA_DISP</TT>, <A NAME="1798"></A><TT>DELTA_XDSP</TT>, <A NAME="1800"></A><TT>FOV_PHI</TT>, and <A NAME="1802"></A><TT>FOV_R</TT> values will be recalculated for those sources for which <A NAME="1804"></A><TT>FIXED_ON_SKY</TT> is true, whereas <A NAME="1806"></A><TT>RA</TT> and <A NAME="1808"></A><TT>DEC</TT> are recalculated for those for which <A NAME="1810"></A><TT>FIXED_ON_SKY</TT> is false; secondly, the region extensions created by <A NAME="1812"></A><A NAME="tex2html58"
+  HREF="../rgsregions/index.html"><SPAN  CLASS="textbf">rgsregions</SPAN></A>
+(if any) are falsified and are therefore deleted.
+
+<P>
+Changing the prime source is similar, you need to set the parameter <TT>changeprime</TT>. To add a user source and reset the prime source to this source, you should do something like
+
+<P>
+<PRE>
+  rgssources srclist=rgssrclist.ds addusersource=yes changeprime=yes
+userasprime=yes (followed by position and optionally the label of the
+user source as described above)
+</PRE>
+
+<P>
+Having to set both <TT>changeprime</TT> and <TT>userasprime</TT> is a bit irritating and we hope to amend the logic of the task in a future version so that this is no longer necessary. <TT>changeprime</TT> itself is necessary to prevent the task reverting to a prime source value defined by the default values for the tree of prime source selection parameters. Future modifications to the parameter interface may allow the task to detect whether a parameter has appeared on the command line or not and much of these extra parameters will vanish.
+
+<P>
+Note that after changing the prime source, the section of the proc/pipeline from <A NAME="1820"></A><A NAME="tex2html59"
+  HREF="../rgsangles/index.html"><SPAN  CLASS="textbf">rgsangles</SPAN></A>
+onwards should be re-run. This is because the prime source is used to calculate attitude-drift corrections to the rgs events.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node30.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Old-format source list."></A>
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Adding further sources."></A>
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

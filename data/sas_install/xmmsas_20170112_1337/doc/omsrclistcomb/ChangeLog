@@ -1,0 +1,494 @@
+ChangeLog for omsrclistcomb
+---------------------------	
+Version 2.22.2 - 2016-04-08 (AI)
+--------------	
+	+ (src/omimagealign_mod.f90) OM windows assigment fix to take into account 
+	windows repetitions in different files 
+	
+Version 2.22.1 - 2016-04-05 (AI)
+--------------	
+	+ (src/omimagealign_mod.f90) Loop to assign OM windows to files modified.
+
+Version 2.22 - 2014-03-19 (VNY)
+--------------	
+	+(src/omsrclistcomb_mod.f90): the threshold of 0.01 in the AB magnitude
+	error is removed (otherwise the VEGA and AB magnitude 
+	errors are not the same
+	for the magnitude errors < 0.01).
+Version 2.21.1 - 2013-08-22 (VNY)
+--------------
+	+(src/omsrclistcomb_mod.f90)
+	Protected agaist the possibility of calculating a wrong RA pointing
+	direction in the case of large differences in the RA_PNT values
+	for the observations overlapping the 0-360 division line in RA
+Version 2.21 - 2013-05-15 (VNY)
+--------------
+	+(src/omsrclistcomb_mod.f90)
+	modified the array size for RA and DEC coordinates passed to the
+	subroutine DoAstrometryCorrection (the prefious fix made in
+	the version 2.20 was not passing the larger arrays corresponding
+	to the total number of input sources) - fixing SAS-SPR-7107
+Version 2.20 - 2013-01-14 (VNY)
+--------------
+	+(src/omsrclistcomb_mod.f90, omastromcorrect_mod.f90):
+	fixed a problem of the erroneous data transfer between the 
+	main routine and the subroutine DoAstrometryCorrection 
+	(the array arguments RA and DEC taken from the source structure 
+	were not passed properly to the subroutine, which was causing 
+	a crash of the program when attempting to apply the astrometry
+	correction procedure to the input source lists)
+Version 2.19 - 2012-12-13 (VNY)
+--------------
+	+(src/omimagealign_mod.f90): fixed a bug in the subroutine
+	AlignWindows which was causing a subscript error of the array nrows
+Version 2.18 - 2012-12-04 (VNY)
+--------------	
+        +(src/omsrclistcomb): protected against possible crash due to 
+	index subscript in the magnitude-limit array
+Version 2.17 - 2012-12-03 (VNY)
+--------------	
+        +(src/omsrclistcomb): added the header keywords MLIMW2, MLIMM2,
+	MLIMW1, MLIMU, MLIMB, MLIMV and MLIMWH to pass the information
+	about the detection limits for different OM filters
+Version 2.16.1 - 2012-03-28 (EO)
+--------------
+	+ Uncommented out EXTERNALS = pgplot to get rid of missing pgplot symbols.
+
+Version 2.16  - 2012-03-15 (VNY)
+-------------------------------
+	+src omastromcorrect_mod.f90 Added  the functionality of using
+	multi-extension subset of the USNO catalogue (SSC-SPR-6691)
+
+Version 2.15  - 2010-01-25 (CB)
+-----------------------------
+        +src Removed call to release
+	dataset before astrometrycorrection
+	done to prevent XPROC1 in fits header
+	file
+
+	
+Version 2.14  - 2010-01-25 (CB)
+-----------------------------
+        +doc Amended the documentation
+	to clarify a few things.
+
+	
+
+Version 2.13.4  - 2009-06-02 (CB)
+-----------------------------
+        +test amended test harness again
+	to fix low-memory test failure
+	on solaris xvsas04 (originally SPR 6532)
+
+	
+Version 2.13.3  - 2009-05-28 (CB)
+-----------------------------
+        +test amended test harness again
+	to fix low-memory test failure
+	on cld.mpe.mpg.de  (originally SPR 6532)
+
+Version 2.13.2  - 2009-05-11 (CB)
+-----------------------------
+        +test reduced number
+	of rows in source-list files
+	to fix low-memory test failure
+	on xvsas04 (SPR 6532)
+
+Version 2.13.1  - 2009-05-11 (CB)
+-----------------------------
+        +src Shortened line 3303
+	in omsrclistcomb_mod.f90
+	to fix SPR 6529
+
+	
+Version 2.13  - 2009-04-24 (CB)
+-----------------------------
+        Tidied up some code in
+	omimagealign_mod.f90
+
+
+Version 2.12  - 2009-04-05 (CB)
+-----------------------------
+        Ammended so that when using
+	source-lists from mosaiced
+	images, columns for the total
+	raw count-rates will be added
+	to the output table. These
+	columns are needed by ommergelists.
+	
+	
+Version 2.11.4  - 2008-06-07 (CB)
+-----------------------------
+
+	Made a small modification
+	so that sources with
+	negative significances
+	have a count-rate entry
+	in the table (SPR 6476)
+
+
+Version 2.11.3  - 2008-06-05 (CB) 
+-----------------------------
+
+        Further investigation of
+	SPR 6473 has identified
+	the problem to an uninitialized
+	variable- variable set to null.
+
+
+Version 2.11.2  - 2008-06-05 (CB)
+-----------------------------
+
+        Replace a fortran "where"
+	statement by 2 do loops
+	to fix SPR 6473, but no
+	idea why the where statement
+	failed.
+	
+Version 2.11.1  - 2008-05-15 (CB) 
+-----------------------------
+	Ammended the test-harness to
+	fix time-out failure in low-momory
+	mode on some systems (SPR 6460)
+	
+===========================
+Version 2.11  - 2008-05-07 (CB) 
+-----------------------------
+        Modified a format statement in
+	omsrclistcomb_mod.f90 to stop WHITE
+	being truncated to WHIT
+Version 2.10  - 2008-05-02 (CB) 
+-----------------------------
+        Updated documentation
+Version 2.9  - 2008-04-24 (CB) 
+-----------------------------
+        Changed merging code so that
+	corrected count rates are averaged
+	without weighting and then the
+	averaged instrumental magnitudes
+	are computed from these rates using
+	cal routine. Modified matching algorithm
+	to run faster.
+
+	
+Version 2.8  - 2008-01-18 (CB) 
+-----------------------------
+        Ammended the subroutine in
+	omsrclistcomb that sets the
+	SRC_IDS for the individual
+	source-list files (SPR 3705)
+	
+Version 2.7.1  - 2007-06-28 (CB) 
+-----------------------------
+        Made a couple of small changes to
+	fix SPR 3693.
+
+	
+Version 2.7  - 2007-05-21 (CB) 
+-----------------------------
+        Small modification made to do source-matching
+	in order of decreasing significance (This
+	reduces the chances of mismatching if bright 
+	sources have faint close neighbours).
+
+
+Version 2.6  - 2007-05-18 (CB) 
+-----------------------------
+        Small modification to fix build problem (duplicate subroutine
+	name).
+
+
+Version 2.5  - 2007-04-03 (CB) 
+-----------------------------
+        The routine that attemtps to align the RA/DEC coordinate
+	axes of the input files improved.
+
+
+	
+Version 2.4  - 2007-03-09 (CB) 
+-----------------------------
+        Modified so that flux conversion constants are
+	obtained from the CAL
+
+
+Version 2.3  - 2005-09-14 (CB) 
+-----------------------------
+        Corrected Vega flux constants (not actually used)
+	and an AB flux conversion constant.
+	
+Version 2.2  - 2005-09-12 (CB) 
+-----------------------------
+        Removed vector tables.
+	
+Version 2.1  - 2005-09-02 (CB) 
+-----------------------------
+        Ammended subroutine addsourceids in omsrclistcomb_mod.f90 to
+	fix SPR 3513. Made minor modifications to subroutine
+	aligncoordinateaxes. Added extra keywords to SRCLIST table
+	to give conversion factors from ergs/s/cm**2/A to Janskys.
+	
+Version 2.0.3  - 2005-08-08 (CB) 
+-----------------------------
+	Improved documentation and comments added to the output source-list file.
+	
+Version 2.0.2 - 2005-06-28 (CB) 
+-----------------------------
+	Removed redundant code to help fix low-memory test failure of omichain (SPR 3485).
+
+Version 2.0.1 - 2005-06-09 (CB) 
+-----------------------------
+	Ammended program so that the correct colour combinations
+	for the standard magnitudes are given in the table (SPR 4374).
+
+Version 2.0 - 2005-05-21 (CB) 
+-----------------------------
+	Introduced vector columns into table and fluxes.
+	
+Version 1.30.4 - 2004-06-01 (CB) 
+-----------------------------
+        Made small ammendement to configuration file for SPR 3330.
+Version 1.30.3 - 2004-05-28 (CB) 
+-----------------------------
+	 Introduced parameters "maxradecerr" and "maxrmsres" to
+	 check if computed astrometry correction paramters okay
+	(SPR 3330).
+Version 1.30.2 - 2004-03-15 (CB) 
+-----------------------------
+	 Documentation ammended.
+Version 1.30.1 - 2004-03-08 (CB) 
+-----------------------------
+	 Samll Ammendment to make use of mssllib 2.43.2.
+Version 1.30 - 2003-03-24 (CB) 
+-----------------------------
+	 Ammended to make use of mssllib 2.30.
+	
+Version 1.29 - 2003-03-24 (CB) 
+-----------------------------
+	 Ammended to make use of mssllib 2.24.	
+Version 1.28 - 2003-03-24 (CB) 
+-----------------------------
+	 Version number of Mssllib in depend file corrected.	
+Version 1.27 - 2003-03-21 (CB) 
+-----------------------------
+	 DEPEND file ammended to correct build problem on some machines.
+
+Version 1.26 - 2003-03-15 (CB) 
+-----------------------------
+    Optional parameter "usecat" added to allow astrometry correction to
+    be carried out on the ras and decs of the combined source list.
+    Code added to find the mean ra and dec offsets of those stored in the
+    individual source-list files. Code added to correct the ras and decs
+    in those source-list files that couldn't be corrected. 	
+	
+	
+Version 1.25 - 2003-02-27 (CB) 
+-----------------------------
+    Uploaded into development track
+	
+Version 1.24 - 2002-10-17 (CB) 
+-----------------------------
+    Uploaded into release track
+	
+Version 1.23 - 2002-10-03 (CB) 
+-----------------------------
+          + (src/omsrclistcomb_mod.f90) - Modified to only combine 
+	  sources with the same extension flag number(fixes SPR 2984).
+	
+	
+Version 1.22 - 2002-09-12 (VNY) 
+-----------------------------
+	DEPEND-file updated
+Version 1.21.9 : - 2002-05-30 (CB)
+-----------------------------	
+	Documentation updated.
+
+Version 1.21.8 : - 2002-03-14 (CB)
+-----------------------------	
+	Uploaded because I previously accidentally uploaded a test
+	version of the program.
+
+Version 1.21.7 : - 2002-03-14 (CB)
+-----------------------------	
+	Documentation corrected.
+
+Version 1.21.6 : - 2002-03-01 
+          + (doc/) - Updated documentation (fixes SPR 2790)
+
+Version 1.21.5 : - 2002-02-21 
+          + (src/omsrclistcomb_mod.f90) - Added call to
+	  OAL_addCommonAttributes to add new attributes needed for SCR 84 
+	  (fixes SPR 2775). Changes instrumental magnitude error column
+	  names to ERR_V_INS (etc) (fixes SPR 2774).
+	
+Version 1.21.4 : - 2002-02-18 
+          + (src/omsrclistcomb_mod.f90) - Removed some write statements.
+
+Version 1.21.3 : - 2002-02-18 
+          + (src/omsrclistcomb_mod.f90) - The standard magnitude errors
+	  have been set equal to the instrumental magnitude errors. When
+	  the call routines have been modified to compute the standard
+	  magnitude errors correctly the program will be updated (fixes
+	  SPR 2765)	
+	
+Version 1.21.2 : - 2002-02-08 
+          + (src/omsrclistcomb_mod.f90) - Program modified to average the
+	  ras and decs by first converting them to standard coordinates,
+	  averaging these, and then converting the mean standard
+	  coordinates value back to raand dec. When averaging magnitudes, 
+	  check added to filter out 9999 values (fixes SPR 2737). Column
+	  names for standard magnitudes ammended.	
+	
+Version 1.21.1 : - 2002-01-27 (CB) Fixed configuration file (SPR 2723).
+
+Version 1.21 : - 2001-12-14 (CB) Added new standard colour-table to enable all
+        possible standard magnitudes to be calculated (fixes SPR 2672)
+        Corrected fault in adding source flags for different filters 
+	(fixes SPR 2666). Attribute "OBS_ID" added to output source-list 
+	file (fixes SPR 2660). Columns for major-axis position angles
+	added (fixes SPR 2599). Extra columns added for standard
+	magnitudes computed from different colours. 
+	
+Version 1.20: - 2001-06-14 (CB)
+--------------
+	Removed line of code converting position errors to arcsecs
+	(fixes SPR 2428).
+	
+
+Version 1.19.1: - 2001-06-05 (CB)
+--------------
+	Documentation updated.
+	
+Version 1.19: - 2001-05-23 (CB)
+--------------
+	+ (src/omsrclistcomb_mod.f90) - Program modified to check the
+	  magnitude errors when averagin-- uses equal weighting
+	  in this case (fixes SPR 2391).
+	
+	
+Version 1.18.1: - 2001-04-26 (CB)
+--------------
+	+ (src/omsrclistcomb_mod.f90) - Column names for the colours
+	changed to make them more meaningful (to fix SPR 2339). Code
+	also tidied up.
+
+	
+Version 1.18: - 2001-01-21 (CB)
+--------------
+	+ (src/omsrclistcomb_mod.f90) - Code will now accept any number of
+	source-list files (previous versions had a default max of 50 and
+	no check was made if that number was exceeed- program would have
+	crashed). Output source-list arranged in order of increasing right-ascension.
+	
+Version 1.17: - 2000-12-05 (CB)
+--------------
+	+ (src/omsrclistcomb_mod.f90) Removed exposure-specific keywords
+	(SPR 2093). Start and end dates calculated from min and max values
+	of input files (SPR 2124). Output table tidied up. Magnitudes
+	averaged correctly.
+
+	
+
+Version 1.16.5: - 2000-11-07 (CB)
+--------------
+	+ (src/omsrclistcomb_mod.f90) Some changes to output table headings made..
+
+	
+Version 1.16.2: - 2000-11-07 (CB)
+--------------
+	+ (src/omsrclistcomb_mod.f90) Some write statements removed.
+
+
+Version 1.16.1: - 2000-11-04 (CB)
+--------------
+	+ (config/omsrclistcomb.info) om addedd.
+	
+Version 1.16: - 2000-11-04 (AMK)
+--------------
+	+ (src/omsrclistcomb_mod.f90) Standard magnitudes and colours calculated.
+	
+
+Version 1.15: - 2000-09-05 (AMK)
+--------------
+	+ (src/omsrclistcomb_mod.f90) General tidy of memory allocation
+	and deallocation code.
+	
+Version 1.14: - 2000-07-07 (AMK)
+--------------
+      + (test/checkoutput.f90) Ammended code to reflect change of column
+      heading from NOBS to SRC_ID. (SSC-SPR-1911) Low memory failure.
+		
+Open SPRs
+Version 1.13.1: 8th June 2000
+Added Galtic coordinates - SPR 1702 (AMK)
+Converted RA and DEC from 4bytes to 8bytes as per spec.
+Cleaned up allocated memory at exit of task.
+	
+Version 1.13.1: 8th June 2000
+Added taskmain to DEPEND file - SPR 1726 (AMK)
+
+Version 1.13.1: 8th June 2000
+Added info file to task - AMK
+	
+Version 1.12.1: 1999-12-15 (Marco Beijersbergen)
+
+Fixed obsolete DAL call.
+
+Version 1.12: 2nd December 1999
+
+Added DISTRIBUTION (world) file	
+	
+Version 1.11: 8th June 1999
+
+Updated dependancies for V3.
+
+Version 1.10: 28 May 1999
+
+Changed parameter names to conform to new convention.
+Modified testomsrclistcomb.
+
+Version 1.9: 4 May 1999
+
+Updated DEPEND and src/Makefile for new structure of SAS
+Updated 'message' calls in code for new error library.
+
+Version 1.8: 18 September 1998
+
+Used correct syntax for parameter lists in .par file
+
+SPR 517:
+
+Version 1.7: 14 August 1998
+
+parse call removed	
+SPR 500 closed: removed cal from test/Makefile
+
+Version 1.6: 17 June 1998
+
+SPR 441 closed: test harness now checks some values
+SPR 440 closed: .par file changed
+SPR 439 closed: file permissions changed
+
+Version 1.5: 21 May 1998
+
+ChangeLog added
+DEPEND edited
+
+Version 1.4: 14 May 1998
+
+SPR 6 closed: task now checks for NOBS columns
+
+Version 1.3: 8 May 1998
+
+SPR 251 closed: test harness altered
+SPR 252 closed: see 251
+SPR 256 closed: see 251
+SPR 258 closed: see 251
+
+Version 1.2: 27 April 1998
+
+SPR 253 closed: access privs changed
+SPR 254 closed: .par added
+SPR 255 closed: warning not split
+SPR 257 closed: datestamp call removed
+Version 1.1: 20 March 1998
+Original version submitted to the SOC

@@ -1,0 +1,174 @@
+<!-- converted from XPI formatted "evarimgen.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="evlistset" type="dataset" mandatory="yes" default="foo.bar">
+   <DESCRIPTION>
+    Name of input event list
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="xcolumn" type="string" default="X">
+   <DESCRIPTION>
+    Name of column to be read for event x-coordinates
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="ycolumn" type="string" default="Y">
+   <DESCRIPTION>
+    Name of column to be read for event y-coordinates
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="xrangetype" type="string" default="maxlegal">
+   <DESCRIPTION>
+    Type of data entry for the range in x
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="maxactual">
+    </ITEM>
+
+    <ITEM value="maxlegal">
+    </ITEM>
+
+    <ITEM value="user">
+     <PARAM id="xmin" type="real" default="-3000" mandatory="yes">
+      <DESCRIPTION>
+       Value of x at which to set LH edge of image.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="xmax" type="real" default="3000" mandatory="yes">
+      <DESCRIPTION>
+       Value of x at which to set RH edge of image.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="yrangetype" type="string" default="maxlegal">
+   <DESCRIPTION>
+    Type of data entry for the range in y
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="maxactual">
+    </ITEM>
+
+    <ITEM value="maxlegal">
+    </ITEM>
+
+    <ITEM value="user">
+     <PARAM id="ymin" type="real" default="-3000" mandatory="yes">
+      <DESCRIPTION>
+       Value of y at which to set bottom edge of image.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="ymax" type="real" default="3000" mandatory="yes">
+      <DESCRIPTION>
+       Value of y at which to set top edge of image.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="imagebinning" type="string" default="numberofpixels">
+   <DESCRIPTION>
+    The way that the number of pixels is to be defined
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="numberofpixels">
+     <PARAM id="nxpixels" type="int" default="600">
+      <DESCRIPTION>
+       Number of bins in x direction.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       nxpixels in [1:1000]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="nypixels" type="int" default="600">
+      <DESCRIPTION>
+       Number of bins in y direction.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       nypixels in [1:1000]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="pixelsize">
+     <PARAM id="xpixelsize" type="real" default="1">
+      <DESCRIPTION>
+       Size of pixels in x direction.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       xpixelsize in (0.0:]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="ypixelsize" type="real" default="1">
+      <DESCRIPTION>
+       Size of pixels in y direction.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       ypixelsize in (0.0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withimageset" type="bool" default="no">
+   <DESCRIPTION>
+    If T, the flux image is expected to be supplied; flux image created if F.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="imageset" type="dataset" default="outimage.ds">
+      <DESCRIPTION>
+       Name of flux image.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="sortevlist" type="bool" default="yes">
+   <DESCRIPTION>
+    If T, the event list is sorted in time order.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="varimageset" type="dataset" default="outvarimage.ds">
+   <DESCRIPTION>
+    Name of the output variability image.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="cutoff" type="int" default="4">
+   <DESCRIPTION>
+    Pixels which contain a number of events less than cutoff are set to zero in the variability image.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    cutoff in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="testtype" type="string">
+   <DESCRIPTION>
+    Developers only - type of test output required.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

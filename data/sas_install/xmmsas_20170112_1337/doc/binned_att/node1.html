@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="binned_att">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="binned_att.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="binned_att.html">
+<LINK REL="up" HREF="binned_att.html">
+<LINK REL="next" HREF="node2.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+binned_att (attcalc2-1.3.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="binned_att.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Home Page"></A>
+<A HREF="binned_att.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="binUpAttitudeFromOdf"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="binned_att.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00010000000000000000"></A>
+<A NAME="binned_att:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+X-ray or optical photons are detected as `events' on the CCD cameras of XMM-Newton. Before one can do some science with these events, it is necessary to determine where in the sky each event comes from. This task is complicated by the fact the the attitude (ie, pointing direction and roll angle) of the XMM-Newton spacecraft does not stay exactly constant during the course of an exposure. Given a sufficiently detailed record of this wandering of the attitude it is of course possible to compute the sky origin of each individual event, but it is much more efficient in computational terms to approximate this notional continuous record by a discrete series of <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$N$"></SPAN> attitude samples. Each sample is separated from its neighbours by time boundaries: it is sensible to choose the boundaries such that the attitude wander within a given pair of boundaries is restricted to within a preset acceptable range. Events falling between boundaries <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$i$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$i+1$"></SPAN> are therefore assumed to be associated with attitude <SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$i+1$"></SPAN>, and their sky position determined accordingly.
+
+<P>
+Matters become a little more complicated if it is desired to create maps in sky coordinates which derive from things other than the simple occurrence of events. For example, a map of the relative exposure of the camera at each point in the sky. For this one needs additionally to associate a weight with each attitude sample. One can therefore perform <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$N$"></SPAN> transforms, one per attitude sample, of the exposure map from CCD coordinates to sky coordinates, weight them accordingly and then simply sum them together.
+
+<P>
+The present library therefore defines the concept of a series of <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$N$"></SPAN> attitude samples, with optional weights associated, separated by <SPAN CLASS="MATH"><IMG
+ WIDTH="46" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$N-1$"></SPAN> time boundaries. The library provides routines for calculating the series of attitude samples from a supplied fine-detail record of the attitude wander, for calculating weights from GTIs, and also for reading and writing such an attitude series to or from a FITS table.
+
+<P>
+
+<P>
+The attitude series is implemented in f90 as a variable type with the following structure:
+
+<P>
+<PRE>
+  type :: attBinType
+    type(SpacecraftAttitudeType) ::&amp; ! type defined in module caloaldefs
+      att
+    real(double) ::&amp;
+      binStartTime,&amp;
+      gtiDuration
+    logical ::&amp;
+      isGood
+  end type attBinType
+</PRE>
+
+<P>
+Some points:
+
+<UL>
+<LI>A series of attitude samples is represented within this library as a vector of type `attBinType'. In this situation the value of `binStartTime' of the first element of the vector is ignored by convention.
+</LI>
+<LI>The name `gtiDuration' for the weight is just because of historical inertia and may be changed to the more general term at some later time.
+</LI>
+<LI>The field `isGood' is included so as to be able to label bad attitudes independently of a GTI schema.
+</LI>
+</UL>
+
+<P>
+The FITS implementation of the series of <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$N$"></SPAN> attitude samples is a little different, in that only elements 2 to <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$N$"></SPAN> are stored in a table, the attitude and weight (not the start time, which is undefined) of the first element being stored in keywords of the table header. The details of the convention are as follows. The table should contain the following header keywords:
+
+<P>
+
+<UL>
+<LI>(mandatory)(double) <A NAME="261"></A><TT>RA_FIRST</TT>, <A NAME="263"></A><TT>DECFIRST</TT> and <A NAME="265"></A><TT>PA_FIRST</TT>: respectively RA, dec and position angle (all in decimal degrees) of the first attitude in the series.
+</LI>
+<LI>(mandatory)(boolean) <A NAME="267"></A><TT>FIRST_OK</TT>: indicates whether the first attitude is `good' or not.
+</LI>
+<LI>(optional)(double) <A NAME="269"></A><TT>WGTFIRST</TT>: the weight of the first attitude sample. If this keyword is present, the corresponding column in the table must also be present; if the keyword is not present, any <A NAME="271"></A><TT>WEIGHTS</TT> column is ignored and all weights are assumed to be 1.
+</LI>
+<LI>(mandatory)(double) <A NAME="273"></A><TT>RA_PNT</TT>, <A NAME="275"></A><TT>DEC_PNT</TT> and <A NAME="277"></A><TT>PA_PNT</TT>: average or nominal attitude, in decimal degrees.
+</LI>
+<LI>(mandatory)(string) <A NAME="279"></A><TT>AVRG_PNT</TT>: meaning of the `_PNT' values, eg mean or median.
+</LI>
+<LI>(mandatory)(double) <A NAME="281"></A><TT>RA_DELTA</TT>, <A NAME="283"></A><TT>DEC_DELTA</TT>, <A NAME="285"></A><TT>PA_DELTA</TT>: the attitude-wander limits discussed in section <A HREF="#attbin:description:limits"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/crossref.png"></A> of the documentation for task <A NAME="287"></A><A NAME="tex2html2"
+  HREF="../attbin/index.html"><SPAN  CLASS="textbf">attbin</SPAN></A>. These are in decimal degrees.
+
+</LI>
+</UL>
+
+<P>
+The required structure of the table itself is best described by a chunk of code from the library:
+
+<P>
+<PRE>
+  time    =&gt; real64Data(addColumn(binnedAttTab, 'TSTART',  REAL64, 's'))
+  raDeg   =&gt; real64Data(addColumn(binnedAttTab, 'RA',      REAL64, 'deg'))
+  decDeg  =&gt; real64Data(addColumn(binnedAttTab, 'DEC',     REAL64, 'deg'))
+  paDeg   =&gt; real64Data(addColumn(binnedAttTab, 'PA',      REAL64, 'deg'))
+  isGood  =&gt; boolData(  addColumn(binnedAttTab, 'IS_GOOD', BOOLEAN))
+  weights =&gt; real64Data(addColumn(binnedAttTab, 'WEIGHTS', REAL64))
+</PRE>
+
+<P>
+Of these, only the column <A NAME="291"></A><TT>WEIGHTS</TT> is optional (if the keyword <A NAME="293"></A><TT>WGTFIRST</TT> is not present in the table header). If it is not present, all weights are assumed to equal 1.
+
+<P>
+It should be noted that this binned-attitude `time series' does NOT conform to OGIP recommendations. However in my view this is a deficiency in OGIP, which should be expanded to allow the edges of time bins to be recorded, not just the bin centre times.
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html29"
+  HREF="node2.html">binUpAttitudeFromOdf</A>
+<LI><A NAME="tex2html30"
+  HREF="node3.html">sampleBinnedAttitude</A>
+<LI><A NAME="tex2html31"
+  HREF="node4.html">writeBinnedAttitude</A>
+<LI><A NAME="tex2html32"
+  HREF="node5.html">readBinnedAttitude</A>
+<LI><A NAME="tex2html33"
+  HREF="node6.html">gtiWeightBinnedAttitude</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="binned_att.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Home Page"></A>
+<A HREF="binned_att.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="binUpAttitudeFromOdf"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

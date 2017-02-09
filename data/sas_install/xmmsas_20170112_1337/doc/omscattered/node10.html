@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Computing the scaling factor with mode=2 and mode=3</TITLE>
+<META NAME="description" CONTENT="Computing the scaling factor with mode=2 and mode=3">
+<META NAME="keywords" CONTENT="omscattered">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omscattered.css">
+
+<LINK REL="next" HREF="node11.html">
+<LINK REL="previous" HREF="node9.html">
+<LINK REL="up" HREF="node8.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omscattered (omscattered-1.3.4) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Using the peripheral background"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Algorithm"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="The sequence of operations"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omscattered.html">Home Page</A> / <A  HREF="node8.html">Algorithm</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00082000000000000000">
+Computing the scaling factor with mode=2 and mode=3</A>
+</H2>.
+
+<P>
+The second and third methods of calculating the scaling factor 
+(mode=2 and mode=3) are auxiliary and might be used in some 
+difficult cases when the input image is contaminated by a multitude of
+other scattered light features (like, ``huge deformed donuts'', smoke
+rings, modulo-8 pattern around bright sources, etc.).
+
+<P>
+These algorithms use two annular regions (instead of a single
+region, as in the case of the mode 1): the larger one is the 
+same as in the case of the mode-1 algorithm and is used for 
+finding the background levels of the input (<SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$B_1$"></SPAN>) and the 
+calibrated (<SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$B_2$"></SPAN>) images. 
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="fig:twoRings2"></A><A NAME="357"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure:</STRONG>
+<SMALL CLASS="SMALL">Two ring-shaped regions for finding the background
+of the input image (the larger ring covering the peripheral parts 
+of the image) and for computing the counts of the central scattered 
+light feature (the smaller ring in the centre enclosing the scattered 
+light feature). These are used for two auxiliary algorithms (mode=2 and mode=3) 
+of calculating the calibration scaling factor.</SMALL></CAPTION>
+<TR><TD><IMG
+ WIDTH="368" HEIGHT="340" BORDER="0"
+ SRC="img14.png"
+ ALT="\begin{figure}\centering
+\epsfig{file=twoRings.eps, height=7.5cm}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+The smaller region (see Fig.<A HREF="#fig:twoRings2">4</A>) 
+corresponds to the known sizes of the ``donut'' of the central 
+scattered light feature. The count numbers within this region 
+(<SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$C_1$"></SPAN> for the input image and <SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$C_2$"></SPAN> for the calibrated image)
+are found by building histograms of the pixel values, as 
+described in Sec.<A HREF="node9.html#omscattered:description:peripheral">8.1</A>. 
+
+<P>
+Then, in the case of the mode-2 algorithm, the calibration 
+scaling factor is computed as
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+S=\frac{C_1-B_1}{C_2-B_2},
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="96" HEIGHT="41" BORDER="0"
+ SRC="img17.png"
+ ALT="\begin{displaymath}
+S=\frac{C_1-B_1}{C_2-B_2},
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+and the output image is obtained by subtraction of the scaled
+and background-free calibration image:
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+I_{\rm output}=I_{\rm input}-S\cdot (I_{\rm calibrated}-B_2).
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="262" HEIGHT="29" BORDER="0"
+ SRC="img18.png"
+ ALT="\begin{displaymath}
+I_{\rm output}=I_{\rm input}-S\cdot (I_{\rm calibrated}-B_2).
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P> 
+
+<P>
+In the case of mode=3 the latter subtraction is made for
+the scaling factor varied (in a loop) with small steps (of 0.02)
+from the values 0.2 to 2.8. The optimal scaling factor 
+(<SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$S_{\rm opt}$"></SPAN>) is then assumed to correspond to the minimum 
+of the absolute value of the difference between the background 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$B_1$"></SPAN> and the number of counts within the smaller annulus. 
+The final output image will then be: 
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+I_{\rm output}=I_{\rm input}-S_{\rm opt }\cdot (I_{\rm calibrated}-B_2).
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="281" HEIGHT="29" BORDER="0"
+ SRC="img20.png"
+ ALT="\begin{displaymath}
+I_{\rm output}=I_{\rm input}-S_{\rm opt }\cdot (I_{\rm calibrated}-B_2).
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P> 
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Using the peripheral background"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Algorithm"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="The sequence of operations"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

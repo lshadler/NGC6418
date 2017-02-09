@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>declarations</TITLE>
+<META NAME="description" CONTENT="declarations">
+<META NAME="keywords" CONTENT="emsaplib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emsaplib.css">
+
+<LINK REL="next" HREF="node17.html">
+<LINK REL="previous" HREF="node15.html">
+<LINK REL="up" HREF="node15.html">
+<LINK REL="next" HREF="node17.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emsaplib (emsaplib-2.31.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node15.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="edusoft_mod module"></A>
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="edusoft_mod module"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="getpixelInE2"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node41.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emsaplib.html">Home Page</A> / <A  HREF="node2.html">Description</A> / <A  HREF="node15.html">edusoft_mod module</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00022100000000000000">
+declarations</A>
+</H3>
+
+<P>
+Here are declarations of parameters and data structures used together
+with the EDUSOFT routines
+
+<P>
+
+<UL>
+<LI><TT>es_nmax</TT>: Maximum number of events that can be found in a frame 
+by EDUSOFT.
+
+<P>
+Type and value :
+<PRE>
+           integer, parameter :: es_nmax  = 50000
+</PRE>
+</LI>
+<LI><TT>edu_npat</TT>: Number of EDU patterns.
+
+<P>
+Type and value :
+<PRE>
+            integer, parameter :: edu_npat = 32
+</PRE>
+</LI>
+<LI><TT>edu_nsid</TT>: Side dimension of the square EDU patterns.
+
+<P>
+Type and value :
+<PRE>
+            integer, parameter :: edu_nsid = 5
+</PRE>
+</LI>
+<LI><TT>edu_pattern</TT>: Data structure describing each EDU pattern.
+
+<P>
+Type :
+<PRE>
+            type edu_pattern
+               integer               id_patt
+               integer               id_mask
+               integer(kind=int8)    mat(edu_nsid,edu_nsid)
+               integer(kind=int8)    number
+               integer(kind=int8)    id_kind
+            end type edu_pattern
+</PRE>
+</LI>
+<LI><TT>edu_evt</TT>: Data structure describing an EDU event in output of EDUSOFT.
+
+<P>
+Type :
+<PRE>
+            type edu_evt
+               integer(kind=int16)   x
+               integer(kind=int16)   y
+               integer(kind=int16)   pattern
+               integer(kind=int16)   e1
+               integer(kind=int16)   e2
+               integer(kind=int16)   e3
+               integer(kind=int16)   e4
+               integer(kind=int16)   peripix
+            end type edu_evt
+</PRE>
+</LI>
+<LI><TT>edu_out</TT>: Data structure containing the EDUSOFT output event list.
+
+<P>
+Type :
+<PRE>
+            type edu_out
+               integer         nevent
+               type(edu_evt)   evt(es_nmax)
+               integer         npix
+               integer         fifoovf
+            end type edu_out
+</PRE>
+</LI>
+<LI><TT>sas_evt</TT>: Data structure describing an EDU event as used by the SAS.
+            Type :
+<PRE>
+            type sas_evt
+               integer(kind=int8)  pattern
+               integer(kind=int8)  peripix
+               integer(kind=int16) rawx
+               integer(kind=int16) rawy
+               integer(kind=int32) frame
+               integer(kind=int32) flag
+               integer(kind=int16) e1
+               integer(kind=int16) e2
+               integer(kind=int16) e3
+               integer(kind=int16) e4
+            end type sas_evt
+</PRE>
+</LI>
+</UL>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

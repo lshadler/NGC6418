@@ -1,0 +1,390 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Correction of the energy scale in specific pixels</TITLE>
+<META NAME="description" CONTENT="Correction of the energy scale in specific pixels">
+<META NAME="keywords" CONTENT="epreject">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epreject.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epreject (epreject-5.17) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Suppression of detector noise"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epreject.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+<B>Correction of the energy scale in specific pixels</B></A>
+</H2>
+
+<P>
+
+<P>
+<BR>
+The usual mode of operating the EPIC-pn camera consists of computing an offset
+map immediately before the beginning of an exposure. Ideally, this map
+contains the energy offset for each pixel (expressed in analog-to-digital
+units, adu). During the exposure, these offsets are subtracted onboard from
+the measured signals, and only events where the difference exceeds a lower
+threshold (usually 20&nbsp;adu, which formally corresponds to 100&nbsp;eV) are
+transmitted to Earth.
+
+<P>
+
+<P></P>
+High-energy particles hitting the EPIC-pn CCD during the offset map
+calculation may cause the affected pixels to get offset values which
+are incorrect by a few adu. As a consequence, the energies of all
+events in these pixels appear to be shifted by the same amount. Due to the
+specific method of deriving the offset map onboard, the affected areas occur
+often in blocks of four consecutive pixels along readout direction. Depending
+on the orientation of the trail caused by the high-energy particle with
+respect to the CCD, these areas may also extend over several consecutive
+pixels perpendicularly to the readout direction. The affected pixels usually
+get an offset which is too small. If the affected area extends over several
+pixels along a CCD row (perpendicularly to the readout direction), then the
+remaining pixels within this CCD row may get an offset which is too high.
+
+<P>
+
+<P></P>
+If the offset to be subtracted is too small, then the adu values which are
+assigned onboard to events in such pixels become too high. Thus, events which
+have adu values below the lower threshold and which would normally be
+rejected, may show up in the data set. As most of such events are due to
+detector noise, which is steeply increasing towards lower energies
+(Fig.<A HREF="#pn059207_003">1</A>), any reduction of the lower energy threshold leads
+to a considerable increase in the number of events. An immediately apparent
+consequence of this effect is the occurrence of bright patches in EPIC-pn
+images which are accumulated at low energies
+(e.g.Fig.<A HREF="#pn0462ff_cls_0">3</A>). A less obvious consequence is a shift in
+the energy scale over the whole spectral bandwidth. This shift degrades the
+energy resolution for extended objects. For point sources, the X-ray spectrum
+may be shifted by some 10&nbsp;eV, in most cases towards higher energies, if the
+position of the source happens to coincide with one of these patches.
+
+<P>
+Task <A NAME="481"></A><A NAME="tex2html15"
+  HREF="../epreject/index.html"><SPAN  CLASS="textbf">epreject</SPAN></A>
+provides two methods to correct the energy scale:
+
+ 
+<OL>
+<LI>If offset maps are available these can be used directly to estimate
+the offset errors: Since the effected chip areas are limited to
+regions where the chip was hit by high-energy particles during
+the offset map calculation, the offset error can be determined
+by subtracting the value of the offset map in the effected areas
+from the value in the unaffected areas. This is achieved by
+in turn subtracting its median value from each column and each
+row of the offset maps. The values in the remaining residual 
+offset map can then be regarded as the offset errors which need
+to be subtracted from each event falling into the respective pixels.
+
+<P>
+</LI>
+<LI>If no offset maps are available the offset errors can be corrected
+using a method based on the count images accumulated in the lowest
+energy channel.  
+As the detector noise is monotonically increasing towards lower energies, a
+correlation is expected between the brightness of such pixels at low energies
+and the amount of offset shift which they have received. Evidence for such a
+correlation was indeed found, in particular when only the lowest transmitted
+adu value (usually 20) is used for determining the pixel brightness. However,
+this correlation is disturbed by the fact that the brightness of a pixel at
+20&nbsp;adu is also influenced by other factors, in particular by its individual
+noise properties. In order to separate offset-induced changes of the 20&nbsp;adu
+pixel brightness from other brightness variations at 20&nbsp;adu across the
+detector, a reference image is subtracted from the 20&nbsp;adu image. This
+reference image contains for each pixel the nominal, i.e. temporally constant,
+value of its 20&nbsp;adu brightness (Fig.<A HREF="#ima20adu_ref">2</A>). The reference image
+was derived by accumulating images at 20&nbsp;adu from long FF exposures with no
+bright X-ray sources in the field, and computing the median value for each
+pixel.
+
+<P>
+
+<P></P>
+The intensity in the subtracted, normalized 20&nbsp;adu images is then used to
+reconstruct the value of the offset shift, which was incorrectly applied
+onboard, and the raw amplitudes of all events in the corresponding pixels are
+shifted back by this amount to their nominal value (Fig.<A HREF="#pn0462ff_cls_1">4</A>).
+The reconstruction of the offset shift is done by using calibration data which
+were derived from exposures where offset maps were available.
+</LI>
+</OL> 
+
+<P>
+
+<P></P>
+<B>X-ray loading:</B> 
+For the fast modes (TIMING and BURST) X-ray loading may affect the offset map 
+calculation and thus shift the energy scale across the PSF.
+This effect is absent if the offset map is calculated in CLOSED filter
+position. 
+<BR>
+If <TT>withxrlcorrection</TT>=Y
+the tasks checks for the fast modes the FILTER position during
+offset map calculation (keyword <A NAME="486"></A><TT>OTFILTER</TT>) and if not CLOSED
+it re-shifts the energies
+by comparison of the actual offset map with a master offset map.
+Note, that this requires that offset maps are available in the ODF
+(is generally the case except for early observations) and that the use of
+offset maps is enabled (is the default, i.e., <TT>withoffsetmap</TT>=Y).
+<BR>
+The underlying caorrection algorithm in the case of non-CLOSED filter during
+offset map calculation is as follows:
+
+<OL>
+<LI>get the CLOSED filter master offset map for mode (TI or BU) and time period
+   from the calibration area and compute the median of each column.
+</LI>
+<LI>determine the general level (for ``master'')
+  via averaging the median values over 
+  columns 2-10, and subtract this value from the medians
+</LI>
+<LI>get the offset map for this exposure from the ODF
+ and compute the median of each column
+</LI>
+<LI>determine the general level (for ``exposure'')
+  via averaging the median values over 
+  columns 2-10, and subtract this value from the medians
+</LI>
+<LI>determine the difference of medians per column ``exposure'' - ``master''
+  and add this value (modified by a linear function)
+  to the corresponding PHA values of the events.
+</LI>
+</OL>
+
+<P>
+
+<P></P>
+<B>Remarks:</B>
+Although this task re-adjusts the energy scale, there are some effects left
+which cannot be corrected for:
+<UL>
+<LI>
+If the energy scale has to be corrected towards lower energies, then events may
+get raw amplitudes which are below the low energy threshold applied onboard.
+In order to re-establish a common lower energy threshold, such events should
+be removed in a subsequent step.
+</LI>
+<LI>
+If the energy scale has to be corrected towards higher energies, then events
+with very low raw amplitudes are missing (because they were not included
+in the telemetry). In order to re-establish a common lower energy threshold,
+this threshold could be increased by the maximum shift which was applied
+towards higher energies. However, while a shift towards higher energies is
+usually required only for very few pixels, information about the lowest
+energies would then be lost for all pixels. Furthermore, the area around the
+object of interest might not be affected at all. Therefore, it should be
+checked in each specific case whether a general increase of the lower
+threshold is appropriate.
+</LI>
+</UL>
+
+<P>
+<DIV CLASS="leftline" ID="par1483" ALIGN="LEFT">
+<B>Caveats:</B></DIV>
+
+<P>
+
+<P></P>
+In option (2), above, the
+task attempts to reconstruct the offset shifts from the brightness of
+pixels at 20&nbsp;adu. While it is guaranteed that the offset shifts can only occur
+at discrete adu steps, the correspondence between the 20&nbsp;adu brightness and
+the value of the offset shift is not always unique. The presence of Poissonian
+noise in the 20&nbsp;adu images, in particular for short exposures, limits the
+sensitivity for spotting the bright patches and deriving the appropriate
+energy correction. The parameter <TT>sigma</TT> which specifies the minimum significance
+which a block of four consecutive pixels along readout direction must have in
+order to trigger the offset shift correction task for this block, can be set by
+the user. Tests indicate that setting this parameter to <SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$\sim4\,\sigma$"></SPAN> is a
+good choice for short (<!-- MATH
+ $\sim5\mbox{ ks}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="49" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$\sim5\mbox{ ks}$"></SPAN>) exposures; for longer exposures this
+parameter can be increased (to <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$\sim5$"></SPAN>-<SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.png"
+ ALT="$6\,\sigma$"></SPAN> for more than 20&nbsp;ks).
+It is recommended to control the results by accumulating an image below 20&nbsp;adu
+after this task: this image shows the pixels where an offset shift was applied
+(Fig.<A HREF="#pn0462ff_cls_2">5</A>).
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="pn059207_003"></A><A NAME="442"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure:</STRONG>
+Number of events as a function of PHA [adu] for
+quadrant&nbsp;0, obtained during 50.7&nbsp;ks in a closed FF exposure (<TT>0059_0122320701_PNS003</TT>). The peak at 20&nbsp;adu corresponds to an event rate of
+0.75&nbsp;events/frame/quadrant, or <!-- MATH
+ $2\cdot10^{-5}\mbox{\,events/frame/pixel}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="190" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$2\cdot10^{-5}\mbox{\,events/frame/pixel}$"></SPAN>.
+</CAPTION>
+<TR><TD><IMG
+ WIDTH="330" HEIGHT="395" BORDER="0"
+ SRC="img9.png"
+ ALT="\begin{figure}\hbox to \hsize{\hfil\psfig{file=pn059207_003_0.eps,width=8.0cm,clip=,bbllx=15pt,bblly=248pt,bburx=162pt,bbury=425pt,clip=}\hfil\hfil}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="ima20adu_ref"></A><A NAME="197"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 2:</STRONG>
+Reference image for the 20&nbsp;adu intensities per pixel, normalized to
+an exposure of 1&nbsp;ks. It was obtained by accumulating images at 20&nbsp;adu from
+long FF exposures with no bright X-ray sources in the field, and computing the
+median value for each pixel. This image contains for each pixel the temporally
+constant value of its 20&nbsp;adu brightness.
+</CAPTION>
+<TR><TD><IMG
+ WIDTH="703" HEIGHT="826" BORDER="0"
+ SRC="img10.png"
+ ALT="\begin{figure}\psfig{file=ima20adu_ref_exp_.eps,width=16.0cm,clip=,bbllx=45pt,bblly=18pt,bburx=580pt,bbury=638pt}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="pn0462ff_cls_0"></A><A NAME="443"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 3:</STRONG>
+Events with raw amplitudes of 20&nbsp;adu in the closed 23.2&nbsp;ks FF exposure
+<TT>0462_0134521601_PNS005</TT>. The number of events per pixel is color coded
+according to the color bar at top, ranging from zero (black) to 50 (white).
+</CAPTION>
+<TR><TD><IMG
+ WIDTH="703" HEIGHT="826" BORDER="0"
+ SRC="img11.png"
+ ALT="\begin{figure}\psfig{file=i20adu_0_462_check0.eps,width=16.0cm,clip=,bbllx=45pt,bblly=18pt,bburx=580pt,bbury=638pt}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="pn0462ff_cls_1"></A><A NAME="444"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 4:</STRONG>
+Same as Fig.<A HREF="#pn0462ff_cls_0">3</A>, but after applying the
+task <A NAME="490"></A><A NAME="tex2html8"
+  HREF="../epreject/index.html"><SPAN  CLASS="textbf">epreject</SPAN></A>
+for correcting the energy scale in specific pixels.</CAPTION>
+<TR><TD><IMG
+ WIDTH="703" HEIGHT="826" BORDER="0"
+ SRC="img12.png"
+ ALT="\begin{figure}\psfig{file=i20adu_1_462_check0.eps,width=16.0cm,clip=,bbllx=45pt,bblly=18pt,bburx=580pt,bbury=638pt}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="pn0462ff_cls_2"></A><A NAME="445"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure:</STRONG>
+Pixels in the exposure <TT>0462_0134521601_PNS005</TT> where offset
+shifts were applied. This image was accumulated from events with
+<!-- MATH
+ $\mbox{PHA}<20\mbox{ adu}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="107" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\mbox{PHA}&lt;20\mbox{ adu}$"></SPAN>, after running the task <A NAME="494"></A><A NAME="tex2html11"
+  HREF="../epreject/index.html"><SPAN  CLASS="textbf">epreject</SPAN></A>. A
+<SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$4\,\sigma $"></SPAN> threshold was applied for the identification of bright patches.</CAPTION>
+<TR><TD><IMG
+ WIDTH="703" HEIGHT="826" BORDER="0"
+ SRC="img14.png"
+ ALT="\begin{figure}\psfig{file=i20adu_2_462_check0.eps,width=16.0cm,clip=,bbllx=45pt,bblly=18pt,bburx=580pt,bbury=638pt}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="pn0462ff_cls_3"></A><A NAME="446"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 6:</STRONG>
+Events with raw amplitudes of 20&nbsp;adu in the closed 23.2&nbsp;ks FF exposure
+<TT>0462_0134521601_PNS005</TT>, after correcting the offset shifts and after
+suppressing the noise. Note that the intensity scale extends now from 0 to 3,
+while it covered the range from 0 to 50 in Figs.<A HREF="#pn0462ff_cls_0">3</A> and
+<A HREF="#pn0462ff_cls_1">4</A>.</CAPTION>
+<TR><TD><IMG
+ WIDTH="703" HEIGHT="824" BORDER="0"
+ SRC="img15.png"
+ ALT="\begin{figure}\psfig{file=i20adu_3_462_check0.eps,width=16.0cm,clip=,bbllx=45pt,bblly=18pt,bburx=580pt,bbury=638pt}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<P><P>
+<BR>
+
+<P>
+<BR>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Suppression of detector noise"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

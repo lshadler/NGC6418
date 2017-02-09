@@ -1,0 +1,180 @@
+<!-- converted from XPI formatted "cifbuild.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="calindexset" type="dataset" default="ccf.cif">
+   <DESCRIPTION>
+    Name of the output calibration index set (aka CIF or MIF).
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withccfpath" type="bool" default="no">
+   <DESCRIPTION>
+    Use the directories listed in ccfpath? Set to no means use SAS_CCFPATH.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="usecanonicalname" type="bool" default="no">
+   <DESCRIPTION>
+    Autogenerate the CIF name based on the ODF identifier?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="ccfpath" type="string" default=".">
+   <DESCRIPTION>
+    Colon-separated list of directories where CCF constituents are to be looked for.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="recurse" type="bool" default="no">
+   <DESCRIPTION>
+    Recursively look for CCF constituents in any subdirectory found in ccfpath or in SAS_CCFPATH?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="fileglob" type="string" default="*.ccf|*.CCF">
+   <DESCRIPTION>
+    File name glob patterns to match CCF constituents. The delimiter is |.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="fullpath" type="bool" default="no">
+   <DESCRIPTION>
+    Write in the calibration index set the full path names of the CCF constituents?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withobservationdate" type="bool" default="no">
+   <DESCRIPTION>
+    Use the user-specified observation date? Otherwise will read the data from the active ODF (environment variable SAS_ODF).
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="observationdate" type="string" default="now">
+   <DESCRIPTION>
+    Date when the observation was made.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="analysisdate" type="string" default="now">
+   <DESCRIPTION>
+    Date when the analysis is performed.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="category" type="string" default="XMMCCF">
+   <DESCRIPTION>
+    Category of constituents to look for.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="SCISIMCCF">
+    </ITEM>
+    <ITEM value="XMMCCF">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="ignorecategory" type="bool" default="no">
+   <DESCRIPTION>
+    Pay no attention to the CATEGORY attribute?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="masterindex" type="bool" default="no">
+   <DESCRIPTION>
+    Create a master calibration index set (aka MIF)?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withmasterindexset" type="bool" default="no">
+   <DESCRIPTION>
+    Make use of the master index set (aka MIF) instead of looking directly at the CCF constituents?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="masterindexset" type="dataset" default="ccf.mif">
+   <DESCRIPTION>
+    Name of the MIF to be used to evaluate the calibration index set (aka CIF).
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="append" type="bool" default="no">
+   <DESCRIPTION>
+    Append CCF constituents to an existing calindexset?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

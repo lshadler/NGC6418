@@ -1,0 +1,328 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="rgsrmfgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsrmfgen.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="rgsrmfgen.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsrmfgen (rgsrmfgen-1.15.6) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="rgsrmfgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsrmfgen.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="rgsrmfgen:description:parameters"></A>
+
+<tr valign=top><td colspan=5>&nbsp;<br>
+  In general for this task only one filename need be provided and the
+  rest are inferred by default using the provided filename as a
+  template.  The rules governing this behavior are intended to follow
+  what the user would instinctively expect and as a result are
+  somewhat complicated.  The descriptions below focus on the meaning
+  of each filename parameter, leaving the exact details of the
+  inferred default value to be explained in the
+  <A HREF="node8.html#rgsrmfgen:description:algorithm">algorithm</A> section.
+  &nbsp;</td></tr>
+
+<A NAME="522"></A>
+<tr valign=top bgcolor='silver'><td><b>evlist</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  The filtered event list.  It must contain the <A NAME="530"></A><TT>EVENTS</TT> table
+  and exposure map extensions.  Not modified.  The default value
+  infers the EVENLI file.
+  <br>&nbsp;</td></tr>
+
+<A NAME="532"></A>
+<tr valign=top bgcolor='silver'><td><b>srclist</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  The source description list.  It must contain the <A NAME="540"></A><TT>SOURCES</TT>
+  table and the relevant selection region extensions.  Not modified.
+  The default value infers the SRCLI_ file.
+ <br>&nbsp;</td></tr>
+
+<A NAME="542"></A>
+<tr valign=top bgcolor='silver'><td><b>rmfset</b></td><td>no</td><td><A HREF=../param/node3.html>file</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  The response matrix file (OGIP-compliant format).  Either created or
+  modified depending on parameter <TT>newrmf</TT>.  When modifying an
+  existing response matrix (<TT>newrmf</TT>=no) an explicit value for
+  this filename must be provided, which then becomes the template from
+  which other filenames may be inferred.  For a new response matrix
+  the default value infers the RSPMAT file.
+  <br>&nbsp;</td></tr>
+
+<A NAME="553"></A>
+<tr valign=top bgcolor='silver'><td><b>witharffile</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+ Switch to enable the creation of two independent response files ARF and RMF.
+  <br>&nbsp;</td></tr>
+
+<A NAME="560"></A>
+<tr valign=top bgcolor='silver'><td><b>arfset</b></td><td>no</td><td><A HREF=../param/node3.html>file</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+ The ARF file name (OGUP-compliant format).
+<br>&nbsp;</td></tr>
+
+<A NAME="567"></A>
+<tr valign=top bgcolor='silver'><td><b>emax</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>2.8</td><td>non-negative</td></tr>
+
+<tr valign=top><td colspan=5>
+  When creating a new response matrix (<TT>newrmf</TT>=yes), this is
+  the upper edge of the highest incident-energy bin to be included.
+  When overwriting part of an existing matrix (<TT>newrmf</TT>=no),
+  this identifies the upper incident-energy bin in the interval to be
+  recomputed.  This value will be raised automatically as necessary to
+  maintain the contiguity of the bins, and can be used to extend the
+  range of the existing matrix.
+  <br>&nbsp;</td></tr>
+
+<A NAME="578"></A>
+<tr valign=top bgcolor='silver'><td><b>emin</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>0.3</td><td>non-negative</td></tr>
+
+<tr valign=top><td colspan=5>
+  When creating a new response matrix (<TT>newrmf</TT>=yes), this is
+  the lower edge of the lowest incident-energy bin to be included.
+  When overwriting part of an existing matrix (<TT>newrmf</TT>=no),
+  this identifies the lower incident-energy bin in the interval to be
+  recomputed.  This value will be lowered automatically as necessary
+  to maintain the contiguity of the bins, and can be used to extend
+  the range of the existing matrix.
+  <br>&nbsp;</td></tr>
+
+<A NAME="589"></A>
+<tr valign=top bgcolor='silver'><td><b>rows</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>4000</td><td>positive</td></tr>
+
+<tr valign=top><td colspan=5>
+  The number of incident-energy bins to cover the range from
+  <TT>emin</TT> to <TT>emax</TT>.  Typically, when overwriting part of
+  an existing matrix (<TT>newrmf</TT>=no), the intention is to increase
+  the resolution of the matrix over a small interval.  This can yield
+  a matrix of manageable size that has very high resolution in just
+  the right places.
+  <br>&nbsp;</td></tr>
+
+<A NAME="602"></A>
+<tr valign=top bgcolor='silver'><td><b>fftdim</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>3</td><td>1-5</td></tr>
+
+<tr valign=top><td colspan=5>
+  The wings of the various distributions that are convolved together
+  to form the narrow features of the line-spread function are
+  truncated to limit the size of the convolution space.  An
+  increment of one in this parameter doubles the size of the
+  convolution space; the larger the convolution space, the slower
+  the computation and the less power is lost to the truncation.
+  <br>&nbsp;</td></tr>
+
+<A NAME="609"></A>
+<tr valign=top bgcolor='silver'><td><b>newrmf</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  Whether to create a new response matrix or edit an existing one.
+  <br>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>&nbsp;<br>
+  The remaining parameters apply only when <TT>newrmf</TT>=yes.  When
+  editing an existing matrix these specifications are obtained from
+  its contents.
+  &nbsp;</td></tr>
+
+<A NAME="619"></A>
+<tr valign=top bgcolor='silver'><td><b>withspectrum</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  Determines how various details of the response matrix are specified.
+  On true: enables parameter <TT>spectrumset</TT>, and the response
+  matrix is made compatible with this spectrum with respect to its
+  source, order, background correction, and channel definitions.  On
+  false: enables parameters <TT>source</TT>, <TT>order</TT>, and
+  <TT>bkgcorrect</TT>, while the channel definitions are obtained from
+  the event list (parameter <TT>evlist</TT>).  Note that a channel
+  rebinning factor cannot be specified except through the
+  <TT>spectrumset</TT>, an oversight which may be corrected in a future
+  version.
+  <br>&nbsp;</td></tr>
+
+<A NAME="638"></A>
+<tr valign=top bgcolor='silver'><td><b>spectrumset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>srspec.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  A spectrum file produced by <A NAME="648"></A><A NAME="tex2html11"
+  HREF="../rgsspectrum/index.html"><SPAN  CLASS="textbf">rgsspectrum</SPAN></A>
+from the data in the
+  given event list (parameter <TT>evlist</TT>).  Not modified.  The
+  metadata from this file are used to ensure that the response matrix
+  produced is the suitable companion to this spectrum for the purpose
+  of analysis.  A default filename cannot be inferred; when this
+  parameter is enabled (<TT>withspectrum</TT>=yes) an explicit value
+  must be provided, which then becomes the template from which other
+  filenames may be inferred.
+  <br>&nbsp;</td></tr>
+
+<A NAME="654"></A>
+<tr valign=top bgcolor='silver'><td><b>source</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>&nbsp;</td><td>non-negative</td></tr>
+
+<tr valign=top><td colspan=5>
+  If a spectrum file is not provided (<TT>withspectrum</TT>=no) this
+  parameter specifies the <A NAME="668"></A><TT>INDEX</TT> number of a source in the
+  source description list (parameter <TT>srclist</TT>), and thereby the
+  incidence angle and selection regions for the response matrix.  The
+  default value, zero, indicates the <A NAME="671"></A><TT>SOURCEID</TT> attribute of the
+  <A NAME="673"></A><TT>EVENTS</TT> table in the event list (parameter <TT>evlist</TT>),
+  which is the source that was used to perform the aspect-drift
+  corrections.
+  <br>&nbsp;</td></tr>
+
+<A NAME="676"></A>
+<tr valign=top bgcolor='silver'><td><b>order</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>1</td><td>positive</td></tr>
+
+<tr valign=top><td colspan=5>
+  If a spectrum file is not provided (<TT>withspectrum</TT>=no) this
+  parameter specifies the reflection order for computing the response
+  matrix.  In conjunction with the <TT>source</TT> parameter, this
+  identifies the energy selection region from the source description
+  list (parameter <TT>srclist</TT>).  Although it does include the
+  contribution of the LSF for every order, the final response matrix
+  is nevertheless order-specific with respect to its effective area
+  and <A NAME="690"></A><TT>EBOUNDS</TT> extension.
+  <br>&nbsp;</td></tr>
+
+<A NAME="692"></A>
+<tr valign=top bgcolor='silver'><td><b>bkgcorrect</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  If a spectrum file is not provided (<TT>withspectrum</TT>=no) this
+  parameter specifies whether background correction should be included
+  in the response matrix computation.  If yes, then the background
+  selection region from the source description list (parameter
+  <TT>srclist</TT>) is required.  <EM>In HTR mode the background
+  correction to the response matrix is not defined, and this parameter
+  is quietly ignored.</EM>
+  <br>&nbsp;</td></tr>
+
+<A NAME="704"></A>
+<tr valign=top bgcolor='silver'><td><b>withmirrorpsf</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  Whether to convolve the standard mirror PSF distribution into the
+  LSF.  <EM>This option should be used with care and knowledge.</EM>  An
+  appropriate circumstance for omitting the mirror PSF is when a
+  custom angular distribution is provided (<TT>withangdist</TT>=yes)
+  that empirically establishes the PSF contribution.
+  <br>&nbsp;</td></tr>
+
+<A NAME="714"></A>
+<tr valign=top bgcolor='silver'><td><b>withangdist</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  Whether to convolve a custom angular distribution into the LSF.
+  <EM>This option should be used with care and knowledge.</EM>  Enables
+  parameter <TT>angdistset</TT>.  Note that this distribution is
+  one-dimensional, an arbitrary function of dispersion off-axis angle.
+  It is rebinned onto the dispersion channel space according to the
+  order and central incident energy of each LSF.  The problem of
+  reducing a two-dimensional image to this one-dimensional
+  distribution is left to the user.
+  <br>&nbsp;</td></tr>
+
+<A NAME="724"></A>
+<tr valign=top bgcolor='silver'><td><b>angdistset</b></td><td>no</td><td><A HREF=../param/node3.html>file</A></td><td>angdist.txt</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+  An ASCII file containing a one-dimensional angular distribution
+  along the axis of dispersion in arc minutes.  Not modified.  Each
+  line of the file describes a distribution bin in terms of the start
+  and stop angles, and the value assigned to that bin.  The
+  distribution may be normalized to any value, though unity is
+  expected and recommended.  See the
+  <A HREF="node6.html#rgsrmfgen:description:inputfiles">input files</A>
+  descriptions for further details.
+  <br>&nbsp;</td></tr>
+
+<A NAME="733"></A>
+<tr valign=top bgcolor='silver'><td><b>dyneffarecorr</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>	
+  Enable the dynamic effective area correction based on Chebyshev polynomials.
+  <br>&nbsp;</td></tr>
+
+<A NAME="740"></A>
+<tr valign=top bgcolor='silver'><td><b>withrectification</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>	
+  Use empirical RGS effective area correction
+  <br>&nbsp;</td></tr>
+
+<A NAME="747"></A>
+<tr valign=top bgcolor='silver'><td><b>witheffectiveareacorrection</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>	
+  Use RGS effective area correction
+  <br>&nbsp;</td></tr>
+
+<A NAME="754"></A>
+<tr valign=top bgcolor='silver'><td><b>spectrumbinning</b></td><td>no</td><td><A HREF=../param/node3.html>choice</A></td><td>lambda</td><td>lambda beta</td></tr>
+
+<tr valign=top><td colspan=5>
+     Dispersion binning type. 
+  <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="rgsrmfgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

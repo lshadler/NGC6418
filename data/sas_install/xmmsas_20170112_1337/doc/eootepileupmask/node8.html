@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Behaviours and command-line arguments.</TITLE>
+<META NAME="description" CONTENT="Behaviours and command-line arguments.">
+<META NAME="keywords" CONTENT="eootepileupmask">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eootepileupmask.css">
+
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eootepileupmask (ebkgmap-2.9) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Relation between this task"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eootepileupmask.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00034000000000000000"></A>
+<A NAME="eootepileupmask:description:behaviour"></A>
+<BR>
+Behaviours and command-line arguments.
+</H2>
+
+<P>
+This task reads an event file as an input, estimating the piled up pixels,
+and outputs either the sky coordinate
+image or 3-dimensional chipcube (controlled by <TT>outputstyle</TT>).
+
+<P>
+In short, we recommend to specify and the sky coordinate image as an
+output, of which the reasons are described below.
+
+<P>
+
+<OL>
+<LI>if the output is the chipcube, the process runs as follows:
+<BR>
+The task calculates the normalised count-per-frame-per-pixel (=rate) map
+  for each chip, taking account of the energy (PI) of each event.
+  Then when a pixel is found to show a rate exceeding the given threshold,
+  the entire row along either or both X and/or Y-axis of the pixel is
+  masked depending whether the areas of OOTE events and/or RGA spikes are
+  specified to be masked or not,
+  and it is output. <A NAME="eootepileupmask:description:item1"></A>
+<P>
+</LI>
+<LI>if the output is the sky-coordinate image, the process runs as follows:
+<BR>
+The core of the routine is exactly the same as the above case.  However,
+  the coordinate conversion into sky-coordinates is not a trivial job,
+  as the pile-up phenomenon is basically processed on the chip(raw)
+  coordinates.  Hence a user is allowed to specify the binned-attitude file.
+  If this (<TT>binnedattset</TT>) is set, the task splits the event files into 
+  the given time bins (described in the file <TT>binnedattset</TT>),
+  performs the above-described calculation (of the normalised rate map)
+  for each of these time bin, converts each normalised rate map and mask map
+  into the sky coordinates<A NAME="tex2html7"
+  HREF="footnode.html#foot438"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A>.  Finally
+  the task calculate the logical sum of the mask file.  In other words,
+  all the pixels that experience the rate above the threshold in one of
+  the time bin are masked.  Note that frames with too short duration
+  are not used in this calculation of rate and mask images (Controlled by
+  <TT>avcnttoprocess</TT>) in this case.  If a user specifies so
+  (controlled by <TT>attstyle</TT>), the entire observation is used as
+  one set -- in that case, the spatial fluctuation of the spacecraft
+  is not taken into account (the median attitude value is simply used for
+  the coordinate conversion).
+
+<P>
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Relation between this task"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

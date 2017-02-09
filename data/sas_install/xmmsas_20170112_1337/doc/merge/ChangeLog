@@ -1,0 +1,128 @@
+ChangeLog for merge
+===============================
+Open SPRs:
+- none
+
+Version 0.14  - 2015-05-13 (RDS)   
+-------------------------------
+ + (src/merge_mod.f90): Remove useless debug line
+
+Version 0.13.1  - 2012-05-17 (RDS)   
+-------------------------------
+
+ + (src/merge_mod.f90): Refuses to merge events from different observations unless
+			a new parameter "mergedifferentobs" is set to "yes" by
+			the user (SPR-6728)
+
+Version 0.13  - 2007-01-11 (HB)   
+-------------------------------
+
+ + (src/merge_mod.f90): Added new warnings to address the situation where 
+	                STIGTI or GTI extensions are present in only one 
+	                of the input datasets, which in most cases will result
+	                in incorrect exposure times. 
+	                General warning added, highlighting limitations when 
+	                using merged eventsets as input in downstream tasks   
+ + (doc/merge_description.tex): new warnings; minor changes in description 
+	                and comments section.
+	                
+Version 0.12  - 2006-06-021 (RDS)   
+-----------------------------------
+ + (src/merge_mod.f90): Now merges GTIs as well as STDGTIs. (SPR-2608)
+
+Version 0.11 - 2003-12-02 (HB)
+-----------------------------------
+ + (src/merge_mod.f90): TSTOP keyword was not updated correctly; fixed.
+closed SPR:
+ + SSC-SPR-3158: "merge" does not update the TSTOP keyword
+	
+Version 0.10 - 2003-05-07 (HB)	
+-----------------------------------
+ + (config/merge.par): modified to enable param-2.0 functionality	
+		
+Version 0.9  - 2003-04-04 (HB)
+-----------------------------------
+ + (doc/merge_description.tex): LaTeX error corrected	
+	
+Version 0.8  - 2003-03-24 (HB)
+-----------------------------------
+ + (src/merge_mod.f90): merging of additional user-specified event table columns
+ + (doc/merge_description.tex): updated	
+		
+Version 0.7  - 2002-08-21 (AMR/MJF)
+-----------------------------------
+ + (src/merge_mod.f90): implemented changes as in version 0.4.5 [SSC-SPR-2933,
+   and further fix for SSC-SPR-2905]
+ + (doc/merge_description.tex): updated
+closed SPR:
+ + SSC-SPR-2933: Should propagate WEIGHT
+
+Version 0.6  - 2002-07-17 (AMR/MJF)
+-----------------------------------
+ + (DEPEND): added "sas" as required by new infrastructure (sas-1.302)
+ + (src/merge_mod.f90): implemented changes as in versions 0.4.3 and 0.4.4 to
+   fix problems with time related keywords
+closed SPR:
+ + SSC-SPR-2905: LIVETIME header in merged file is not being updated correctly
+
+Version 0.5  - 2002-05-27 (MJF)
+-------------------------------
+ + (config/merge.par): updated for `param-2.0'
+ + (DEPEND): needs `param-2.0', updated all other entries to latest
+
+Version 0.4.2 2002-05-27 (AMR)
+-------------
+ + (src/merge_mod.f90) Further start/stop time attributes and durations corrected
+ + (doc/merge_description.tex) Updated
+
+Version 0.4.1 2001-11-08 (AMR)
+-------------
+ + (src/merge_mod.f90) STDGTI files now merged (SSC-SPR-2617). 
+   Various start & stop time attributes corrected
+ + (doc/merge_description.tex) Updated
+
+Version 0.4 2001-06-19 (AMR)
+-------------
+	+ (src/merge_mod.f90) New functionality, allowing adjustments of 
+	  individual event file sky coordinates, for attitude errors etc, prior
+   to merging. 
+	+ (config/merge.par, merge.lyt) New parameters for sky coordinate 
+	  adjustments. Also withuserradec changed to withradec. 
+ + (doc/merge_description.tex) Above change described. 
+
+Version 0.3.1 2000-11-23 (AMR)
+-------------
+ + (doc/merge_description.tex) Documentation updated (SSC-SPR-2115)
+
+Version 0.3 2000-09-22 (AMR)
+------------
+
+Initial SAS version - non-accepted (version number same as documentation). 
+Experimental and under development - treat all output with caution. 
+Comments welcome, especially as regards improvements in output file. 
+
+Examples:
+---------	
+>  Merging two event files (reprojecting X/Y coordinates to mean ref.point)
+
+merge set1=ev1.fits set2=ev2.fits outset=evout.fits
+
+>  Merging two event files (reprojecting X/Y coordinates to user ref.point)
+
+merge set1=ev1.fits set2=ev2.fits outset=evout.fits withuserradec=Y ra=10.2 dec=-13.7
+
+>  Merging two attitude files (atthkgen output files)
+
+merge set1=att1.fits set2=att2.fits outset=attout.fits
+
+>  Merging two orbit files (orbit output files)
+
+merge set1=orb1.fits set2=orb2.fits outset=orbout.fits
+
+-- Note, it is possible in many cases to treat the output files as ordinary 
+(non-merged) files. e.g. creation of an exposure map is possible for merged 
+data: First merge the relevant event files and associated attitude files, then 
+form a sky image (via evselect) from the merged event file, then run eexpmap
+as normal using this image and the merged event and attitude files. 
+-- Just to reiterate, do take care with any merged output. This task is still 
+under development. 

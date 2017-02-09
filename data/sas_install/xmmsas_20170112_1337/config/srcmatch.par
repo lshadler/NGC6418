@@ -1,0 +1,113 @@
+<!-- converted from XPI formatted "srcmatch.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="outputlistset" type="table" mandatory="yes" default="srclist.fits">
+   <DESCRIPTION>
+    Output summary source list in FITS format
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="htmloutput" type="table" mandatory="yes" default="srclist.html">
+   <DESCRIPTION>
+    html output source list table
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="inputlistsets" type="table" list="yes" mandatory="yes" default="emllist.fits">
+   <DESCRIPTION>
+    EPIC (emldetect) input source lists
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="crossidsets" type="table" list="yes" default="crossid.fits">
+   <DESCRIPTION>
+    Cross-identification source lists from earlier stages of the detection pipeline (DETECT1 or 2 sets)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="usecrossidsets" type="bool" default="no">
+   <DESCRIPTION>
+    Should crossid set be used?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="omlistset" type="table" default="omlist.fits">
+   <DESCRIPTION>
+    OM input source list
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="useomlistset" type="bool" default="no">
+   <DESCRIPTION>
+    Is there an OM source list to be used?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="systerr" type="real" default="1">
+   <DESCRIPTION>
+    Systematic error for EPIC source matching [arcsec]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    systerr in [0.0:60.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="maxerr" type="real" default="3">
+   <DESCRIPTION>
+    Maximum allowed error for EPIC source matching [sigmas]. Recommended: [3.0:5.0]. Negative values of maxerr are interpreted as absolute offsets in arcsec (experimental only).
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    maxerr in [-60.0:15.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="omdist" type="real" default="15">
+   <DESCRIPTION>
+    Maximum distance EPIC-OM for correlation [arcsec]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    omdist in [0.0:60.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="allepicmode" type="bool" default="no">
+   <DESCRIPTION>
+     Source lists are results of emldetect multi-camera runs: Calculate combined source parameters. 
+   </DESCRIPTION>
+  </PARAM>
+
+
+
+
+ </CONFIG>
+</FILE>

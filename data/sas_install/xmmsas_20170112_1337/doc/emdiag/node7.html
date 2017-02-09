@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Output Files</TITLE>
+<META NAME="description" CONTENT="Output Files">
+<META NAME="keywords" CONTENT="emdiag">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emdiag.css">
+
+<LINK REL="next" HREF="node8.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="emdiag.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emdiag (emdiag-4.0.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input Files"></A>
+<A HREF="emdiag.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emdiag.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00070000000000000000"></A>
+<A NAME="emdiag:description:outputfiles"></A>
+<BR>
+Output Files
+</H1>
+
+<P>
+
+<OL>
+<LI>offset/variance file for that CCD/node in ODF format
+          (for calibration purposes, [<A
+ HREF="node11.html#ct:SOCODFICD">1</A>])
+</LI>
+<LI>masked CCD map(s) as a 600x600 image FITS file with additional
+          <A NAME="802"></A><TT>EMDHLOW</TT>, <A NAME="804"></A><TT>EMDHUPP</TT>, <A NAME="806"></A><TT>MASKED</TT> and <A NAME="808"></A><TT>CCDMAP</TT>
+          keywords (for calibration purposes)
+</LI>
+<LI>event file simulating on-board processing in ODF format
+          (for calibration purposes), with the additional <A NAME="810"></A><TT>CCDMAP</TT> keyword
+          and an extension holding the auxiliary (frame) information
+          (replaced by keywords if there is only one input map).
+          In this format the event coordinates are as in the ODF, <I>i.e.</I>
+          offset by (+6,+1) from the coordinates in the output maps
+          (and the input window parameters).
+</LI>
+<LI>map(s) of pixels above threshold outside events
+          as a 600x600 image FITS file with additional
+          <A NAME="812"></A><TT>EMDHLOW</TT>, <A NAME="814"></A><TT>EMDHUPP</TT>, <A NAME="816"></A><TT>BRIGHT</TT> and <A NAME="818"></A><TT>CCDMAP</TT>
+          keywords (for calibration purposes)
+</LI>
+</OL>
+Applicable keywords are propagated from the input diagnostic image file.
+The window keywords in the input file are converted to [1-600]x[1-600] 
+and clipped following the window parameters set by the user.
+The <A NAME="820"></A><TT>EDUTHR</TT> keyword may be modified by the user (<TT>eduthreshold</TT>
+parameter).
+The offsets used to analyse the data are incorporated as an offset/variance
+<A NAME="823"></A><TT>OFFSETS0</TT> extension in ODF format in the output map and event files.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input Files"></A>
+<A HREF="emdiag.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="emframes">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emframes.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="emframes.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emframes (emframes-5.10) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="emframes.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emframes.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="emframes:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+MODULE em_frames_module
+ 
+   Read the file names of frames files (input and output) and events file
+
+   Opening of input auxiliary and events file
+   Select CCD/node in auxiliary file
+   Copy of input events file header keywords to output frames file
+
+   parameters read : choice of sub_tasks to execute
+
+   Loop over input task parameters
+      Read the task parameter / 1 to perform the procedure,
+                                0 not to perform it  /
+   End loop
+
+   Get the values of files columns in memory
+
+SUBROUTINE FRAMES 
+      frame time calculation as difference between successive read-out times
+             use only if constant 3 times in a row
+             otherwise keep original value
+      Read counting mode file if any
+      Renumber frames and associated events if times indicate
+             that frame number was lost.
+      Build complete arrays of flags and times
+             including missing frames and correcting wrong times
+      Write columns to output file
+      Put the keyword FRMTIME on file
+ 
+SUBROUTINE FLAG_HK
+      if flag_hk requested  then
+           read the gti file name parameter
+           Read GTI file  
+           Loop over the rows of frames file
+               Loop over good time intervals
+                  flag frame outside intervals 
+               end loop
+           end loop
+      endif
+ 
+SUBROUTINE FIFO  check the FIFOOVF
+   if fifo requested  then
+      Loop over frame rows
+         flag frames with FIFOOVF not equal to 0 
+      end loop
+   endif
+ 
+SUBROUTINE VALID    check the number of events for each frame
+    if valid requested  then
+      Loop over frame rows 
+        count the number of rows in the events file for each frame
+        and compare with the NVALID value
+        flag the frame if not equivalence      
+      end loop
+    endif
+ 
+SUBROUTINE CR_DEAD 
+   identify the ``cosmic-ray'' patterns,
+   and get the number of pixels above threshold for each type of pattern
+   for patterns CRPATi we put 0 to avoid subtracting cosmic-rays
+   if cr_dead requested then
+      Read cosmicsize and cosmicoutoverin values from CAL
+      Loop over frame rows
+        calculate crratio as 
+        ( NPIXEL(frame) - NPIXEL(events) - NBELOW ) / ( DX * DY )
+        check  crratio &gt; NABOVE / ( DX * DY )
+        apply correction factor
+        crratio = crratio * cosmicsize / (ratarea+(1-ratarea)*cosmicoutoverin)
+        ratarea = fraction of window in open view of the sky
+      end loop 
+      write CRRATIO column on file 
+    endif   
+
+SUBROUTINE MAKE_GTI    Build new GTI from unflagged frames
+    if make_gti requested then
+      Loop over the frames
+        Reconstruct new GTI intervals excluding all flagged frames
+      end loop
+    endif
+ 
+SUBROUTINE PUT_GATTI    check the gatti flag and write the gatti value
+    if put_gatti requested then
+       Loop over frame rows
+          Look for GATTI flag = 1
+          recompute the gatti value in previous 510 frames
+       end loop
+       Recompute GATTI in last frames
+       write GATTIVAL column on file 
+    endif
+ 
+    write FLAG column on file
+
+    Closing files
+ 
+end module
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

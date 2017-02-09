@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Input Files</TITLE>
+<META NAME="description" CONTENT="Input Files">
+<META NAME="keywords" CONTENT="eimsimprep">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eimsimprep.css">
+
+<LINK REL="next" HREF="node14.html">
+<LINK REL="previous" HREF="node12.html">
+<LINK REL="up" HREF="eimsimprep.html">
+<LINK REL="next" HREF="node14.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eimsimprep (eimsim-2.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node12.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Errors"></A>
+<A HREF="eimsimprep.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Output files"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eimsimprep.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00050000000000000000"></A>
+<A NAME="eimsimprep:description:inputfiles"></A>
+<BR>
+Input Files
+</H1>
+
+<OL>
+<LI>A FITS dataset which acts as a template file to allow first the list of simulated sources and then the simulated EPIC images to be constructed. Its structure is as follows:
+
+<P>
+
+<UL>
+<LI>Binary table extension <A NAME="969"></A><TT>SRCSPECS</TT> containing:
+    
+<UL>
+<LI>real-valued keyword <A NAME="971"></A><TT>HI_SLOPE</TT>
+</LI>
+<LI>4-byte real column <A NAME="973"></A><TT>FLUX</TT> in erg cm<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^{-2}$"></SPAN> s<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^{-1}$"></SPAN>.
+</LI>
+<LI>4-byte real column <A NAME="975"></A><TT>DENSITY</TT> in cumulative sources deg<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^{-2}$"></SPAN>.
+    
+</LI>
+</UL>
+</LI>
+<LI>Binary table extension <A NAME="977"></A><TT>INSTRUMENTS</TT>, listing all instruments recognized as valid for <A NAME="979"></A><A NAME="tex2html51"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+purposes. The row numbers (the first row being numbered 1) correspond to the `Potsdam' integer ID scheme appropriate to source lists created by <A NAME="983"></A><A NAME="tex2html52"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+or <A NAME="987"></A><A NAME="tex2html53"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>. Contents:
+
+<UL>
+<LI>integer keyword <A NAME="991"></A><TT>I_SUMMRY</TT> giving the integer code, in the `Potsdam' scheme, of the `summary' instrument.
+</LI>
+<LI>10-character string column <A NAME="993"></A><TT>NAME</TT>, giving the standard `XMM'-style name of the instrument. These strings are recognized by the <A NAME="995"></A><A NAME="tex2html54"
+  HREF="../caloalutils/index.html"><SPAN  CLASS="textbf">caloalutils</SPAN></A>
+function instId().
+</LI>
+<LI>2-character string column <A NAME="999"></A><TT>ABBREV</TT>, giving an upper-case abbreviation of the instrument name.
+    
+</LI>
+</UL>
+</LI>
+<LI>Binary table extension <A NAME="1001"></A><TT>FILTERS</TT>, listing all filters recognized as valid for <A NAME="1003"></A><A NAME="tex2html55"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+purposes. Contents:
+    
+<UL>
+<LI>10-character string column <A NAME="1007"></A><TT>NAME</TT>.
+    
+</LI>
+</UL>
+</LI>
+<LI>Binary table extension <A NAME="1009"></A><TT>FLUX_SCALES</TT>, listing all energy bands recognized as valid for <A NAME="1011"></A><A NAME="tex2html56"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+purposes. Contents:
+    
+<UL>
+<LI>String keyword <A NAME="1015"></A><TT>DET_TYPE</TT>
+</LI>
+<LI>integer keyword <A NAME="1017"></A><TT>I_SUMMRY</TT> giving the integer code, in the `Potsdam' scheme, of the `summary' band.
+</LI>
+<LI>8-byte real keyword <A NAME="1019"></A><TT>SPECINDX</TT>
+</LI>
+<LI>8-byte real keyword <A NAME="1021"></A><TT>HI</TT> in cm<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^{-2}$"></SPAN>.
+</LI>
+<LI>String keyword <A NAME="1023"></A><TT>EUNIT</TT> (`keV' is currently the only accepted value).
+</LI>
+<LI>8-byte real keyword <A NAME="1025"></A><TT>E_MIN</TT> in keV.
+</LI>
+<LI>8-byte real keyword <A NAME="1027"></A><TT>E_MAX</TT> in keV.
+</LI>
+<LI>8-byte real keyword <A NAME="1029"></A><TT>FLUX</TT> in erg cm<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^{-2}$"></SPAN> s<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^{-1}$"></SPAN>.
+</LI>
+<LI>2-byte integer column <A NAME="1031"></A><TT>ID_BAND</TT> (integer code of the band in the `Potsdam' scheme).
+</LI>
+<LI>4-byte real column <A NAME="1033"></A><TT>E_LO</TT>
+</LI>
+<LI>4-byte real column <A NAME="1035"></A><TT>E_HI</TT>
+</LI>
+<LI>4-byte real column <A NAME="1037"></A><TT>FLUX</TT>
+</LI>
+<LI>For each instrument listed in the <A NAME="1039"></A><TT>INSTRUMENTS</TT> table, and each filter listed in the <A NAME="1041"></A><TT>FILTERS</TT> table, a 4-byte real column with a name after the pattern <A NAME="1043"></A><TT>ECF_&lt;inst abbrev&gt;_&lt;filter&gt;</TT>
+</LI>
+<LI>For each instrument listed in the <A NAME="1045"></A><TT>INSTRUMENTS</TT> table, a 4-byte real column with a name after the pattern <A NAME="1047"></A><TT>BG_&lt;inst abbrev&gt;_THIN</TT>. These are currently unused.
+    
+</LI>
+</UL>
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI>Various XMM product files (all these are FITS datasets too) which are again used mainly as templates for the construction of the simulated images. These must be found in a subdirectory whose name is constructed by appending `/' followed by <TT>prdssubdir</TT> to one of the base directories supplied in the string <TT>obsidroots</TT>. These files must have the standard XMM product file names. An example set is given in the `cookbook' section near the start of the present document. Note that the 27-character-long filename prefixes contain information as follows:
+  
+<UL>
+<LI>Characters 2 through 11 give the 10-digit observation ID.
+</LI>
+<LI>Characters 12 and 13 give the 2-character instrument ID.
+</LI>
+<LI>Characters 14 through 17 give the 4-character exposure ID.
+</LI>
+<LI>Characters 18 through 23 give the 6-character file type code.
+</LI>
+<LI>Character 24 is the energy band ID character.
+</LI>
+<LI>Characters 25 through 27 are generally 0 but can be used for source number or spectral order number for example.
+  
+</LI>
+</UL>
+
+<P>
+These files must obey the following rules:
+  
+<UL>
+<LI>Only 1 observation ID is permitted per subdirectory.
+</LI>
+<LI>Permitted instrument codes are either `OB', for files which have significance for the whole observation, or from the list `PN', `M1' and `M2', which represent the three XMM-Newton EPIC cameras. The two required `OB' files have type codes `CALIND' (the list of calibration constituents) and `ATTTSR' (the attitude time series created by task <A NAME="1051"></A><A NAME="tex2html57"
+  HREF="../atthkgen/index.html"><SPAN  CLASS="textbf">atthkgen</SPAN></A>). At least one of the EPIC instruments must be present. Each instrument may be present with more than 1 exposure ID. For each combination of EPIC instrument and exposure ID, the following files are required:
+
+<UL>
+<LI>An event list (file type `PIEVLI' for `PN' or `MIEVLI' for the mos).
+</LI>
+<LI><SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$N$"></SPAN> exposure maps (file type `EXPMAP'), one for each of <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$N$"></SPAN> energy bands.
+    
+</LI>
+</UL>
+    <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$N$"></SPAN> must be the same for all observations, instruments and exposures. For the present, the band ID characters (character 24 of the file name) must be digits from 1 to 9. Each digit which is represented by an `EXPMAP' file name must also be found in the <A NAME="1055"></A><TT>FLUX_SCALES</TT> table of the template file <TT>srcspecset</TT>.
+  
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI>If <TT>bkgstyle</TT>=`products', the user should supply, for each observation, instrument, exposure and band, a real-valued image of the expectation value, in average counts per image pixel, of the instrumental background.
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node12.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Errors"></A>
+<A HREF="eimsimprep.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Output files"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

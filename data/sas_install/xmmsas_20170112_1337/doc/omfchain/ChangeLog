@@ -1,0 +1,334 @@
+ChangeLog for omfchain
+===============================
+Version 1.42.6 - 2014-09-30 (RDS) +(src/omfchain.pl): 
+	- Uses taskmain for options handling (SPR-7237) 
+
+Version 1.42.5 - 2014-09-09 (RDS) +(src/omfchain.pl): 
+	- extra fix to bug (SPR-7206) which was precluding
+	to calculate the background value from the imaging-mode data.
+Version 1.42.4 - 2014-05-11 (VNY) +(test/testomfchain):
+	explicitely set the parameter bkgfromimage to NO
+	as the test data does not have NAXIS1 keyword in the 
+	first extension 
+Version 1.42.3 - 2014-05-08 (VNY) +(src/omfchain.pl): 
+	- fixed a bug (SSC SPR report 7209) which was precluding
+	to calculate the background value from the imaging-mode data.
+Version 1.42.2 - 2014-04-02 (EC)
+	- moved binary data test/*0099010101* to testprods/omfchain_data
+Version 1.42.1 - 2013-02-27 (VNY) +(src/omfchain.pl, test/*)
+	Removed an extra FAST-mode data set from the test folder (to reduce the
+        test processing time); checked the size of the imaging-mode file
+	(it will not be used if small).
+Version 1.42 - 2012-07-19 (VNY) +(config/omfchain.par)
+	Changed the default value of the parameter 
+	bkgfromimage to "yes".
+Version 1.41 - 2012-03-07 (VNY) +(src/omfchain.pl) 
+	Fixed the problem with picking up the Raw attitude file
+	(SSC-SPR-6692).
+Version 1.40 - 2011-10-05 (VNY) +(src/omfchain.pl) 
+	Corrected the wrong version dated 2011-10-04 (the changes
+	were made to the downgraded version 1.38); the same changes
+	to the version 1.39: 
+	Improved the processing of bright source exposures: in 
+	order to exclude casual jumps of the count rates when 
+	the mod8factor for a given exposure exceeds the 0.35 threshold 
+	the analysis of the mod8-factor is made only for the first 
+	exposure of the series. The rest of the exposures are processed 
+	with the same extraction radius as was decided for the first 
+	exposure (no matter was it increased or left to be normal)	
+Version 1.39 - 2011-06-07 (VNY) +(src/omfchain.pl, param/omfchain.par)
+	A new parameter (rawattitude) is introduced to control the
+	averaging of the raw attitude data.
+Version 1.38 - 2010-04-21 (VNY) +(src/omfchain.pl, param/omfchain.par)
+	A new optional parameter maxrawcountrate is introduced to
+	establish the upper threshold for source PSF-photometry
+	(required by omdetect).
+Version 1.37.1 - 2010-03-26 (VNY): documentation updated.
+Version 1.37 - 2010-01-31 (VNY) +(src/omfchain.pl, config/omfchain.par)
+	The default value of the parameter bkgfromimage is set to NO;
+	The wrong intermediate image file name is corrected;
+	Protected against possible shortening of the postscript file
+	name by pgplot in the task lcplot.
+Version 1.36 - 2010-01-31 (VNY) +(DEPEND, config/omfchain.par)
+	Updating the dependencies; changing the default value 
+	of the parameter bkgfromimage to "yes".
+Version 1.35 - 2010-01-26 (VNY) +(src/omfchain.pl, config/omfchain.par)
+	New parameters are introduced to control the modified
+	task omlcbuild. The parameter, "bkgfromimage=yes/no"
+	allows using the background obtained from the accompanying
+	imaging data. The parameter "psfphotometryenabled=yes/no"
+	allows psf-photometry of the source in the task omdetect-5.22
+Version 1.34.3 - 2008-05-20 (VNY) +(config/omfchain.par) The default value
+	of the parameter nsigma is set to 3 instead of 2 in order
+	to reduce the number of spurious sources detected in the 
+	fast window (SSC-SPR-6462).
+Version 1.34.2 - 2007-06-07 (VNY) +(src/omfchain.pl) Fixing a bug
+	of the previous version: by accident a few task were excluded
+	from processing (restoring them). 
+Version 1.34.1 - 2007-06-07 (VNY) +(src/omfchain.pl) Increasing the 
+	source extraction radius for very bright sources, which are
+	badly affected by coincidence losses and modulo-9 noise 
+	in order to avoid negative background counts, which is happen
+	when applying the standard background calculation procedure 
+	designed for the normal sources. Effectively, in these cases
+	the background extraction region is forced to zero size 
+	(fixing SSC-SPR-3144).	
+Version 1.34 - 2006-05-23 (VNY) A protection against generating an empty 
+	PDF-file is introduced (SSC-SPR-3604) for the rare cases when 
+	the omlcbuild task for some reason could not produce the light-curve
+	PS-plot
+Version 1.33.1 - 2006-05-18 (VNY) Checking for the consistency of
+	the sampling and binning intervals is introduced
+	(SSC-SPR-3598)
+Version 1.33 - 2005-11-10 (VNY) Adjusted to the changes in the 
+	source region file made by omdetect (SSC-SPR-3538)
+Version 1.32 - 2005-09-09 (VNY) Dependency file updated to fit the
+	changed task omlcbuild-1.25 (SSC-SPR-3507)
+Version 1.31.8 - 2005-06-15 (VNY) Protected against a crash when a magnifier 
+	filter exposure is found in the ODF (SSC-SPR-3480)
+Version 1.31.7 - 2005-05-23 (CB1) Ammended DEPEND file to fix build problem.
+Version 1.31.6 - 2004-05-28 (VNY) +(src/omfchain.pl) The subroutine
+	GetCurrentDirectory is modified in order to protect 
+        it from a failure during the test in Mac-machines 
+Version 1.31.5 - 2004-05-27 (VNY) +(test/testomfchain) picking un
+	the SAS_ODF variable is modified in order to avoid test 
+	failure on Mac-machines
+Version 1.31.4 - 2004-02-24 (VNY) The statement use DAL removed,
+	since it is not necessary anymore.
+Version 1.31.3 - 2004-02-11 (VNY) The parameter --odf has been 
+	remover from the calls to all of the tasks
+	(SSC-SPR-3254)
+Version 1.31.2 - 2004-02-11 (VNY) the parameter --odf was removed
+	from the calls to omprep. This could cause crashes in 
+	some computers (SPR-3254)
+Version 1.31.1 - 2004-02-01 (VNY) The problem described in 
+	SSC-SPR-3238 is fixed. In the case of the output directoy
+	chosen to be different from that containing the input ODF
+	there was a possibility of missin a flat-field file (FFX)
+	created to satisfy omfastflat task. At the same time the 
+	task is protected against crashing when the verbosity
+	level is higher than seven.
+Version 1.31 - 2003-11-21 (VNY) DEPEND file updated to match 
+	the new version (3.0) of ssclib
+Version 1.30 - 2003-09-29 (VNY) A part of the code was restored that 
+	creates a unit flat field file (FFX) in the case of not 
+	finding a real FFX in the curret ODF: this was removed temporarily
+	for test purposes and not restored by a mistake (SSC-SPR-3151)
+Version 1.29 - 2003-06-16 (VNY) the task is cleaned from the PERL-5 error 
+	messages, when the latter is working in its strict mode	
+Version 1.28 - 2003-02-28 (VNY) DEPEND file modified
+	now uses DSSLIB-5.2 instead of 4.0
+Version 1.27 - 2002-10-21 (VNY) DEPEND file modified: now needs 
+	OMDETECT-4.1 instead of V3.6
+Version 1.26 - 2002-09-27 (VNY) DEPEND file updated (now dsslib is 4.0).
+        First call to OMPREP is modified in accordance to the updated
+	modeset parameter (modeset=3 for tracking). 
+
+Version 1.25 - 2002-06-11 (VNY)  +(src/omfchain.pl) Formation of the list
+	of the input ODF-files is changes in order to cope
+	with the local codification table at Jupiter machine (SPR-2876)
+	
+Version 1.24 - 2002-06-10 (VNY)	
+	+ (src/omfchain.pl) Modified to make it look into the correct
+	directory for the SAS summary file when SAS_ODF has been set
+	to point to the file (fixes SPR 2899). A bug with redirection
+	of the FFX-file has been fixed (SPR-2900).
+	+(config/omfchain.info): GROUPS parameter  has been set
+	to 'om' instead of 'pipeline'.
+	
+Version 1.23 - 2002-05-22 (VNY) DEPEND and +config/onfchain.par files
+	have been updated in order to work with new PARAM-2.0
+	
+Version 1.22.7 - 2002-04-18 (VNY) 
+	+(config/omfchain.par) Default value for the source extraction
+	radius has been reduced down to 6 pixels in order to
+	increase signal-to-noise ratio and improve estimation 
+	of background
+	
+Version 1.22.6 - 2002-03-26 (CB) DISTRIBUTION changed to world
+
+Version 1.22.5 - 2002-03-22 (VNY)
+	+(test/0202_0099010101_SCX00000ROS.ASC) 
+	 missed orbit file in the test directory has been restored
+	(SSC-SPR-2817); 
+	smooth size parameter is set to 12 (its default value was 64
+	that exceeds the Fast Mode window size).
+	
+Version 1.22.4 - 2002-03-05 (CB)
+---------------------------------
+	Output was accidentally redirected to a log file- corrected.
+
+Version 1.22.3 - 2002-03-05 (VNY) 
+	+(test/0202_0099010101_SCX00000TCS.FIT) a missed file in the test
+	directory has been restored 
+	
+Version 1.22.2 - 2002-01-28 (VNY)
+	+(src/omfchain.pl) comment on the creation of the Log-file has
+	been removed
+	
+Version 1.22.1 - 2002-01-28 (VNY) 
+	+(config/omfchain.par) values for the optional parameters
+	have been updated
+	
+Version 1.22 - 2002-01-08 (VNY)
+	+(DEPEND) dependencies file updated to work woth ssclib V2.0
+	
+Version 1.21 - 2001-12-14 (VNY)
+	+(src/omfchain.pl, config/omfchain.par)  additional input
+	parameters have been introduced in order to make possible
+	online changes of the source extraction radius, as well
+	as some parameters for online improvement of the source
+	detectability by omdetect. Dependencies are updated.
+
+Version 1.20.1 - 2001-11-19
+	+(src/omfchain.pl) The names have been changed for the Tracking
+	History Plot, Tracking Star Timeseries, and OSW Source List files
+	(converting them to the pipeline products). PNG-extention of the
+	Tracking History Plot file was replaced with the extention .PS
+	(Postscript file), SPR-2630.
+ 
+Version 1.20 - 2001-10-26
+	DEPEND file updated to rectify a SOC build problem.
+Version 1.19.3 - 2001-10-24
+	DEPEND file updated to rectify a SOC build problem (interp package)
+Version 1.19.2 - 2001-10-23
+	+ (src/omfchain.pl) a bug with the use of non-existing name
+        (tmp_eventlist_1) has been rectified	
+
+Version 1.19.1 - 2001-10-10 - DEPEND file ammended to rectify a SOC build problem. 
+
+Version 1.19 - 2001-10-09 
+        + (src/omich.pl) Modified so that if the environment variable
+	SAS_ODF has been set to a directory the input directory is set to
+	that directory. Further modified so that if the environment variable
+	SAS_ODF has been set to a SAS Summary file the omichain will
+	retrieve the ODF directory from that file and set the input
+	directory to that file. (further fix for SPR 2581)
+
+
+Version 1.18 - 08.10.2001 
+	Name of flatfield created by omflatgen corrected. Parameter
+	"oaldirectory" deleted. Log file removed. Environment variable
+	"SAS_ODF" set automatically to the input directory (SPR 2582). 
+	Documentation updated (SPR 2581).
+	
+Version 1.17 - 24.09.2001 
+	"thxset" parameter has been removed from the call to OMLCBUILD;
+	dependencies have been actualised.
+Version 1.16.4 - 07.08.2001
+    Fixed 12-pixel radius is used for the source extraction region (omregion routine)	
+Version 1.16.3 - 31.07.2001
+    Dependencies file has been actualised (omatt V2.23 has been added)
+    
+Version 1.16.2 - 30.07.2001
+    Summary file (SUM) in the test data set have been corrected - the local PATH for the 
+    data set has been removed, SPR-2496
+        
+Version 1.16.1 - 27.07.2001
+    Dependencies have been actualised, SPR 2494
+
+Version 1.16  -  17.07.2001
+------------------------	
+	
+              - binsize parameter for lcplot routine has been set to 1 (was 5 by deafault);
+               - bkginner and  bkgouter parameters added to the omregion
+              routine call (default values were 1 and 2, now they are 1.2 and 1.8) in order
+              to avoid contamination of the background with the source counts;
+               - dummy flat field file created (FFX) in case it
+              doesn't exist. Deals now  with the absence of the tracking history file as well;
+              - input file check flags added;
+              - source magnitudes have been added to the output light
+              curve file;
+              - two new parameters (wdxset and sourcelistset) have been
+              added in the call to the OMLCBUILD in order to correct the photon counts for
+              the counts loss;  
+              - OSW sky coordinate images are produced as the output of
+              the programme;
+	      - tmp-eventlist-1 was replaced with  PPS-eventlist-file in
+              the second call for the OMPREP routine;
+              - output INT-file extention has been replaced with FIT (files
+              BGDREG, BGRATE, SRCREG, SCRATE);
+              - produces light-curve time series and output PDF-files
+              for all sources detected in the OSW; 
+              - conversion from PS to PDF is added for the output light-curve graph;   
+              - output file names are modified in accordance with the PPS specifications; 	
+
+Version 1.15.1 21 June 2000 
+
+Patch to add info file - SPR 1799
+
+Version 1.15 22 March 2000
+
+Added command line parameter functionality using dal	
+	
+Version 1.14 21 March 2000
+
+Updated files in test harness.
+Updated DEPEND file.
+Updated ODF sort/check in chain script.	
+	
+Version 1.13 11 Jan 2000
+
+--odfdir altered to --odf 	
+	
+Version 1.11 20 August 1999
+
+Changed set to table on evselect command line.
+	
+Version 1.10 18 August 1999
+
+Updated TCS file in test directory.
+
+Version 1.9 16 August 1999
+
+Updated evselect dependency.
+	
+Version 1.8 29 July 1999
+
+updated for new parameters.	
+	
+Version 1.7 10 December 1998
+	
+updated Dependancy file RE: mssllib
+	
+Version 1.6 2 December 1998
+
+closed SPR 831 : implicit types in test source code
+	
+Version 1.5 3 Nov 1998
+----------------------
+
+Change dependancy file to acccomodate changes to omthconv
+Delete missed line from ODF Summary file.
+	
+Version 1.4 28 Oct 1998
+-----------------------
+
+Deleted lines in ODF Summary file. Changed dependancy for
+omthconv and omfastshift.
+
+	
+Version 1.3 13 Oct 1998
+
+Changed 'event-frame' tagging subroutine 'locate' output to solve array
+out of bounds problem. Changed dependancy file to omfastshift 1.4		
+	
+Version 1.2: 9 Oct 1998
+
+Updated 'event-frame' locating algorithm in omfasttest.f90		
+and omfastshift. Changed dependancy file to omfastshift 1.3
+		
+Version 1.1: 28 Sep 1998
+------------------------
+
+Updated script for compatability with omthconv and omfastshift
+
+Version 1.0: 10 Sep 1998
+------------------------
+
+First version
+	
+Version 0.1
+----------------------------
+
+- Directory structure created by pkgmaker.

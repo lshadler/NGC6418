@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="om2pha">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="om2pha.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="om2pha.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+om2pha (om2pha-0.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="om2pha.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="om2pha.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="om2pha:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+<A NAME="308"></A><A NAME="tex2html2"
+  HREF="../om2pha/index.html"><SPAN  CLASS="textbf">om2pha</SPAN></A>
+works from an input XMM-Newton OM source list and an input
+celestial position. It finds the source list entry corresponding to the
+input position, within a certain tolerance, and extracts the filter count
+rates and errors into a single spectral file. This file may then be used in a
+spectral fitting program, such as XSPEC, possibly in conjunction with 
+spectra from X-ray instruments to perform spectral fitting over the
+optical, UV and possibly X-ray bands. 
+
+<P>
+The output is a single spectral file, known as an "OGIP TYPE:II" file
+that contains the spectrum for each filter on a separate row.
+Each row refers to the response matrix which should be used for this
+filter within the fitting program. The most recent response matrices,
+available from the XMM-Newton web site, 
+should be copied into the current directory before starting the 
+fitting process.
+
+<P>
+Each row of the multiple spectral file contains the columns:
+<A NAME="312"></A><TT>SPEC_NUM</TT> (scalar giving the reference number of the spectrum
+in the particular row), <A NAME="314"></A><TT>CHANNEL</TT> (specifying that we use channel 1),
+<A NAME="316"></A><TT>RATE</TT> (the count rate for this filter in counts/s),
+<A NAME="318"></A><TT>STAT_ERR</TT> (the statistical error on the count rate),<A NAME="320"></A><TT>RESPFILE</TT> (the response file to be used when interpreting the
+count rate in this filter),
+<A NAME="322"></A><TT>ROWID</TT> (the filter name).
+
+<P>
+The resulting multiple spectrum file can be read into <A NAME="tex2html3"
+  HREF="http://heasarc.gsfc.nasa.gov/lheasoft/xanadu/xspec/index.html">Xspec</A>V.10
+and higher, for example.
+
+<P>
+<SPAN  CLASS="textbf">Example:</SPAN> to produce a multiple spectral file from the position
+RA=180.1 degrees, DEC=-45.1 degrees from the source list 
+P0691100201OMCOMBOBSMLI0000.FIT and write the result into a file called
+omspecs.ds, use:
+
+<P>
+<BR>
+<IMG
+ WIDTH="690" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="\begin{code}
+\par
+om2pha srclist=P0691100201OMCOMBOBSMLI0000.FIT ra=180.1 dec=-45.1 output=omspecs.ds
+\par
+\end{code}">
+<BR>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="om2pha.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

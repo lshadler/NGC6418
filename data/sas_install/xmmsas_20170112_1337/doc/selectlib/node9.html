@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Vector operators and functions</TITLE>
+<META NAME="description" CONTENT="Vector operators and functions">
+<META NAME="keywords" CONTENT="selectlib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="selectlib.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+selectlib (selectlib-4.74.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Arithmetic operators and functions"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Character string constants, operators"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node30.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="selectlib.html">Home Page</A> / <A  HREF="node2.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00024000000000000000">
+Vector operators and functions</A>
+</H2>
+A limited set of operators and functions to perform vector algebra
+in three-dimensional Eucledian space is available. The following
+table provides an overview over the available constructs:
+
+<P>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>description</TD>
+<TD ALIGN="LEFT">symbol/name</TD>
+<TD ALIGN="LEFT">type</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>comment</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>vector construction</TD>
+<TD ALIGN="LEFT"><TT>vector(x, y, z)</TT></TD>
+<TD ALIGN="LEFT">vector</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><TT>x</TT>/<TT>y</TT>/<TT>z</TT> can be arithmetic expressions</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>unit vector construction</TD>
+<TD ALIGN="LEFT"><TT>unitvector(x, y, z)</TT></TD>
+<TD ALIGN="LEFT">vector</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><TT>norm(unitvector(x, y, z))==1</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>construction sky vector in J2000 reference frame</TD>
+<TD ALIGN="LEFT"><TT>skyvector(ra, dec)</TT></TD>
+<TD ALIGN="LEFT">vector</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><TT>ra</TT>/<TT>dec</TT> Right Ascension/Declination in rad</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>unary minus</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ ${\tt -}{\tt v}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.png"
+ ALT="${\tt -}{\tt v}$"></SPAN></TD>
+<TD ALIGN="LEFT">vector</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><TT>v</TT> vector</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>vector addition</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ ${\tt v1}{\tt +}{\tt v2}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="50" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="${\tt v1}{\tt +}{\tt v2}$"></SPAN></TD>
+<TD ALIGN="LEFT">vector</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><TT>v1</TT>/<TT>v2</TT>
+vectors</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>vector subtraction</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ ${\tt v1}{\tt -}{\tt v2}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="50" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="${\tt v1}{\tt -}{\tt v2}$"></SPAN></TD>
+<TD ALIGN="LEFT">vector</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><TT>v1</TT>/<TT>v2</TT>
+vectors</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>multiplication with scalar</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ ${\tt s}{\tt *}{\tt v}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.png"
+ ALT="${\tt s}{\tt *}{\tt v}$"></SPAN></TD>
+<TD ALIGN="LEFT">vector</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><TT>v</TT> vector, <TT>s</TT> arithmetic expression</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>division by scalar</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ ${\tt v}{\tt /}{\tt s}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="${\tt v}{\tt /}{\tt s}$"></SPAN></TD>
+<TD ALIGN="LEFT">vector</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><TT>v</TT> vector,
+<TT>s</TT> arithmetic expression <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$\neq0$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>cross product</TD>
+<TD ALIGN="LEFT"><TT>cross(v1, v2)</TT></TD>
+<TD ALIGN="LEFT">vector</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><TT>v1</TT>/<TT>v2</TT>
+vectors</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>vector component</TD>
+<TD ALIGN="LEFT"><TT>v[i]</TT></TD>
+<TD ALIGN="LEFT">scalar</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170><SPAN CLASS="MATH"><IMG
+ WIDTH="95" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$0&lt;={\tt i}&lt;=2$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>vector norm</TD>
+<TD ALIGN="LEFT"><TT>norm(v)</TT></TD>
+<TD ALIGN="LEFT">scalar</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>equivalent to
+<TT>sqrt(v[0]**2+v[1]**2+v[2]**2)</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=113>scalar product</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ ${\tt v1}{\tt *}{\tt v2}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="${\tt v1}{\tt *}{\tt v2}$"></SPAN></TD>
+<TD ALIGN="LEFT">scalar</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=170>equivalent to
+<TT>v1[0]*v2[0]+v1[1]*v2[1]+v1[2]*v2[2]</TT></TD>
+</TR>
+</TABLE>
+</DIV>
+Example expressions involving vector algebra:
+
+<UL>
+<LI><TT>norm(vector(1,2,3)-4*vector(8,9,10))</TT>
+</LI>
+<LI><TT>cross(skyvector(0,0), skyvector(#PI/2, 0))</TT>
+</LI>
+<LI><TT>norm(vector(3,4,5)*unitvector(-2,3,4))-1</TT>
+</LI>
+<LI><TT>5*vector(1,2,3)[0]</TT>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Arithmetic operators and functions"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Character string constants, operators"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node30.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="omcosflag">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omcosflag.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="omcosflag.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omcosflag (omcosflag-1.33) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="omcosflag.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omcosflag.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="omcosflag:description:description"></A>
+<BR>
+Description
+</H1>
+The shift and add process means that the counts observed in each pixel
+of an OSW image may have been accumulated in several different
+detector pixels. This task takes the OM tracking history and applies
+it to the map of bad pixels defined in the CCF. The result is an
+increase in the area of the OSW image contaminated by bad pixels. 
+
+<P>
+The task produces a bad-pixel 2-d map which is stored in the
+<SPAN  CLASS="textbf">QUALITY</SPAN> extension of the FITS input<SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\backslash$"></SPAN>output image file. 
+From <SPAN  CLASS="textbf">SAS 9.0</SPAN> onwards, this map is a 16-bit image, compared to the
+earlier 8-bit image. This change has occurred because <SPAN  CLASS="textbf">SAS 9.0</SPAN> introduced
+the functionality of source-detection on mosaiced sky-images. In order to allow
+the quality-flagging of sources detected on such images, the <SPAN  CLASS="textbf">QUALITY</SPAN> image
+allows flagging information obtained from source-detection on exposure images to be stored
+and then retrieved to set source <SPAN  CLASS="textbf">QUALITY</SPAN> flags. This process is explained in the
+<SPAN  CLASS="textbf">SAS</SPAN> document <SPAN  CLASS="textbf">omqualitymap</SPAN>- a new <SPAN  CLASS="textbf">OM</SPAN> program.
+
+<P>
+The QUALITY image will be used by other <SPAN  CLASS="textbf">OM</SPAN> programs, including
+<SPAN  CLASS="textbf">omdetect</SPAN>, <SPAN  CLASS="textbf">ommodmap</SPAN> and <SPAN  CLASS="textbf">ommosaic</SPAN>. The binning of the bad
+pixel map, and the offset of the science window, are read from the
+headers of the OSW image, which is an input of the task.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="omcosflag.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

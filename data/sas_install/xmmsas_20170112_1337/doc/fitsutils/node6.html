@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>getFitsVecStatInfo???</TITLE>
+<META NAME="description" CONTENT="getFitsVecStatInfo???">
+<META NAME="keywords" CONTENT="fitsutils">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="fitsutils.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node5.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+fitsutils (fitsutils-1.9.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Statistical information"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Statistical information"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="getFitsImgStatInfo???"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="fitsutils.html">Home Page</A> / <A  HREF="node4.html">General-purpose FITS-processing utilities</A> / <A  HREF="node5.html">Statistical information</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00021100000000000000"></A> <A NAME="sec:getFitsVecStatInfo"></A>
+<BR>
+getFitsVecStatInfo???
+</H3>
+
+<P>
+This function is a wrapper for the function
+<TT>ssclib/array_utils/getAryStatInfo</TT> 
+for a 1-dimensional array,
+and so returns the structure <TT>aryStatInfo???T</TT>
+(See the documentation of <TT>ssclib</TT>),which contains the statistical information of the array.
+
+<P>
+The part `???' in the function names is either Double, Single, Int32/16/8.
+<P>
+The following is an example interface for the Double-type one.
+In other types, only the difference is the type of the returned variable
+(<TT>aryStatInfo???T</TT>).
+<P>
+<PRE>
+  interface getFitsVecStatInfoDouble
+
+    function getFitsVecStatDoubleName(setTabName, colName &amp;
+       , minAreaIndices, maxAreaIndices, valLower, valUpper, extNum, arMaskIn &amp;
+       , flagInfo) result(aryStatInfo)
+
+      ! integer, parameter :: rankArin = 1
+      type(aryStatInfoDoubleT) :: aryStatInfo     ! defined in array_utils
+      character(*), intent(in) :: setTabName      ! "FITS.ds" or "FITS.ds:TAB"
+      character(*), intent(in) :: colName
+      integer(int32), intent(in), optional :: minAreaIndices(rankArin), maxAreaIndices(rankArin)
+      real(double), intent(in), optional :: valLower, valUpper
+      integer, intent(in), optional :: extNum
+      logical, intent(in), optional :: arMaskIn(:)
+      type(aryStatInfoFlagT), intent(in), optional :: flagInfo
+    end function getFitsVecStatDoubleName
+
+    function getFitsVecStatDoubleNameSimp(fitsSetTabName, colName &amp;
+       , minAreaIndex, maxAreaIndex, valLower, valUpper, extNum, arMaskIn &amp;
+       , flagInfo) result(aryStatInfo)
+  
+      ! integer, parameter :: rankArin = 1
+      type(aryStatInfoDoubleT) :: aryStatInfo     ! defined in array_utils
+      character(*), intent(in) :: fitsSetTabName  ! "FITS.ds" or "FITS.ds:TAB"
+      character(*), intent(in) :: colName
+      integer(int32), intent(in) :: minAreaIndex, maxAreaIndex
+      real(double), intent(in), optional :: valLower, valUpper
+      integer, intent(in), optional :: extNum
+      logical, intent(in), optional :: arMaskIn(:)
+      type(aryStatInfoFlagT), intent(in), optional :: flagInfo
+    end function getFitsVecStatDoubleNameSimp
+
+    function getFitsVecStatDoubleSet(inSet, colName, tabName, extNum &amp;
+       , minAreaIndices, maxAreaIndices, valLower, valUpper, arMaskIn &amp;
+       , flagInfo, strFileInfo) result(aryStatInfo)
+  
+      !integer, parameter :: rankArin = 1
+      type(aryStatInfoDoubleT) :: aryStatInfo     ! defined in array_utils
+      type(DataSetT), intent(in) :: inSet
+      character(*), intent(in) :: colName
+      character(*), intent(in), optional :: tabName       ! or extNum
+      integer, intent(in), optional :: extNum             ! or tabName
+      integer(int32), intent(in), optional :: minAreaIndices(rankArin), maxAreaIndices(rankArin)
+      real(double), intent(in), optional :: valLower, valUpper
+      logical, intent(in), optional :: arMaskIn(:)
+      type(aryStatInfoFlagT), intent(in), optional :: flagInfo
+      character(*), intent(in), optional :: strFileInfo
+    end function getFitsVecStatDoubleSet
+
+    function getFitsVecStatDoubleSetSimp(inSet, colName, tabName, extNum &amp;
+       , minAreaIndex, maxAreaIndex, valLower, valUpper, arMaskIn &amp;
+       , flagInfo, strFileInfo) result(aryStatInfo)
+  
+      !integer, parameter :: rankArin = 1
+      type(aryStatInfoDoubleT) :: aryStatInfo     ! defined in array_utils
+      type(DataSetT), intent(in) :: inSet
+      character(*), intent(in) :: colName
+      character(*), intent(in), optional :: tabName       ! or extNum
+      integer, intent(in), optional :: extNum             ! or tabName
+      integer(int32), intent(in) :: minAreaIndex, maxAreaIndex
+      real(double), intent(in), optional :: valLower, valUpper
+      logical, intent(in), optional :: arMaskIn(:)
+      type(aryStatInfoFlagT), intent(in), optional :: flagInfo
+      character(*), intent(in), optional :: strFileInfo
+    end function getFitsVecStatDoubleSetSimp
+
+    function getFitsVecStatDoubleTab(inTab, colName &amp;
+       , minAreaIndices, maxAreaIndices, valLower, valUpper, arMaskIn &amp;
+       , flagInfo, strFileInfo) result(aryStatInfo)
+  
+      !integer, parameter :: rankArin = 1
+      type(aryStatInfoDoubleT) :: aryStatInfo     ! defined in array_utils
+      type(TableT), intent(in) :: inTab
+      character(*), intent(in) :: colName
+      integer(int32), intent(in), optional :: minAreaIndices(rankArin), maxAreaIndices(rankArin)
+      real(double), intent(in), optional :: valLower, valUpper
+      logical, intent(in), optional :: arMaskIn(:)
+      type(aryStatInfoFlagT), intent(in), optional :: flagInfo
+      character(*), intent(in), optional :: strFileInfo
+    end function getFitsVecStatDoubleTab
+  
+    function getFitsVecStatDoubleTabSimp(inTab, colName &amp;
+       , minAreaIndex, maxAreaIndex, valLower, valUpper, arMaskIn &amp;
+       , flagInfo, strFileInfo) result(aryStatInfo)
+  
+      !integer, parameter :: rankArin = 1
+      type(aryStatInfoDoubleT) :: aryStatInfo     ! defined in array_utils
+      type(TableT), intent(in) :: inTab
+      character(*), intent(in) :: colName
+      integer(int32) :: minAreaIndex, maxAreaIndex
+      real(double), intent(in), optional :: valLower, valUpper
+      logical, intent(in), optional :: arMaskIn(:)
+      type(aryStatInfoFlagT), intent(in), optional :: flagInfo
+      character(*), intent(in), optional :: strFileInfo
+    end function getFitsVecStatDoubleTabSimp
+
+  end interface
+</PRE>
+
+<P>
+Note that the ranks of arMaskIn (if specified) and that of the input
+FITS file have to be identical.
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

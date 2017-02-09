@@ -1,0 +1,202 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="eimsimprep">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eimsimprep.css">
+
+<LINK REL="next" HREF="node12.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="eimsimprep.html">
+<LINK REL="next" HREF="node12.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eimsimprep (eimsim-2.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node10.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Add bits and bobs"></A>
+<A HREF="eimsimprep.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eimsimprep.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="eimsimprep:description:parameters"></A>
+<A NAME="759"></A>
+<tr valign=top bgcolor='silver'><td><b>obsidroots</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>.</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    A list of directory names. For each member of the list, the task constructs subdirectory names by appending `/' followed respectively by the strings in <TT>prdssubdir</TT> and <TT>simopsubdir</TT>. Please see the respective parameter descriptions for further information.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="770"></A>
+<tr valign=top bgcolor='silver'><td><b>entrystage</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>makeskymasks</td><td>detprep-makeskymasks-makenonvig-makebkgmap-sensmaps-addskyarea-cleanup</td></tr>
+
+<tr valign=top><td colspan=5>
+    This allows the user to enter the <A NAME="778"></A><A NAME="tex2html44"
+  HREF="../eimsimprep/index.html"><SPAN  CLASS="textbf">eimsimprep</SPAN></A>
+script at one of several places in its processing sequence.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="782"></A>
+<tr valign=top bgcolor='silver'><td><b>finalstage</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>detprep</td><td>detprep-makeskymasks-makenonvig-makebkgmap-sensmaps-addskyarea-cleanup</td></tr>
+
+<tr valign=top><td colspan=5>
+    This allows the user to exit the <A NAME="790"></A><A NAME="tex2html45"
+  HREF="../eimsimprep/index.html"><SPAN  CLASS="textbf">eimsimprep</SPAN></A>
+script at one of several places in its processing sequence.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="794"></A>
+<tr valign=top bgcolor='silver'><td><b>refband</b></td><td>no</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Where only one file is required out of a set spanning several energy bands, for example an exposure map to be used to create a detection mask, the band used is specified by this parameter.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="801"></A>
+<tr valign=top bgcolor='silver'><td><b>bkgstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>srcspecset</td><td>user-products-srcspecset</td></tr>
+
+<tr valign=top><td colspan=5>
+    Permits several ways to generate background maps.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="808"></A>
+<tr valign=top bgcolor='silver'><td><b>bkgrates</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>5.0e-7</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>bkgstyle</TT>=`user'. This is a list parameter, which must either have a single entry, or 1 entry for each energy band in the <A NAME="819"></A><TT>FLUX_SCALES</TT> table of the source template set <TT>srcspecset</TT>. The units are counts per image pixel per second.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="822"></A>
+<tr valign=top bgcolor='silver'><td><b>vigfractions</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>0.2</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>bkgstyle</TT>=`user'. It is a list parameter, which must have the same number of elements as <TT>bkgrates</TT>. The elements, which must be fractions between 0 and 1, represent the fraction of the background amplitude which is to be multiplied by the vignetting function for that band. This vignetted component represents that part of the instrumental background which comprises real x-rays. The non-vignetted remainder represents that part of the instrumental background which is caused by unvignetted cosmic rays and weakly vignetted soft protons.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="833"></A>
+<tr valign=top bgcolor='silver'><td><b>prdssubdir</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>product</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    For each member of the list <TT>obsidroots</TT>, the task constructs subdirectory names by appending `/' followed by the string in <TT>prdssubdir</TT>. The task expects to find input files in the <TT>prdssubdir</TT> subdirectory, namely a set of template files in the form of XMM products (see section <A HREF="#eimsim:description:inputfiles"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/crossref.png"></A> for a detailed description). Product templates from only 1 observation may be present in any one <TT>prdssubdir</TT> subdirectory.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="849"></A>
+<tr valign=top bgcolor='silver'><td><b>simopsubdir</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>sim_output</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    For each member of the list <TT>obsidroots</TT>, the task constructs subdirectory names by appending `/' followed by the string in <TT>simopsubdir</TT>. The task writes observation-specific outputs to this directory.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="860"></A>
+<tr valign=top bgcolor='silver'><td><b>simgensubdir</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>sim_generic</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The task writes non-observation-specific output to this directory.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="867"></A>
+<tr valign=top bgcolor='silver'><td><b>pseudoprodsubdir</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>pseudo_product</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter has a similar function to <TT>simopsubdir</TT>, but is intended solely to contain the non-vignetted exposure maps which are created by the present task.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="876"></A>
+<tr valign=top bgcolor='silver'><td><b>padsizearcsec</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>100</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    See section <A HREF="node4.html#eimsimprep:description:makeskymasks">2.2</A> for a description of this parameter.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="884"></A>
+<tr valign=top bgcolor='silver'><td><b>srcspecset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>srcspec.fits</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This is the name of a FITS dataset which contains specification of the source probability distributions and also band-related specifications. See section <A HREF="node13.html#eimsimprep:description:inputfiles">5</A> for a detailed description. Example files can be found in <TT>$SAS_DIR/lib/data/eimsimdata/</TT> .
+  <br>&nbsp;</td></tr>
+
+  <A NAME="893"></A>
+<tr valign=top bgcolor='silver'><td><b>dettaskstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>auto</td><td>user|auto</td></tr>
+
+<tr valign=top><td colspan=5>
+    The user is able to specify which source detection program or script should be used by the simulations. The user may either choose between alternatives provided in the package, or write their own source-detection script. Matters are somewhat complicated by the need also to provide a `detection preparation' script to <A NAME="909"></A><A NAME="tex2html46"
+  HREF="../eimsimprep/index.html"><SPAN  CLASS="textbf">eimsimprep</SPAN></A>. The preparation and detection scripts must match. Some guidance for coordinating these choices at package level is given in the <A NAME="913"></A><A NAME="tex2html47"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+package documentation. If <TT>dettaskstyle</TT> is left at its default of `auto', <A NAME="918"></A><A NAME="tex2html48"
+  HREF="../eimsimprep/index.html"><SPAN  CLASS="textbf">eimsimprep</SPAN></A>
+reads the detection style code from the parameter <TT>dettype</TT>. This code, which dictates which preparation script to run, is written to a file in the PWD called `eimsim_config', for later reading by <A NAME="923"></A><A NAME="tex2html49"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>. If on the other hand <TT>dettaskstyle</TT> is set to `user', <A NAME="928"></A><A NAME="tex2html50"
+  HREF="../eimsimprep/index.html"><SPAN  CLASS="textbf">eimsimprep</SPAN></A>
+reads the name of the preparation task directly from the parameter <TT>detpreptask</TT>.
+
+<br>&nbsp;</td></tr>
+
+  <A NAME="933"></A>
+<tr valign=top bgcolor='silver'><td><b>dettype</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>2xmm</td><td>1xmm|2xmm</td></tr>
+
+<tr valign=top><td colspan=5>
+    A code which indicates which source-detection scheme the simulation is to use.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="940"></A>
+<tr valign=top bgcolor='silver'><td><b>detpreptask</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>eimsimdetprep2xmm</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>dettaskstyle</TT> is set to `user'. It gives the name of the task or script which is to perform any necessary once-only preparation for the source detection task. The user may either choose between alternatives provided in the package, or write their own task. For users wishing to `roll their own', a description of the `handshaking' required of such a task is given in section <A HREF="node3.html#eimsimprep:description:detprep">2.1</A>.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="950"></A>
+<tr valign=top bgcolor='silver'><td><b>astest</b></td><td>no</td><td><A HREF=../param/node3.html>bool</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If `yes', no tasks are called except the <TT>detpreptask</TT> script, which is also passed this parameter value to allow it to do the same.
+  <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node10.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Add bits and bobs"></A>
+<A HREF="eimsimprep.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

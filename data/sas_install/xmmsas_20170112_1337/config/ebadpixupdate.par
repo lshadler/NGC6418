@@ -1,0 +1,91 @@
+<!-- XMM SAS parameter file for ebadpixupdate -->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="eventset" type="dataset" mandatory="yes" default="">
+   <DESCRIPTION>
+    Input event file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="overwrite" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    Replace bad pixels with the new ones (rather than adding the new ones)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="replaceonboard" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    Replace bright pixels declared on-board
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="forcereplace" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    Force replacing the existing bad pixels when the check would not let you
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="fromccf" type="bool" mandatory="no" default="yes">
+   <DESCRIPTION>
+    Read bad pixels from CCF
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="ccds" type="int" list="yes" mandatory="no" default="0">
+      <DESCRIPTION>
+       List of CCDs to update
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       ccds in [0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="fromfiles" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    Read bad pixels from files
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="badpixtables" type="table" list="yes" mandatory="no" default="">
+      <DESCRIPTION>
+       Input bad pixels tables
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

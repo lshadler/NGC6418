@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>General structure</TITLE>
+<META NAME="description" CONTENT="General structure">
+<META NAME="keywords" CONTENT="edetect_stack">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="edetect_stack.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+edetect_stack (edetect_stack-0.1.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Input parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="edetect_stack.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000"></A>
+<A NAME="edetect_stack:description:description:general"></A>
+<BR>
+General structure
+</H2>
+
+<P>
+General structure of <A NAME="2284"></A><A NAME="tex2html11"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>, starting from event lists,
+
+attitude information and ODF summary files:
+
+<P>
+
+<UL>
+<LI>sort input files and determine the number of different pointings
+</LI>
+<LI>set up the common coordinate system: choose reference coordinates
+      and image size from the pointing coordinates and the position angles of
+      the input files (if not explicitly given by the user)
+</LI>
+<LI>check whether all imput pointings are overlapping: If the field of
+      view of an input pointing is not overlapping with any other field by at
+      least 3arcmin in radius, <A NAME="2288"></A><A NAME="tex2html12"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>
+exits with an error. If
+      the full fields of view are overlapping, but a pointing is not
+      overlapping with the user-chosen area of interest (reference coordinates
+      &amp; image size), this pointing is ignored, and a warning ist thrown.
+</LI>
+<LI>project the input event lists onto the reference coordinate system
+</LI>
+<LI>prepare the input files to source detection per pointing
+      (<SPAN  CLASS="textit">stages <SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$2-7$"></SPAN></SPAN>, see below)
+</LI>
+<LI>perform stacked source detection on all pointings simultaneously
+</LI>
+<LI>create the final source list, which includes information on the
+      detections in the individual pointings and all-EPIC, and a
+      summary source list, which includes one all-EPIC row per valid detection.
+  
+</LI>
+</UL>
+
+<P>
+Each input image is combined with its respective background image, exposure
+  map, and detection mask. Within a cut-out radius about each tentative
+  detection, the appropriate PSFs are chosen for all valid images, as
+  illustrated in Fig. <A HREF="#edetect_stack:description:fig:psfs">1</A>, and source
+  position, counts, and extent are fit simultaneously.
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="edetect_stack:description:fig:psfs"></A><A NAME="1840"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 1:</STRONG>
+Combining the PSFs of different instruments and observations
+      (offset angles) within the source cut-out radius.
+    </CAPTION>
+<TR><TD><IMG
+ WIDTH="177" HEIGHT="2" BORDER="0"
+ SRC="img3.png"
+ ALT="\begin{figure}\centering
+\psfig{figure=PSFstack.eps,height=9cm,angle=270}
+\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Input parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

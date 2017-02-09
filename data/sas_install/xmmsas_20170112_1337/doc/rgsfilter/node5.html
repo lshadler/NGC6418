@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Combined Exposure Map</TITLE>
+<META NAME="description" CONTENT="Combined Exposure Map">
+<META NAME="keywords" CONTENT="rgsfilter">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsfilter.css">
+
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsfilter (rgsfilter-1.18.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Node-specific Exposure Maps"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsfilter.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000">
+Combined Exposure Map</A>
+</H2>
+
+<P>
+The combined exposure map covers the area defined by <A NAME="775"></A><A NAME="tex2html10"
+  HREF="../rgsangles/index.html"><SPAN  CLASS="textbf">rgsangles</SPAN></A>
+as the minimum and maximum legal values (<A NAME="779"></A><TT>TLMIN</TT> and <A NAME="781"></A><TT>TLMAX</TT>)
+ for <A NAME="783"></A><TT>BETA_CHANNEL</TT> or <A NAME="785"></A><TT>MLAMBDA_CHANNEL</TT> and
+ <A NAME="787"></A><TT>XDSP_CHANNEL</TT>.  This means that in general the combined map
+ will extend well beyond the exposed surface of the focal plane.  Even
+ so it is nevertheless possible for the camera to drift outside these
+ bounds, and in that case the combined exposure map is truncated with
+ respect to the aggregate of node-specific maps (which are aligned to
+ the same grid but not confined by it).  The warning emitted in this
+ unlikely circumstance will most likely indicate a serious problem
+ with the aspect correction or GTI filtering.  The combined map is
+ output to its own dataset, separate from the event list.
+
+<P>
+Since <A NAME="789"></A><A NAME="tex2html11"
+  HREF="../rgsangles/index.html"><SPAN  CLASS="textbf">rgsangles</SPAN></A>
+sets <A NAME="793"></A><TT>TLMIN</TT>=1, event channel coordinates
+ can be located on the combined map without any change of origin.  As
+ in the node-specific exposure maps, the transformation from map
+ coordinates to angular coordinates is:
+
+<P>
+<P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{eqnarray*}
+\beta & = & 
+ -->
+<IMG
+ WIDTH="273" HEIGHT="52" BORDER="0"
+ SRC="img14.png"
+ ALT="\begin{eqnarray*}
+\beta &amp; = &amp; \index{Attributes!CDELT1}{\tt CDELT1} \cdot ( b -...
+...s!CRPIX2}{\tt CRPIX2} ) + \index{Attributes!CRVAL2}{\tt CRVAL2}
+\end{eqnarray*}"></DIV>
+<BR CLEAR="ALL"><P></P>
+<BR CLEAR="ALL"><P></P>
+
+<P>
+The combined map does not define a linear transformation from map
+ coordinates to chip coordinates.  Instead, the approximate mapping of
+ the node boundaries is preserved as a linear transform on the
+ dispersion coordinate:
+
+<P>
+<P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{eqnarray*}
+n    & = & 
+ -->
+<IMG
+ WIDTH="238" HEIGHT="96" BORDER="0"
+ SRC="img16.png"
+ ALT="\begin{eqnarray*}
+n &amp; = &amp; \index{Attributes!T\_BETA\_N}{\tt T\_BETA\_N} \cdot b...
+...ox{$n$\ is even}\\
+1, &amp; \mbox{$n$\ is odd} \end{array}\right.
+\end{eqnarray*}"></DIV>
+<BR CLEAR="ALL"><P></P>
+<BR CLEAR="ALL"><P></P>
+
+<P>
+The two parameters of the transform are attributes of the output
+ dataset.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Node-specific Exposure Maps"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

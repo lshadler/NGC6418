@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Setting bad channels</TITLE>
+<META NAME="description" CONTENT="Setting bad channels">
+<META NAME="keywords" CONTENT="specgroup">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="specgroup.css">
+
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+specgroup (specgroup-1.6) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Grouping options and examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node26.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="specgroup.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000"></A>
+<A NAME="specgroup:description:badchans"></A>
+<BR>
+Setting bad channels
+</H2>
+
+<P>
+The quality of spectral channels may be set to bad by choosing the appropriate 
+option. If set bad, channels will not be considered when grouping channels 
+with one of the statistical methods. However, if a range or regular 
+binning is specified which includes these bins then this will take
+precedence and the quality of these channels will be set to good.
+
+<P>
+The options are:
+
+<P>
+<BR>
+<IMG
+ WIDTH="360" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="\begin{code}{\em
+specgroup spectrumset=srcspec.ds setbad=CCF
+}\end{code}">
+<BR>
+
+<P>
+in which case the channels to exclude from spectral fitting will be
+read from a calibration file.
+
+<P>
+<BR>
+<IMG
+ WIDTH="449" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="\begin{code}{\em
+specgroup spectrumset=srcspec.ds setbad='0:10,790:799'
+}\end{code}">
+<BR>
+
+<P>
+in which case the channels from 0 to 10 and 790 to 799 will be set bad.   
+
+<P>
+<BR>
+<IMG
+ WIDTH="561" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="\begin{code}{\em
+specgroup spectrumset=srcspec.ds setbad='0:0.2,10.0-15.0' units=KEV
+}\end{code}">
+<BR>
+
+<P>
+in which case the channels with energy between 0 and 0.2 keV or
+10 and 15 keV will be set to bad.
+
+<P>
+<BR>
+<IMG
+ WIDTH="349" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="\begin{code}{\em
+specgroup spectrumset=srcspec.ds setbad=no
+}\end{code}">
+<BR>
+
+<P>
+in which case no channels will be excluded before the spectrum is grouped.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Grouping options and examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node26.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

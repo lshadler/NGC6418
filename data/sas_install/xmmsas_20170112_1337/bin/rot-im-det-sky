@@ -1,0 +1,182 @@
+#! /usr/bin/perl -w
+
+use SAS;
+require "esas_parameters_init.pl";
+require "esas_GVariables.pm";
+
+  print "   \n";
+  $task="rot-im-det-sky";
+  $version="3.1";
+  $date="2011-02-10";
+  $author="S. L. Snowden";
+  print "Task: $task \n";
+  print "Version: $version\n";
+  print "Date: $date\n";
+  print "Author: $author\n";
+
+#.. Create object to store parameters
+#.. Define Global Variables
+  use vars qw($gv);
+    
+  $gv = esas_GVariables->new();   
+    
+#.. Init Program Parameters
+  &rotimdetsky_parameters_init(@ARGV);
+
+  open (JUNK_HNDL,">>command.csh"); 
+
+  $prefix=$gv->ROTIM_prefix;
+  $elow=$gv->ROTIM_elow;
+  $ehigh=$gv->ROTIM_ehigh;
+  $mode=$gv->ROTIM_mode;
+  $mask=$gv->ROTIM_mask;
+  $clobber=$gv->ROTIM_clobber;
+  
+  $de=substr($prefix,0,1);
+
+  if(($de eq 'S') or ($de eq 'U')){ 
+    $det='PN';
+    $de='3';
+  } elsif($de == '1'){ 
+    $det='EMOS1';
+  } else {
+    $det='EMOS2';
+  }
+
+  print "prefix: $prefix\n";
+  print "elow: $elow\n";
+  print "ehigh: $ehigh\n";
+  print "det: $det\n";
+  print "de: $de\n";
+  print "mode: $mode\n";
+  print "mask: $mask\n";
+  print "clobber: $clobber\n";
+
+  if(($mode eq 4) or ($mode eq 5)){
+    $imfile="mos".$prefix."-obj-image-sky.fits[0]";
+    $imset="mos".$prefix."-obj-image-sky.fits";
+  } else {
+    if(($de == '1') || ($de == '2')){
+      $imfile="mos".$prefix."-obj-im-".$elow."-".$ehigh.".fits[0]";
+      $imset="mos".$prefix."-obj-im-".$elow."-".$ehigh.".fits";
+    } else {
+      $imfile="pn".$prefix."-obj-im-".$elow."-".$ehigh.".fits[0]";
+      $imset="pn".$prefix."-obj-im-".$elow."-".$ehigh.".fits";
+    }
+  }
+
+  print "imfile: $imfile\n";
+  print "   \n";
+
+  system "fkeypar $imfile CRVAL1";
+  $crval1=`pget fkeypar value`;
+  chomp($crval1);
+  $crval1=1.0*$crval1;
+  print "CRVAL1 Right Ascension: $crval1\n";
+
+  system "fkeypar $imfile CRVAL2";
+  $crval2=`pget fkeypar value`;
+  chomp($crval2);
+  $crval2=1.0*$crval2;
+  print "CRVAL2 Declination: $crval2\n";
+
+  system "fkeypar $imfile PA_PNT";
+  $pa_pnt=`pget fkeypar value`;
+  chomp($pa_pnt);
+  $pa_pnt=1.0*$pa_pnt;
+  print "PA_PNT rotation angle: $pa_pnt\n";
+
+  system "fkeypar $imfile INSTRUME";
+  $inst=`pget fkeypar value`;
+  chomp($inst);
+  print "INSTRUME: $inst\n";
+
+  system "fkeypar $imfile DATE-OBS";
+  $date=`pget fkeypar value`;
+  chomp($date);
+  print "DATE-OBS: $date\n";
+
+  system "fkeypar $imfile CRPIX1";
+  $crpix1=`pget fkeypar value`;
+  chomp($crpix1);
+  $crpix1=1.0*$crpix1;
+  print "CRPIX1 Sky X Pixel: $crpix1\n";
+
+  system "fkeypar $imfile CRPIX2";
+  $crpix2=`pget fkeypar value`;
+  chomp($crpix2);
+  $crpix2=1.0*$crpix2;
+  print "CRPIX2 Sky Y Pixel: $crpix2\n";
+
+#  print "$crval1 $crval2 \n";
+#  print "   \n";
+
+#  $crval1=2.66562875000000E+02;
+#  $crval2=-1.22426666666667E+01;
+
+#  $crval1s=$crval1 - 0.024 ;
+#  $crval2s=$crval2 - 0.016 ;
+
+#  Run the esky2det SAS task
+
+  $comm="esky2det datastyle=user ra=".$crval1." dec=".$crval2." outunit=det". 
+    " withheader=no calinfostyle=set calinfoset=".$imset." verbosity=0" ;
+
+#  $comm="esky2det datastyle=user ra=".$crval1." dec=".$crval2." outunit=det ".
+#    "withheader=no calinfostyle=user scattra=".$crval1s." scattdec=".$crval2s.
+#    " scattapos= instrument=".$inst." datetime=".$date." verbosity=0" ;
+ 
+#  print "$crval1 $crval2 \n";
+
+  print JUNK_HNDL "$comm\n";
+  print JUNK_HNDL "   \n";
+  print "$comm\n";
+  print "   \n";
+
+  $output = `$comm`;
+
+#  Extract the values from esky2det, these are the 
+#  reference DETX, DETY coords
+
+#  print "$output\n";
+#  @values = split(/\s+/,$output);
+
+  $output =~ s/^\s+//; # gets rid of leading blank space
+  @values = split(/\s+/,$output);
+
+  $dxcen = $values[0];
+  $dycen = $values[1];
+
+#  $dxcen = $values[1];
+#  $dycen = $values[2];
+#  $dxcen = 0.0;
+#  $dycen = 0.0;
+
+
+#  Make the values useful
+
+  $dxcen=1.00001*$dxcen;
+  $dycen=1.00001*$dycen;
+
+  print "Reference Detector DETX Coord: $dxcen\n";
+  print "Reference Detector DETY Coord: $dycen\n";
+  print "   \n";
+
+#  $dxcen=138.7;
+#  $dycen=-216.4;
+
+#  print "Reference Detector DETX Coord: $dxcen\n";
+#  print "Reference Detector DETY Coord: $dycen\n";
+#  print "   \n";
+
+#  Run the program rot-det-sky to do the heavy lifting
+#  of the rotation
+
+  $comm="rot_det_sky mode=".$mode." prefix=".$prefix." elow=".$elow." ehigh=".$ehigh.
+      " detx=".$dxcen." dety=".$dycen." skyx=".$crpix1." skyy=".$crpix2.
+      " maskfile=".$mask." clobber=".$clobber ;
+  print JUNK_HNDL "$comm\n";
+  print JUNK_HNDL "   \n";
+  print "$comm\n";
+  print "   \n";
+  system "$comm";

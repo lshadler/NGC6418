@@ -1,0 +1,477 @@
+#! /usr/bin/perl -w
+
+  print "   \n";
+  $task="mos-filter";
+  $version="4.01";
+  $date="2011-03-21";
+  $author="S. L. Snowden, based on code from K. D. Kuntz";
+  print "Task: $task\n";
+  print "Version: $version\n";
+  print "Date: $date\n";
+  print "Author: $author\n";
+
+  open (JUNK_HNDL,">>command.csh"); 
+  
+  $good=substep();
+
+# Here is the first level subroutine (a bit of handle, redux, and flare)
+
+  sub substep{
+    {
+
+# Isolate each segment
+
+      print "   \n";
+      print "Step 1: Do Some Bookkeeping\n";
+      print "   \n";
+
+# Find which event lists were produced by emchain
+
+      $new_name="P??????????M?S???MIEVLI????.FIT";
+      system "ls $new_name > temp.list";
+      $new_name="P??????????M?U???MIEVLI????.FIT";
+      system "ls $new_name >> temp.list";
+      system "cat temp.list";
+
+      open (LIST_HNDL,"temp.list");
+      @file_list=<LIST_HNDL>;
+      close(LIST_HNDL);
+      $file_numb=@file_list;
+
+# Loop over the event lists
+
+      if($file_numb == 0){
+        print "No MOS observation segments\n";
+      } else {
+
+        $subo=0;
+        
+        open(CATF_HNDL,">>../../catalogue");
+        foreach $subo_name (@file_list) {
+          chomp($subo_name);
+          print "$subo $subo_name\n";
+          $ins_num=substr($subo_name,12,1);
+
+# Extract root names for the new files
+
+          $rot_name=substr($subo_name,12,5);
+          system "mv $subo_name mos".$rot_name.".fits";
+
+          system "fkeypar mos".$rot_name.".fits FILTER";
+          $filt=`pget fkeypar value`;
+          print "Filter: $filt \n";
+          chomp($filt);
+
+# Check for CalClosed observations
+
+          if($filt eq "'CalClosed'"){
+            print "CalClosed observation - Do Not Process \n";
+            system "mv mos".$rot_name.".fits mos".$rot_name."-cc-ori.fits" ;
+          } else {
+
+            $comm="espfilt eventset=mos".$rot_name.".fits" ;
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+
+# Rename a few files
+
+            $rotall_name=substr($subo_name,0,17);
+            $comm="mv ".$rotall_name."-objevlifilt.FIT mos".$rot_name."-clean.fits";
+            print "$comm\n";
+            system "$comm";
+            $comm="mv ".$rotall_name."-corevlifilt.FIT mos".$rot_name."-corn.fits";
+            print "$comm\n";
+            system "$comm";
+            $comm="mv ".$rotall_name."-objlc.FIT mos".$rot_name."-rate.fits";
+            print "$comm\n";
+            system "$comm";
+            $comm="mv ".$rotall_name."-corlc.FIT mos".$rot_name."-ratec.fits";
+            print "$comm\n";
+            system "$comm";
+            $comm="mv ".$rotall_name."-gti.FIT mos".$rot_name."-gti.fits";
+            print "$comm\n";
+            system "$comm";
+            $comm="mv ".$rotall_name."-gti.txt mos".$rot_name."-gti.txt";
+            print "$comm\n";
+            system "$comm";
+            $comm="mv ".$rotall_name."-hist.qdp mos".$rot_name."-hist.qdp";
+            print "$comm\n";
+            system "$comm";
+
+# Get some diagnostic information
+
+            system "fkeypar mos".$rot_name."-clean.fits REVOLUT";
+            $revl=`pget fkeypar value`;
+            system "fkeypar mos".$rot_name."-clean.fits DATE-OBS";
+            $date=`pget fkeypar value`;
+            system "fkeypar mos".$rot_name."-clean.fits FILTER";
+            $filt=`pget fkeypar value`;
+            system "fkeypar mos".$rot_name."-clean.fits SUBMODE";
+            $mode=`pget fkeypar value`;
+            system "fkeypar mos".$rot_name.".fits ONTIME";
+            $ontime=`pget fkeypar value`;
+            system "fkeypar mos".$rot_name."-clean.fits LIVETIME";
+            $liveti=`pget fkeypar value`;
+            print "Revolution: $revl \n";
+            print "Observation Date: $date \n";
+            print "Filter: $filt \n";
+            print "Observation Mode: $mode \n";
+            print "On Time: $ontime \n";
+            print "Live Time: $liveti \n";
+
+# Create some diagnostic images          
+     
+            $comm="evselect table=mos".$rot_name.".fits withimageset=yes ".
+              "imageset=mos".$rot_name."-obj-image-det-unfilt.fits xcolumn='DETX' ximagesize=780 ".
+              "ximagemax=19500 ximagemin=-19499 ycolumn='DETY' yimagesize=780 ".
+              "yimagemax=19500 yimagemin=-19499 imagebinning=imageSize";
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+
+            if (($ins_num eq "1") and ($revl ge 2383)) {
+              $comm="evselect table=mos".$rot_name."-clean.fits withimageset=yes ".
+                "imageset=mos".$rot_name."-obj-image-det-soft.fits xcolumn='DETX' ".
+                "ximagesize=780 filtertype=expression ".
+                "expression='(PI in [200:900])&&".
+                "(((FLAG & 0x766a0f63) == 0)||((FLAG & 0x766a0763) == 0))' ".
+                "ximagemax=19500 ximagemin=-19499 ycolumn='DETY' yimagesize=780 ".
+                "yimagemax=19500 yimagemin=-19499 imagebinning=imageSize" ;
+            } else {
+              $comm="evselect table=mos".$rot_name."-clean.fits withimageset=yes ".
+                "imageset=mos".$rot_name."-obj-image-det-soft.fits xcolumn='DETX' ".
+                "ximagesize=780 filtertype=expression ".
+                "expression='(PI in [200:900])&&((FLAG & 0x766a0f63) == 0)' ".
+                "ximagemax=19500 ximagemin=-19499 ycolumn='DETY' yimagesize=780 ".
+                "yimagemax=19500 yimagemin=-19499 imagebinning=imageSize" ;
+            }
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+            $comm="evselect table=mos".$rot_name."-clean.fits withimageset=yes ".
+              "imageset=mos".$rot_name."-obj-image-det.fits xcolumn='DETX' ximagesize=780 ".
+              "ximagemax=19500 ximagemin=-19499 ycolumn='DETY' yimagesize=780 ".
+              "yimagemax=19500 yimagemin=-19499 imagebinning=imageSize" ;
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+            $comm="evselect table=mos".$rot_name."-clean.fits withimageset=yes ".
+              "imageset=mos".$rot_name."-obj-image-sky.fits squarepixels=yes ignorelegallimits=yes ".
+              "withxranges=yes withyranges=yes xcolumn='X' ximagesize=900 ximagemax=48400 ".
+              "ximagemin=3401 ycolumn='Y' yimagesize=900 yimagemax=48400 ".
+              "yimagemin=3401 updateexposure=yes filterexposure=yes";
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+
+# Do some basic definitions
+
+            if($ins_num eq "1"){
+              $corndef="!(CIRCLE(100,-200,17700,DETX,DETY)".
+                   "||CIRCLE(834,135,17100,DETX,DETY)".
+                   "||CIRCLE(770,-803,17100,DETX,DETY)".
+                   "||BOX(-20,-17000,6500,500,0,DETX,DETY)".
+                   "||BOX(5880,-20500,7500,1500,10,DETX,DETY)".
+                   "||BOX(-5920,-20500,7500,1500,350,DETX,DETY)".
+                   "||BOX(-20,-20000,5500,500,0,DETX,DETY)".
+                   "||BOX(-12900,16000,250,4000,0,DETX,DETY)".
+                   "||BOX(80,18600,150,1300,0,DETX,DETY)".
+                   "||BOX(-10,-18800,125,1500,0,DETX,DETY))";
+            } else {
+              $corndef="!(CIRCLE(435,1006,17100,DETX,DETY)".
+                   "||CIRCLE(-34,68,17700,DETX,DETY)".
+                   "||BOX(-20,-17000,6500,500,0,DETX,DETY)".
+                   "||BOX(5880,-20500,7500,1500,10,DETX,DETY)".
+                   "||BOX(-5920,-20500,7500,1500,350,DETX,DETY)".
+                   "||BOX(-20,-20000,5500,500,0,DETX,DETY))";
+            }
+
+# Create the corner-only events file
+
+            if (($ins_num eq "1") and ($revl ge 2383)) {
+              $comm="evselect table=mos".$rot_name."-clean.fits:EVENTS withfilteredset=yes ".
+                "expression='(((FLAG & 0x766a0f63) == 0)||((FLAG & 0x766a0763) == 0))&&".
+                $corndef."' filteredset=mos".$rot_name."-corn.fits filtertype=expression ".
+                "keepfilteroutput=yes updateexposure=yes filterexposure=yes";
+            } else {
+              $comm="evselect table=mos".$rot_name."-clean.fits:EVENTS withfilteredset=yes ".
+                "expression='((FLAG & 0x766a0f63) == 0)&&".$corndef.
+                "' filteredset=mos".$rot_name."-corn.fits filtertype=expression ".
+                "keepfilteroutput=yes updateexposure=yes filterexposure=yes";
+            }
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+
+# Create the image of the corner-only events
+
+            $comm="evselect table=mos".$rot_name."-corn.fits withimageset=yes ".
+              "imageset=mos".$rot_name."-corn-image.fits xcolumn=DETX ycolumn=DETY ".
+              "imagebinning=imageSize ximagesize=600 yimagesize=600";
+            print "$comm\n";
+            print "   \n";
+            system "$comm";
+
+# Determine the count rate and hardness ratio
+
+            for($chip=2;$chip<=7;$chip++){
+            system "fkeypar mos".$rot_name."-clean.fits LIVETI0".$chip;
+            $livetii=`pget fkeypar value`;
+            if (($ins_num eq "1") and ($revl ge 2383)) {
+              $comm="evselect table=mos".$rot_name."-corn.fits:EVENTS withfilteredset=yes ".
+                "expression='(PATTERN<=12)&&!BOX(10167,13005,3011,6575,0,DETX,DETY)".
+                "&&(((FLAG & 0x766a0f63)==0)||((FLAG & 0x766a0763) == 0))".
+                "&&(CCDNR==".$chip.")&&(PI in [300:10000])' ".
+                "filtertype=expression filteredset=temp_events.fits keepfilteroutput=yes ".
+                "updateexposure=yes filterexposure=yes ";
+            } else {
+              $comm="evselect table=mos".$rot_name."-corn.fits:EVENTS withfilteredset=yes ".
+                "expression='(PATTERN<=12)&&((FLAG & 0x766a0f63)==0)".
+                "&&(CCDNR==".$chip.")&&(PI in [300:10000])' ".
+                "filtertype=expression filteredset=temp_events.fits keepfilteroutput=yes ".
+                "updateexposure=yes filterexposure=yes ";
+            }
+              print "$comm\n";
+              print "   \n";
+              system "$comm";
+              system "fkeypar temp_events.fits NAXIS2";
+              $corcou=`pget fkeypar value`;
+              chomp($corcou);
+              
+              if (($corcou > 0) and ($livetii > 0)){
+                $rate=$corcou/$livetii;
+                $sigrate=sqrt($corcou)/$livetii;
+                system "rm temp_events.fits";
+
+                if (($ins_num eq "1") and ($revl ge 2383)) {
+                  $comm="evselect table=mos".$rot_name."-corn.fits:EVENTS withfilteredset=yes ".
+                    "expression='(PATTERN<=12)&&!BOX(10167,13005,3011,6575,0,DETX,DETY)".
+                    "&&(((FLAG & 0x766a0f63)==0)||((FLAG & 0x766a0763) == 0))".
+                    "&&(CCDNR==".$chip.")&&(PI in [500:800])' ".
+                    "filtertype=expression filteredset=temp_events.fits keepfilteroutput=yes ".
+                    "updateexposure=yes filterexposure=yes ";
+                } else {
+                  $comm="evselect table=mos".$rot_name."-corn.fits:EVENTS withfilteredset=yes ".
+                    "expression='(PATTERN<=12)&&((FLAG & 0x766a0f63)==0)".
+                    "&&(CCDNR==".$chip.")&&(PI in [500:800])' ".
+                    "filtertype=expression filteredset=temp_events.fits keepfilteroutput=yes ".
+                    "updateexposure=yes filterexposure=yes ";
+                }
+                print "$comm\n";
+                print "   \n";
+                system "$comm";
+                system "fkeypar temp_events.fits NAXIS2";
+                $lowe=`pget fkeypar value`;
+                chomp($lowe);
+                system "rm temp_events.fits";
+
+                if (($ins_num eq "1") and ($revl ge 2383)) {
+                  $comm="evselect table=mos".$rot_name."-corn.fits:EVENTS withfilteredset=yes ".
+                    "expression='(PATTERN<=12)&&!BOX(10167,13005,3011,6575,0,DETX,DETY)".
+                    "&&(((FLAG & 0x766a0f63)==0)||((FLAG & 0x766a0763) == 0))".
+                    "&&(CCDNR==".$chip.")&&(PI in [2500:5000])' ".
+                    "filtertype=expression filteredset=temp_events.fits keepfilteroutput=yes ".
+                    "updateexposure=yes filterexposure=yes ";
+                } else {
+                  $comm="evselect table=mos".$rot_name."-corn.fits:EVENTS withfilteredset=yes ".
+                    "expression='(PATTERN<=12)&&((FLAG & 0x766a0f63)==0)".
+                    "&&(CCDNR==".$chip.")&&(PI in [2500:5000])' ".
+                    "filtertype=expression filteredset=temp_events.fits keepfilteroutput=yes ".
+                    "updateexposure=yes filterexposure=yes ";
+                }
+                print "$comm\n";
+                print "   \n";
+                system "$comm";
+                system "fkeypar temp_events.fits NAXIS2";
+                $hige=`pget fkeypar value`;
+                chomp($hige);
+              } else {
+                $lowe = 0;
+                $hard=0.0;
+                $sighard=0.0;
+                $rate=0.0;
+                $sigrate=0.0;
+             }
+              if ($lowe == 0){
+                $hard=0.0;
+                $sighard=0.0;
+                $rate=0.0;
+                $sigrate=0.0;
+              } else {
+                $hard=$hige/$lowe;
+                $sighard = sqrt($hige + $hige*$hige/$lowe)/$lowe;
+              }
+              $expid[$subo+1]=$rot_name;
+              $num=7*$subo+$chip;
+              $hard = sprintf("%.3f",$hard);
+              $hardarr[$num]=$hard;
+              $sighard = sprintf("%.3f",$sighard);
+              $sighardarr[$num]=$sighard;
+              $rate=100.0*$rate;
+              $rate = sprintf("%.3f",$rate);
+              $ratearr[$num]=$rate;
+              $sigrate=100.0*$sigrate;
+              $sigrate = sprintf("%.3f",$sigrate);
+#              $sigratearr[$num]=$sigrate;
+            }
+              
+
+# Rename the original file
+
+            system "mv mos".$rot_name.".fits mos".$rot_name."-ori.fits" ;
+
+            $subo=$subo+1;
+          }
+        }
+        close(CATF_HNDL);
+
+# Do some cleanup
+
+        system "rm -f temp.list";
+      }
+
+# End of the local environment
+
+    }
+
+    $space="    ";
+    for($exp=0;$exp<=$subo-1;$exp++){
+      $det=substr($expid[$exp+1],0,1);
+      print "$expid[$exp+1]\n";
+      for($chip=2;$chip<=7;$chip++){
+        $num=7*$exp+$chip;
+        if($det == 1){
+          if($chip==4){
+            if($ratearr[$num] < 5.0){
+               $temphard=0.90;
+            } else {
+              if($ratearr[$num] < 7.0){
+                $temphard=0.25*$ratearr[$num] - 0.35;
+              } else {
+                $temphard=1.4;
+              }
+            }
+            $tr=$temphard;
+            $tr = sprintf("%.2f",$tr);
+            if(($hardarr[$num]+$sighardarr[$num])<$tr){
+              print "$space Limit=$tr CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ****\n";
+              print JUNK_HNDL "$space # Limit=$tr CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ****\n";
+            } else {
+              if(($hardarr[$num]-$sighardarr[$num])>=$tr){
+                print "$space Limit=$tr CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num]\n";
+                print JUNK_HNDL "$space # Limit=$tr CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num]\n";
+              } else {
+                print "$space Limit=$tr CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ####\n";
+                print JUNK_HNDL "$space # Limit=$tr CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ####\n";
+              }
+            }
+          } else {
+            if($chip==5){
+              $temphard=1.44 + 0.074*$ratearr[$num];
+              $tr=$temphard;
+              $tr = sprintf("%.2f",$tr);
+#              print "$chip $ratearr[$num] $tr $hardarr[$num] $sighardarr[$num] \n";
+              if(($hardarr[$num]+$sighardarr[$num])<$tr){
+                print "$space Limit=$tr CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ****\n";
+                print JUNK_HNDL "$space Limit=$tr CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ****\n";
+              } else {
+                if(($hardarr[$num]-$sighardarr[$num])>=$tr){
+                  print "$space Limit=$tr CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num]\n";
+                  print JUNK_HNDL "$space # Limit=$tr CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num]\n";
+                } else {
+                  print "$space Limit=$tr CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ####\n";
+                  print JUNK_HNDL "$space # Limit=$tr CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ####\n";
+                }
+              }
+            } else {
+              if(($hardarr[$num]+$sighardarr[$num])<1.0){
+                print "$space Limit=1.0 CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ****\n";
+                print JUNK_HNDL "$space # Limit=1.0 CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ****\n";
+              } else {
+                if(($hardarr[$num]-$sighardarr[$num])>=1.0){
+                  print "$space Limit=1.0 CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num]\n";
+                  print JUNK_HNDL "$space # Limit=1.0 CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num]\n";
+                } else {
+                  print "$space Limit=1.0 CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ####\n";
+                  print JUNK_HNDL "$space # Limit=1.0 CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ####\n";
+                }
+              }
+            }
+          }
+        } else {
+          if($chip==2){
+            if(($hardarr[$num]+$sighardarr[$num])<1.0){
+              print "$space Limit=1.0 CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ****\n";
+              print JUNK_HNDL "$space # Limit=1.0 CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ****\n";
+            } else {
+              if(($hardarr[$num]-$sighardarr[$num])>=1.0){
+                print "$space Limit=1.0 CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num]\n";
+                print JUNK_HNDL "$space # Limit=1.0 CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num]\n";
+              } else {
+                print "$space Limit=1.0 CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ####\n";
+                print JUNK_HNDL "$space # Limit=1.0 CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ####\n";
+              }
+            }
+          } else {
+            if($chip==5){
+              if($ratearr[$num] < 2.75){
+                $temphard=0.9;
+              } else {
+                if($ratearr[$num] < 7.2){
+                  $temphard=0.18*$ratearr[$num] + 0.4056;
+                } else {
+                  $temphard=1.7;
+                }
+              }
+              $tr=$temphard;
+              $tr = sprintf("%.2f",$tr);
+              if(($hardarr[$num]+$sighardarr[$num])<$tr){
+                print "$space Limit=$tr CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ****\n";
+                print JUNK_HNDL "$space # Limit=$tr CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ****\n";
+              } else {
+                if(($hardarr[$num]-$sighardarr[$num])>=$tr){
+                  print "$space Limit=$tr CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num]\n";
+                  print JUNK_HNDL "$space # Limit=$tr CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num]\n";
+                } else {
+                  print "$space Limit=$tr CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ####\n";
+                  print JUNK_HNDL "$space # Limit=$tr CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ####\n";
+                }
+              }
+            } else {
+              if(($hardarr[$num]+$sighardarr[$num])<1.0){
+                print "$space Limit=1.0 CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ****\n";
+                print JUNK_HNDL "$space # Limit=1.0 CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ****\n";
+              } else {
+                if(($hardarr[$num]-$sighardarr[$num])>=1.0){
+                  print "$space Limit=1.0 CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num]\n";
+                  print JUNK_HNDL "$space # Limit=1.0 CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num]\n";
+                } else {
+                  print "$space Limit=1.0 CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ####\n";
+                  print JUNK_HNDL "$space # Limit=1.0 CCD=$chip Hardness=$hardarr[$num] Uncertainty=$sighardarr[$num] ####\n";
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    print " \n";
+    print JUNK_HNDL "# CCD designated as being in an anomolous state: ****\n";
+    print "****  CCD designated as being in an anomolous state, or for MOS1 CCD #6 \n";
+    print "      after the CCD was lost to the micrometeorite hit.  \n";
+    print "      If other CCDs are in use and if data for E<1 keV are to be used \n";
+    print "      mos_spectra should be run excluding this CCD\n";
+    print " \n";
+    print JUNK_HNDL "# CCD possibly in an anomolous state (within 1 sigma): ####\n";
+    print "####  CCD possibly in an anomolous state (within 1 sigma of threshold) \n";
+    print "      The model QPB spectrum may be of questionable validity below ~1 keV, \n";
+    print "      the model above ~1 keV is valid.  If data for E<1 keV are to be \n";
+    print "      used, examine the results closely.  If necessary exclude this CCD \n";
+    print "      from further analysis (mos-spectra and mos_back). \n";
+
+    return $good;
+
+# End of the subroutine
+  }

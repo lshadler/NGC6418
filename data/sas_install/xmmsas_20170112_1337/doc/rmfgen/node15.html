@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Method</TITLE>
+<META NAME="description" CONTENT="Method">
+<META NAME="keywords" CONTENT="rmfgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rmfgen.css">
+
+<LINK REL="previous" HREF="node14.html">
+<LINK REL="up" HREF="node14.html">
+<LINK REL="next" HREF="node16.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rmfgen (rmfgen-2.5.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node14.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Correction of spectral distortion"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Correction of spectral distortion"></A>
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rmfgen.html">Home Page</A> / <A  HREF="node3.html">Description</A> / <A  HREF="node14.html">Correction of spectral distortion</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00039100000000000000">
+Method</A>
+</H3>
+The method developed for pile-up correction is motivated by the "pulser method"
+ which is used by laboratory measurements for quantitative pile up correction 
+(compare G.F. Knoll, Radiation Detection and Measurement, second addition, 
+1989, p. 620, quantitative correction for pile-up effects). 
+The method consists of mixing the output of an amplitude pulse generator 
+with the pulses from the detector. Pile-up is corrected according to 
+the ratio of generated pulses to measured (generated) pulses.
+
+<P>
+The detector response maps energies to events and their pulse invariant
+amplitude (charges). 
+<A NAME="762"></A><A NAME="tex2html21"
+  HREF="../rmfgen/index.html"><SPAN  CLASS="textbf">rmfgen</SPAN></A>
+calculates a pile-up-corrected detector response matrix through 
+tracing simulated charges that are added to the observed data through the 
+pn event reconstruction process.
+
+<P>
+Charge(s) for given energies are simulated by randomizing over 
+the detector response, over the point spread function and over the 
+pattern distribution. These simulated charge(s) are added to 
+the frames which contain the observed charges. <A NAME="766"></A><A NAME="tex2html22"
+  HREF="../rmfgen/index.html"><SPAN  CLASS="textbf">rmfgen</SPAN></A>
+then applies the 
+event reconstruction algorithm to each frame. Comparing the results of the 
+event reconstruction for the frames with and without added simulated 
+charge(s) allows mapping the energies against events and their 
+pulse invariant amplitude. Such simulations are performed many times for all 
+input energies and for all observed frames. To generate the detector 
+response matrix a sub-set of the traced charges is used 
+such that the distribution of number of events in the frames with 
+simulated charges equals the distribution of number of events in the observed 
+frames, i.e. the count rate corresponding to the frames used to generate 
+the detector response equals the observed count rate.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node14.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Correction of spectral distortion"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Correction of spectral distortion"></A>
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

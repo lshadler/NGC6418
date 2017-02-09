@@ -1,0 +1,926 @@
+ChangeLog for rgsproc
+=====================
+
+=======
+
+Version 1.34.7 - 2017-01-09 (AI)
+------------
+	+ Doc updated to include the choice parameter "badpixalgo".
+	This parameter enables the option "embadpixalgo" that
+	calls to "embadpixfind" task algorithm to filter 
+	hot pixels and columns.
+
+Version 1.34.6 - 2016-11-18 (AI)
+------------
+	+ Version number in Changelog fixed.
+
+Version 1.35.5 - 2016-11-18 (AI)
+------------
+	+ Parameter "order" forwarded to rgsrmfgen call.
+
+Version 1.34.4 - 2016-11-03 (AI)
+------------
+	+ New rgsrmfgen parameter (witheffectiveareacorrection) added.
+	
+Version 1.34.3 - 2016-01-13 (AI)
+------------
+	+ The test Boresight ccf file was corrupted because of a 
+	git upload problem. It has been replaced by a correct one.
+	
+Version 1.34.2 - 2015-12-22 (AI)
+------------
+	+ Update in rgsfluxser call to deal with separated RMF and ARF
+	files.
+	
+
+Version 1.34.1 - 2015-12-17 (RDS)
+------------
+	+ test/XMM_BORESIGHT_0000.CCF  - changed to ALGOID=1
+
+Version 1.34 - 2015-11-20 (AI)
+------------
+	+ New parameter "includeinputfifofull" to disable 
+	INPUT FIFO FULL HK filtering in hkgtigen
+	+ Parameter files updated to include the parameters included in ver
+	1.33
+	
+Version 1.33 - 2015-11-20 (AI)
+------------
+	+ new parameter "embadpixalgo" to enable embadpixfind algorithm in rgsbadpix
+	
+Version 1.32 - 2015-07-10 (AI)
+------------	
+        + New parameter "witharffiles" added to rgsrmfgen (fluxing stage).
+	+ Doc updated.
+	
+Version 1.31.3 - 2014-09-29 (AI)
+------------	
+	+ rgsproc harness test modified.
+
+Version 1.31.2 - 2014-09-29 (AI)
+------------	
+	+ Default parameter values for "withheliocentriccorr" and 
+	"withsunanglecorr" changed to "yes". SOC-SPR-7239 closed
+
+Version 1.31.1 - 2013-02-28 (AI)
+------------	
+	+ New parematers "withheliocentriccorr" and "withsunanglecorr"
+	added to rgsangles task. SOC-SCR-304
+	
+Version 1.31 - 2012-12-17 (AI)
+------------	
+        + New parameter "spectrumbinning" added to rgsfilter, 
+	rgsregions and rgsrmfgen call. This modification is related to SOC-SPR-6688
+	+ documentation updated.
+	
+Version 1.30.3 - 2012-05-21 (AI)
+------------
+	+ heliocentriccorr call added to the rgsproc chain.
+	+ New paremeter withheliocorr added
+	+ documentation updated
+	
+Version 1.30.2 - 2012-05-08 (AI)
+------------
+	+ (src/rgsproc.cc) rgslccorr call added to the processing chain.
+	+ New processing stage added to create time series (6:lightcurve)
+	+ Doc updated
+	
+Version 1.30.1 - 2010-12-22 (AI)
+------------
+	+ (src/rgsproc.cc) Small window mode checking. If any exposure is in SW mode, 
+	then background generation is skipped in rgsspectrum and in rgsfluxer 
+	this exposure is removed.
+	+ Doc updated
+	
+Version 1.30 - 2010-07-21 (AI)
+------------
+	+ (config/rgsproc.par) rgsfluxer default params updated.
+
+Version 1.29 - 2010-05-14 (AI)
+------------
+	+ doc updated. Parameter keepcool added.
+	
+Version 1.28.3 - 2010-04-08 (AI)
+------------
+	+ rgsbkgmodel generate the template in lambda or beta  depending on 
+	spectrumbinning parameter
+	
+Version 1.28.2 - 2010-04-01 (AI)
+------------
+	+ Default value of parameter "spectrumbinning" changed by "lambda".
+	+ documentation updated.
+
+Version 1.28.1 - 2010-03-26 (AI)
+------------
+	+ rgsangles parameters updated (SOC-SPR-6576)
+	
+Version 1.28 - 2010-02-25 (AI)
+------------
+	+ New parameter "withrectification" added to "rgsrmfgen" processing
+
+Version 1.27.2 - 2009-09-04 (AI)
+------------
+	+ Fixes to make rgsproc gcc-4.3 compliant.
+	
+Version 1.27.1 - 2009-05-29 (AI)
+------------
+        + New Parameters "xdspregions", "xdspbackground", "withpicutoff", "picutoff" 
+	from rgsregions available in rgsproc. SOC-SCR-241
+	
+Version 1.27 - 2009-05-08 (CG)
+------------
+	+ DEPEND updated - ssclib 4.8
+
+Version 1.26.3 - 2008-05-23 (AI)
+--------------
+	+ New parameter "spectrumbinning" in rgsspectrum stage, 
+	to enable the spectrum calculations in a wavelength grid.
+	
+Version 1.26.2 - 2007-09-13 (AI)
+--------------
+	+ Documentation updated. Update the entrystage and finalstage 
+	parameter values.
+
+Version 1.26.1 - 2007-05-25 (CG)
+--------------
+	+ dependency changed to cope with higher version of rgssources
+
+Version 1.26 - 2007-04-11 (CG)
+--------------
+	+ new (attfilter related) parameter added: "onlylastatt" - for taking
+	only the last 100 exposure attitude points for deriving the reference
+	position used by filtering.
+	SRC 226.
+
+Version 1.25 - 2006-11-22 (AI)
+--------------
+	+ (config/rgsproc.par & src/rgsproc.cc) rgsproc GUI shows the
+	entrystage and finalstage options unsorted (SOC-SPR-2527 fixed)
+	+ (config/rgsproc.par) rejflags default value added to the option list.
+	
+Version 1.24.1 - 2006-06-23 (CG)
+--------------
+	+ Default value for "withmlambdacolumn" set to "yes". 
+	
+Version 1.24 - 2006-05-23 (AI)
+------------
+	+ Default values for parameters "xpsfincl", "xpsfexcl",
+	"pdistincl" and "rejflags" changed.
+	
+Version 1.23 - 2006-05-22 (AI)
+------------
+	+ Parameter "withneweffare" changed for "withdyneffare"
+	Documentation updated.
+	
+Version 1.22 - 2006-05-17 (AI)
+------------
+	+ Parameter "pdistincl" now also uses in rgsbkgmodel.
+	  (test/ccf.cif) New entry EFFAREACORR CCF file.
+	
+Version 1.21 - 2006-03-10 (CG)
+------------
+	+ New parameter "keepcool" added (for calling rgsbadpix).
+	
+Version 1.20 - 2006-02-22 (AI)
+------------
+	+ New parameter "withneweffarea" added.
+	
+Version 1.19.20 - 2005-11-11 (CG)
+--------------
+	+ test harness EPIC SRCLIST file replaced due to change in rgssources:
+	extra column required 
+
+Version 1.19.11 - 2005-10-27 (AI)
+--------------
+	+ withdiagoffset default value changed to "yes" to follow the 
+	pipeline default values.
+
+Version 1.19.10 - 2005-08-04 (AMTP & AI)
+--------------
+	+ rgsfluxer bkg logic.
+	
+Version 1.19.9 - 2005-02-02 (CG)
+--------------
+	+ small correction in documentation  
+
+Version 1.19.8 - 2005-01-27 (CG)
+--------------
+	+ inclusion of ssclib, slatec, emsaplib, tabgtigen, dsplot in DEPEND 
+	  (SPR 2575 - forgotten in 1.19.7) 
+
+Version 1.19.7 - 2005-01-27 (CG)
+--------------
+	+ inclusion of dsslib in DEPEND (SPR 2575) 
+
+Version 1.19.6 - 2004-11-12 (AI)
+--------------
+	+ use of parameter "withbackgroundmodel" documented. 
+
+Version 1.19.5 - 2004-10-09 (EO)
+--------------
+	+ No changes to code. Changed the dependency on rgsbkgmodel 1.1 in
+          DEPEND (from 0.2). 
+
+Version 1.19.4 - 2004-10-04 (AI)
+--------------
+- New parameter "withbackgroundmodel" added. This parameter 
+  execute (rgsbkgmodel task).
+
+Version 1.19.3 - 2004-06-10 (CG&AI)
+--------------
+- In order to solve the errors during the mac execution, we had to:
+  + rgsproc.cc: Include header file tabgtigen.h.
+  + rgsproc.cc: Remove STRINGVECTOR definition. 
+  + rgsproc.cc:	We had to create the parameters using a vector<string> 
+                in stead of a char* in methods (Machine::evlistcomb) 
+                and (Machine::Machine)
+	
+Version 1.19.2 - 2004-03-15 (CG)
+--------------
+- Parameter list documentation changed due to problem in html version,
+  + 2 spurious parameters removed from .par file
+
+Version 1.19.1 - 2003-12-12 (CG)
+--------------
+- Use of parameter "withdiagoffset" documented.
+
+Version 1.19 - 2003-12-11 (CG)
+------------
+- Adding use of parameter "withdiagoffset": rgsenergy 2.0 
+
+Version 1.18 - 2003-10-31 (CG)
+------------
+- Again changing order of usedlibs for static build
+
+Version 1.17 - 2003-10-27 (CG)
+------------
+- Changing order of usedlibs for static build
+
+Version 1.16 - 2003-10-23 (CG)
+------------
+- Changing test case to avoid problems using old LINESPREADFUNC 
+
+Version 1.15 - 2003-09-05 (CG)
+------------
+- Issued because of problems with upload of former one 
+
+Version 1.14 - 2003-09-05 (CG)
+------------
+- minor change in documentation - SPR 2387
+
+Version 1.13 - 2003-06-27 (CG)
+------------
+- parameter description changed for getting logical order
+ 
+Version 1.12 - 2002-06-28 (JDR)
+------------
+- requires rgsrmfgen-1.1
+ 
+Version 1.11 - 2002-06-25 (JDR)
+------------
+- changed response matrix filename tag from 'matrix' to 'RSPMAT'
+ 
+Version 1.10 - 2002-06-17 (JDR)
+------------
+- requires: attfilter-1.0 and rgssources-5.21
+- hkgtigen invoked separately (redundantly) for every exposure
+- automatically copies EVENLI to merged if necessary when starting at 'filter'
+- bug fix: merged event list not required when starting at 'spectra'
+ 
+Version 1.9 - 2002-05-29 (JDR)
+-----------
+- requires: rgslib-1.29, rgsevents-3.10, rgsfilter-1.16, rgsspectrum-2.2
+- runs rgsrmfgen for every exposure, rather than just for each instrument
+- added ON_NODE_INTERFACE to --rejflags parameter default
+- replaced NEXT_TO_CCD_BORDER with ON_WINDOW_BORDER
+- added new parameters for rgsspectrum
+ 
+Version 1.8 - 2002-05-09 (JDR)
+-----------
+- requires: param-2.0, htrframes-1.1, rgsspectrum-2.2
+ 
+Version 1.7 - 2002-03-21 (JDR)
+-----------
+- requires htrframes-0.7 and rgslib-1.28 (full chip exposure in HTR)
+ 
+Version 1.6 - 2002-03-11 (JDR)
+-----------
+- returned mistakenly deleted EPIC.FIT in test harness
+ 
+Version 1.5 - 2002-03-08 (JDR)
+-----------
+- replaced EPIC.FIT in test harness with updated version
+- updated task description: ATTTSR and hkgti_ files not overwritten
+
+Version 1.4 - 2002-02-25 (JDR)
+-----------
+- added support for HTR mode data
+
+Version 1.3 - 2002-01-24 (JDR)
+-----------
+- replaced EPIC.FIT in test harness with updated version
+- set parameter defaults to produce analysis-grade response matrices
+
+Version 1.2 - 2002-01-16 (JDR)
+-----------
+- requires rgssources-3.15
+
+Version 1.1 - 2001-12-20 (JDR)
+-----------
+- requires oal-3.82
+- supports odfbrowser calling interface
+- accesses ODF only when strictly necessary
+
+Version 0.110 - 2001-11-15 (JDR)
+-------------
+- requires rgsframes-3.9 and rgsangles-4.3
+- fixed minor bug in fluxed spectrum file names
+
+Version 0.109 - 2001-11-08 (JDR)
+-------------
+- requires rgsenergy-1.1
+
+Version 0.108 - 2001-10-30 (JDR)
+-------------
+- requires rgssources-5.12
+- changed --instruments values to rgs1|rgs2
+
+Version 0.107 - 2001-10-10 (JDR)
+-------------
+- updated for parameter name changes in various sub-tasks
+
+Version 0.106 - 2001-09-28 (JDR)
+-------------
+- requires rgsfilter-1.6 and rgssources-5.6
+- added parameters --withprefix and --prefix
+- changed all of the output filenames; PPS convention is now default
+- added std namespace qualifiers
+
+Version 0.105 - 2001-09-21 (JDR)
+-------------
+- requires rgsfilter-1.5
+- no longer accepts an external attitude file
+- restructured GTI processing, including filtering the attitude file
+
+Version 0.104 - 2001-08-29 (JDR)
+-------------
+- requires rgsspectrum-1.1, rgsrmfgen-0.46 and rgsfluxer-0.16
+
+Version 0.103 - 2001-08-09 (JDR)
+-------------
+- requires rgsenergy-0.1 and rgsevents-3.1
+
+Version 0.102 - 2001-08-07 (JDR)
+-------------
+- requires rgssources-5.2
+
+Version 0.101 - 2001-08-03 (JDR)
+-------------
+- test harness: no longer sets SAS_CCF for itself, new EPIC source list
+- task description update completed
+
+Version 0.100 - 2001-07-27 (JDR)
+-------------
+- requires rgssources-5.0 and rgsangles-4.1
+- added housekeeping and attitude GTI filtering
+- added a fifth processing stage: "fluxing"
+- some minor changes to the parameter interface
+- reactivated the test harness
+- task description only partially updated
+
+Version 0.99 - 2001-06-18 (JDR)
+------------
+	+ updated for and requires rgsfilter-1.2
+	+ pending rgsframes update, renames GTI to STDGTI in intermediate lists
+	+ the CCD-specific GTI tables are no longer merged together
+
+Version 0.98.2 - 2001-06-08 (JDR)
+--------------
+	+ task description brought up to date
+
+Version 0.98.1 - 2001-05-03 (JDR)
+--------------
+	+ fixed bug due to unexpected OAL state change
+
+Version 0.98 - 2001-04-24 (JDR)
+------------
+	+ requires rgslib-1.12, rgsframes-3.4 and rgsangles-3.0
+	+ test harness temporarily disabled
+
+Version 0.97 - 2001-04-11 (JDR)
+------------
+	+ requires rgsframes-3.1 and rgssources-4.0
+
+Version 0.96 - 2001-04-05 (JDR)
+------------
+	+ removed --timepatch parameter
+
+Version 0.95 - 2001-03-23 (JDR)
+------------
+	+ original pipeline structure removed
+
+Version 0.94 - 2001-03-09 (JDR)
+------------
+	+ phasing out the original pipeline structure, still available
+	+    as non-default --experimental=no
+
+Version 0.93 - 2001-02-16 (JDR)
+------------
+	+ propagates REJPIX and EXPOSURE tables to combined event list
+	+ changed default parameters to: --withdubious=no --withedges=no
+
+Version 0.92 - 2001-02-07 (JDR)
+------------
+	+ updated for and requires rgsbadpix-2.1 (formerly xrgsbadpix)
+	+ --experimental parameter retained for private use
+
+Version 0.91 - 2001-01-12 (JDR)
+------------
+	+ same as previous, but only constructs symmetric regions
+
+Version 0.90 - 2001-01-12 (JDR)
+------------
+	+ updated for rgsregions-1.3
+
+Version 0.89 - 2001-01-04 (JDR)
+------------
+	+ fixed other problems due to rgsregions interface changes
+
+Version 0.88 - 2001-01-03 (JDR)
+------------
+	+ fixed error in parameter and layout files (re rgsregions)
+
+Version 0.87 - 2000-12-28 (JDR)
+------------
+	+ user may now select xrgsbadpix (default) or rgsbadpix
+
+Version 0.86 - 2000-12-01 (JDR)
+------------
+	+ requires rgslib-1.3 and rgsregions-0.2
+	+ no longer requires rgsregion
+	+ source selection parameters changed accordingly
+
+Version 0.85.2 - 2000-11-16 (JDR)
+--------------
+	+ updated documentation to reflect previous change
+
+Version 0.85.1 - 2000-11-16 (JDR)
+--------------
+	+ region coverage factor defaults increased (SPR 1852)
+
+Version 0.85 - 2000-11-03 (JDR)
+------------
+	+ requires rgslib-1.2
+	+ revised the parameter layout for a smaller window
+
+Version 0.84 - 2000-10-30 (JDR)
+------------
+	+ added --timepatch=no parameter
+
+Version 0.83.2 - 2000-10-27 (JDR)
+--------------
+	+ sets rgsframes parameter --timepatch to false
+
+Version 0.83.1 - 2000-10-25 (JDR)
+--------------
+	+ propagates the EVENTS:M_LAMBDA column correctly
+	+ makes spectra for all requested orders
+	+ task description and parameter layout updated
+	+ test harness 'simplechain' updated
+
+Version 0.83 - 2000-10-05 (GV)
+------------
+	+ fix test harness simplechain.
+
+Version 0.82 - 2000-09-20 (JDR)
+------------
+	+ added rgsbackreg
+	+ the event filtering expression is controled via rgsexposure
+	+ replaced evselect with rgsspectrum for making spectra
+	+ changed source spectrum file names
+	+ creates a background spectrum
+	+ parameters revised but layout not updated
+
+Version 0.81 - 2000-09-06 (JDR)
+------------
+	+ parameters revised for compatibility with rgssources-3.2
+	+ --processexposure parameter added for GTI reprocessing
+	+ --srcselectexpression controls spectrum generation
+
+Version 0.80 - 2000-08-15 (PV)
+------------
+	+ DEPEND updated
+
+Version 0.79 - 2000-08-14 (PV)
+------------
+	+ parameters renamed to work with rgssources-3.0
+        + parameter file needs cleanup.
+        + tests pass, but results not verified.
+
+Version 0.78 - 2000-08-09 (PV)
+------------
+	+ emsaplib removed from DEPEND
+
+Version 0.77 - 2000-07-28 (UL)
+------------
+	+ implemented SCR 1351: Add a parameter ``instruments'' in rgsproc
+	+ implemented SPR 1689: rgsproc has wrong xcolname and ycolname in the
+	  spectrum generation
+
+Version 0.76 - 2000-07-13 (PV)
+------------
+       + DEPEND on rgslib-1.0
+       + test/imageplot no longer needs the instrument as 3rd argument.
+	
+Version 0.75 - 2000-07-03 (PV)
+------------
+       + default changed to runevselectaschild=no (rgsproc.par SPR-1540)
+	
+Version 0.74 - 2000-06-30 (PV)
+------------
+       + adapted for rgssources-2.0 rgsangles-1.0
+       + daltools dependency removed
+    		
+Version 0.73.3 - 2000-06-15 (PV)
+------------
+       + added attributestocopy="BETA_REF BETA_WID" to evselect
+	spectrum generation call. (evselect-3.25.5)
+       + new parameter runevselectaschild as temporary work around for
+	evselect bus error (SPR 1540) (sorry for the interface change).
+	
+Version 0.73.2 - 2000-06-15 (PV)
+------------
+       + easier way to spawn evselect as child. SPR-1540
+
+Version 0.73.1 - 2000-06-15 (PV)
+------------
+       + patched to spawn evselect as child. workaround for SPR-1540
+
+Version 0.73 - 2000-05-29 (PV)
+------------
+       + updated for gtimerge-1.0
+       + updated for evselect-3.23 (keepfilteroutput=yes)
+	
+Version 0.72 - 2000-05-27 (GV)
+------------
+	+ updated DEPEND.
+
+Version 0.71 - 2000-05-24 (PV)
+------------
+       + re-added line containing withspectrumset=false to make it work
+	with param-1.54 does not implement closeParameters()
+	
+Version 0.70 - 2000-05-22 (PV)
+------------
+	+ typo rgsproc.cc (missing line: spikelimit=realParameter("spikelimit") )
+        + reset parameters after every task call (closeParameters)
+
+Version 0.69 - 2000-05-22 (PV)
+------------
+	+ parameter noiselimit=0 
+        + new parameter spikelimit=8.0 (hot pixel spike sharpness factor)
+        + BADPIX added to parameter "othertables"
+        + new parameter maxattributes=TLMAX TDMAX EXPOSURE
+        + new parameter spectralbinsize=1 (SPR 1303)
+        + work around for spectrum extraction bug. Reset evselect default. (withspectrumset=false)
+        + updated GUI layout file
+        + doc updated
+	+ .info file added
+	
+Version 0.68 - 2000-05-15 (PV)
+------------
+	+ selection expression inverted
+
+Version 0.67 - 2000-05-10 (PV)
+------------
+	+ testscript simplechain updated
+
+Version 0.66 - 2000-05-09 (PV)
+------------
+	+ fixed dscopyblock parameter problem
+	+ added test "simplechain" to testharness
+
+Version 0.65 - 2000-05-03 (PV)
+------------
+	+ DEPEND updated for rgsframes-1.0 rgssources-1.0
+
+Version 0.64 - 2000-04-29 (GV)
+------------
+	+ DEPEND contained wrong version for saslib (1.61 instead of 1.60).
+
+Version 0.63 - 2000-04-28 (GV)
+------------
+	+ re-uploaded.
+
+Version 0.62 - 2000-04-28 (GV)
+------------
+	+ DEPEND again.
+
+Version 0.61 - 2000-04-27 (GV)
+------------
+	+ DEPEND updated.
+
+Version 0.60 - 2000-04-25 (GV)
+------------
+	+ (src/Makefile) change order of libraries in USEDLIBS, moving
+	metatask towards th end of the list. This seems to prevent
+	segfaults on some machines (??).
+	
+Version 0.59 2000-04-20 (PV)
+------------
+	+ changed hardcoded parameter destruct=true in spectrum generation (requested by CE)
+
+Version 0.58 2000-04-19 (PV)
+------------
+	+ updated for rgsframes 0.50 (changed parameter names to set and outset)
+
+Version 0.57 2000-04-14 (PV)
+------------
+	+ changed parameter names rgsframes to sets and outsets
+
+	
+Version 0.56 2000-04-13 (MB/UL)
+------------
+	+ fixed the default selection expression awating a change in the 
+	  definition of XMMEA_RG (Marco Beijersbergen)
+	+ now properly uses the user-specified betabinning and xdispbinning (MB)
+	+ removed option attitudesource for rgsangles
+	+ brought in line with oal-3.50
+
+Version 0.55 2000-04-07 (Peter Videler)
+------------
+	+ updates for rgsframes 0.45
+	+ rgsgtifix removed
+	+ code to determine AUX file for rgsframes removed from rgsproc.cc
+	
+Version 0.54 2000-04-05 (Peter Videler)
+------------
+	+ dsrm dscopyblock dependency changed to combi-lib daltools
+	(requires daltools-0.17)
+	+ Layout file fixed. (SPR 1257 1245)
+	+ default reconstruct=yes (SPR 1252)
+	+ fixed withnew parameter (SPR 1247)
+	+ renamed parameter referenceframe referenceattitude (requires
+	rgsangles-0.48)
+	
+Version 0.53 2000-03-20 (Peter Videler)
+------------
+	+ typo dsslib version in DEPEND
+
+Version 0.52 2000-03-17 (Peter Videler)
+------------
+	+ obsolete ieeefp.h removed. (originally used for replacing NaN values)
+        + SAS_CCF set in test/runtest
+        + added dss to USEDLIBS
+	
+Version 0.51 2000-03-09
+------------
+	+ fix for non-contiguous exposure numbers (also released in 0.48.1) (MB)
+	+ upgraded to rgsangles-0.45 (0.44 with STime bug fixed) (PV)
+	+ upgraded to rgsregion-2.14 (MB)
+        + updated for new parameters rgsevents 2.2 (PV)
+	+ output filenames now retain the S/U/X flags (MB)
+	+ rgsregion source loop now done in rgsregion itself (MB)
+	+ added spectrum extraction (MB)
+
+Version 0.50 2000-02-28 (UL)
+------------
+	+ brought in line with oal-3.47
+
+Version 0.49 2000-02-22 (Peter Videler)
+------------
+	+ updated for parameters rgsangles-0.43
+
+Version 0.48
+------------
+	+ added XMMEA_RG to list of attributes to propagate
+	+ split test harness
+	+ default nbetaforxdisp set to 1000
+
+Version 0.47 2000-02-18 (Marco Beijersbergen)
+------------
+	+ use gtimerge instead of mgtime
+	+ evselect does not filter on GTIs, instead it filters on the OUTGTI
+          flag produced by rgsevents.
+	+ evselect operates on the combined event list.
+	+ changed output name rgsssourcelist.ds into rgssources.ds
+	+ more uniform output product names, also documented
+
+Version 0.46 2000-02-16 (Marco Beijersbergen)
+------------
+	+ fixed bug in 0.45: exposure maps were not propagated.
+
+Version 0.45 2000-02-16 (Marco Beijersbergen)
+-------------
+	+ fixed error in binning choice when calling rgsangles
+	+ uses same default reference angles as rgsangles
+	+ force rgsangles to use use the output of rgssources
+	+ specify fully qualified table for sourcelist
+	+ posref -> paref
+	+ new defaults nbetaforpi=50 and nbetaforxdisp=20
+	+ disable GTI handling in rgsexposure, and run rgsexpcomb
+	+ produce more keywords in rgsgtifix
+ 
+Version 0.44 2000-02-16 (Marco Beijersbergen)
+------------
+	+ made dozens of task parameters visible as rgsproc parameters
+	+ dummy fix for GTI format produced by rgsframes
+	+ uses gticomb to allow external GTI file
+	+ included filtering on RGS_REJECTION_MASK and GTIs
+	+ added loop of rgsregion over the sources in the source list
+	+ split functionality in three stages
+        + Because rgsexposure produces 0x0 exposure maps, and because
+          evlistcomb cannot handle them, the exposure maps cannot be propagated.
+          rgsexpcomb is disabled.
+	+ documentation updated, except the flow chart
+
+Version 0.43 2000-02-15 (Peter Videler)
+------------
+	+ documentation updated
+
+Version 0.42 2000-02-07 (Peter Videler)
+------------
+	+ badpix replaced by rgsbadpix-0.2 
+
+Version 0.41 2000-01-27 (Peter Videler)
+------------
+	+ DATE-OBS and DATE-END added to keywords propagated by evlistcomb.
+
+Version 0.40 2000-01-25 (Peter Videler)
+------------
+	+ selector added to dependencies (needed for rgsexposure)
+
+Version 0.39 2000-01-18 (Peter Videler)
+------------
+	+ rgsexpcomb (re)included again.
+
+Version 0.38 2000-01-16 (Marco Beijersbergen)
+------------
+	+ fixed DEPEND
+
+Version 0.37 2000-01-15 (Marco Beijersbergen)
+------------
+	+ upgraded to rgsexposure-1.1. Note that rgsframes does not yet
+          produce a GTI tabel, and rgsexposure does not read one.
+
+Version 0.36 2000-01-13 (PV)
+------------
+	+ histo should be histolib in DEPEND 
+
+Version 0.35 2000-01-10 (PV)
+------------
+	+ histo added to dependencies (needed for rgsoffsetcalc)
+
+Version 0.34 2000-01-07 (PV)
+------------
+	+ includes badpix (not rgsbadpixfind)
+        - rgsexpcomb commented out awaiting new upload
+	
+Version 0.33 1999-12-17 (PV)
+------------
+	+ includes rgsexpcomb
+	
+Version 0.32 1999-12-17 (PV)
+------------
+	+ includes rgssources. 
+	+ rgsregion no longer needs EPIC source list)
+        + includes rgsoffsetcalc
+	
+Version 0.31 1999-12-19 (Marco Beijersbergen)
+------------
+	+ implemented a workaround for in case emllist.ds is not present in
+	  the current directory, since it normally won't be.
+
+Version 0.30 1999-12-17 (PV)
+------------
+	+ includes rgsregegion. (needs EPIC source list)
+	
+Version 0.29 1999-11-19 (PV)
+------------
+	+ exposuremaps and table attributes added to evlistcomb.
+	+ dependency on emevents replaced by emsaplib
+
+Version 0.28 1999-11-10 (PV)
+------------
+	+ updated flow diagram (by CE)
+
+Version 0.27 1999-11-09 (PV)
+------------
+	+ includes rgsexposure evlistcomb
+
+Version 0.26 1999-10-21 (PV)
+------------
+	+ included task atthkgen
+	
+Version 0.25 1999-09-27 (CE)
+------------
+	+ updated flow diagram (doc/pipeline_flow.fig)
+
+Version 0.24 1999-09-17 (CE)
+------------
+	+ updated documentation with flow diagram
+	+ changed intermediate PIXELS table: SER --> SHAPE/GRADE
+	+ changed intermediate EVENTS table: deleted ENERGY
+
+Version 0.23 1999-09-09 (CE)
+------------
+	+ updated for new parameter names rgsangles
+	+ updated documentation with flow diagram (CE)
+
+Version 0.22 1999-09-10
+------------
+	+ updated documentation with flow diagram (CE)
+	+ updated documentation with event list tables
+
+Version 0.21 1999-08-11 (PV)
+------------
+	+ Depend file updated for rgsangles rgslib
+
+Version 0.20 1999-08-10 (PV)
+------------
+	+ rgswavelength replaced by rgsangles
+
+Version 0.19 1999-06-21 (PV)
+------------
+	+ fixed for rgsevents 1.0 and rgslib0.1 from COL
+
+Version 0.18 1999-06-14 (PV)
+------------
+	+ added rgsx to DEPEND
+
+Version 0.17 1999-06-11 (PV)
+------------
+	+ integrates rgsx rather then rgsevents and rgsenergy
+
+Version 0.16 1999-05-13 (GV)
+------------
+	+ bring in line with new error
+
+Version 0.15  14apr1999 (PV)
+------------
+- in line with OAL 3.11 interface change
+	
+Version 0.14 1999-04-08 (Marco Beijersbergen)
+------------
+- now uses the OAL instead of directory scanning.
+
+Version 0.13 1999-04-01 (PV)
+-----------
+- in line with saslib 1.30 (sasdal)
+
+Version 0.12 1999-03-15 (PV)
+-----------
+- export SAS_ODFDIR in test harness.
+
+Version 0.11 1999-03-12 (PV)
+-----------
+- inline with rgswavelength v0.15.  (setparameter odfdir taken out rgswavelength)
+
+Version 0.10 1999-02-18 (PV)
+-----------
+- changes for new f95 meta task support taskmain 1.20
+	
+Version 0.9 1999-02-11 (PV)
+-----------
+- included header file rgsproc.h.
+
+Version 0.8 1999-01-28 (PV)
+-----------
+- integrated rgsevlistcomb in rgsproc.
+	
+Version 0.7 1999-01-27 (PV)
+-----------
+- in line with rgsframes v0.6 (new parameters)
+		
+Version 0.6 1999-01-13 (PV)
+-----------
+
+- in line with new parameter names rgstasks
+	rgsframes v0.4
+	rgsevents v0.5
+        rgsenergy v0.5
+        rgswavelength v0.7  (requires odf)
+
+Version 0.5 1998-12-12
+-----------
+	+ another sync with the latest RGS tasks.
+
+Version 0.4 1998-10-27 (GV)
+-----------
+
+- bring in line with new RGS tasks (that require the cal)
+	
+Version 0.3 1998-10-27 (GV)
+-----------
+
+- modify test harness. It was failing with a shell error when the
+  variable ODF_DIR was not set.
+
+Version 0.2
+-----------
+	
+Version 0.1 (Marco Beijersbergen)
+-----------
+
+- Released for I&T to the SSC.
+- Directory structure created by pkgmaker.

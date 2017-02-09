@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>`Pipeline' mode</TITLE>
+<META NAME="description" CONTENT="`Pipeline' mode">
+<META NAME="keywords" CONTENT="gtialign">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="gtialign.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+gtialign (gtialign-2.10) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="`Generic' mode"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="gtialign.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000"></A>
+<A NAME="gtialign:description:pipeline"></A>
+<BR>
+`Pipeline' mode
+</H2>
+
+<P>
+This was the only mode of operation available before version 2.9. It is still the default.
+
+<P>
+In this mode, the <A NAME="370"></A><A NAME="tex2html2"
+  HREF="../gtialign/index.html"><SPAN  CLASS="textbf">gtialign</SPAN></A>
+task takes as input the GTI file to be aligned, and the event list to which the GTIs will eventually be applied.  There should be exposure extension(s) in the event list, which will contain the frame readout times for the events in this file. This data will be used to adjust the GTI start and stop times as described above.  The different CCDs in the instruments may have different frame integration start and stop times, so that the GTI file will have to be aligned separately for each CCD.  Note that the frame integration time for a particular CCD can also vary within a given exposure.
+
+<P>
+Depending on the convention used (as recorded in the <A NAME="374"></A><TT>TIMEPIXR</TT> keyword of the <A NAME="376"></A><TT>EVENTS</TT> extension), the times associated with individual events can be set to the beginning, end or middle of the frame readout intervals (or, in principle, any value in between).  This is also true of the exposure extension, which stores the frame readout times as an absolute time and an interval.  
+
+<P>
+In the case of the event times, this task adjusts the GTIs such that any event in a frame with a good GTI will be accepted, no matter where in the frame readout interval this time is set.
+
+<P>
+However, for the exposure information, it is necessary to know what convention is being used for storing frame timing information.  This will be determined by referring to the OGIP keyword <A NAME="378"></A><TT>TIMEPIXR</TT> in the header of the exposure extension.  A value of <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$0$"></SPAN> corresponds to time stamps referring to the beginning of the time interval, <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$1.0$"></SPAN> to the end of the time interval, etc.  If the keyword is not present, the default value is <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$0.5$"></SPAN>, i.e. the time stamp refers to the middle of the time interval.
+
+<P>
+The output of this task will be a <A NAME="tex2html3"
+  HREF="http://heasarc.gsfc.nasa.gov/docs/heasarc/fits.html">FITS</A>file, with a GTI extension for each CCD in the event list.  Each extension will have the name <A NAME="385"></A><TT>STDGTI<I>n</I></TT>, where <I>n</I> is the CCD number for that extension. Where deemed useful, the extension will also contain CCD specific keywords such as <A NAME="389"></A><TT>CCDID</TT>, <A NAME="391"></A><TT>CCDNODE</TT>, and <A NAME="393"></A><TT>FRMTIME</TT>.  The primary header of this file will contain all the standard XMM keywords, as copied from the original GTI file.
+
+<P>
+All GTI files will be OGIP compliant.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="`Generic' mode"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

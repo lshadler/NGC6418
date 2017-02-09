@@ -1,0 +1,1068 @@
+<!-- converted from XPI formatted "rgsproc.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="entrystage" type="string" default="1:events">
+   <DESCRIPTION>
+    (re)start processing at
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="1:events">
+    </ITEM>
+    <ITEM value="2:angles">
+    </ITEM>
+    <ITEM value="3:filter">
+    </ITEM>
+    <ITEM value="4:spectra">
+    </ITEM>
+    <ITEM value="5:fluxing">
+    </ITEM>
+    <ITEM value="6:lightcurve">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="finalstage" type="string" default="5:fluxing">
+   <DESCRIPTION>
+    conclude processing at
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="1:events">
+    </ITEM>
+    <ITEM value="2:angles">
+    </ITEM>
+    <ITEM value="3:filter">
+    </ITEM>
+    <ITEM value="4:spectra">
+    </ITEM>
+    <ITEM value="5:fluxing">
+    </ITEM>
+    <ITEM value="6:lightcurve">
+    </ITEM>    
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withinstexpids" type="bool" default="no">
+   <DESCRIPTION>
+    enable explicit subset of exposures
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="instexpids" type="string" list="yes" default="">
+   <DESCRIPTION>
+    instrument-exposure id list
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="orders" type="int" list="yes" default="1 2">
+   <DESCRIPTION>
+    reflection orders for spectrum generation
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    orders in [1:6]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="expunge" type="string" list="yes" default="&#34;events&#34;">
+   <DESCRIPTION>
+    delete intermediate files
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="events">
+    </ITEM>
+    <ITEM value="merged">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ <PARAM id="spectrumbinning" type="string" default="lambda">
+   <DESCRIPTION>
+    Dispersion binning method
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="lambda">
+    </ITEM>
+    <ITEM value="beta">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="withprefix" type="bool" default="no">
+   <DESCRIPTION>
+    enable filename prefix override
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="prefix" type="string" default="">
+   <DESCRIPTION>
+    prefix for product filenames
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="timestep" type="real" default="1">
+   <DESCRIPTION>
+    [seconds] time step
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    timestep in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="driftlimit" type="real" default="5">
+   <DESCRIPTION>
+    [arcmin] GTI attitude drift limit
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    driftlimit in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="onlylastatt" type="bool" default="no">
+   <DESCRIPTION>
+    use last exposure attitude points for filtering instead of full exposure
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withepicset" type="bool" default="no">
+   <DESCRIPTION>
+    add sources from an epic-derived source list
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="epicset" type="dataset" default="">
+   <DESCRIPTION>
+    name of the epic-derived source list
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withsrc" type="bool" default="no">
+   <DESCRIPTION>
+    add a source with user-defined position, rate etc
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="srclabel" type="string" default="USER">
+   <DESCRIPTION>
+    label for the user-defined source
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="srcrate" type="real" default="0">
+   <DESCRIPTION>
+    rate value (if known) for the user-defined source
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    srcrate in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="srcstyle" type="string" default="radec">
+   <DESCRIPTION>
+    style for entering the position of the user-defined source
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="radec">
+    </ITEM>
+    <ITEM value="wrtatt">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="srcra" type="real" default="-999">
+   <DESCRIPTION>
+    [decimal degrees] right ascension of the user-defined source
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="srcdec" type="real" default="-999">
+   <DESCRIPTION>
+    [decimal degrees] declination of the user-defined source
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="srcdisp" type="real" default="0">
+   <DESCRIPTION>
+    [arcmin] dispersion off-axis angle of the user-defined source
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="srcxdsp" type="real" default="0">
+   <DESCRIPTION>
+    [arcmin] cross-dispersion off-axis angle of the user-defined source
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="attstyle" type="string" default="expmedian">
+   <DESCRIPTION>for defining the reference attitude</DESCRIPTION>
+   <CASE>
+    <ITEM value="expmedian"/>
+    <ITEM value="start"/>
+    <ITEM value="user"/>
+    </CASE>
+   </PARAM>
+
+  <PARAM id="attra" type="real" default="-999">
+   <DESCRIPTION>
+    [decimal degrees] right ascension of the user-defined attitude
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="attdec" type="real" default="-999">
+   <DESCRIPTION>
+    [decimal degrees] declination of the user-defined attitude
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="attapos" type="real" default="-999">
+   <DESCRIPTION>
+    [decimal degrees] position angle of the user-defined attitude
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="includeinputfifofull" type="bool" default="no">
+   <DESCRIPTION>
+    enable HK time interval with INPUT FIFO FULL
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="calcoffsets" type="bool" default="no">
+   <DESCRIPTION>
+    calculate offsets from diagnostic mode
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withoffsethistogram" type="bool" default="no">
+   <DESCRIPTION>
+    Store histograms in a dataset
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withdiagoffset" type="bool" default="yes">
+   <DESCRIPTION>
+    enable offset subtraction from Diagnostic Offset Average files
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withgain" type="bool" default="yes">
+   <DESCRIPTION>
+    enable gain correction
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withcti" type="bool" default="yes">
+   <DESCRIPTION>
+    enable CTI correction
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withadvisory" type="bool" default="yes">
+   <DESCRIPTION>
+    include non-uplinked CCF bad pixels
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+<PARAM id="badpixalgo" type="string" default="badpixalgo"> 
+  <DESCRIPTION> Type of badpix algorithm to use </DESCRIPTION>
+  <CASE>
+    <ITEM value="embadpixalgo">
+     <PARAM id="embadpixalgo" type="bool" default="no">
+     <DESCRIPTION>
+       Use embadpixfind algorithm to find hot pixels and columns
+     </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+     </CASE>
+    </PARAM>
+    </ITEM> 
+
+  <ITEM value="badpixalgo">
+     <PARAM id="withfoundhot" type="bool" default="yes">
+      <DESCRIPTION>
+       include found hot pixels
+      </DESCRIPTION>
+      <CASE>
+        <ITEM value="no">
+        </ITEM>
+        <ITEM value="yes">
+        </ITEM>
+     </CASE>
+    </PARAM>
+   </ITEM>
+  </CASE>
+</PARAM>
+
+
+  <PARAM id="keepcool" type="bool" default="yes">
+   <DESCRIPTION>
+    include (do not discard) non-uplinked CCF cool pixels
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="pixnoiselimit" type="int" default="0">
+   <DESCRIPTION>
+    hot pixel threshold pulse height
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    pixnoiselimit in [0:4095]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="colnoiselimit" type="int" default="250">
+   <DESCRIPTION>
+    hot column threshold pulse height
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    colnoiselimit in [0:4095]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="pixsharpness" type="real" default="5">
+   <DESCRIPTION>
+    hot pixel sharpness criterion
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    pixsharpness in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="colsharpness" type="real" default="8">
+   <DESCRIPTION>
+    hot column sharpness criterion
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    colsharpness in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="detcoord" type="string" default="cam">
+   <DESCRIPTION>
+    detector coordinate system
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="cam">
+    </ITEM>
+    <ITEM value="chip">
+    </ITEM>
+    <ITEM value="sac">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withdetcoord" type="bool" default="no">
+   <DESCRIPTION>
+    enable detector coordinate output
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="reconstruct" type="bool" default="yes">
+   <DESCRIPTION>
+    enable event reconstruction
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="betabinning" type="string" default="binSize">
+   <DESCRIPTION>
+    Specify number or size of beta bins
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="Range">
+    </ITEM>
+    <ITEM value="binSize">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="betabinref" type="real" default="0.03578524">
+   <DESCRIPTION>
+    midpoint of bin for which BETACHA is one [rad]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="betabinwidth" type="real" default="1.208e-05">
+   <DESCRIPTION>
+    width of beta bin [rad]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    betabinwidth in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="nbetabins" type="int" default="3400">
+   <DESCRIPTION>
+    number of beta bins
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    nbetabins in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="betamin" type="real" default="0.03">
+   <DESCRIPTION>
+    lowerleft of first beta bin [rad]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="betamax" type="real" default="0.08">
+   <DESCRIPTION>
+    top end of last beta bin [rad]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="xdispbinning" type="string" default="binSize">
+   <DESCRIPTION>
+    Specify number or size of cross-dispersion bins
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="Range">
+    </ITEM>
+    <ITEM value="binSize">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="xdispbinref" type="real" default="-0.0009126">
+   <DESCRIPTION>
+    midpoint of bin for which XDSPCHA is one [rad]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="xdispbinwidth" type="real" default="1.08e-05">
+   <DESCRIPTION>
+    width of cross dispersion bin [rad]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    xdispbinwidth in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="nxdispbins" type="int" default="170">
+   <DESCRIPTION>
+    number of xdisp bins
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    nxdispbins in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="xdispmin" type="real" default="-0.001">
+   <DESCRIPTION>
+    lowerleft of first xdisp bin [rad]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="xdispmax" type="real" default="0.001">
+   <DESCRIPTION>
+    top end of last xdisp bin [rad]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withpointingcolumn" type="bool" default="no">
+   <DESCRIPTION>
+    Produce columns with Spacecraft Pointing
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withmlambdacolumn" type="bool" default="yes">
+   <DESCRIPTION>
+    Produce column with m*lambda (source at requested position)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="withheliocentriccorr" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply heliocentric velocity correction to mlambda column
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withsunanglecorr" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply Sun Angle correction to mlambda column
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+
+  <PARAM id="rejflags" type="string" list="yes"
+         default="BAD_SHAPE ON_NODE_INTERFACE ON_BADPIX NEXT_TO_BADPIX ON_WINDOW_BORDER BELOW_ACCEPTANCE">
+   <DESCRIPTION>event rejection flags</DESCRIPTION>
+   <CASE>
+    <ITEM value="BAD_SHAPE"		/>
+    <ITEM value="ON_NODE_INTERFACE"	/>
+    <ITEM value="ON_BADPIX"		/>
+    <ITEM value="NEXT_TO_BADPIX"	/>
+    <ITEM value="ON_WINDOW_BORDER"	/>
+    <ITEM value="BELOW_ACCEPTANCE"	/>
+    <ITEM value="BAD_SHAPE ON_NODE_INTERFACE ON_BADPIX ON_WINDOW_BORDER BELOW_ACCEPTANCE"	/>
+    <ITEM value="BAD_SHAPE ON_NODE_INTERFACE ON_BADPIX NEXT_TO_BADPIX ON_WINDOW_BORDER BELOW_ACCEPTANCE" />
+    </CASE>
+   </PARAM>
+
+  <PARAM id="driftbinsize" type="real" default="1">
+   <DESCRIPTION>
+    [arcsec] drift quantization width
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    driftbinsize in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withcombmap" type="bool" default="yes">
+   <DESCRIPTION>
+    generate the combined exposure map
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="auxgtitables" type="table" list="yes" default="">
+   <DESCRIPTION>
+    Additional GTI tables
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="spatialres" type="int" default="5">
+   <DESCRIPTION>
+    vertices per node across spatial regions
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    spatialres in [2:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="orderres" type="int" default="3">
+   <DESCRIPTION>
+    vertices per node across order regions
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    orderres in [2:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="xpsfincl" type="real" default="95">
+   <DESCRIPTION>
+    percent of cross-dispersion PSF included
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    xpsfincl in [0:100]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="xpsfexcl" type="real" default="98">
+   <DESCRIPTION>
+    percent of cross-dispersion PSF excluded from background
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    xpsfexcl in [0:100]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="pdistincl" type="real" default="95">
+   <DESCRIPTION>
+    percent of pulse-height distribution included
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    pdistincl in [0:100]
+   </CONSTRAINTS>
+  </PARAM>
+
+ <PARAM id="withpicutoff" type="bool" default="no">
+   <DESCRIPTION>
+    PI cutoff switch
+   </DESCRIPTION>
+ </PARAM>
+
+ <PARAM id="picutoff" type="real" default="0">
+   <DESCRIPTION>
+    	Excluded PI region below this value (eV).
+   </DESCRIPTION>
+  </PARAM>
+
+
+  <PARAM id="xdspregions" type="real" list="yes" default="">
+   <DESCRIPTION>
+    Extended regions selected 
+   </DESCRIPTION>
+  </PARAM>
+                                                                                
+  <PARAM id="xdspbackground" type="real" list="yes" default="">
+   <DESCRIPTION>
+     background  selected
+   </DESCRIPTION>
+  </PARAM>
+  
+  <PARAM id="procsrcsexpr" type="string" default="INDEX==#PRIMESRC">
+   <DESCRIPTION>
+    select which sources to process
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="exclsrcsexpr" type="string" default="INDEX==#PRIMESRC">
+   <DESCRIPTION>
+    select which sources to exclude from background
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="bkgcorrect" type="bool" default="no">
+   <DESCRIPTION>
+    background correct the spectra
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withbkgset" type="bool" default="yes">
+   <DESCRIPTION>
+    generate background spectra
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="withbackgroundmodel" type="bool" default="no">
+   <DESCRIPTION>Calculate background model</DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+     </ITEM>
+    <ITEM value="yes"/>
+    </CASE>
+   </PARAM>
+
+
+  <PARAM id="edgechannels" type="int" default="2">
+   <DESCRIPTION>
+    flag chip-edge channels as dubious
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    edgechannels in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="rebin" type="int" default="1">
+   <DESCRIPTION>
+    dispersion channel rebinning factor
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    rebin in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withfracexp" type="bool" default="no">
+   <DESCRIPTION>
+    add FRAC_EXP column to output files
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="exposed" type="real" default="0.1">
+   <DESCRIPTION>
+    minimum good fractional exposure
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    exposed in [0:1]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="badquality" type="int" default="1">
+   <DESCRIPTION>
+    QUALITY used to flag bad channels
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    badquality in [0:5]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="witharffile" type="bool" default="false">
+    <DESCRIPTION>Create two independent ARF and RMF files</DESCRIPTION>
+   </PARAM>
+
+
+  <PARAM id="rmfbins" type="int" default="4000">
+   <DESCRIPTION>
+    number of response energy bins
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    rmfbins in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="fftdim" type="int" default="3">
+   <DESCRIPTION>
+    convolution size exponent
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    fftdim in [1:5]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withmirrorpsf" type="bool" default="yes">
+   <DESCRIPTION>whether to include the standard mirror PSF distribution
+    </DESCRIPTION>
+   </PARAM>
+
+  <PARAM id="withangdist" type="bool" default="no">
+   <DESCRIPTION>whether to include a custom angular distribution</DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+
+     <PARAM id="angdistset" type="file" default="angdist.txt">
+      <DESCRIPTION>user-defined angular distribution file</DESCRIPTION>
+      </PARAM>
+
+     </ITEM>
+    <ITEM value="no"/>
+    </CASE>
+   </PARAM>
+
+  <PARAM id="mergeorders" type="bool" default="no">
+   <DESCRIPTION>
+    flux all orders together
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="flxformat" type="string" default="dal">
+   <DESCRIPTION>
+    output file format
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="ascii">
+    </ITEM>
+    <ITEM value="dal">
+    </ITEM>
+    <ITEM value="qdp">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="flxmode" type="string" default="wavelength">
+   <DESCRIPTION>
+    computational mode
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="energy">
+    </ITEM>
+    <ITEM value="wavelength">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="flxmin" type="real" default="4">
+   <DESCRIPTION>
+    minimum output wavelength or energy
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    flxmin in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="flxmax" type="real" default="40">
+   <DESCRIPTION>
+    maximum output wavelength or energy
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    flxmax in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="flxbins" type="int" default="3600">
+   <DESCRIPTION>
+    number of output bins
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    flxbins in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="flxquality" type="int" list="yes" default="0">
+   <DESCRIPTION>
+    usable quality in promotion order
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    flxquality in [0:5]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withflxnan" type="bool" default="no">
+   <DESCRIPTION>
+    enable alternate NaN value
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="flxnan" type="real" default="0">
+   <DESCRIPTION>
+    alternate NaN value
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withdyneffarea" type="bool" default="yes">
+   <DESCRIPTION>
+    enable dynamic Effective Area Correction.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withrectification" type="bool" default="no">
+    <DESCRIPTION>Use empirical RGS effective area correction</DESCRIPTION>
+   </PARAM>
+
+  <PARAM id="witheffectiveareacorrection" type="bool" default="no">
+    <DESCRIPTION>Use  RGS effective area correction</DESCRIPTION>
+   </PARAM>
+
+  <PARAM id="lambdabinref" type="real" default="4.005">
+   <DESCRIPTION>
+    midpoint of bin for which LAMBDACHA is one [Angstrom]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="lambdabinwidth" type="real" default="0.010">
+   <DESCRIPTION>
+    width of lambda bin [Angstroms]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    lambdabinwidth in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="nlambdabins" type="int" default="3600">
+   <DESCRIPTION>
+    number of lambda bins
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    nlambdabins in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="withheliocorr" type="bool" default="no">
+   <DESCRIPTION>Calculate Heliocentric velocity correction</DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+     </ITEM>
+    <ITEM value="yes"/>
+    </CASE>
+   </PARAM>
+
+
+
+<PARAM id="timebinsize" type="real" default="1000" mandatory="no">
+        <DESCRIPTION> Size of time bins for time series files 
+        </DESCRIPTION>
+        <CONSTRAINTS>
+                timebinsize in [0:]
+        </CONSTRAINTS>
+</PARAM>
+
+<PARAM id="withbkgsubtraction" type="bool" default="yes">
+    <DESCRIPTION> Substract background </DESCRIPTION>
+</PARAM> 
+
+ </CONFIG>
+</FILE>

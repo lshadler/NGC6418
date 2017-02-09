@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="evarimgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="evarimgen.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="evarimgen.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+evarimgen (evarimgen-0.8.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="evarimgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="evarimgen.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="evarimgen:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+This task takes an event list and makes an image in which the value in each pixel is proportional to the variability with respect to time of the flux of events which fall within that pixel. The task cycles through all the events in the list which fall within the spatial extent of the image; for each of these events, a value <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$\delta$"></SPAN> of the Kolmogorov-Smirnov statistic is calculated. The value of <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$\delta$"></SPAN> for the <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$i,j$"></SPAN>th pixel depends on both the cumulative number of events <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$n$"></SPAN> within the whole image and the cumulative number <SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$n_{i,j}$"></SPAN> within the pixel. The formula for <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$\delta$"></SPAN> is
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+\delta_{i,j} = \Big|\frac{n}{N} - \frac{n_{i,j}}{N_{i,j}}\Big|,
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="126" HEIGHT="39" BORDER="0"
+ SRC="img5.png"
+ ALT="\begin{displaymath}
+\delta_{i,j} = \Big\vert\frac{n}{N} - \frac{n_{i,j}}{N_{i,j}}\Big\vert,
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+where <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$N$"></SPAN> is the total number of events that fall within the image bounds and <SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$N_{i,j}$"></SPAN> is the total number of events that fall within the <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$i,j$"></SPAN>th pixel. (The value of <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$N$"></SPAN> is easily found by counting all the events that fall within the image bounds; whereas <SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$N_{i,j}$"></SPAN> can be read from the total flux image, provided that this is binned up to the same bounds and pixel size.) For each pixel, the raw variability image is formed from the maximum value of <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$\delta$"></SPAN> encountered for each pixel during the above procedure. The values <SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$V_{i,j}$"></SPAN> in the final variability image are obtained by using the weighting
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+V_{i,j} = \sqrt{\eta} + 0.12 + 0.11/\sqrt{\eta},
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="195" HEIGHT="29" BORDER="0"
+ SRC="img9.png"
+ ALT="\begin{displaymath}
+V_{i,j} = \sqrt{\eta} + 0.12 + 0.11/\sqrt{\eta},
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+where
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+\eta = \frac{nN}{n+N}.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="80" HEIGHT="40" BORDER="0"
+ SRC="img10.png"
+ ALT="\begin{displaymath}
+\eta = \frac{nN}{n+N}.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+These last two formulae can be found within [<A
+ HREF="node10.html#ct:nrf">1</A>]
+
+<P>
+Pixels which have too few events for the KS statistic to be reliably calculated (see parameter <TT>cutoff</TT>) are set to the value of 0.827574; at this value of the Kolmogorov-Smirnov (KS) statistic, it can be shown that the probability that this value or higher results from a non-variable series is 50%. Note the implication that pixels having zero variability are <SPAN  CLASS="textit">not</SPAN> zero-valued in the output image.
+
+<P>
+Note that the KS statistic does not require any information about the time of occurrence of the events. It is therefore immune to gaps in the sequence (such as might be caused by good time interval (GTI) filtering) and not very sensitive to variability of the background. However there is some undesirable effect due to background variability. The KS statistic of a series of events measures the magnitude of the difference between the variability of that series and a reference series. In the present version of the task, the reference series is provided by the events occurring within the entire image bounds. If this is dominated by background flares, steady point sources will differ in variability from the reference through being <SPAN  CLASS="textit">less</SPAN> variable, but will nevertheless display high KS values. It is therefore recommended that the event list be filtered to remove events from periods in which background bursts occurred, before submitting the event list to <A NAME="437"></A><A NAME="tex2html1"
+  HREF="../evarimgen/index.html"><SPAN  CLASS="textbf">evarimgen</SPAN></A>. A future version of <A NAME="441"></A><A NAME="tex2html2"
+  HREF="../evarimgen/index.html"><SPAN  CLASS="textbf">evarimgen</SPAN></A>
+may contain a facility for performing this filtering within the task itself.
+
+<P>
+The statistic is, on the other hand, sensitive to the ordering of the events in time. Since event lists produced by the sas usually contain at least some out-of-order events, a facility has been provided within the task for sorting the events into time order. This is requested via the parameter <TT>sortevlist</TT> (which is `yes' by default). If <TT>sortevlist</TT>=no, <A NAME="447"></A><A NAME="tex2html3"
+  HREF="../evarimgen/index.html"><SPAN  CLASS="textbf">evarimgen</SPAN></A>
+checks the ordering of the events and generates a warning if any out-of-order events are found. The sorting is internal to the task and in no circumstances is the event list modified.
+
+<P>
+The task as presently constructed does not handle well a situation in which a single bright source contributes most of the events. (However, this must be much brighter than simple intuition would suggest, since the sheer number of background pixels means that they nearly always provide the majority of events.) In this case, no matter how variable the source, <A NAME="451"></A><A NAME="tex2html4"
+  HREF="../evarimgen/index.html"><SPAN  CLASS="textbf">evarimgen</SPAN></A>
+is likely to show it as only weakly variable, because it is largely being compared with itself. Future developments in the task may solve this problem.
+
+<P>
+A knowledge of <SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$N_{i,j}$"></SPAN>, the total flux of events within each pixel, is necessary in order to calculate the Kolmogorov-Smirnov statistic. If a total-flux image has previously been calculated from the event list, this may be submitted to the task via the parameters <TT>withimageset</TT> and <TT>imageset</TT>. However at the moment it is better practice to calculate this within the task, so it is recommended that the default value of <TT>withimageset</TT>=no be used. In this case <TT>imageset</TT> is the name of the newly created output flux image, and therefore it may not be safe to leave this parameter at its default value. If <TT>withimageset</TT>=no and <TT>imageset</TT> happens to point to another file of the same name, the previous file may be overwritten.
+
+<P>
+The first priority for future development of <A NAME="461"></A><A NAME="tex2html5"
+  HREF="../evarimgen/index.html"><SPAN  CLASS="textbf">evarimgen</SPAN></A>
+will be to allow the task to read the variability image size and pixel numbers from the input flux image, where this is supplied. The variability image would then automatically be compatible with an exposure map produced using the same image size settings, which is presently not the case. Lack of an exposure map or other mask image of the same dimensions prevents optimum application of the smoothing task <A NAME="465"></A><A NAME="tex2html6"
+  HREF="../asmooth/index.html"><SPAN  CLASS="textbf">asmooth</SPAN></A>
+to the output of <A NAME="469"></A><A NAME="tex2html7"
+  HREF="../evarimgen/index.html"><SPAN  CLASS="textbf">evarimgen</SPAN></A>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="evarimgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

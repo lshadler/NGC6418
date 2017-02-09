@@ -1,0 +1,326 @@
+ChangeLog for efftplot
+===============================
+
+Version 2.20 - 2016-08-26 (EO)
+------------
+	+ src/Makefile: Added code to proccess Fortran preprocessor
+	directives.
+	+ DEPEND: Updated to sas-1.573 that implements new policy for
+	preprocessor compilations.
+
+Version 2.19.1 - 2016-08-25 (EO)
+--------------
+	+ src/Makefile: Removed ifeq to set F90FLAGS depending on Fortran
+	  compiler. This was left unchanged in 2.19.
+	+ DEPEND: sas 1.572 is required to build properly this version.
+
+Version 2.19 - 2016-08-24 (EO)
+------------
+	+ src/efftplot_mod.f90: Added preprocessor directive ifdef
+	 NAGf90Fortran before use f90_unix_proc to allow to load this NAG
+	 Frotran supplied module only when NAG Fortran compiler is used.
+	 This change is effective only after SAS configure includes
+	 preprocessor capabilities (after sas-1.571). Otherwise a similar
+	 functionality must be available in src/Makefile. 
+	 For NAG Fortran compiler, the inclussion of preprocessor switch -fpp
+	 unveiled a syntax error in original line 324, a blank line after 
+	 "window         ",&
+	 which has been removed. 
+
+Version 2.18.2 - 2012-19-04 (NW)
+------------
+
+	The coordinates given in the header of the output of efftplot 
+	are now displayed to .00 for RA and .0 for Dec. even when the 
+	(arc)seconds are inferior to 10, as requested in SPR 6714.
+
+
+
+Version 2.18.1 - 2012-04-04 (NW)
+------------
+	the coordinates given in the header of the output of efftplot 
+	are now fixed to .00 for RA and .0 for Dec., as requested in SPR 6496.
+
+
+
+
+Version 2.18 - 2010-01-18 (EO)
+------------
+	+ efftplot_mod.f90: Added use_f90_unix_proc to include support for subroutine
+	  system (used to execute shell commands).
+	  The support is made through NAG supported modules as provided in their library
+	  directory. 
+	  In order to fulfill the software dependencies, the keyword NAGSUPMODS = yes
+	  must be present in src/Makefile.
+
+Version 2.17 - 2006-12-12 (NAW)
+----------------------------------
+
+	Previously efftplot searched for a file produced by powspec that 
+	contained the good points to be used in the FFT.  If no file existed 
+	efftplot stated that there were not enough good points and no plot 
+	was produced.  However, there is the case where the file can be 
+	produced, but no plot results.  This is for the case of <4 good 
+	points.  A new loop has been added to check for this situation and 
+	no plot results in this case.  This closes SSC-SPR-3638.
+
+
+Version 2.16.4 - 2006-03-07 (NAW)
+----------------------------------
+
+        If there were no GTIs in the GTI file, the task went ahead and 
+        produced the output file regardless.  Now the task gives a warning 
+        and no power spectrum plot is produced.  The documentation has 
+        been updated.
+    
+
+Version 2.16.3 - 2005-11-29 (IMS/LUX)
+        -------------------------------
+Last mod introduced a seg fault; now fixed.
+
+
+Version 2.16.2 - 2005-11-24 (NW)
+        -------------------------------
+
+  	Changed the error NotEnoughBins to a warning and kept the status 
+	that no output file is produced in this case, as requested so that 
+	there are fewer errors in the pipeline logfile.  The documentation 
+	has also been updated. 
+
+	
+Version 2.16.1 - 2005-06-07 (NW)
+        -------------------------------
+  
+	Changes made to DEPEND for the releasetrack version
+
+	
+Version 2.16 - 2005-03-03 (NW)
+        -------------------------------
+
+        New error (NotEnoughBins) introduced that ensures that no plot is
+	produced if there are too few bins to create the power density
+	spectrum.  Documentation has been updated.
+	
+
+Version 2.15 - 2005-01-28 (NW)
+        -------------------------------
+
+        Efftplot now reads and plots the corrected source RA and DEC.
+	
+
+Version 2.14 - 2004-12-15 (NW)
+        -------------------------------
+
+        Efftplot now reads the new FITS keywords SRCNUM, SRC_RA, SRC_DEC
+	written into the lccorr output and writes these values on the plots
+	produced.
+
+
+Version 2.13 - 2004-11-01 (NW)
+        -------------------------------
+
+        New development track version.  Changes made to the presentation
+	of the header and title of the power spectrum.  The linear plot is
+	now shown with the same size gap between the left and right frame.
+	The default is that net counts are used for the fourier transform.
+
+	
+	
+Version 2.10.4 - 2004-08-27 (NW)
+        -------------------------------
+ 
+        Explicitly reads the total rates and background counts before
+	passing the file to powspec, so that the total rates and
+	background rates can be checked for negative values.  The user may
+	now choose whether the total or net counts are used to produce the
+	power density spectrum, via an optional parameter `bkgsub'.  The
+	documentation has been updated.
+	
+
+Version 2.10.3 - 2004-08-10 (NW)
+        -------------------------------
+ 
+        Changed error calculation for the total counts, when they are
+	recovered from the net and background counts.
+	
+
+Version 2.10.2 - 2004-08-09 (NW)
+        -------------------------------
+ 
+        This version now shows a line plot, rather than points.
+	
+
+Version 2.10.1 - 2004-08-01 (NW)
+        -------------------------------
+ 
+        This version now accepts a user provided GTI file.  It also takes
+	a background subtracted lightcurve and corrects the lightcurve to
+	have total counts (counts + background).  The error bars are no
+	longer plotted and there is now a space between the y-axis and the
+	first point, when xscale=lin is chosen.  Also modifications that
+	were being made to the FITS header of the input file are no longer
+	being made (SSC-SPR-3362). The documentation has duly been updated.
+
+Version 2.10 - 2004-07-01 (NW)
+        -------------------------------
+ 
+        Revised some of the warning statements that were unnecessary
+
+Version 2.9 - 2004-05-14 (NW)
+        -------------------------------
+ 
+        Small changes to avoid efftplot crashing with lccorr files.
+
+Version 2.8 - 2002-07-25 (NW)
+        -------------------------------
+ 
+        Updated the DEPEND file. It now includes a dependence on sas.
+                                    
+                                            
+Version 2.7 - 2002-06-03 (NW)
+----------------------
+
+        Made the updates necessary for the new version of param
+	
+Version 2.6.1 - 22-05-01
+----------------------
+
+        The documentation has been updated to include examples of how to
+	use efftplot.
+
+Version 2.6 - 06-04-01
+----------------------
+
+        The test harness has been changed to be variable for Linux or
+        Unix, because the environment variables are different.  In this
+        way, the test can be passed on Linux or Unix.
+
+Version 2.5.1 - 08-02-01
+-----------------------  
+        The environment variables for `pgplot' were different to those 
+        at the `static build' and hence the test was not passed, as the 
+        output files were different to the comparison files.  The 
+        environment variables for `pgplot' are now changed, so the 
+        output files of the `static build' should pass the test.
+
+
+Version 2.5 - 19-12-00
+	---------------------- 
+	Changed the test file, so that it doesn't call gs.  Also changed
+ 	the header information of the files that are written out by ftools
+ 	in efftplot, so that the headers are compatible with the SAS
+ 	software.
+
+Version 2.4 - 31-10-00
+----------------------
+	Updated GROUPS description and the documentation
+
+Version 2.3 - 03-10-00
+----------------------
+	Fix the parameter and info files 
+	Updrade the version number as required for the SAS V5
+
+Version 2.2.1 - 27-06-00
+------------------------
+	SSC-SPR-1818 efftplot (version 2.2): update documentation to remove non-existant link to powspec
+	
+Version 2.2 - 22-05-00
+----------------------
+	- Add efftplot.info file in the config directory
+	
+Version 2.1 - 18-04-00
+----------------------
+
+	The following SPRs have been taken into account:
+
+	- SSC-SPR-1641 efftplot (version 2.0): documentation macros
+	
+Version 2.0 - 07-03-00
+----------------------
+
+	The following SPRs have been taken into account:
+	
+ 	SSC-SPR-1565 efftplot (version 1.3): When setting the parameter
+ 	gapfill to 1, we get the error message "value 1 is not an allowed
+ 	value
+        
+   	SSC-SPR-1564 efftplot (version 1.3): The values in the last
+ 	incomplete data segment have an effect on the output
+        
+   	SSC-SPR-1563 efftplot (version 1.3): efftplot always overwrites an
+ 	existing output file
+        
+   	SSC-SPR-1562 efftplot (version 1.3): There is no parameter layout
+ 	file
+        
+   	SSC-SPR-1561 efftplot (version 1.3): File config.par is to be
+ 	updated
+        
+   	SSC-SPR-1560 efftplot (version 1.3): Description paragraph should
+ 	give the definition of "normalized PDS"
+        
+   	SSC-SPR-1559 efftplot (version 1.3): Algorithm description should
+ 	indicate which options are used to call powspec.
+
+Version 1.4 - 16-02-00
+----------------------
+
+- Fixes SPR-1482
+
+Version 1.3 - 26-11-99
+----------------------
+
+- Includes a DISTRIBUTION file
+
+Version 1.2 - 11-05-99
+----------------------
+
+- DEPEND now contains taskmain (SPR 987)
+- Test harness check on whether the output file exists 
+
+
+Version 1.1
+-----------
+
+Remarks about this version.
+
+Fixed SPRs:
+
+ - SSC-SPR-0738
+ - SSC-SPR-0739
+ - SSC-SPR-0740
+ - SSC-SPR-0745
+ - SSC-SPR-0746
+ - SSC-SPR-0748
+ - SSC-SPR-0749
+ - SSC-SPR-0750
+ - SSC-SPR-0751
+ - SSC-SPR-0752
+ - SSC-SPR-0753
+ - SSC-SPR-0754
+ - SSC-SPR-0755
+ - SSC-SPR-0756
+ - SSC-SPR-0757
+ - SSC-SPR-0758
+ - SSC-SPR-0759
+ - SSC-SPR-0760
+ - SSC-SPR-0761
+ - SSC-SPR-0765
+
+All closed on November 13th, 1998 by DB
+
+Version 1.0
+-----------
+
+Delivered 14/10/98
+	
+	
+Version 0.1
+----------------------------
+
+- Directory structure created by pkgmaker.
+
+
+
+      
+	

@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Setting of bit 3 (Diffraction-spikes)</TITLE>
+<META NAME="description" CONTENT="Setting of bit 3 (Diffraction-spikes)">
+<META NAME="keywords" CONTENT="omqualitymap">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omqualitymap.css">
+
+<LINK REL="next" HREF="node16.html">
+<LINK REL="previous" HREF="node14.html">
+<LINK REL="up" HREF="node11.html">
+<LINK REL="next" HREF="node16.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omqualitymap (omqualitymap-1.4) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node14.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Setting of bit 2"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Algorithm"></A>
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Setting of bit 4"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node27.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omqualitymap.html">Home Page</A> / <A  HREF="node11.html">Algorithm</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00084000000000000000"></A>
+<A NAME="BIT3"></A>
+<BR>
+Setting of bit 3 (Diffraction-spikes)
+</H2>
+Any object with either a raw count-rate <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$&gt;$"></SPAN> 70 counts/sec or flagged as having a mod-8 pattern is checked to see
+if it might have diffraction spikes. 
+
+<P>
+The algorithm works as follows:
+
+<P>
+
+<OL>
+<LI>Count the number of objects along position angles of 45 and 135 degrees from the centre
+of the star that lie within a radius of 10 and 120 pixels from the centre and a distance
+of no more than 5 pixels from the radius line.              
+</LI>
+<LI>Compute the search area from:             
+
+<P>
+SearchArea = (maxRadius - minradius) <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$\times$"></SPAN> 4 <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$\times$"></SPAN> maxDistance 
+
+<P>
+where
+        minradius=10, maxradius=200, maxDistance=5
+        minradius is the minimum radius from the centre of the star
+        maxradius is the maximum radius from the centre of the star
+        maxDistance is the maximum distance from the centre of the star.
+
+<P>
+These define a search area along the radius vector
+        from the star (4 angles), 45, 135, 225, 315 degrees) for faint stars
+        associated with a star spike. 
+
+<P>
+</LI>
+<LI>Compute the number of objects within a box of width and height 200 pixels centred
+ on the star centre, ignoring objects with a raw count-rate greater than 5 counts/sec (n1).
+
+<P>
+</LI>
+<LI>Compute the number of stars expected within the search area, again ignoring objects
+with a raw count-rate greater than 5 counts/sec (n2).
+
+<P>
+</LI>
+<LI>If the number of star along the spikes (n1) is <!-- MATH
+ \begin{math}
+>
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$&gt;$"></SPAN> 3 <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$\times$"></SPAN> n2 then conclude that there
+are diffraction spikes and flag sources along the spikes. All quality-image pixels within rectangular 
+regions rotated from the vertical by <!-- MATH
+ \begin{math}
+\pm 45
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$\pm 45$"></SPAN> and <!-- MATH
+ \begin{math}
+\pm
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$\pm$"></SPAN> 
+135 degrees have bit 2 set. The half-width of a rectangle is 10 unbinned pixels and they extend radially, 50 to 250 unbinned pixels
+from the centre of the star. 
+
+<P>
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node14.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Setting of bit 2"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Algorithm"></A>
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Setting of bit 4"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node27.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

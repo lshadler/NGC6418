@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Generating a set of points along an ellipse locus</TITLE>
+<META NAME="description" CONTENT="Generating a set of points along an ellipse locus">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node144.html">
+<LINK REL="previous" HREF="node142.html">
+<LINK REL="up" HREF="node140.html">
+<LINK REL="next" HREF="node144.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node142.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Is a given point"></A>
+<A HREF="node140.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Routines which deal with"></A>
+<A HREF="node144.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="EllipseT structure definition"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node140.html">Routines which deal with</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000113000000000000000">
+Generating a set of points along an ellipse locus</A>
+</H2>
+
+<P>
+<PRE>
+  subroutine calcEllipseFromAngle(xSemi, ySemi, angleDeg, xVals, yVals)
+    real(single), intent(in)  :: xSemi, ySemi, angleDeg
+    real(single), intent(out) :: xVals(:), yVals(size(xVals))
+  end subroutine calcEllipseFromAngle
+</PRE>
+
+<P>
+Equation <A HREF="node141.html#ellipse0">2</A> can be decomposed into the following pair of parametric equations in <SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img73.png"
+ ALT="$theta$"></SPAN>:
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+x = R_x \cos(\theta)
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="93" HEIGHT="28" BORDER="0"
+ SRC="img131.png"
+ ALT="\begin{displaymath}
+x = R_x \cos(\theta)
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+y = R_y \sin(\theta).
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="95" HEIGHT="29" BORDER="0"
+ SRC="img132.png"
+ ALT="\begin{displaymath}
+y = R_y \sin(\theta).
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+<SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img73.png"
+ ALT="$theta$"></SPAN> here plays the same role as in equations <A HREF="node141.html#ellipse1">3</A> and <A HREF="node141.html#ellipse2">4</A>. The subroutine returns points evenly distributed in <SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img73.png"
+ ALT="$theta$"></SPAN>.
+
+<P>
+The matching `phase'-style subroutine is
+
+<P>
+<PRE>
+  subroutine calcEllipseFromPhase(xAmp, yAmp, phase, xVals, yVals)
+    real(single), intent(in)  :: xAmp, yAmp, phase
+    real(single), intent(out) :: xVals(:), yVals(size(xVals))
+  end subroutine calcEllipseFromPhase
+</PRE>
+
+<P>
+Again the point coordinates returned in xVals and yVals are distributed evenly in <SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img73.png"
+ ALT="$theta$"></SPAN>.
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

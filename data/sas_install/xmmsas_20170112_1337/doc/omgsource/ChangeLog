@@ -1,0 +1,339 @@
+ChangeLog for omgsource
+===========================================
+
+Version 1.10 - 2016-07-19 (AI)
+-----------	
+	+ (src/DopeVector.h) gfortran array descritor definition added
+	
+Version 1.9 - 2014-05-22 (AI)
+-----------	
+	+ (src/OmSourceParameters.h, src/OmgSourceParameters.h)
+	 c++ struct refractoring to avoid seg faults in 64bit platforms
+	+ (src/omgsourceparameter_mod.f90) Derived type modified acoordingly 
+	to match c++ struct variable order.
+	
+Version 1.8 - 2014-04-21 (AI)
+-----------	
+	+ gcc 4.8.2 portability changes
+
+Version 1.7.26 - 2014-04-01 (EC)
+	- removed unused binary data from test/
+
+Version 1.7.25 - 2012-04-09 (EO)
+	+ src/DopeVector.h: offset and addr must be type dope_Offset (long long on 64-bit, int on 32-bit).
+
+Version 1.7.24 - 2012-03-28 (EO)
+--------------
+	+ src/Makefile: Added pgplot to EXTERNALS to get rid of missing pgplot references.
+
+Version 1.7.23- 2009-09-21 (CB)
+--------------------------------
+        +src Makefile- removed ssc lib (not needed) to fix
+	build failure on sasbld05
+Version 1.7.22- 2009-09-17 (CB)
+--------------------------------
+        Further fixes for gcc 4 compiler on sasbld02
+        +src/ds9SelectDlg.h" replaced string filter
+	in constructor to const char *fiilter
+	to fix error "string has not been declared"
+	
+
+
+Version 1.7.21- 2009-09-17 (CB)
+--------------------------------
+        Further fixes for gcc 4 compiler on sasbld02
+        +src/ds9SelectDlg.h" reorganized header files
+	and added using namespace sdt
+	to fix error "string has not been declared"
+	
+Version 1.7.20- 2009-09-17 (CB)
+--------------------------------
+        Further fixes for gcc 4 compiler on sasbld02
+        +src/OmSourceTableDlg.h- deleted #include "ds9SelectDlg.h"
+	to fix error "string has not been declared"
+
+Version 1.7.19- 2009-09-16 (CB)
+--------------------------------
+        Further fixes for gcc 4 compiler
+        +src/ds9SelectDlg.h- deleted "using std::string"
+	to fix error "std::string has not been declared"
+
+	
+Version 1.7.18- 2009-08-14 (CB)
+--------------------------------
+        Further fixes for gcc 4 compiler
+        +src/ds9SelectDlg.h- added "using std::string"
+	to fix error "string has not been declared"
+
+Version 1.7.17- 2009-08-14 (CB)
+--------------------------------
+        Further fixes for gcc 4 compiler
+        +src/ds9SelectDlg.h- added cstring.h
+	to fix error "string has not been declared"
+
+Version 1.7.16- 2009-08-13 (CB)
+--------------------------------
+        Further fixes for gcc 4 compiler
+        +src/OmSourceBrowser.cc- line 1322
+	added .c_str to filter, to fix
+	error "no matching function for..."
+
+Version 1.7.15- 2009-08-12 (CB)
+--------------------------------
+        Further fixes for gcc 4 compiler
+        +src/OmSourceBrowser.cc - lines 1876, 1891, 1956,
+	2223, 2512 and - added .c_str() 
+	to fix errors "no matching function call to ...
+	+src ds9SelectDlg.cc - changed constructor
+	QWidget * to OmSourceBrowser *, to fix
+	error "no matching function for..."
+
+Version 1.7.14- 2009-08-11 (CB)
+--------------------------------
+        Further fixes for gcc 4 compiler
+        +src/OmSourceTableDlg.cc - line 401- added .c_str() 
+	to fix error "no matching function call to QProcess::addArguemnt"
+
+Version 1.7.13- 2009-08-10 (CB)
+--------------------------------
+        Further fixes for gcc 4 compiler
+        +src/OmGSourceExtractionRegion.cc - added string header file 
+	and "using std string" to fix error "string has not been declared"
+
+Version 1.7.12- 2009-08-07 (CB)
+--------------------------------
+        Further fixes for gcc 4 compiler
+        +src/OmGSourceExtractionRegion.cc - added cstring header file 
+	to fix error "string has not been declared"
+
+Version 1.7.11- 2009-08-06 (CB)
+--------------------------------
+        Further fixes for gcc 4 compiler
+        +src/OmSourceAddSourcesDlg.h added line "class string" at the start,
+	to fix error "string has not been declared"
+
+Version 1.7.10- 2009-08-03 (CB)
+--------------------------------
+        Further fixes for gcc 4 compiler
+        +src/OmSourceAddSourcesDlg.h added line "using namespace std"
+	to fix error "string has not been declared"
+
+Version 1.7.9- 2009-07-30 (CB)
+--------------------------------
+        Further fixes for gcc 4 compiler
+        +src/ds9SelectDlg.cc & OmSourceBrowser.cc- fixed
+	all warnings "deprecated conversion from string 
+	constant to char *"
+
+Version 1.7.8- 2009-07-29 (CB)
+--------------------------------
+        Further fixes for gcc 4 build failure
+        +src OmSourceAddSourcesDlg.cc - Added string header file to
+	fix "error : string has not been declared"
+
+Version 1.7.7- 2009-07-28 (CB)
+--------------------------------
+        Further fixes for gcc 4 build failure
+        +src OmSourceTableDlg.cc - Added cstdlib header file
+	for error "system was not declared in this scope".
+
+Version 1.7.6- 2009-07-27 (CB)
+--------------------------------
+        Further fixes for gcc 4 build failure
+        +src OmSourceAddSourcesDlg.cc/h- deleted (obsolescent)
+	to fix error "string has not been declared"
+Version 1.7.5- 2009-07-24 (CB)
+--------------------------------
+        Further fixes for gcc 4 build failure
+        +src/OmGSourceExtraction.h - amended line 24
+	to fix warning "extra qualification ExtractionRegion".
+
+
+Version 1.7.4- 2009-07-23 (CB)
+--------------------------------
+        Further fixes for gcc 4 build failure
+        +src/OmSourceRegions.h - Deleted line 46 containing
+	exit function (only used for testing) to fix error
+	"error exit was not declared in this scope"
+
+
+Version 1.7.3- 2009-07-22 (CB)
+--------------------------------
+        +src/DopeVector.h - Merged struct DopeVector with
+	struct Dope to fix error "dim was not declared in this
+	scope", and similar errors, with gcc 4.3 compiler.
+
+Version 1.7.2- 2009-07-21 (CB)
+--------------------------------
+        +src Added cstdlib to omsourceutility.cc to
+	fix gcc4 build failure
+
+Version 1.7.1- 2009-07-20 (CB)
+--------------------------------
+        +src Added cstdlib to omgsourcelist.cc to
+	fix gcc4 build failure
+Version 1.7- 2009-04-07 (CB)
+--------------------------------
+        Modified to be able to with
+	either 8 or 16 bit qualityflag image
+
+Version 1.6- 2009-04-06 (CB)
+--------------------------------
+        Changed qualityflag to
+	int 16.
+
+
+	
+Version 1.5- 2009-02-11 (CB)
+--------------------------------
+	Removed ssclib from DEPEND file to
+	fix build problem at Vilspa
+
+	
+Version 1.4- 2007-05-14 (CB)
+--------------------------------
+	Removed some unwanted write statements
+
+
+
+Version 1.3- 2007-03-09 (CB)
+--------------------------------
+	Removed the old and obsolete window for
+	selecting spectra and improved the new method.
+
+
+Version 1.2.19 - 2006-06-22 (CB)
+--------------------------------
+	Added a new window for selecting spectra (SPR 3615)
+	
+Version 1.2.18 - 2005-05-23 (CB)
+--------------------------------
+	Ammended DEPEND file (changed omdetect 4.0 to omdetect 5.0 to
+	fix build problem)
+Version 1.2.17 - 2005-05-20 (CB) 
+--------------------------------
+	 Removed function ModifiedJulianDate to fix build problem
+
+Version 1.2.16 - 2004-10-22 (CB) 
+--------------------------------
+	 Made minor modifications (ammended help text, fixed problem
+	 of regions not being erased properly and ammended parameters to 
+	 to omgrism) to OmsourceAddsourcedlg.cc to fix SPR 3412.
+	 SPR 3412.
+Version 1.2.15 - 2004-09-29 (CB) 
+--------------------------------
+	 Made minor modification to OmsourceAddsourcedlg.cc  so that
+	 hitting the return key will comoute a spectrum and hitting
+	 the Delete key will remove one (fixes SPR 3394).
+Version 1.2.14 - 2004-09-27 (CB) 
+--------------------------------
+	 OmsourceAddsourcedlg.cc modified so that the centroiding buttons
+	 are initialised to false (fixes SPR 3392).
+Version 1.2.13 - 2004-08-20 (CB) 
+--------------------------------
+	 OmsourceAddsourcedlg.cc modified to set focus to the image window
+	 when the user has changed an extraction region parameter.
+	(fixes SPR 3388).
+
+Version 1.2.12 - 2004-08-20 (CB) 
+--------------------------------
+	 OmsourceAddsourcedlg.cc modified to plot the extracted spectrum
+	 in the correct position when automatic centriding switced-off
+	(fixes SPR 3380).
+	
+Version 1.2.11 - 2004-07-21 (CB) 
+--------------------------------
+	 Table name ORIGIN changed to REL2SRCNUM for
+	 SPR 3358 (this SPR was raised for omgrism).
+	
+	
+Version 1.2.10 - 2004-05-28 (CB) 
+--------------------------------
+	 Further modification to fix mac build failure.
+	
+Version 1.2.9 - 2004-05-28 (CB) 
+--------------------------------
+	  src Makefile, OmSourceRegions.cc and OmSouurceBrowser.cc
+	  ammended to fix mac build failure.
+Version 1.2.8 - 2004-03-15 (CB) 
+-------------------------------
+	  Minor modification made to check the coordinates in the
+	  spectrum file produced by omgrism to ensure zeroth-order
+	  coordinates are not zero (fixes SPR 3270).
+	
+Version 1.2.7 - 2004-03-02 (CB) 
+-------------------------------
+	  Documentation updated for SPR 3263 and some minor changes
+	  made to interactive information.
+	
+Version 1.2.6 - 2004-02-17 (CB) 
+-------------------------------
+	  Further modification for SPRs 3243 & 3251.
+	
+Version 1.2.5 - 2004-02-06 (CB) 
+-------------------------------
+	  Ammended omsource_old.f90 so that temp sources created for 
+	  omgrism won't be rejected and also to allow omgrism and
+	  omgrismplot parameters to be inputted. (fixes SPRs 3243 & 3251).
+Version 1.2.4 - 2004-01-20 (CB) 
+-------------------------------
+	  Ammended code so that extraction regions are displayed centred
+	  on first-order spectrum (fixes SPR 3224).
+	
+Version 1.2.3 - 2004-01-20 (CB) 
+-------------------------------
+	  Ammended code in OmSourceBrowser.cc to fix SPR 3221.
+	
+Version 1.2.2 - 2003-12-17 (CB) 
+-------------------------------
+	  Modified code in omsource_old.f90 that produces 2 sources
+	  for omgrism - made the zeroth-order centroiding box larger
+	  and adjusted  the box round the firts-order spectrum to have
+	  the correct displacement from teh zeroth-order spectrum
+	  and the correct length for the given filter (GRISM1/GRISM2).
+	
+Version 1.2.1 - 2003-12-12 (CB) 
+-------------------------------
+	  Modified to check image-displayer running, and  restart
+	  if necessary, when an image is loaded (fixes SPR 3173)
+Version 1.2 - 2003-12-11 (CB) 
+-------------------------------
+	  Made ammendments so program is compatible with latest omgrism.
+	
+Version 1.1 - 2003-12-08 (CB) 
+-------------------------------
+	  Bug in running omdetect fixed. 
+	
+Version 1.0 - 2003-12-05 (CB) 
+-------------------------------
+	  The display of the source-regions on the ds9 image improved.  
+          Fixed bug in deleting block from temporary spectrum-list file.
+	  Incorporates some of Antonio's suggested improvements.
+	
+Version 0.6 - 2003-12-03 (CB) 
+-------------------------------
+	  Ammendment made to spectrum-list table.
+	
+Version 0.5 - 2003-12-02 (CB) 
+-------------------------------
+	  Bug in deleting spectra from the list fixed. Modification 
+	  made to make it easier for the user to change the image
+	  appearance when selecting regions for processing.
+	
+Version 0.4 - 2003-11-28 (CB) 
+-------------------------------
+          Some obsolete code removed and some corrections to the 
+	  spectrum-list table made.
+	
+Version 0.3 - 2003-11-26 (CB) 
+-------------------------------
+          Minor changes made for compatibility with latest version of
+	  omgrism.
+	
+Version 0.2 - 2003-11-26 (CB) 
+-------------------------------
+          Makefile in src directory ammended to fix static-build failure
+
+Version 0.1 - 2003-11-21 (CB) - First uploaded version
+-------------------------------
+

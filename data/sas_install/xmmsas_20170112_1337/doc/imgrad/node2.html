@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="imgrad">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="imgrad.css">
+
+<LINK REL="next" HREF="node3.html">
+<LINK REL="previous" HREF="node1.html">
+<LINK REL="up" HREF="imgrad.html">
+<LINK REL="next" HREF="node3.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+imgrad (tools-1.67) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node1.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Instruments/Modes"></A>
+<A HREF="imgrad.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="imgrad.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00020000000000000000"></A>
+<A NAME="imgrad:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+This task approximates the gradient at each pixel of an image by doing least-squares fitting of a plane to the 3x3 array of values centred on each pixel. Since gradient is a vector quantity, two output images are required. The user can choose between a cartesian representation (in which the output images record the x and y components of the gradient) or a polar representation (in which the output images are the magnitude and azimuth of the gradient.).
+
+<P>
+`Least-squares fitting of a plane' sounds very grand but in fact the algebra boils down to the following:
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+(\nabla I)_{x,y} = \frac{1}{6} \left( \begin{array}{c}
+\sum_{j=y-1}^{y+1} I_{x+1,j} - \sum_{j=y-1}^{y+1} I_{x-1,j} \\
+\\
+\sum_{i=x-1}^{x+1} I_{i,y+1} - \sum_{i=x-1}^{x+1} I_{i,y-1} \\
+\end{array} \right).
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="355" HEIGHT="69" BORDER="0"
+ SRC="img1.png"
+ ALT="\begin{displaymath}
+(\nabla I)_{x,y} = \frac{1}{6} \left( \begin{array}{c}
+\sum_...
+...i,y+1} - \sum_{i=x-1}^{x+1} I_{i,y-1} \\
+\end{array} \right).
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+Here <SPAN CLASS="MATH"><IMG
+ WIDTH="30" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$I_{x,y}$"></SPAN> represents the image value at the (<SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$x,y$"></SPAN>)th pixel.
+
+<P>
+No gradient value is calculated at the edge: nulls are stored in the output at these pixels. If the input image contains null-valued pixels, all 8 nearest neighbours of such pixels are set to null in the output.
+
+<P>
+The azimuth, where this is to be calculated, is <!-- MATH
+ $\arctan(\nabla_y/\nabla_x)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="111" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$\arctan(\nabla_y/\nabla_x)$"></SPAN>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node1.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Instruments/Modes"></A>
+<A HREF="imgrad.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

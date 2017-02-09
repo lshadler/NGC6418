@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Simplest case.</TITLE>
+<META NAME="description" CONTENT="Simplest case.">
+<META NAME="keywords" CONTENT="rgssources">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgssources.css">
+
+<LINK REL="next" HREF="node30.html">
+<LINK REL="previous" HREF="node28.html">
+<LINK REL="up" HREF="node28.html">
+<LINK REL="next" HREF="node30.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgssources (rgssources-6.2.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node28.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Adding further sources."></A>
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Adding further sources."></A>
+<A HREF="node30.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Old-format source list."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgssources.html">Home Page</A> / <A  HREF="node19.html">Examples.</A> / <A  HREF="node28.html">Adding further sources.</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00064100000000000000">
+Simplest case.</A>
+</H3>
+
+<P>
+After the initial source list has been made, the user will generally want to add some source positions of his/her own. The simplest call to do this is:
+
+<P>
+<PRE>
+  setenv SAS_CCF &lt;the .cif file&gt; [if it hasn't already been done, of course.
+From now on I'll assume that SAS_CCF has been set - it is always necessary.]
+
+  rgssources srclist=&lt;previous rgs source list&gt; addusersource=yes
+ra=&lt;user src ra&gt; dec=&lt;user src dec&gt;
+</PRE>
+
+<P>
+Notes:
+
+<OL>
+<LI>It is unnecessary to set the parameter <TT>filemode</TT>=modify since this is the default value.
+</LI>
+<LI>It is unnecessary with this call to supply an attitude history file.
+</LI>
+<LI>It is unnecessary with this call to set the environment variable SAS_ODF.
+</LI>
+<LI>If you <TT>addusersource</TT> but forget the <TT>ra</TT> and/or <TT>dec</TT> parameters, the task will issue a warning.
+</LI>
+<LI>The pointing and prime source remain unchanged by default.
+</LI>
+<LI>It is a good idea to specify a label as well for your source via the parameter <TT>label</TT>. Reason: the default value is 'USER'. If you try to add another source using again the default <TT>label</TT> value, the task will not allow this because <A NAME="1752"></A><TT>LABEL</TT> values must be unique.
+</LI>
+<LI>Parameter <TT>enablefilter</TT> if set will not at present prevent you adding an out-of-FOV source to the source list; however it will enable the task to generate a warning after the fact, and the out-of-FOV sources are flagged as it is in the resultant source list.
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node28.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Adding further sources."></A>
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Adding further sources."></A>
+<A HREF="node30.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Old-format source list."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Instrument modes</TITLE>
+<META NAME="description" CONTENT="Instrument modes">
+<META NAME="keywords" CONTENT="odfingest">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="odfingest.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+odfingest (odfingest-3.30) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Parameters"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Housekeeping parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node35.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="odfingest.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00033000000000000000">
+Instrument modes</A>
+</H2>
+
+<P>
+The following is an example (for EMOS) of the instrument mode
+information that <A NAME="1424"></A><A NAME="tex2html13"
+  HREF="../odfingest/index.html"><SPAN  CLASS="textbf">odfingest</SPAN></A>
+can derive with the help of the
+calibration data base.
+
+<P>
+<PRE>
+MODE = PrimePartialW2 / Instrument configuration 
+CALIBRATION_MODE_1 = PrimePartialW2 / Mode used to calibrate events from CCD 1
+CALIBRATION_MODE_2 = PrimeFullWindow / Mode used to calibrate events from CCD 2
+CALIBRATION_MODE_3 = PrimeFullWindow / Mode used to calibrate events from CCD 3
+CALIBRATION_MODE_4 = PrimeFullWindow / Mode used to calibrate events from CCD 4
+CALIBRATION_MODE_5 = PrimeFullWindow / Mode used to calibrate events from CCD 5
+CALIBRATION_MODE_6 = PrimeFullWindow / Mode used to calibrate events from CCD 6
+CALIBRATION_MODE_7 = PrimeFullWindow / Mode used to calibrate events from CCD 7
+DATA_MODE_1 = Imaging / Data mode for CCD 1
+DATA_MODE_2 = Imaging / Data mode for CCD 2
+DATA_MODE_3 = Imaging / Data mode for CCD 3
+DATA_MODE_4 = Imaging / Data mode for CCD 4
+DATA_MODE_5 = Imaging / Data mode for CCD 5
+DATA_MODE_6 = Imaging / Data mode for CCD 6
+DATA_MODE_7 = Imaging / Data mode for CCD 7
+</PRE>
+
+<P>
+The <TT>MODE</TT> parameter describes the instrument configuration as
+determined by the <A NAME="1428"></A><A NAME="tex2html14"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>.
+
+<P>
+The <TT>CALIBRATION_MODE_n</TT> parameters describe the CCD mode
+that the <A NAME="1432"></A><A NAME="tex2html15"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>
+would use to calibrate the science data for the
+n-th CCD (or window, in the case of OM).
+
+<P>
+The <TT>DATA_MODE_n</TT> parameters indicate the data mode
+(determined by the <A NAME="1436"></A><A NAME="tex2html16"
+  HREF="../oal/index.html"><SPAN  CLASS="textbf">oal</SPAN></A>) the n-th CCD was in during the
+exposure.
+
+<P>
+The example above says that the 7 CCDs were operated in imaging mode.
+The detailed configuration (this determines what calibration data and
+algorithms to apply) of CCD 1 correspond to the mode PrimePartialW2,
+while the other 6 CCDs were opearated in PrimeFullWindow mode. The
+overall instrument configuration for this exposure was PrimePartialW2.
+
+<P>
+The <TT>MODE</TT> is set to <TT>UNDEFINED</TT> if it cannot be cannot
+be determined, or if it does not make sense for a certain
+<TT>DATA_MODE</TT> (for instance there is no calibration mode
+associated with the RGS diagnostic images).
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Parameters"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Housekeeping parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node35.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

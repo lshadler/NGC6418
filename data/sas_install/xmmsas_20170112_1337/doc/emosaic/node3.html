@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="emosaic">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emosaic.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="emosaic.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emosaic (emosaic-1.17) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="emosaic.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emosaic.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="emosaic:description:description"></A>
+<BR>
+Description
+</H1>
+This task accepts an arbitrary number (maximum 999 in practice) of 
+input images and combines them to produce a single mosaiced image. Exposure images may optionally be
+supplied in parallel with the raw event images, in which case the
+output image will be exposure corrected.
+
+<P>
+The task will only handle images which are a tangent plane projection
+of the sky, for example those created from the <TT>X</TT> and
+<TT>Y</TT> columns of EPIC event lists using <TT>evselect</TT>. Images
+from the optical monitor, which in their raw form contain a
+significant amount of distortion, could in principle be mosaiced after
+reprojection to the tangent plane projection.
+
+<P>
+The output image is the additive mosaic of the input images, in other
+words no average is performed. If the input image list is matched with
+a corresponding list of exposure maps, these exposure maps are
+additively mosaiced in parallel, then the output image is divided by
+the mosaiced exposure map. This approach is preferable to mosaicing
+exposure corrected images, as it helps avoid problems of poor counting
+statistics in areas of low exposure. Binary masks can be simulated by
+providing exposure images which have a pixel values of zero or one.
+
+<P>
+The output pixel size (in degrees) and world-coordinate system (WCS)
+reference coordinate for the output image are set to those of the first
+input image.
+
+<P>
+The task can read images in any of the <A NAME="303"></A><A NAME="tex2html1"
+  HREF="../dal/index.html"><SPAN  CLASS="textbf">dal</SPAN></A>-supported numeric data types.
+If all the input images have the same data type (and if <TT>-withexposure</TT>
+is not set), the output image also has that type;
+otherwise the output is written in real64.
+If <TT>-withexposure</TT> is set, this task also looks up the input <TT>exposuresets</TT>
+as well, then the datatype with a larger bytesize one (e.g., FLOAT rather
+than INTEGER) between input images and <TT>exposuresets</TT> is used
+for the type for the output image, providing that all the input sets
+have the same data type; 
+otherwise the output is written in real64.
+
+<P>
+The task support FITS images which have their image array in the 
+<B>PRIMARY</B> extension
+of the file. It also, exceptionally, supports XMM-Newton mask files, which 
+hold the mask array in an extension called <B>MASK</B>. In the latter case, 
+the output file also contains an extension <B>MASK</B> which holds the
+mosaiced mask array.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="emosaic.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

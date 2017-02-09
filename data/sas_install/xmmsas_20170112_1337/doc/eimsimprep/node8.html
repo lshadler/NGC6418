@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Make maps of expected background counts</TITLE>
+<META NAME="description" CONTENT="Make maps of expected background counts">
+<META NAME="keywords" CONTENT="eimsimprep">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eimsimprep.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eimsimprep (eimsim-2.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Make non-vignetted exposure maps"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Make sensitivity and reciprocal-sensitivity"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eimsimprep.html">Home Page</A> / <A  HREF="node2.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00024000000000000000"></A>
+<A NAME="eimsimprep:description:makebkgmap"></A>
+<BR>
+Make maps of expected background counts
+</H2>
+
+<P>
+This function may be performed alone by calling the script with <TT>entrystage</TT> and <TT>finalstage</TT>=`makebkgmap'. Processing is performed by the task <A NAME="697"></A><A NAME="tex2html35"
+  HREF="../bkgtemplategen/index.html"><SPAN  CLASS="textbf">bkgtemplategen</SPAN></A>. Note that background maps are expected to be supplied by the user if parameter <TT>bkgstyle</TT> is set to `products'; In this case, of course, the present function is skipped. 
+
+<P>
+A realistic image simulation includes background counts. The XMM EPIC background has not yet been fully characterised but it seems clear that it consists primarily of one component from cosmological x-ray background, which is vignetted to the same degree as x-rays from discrete sources, plus a second component which is a combination of instrumental and particle background and which exhibits, in comparison, only a small amount of spatial variation. It ought therefore to be possible to produce quite a good background model by adding some scaled combination of normal (ie, vignetted) and non-vignetted exposure maps. This is what is done by the present function of <A NAME="702"></A><A NAME="tex2html36"
+  HREF="../eimsimprep/index.html"><SPAN  CLASS="textbf">eimsimprep</SPAN></A>.
+
+<P>
+One background map is produced per band, per exposure, per observation. There are at present two ways of supplying the background rates, controlled by the parameter <TT>bkgstyle</TT>.
+
+<P>
+If <TT>bkgstyle</TT> is set to `srcspecset', the <SPAN  CLASS="textit">total</SPAN> (ie, vignetted plus non-vignetted) background rates (in counts per second per square arcsec) are read for the appropriate band, instrument and filter from the source template set (name as supplied to parameter <TT>srcspecset</TT>). At present the fraction of these rates which is to be considered non-vignetted is hard-wired at 0.2. This will no doubt become more sophisticated in the future.
+
+<P>
+If <TT>bkgstyle</TT> is set to `user' on the other hand, the respective amounts of vignetted vs. non-vignetted component are supplied via list parameters <TT>bkgrates</TT> and <TT>vigfractions</TT>. Each of these parameters should be supplied with a list with <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$N$"></SPAN> elements, 1 per each of <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$N$"></SPAN> energy bands listed in the <A NAME="712"></A><TT>FLUX_SCALES</TT> table of the source template set, in the same order as the band IDs occur in that table. The maximum total background rates (in counts arcsec<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^{-2}$"></SPAN> sec<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^{-1}$"></SPAN>) should be supplied via <TT>bkgrates</TT>; the fractions of these which are to be considered vignetted are supplied via <TT>vigfractions</TT>. The units of the output image are counts pixel<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^{-1}$"></SPAN>.
+
+<P>
+As mentioned above, if parameter <TT>bkgstyle</TT> is set to `products', the user is expected to supply maps for all necessary instruments and bands. It is up to the user to make sure that such maps are consistent with the remainder of the product templates (exposure maps in particular). At present there is no parameter by which the user can point <A NAME="717"></A><A NAME="tex2html37"
+  HREF="../eimsimprep/index.html"><SPAN  CLASS="textbf">eimsimprep</SPAN></A>
+to these files; instead one just names them correctly and places them in the correct directory. (This rather rudimentary interface may change in future.) The easiest way to determine the correct file names for these is to run <A NAME="721"></A><A NAME="tex2html38"
+  HREF="../eimsimprep/index.html"><SPAN  CLASS="textbf">eimsimprep</SPAN></A>
+with <TT>astest</TT>=`yes' and <TT>bkgstyle</TT>=`user' or `srcspecset'. In `astest' mode, the command lines are not sent to the shell, just printed to standard output; the appropriate file names will be found in the invocations of task <A NAME="727"></A><A NAME="tex2html39"
+  HREF="../bkgtemplategen/index.html"><SPAN  CLASS="textbf">bkgtemplategen</SPAN></A>. 
+
+<P>
+Note that the list of simulated sources should contain sources which are too faint to stand any significant chance of being detected - otherwise it would not be possible to assess the sensitivity of the detection scheme. These faint sources will therefore contribute to the vignetted component of the background. This is in accordance with the actual x-ray sky: on statistical and other grounds it is presently believed that a significant fraction of the cosmological x-ray background is comprised of unresolved point sources (ref????*****). It may therefore be desirable to adjust the faint-end cutoff in the list of simulated sources so as to generate a background which mimics as nearly as possible the (somewhat lumpy) statistical qualities of the real x-ray background. A disadvantage in doing this is that the spectrum of the cosmological background is known to be somewhat harder than that of populations of (so far) detectable sources (ref []). Representing it in part by sources and in part by a smooth vignetted map hopefully will allow us to overcome this difficulty.
+<P>
+**** Use Ueda et al, Ap J 518, 656-671 (1999) for the ref?
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Make non-vignetted exposure maps"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Make sensitivity and reciprocal-sensitivity"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

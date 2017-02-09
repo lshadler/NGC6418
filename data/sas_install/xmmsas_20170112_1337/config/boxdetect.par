@@ -1,0 +1,110 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="imagesets" list="yes" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    List of input images.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="bkgmapsets" list="yes" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    List of input background maps.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withdetmaskset" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to input a detection mask.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="detmaskset" type="dataset" mandatory="yes">
+      <DESCRIPTION>
+       Detection mask. Sources will not be sought in unmasked areas of the images.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="boxhalfsize" type="int" default="2">
+   <DESCRIPTION>
+    The size of the detection box = 2*boxhalfsize+1.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    boxhalfsize in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="writebadmapset" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to output a mask of pixels where the bkgmap was lt 0.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="badmapset" type="dataset" default="badmap.ds">
+      <DESCRIPTION>
+       Map of bad pixels.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="writelikemapset" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to output a likelihood image.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="likemapset" type="dataset" default="likemap.ds">
+      <DESCRIPTION>
+       Nett likelihood image.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="deleteconfused" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to delete confused sources.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="filemode" type="string" default="append">
+   <DESCRIPTION>
+    Whether to add sources to an old list or start a new list.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="create">
+    </ITEM>
+    <ITEM value="append">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="srclistset" type="dataset" default="srclist.ds">
+   <DESCRIPTION>
+    List of sources.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="likemin" type="real" default="10.0">
+   <DESCRIPTION>
+    Likelihood cutoff. Source candidates below this are discarded.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    likemin in (0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="dithercounts" type="bool" default="no">
+   <DESCRIPTION>
+    Dithers all non-zero counts to within +- 0.5 (for test purposes).
+   </DESCRIPTION>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

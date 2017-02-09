@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Calculate the indices(i,j) on the new frame converted from the old frame.</TITLE>
+<META NAME="description" CONTENT="Calculate the indices(i,j) on the new frame converted from the old frame.">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="previous" HREF="node12.html">
+<LINK REL="up" HREF="node10.html">
+<LINK REL="next" HREF="node14.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node12.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Return the indices (i,j)"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Integer (index) scalar integers"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Array or vector scalar"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node6.html">General-purpose array-processing utilities</A> / <A  HREF="node10.html">Integer (index) scalar integers</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00024300000000000000"></A>
+    <A NAME="ssclib:description:calcIndicesFromIndices"></A>
+<BR>
+Calculate the indices(i,j) on the new frame converted from the old frame.
+</H3>
+
+<P>
+Particularly useful in subroutines.
+
+<P>
+<PRE>
+  interface calcIndicesFromIndices
+    subroutine calcIndicesFromIndicesDblDbl(oldIndices, newIndices, oldLbound, newLbound)
+      real(double), intent(in)    :: oldIndices(:)
+      real(double), intent(out)   :: newIndices(size(oldIndices))
+      integer, intent(in)           :: oldLbound(size(oldIndices))
+      integer, intent(in), optional :: newLbound(size(oldIndices))
+    end subroutine calcIndicesFromIndicesDblDbl
+
+    subroutine calcIndicesFromIndicesDblI32(oldIndices, newIndices, oldLbound, newLbound)
+      real(double),   intent(in)  :: oldIndices(:)
+      integer(int32), intent(out) :: newIndices(size(oldIndices))
+      integer, intent(in)           :: oldLbound(size(oldIndices))
+      integer, intent(in), optional :: newLbound(size(oldIndices))
+    end subroutine calcIndicesFromIndicesDblI32
+  
+    subroutine calcIndicesFromIndicesDblI16(oldIndices, newIndices, oldLbound, newLbound)
+      real(double),   intent(in)  :: oldIndices(:)
+      integer(int16), intent(out) :: newIndices(size(oldIndices))
+      integer, intent(in)           :: oldLbound(size(oldIndices))
+      integer, intent(in), optional :: newLbound(size(oldIndices))
+    end subroutine calcIndicesFromIndicesDblI16
+  
+    subroutine calcIndicesFromIndicesSglSgl(oldIndices, newIndices, oldLbound, newLbound)
+      real(single),   intent(in)  :: oldIndices(:)
+      real(single),   intent(out) :: newIndices(size(oldIndices))
+      integer, intent(in)           :: oldLbound(size(oldIndices))
+      integer, intent(in), optional :: newLbound(size(oldIndices))
+    end subroutine calcIndicesFromIndicesSglSgl
+  
+    subroutine calcIndicesFromIndicesSglI32(oldIndices, newIndices, oldLbound, newLbound)
+      real(single),   intent(in)  :: oldIndices(:)
+      integer(int32), intent(out) :: newIndices(size(oldIndices))
+      integer, intent(in)           :: oldLbound(size(oldIndices))
+      integer, intent(in), optional :: newLbound(size(oldIndices))
+    end subroutine calcIndicesFromIndicesSglI32
+  
+    subroutine calcIndicesFromIndicesSglI16(oldIndices, newIndices, oldLbound, newLbound)
+      real(single),   intent(in)  :: oldIndices(:)
+      integer(int16), intent(out) :: newIndices(size(oldIndices))
+      integer, intent(in)           :: oldLbound(size(oldIndices))
+      integer, intent(in), optional :: newLbound(size(oldIndices))
+    end subroutine calcIndicesFromIndicesSglI16
+  
+    subroutine calcIndicesFromIndicesI32I32(oldIndices, newIndices, oldLbound, newLbound)
+      integer(int32), intent(in)  :: oldIndices(:)
+      integer(int32), intent(out) :: newIndices(size(oldIndices))
+      integer, intent(in)           :: oldLbound(size(oldIndices))
+      integer, intent(in), optional :: newLbound(size(oldIndices))
+    end subroutine calcIndicesFromIndicesI32I32
+  
+    subroutine calcIndicesFromIndicesI16I16(oldIndices, newIndices, oldLbound, newLbound)
+      integer(int16), intent(in)  :: oldIndices(:)
+      integer(int16), intent(out) :: newIndices(size(oldIndices))
+      integer, intent(in)           :: oldLbound(size(oldIndices))
+      integer, intent(in), optional :: newLbound(size(oldIndices))
+    end subroutine calcIndicesFromIndicesI16I16
+  end interface
+</PRE>
+
+<P>
+This calculates the indices <TT>(i,j)</TT> on the new frame converted from
+those on the old frame.
+The most likely case is to get a pair of indices of an array
+in a subroutine/function, all the lbound-s of which must be 1,
+from the old pair of indices, where the lbound-s can be arbitrary.
+
+<P>
+<TT>newLbound(:)</TT> is in default 1 (if not given).
+
+<P>
+The following is an example for a 1-dimension array.
+
+<P>
+<PRE>
+  integer :: ary(5:8)
+  ary(7) = -99	! i=7 is the 3rd element in the array.
+  call aSub(iPoints=(/7/), lbounds=lbound(ary))
+
+  subroutine aSub(iPoints, lbounds)
+    integer, intent(in) :: iPoints(:), lbounds(:)
+    integer :: outAry(size(iPoints))
+
+    call getIndicesFromIndices(iPoints, outAry, lbounds)
+    print *, outAry		! =&gt; 3
+    ! nb., the old index=7 corresponds to index=3 in the current context.
+  end subroutine aSub
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

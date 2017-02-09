@@ -1,0 +1,68 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="imagesets" list="yes" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    List of input images.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="bkgmapsets" list="yes" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    List of input background maps.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="expmapsets" list="yes" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    List of input exposure maps.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="groupids" list="yes" type="int" mandatory="yes">
+   <DESCRIPTION>
+    List of group IDs for the images.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    groupids in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="boxhalfsizes" list="yes" type="int" default="2">
+   <DESCRIPTION>
+    The sizes of the detection boxes = 2*boxhalfsize+1.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    boxhalfsizes in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="srclistset" type="dataset" default="srclist.ds">
+   <DESCRIPTION>
+    List of sources.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="likemin" type="real" default="10.0">
+   <DESCRIPTION>
+    Likelihood cutoff. Source candidates below this are discarded.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    likemin in (0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="astest" type="bool" default="yes">
+   <DESCRIPTION>
+    Whether to run in test mode.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="cleanup" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to delete temp files.
+   </DESCRIPTION>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

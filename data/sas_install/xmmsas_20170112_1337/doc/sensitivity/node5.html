@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="sensitivity">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="sensitivity.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="sensitivity.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+sensitivity (esensitivity-1.10) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Theory"></A>
+<A HREF="sensitivity.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="sensitivity.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="sensitivity:description:parameters"></A>
+<A NAME="513"></A>
+<tr valign=top bgcolor='silver'><td><b>weights</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.png"
+ ALT="$0\le$"></SPAN><TT>weights</TT></td></tr>
+
+<tr valign=top><td colspan=5>
+    This list of real values contains the information about the spectrum of the source. They correspond to the <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$\mu_i$"></SPAN> values in equation <A HREF="node4.html#equ2">2</A>. They need not be normalized however: the task will do this itself. At least one of the values in the list must be greater than zero. Note that these values represent the detected spectrum of the source; that is, <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$\mu_i$"></SPAN> is the total number of detected counts within energy band <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$i$"></SPAN> during a given exposure time, on the optic axis, assuming no chip gaps or bad pixels under the PSF.
+    <br>&nbsp;</td></tr>
+
+<A NAME="523"></A>
+<tr valign=top bgcolor='silver'><td><b>boxbkgmapsets</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    A list of input images, one per energy band. These images are made by <A NAME="532"></A><A NAME="tex2html20"
+  HREF="../esensitivity/index.html"><SPAN  CLASS="textbf">esensitivity</SPAN></A>
+calling <A NAME="536"></A><A NAME="tex2html21"
+  HREF="../asmooth/index.html"><SPAN  CLASS="textbf">asmooth</SPAN></A>. They are formed by convolving the background maps with the square detection box.
+
+<br>&nbsp;</td></tr>
+
+<A NAME="540"></A>
+<tr valign=top bgcolor='silver'><td><b>psfexpmapsets</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    A list of input images, one per energy band. These images are made by <A NAME="550"></A><A NAME="tex2html22"
+  HREF="../esensitivity/index.html"><SPAN  CLASS="textbf">esensitivity</SPAN></A>
+calling <A NAME="554"></A><A NAME="tex2html23"
+  HREF="../econvolverprep/index.html"><SPAN  CLASS="textbf">econvolverprep</SPAN></A>
+followed by <A NAME="558"></A><A NAME="tex2html24"
+  HREF="../asmooth/index.html"><SPAN  CLASS="textbf">asmooth</SPAN></A>. They are formed by truncating the normalized PSF within the detection box and convolving the exposure maps with the result. Thus these images are in units of seconds and in some sense represent the exposure `seen' within the sliding source-detection box.
+
+<br>&nbsp;</td></tr>
+
+<A NAME="562"></A>
+<tr valign=top bgcolor='silver'><td><b>expmapsets</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    A list of exposure maps. These were utilized in a previous version of the task but appear to serve little function in the present version. In future I'll probably remove them.
+    <br>&nbsp;</td></tr>
+
+<A NAME="569"></A>
+<tr valign=top bgcolor='silver'><td><b>sensmapsets</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The output sensitivity maps, one per energy band. These are in units of counts <SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$\rm {s}^{-1}$"></SPAN>.
+    <br>&nbsp;</td></tr>
+
+<A NAME="578"></A>
+<tr valign=top bgcolor='silver'><td><b>likemin</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img34.png"
+ ALT="$0&lt;$"></SPAN><TT>likemin</TT></td></tr>
+
+<tr valign=top><td colspan=5>
+    The same cutoff value of detection likelihood <!-- MATH
+ $L_{\rm {cutoff}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="48" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.png"
+ ALT="$L_{\rm {cutoff}}$"></SPAN> which was supplied to the parameter of the same name of <A NAME="590"></A><A NAME="tex2html25"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>.
+
+<br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Theory"></A>
+<A HREF="sensitivity.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

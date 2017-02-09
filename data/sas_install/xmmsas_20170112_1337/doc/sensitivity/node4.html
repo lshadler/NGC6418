@@ -1,0 +1,388 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Theory</TITLE>
+<META NAME="description" CONTENT="Theory">
+<META NAME="keywords" CONTENT="sensitivity">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="sensitivity.css">
+
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+sensitivity (esensitivity-1.10) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="sensitivity.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000"></A>
+<A NAME="sensitivity:description:theory"></A>
+<BR>
+Theory
+</H2>
+
+<P>
+The task <A NAME="470"></A><A NAME="tex2html15"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+takes as input <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$N$"></SPAN> images of the same part of the sky in <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$N$"></SPAN> separate energy bands, and (in `map' mode) <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$N$"></SPAN> images of the estimated background counts per pixel. The task applies a sliding box to these stacked images.<A NAME="tex2html10"
+  HREF="footnode.html#foot381"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A> At each pixel, then, the task has available <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$N$"></SPAN> values <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$C_i$"></SPAN> of the actual number of events found within the box and <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$N$"></SPAN> values <!-- MATH
+ $\langle B_i \rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="34" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$\langle B_i \rangle$"></SPAN> of the expected number of background events within the same box. Considering for a moment just the values from a single band in isolation, if there were no sources in the field, then the probability <SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$p(C)$"></SPAN> of finding <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$C$"></SPAN> counts in this box would be given by the familiar Poisson expression
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+p(C) = \frac{\langle B\rangle^C \ e^{-\langle B\rangle}}{C!}.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="142" HEIGHT="42" BORDER="0"
+ SRC="img7.png"
+ ALT="\begin{displaymath}
+p(C) = \frac{\langle B\rangle^C \ e^{-\langle B\rangle}}{C!}.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+The probability <!-- MATH
+ $P_{\rm {null}}(C)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="61" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$P_{\rm {null}}(C)$"></SPAN> that the observed count <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$C$"></SPAN> is due only to background is therefore the sum of <SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$p(x)$"></SPAN> for all values of <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$x$"></SPAN> from <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$C$"></SPAN> to infinity. This can be shown to be equal to
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+P_{\rm {null}}(C) = 1-Q(C, \langle B\rangle)
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="172" HEIGHT="28" BORDER="0"
+ SRC="img11.png"
+ ALT="\begin{displaymath}
+P_{\rm {null}}(C) = 1-Q(C, \langle B\rangle)
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+where <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$Q$"></SPAN> is the incomplete gamma function, defined by
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+Q(C, \langle B\rangle) = \frac{\int_{\langle B\rangle}^{\infty} \ dt \, e^{-t} t^{C-1}}{\int_{0}^{\infty} \ dt \, e^{-t} t^{C-1}}.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="206" HEIGHT="52" BORDER="0"
+ SRC="img13.png"
+ ALT="\begin{displaymath}
+Q(C, \langle B\rangle) = \frac{\int_{\langle B\rangle}^{\in...
+... \, e^{-t} t^{C-1}}{\int_{0}^{\infty} \ dt \, e^{-t} t^{C-1}}.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+<A NAME="486"></A><A NAME="tex2html16"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+calculates the value of the <A NAME="490"></A><TT>LIKE</TT> column for the <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$i$"></SPAN>th energy band from the likelihood <!-- MATH
+ $L_i = -ln(P_{\rm {null}})$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="113" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$L_i = -ln(P_{\rm {null}})$"></SPAN>. The <A NAME="492"></A><TT>LIKE</TT> value <!-- MATH
+ $L_{\rm {summ}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="48" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$L_{\rm {summ}}$"></SPAN> for the summary row<A NAME="tex2html14"
+  HREF="footnode.html#foot389"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A> is calculated by <A NAME="496"></A><A NAME="tex2html17"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+as follows. First, the values of <A NAME="500"></A><TT>LIKE</TT> for the individual bands are summed. This sum can be shown itself to follow a Poisson-like probability distribution. Leaving out the details, the probability <!-- MATH
+ $P_{\rm {null}}(\bar{C})$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="61" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$P_{\rm {null}}(\bar{C})$"></SPAN> that the vector <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$\bar{C}$"></SPAN> of counts in the <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$N$"></SPAN> bands is due solely to background can be shown to be approximately given by
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+P_{\rm {null}}(\bar{C}) = Q\Big[N, N-\sum_{i=1}^{N} Q\big(C_i, \langle B_i\rangle\big) \Big].
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="270" HEIGHT="56" BORDER="0"
+ SRC="img19.png"
+ ALT="\begin{displaymath}
+P_{\rm {null}}(\bar{C}) = Q\Big[N, N-\sum_{i=1}^{N} Q\big(C_i, \langle B_i\rangle\big) \Big].
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+The summary-row value of <A NAME="502"></A><TT>LIKE</TT> is thus calculated from
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+L_{\rm {summ}} = -ln\Big\{Q\Big[N, N-\sum_{i=1}^{N} Q\big(C_i, \langle B_i\rangle\big) \Big]\Big\}.
+\end{equation}
+ -->
+<A NAME="equ1"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="equ1"></A><IMG
+ WIDTH="306" HEIGHT="56" BORDER="0"
+ SRC="img20.png"
+ ALT="\begin{displaymath}
+L_{\rm {summ}} = -ln\Big\{Q\Big[N, N-\sum_{i=1}^{N} Q\big(C_i, \langle B_i\rangle\big) \Big]\Big\}.
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">1</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+If there is no source at that location then clearly <SPAN CLASS="MATH"><IMG
+ WIDTH="59" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$C_i = B_i$"></SPAN>. Suppose however that there is actually a source which contributes, on average, <!-- MATH
+ $\langle S_i\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="31" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$\langle S_i\rangle$"></SPAN> counts to band <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$i$"></SPAN> within the box in question. Equation <A HREF="#equ1">1</A> becomes in this case
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+L_{\rm {summ}} = -ln\Big\{Q\Big[N, N-\sum_{i=1}^{N} Q\big(B_i+S_i, \langle B_i\rangle\big) \Big]\Big\}.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="340" HEIGHT="56" BORDER="0"
+ SRC="img23.png"
+ ALT="\begin{displaymath}
+L_{\rm {summ}} = -ln\Big\{Q\Big[N, N-\sum_{i=1}^{N} Q\big(B_i+S_i, \langle B_i\rangle\big) \Big]\Big\}.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+The question which <A NAME="504"></A><A NAME="tex2html18"
+  HREF="../sensitivity/index.html"><SPAN  CLASS="textbf">sensitivity</SPAN></A>
+should answer is, how small can the <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$S_i$"></SPAN> become while retaining <!-- MATH
+ $L_{\rm {summ}} \ge L_{\rm {cutoff}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="114" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="$L_{\rm {summ}} \ge L_{\rm {cutoff}}$"></SPAN>? The first step in answering this is to reduce the degrees of freedom in the problem. For this purpose it is convenient to express each <!-- MATH
+ $\langle S_i\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="31" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$\langle S_i\rangle$"></SPAN> as a product of two factors: a purely spectral factor <!-- MATH
+ $\mu_i=\langle S_i/\sum S_i\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="113" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$\mu_i=\langle S_i/\sum S_i\rangle$"></SPAN>, which will be held fixed, and a pure flux factor <!-- MATH
+ $\langle S\rangle=\langle \sum S_i\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="95" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$\langle S\rangle=\langle \sum S_i\rangle$"></SPAN>, which we vary. Let us find that <!-- MATH
+ $\langle S_{\rm {min}}\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="48" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$\langle S_{\rm {min}}\rangle$"></SPAN> which is the solution to
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+L_{\rm {cutoff}} = -ln\Big\{Q\Big[N, N-\sum_{i=1}^{N} Q\big(B_i+\mu_i\langle S_{\rm {min}}\rangle, \langle B_i\rangle\big) \Big]\Big\}.
+\end{equation}
+ -->
+<A NAME="equ2"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="equ2"></A><IMG
+ WIDTH="384" HEIGHT="56" BORDER="0"
+ SRC="img29.png"
+ ALT="\begin{displaymath}
+L_{\rm {cutoff}} = -ln\Big\{Q\Big[N, N-\sum_{i=1}^{N} Q\big...
+...gle S_{\rm {min}}\rangle, \langle B_i\rangle\big) \Big]\Big\}.
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">2</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+This value of <!-- MATH
+ $\langle S\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$\langle S\rangle$"></SPAN> represents the expectation value of counts within the detection box of a source of spectrum <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$\mu_i$"></SPAN> which will, on average, result in a source detection against the given background.
+
+<P>
+This is exactly what <A NAME="508"></A><A NAME="tex2html19"
+  HREF="../sensitivity/index.html"><SPAN  CLASS="textbf">sensitivity</SPAN></A>
+does: solve equation <A HREF="#equ2">2</A>. All that remains after that is to calculate <!-- MATH
+ $\langle S_{i,\rm {min}}\rangle = \mu_i \langle S_{\rm {min}}\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="136" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$\langle S_{i,\rm {min}}\rangle = \mu_i \langle S_{\rm {min}}\rangle$"></SPAN> for all <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$i$"></SPAN>, then convert these counts values to count rates by multiplication by the box exposure at that pixel, supplied via the parameter <TT>psfexpmapsets</TT>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

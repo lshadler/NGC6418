@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Input Files</TITLE>
+<META NAME="description" CONTENT="Input Files">
+<META NAME="keywords" CONTENT="region">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="region.css">
+
+<LINK REL="next" HREF="node14.html">
+<LINK REL="previous" HREF="node12.html">
+<LINK REL="up" HREF="region.html">
+<LINK REL="next" HREF="node14.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+region (region-7.13) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node12.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Errors"></A>
+<A HREF="region.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Output Files"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="region.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00060000000000000000"></A>
+<A NAME="region:description:inputfiles"></A>
+<BR>
+Input Files
+</H1>
+
+<P>
+
+<OL>
+<LI>A source list, which at minimum must contain a table extension named <A NAME="1102"></A><TT>SRCLIST</TT> with the following columns:
+
+<P>
+
+<UL>
+<LI>(mandatory) <A NAME="1104"></A><TT>RA</TT>: right ascension of the source in decimal degrees.
+</LI>
+<LI>(mandatory) <A NAME="1106"></A><TT>DEC</TT>: declination of the source in decimal degrees.
+</LI>
+<LI>(optional) <A NAME="1108"></A><TT>SCTS</TT>: total source counts; mandatory only if <TT>radiusstyle</TT>=`contour'.
+</LI>
+<LI>(optional) <A NAME="1111"></A><TT>BG_MAP</TT>: total background counts per pixel; mandatory only if <TT>radiusstyle</TT>=`contour'.
+</LI>
+<LI>(optional) <A NAME="1114"></A><TT>ID_INST</TT>: integer id of the EPIC instrument; mandatory only if <TT>radiusstyle</TT> is not equal to `userfixed'.
+</LI>
+<LI>(optional) <A NAME="1117"></A><TT>ID_BAND</TT>: integer id of the energy band; mandatory only if <TT>radiusstyle</TT> is not equal to `userfixed'.
+</LI>
+<LI>(optional) a further column, specified by <TT>srcidcol</TT>, which should contain a unique source identifying integer; mandatory only if <TT>operationstyle</TT>=`batch'.
+    
+</LI>
+</UL>
+
+<P>
+If <TT>radiusstyle</TT>=`contour', the source list should also contain WCS keywords so as to enable one to convert the flux-per-pixel background values to flux-per-arcsec. XMM EPIC source lists currently store these in a slightly non-standard way, as keywords in the table header, instead of as image-position column keywords. Since the major grist to <A NAME="1123"></A><A NAME="tex2html22"
+  HREF="../region/index.html"><SPAN  CLASS="textbf">region</SPAN></A>'s mill is EPIC source lists, the task has been `hard-wired' to look for these header keywords. These keywords are described as follows:
+
+<P>
+
+<UL>
+<LI><A NAME="1127"></A><TT>TCTYPEn</TT>: ='RA--TAN' for n=1 and 'DEC-TAN' for n=2.
+</LI>
+<LI><A NAME="1129"></A><TT>TCRPIXn</TT>: the position in pixel units of the reference point.
+</LI>
+<LI><A NAME="1131"></A><TT>TCRVALn</TT>: the position in world (ie, RA or dec) units of the reference direction.
+</LI>
+<LI><A NAME="1133"></A><TT>TCDELTn</TT>: the size of the pixels in world (ie, RA or dec) units. Note that for RA/dec as world units, the n=1 pixel size is usually made negative, so that RA increases to the left.
+</LI>
+<LI><A NAME="1135"></A><TT>TCROTA2</TT>: the rotation angle of the world frame. Usually this rotation is zero and in this case the keyword can be omitted.
+    
+</LI>
+</UL>
+
+<P>
+`n' in the above should run from 1 to 2.
+
+<P>
+I realize that this is a very narrow and restrictive source-list format definition. In future it is hoped to be able to make <A NAME="1137"></A><A NAME="tex2html23"
+  HREF="../region/index.html"><SPAN  CLASS="textbf">region</SPAN></A>
+accept much more generic lists of sources.
+
+<P>
+</LI>
+<LI>An XMM EPIC event list against which the region filter will be applied.
+  
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node12.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Errors"></A>
+<A HREF="region.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Output Files"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

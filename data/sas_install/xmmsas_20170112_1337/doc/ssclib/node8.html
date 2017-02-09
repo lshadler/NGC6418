@@ -1,0 +1,252 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>aryStatInfo???T structure definition</TITLE>
+<META NAME="description" CONTENT="aryStatInfo???T structure definition">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="aryStatInfoFlagT structure definition"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="General-purpose array-processing utilities"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="AryEdgesInfoT structure definition"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node6.html">General-purpose array-processing utilities</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00022000000000000000"></A> <A NAME="sec:aryStatInfoT"></A>
+<BR>
+aryStatInfo???T structure definition
+</H2>
+
+<P>
+A set of structure definitions is provided.
+The above `???' can be Double, Single, Int32, Int16 or Int8.
+This gives a structure for the statistics for a given (2-d?) array.
+The following is the example of <TT>aryStatInfoDoubleT</TT>.
+
+<P>
+<PRE>
+  type, public :: aryStatInfoDoubleT
+     real(double)   :: totalsum, mean, sigma
+     real(double)   :: realsum
+     integer(int32) :: totalentry, validentry
+     real(double)   :: minval, maxval
+     integer(int32), dimension(:), allocatable :: minindices, maxindices
+     real(double)   :: vallower, valupper
+     integer(int32), dimension(:), allocatable :: minareaindices, maxareaindices
+     type(aryStatInfoFlagT) :: flag
+  end type aryStatInfoDoubleT
+</PRE>
+
+<P>
+This structure is meant to offer the statistical information
+of an array or its subset.  That is, the statistical information
+for the array, where the valid entry can be filtered based on given
+
+<OL>
+<LI>external mask file, where True entry is valid,
+</LI>
+<LI>lower and/or upper thresholds for value at each cell,
+</LI>
+<LI>lower and/or upper boundaries (area, if 2-dim) of the indices of the array cell.
+</LI>
+</OL>
+If more than one filter condition are given, then
+the logical product of those conditions are considered, namely,
+only the entries that satisfy all the given filter conditions are used.
+Note that the boundary is inclusive for the second and third conditions.
+For example, if the lower thresholds for value at each cell is
+given to be 2.5, then the cells of which the value is smaller than 2.5
+are regarded as invalid and are not counted as the valid entry.
+
+<P>
+Table&nbsp;<A HREF="#tbl:aryStatInfo">1</A> shows the (supposed) meaning of each element
+as well as gives the difference in types of elements between the structures
+(such as, <TT>aryStatInfoDoubleT</TT> and <TT>aryStatInfoInt32T</TT>).
+Technically each user could give a different meaning for them,
+but it is discouraged for an obvious reason.
+
+<P>
+<BR>
+<DIV ALIGN="CENTER">
+  <A NAME="tbl:aryStatInfo"></A><A NAME="1462"></A>
+<TABLE CELLPADDING=3 BORDER="1" ALIGN="CENTER">
+<CAPTION><STRONG>Table 1:</STRONG>
+Elements in <TT>aryStatInfoT</TT></CAPTION>
+<TR><TD ALIGN="LEFT">Element</TD>
+<TD ALIGN="LEFT">Type<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^1$"></SPAN></TD>
+<TD ALIGN="LEFT">Description</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%totalsum</TD>
+<TD ALIGN="LEFT">D/S/I32</TD>
+<TD ALIGN="LEFT">Sum (for the valid entry)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%realsum</TD>
+<TD ALIGN="LEFT">D</TD>
+<TD ALIGN="LEFT">Sum (for the valid entry)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%mean</TD>
+<TD ALIGN="LEFT">D (S for SingleT)</TD>
+<TD ALIGN="LEFT">Mean</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%sigma</TD>
+<TD ALIGN="LEFT">D (S for SingleT)</TD>
+<TD ALIGN="LEFT">Standard deviation<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$^2$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT">%totalentry</TD>
+<TD ALIGN="LEFT">I32</TD>
+<TD ALIGN="LEFT">Total entry (size) of the array.</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%validentry</TD>
+<TD ALIGN="LEFT">I32</TD>
+<TD ALIGN="LEFT">The entry used in calculation.</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%minval</TD>
+<TD ALIGN="LEFT">D/S/I32/I16/I8</TD>
+<TD ALIGN="LEFT">Minimum value among the valid entry.</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%maxval</TD>
+<TD ALIGN="LEFT">D/S/I32/I16/I8</TD>
+<TD ALIGN="LEFT">Minimum value among the valid entry.</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%minindices</TD>
+<TD ALIGN="LEFT">I32 [Array]</TD>
+<TD ALIGN="LEFT">Location (indices: x,y,...) of <TT>minval</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">%maxindices</TD>
+<TD ALIGN="LEFT">I32 [Array]</TD>
+<TD ALIGN="LEFT">Location (indices: x,y,...) of <TT>maxval</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">%vallower</TD>
+<TD ALIGN="LEFT">D (S for SingleT)</TD>
+<TD ALIGN="LEFT">Lower threshold to be a valid entry (if specified).</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%valupper</TD>
+<TD ALIGN="LEFT">D (S for SingleT)</TD>
+<TD ALIGN="LEFT">Upper threshold to be a valid entry (if specified).</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%minareaindices</TD>
+<TD ALIGN="LEFT">I32 [Array]</TD>
+<TD ALIGN="LEFT">Minimum indices for the area of valid entry.</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%maxareaindices</TD>
+<TD ALIGN="LEFT">I32 [Array]</TD>
+<TD ALIGN="LEFT">Maximum indices for the area of valid entry.</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%flag%status</TD>
+<TD ALIGN="LEFT">Integer</TD>
+<TD ALIGN="LEFT">0 if normal.</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%flag%isValLowerUsed</TD>
+<TD ALIGN="LEFT">Logical</TD>
+<TD ALIGN="LEFT">True if <TT>vallower</TT> is used.</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%flag%isValUpperUsed</TD>
+<TD ALIGN="LEFT">Logical</TD>
+<TD ALIGN="LEFT">True if <TT>valupper</TT> is used.</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%flag%isAreaLowerUsed</TD>
+<TD ALIGN="LEFT">Logical</TD>
+<TD ALIGN="LEFT">True if <TT>minareaindices</TT> is used.</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%flag%isAreaUpperUsed</TD>
+<TD ALIGN="LEFT">Logical</TD>
+<TD ALIGN="LEFT">True if <TT>maxareaindices</TT> is used.</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%flag%isMaskUsed</TD>
+<TD ALIGN="LEFT">Logical</TD>
+<TD ALIGN="LEFT">True if an external mask is used.</TD>
+</TR>
+</TABLE>
+</DIV>
+<SMALL CLASS="FOOTNOTESIZE">
+<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^1$"></SPAN>: D(Double), S(Single), I32/I16/I8 (Int32/Int16/Int8)
+<BR><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$^2$"></SPAN>: <!-- MATH
+ $\sqrt{\frac{1}{N}\sum_{i} (x_i- \bar{x})^2}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="122" HEIGHT="49" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$\sqrt{\frac{1}{N}\sum_{i} (x_i- \bar{x})^2}$"></SPAN>.
+</SMALL>
+<BR>
+
+<P>
+<B>Notes</B>: 
+Some of the elements of the structure can be undefined.
+For example, if <TT>flag%isAreaLowerUsed</TT> is false,
+the array <TT>minareaindices</TT> is
+likely to be undefined, even its size (<B>NOT</B> allocated).
+Similarly <TT>flag%isValLowerUsed</TT> is false,
+<TT>vallower</TT> is likely to be undefined, and so on.
+If one tries to access those undefined values that may cause
+a trouble or even Fortran error, leading to abortion.
+
+<P>
+The difference between the elements of <TT>totalsum</TT> and <TT>realsum</TT>
+is the type; the latter is always <TT>double</TT>, whereas
+the former is <TT>double</TT>/<TT>single</TT>/<TT>int32</TT>, depending
+on the type of the input array; n.b., it is <TT>int32</TT> for any
+of the integer array.  The <TT>totalsum</TT> for an integer array
+may overflow; in that case <TT>totalsum</TT> has a value <TT>INTEGER_NULL</TT>.
+Another note is that although the they type of <TT>realsum</TT> for
+a single-precission float array is <TT>double</TT>, obviously it has
+a practical accuracy of only <TT>single</TT>-precission.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="aryStatInfoFlagT structure definition"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="General-purpose array-processing utilities"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="AryEdgesInfoT structure definition"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

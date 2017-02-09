@@ -1,0 +1,336 @@
+ChangeLog for ommosaic	
+==========================
+
+Version 2.8.1 - 2015-12-22 (RDS)
+-------------------------------
+	+(src/omwcs.cc) calculate the deadtime fraction from the 
+			MAXIMUM frame time of the input images
+			(SPR-7299)
+
+Version 2.8 - 2015-11-26 (RDS)
+-------------------------------
+	+(src/omwcs.cc) calculate the deadtime fraction from the
+	frametime, rather than reading it from the file header.
+	(SPR-7299)
+
+Version 2.7.1 - 2014-04-22 (EC)
+-------------------------------
+	- additional cleaning of generated files in test/
+
+Version 2.7 - 2014-04-21 (AI)
+-------------------------------
+	+ gcc4.8.2 portability changes
+	
+Version 2.6.1 - 2014-04-01 (EC)
+-------------------------------
+	-Removed FITS files from test/ as they are generated on-the-fly
+
+Version 2.6 - 2014-03-19 (VNY) +src/(omwcs.cc omwcs.h ommosaic.cc)
+	introduced the non-zero values for FRAMTIME and DEADFRAC into
+	the output file header (based on the max values from the
+	corresponding keywords of the input files).
+Version 2.5.18 - 2013-08-16 (VNY)
+	+(src/omwcs.cc, ommosaic.cc) Protected against the possibility 
+	of calculating wrong mosaic image size in the case of 
+	having the 24h/0h RA division
+	line within the image.
+---------------------------------
+Version 2.5.17 - 2011-12-13 (VNY)
+---------------------------------
+	+(src/ommosaic.cc) Checking the side coordinates of the 
+	mosaiced images and adjusting those that are 2-Pi shifted from 
+	the others (SSC-SPR-6680)
+	
+Version 2.5.16 - 2011-02-21 (VNY)
+---------------------------------
+	+(src/ommosaic.cc, src/omwcs.cc) Protected against crashes
+	when working with the files containing the keywords RA_OFF
+	and DEC_OFF instead of RAOFFSET and DEOFFSET (SSC-SPR-6651)
+Version 2.5.15 - 2010-12-23 (VNY)
+---------------------------------
+	+(src/ommosaic.cc) Protected against possible crashes
+	when processing observations with exposures widely separated
+	from each other (SSC-SPR-6640)
+	
+Version 2.5.14 - 2009-09-22 (CB)
+-------------------------
+	+doc / Minor documentation correction.
+ 
+Version 2.5.13 - 2009-07-29 (CB)
+-------------------------
+	Further amendements to fix gcc 4 build failure.
+        +src/interpolation.h - Line 39 deleted Interpolation<T>::
+	template<class T> to fix error "explicit specialization
+	of 'T Interpolation<T>::BilinearInterpolation<T, T)' must
+	be introduced by template<>
+
+Version 2.5.12 - 2009-07-28 (CB)
+-------------------------
+	Further amendements to fix gcc 4 build failure.
+        +src/interpolation.h - Line 39 added
+	template<class T> to fix error "explicit specialization
+	of 'T Interpolation<T>::BilinearInterpolation<T, T)' must
+	be introduced by template<>
+
+Version 2.5.11 - 2009-07-27 (CB)
+-------------------------
+	Further amendements to fix gcc 4 build failure.
+        +src/interpolation.h - Line 21 changed T image
+	to float image to fix errors "class Interpolation
+	has no member named BilinearInterpolation
+
+Version 2.5.10 - 2009-07-23 (CB)
+-------------------------
+	Further amendements to fix gcc 4 build failure.
+        +src/omwc.h - modified line 258 Changed so that xin and yin
+	don't appear twice in function prototype.
+
+Version 2.5.9 - 2009-07-23 (CB)
+-------------------------
+	Further amendements to fix gcc 4 build failure.
+        +src/omwc.h - Changed all function prototypes so that
+	the same variable name doesn't appear twice in a prototype.
+	Fixes errors such as "error: multiple parameters named x"" 
+
+Version 2.5.8 - 2009-07-22 (CB)
+-------------------------
+	Further amendements to fix gcc 4 build failure.
+        +test/checkoutput.cc- changed "string" header file
+	to "cstring" for "strncmp was not declared in scope" error.
+
+	
+Version 2.5.7 - 2009-07-22 (CB)
+-------------------------
+	Further amendements to fix gcc 4 build failure.
+        +src/sourcelist.cc- changed "string" header file
+	to "cstring" for "strcpy was not declared in scope" error.
+
+Version 2.5.6 - 2009-07-21 (CB)
+-------------------------
+	Further amendements to fix gcc 4 build failure.
+        +test - checkoutput.cc, added cmath header file
+	to fix ambiguous overload
+
+Version 2.5.5 - 2009-07-21 (CB)
+-------------------------
+	Amendements to fix gcc 4 build failure.
+	+src Added string header file (for strcpy) to sourcelist.cc
+	+src Deleted reference to typeinfo in sourcelits.h (was originally 
+	for test purposes).
+	
+Version 2.5.4 - 2009-07-20 (CB)
+	+src Removed DopeVector.h (not needed) to fix gcc4 build failure.  
+	+test Added cmath to creattest.f90 to fix gcc 4 build failure.
+-------------------------
+Version 2.5.3 - 2009-06-10 (CB) 
+-------------------------
+        + test Minor amendement to test program 
+	createtest.cc to fix a failure on xmmls11
+	
+Version 2.5.2 - 2009-05-11 (CB) 
+-------------------------
+        + scr Makefile Delete guiutils from Makefile for further
+	fix to (SPR 6527).
+
+Version 2.5.1 - 2009-05-11 (CB) 
+-------------------------
+        Replaced QT's QFile::exists
+	function with Dal's dataSetServer->exists
+	function (SPR 6527) and removed all QT
+	header files.
+
+Version 2.5 - 2009-05-06 (CB) 
+-------------------------
+        Removed qt from scr Makefile
+	to fix problem in Leicester pipeline
+
+Version 2.4 - 2009-05-01 (CB) 
+-------------------------
+        Changed default value of "mincorr" to
+	0, as stated in the documentation.
+
+Version 2.3 - 2009-04-29 (CB) 
+-------------------------
+        Ammended checkoutput.cc in test harness to fix
+	low-memory test failure on xmmls11
+
+Version 2.2 - 2009-04-05 (CB) 
+-------------------------
+        Ammended omwcs.h to fix build failure.
+
+Version 2.1 - 2009-03-24 (CB) 
+-------------------------
+        Removed some redundant development code.
+	
+Version 2.0 - 2009-03-23 (CB) 
+-------------------------
+	Mainly re-written to allow source-detection on the
+	mosaiced output-image. Quality image added to the output
+	file. Exposure image corrected for dead-time fraction.
+	
+
+Version 1.21 - 2008-09-18 (VNY) +src/ommosaic_mod.f90: The subroutine 
+	RemoveGaps is corrected to prevent interpolating and filling 
+	the corners between two images instead of filling in the gaps.
+	The file name in the message produced by the task is shorten
+	(the task message was too long and estetically not very nice
+	because of the long path included into the file name).
+Version 1.20 - 2008-08-01 (VNY) A half-pixel shift in the coordinates
+ 	of the reference pixel CRPIX1 and CRPIX2 of the output sky-image
+	is removed. This shift was always there (introduced by the 
+	subroutine calculateOutputSize.
+Version 1.19 - 2008-07-09 (VNY) The name of the attribute RA_PNT 
+	in the header of the input image file is corrected in the subroutine
+	ModifyAstrometryAttributes (erroneously was DEC_PNT). 
+	This attribute is changed only when the astrometry correction
+	was not applied to the image before running ommosaic.
+Version 1.18 - 2008-04-17 (VNY) Introducing the keyword POSINTRP
+	(false/true) to indicathe whether the the astrometric correction
+	was done by omatt (using the catalogue) or by interpolation
+	(using the coorections from other exposures belonging
+	to the data set). The input images are now astrometry-
+	corrected (shifted) in the case they were not corrected
+	by omatt. In this case the interpolated correction is used.
+Version 1.17 - 2008-04-17 (VNY) interpolating the RA and DEC offsets
+	for those exposures that were not astrometry corrected
+	taking the offsets from the corrected exposures. Making
+	use of the RA_OFF and DEC_OFF attributes produced by omatt
+	(this is a continuation of updates for fixing SSC-SPR-3707).
+Version 1.16 - 2008-03-11 (VNY) The RA shifts of the individual images
+        that form the mosaic are multiplied by cos(DEC), SSC-SPR-3710  
+Version 1.15 - 2008-03-07 (VNY) 
+	Documentation updated
+Version 1.14 - 2008-02-27 (VNY)
+	Making use of the keyword POSCOROK for astrometry-corrected
+	images and shifting these images according to the CRVAL1 and CRVAL2
+	keywords (SSC-SPR-3707)
+Version 1.13 - 2007-03-05 (CB) 
+-------------------------
+       
+        Ammended info file to OM. 
+
+	
+Version 1.12 - 2006-12-21 (CB) 
+-------------------------
+        Increased buffer size for storing file names
+        Ammended info file to OM. 
+
+Version 1.11.7 - 2005-06-07 (CB) 
+-------------------------
+        Replaced for all statements by do statements to fix run-time
+	crash on xmm-ssc
+	
+Version 1.11.6 - 2005-05-21 (CB) 
+-------------------------
+	Further small ammendment made to stop run-time failure
+	on some machines.
+Version 1.11.5 - 2005-05-21 (CB) 
+-------------------------
+	Small ammendment made to stop run-time failure
+	on some machines.
+	
+Version 1.11.4 - 2004-03-15 (CB) 
+-------------------------
+	Small ammendment made to stop array data going out of bounds.
+        (fixes SPR 3275).
+	
+Version 1.11.3 - 2004-03-02 (CB) 
+-------------------------
+	mssllib added to DEPEND file.
+
+Version 1.11.1 - 2004-03-01 (CB) 
+-------------------------
+	Modified program to replace nan pixel values in te interior region
+	of the mosaiced image with the median value of surrounding pixels
+	(fixes SPR 3262).
+	
+Version 1.11 - 2003-11-21 (CB) 
+-------------------------
+	ChangeLog ammended
+	
+Version 1.10 - 2003-11-21 (CB) 
+-------------------------
+	DEPEND file ammended for ssclib 3.0
+	
+Version 1.9 - 2002-10-17 (CB) 
+-------------------------
+        Uploaded into release track
+	
+Version 1.8 - 2002-10-07 (CB) 
+-------------------------
+        Further small modification for SPR 2991
+	
+Version 1.7 - 2002-10-03 (CB) 
+-------------------------
+        Pixels in output image around mosaiced boundaries with NULL values 
+	replaced with average value of suurounding pixels (fixes SPR 2991)
+	
+Version 1.6 - 2002-09-12 (VNY) 
+-------------------------
+	DEPEND file has been updated
+Version 1.5.5 - 2002-05-30 - (CB)
+-------------------------
+      +(src/ommosaic_mod.f90) Modified to add ATT_SRC keyword  (fixes SPR 2885).
+        
+	
+Version 1.5.4 - 2002-05-29 - (CB)
+-------------------------
+        Documentation corrected
+	
+Version 1.5.3 - 2002-03-14 - (CB)
+-------------------------
+        Documentation corrected
+	
+Version 1.5.2 - 2002-03-04 - (CB)
+-------------------------
+       +(src/ommosaic_mod.f90) Modified to add correct exposure time to
+       output image header (fixes SPR 2795).
+    
+
+Version 1.5.1 - 2002-02-27 - (CB)
+-------------------------
+       +(config/ommosaic.par) Increased maximim allowable exposure time
+	(SPR 2786).
+
+Version 1.5 - 2002-01-11 - (CB)
+-------------------------
+       +(src/ommosaic_mod.f90) Added the keyword "OBJECT" to output file
+	(SPR 2700).
+    
+ 
+Version 1.4 - 2002-01-07 - (CB) Changed DEPEND file for ssclib.
+-------------------------
+  
+Version 1.3 - 2001-11-13 - (CB)
+-------------------------
+       +(src/ommosaic_mod.f90) Code ammended to properly mosaic a mix of
+       low and high-resolution images  (fixes SPR 2638). Obsolete optional 
+       parameter "samplingpoint" removed. New optional boolean parameter 
+       "exposuremap" added, to enable the user to save the exposure map 
+       image in the output file- defaults to false. New optional parameter 
+       "exposure" also introduced to enable the user to specify the
+       exposure time for the output image (defaults to 1000 secs). New
+       keywords added to output file  (SPR 2658). Pixels outside image
+       boundary set to NULL.	
+       	
+Version 1.2.1 - 2001-11-05
+-------------------------
+       +(src/ommosaic_mod.f90) Bug in checking filters rectified (fixes
+       SPR 2620)
+
+Version 1.2 - 2001-07-10
+-------------------------
+       +(src/ommosaic_mod.f90) Check for the presence of a high and low
+       central window of the same exposure, in the input files,  ammended.
+
+Version 1.1   09-07-2001 (CB) - Distribution changed to "world". Program
+              modified to check that 2 or more overlapping images aren't
+	      being combined- if so a warning message is output.
+Version 1.0.3 01-05-2001 Output image changed to 32-bit pixels and output
+pixel size pixel-size changed to be the largest of the input pixel sizes
+	(fixes SPR 2353).
+Version 1.0.2 12-02-2000 Request to upload it.
+
+Version 1.0.1 06-02-2001 (+test/testommosaic) Output mosaiced image 
+	file now deleted.
+

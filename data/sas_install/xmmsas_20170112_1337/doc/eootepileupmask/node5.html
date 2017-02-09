@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Note for the case where there is a too bright source</TITLE>
+<META NAME="description" CONTENT="Note for the case where there is a too bright source">
+<META NAME="keywords" CONTENT="eootepileupmask">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eootepileupmask.css">
+
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eootepileupmask (ebkgmap-2.9) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Out-of-time events and pile-ups"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Out-of-time events and pile-ups"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="RGA spikes"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eootepileupmask.html">Home Page</A> / <A  HREF="node3.html">Description</A> / <A  HREF="node4.html">Out-of-time events and pile-ups</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00031100000000000000"></A>
+<A NAME="eootepileupmask:description:oot_pileup:toobright"></A>
+<BR>
+Note for the case where there is a too bright source
+</H3>
+
+<P>
+When a source itself is too bright, there will be a depression at and near
+the peak position of the source in the image proceesed in the standard way,
+because the pixels around the peak are so heavily piled up that most or all
+the events are detected with a bad grade (such as, Pattern 36 in MOSs)
+and have been filtered out before the image or event is created.
+In extreme cases those pixels may not contain hardly any event,
+hence are not regarded as piled-up pixels by this task, since the count
+per frame in those pixels would not exceed the threshold.
+
+<P>
+However even in those cases this task should work nicely, because
+(1) somewhere away from the peak position of the source, there must be
+pixels which are not as badly piled-up as the peak position, but
+show a large enough the count per frame rate to be recognised as piled-up,
+(2) the OOT event streaks are then defined based on these `peripheral' pixels,
+(3) the area of those recognised piled-up pixels should be distributed
+in a roughly concentric area from the source, therefore they overall
+mask out the large chunk of area, which includes the source itself.
+Even in the case a source is so bright and causes so much pile-up
+that some entire rows in a CCD chip are not recognised as piled-up,
+it will not matter practically, because any of those pixels will not be
+recognised as a source in the (standard) source detection,
+hence there is practically no need to mask those positions,
+providing the mask file is used in conjunction with the result
+of a source detection.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Out-of-time events and pile-ups"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Out-of-time events and pile-ups"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="RGA spikes"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

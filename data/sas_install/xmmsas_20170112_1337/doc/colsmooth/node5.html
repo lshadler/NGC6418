@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Convolver.</TITLE>
+<META NAME="description" CONTENT="Convolver.">
+<META NAME="keywords" CONTENT="colsmooth">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="colsmooth.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+colsmooth (colsmooth-1.7.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Introduction."></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Masking."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="colsmooth.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000">
+Convolver.</A>
+</H2>
+
+<P>
+There are several ways in which the user can specify the convolving function, governed by the parameter <TT>convolvertype</TT>. These are:
+
+<P>
+
+<UL>
+<LI><TT>convolvertype</TT> = `set': the task then expects the convolver to be contained in the column of a fits table described by parameters <TT>convolvertable</TT> and <TT>convolvercolumn</TT>. The data type of the column must be real32.
+</LI>
+<LI><TT>convolvertype</TT> = `tophat': this is a convolver which is equal to <SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$1/W$"></SPAN> within <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img20.png"
+ ALT="$W$"></SPAN> contiguous channels and 0 elsewhere. The task requires <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img20.png"
+ ALT="$W$"></SPAN> to be specified via the parameter <TT>width</TT>.
+</LI>
+<LI><TT>convolvertype</TT> = `gaussian': the task reads the sigma value from the parameter of the same name. The convolver is truncated at 5 times sigma either side of the centre of the gaussian.
+</LI>
+<LI><TT>convolvertype</TT> = `user': in this mode, the user can supply the convolver directly as a list of real numbers via the parameter <TT>convolver</TT>.
+</LI>
+</UL>
+
+<P>
+The user should pay careful attention to the phase of the convolver. Equation <A HREF="node4.html#convolution">1</A> (and all others that include a sum over the convolver values) implies that the number of convolver channels, <SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$2M + 1$"></SPAN>, is an odd number, and that the centre of the convolver is located at the centre channel. However, convolvers with an even number of channels are also permitted. In this case the lowest channel of the upper half of the channels is taken to be the centre channel. In other words, the sums in this case extend from <SPAN CLASS="MATH"><IMG
+ WIDTH="48" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$1-M$"></SPAN> to <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$M$"></SPAN> for a total number of convolver channels <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.png"
+ ALT="$2M$"></SPAN>. To clarify with a couple of examples, calls of the form
+
+<P>
+<PRE>
+	colsmooth convolvertype=user convolver='0 0 1 0 0'
+</PRE>
+
+<P>
+or
+
+<P>
+<PRE>
+	colsmooth convolvertype=user convolver='0 0 0 1 0 0'
+</PRE>
+
+<P>
+will leave unchanged the input values in inset.ds:SPECTRUM column <A NAME="556"></A><TT>RATE</TT>, but
+
+<P>
+<PRE>
+	colsmooth convolvertype=user convolver='1 0 0 0'
+</PRE>
+
+<P>
+will left-shift all the input values by 2 channels. (Note that in this last example, the right-most two channels of the output will contain <A NAME="558"></A><A NAME="tex2html2"
+  HREF="../dal/index.html"><SPAN  CLASS="textbf">dal</SPAN></A>-type null values. Zero values would probably be better and the task may be changed in future to write zeros in this case.)
+
+<P>
+The elements of the convolver may not sum to zero. Negative and zero-valued elements should be avoided if filling of holes is desired (see section <A HREF="node7.html#holes">3.3.1</A> below).
+
+<P>
+Note that, under default settings, no convolution is performed.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Introduction."></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Masking."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

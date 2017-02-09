@@ -1,0 +1,297 @@
+#! /usr/bin/perl -w
+#
+#
+# main for SAS perl tasks.
+#
+require 5;
+use strict;
+use Getopt::Long;
+Getopt::Long::Configure ("pass_through");
+use SAS::error;
+## At build time the following strings (enclosed in --, that is
+## -string-) are replaced:
+##  sasperl  -> This is taken from the PERL variable defined by configure
+##  taskname
+##  version
+##  release
+##  aka
+## Make sure they do not occur anywhere else in main.pl unless you
+## want them to be replaced.
+##  taskname also occurs at the end of main.pl
+##
+my $name = "inthist";
+SAS::error::client($name);
+my $VERSION = "2.21";
+my $RELEASE = "xmmsas_20170112_1337-16.0.0";
+my $AKA = "16.0.0";
+
+## 
+## Standard options: these follow taskmain.
+##
+## -a|--ccfpath <dir1>[:<dir2>...] --> SAS_CCFPATH
+## -f|--ccffiles <f1> [<f2>...] --> cannot be implemented
+## -c|--noclobber --> SAS_CLOBBER
+## -d|--dialog --> tool(sasdialog)
+## -h|--help --> tool(listparams)
+## -i|--ccf <cif> --> SAS_CCF
+## -m|--manpage --> sashelp
+## -o|--odf <sumfile> --> SAS_ODF
+## -V|--verbosity <level> -- SAS_VERBOSITY
+## -v|--version --> local implementation
+##
+## Getopt::Long provides support for short versions with single "-" except for -v.
+## Therefore all short versions were automatically included either with first letter
+## or via an alias as for -a, -i, -o and -V.
+##
+## -v deserves special care due to the existence of support for $version within the
+## Getopt module. Therefore -v is treated specially. 
+
+my ($ccfpath, $noclobber, $dialog, $help, $ccf, $manpage, $odf, $verbosity, $version);
+
+exit(1) unless
+    GetOptions("ccfpath|a=s"    => \$ccfpath,
+	       "noclobber"      => \$noclobber,
+	       "dialog"         => \$dialog,
+	       "help"           => \$help,
+	       "ccf|i=s"        => \$ccf,
+	       "manpage"        => \$manpage,
+	       "odf|o=s"        => \$odf,
+	       "verbosity|V=i"  => \$verbosity,
+	       "version"        => \$version,
+	      );
+
+my $arg;
+foreach $arg (@ARGV) {
+  $version=1 if ( $arg =~ "-v" );
+}
+
+$ENV{SAS_CCFPATH}   = $ccfpath if($ccfpath);
+$ENV{SAS_CLOBBER}   = 0 if($noclobber);
+$ENV{SAS_CCF}       = $ccf if($ccf);
+$ENV{SAS_ODF}       = $odf if($odf);
+$ENV{SAS_VERBOSITY} = $verbosity if($verbosity);
+
+use SAS::param;
+
+
+if($version){
+    print "$name-$VERSION [$RELEASE-$AKA]\n";
+    exit(0);
+}
+if($manpage){
+    system("sashelp --doc=$name");
+    my $x = $? >> 8; # perldoc -f system
+    exit($x);
+}
+if($help){
+    system("listparams $name");
+    my $x = $? >> 8;
+    exit($x);
+}
+if($dialog){
+    system("sasdialog $name");
+    my $x = $? >> 8;
+    exit($x);
+}
+
+&inthist();
+
+#!/usr/local/bin/perl
+# 
+# Usage :
+#
+#   inthist -sets="List of input images in the default imaging bands"
+#           -exposuresets="List of the exposure maps for the corresponding 
+#                          images in sets"
+#           -tmpflatsets="List of the temporary flatfielded images"
+#           -binsiz="Size of the rebinned pixels in degrees for histogramming"
+#           -histo="Name of the output Post Script file containing plots 
+#                   of the histograms" 
+#
+#   Read input command line options: 
+#        sets=$img[] exposuresets=$expm[] tmpflatsets=$flatimg[]
+#        binsize=$binpixsize outfile=$histofile 
+#         
+#
+#
+# ------------------------------------------------------
+# Define variables   
+# ------------------------------------------------------ 
+
+use SAS;
+use strict;
+
+sub inthist{
+    
+    my ($b,$band,$binpixsize,$expmContent  );
+    my ($fits,$hdu,$histofile,$i,$imgContent,$j,$key,$opts);
+    my ($nbands,$nhdus,$str_flat);
+    my ($msg,$idmess);
+    my ($nimgs,$nexps,$nflats);
+    my($stat,$status);
+    my ($at,$ds,$tb,$has);
+    my ($imgList,$expmList);
+
+    my @expm=();
+    my @flatimg=();
+    my @img=();
+
+# ------------------------------------------------------ 
+# Read input  parameters
+# ------------------------------------------------------ 
+
+    $nimgs=parameterCount("sets");
+    $msg="Reading $nimgs EPIC images...\n";
+    SAS::message($SAS::AppMsg,$SAS::VerboseMsg,$msg);
+    for($i=0;$i<$nimgs;$i++){
+	$img[$i]=stringParameter("sets",$i);
+    }
+    $nexps=parameterCount("exposuresets");
+    $msg="Reading $nexps EPIC exposure maps...\n";
+    SAS::message($SAS::AppMsg,$SAS::VerboseMsg,$msg);
+    for($i=0;$i<$nexps;$i++){
+	$expm[$i]=stringParameter("exposuresets",$i);
+    }
+    $nbands=$nimgs;
+
+    $msg="Working with $nbands energy bands\n";
+    SAS::message($SAS::AppMsg,$SAS::VerboseMsg,$msg);
+
+    $nflats=parameterCount("tmpflatsets");
+    $msg="Reading $nflats temporary flatfield file(s)...\n";
+    SAS::message($SAS::AppMsg,$SAS::VerboseMsg,$msg);
+
+    if($nflats > 0){
+	for($i=0;$i<$nflats;$i++){
+	    $flatimg[$i]=stringParameter("tmpflatsets",$i);
+	}
+    }
+    
+    $binpixsize=realParameter("binsize");
+    $histofile=stringParameter("outfile");
+    
+    
+# ------------------------------------------------------ 
+#     Read parameters in parametercs Lists
+# ------------------------------------------------------ 
+
+    if($nimgs != $nexps){
+      SAS::error("IncNumImg","N. of images= $nimgs different from N. of Exposure maps=$nexps\n");
+    }
+    
+    if($nflats >0){
+      if($nimgs != $nflats){
+	SAS::error("IncNumImg","N. of images=$nimgs different from N. of files for Flat images=$nflats\n");
+      }
+      $str_flat="'";
+      for($j=0;$j<$nflats;$j++){
+	if($j==0){
+	  $str_flat = $str_flat . $flatimg[$j];
+	}else{
+	  $str_flat = $str_flat . " " . $flatimg[$j];
+	}
+      }
+      $str_flat .= "'";
+    }else{ 
+      $str_flat="'";
+      for($j=0;$j<$nbands;$j++){
+	$flatimg[$j]="flat_".$j.".img";
+	if($j==0){
+	  $str_flat = $str_flat . $flatimg[$j];
+	}else{
+	  $str_flat = $str_flat . " " . $flatimg[$j];
+	}
+      }
+      $str_flat .= "'";
+    }
+    
+# ------------------------------------------------------ 
+#     Check : input FITS files are IMAGE Products: images/exposure maps
+# ------------------------------------------------------ 
+
+    for ($b=0;$b<$nbands;$b++){
+      $key=" ";
+      if(system("fstruct $img[$b] >/dev/null")){
+	SAS::error("ErrFstruct","Cannot run fstruct for \"$img[$b]\"\n");
+      }
+      $nhdus=`pget fstruct totalhdu`;
+      for ($hdu=0;$hdu<$nhdus;$hdu++){
+	$imgContent=$img[$b]."+".$hdu;
+        if(system("fkeypar fitsfile=$imgContent keyw='CONTENT'")){
+	  SAS::error("ErrFkeypar","Cannot run fkeypar to read CONTENT from \"$img[$b]\"\n");
+	}
+	$key=`pget fkeypar value`;
+	chomp($key);
+	($key =~ /EPIC\s*IMAGE/) && last;
+      }
+      unless($key =~ /EPIC\s*IMAGE/){
+	SAS::warning("NotImage","Input image: $img[$b] is not an EPIC IMAGE file\n");
+      }
+      
+      $key=" ";
+      if(system("fstruct $expm[$b] >/dev/null")){
+	SAS::error("ErrFstruct","Cannot run fstruct for \"$expm[$b]\"\n");
+      }
+      $nhdus=`pget fstruct totalhdu`;
+
+      for ($hdu=0;$hdu<$nhdus;$hdu++){
+	$expmContent=$expm[$b]."+".$hdu;
+	if(system("fkeypar fitsfile=$expmContent keyw='CONTENT'")){
+	  SAS::error("ErrFkeypar","Cannot run fkeypar to read CONTENT from \"$expmContent\n");
+	}
+	$key=`pget fkeypar value`;
+	chomp($key);
+	($key =~ /EPIC\s*EXPOSURE\s*MAP\s*/) && last;
+      }
+      unless($key =~ /EPIC\s*EXPOSURE\s*MAP/){
+	SAS::warning("NotExpMap","Input Map:$expm[$b],is not an EPIC EXPOSURE MAP\n");
+      }
+    }
+
+
+#
+# ------------------------------------------------------ 
+#  1) Flatfield the IMAGES with the EXPOS MAP: ARITHMETIC
+#       Input:  IMG_file_in_band
+#               EXPOS_MAP_file_in_band
+# 
+#       Output: FLAT_IMG_file_in_band
+# ------------------------------------------------------ 
+#
+
+    $msg="Flatfielding input images with their respective exposure maps...\n";
+    SAS::message($SAS::AppMsg,$SAS::VerboseMsg,$msg);
+
+    for ($b=0;$b<$nbands;$b++){
+	$band=$b+1;
+	SAS::message($SAS::AppMsg,$SAS::VerboseMsg,$msg);
+	if(system("farith infil1=$img[$b] infil2=$expm[$b] outfil=$flatimg[$b] ops=DIV datatype='-' blank=-1 null=no copyprime=yes clobber=yes")){
+	  (-e $flatimg[$b]) && unlink($flatimg[$b]);
+	  SAS::error("ErrFarith","Cannot divide:$img[$b] and $expm[$b]\n");
+	}
+    }
+    
+#
+# ------------------------------------------------------ 
+#  2) Run Intmakehist to obtain the histograms
+#       Input:  FLAT_IMG_files
+# 
+#       Output: HISTOGRAMS_file
+# ------------------------------------------------------ 
+#
+    $msg="Entering routine intmakehist to create intensity histograms...\n";
+    SAS::message($SAS::AppMsg,$SAS::VerboseMsg,$msg);
+
+
+    if(system("intmakehist sets=$str_flat binsize=$binpixsize plotfile=$histofile")){   
+	for ($b=0;$b<$nbands;$b++) {
+	    (-e $flatimg[$b]) && unlink($flatimg[$b]);
+	}
+      SAS::error("ErrIntmakehist","Error running INTMAKEHIST\n");
+    }
+    for ($b=0;$b<$nbands;$b++) {
+	(-e $flatimg[$b]) && unlink($flatimg[$b]);
+    }
+
+}
+

@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Memory Models</TITLE>
+<META NAME="description" CONTENT="Memory Models">
+<META NAME="keywords" CONTENT="dal">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="dal.css">
+
+<LINK REL="next" HREF="node17.html">
+<LINK REL="previous" HREF="node15.html">
+<LINK REL="up" HREF="dal.html">
+<LINK REL="next" HREF="node17.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+dal (dal-1.191.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node15.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Null Values"></A>
+<A HREF="dal.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Iterators"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="dal.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000160000000000000000">
+Memory Models</A>
+</H1>
+
+<P>
+There are currently two memory models available; the High Memory and the High/Low Models (The Low Memory Mode, is only partially prototyped and is unlikely to be released in the foreseable future. ).  
+
+<P>
+The memory model may be selected by setting the environment variable
+SAS_MEMORY_MODEL. The allowed settings are:
+
+<UL>
+<LI><TT>high </TT> 
+<BR>
+Select the High Memory Model.
+</LI>
+<LI><TT>highlow </TT>
+Select the High/Low Memory Model.
+</LI>
+<LI><TT>low </TT>
+Select the low memory model.
+
+<P>
+N.B. The low memory model is not yet implemented, and
+the highlow memory model will be selected.
+</LI>
+</UL>
+
+<P>
+When a dataset is opened, with the High Memory Model mode (HMM), it is loaded
+into memory in its entirety. All subsequent operations are performed on the memory-loaded
+dataset. When the dataset is closed, the memory is flushed back to disk. The
+High Memory Mode gives high performance but is memory expensive. With the
+HMM mode enabled, it is more probable that the operating swapping mechanism will
+be invoked, giving rise to unacceptibly poor performance.
+
+<P>
+In the HighLow Memory Model (LMM) mode, when the dataset is opened, only the attributes are loaded into memory. Only when the data is accessed is it loaded into memory. When the data is no longer required it may be released, in which case
+it is flushed to disk before the memory is freed.
+
+<P>
+In principle, the LMM mode is capable of using almost no
+memory, or as much as the high memory mode. A task programmer should take the
+steps necessary to ensure that the memory consumption is kept to a minimum, and
+that the task is both high and low memory compatible. The guidelines for this
+are given later in this document.
+
+<P>
+The DAL supports the notion of subranges, which essentailly is a convenient
+mechanism of restricting access to all or only part of the data in a column or an array.
+
+<P>
+In the HMM mode, a subrange amounts to manipulating memory offsets to the data.
+
+<P>
+In the LMM mode, however, subranges become very significant because only the data specified in a subrange will be loaded into memory.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node15.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Null Values"></A>
+<A HREF="dal.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Iterators"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

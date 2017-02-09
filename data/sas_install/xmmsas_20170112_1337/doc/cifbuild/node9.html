@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Examples</TITLE>
+<META NAME="description" CONTENT="Examples">
+<META NAME="keywords" CONTENT="cifbuild">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="cifbuild.css">
+
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node5.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+cifbuild (cifbuild-4.8) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Using a Master Index"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Generation of the Calibration"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Generation of a Master"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node22.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="cifbuild.html">Home Page</A> / <A  HREF="node3.html">Description</A> / <A  HREF="node5.html">Generation of the Calibration</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00032300000000000000">
+Examples</A>
+</H3>
+
+<P>
+In reference to the examples below, see also the <A HREF=../cal/node4.html>CAL
+  documentation</A> on how to specify a CIF.
+
+<P>
+<SPAN  CLASS="textbf">Note</SPAN>: in the following examples we use the Bourne shell
+syntax to specify environment variables. C shell users should convert
+that to <TT>setenv VARIABLE value</TT>.
+
+<P>
+
+<OL>
+<LI>This are the recommended steps for people who have access to a
+  local collection of CCF constituents:
+
+<P>
+
+<OL>
+<LI><TT>export SAS_ODF=/path/to/odf_dir</TT><A NAME="tex2html9"
+  HREF="footnode.html#foot565"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A>
+<P>
+</LI>
+<LI><TT>export SAS_CCFPATH=/path/to/ccfstore1:/path/to/ccfstore2</TT>
+
+<P>
+</LI>
+<LI><TT>cifbuild</TT>
+
+<P>
+</LI>
+</OL>
+
+<P>
+This creates the file <TT>ccf.cif</TT> (the default value of
+  <TT>calindexset</TT>) in the current directory. The CCF constituents
+  are searched among the files in the two directories specified in the
+  environment variable <TT>SAS_CCFPATH</TT>. The observation date is
+  taken from the active ODF as indicated by the variable
+  <A NAME="665"></A><TT>SAS_ODF</TT>. The analysis date defaults to <TT>now</TT> (the
+  default value of <TT>analysisdate</TT>). 
+
+<P>
+If the <TT>usecanonicalname</TT> had been set to <TT>true</TT>, the
+  name of the CIF would have been of the form
+  <TT>rrrr_ppppppooll.cif</TT>, where <TT>rrrr</TT> is the
+  revolution number, and <TT>ppppppooll</TT> is the observation
+  identifier.
+
+<P>
+</LI>
+<LI>This is the recommended mode of operation for those who want to
+  generate a CIF from a MIF. It is not necessary to have access to any
+  of the CCF constituents.
+
+<P>
+<TT>cifbuild -withmasterindexset=yes
+    -masterindexset=XMM_CALINDEX_0123.CCF</TT>
+
+<P>
+The CIF is built from the list of CCF constituents specified in
+  <TT>XMM_CALINDEX_0123.CCF</TT>. 
+
+<P>
+<A NAME="cif:6"></A>
+<P>
+</LI>
+<LI><TT>cifbuild -withccfpath=yes
+<BR>    -ccfpath="/path/to/ccfstore1/:/path/to/ccfstore2"
+<BR>    -fullpath=yes</TT>
+
+<P>
+This creates the file <TT>ccf.cif</TT> (the default value of
+  <TT>calindexset</TT>) in the current directory. The CCF constituents
+  are searched among the files in the two directories specified with
+  <TT>ccfpath</TT>. The observation date is taken from the active ODF
+  as indicated by the variable <A NAME="672"></A><TT>SAS_ODF</TT>. The analysis date
+  defaults to <TT>now</TT> (the default value of
+  <TT>analysisdate</TT>). The CIF contains the full path to the CCF
+  constituents.
+
+<P>
+To use the CIF set the environemnt variable <A NAME="675"></A><TT>SAS_CCF</TT> to be
+  <TT>ccf.cif</TT>. If you set <A NAME="678"></A><TT>SAS_CCF</TT> to be the absolute path to
+  the CIF, then the latter can be used from any other directory.
+  <A NAME="cif:1"></A>
+<P>
+</LI>
+<LI><TT>cifbuild -withccfpath=yes -ccfpath=/path/to/ccfstore</TT>
+
+<P>
+The CIF <TT>ccf.cif</TT> contains the base name of the CCF
+  constituents found in <TT>/path/to/ccfstore</TT>.
+
+<P>
+To use the CIF place it in <TT>/path/to/ccfstore</TT> and set the
+  environemnt variable <A NAME="681"></A><TT>SAS_CCF</TT> to be
+  <TT>/path/to/ccfstore</TT>.
+  <A NAME="cif:2"></A>
+<P>
+</LI>
+<LI><TT>cifbuild -withccfpath=yes -ccfpath=/path/to/ccfstore
+<BR>    -calindexset=/path/to/ccfstore/myobservation.cif</TT>
+
+<P>
+As in <A HREF="#cif:2">4</A>, but now the CIF is called
+  <TT>myobservation.cif</TT> and is written directly to the directory
+  <TT>/path/to/ccfstore</TT>.
+
+<P>
+To use the CIF set the environment variable <A NAME="683"></A><TT>SAS_CCF</TT> to be
+  <TT>/path/to/ccfstore/myobservation.cif</TT>. 
+  <A NAME="cif:3"></A>
+<P>
+</LI>
+<LI><TT>cifbuild -withccfpath=yes 
+<BR>    -ccfpath="/path/to/ccfstore1/:/path/to/ccfstore2" 
+<BR>    -withobservationdate=yes
+    -observationdate="2000-01-13T00:00:00"
+<BR>    -fullpath=yes</TT>
+
+<P>
+As in <A HREF="#cif:1">3</A>, but now the observation date is specified to be
+  Midnight January 13, 2000.
+
+<P>
+<A NAME="cif:4"></A>
+<P>
+</LI>
+<LI><TT>cifbuild -withccfpath=yes
+    -ccfpath="/path/to/ccfstore1/:/path/to/ccfstore2" 
+<BR>    -analysisdate="2000-03-19T00:00:00" -fullpath=yes</TT>
+
+<P>
+As in <A HREF="#cif:1">3</A>, but the observation date is taken from the active
+  ODF, but the CIF is built as if the analysis was being performed on
+  March 19, 2000.
+
+<P>
+<A NAME="cif:5"></A>
+<P>
+</LI>
+<LI><TT>cifbuild -calindexset=ccf.cif -category=SCISIMCCF
+    -ccfpath=/path/to/ccfstore/ -withccfpath=yes </TT>
+
+<P>
+<TT>cifbuild -calindexset=ccf.cif 
+    -withccfpath=yes -ccfpath=/path/to/ccfstore/ -append=yes</TT>
+
+<P>
+This builds a CIF that contains constituents of category
+  SCISIMCCF if they exist, otherwise constituents of category
+  <TT>XMMCCF</TT> are used.
+  <A NAME="cif:99"></A>
+<P>
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Using a Master Index"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Generation of the Calibration"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Generation of a Master"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node22.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,369 @@
+<!-- converted from XPI formatted "emchain.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="runccdloop" type="bool" default="yes">
+   <DESCRIPTION>
+    Loop over all raw CCD files
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="ccds" type="int" list="yes" default="1 2 3 4 5 6 7">
+      <DESCRIPTION>
+       CCDs to analyse (space separated)
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       ccds in [1:7]
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="processlowgain" type="bool" default="no">
+      <DESCRIPTION>
+       Process low gain data
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="startfromodf" type="bool" default="yes">
+      <DESCRIPTION>
+       Start from ODF files (or from intermediate files
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+        <PARAM id="exposures" type="string" list="yes" default="">
+         <DESCRIPTION>
+          Exposures to analyse ("" is all)
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          true
+         </CONSTRAINTS>
+        </PARAM>
+        <PARAM id="instruments" type="string" list="yes" default="M1 M2">
+         <DESCRIPTION>
+          Instrument to analyse
+         </DESCRIPTION>
+         <CASE>
+          <ITEM value="M1">
+          </ITEM>
+          <ITEM value="M2">
+          </ITEM>
+         </CASE>
+        </PARAM>
+        <PARAM id="withatthkgen" type="bool" default="no">
+         <DESCRIPTION>
+          Rerun atthkgen
+         </DESCRIPTION>
+         <CASE>
+          <ITEM value="no">
+          </ITEM>
+          <ITEM value="yes">
+          </ITEM>
+         </CASE>
+        </PARAM>
+        <PARAM id="filteratt" type="bool" default="no">
+         <DESCRIPTION>
+          Filter data on bad attitude
+         </DESCRIPTION>
+         <CASE>
+          <ITEM value="no">
+          </ITEM>
+          <ITEM value="yes">
+          </ITEM>
+         </CASE>
+        </PARAM>
+        <PARAM id="atttol" type="real" default="0.05">
+         <DESCRIPTION>
+          Tolerance for attitude filtering (degrees)
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          atttol in [0.:]
+         </CONSTRAINTS>
+        </PARAM>
+        <PARAM id="filterhk" type="bool" default="no">
+         <DESCRIPTION>
+          Filter data on bad HK
+         </DESCRIPTION>
+         <CASE>
+          <ITEM value="no">
+          </ITEM>
+          <ITEM value="yes">
+          </ITEM>
+         </CASE>
+        </PARAM>
+        <PARAM id="ingtiset" type="dataset" default="">
+         <DESCRIPTION>
+          Input HK GTI file for emframes
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          true
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="badpixfindalgo" type="string" default="EM">
+      <DESCRIPTION>
+       Algorithm for finding bad pixels
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="EM">
+        <PARAM id="stopafterbadpixfind" type="bool" default="no">
+         <DESCRIPTION>
+          Stop just after bad pixels detection
+         </DESCRIPTION>
+         <CASE>
+          <ITEM value="no">
+          </ITEM>
+          <ITEM value="yes">
+          </ITEM>
+         </CASE>
+        </PARAM>
+        <PARAM id="lowenerbadpix" type="bool" default="yes">
+         <DESCRIPTION>
+          Call bright pixels detection additionally below 500 eV
+         </DESCRIPTION>
+         <CASE>
+          <ITEM value="no">
+          </ITEM>
+          <ITEM value="yes">
+          </ITEM>
+         </CASE>
+        </PARAM>
+       </ITEM>
+       <ITEM value="EP">
+       </ITEM>
+       <ITEM value="NO">
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="withbadpix" type="bool" default="yes">
+      <DESCRIPTION>
+       Run badpix
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="withemevents" type="bool" default="yes">
+      <DESCRIPTION>
+       Run emevents
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="randomize" type="string" default="PET">
+      <DESCRIPTION>
+       Randomize position, energy and/or time
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="withattcalc" type="bool" default="yes">
+      <DESCRIPTION>
+       Run attcalc
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="withemenergy" type="bool" default="yes">
+      <DESCRIPTION>
+       Run emenergy
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+        <PARAM id="writeccdbackground" type="bool" default="no">
+         <DESCRIPTION>
+          Save CCD background for offset calibration (one file per CCD)
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="rejectbadevents" type="bool" default="yes">
+      <DESCRIPTION>
+       Delete events flagged for rejection
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+        <PARAM id="rejectionflag" type="string" default="762a0000">
+         <DESCRIPTION>
+          Hexadecimal rejection flag
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="runevlistcomb" type="bool" default="yes">
+   <DESCRIPTION>
+    Merge CCD-specific events lists
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="fulloutput" type="bool" default="no">
+      <DESCRIPTION>
+       Keep all original columns
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="applyccdgti" type="bool" default="yes">
+      <DESCRIPTION>
+       Apply CCD-specific and HK GTI
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="keepintermediate" type="bool" default="no">
+      <DESCRIPTION>
+       Keep intermediate files
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="makeflaregti" type="bool" default="yes">
+   <DESCRIPTION>
+    Build the GTI for proton flare rejection
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="flaretimebin" type="real" default="52">
+      <DESCRIPTION>
+       Time bin for flare rejection (s)
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       flaretimebin in [2.6:]
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="flaremaxrate" type="real" default="2">
+      <DESCRIPTION>
+       Threshold on truncated singles per ks per arcmin2
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       flaremaxrate in [0.:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="applyflaregti" type="bool" default="no">
+   <DESCRIPTION>
+    Apply the proton flare GTI
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="globalflare" type="bool" default="yes">
+   <DESCRIPTION>
+    Build global flare time series for all MOS exposures
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="addtaglenoise" type="bool" default="yes">
+   <DESCRIPTION>
+    Compute low-energy noise flags
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="addvigweight" type="bool" default="no">
+   <DESCRIPTION>
+    Call evigweight to add WEIGHT column
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="stoponerror" type="bool" default="no">
+   <DESCRIPTION>
+    Stop at first error (or continue loop)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="clobber" type="bool" default="yes">
+   <DESCRIPTION>
+    Erase previously existing output files
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

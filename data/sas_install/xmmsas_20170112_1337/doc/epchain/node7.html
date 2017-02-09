@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Creation of background spectrum and lightcurve; screening of periods of high background</TITLE>
+<META NAME="description" CONTENT="Creation of background spectrum and lightcurve; screening of periods of high background">
+<META NAME="keywords" CONTENT="epchain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epchain.css">
+
+<LINK REL="next" HREF="node8.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epchain (epchain-8.76) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Incomplete ODFs"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Optical loading"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epchain.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00034000000000000000">
+Creation of background spectrum and lightcurve; 
+            screening of periods of high background</A>
+</H2>
+
+<P>
+If requested (<TT>runbackground</TT>=Y), 
+the task creates a background lightcurve, as well as a background spectrum for
+the imaging modes (FF, eFF, LW, SW) using background masks. 
+These are not used for the fast modes as there is no useful background region, 
+in which case the total lightcurve is produced. The usage of background masks 
+can be controlled by parameter <TT>withmask</TT> (default value: yes). 
+The background masks are created by task badpixfind using threshold 
+parameters, appropriate for the detection of real X-ray sources. 
+The background lightcurves and corresponding masks are created in 
+the 7.0 - 15.0 keV energy band,
+while masks created in the 0.2-10.0 keV energy band are used for the
+creation of the background spectrum.
+
+<P>
+Depending on the individual observation 
+and on the requested <TT>timebinsize</TT>
+one can then create a GTI file via <A NAME="1661"></A><A NAME="tex2html51"
+  HREF="../tabgtigen/index.html"><SPAN  CLASS="textbf">tabgtigen</SPAN></A>
+(e.g.):
+<PRE>
+  tabgtigen table=rate_bkg.fits gtiset=bkg_GTI.fits expression='COUNTS&lt;500'
+</PRE>
+or using the count rate column
+<PRE>
+  tabgtigen table=rate_bkg.fits gtiset=bkg_GTI.fits expression='RATE&lt;8'
+</PRE>
+where the output rate is in 
+counts ks<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$^{-1}$"></SPAN> arcmin<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^{-2}$"></SPAN>. 
+Typical low-background rates for PN are of the order 
+3 - 5 counts ks<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$^{-1}$"></SPAN> arcmin<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^{-2}$"></SPAN> in the 7.0 to 15.0 keV energy range.
+
+<P>
+The GTI file can then be used to screen the event list via <A NAME="1665"></A><A NAME="tex2html52"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+(e.g.):
+<PRE>
+  evselect expression='GTI(bkg_GTI.fits,TIME)' ...
+</PRE>
+As the GTIs strongly depend on the intended science this screening is
+not performed and only background masks, the lightcurve, and a GTI file
+are created by <A NAME="1669"></A><A NAME="tex2html53"
+  HREF="../epchain/index.html"><SPAN  CLASS="textbf">epchain</SPAN></A>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Incomplete ODFs"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Optical loading"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

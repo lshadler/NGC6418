@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Source-matching algorithm</TITLE>
+<META NAME="description" CONTENT="Source-matching algorithm">
+<META NAME="keywords" CONTENT="ommergelists">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ommergelists.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node8.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ommergelists (ommergelists-1.0.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithmn"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Algorithmn"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="SRCLIST table sorting algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ommergelists.html">Home Page</A> / <A  HREF="node8.html">Algorithmn</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00081000000000000000">
+Source-matching algorithm</A>
+</H2>
+
+<P>
+The matching algorithm takes into account that more than one source in source-list 1 may have a match
+with the same source in source-list 2. This can become important in crowded-fields. For example, sources 1 and 2 
+in source-list 1 may be matched with source 10 in source-list 2, with separations of 2 and 1 arcsecs, respectively.
+In a simple matching algorithm, source 1 could be matched with source 10, when in fact source 2 of source-list 1
+is better matched with it..
+
+<P>
+In the following, a <SPAN  CLASS="textbf">list</SPAN> is a c++ vector that can grow in size as necessary, and each element of the vector is also a vector which can grow in size. 
+
+<P>
+The algorithm works as follows- 
+
+<P>
+
+<OL>
+<LI>Create an empty list, <SPAN  CLASS="textbf">matchedindex1</SPAN>, that will record the row-number of a source in source-list 1
+that has a match with a source in source-list 2.
+</LI>
+<LI>Create an empty list, <SPAN  CLASS="textbf">matchedindex2</SPAN>, that will record the corresponding row-number of a source in source-list 2
+that has been matched with a source in source-list 1.
+</LI>
+<LI>Create an empty list, <SPAN  CLASS="textbf">matcheslist</SPAN>, of size equal to the number of rows in source-list 1, 
+that will store the row-numbers and distances of the sources in source-list 2 that 
+are no greater than the distance <SPAN  CLASS="textbf">tolerance</SPAN> from each source in source-list 1. 
+
+<P>
+</LI>
+<LI>Loop through from i=1 to the number of rows in source-list 1 and for each one:
+
+<P>
+
+<UL>
+<LI>Find all the sources in source-list 2 that are no more than a distance <SPAN  CLASS="textbf">tolerance</SPAN> arcsecs from 
+it, and add the source-list 2 row-numbers and distances to <SPAN  CLASS="textbf">matchesList[i]</SPAN>.
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI>Loop through <SPAN  CLASS="textbf">matchesList</SPAN> and for each element sort the list of sources in source-list 2 
+that have 2 or more matches with a source in source-list 1 into increasing distance order, preserving 
+the correct source-list 2 row numbers. 
+</LI>
+<LI>Loop through from i=1 to i=size of source-list 1 and
+
+<P>
+
+<UL>
+<LI>If source i has no matches move on to the next i.
+</LI>
+<LI>Loop through from j=1 to j=size of matchesList[i] and
+
+<P>
+
+<UL>
+<LI>Set l to the index of matchesList[i][j]
+</LI>
+<LI>Check to see if this source in source-list 2 has been matched with any other source in source-list 1
+</LI>
+<LI><SPAN  CLASS="textbf">IF NOT</SPAN> then increase the size of matchedIndex1 and matchedIndex2 by 1, and set the former to
+i and the latter to l. Move on to the next i.
+</LI>
+<LI><SPAN  CLASS="textbf">If YES</SPAN> Check to see if the distance in matchesList[i][j] is no greater than any of the
+other matched distances for this source in source-list 2- if not then increase the size of matchedIndex1 and matchedIndex2 by 1, and set the former to
+i and the latter to l. Move on to the next i.
+</LI>
+</UL>
+
+<P>
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI>Using the refined matched-list of sources, compute the mean differences in <SPAN  CLASS="textbf">RAxcos(Dec)</SPAN> and <SPAN  CLASS="textbf">Dec</SPAN>.
+</LI>
+<LI>If either of these offsets are more than 0.1 arcsecs then correct the coordinates of the second source-list and repeat
+the matching process (a maximum of 3 iterations). 
+
+<P>
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithmn"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Algorithmn"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="SRCLIST table sorting algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

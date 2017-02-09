@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Command-line position entry.</TITLE>
+<META NAME="description" CONTENT="Command-line position entry.">
+<META NAME="keywords" CONTENT="edet2sky">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="edet2sky.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+edet2sky (esky2det-1.18) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="FITS file positions"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="edet2sky.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+Command-line position entry.</A>
+</H2>
+
+<P>
+The detector position of a single source may be entered via the 
+parameters <TT>X</TT>, <TT>Y</TT>, where the coordinate system is specified
+by <TT>inputunit</TT> which can be either "raw" or "det" for RAW or DETECTOR
+coordinates. If <TT>inputunit</TT>="raw" then the CCD number must be entered
+with the parameter <TT>ccd</TT>. Eg:
+
+<P>
+<PRE>
+edet2sky datastyle=user inputunit=raw X=32 Y=190 ccd=4 calinfoset=imagepnxy.ds 
+
+or
+
+edet2sky datastyle=user inputunit=det X=-10000 Y=10000 calinfoset=imagemos1.ds
+</PRE>
+
+<P>
+See the task <A NAME="519"></A><A NAME="tex2html3"
+  HREF="../param/index.html"><SPAN  CLASS="textbf">param</SPAN></A>
+documentation for further details.
+
+<P>
+In this mode, the output positions are printed to the standard output. 
+The format of the output lines is as follows irrespective of the units
+of the input coordinates.
+
+<P>
+<PRE>
+# Instrument: EPN
+# RA (deg)   DEC (deg)
+187.7579    64.0481
+#
+# rawX      rawY    ccd   On chip?
+  28.95     66.46    2      T
+#
+# detX         detY
+ -10000.00     10000.00
+#
+# Image X    Y pixel
+  343.86     140.33
+#
+# Sky X        Y pixel
+  29872.94     12165.86
+</PRE>
+
+<P>
+Ouput contains coordinates in the systems, RA/DEC, RAW and Detector.
+If WCS information has been obtained from an input file
+(<TT>calinfoset</TT>=`set') then the output includes the
+Image pixel and Sky pixel (POS). The 'Image pixel' coordinates refer to 
+the pixel position in the input file given by the <TT>calinfoset</TT>
+parameter. 
+
+<P>
+If you want to display the numbers only, add <TT>withheader</TT>=`no' to 
+the command line. In the case above, this would give
+
+<P>
+<PRE>
+187.7579    64.0481
+  28.95     66.46    2      T
+ -10000.00     10000.00
+  343.86     140.33
+  29872.94     12165.86
+</PRE>
+
+<P>
+For the convenience of script authors, the number fields for 
+the output are given below:
+
+<P>
+<PRE>
+# Instrument: EPN
+# RA (deg)   DEC (deg)
+
+187.7579    64.0481
+#
+# rawX      rawY    ccd   On chip?
++xxx.xx   +xxx.xx   xx      x  
+#
+# detX         detY
++xxxxx.xx     +xxxxx.xx
+#
+# Image X    Y pixel
+ xxxx.xx    xxxx.xx
+#
+# Sky X        Y pixel
++xxxxx.xx     +xxxxx.xx
+</PRE>
+
+<P>
+If <TT>inputunit</TT>=`det' and the source does not fall on a CCD
+a warning message is issued; however the task still prints a RAWX/Y position, this being the position of the source in the RAWX/Y coordinate system of the nearest CCD. In this case the value of the `On chip?' column is `F' rather than `T'.
+
+<P>
+If <TT>inputunit</TT>=`raw' and the source does not fall on a CCD 
+then the position is translated without a warning message.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="FITS file positions"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

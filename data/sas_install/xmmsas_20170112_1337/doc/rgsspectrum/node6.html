@@ -1,0 +1,300 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Input Files</TITLE>
+<META NAME="description" CONTENT="Input Files">
+<META NAME="keywords" CONTENT="rgsspectrum">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsspectrum.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="rgsspectrum.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsspectrum (rgsspectrum-2.8.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Errors"></A>
+<A HREF="rgsspectrum.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Output Files"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsspectrum.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00060000000000000000"></A>
+<A NAME="rgsspectrum:description:inputfiles"></A>
+<BR>
+Input Files
+</H1>
+
+<P>
+The following input files are never modified by this task.
+
+<P>
+
+<UL>
+<LI><TT>evlist</TT> -- filtered event dataset (<A NAME="809"></A><A NAME="tex2html13"
+  HREF="../rgsfilter/index.html"><SPAN  CLASS="textbf">rgsfilter</SPAN></A>)
+
+<P>
+Attributes:
+   <A NAME="813"></A><TT>TELESCOP</TT>, <A NAME="815"></A><TT>INSTRUME</TT>, <A NAME="817"></A><TT>FILTER</TT>, <A NAME="819"></A><TT>OBJECT</TT>,
+   <A NAME="821"></A><TT>OBS_ID</TT>, <A NAME="823"></A><TT>EXP_ID</TT>, <A NAME="825"></A><TT>EXPIDSTR</TT>, <A NAME="827"></A><TT>DATE-OBS</TT>,
+   <A NAME="829"></A><TT>DATE-END</TT>, <A NAME="831"></A><TT>EQUINOX</TT>, <A NAME="833"></A><TT>RADECSYS</TT>.
+
+<P>
+Extensions:
+
+<P>
+
+<UL>
+<LI><A NAME="835"></A><TT>EVENTS</TT>
+
+<P>
+Attributes:
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><A NAME="837"></A><TT>SOURCEID</TT></TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">aspect correction target source index</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="839"></A><TT>RA_OBJ</TT> <A NAME="841"></A><TT>DEC_OBJ</TT></TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+</TABLE>
+
+<P>
+Columns:
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><A NAME="843"></A><TT>PI</TT></TD>
+<TD ALIGN="LEFT">short</TD>
+<TD ALIGN="LEFT">calibrated energy</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="845"></A><TT>BETA_CHANNEL</TT>
+     <A NAME="847"></A><TT>XDSP_CHANNEL</TT></TD>
+<TD ALIGN="LEFT">short</TD>
+<TD ALIGN="LEFT">channel coordinates</TD>
+</TR>
+</TABLE>
+
+<P>
+These WCS attributes of the channel columns are also required:
+     <A NAME="849"></A><TT>TCDLT</TT>, <A NAME="851"></A><TT>TCRPX</TT>, <A NAME="853"></A><TT>TCRVL</TT>, <A NAME="855"></A><TT>TLMIN</TT> and <A NAME="857"></A><TT>TLMAX</TT>.
+
+<P>
+</LI>
+<LI><A NAME="859"></A><TT>EXPMAPnn</TT>
+
+<P>
+At least one valid exposure map extension is required.  To be
+     considered valid an exposure map must cover a non-zero area on a
+     channel grid commensurate with the channel grid of the
+     <A NAME="861"></A><TT>EVENTS</TT> table.
+
+<P>
+Attributes:
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><A NAME="863"></A><TT>CCDNODE</TT></TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">readout node identifier</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="865"></A><TT>DATAMAX</TT></TD>
+<TD ALIGN="LEFT">real</TD>
+<TD ALIGN="LEFT">maximum duration of exposure</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="867"></A><TT>CTYPE1</TT> <A NAME="869"></A><TT>CUNIT1</TT> <A NAME="871"></A><TT>CRPIX1</TT> <A NAME="873"></A><TT>CRVAL1</TT> <A NAME="875"></A><TT>CDELT1</TT></TD>
+<TD ALIGN="LEFT">WCS</TD>
+<TD ALIGN="LEFT">dispersion axis</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="877"></A><TT>CTYPE2</TT> <A NAME="879"></A><TT>CUNIT2</TT> <A NAME="881"></A><TT>CRPIX2</TT> <A NAME="883"></A><TT>CRVAL2</TT> <A NAME="885"></A><TT>CDELT2</TT></TD>
+<TD ALIGN="LEFT">WCS</TD>
+<TD ALIGN="LEFT">cross-dispersion axis</TD>
+</TR>
+</TABLE>
+
+<P>
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI><TT>srclist</TT> -- source definition dataset (<A NAME="888"></A><A NAME="tex2html14"
+  HREF="../rgsregions/index.html"><SPAN  CLASS="textbf">rgsregions</SPAN></A>)
+
+<P>
+Extensions:
+
+<P>
+
+<UL>
+<LI><A NAME="892"></A><TT>SRCLIST</TT>
+
+<P>
+Attributes:
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><A NAME="894"></A><TT>INSTRUME</TT></TD>
+<TD ALIGN="LEFT">string</TD>
+<TD ALIGN="LEFT">instrument</TD>
+</TR>
+</TABLE>
+
+<P>
+Columns:
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><A NAME="896"></A><TT>INDEX</TT></TD>
+<TD ALIGN="LEFT">int</TD>
+<TD ALIGN="LEFT">source identifier</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="898"></A><TT>DELTA_DISP</TT></TD>
+<TD ALIGN="LEFT">real</TD>
+<TD ALIGN="LEFT">grating dispersion angle</TD>
+</TR>
+</TABLE>
+
+<P>
+</LI>
+<LI><!-- MATH
+ $<\!\!instrument\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="109" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&lt;\!\!instrument\!\!&gt;$"></SPAN>_BACKGROUND
+
+<P>
+FITS region in RGS angular coordinates: defines the background
+     spatial selection region.  This region is never required in HTR
+     mode, and in Spectroscopy mode it is not required for a TOTAL
+     spectrum.
+
+<P>
+</LI>
+<LI><!-- MATH
+ $<\!\!instrument\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="109" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&lt;\!\!instrument\!\!&gt;$"></SPAN>_SRC<!-- MATH
+ $<\!\!source\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$&lt;\!\!source\!\!&gt;$"></SPAN>_SPATIAL
+
+<P>
+FITS region in RGS angular coordinates: defines the source
+     spatial selection region.  This region is always required in HTR
+     mode, but in Spectroscopy mode it is not required for a BKG
+     spectrum.
+
+<P>
+</LI>
+<LI><!-- MATH
+ $<\!\!instrument\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="109" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&lt;\!\!instrument\!\!&gt;$"></SPAN>_SRC<!-- MATH
+ $<\!\!source\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$&lt;\!\!source\!\!&gt;$"></SPAN>_ORDER_<!-- MATH
+ $<\!\!order\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="66" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$&lt;\!\!order\!\!&gt;$"></SPAN>
+
+<P>
+FITS region in RGS dispersion and energy (PI): defines the source
+     energy selection region.  This region is always required in
+     Spectroscopy mode, but in HTR mode it is not required for a BKG
+     spectrum.
+
+<P>
+</LI>
+<LI><!-- MATH
+ $<\!\!instrument\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="109" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&lt;\!\!instrument\!\!&gt;$"></SPAN>_SRC<!-- MATH
+ $<\!\!source\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$&lt;\!\!source\!\!&gt;$"></SPAN>_ORD<!-- MATH
+ $<\!\!order\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="66" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$&lt;\!\!order\!\!&gt;$"></SPAN>_BKG
+
+<P>
+FITS region in RGS dispersion and energy (PI): defines the
+     background energy selection region.  This region is never
+     required in Spectroscopy mode, and in HTR mode it is not required
+     for a TOTAL spectrum.
+
+<P>
+</LI>
+</UL>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Errors"></A>
+<A HREF="rgsspectrum.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Output Files"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

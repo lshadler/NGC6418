@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="epicspeccombine">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epicspeccombine.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="epicspeccombine.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epicspeccombine (epicspeccombine-0.1.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="epicspeccombine.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epicspeccombine.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="epicspeccombine:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+The <A NAME="305"></A><A NAME="tex2html1"
+  HREF="../epicspeccombine/index.html"><SPAN  CLASS="textbf">epicspeccombine</SPAN></A>
+is a SAS implementation of the ``Combining
+the spectra of the 3 EPIC cameras'' thread that can be found at
+http://xmm.esac.esa.int/sas/current/documentation/threads/epic_merging.shtml. For
+convenience, this task should be used in combination with
+<A NAME="309"></A><A NAME="tex2html2"
+  HREF="../multixmmselect/index.html"><SPAN  CLASS="textbf">multixmmselect</SPAN></A>
+and <A NAME="313"></A><A NAME="tex2html3"
+  HREF="../multiespecget/index.html"><SPAN  CLASS="textbf">multiespecget</SPAN></A>
+tasks.
+
+<P>
+<A NAME="317"></A><A NAME="tex2html4"
+  HREF="../epicspeccombine/index.html"><SPAN  CLASS="textbf">epicspeccombine</SPAN></A>
+task requires as an input a set of source
+spectra, background spectra, plus the corresponding response and
+effective area files of the three EPIC cameras as produced by the
+<A NAME="321"></A><A NAME="tex2html5"
+  HREF="../multiespecget/index.html"><SPAN  CLASS="textbf">multiespecget</SPAN></A>. Although, it is not mandatory the use of
+<A NAME="325"></A><A NAME="tex2html6"
+  HREF="../multiespecget/index.html"><SPAN  CLASS="textbf">multiespecget</SPAN></A>
+task prior
+<A NAME="329"></A><A NAME="tex2html7"
+  HREF="../epicespeccombine/index.html"><SPAN  CLASS="textbf">epicespeccombine</SPAN></A>
+execution, it is highly recommended because 
+<A NAME="333"></A><A NAME="tex2html8"
+  HREF="../multiespecget/index.html"><SPAN  CLASS="textbf">multiespecget</SPAN></A>
+task sets accordingly all the parameters related 
+to spectral range or energy binning. Nevertheless, the user can use his own files, 
+but in this case, the user has to ensure that the spectra files have
+a common spectral range and a common binnig. Also, the user has to
+provide the response and ancilliary files with the same energy
+binning.
+
+<P>
+<A NAME="337"></A><A NAME="tex2html9"
+  HREF="../epicspeccombine/index.html"><SPAN  CLASS="textbf">epicspeccombine</SPAN></A>
+task assumes that the spectral extraction regions 
+are identical for all the EPIC input files.
+
+<P>
+Firstly, this task merges together the source+background and background spectra
+files into a single set of merged source+background spectrum and
+background spectrum. Then, the  redistribution matrix and effective
+area vector files are also combined together into a single response file.
+
+<P>
+The files for each of the input parameters: <TT>pha</TT>,
+<TT>bkg</TT>, <TT>rmf</TT> and <TT>arf</TT> have to be
+introduced in order. Its means, <A NAME="345"></A><A NAME="tex2html10"
+  HREF="../epicespeccombine/index.html"><SPAN  CLASS="textbf">epicespeccombine</SPAN></A>
+assumes that
+the order of the input list is the same and it is correct.
+
+<P>
+The algorithm, together with the weights used to combine the response
+files are properly described in the SAS thread web page.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="epicspeccombine.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>What is pile-up?</TITLE>
+<META NAME="description" CONTENT="What is pile-up?">
+<META NAME="keywords" CONTENT="epileupmask">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epileupmask.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epileupmask (ebkgmap-2.9) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="What does this task"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epileupmask.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000"></A>
+<A NAME="epileupmask:description:pileup"></A>
+<BR>
+What is pile-up?
+</H2>
+
+<P>
+Pile-up is in a way a simple phenomenon.  However once the image/event
+is obtained, it is not trivial at all to reproduce the non-piled up image,
+which is what an observer really wants.
+
+<P>
+Pile-up is essentially described as an event which contains more than
+one incoming photon in it, primarily due to slow read-out, comparing
+with the incoming flux.  By definition,
+those more-than-one photons are inseparatable.  Therefore practically
+the event is regarded as the `<SPAN  CLASS="textit">sum</SPAN>' of those events; <I>ie.</I>, the energy
+of the event is regarded as the total sum of those incoming photons.
+Therefore these piled-up events (1) skew the spectrum of the source, namely,
+the piled-up spectrum appears to be harder than the original spectrum,
+and (2) reduces the observed flux in photons per unit time
+for the entire energy band (though preserves in the first-order approximation
+the flux in unit of energy per unit time).
+These two are the most simple effect of the pile-up.
+
+<P>
+In the case of the CCD detection (in the imaging mode), the situation
+is more complicated.  If the point-spread function (PSF) is larger
+than the CCD pixel, which is the case in both pn and MOSs, the second
+(third, fourth, etc) photon, which is due to cause the pile-up, is more likely
+to fall onto the surrounding pixel than the central pixel, onto which the
+first photon fell.  If the first photon is due to cause a single pixel event,
+the combination of the first and second photons would cause a double pixel
+event -- either diagonal pixel or bipixel event, or, depending on
+the geometry and energy, it may cause tripixel or quadripixel event.
+Or worse, if the pile-up is extremely severe, the sum of all those piled-up
+photons may give an active signal for the entire <SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$3\times3$"></SPAN> pixels
+(pattern 31 in MOS), which leads to the situation where
+the position is likely to appear to be a void spot in the image,
+because the pattern 31 is generally filtered out in the filtering.
+
+<P>
+Hence the pile-up also alters the grade-branching ratio.
+In short higher grade (more double-pixel events, for example) events
+are more likely to increase.  This follows if one extracts only the single
+pixel events, the derived flux will be smaller than the true value
+in the case of pile-up, because more events are detected as double (triple,
+quadruple) pixel events as piled-up (or combined) events, each of which 
+could be a sum of originally single-pixel events.
+
+<P>
+In the piled-up image, the observed PSF must be flatter than the non-piled-up
+one, because the centre of the PSF is more heavily piled up than its
+outer skirts.  If the pile-up at the centre is very severe,
+as explained above, the centre of the PSF may show a depression, or worse
+a void.
+
+<P>
+What we get as data is the already piled-up data, that is, a skewed image
+with a skewed energy spectrum (and light curve).  Generally speaking
+we know neither the true image nor spectrum.  Conversely that is
+what we want to get.  We understand well the skewing process by pile-up,
+however the inverse function for it is not analytical and is
+extremely hard to calculate even computationally.
+
+<P>
+Consequently the pile-up is a function of the incoming flux, energy,
+surface brightness (of the source(s)), as well as the shape of the PSF.
+It affects the grade-branching ratio (of the CCD), observed flux and energy and
+spatial distribution.
+If the source flux is the input, the vignetting is a factor of concern, too.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="What does this task"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

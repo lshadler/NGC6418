@@ -1,0 +1,1363 @@
+ChangeLog for OAL
+=================
+Open SPRs/SCRs:
+	*none*
+Version 3.133.1 - 2016-09-09 (EO)
+---------------
+	+ (src/AttituteLocator.h AuxHKaccess.h): GNUC >= 6 since
+	 g++ 5.3.1 does not include C++ 2011 by default.
+
+Version 3.133 - 2016-09-06 (AI)
+---------------	
+	+ (src/AttituteLocator.h OalServer.h AuxHKaccess.h) macro preprocessor
+	added to constexpr statement to keep gcc backward compatibility.
+
+Version 3.132 - 2016-09-05 (AI)
+---------------	
+	+ (src/AttituteLocator.h OalServer.h AuxHKaccess.h) gcc-6.X 
+	portability changes. (constexpr added to "static const" statements)
+	+ (f90test/oalexample.f90 oaltest.f90) pointers initialized to null().
+	(mandatory fo gcc-6.X)
+
+Version 3.131 - 2016-07-14 (AI)
+---------------	
+	+ (f90/oal.f90) CONTIGUOUS statement added in the OAL_toEulerAngles
+	subroutine
+
+Version 3.130 - 2016-07-06 (RDS)
+---------------	
+	+ (f90/oal.f90) Remove contiguous option to get it to build
+
+Version 3.129 - 2016-07-01 (AI)
+---------------	
+	+ (f90/Makefile) Conditional compiler option added
+
+Version 3.128 - 2016-06-30 (AI)
+---------------	
+	+ (f90/OalF90cxxGlue.f90) gfortran compatibility changes for 
+	Dope (array descriptor) structures.
+	+ (f9/Makefile and f90/oal.f90) fortran CONTIGUOUS statement is 
+	not present in NAGfor 5.2. To solve this dependency, 
+	we have added a preprocesor macro.
+	
+Version 3.127 - 2016-03-11 (RDS)
+---------------	
+	+ DEPEND		- added testodf into DEPEND (SPR-7349)
+
+Version 3.126.1 - 2015-12-17 (RDS)
+---------------	
+	+ test/myboresight.ccf - changed to ALGOID=1 for CAL compatibility
+
+Version 3.126 - 2015-09-29 (AI)
+---------------	
+	+ (TimeTags.cc) In RGS toObt method, we have added an extra check 
+	for wrap-arounds of the EOSCOARS values in the AUX file. 
+	
+Version 3.125 - 2014-04-15 (AI)
+---------------	
+	+ gcc4.8.2 compatibility changes
+	
+Version 3.124 - 2013-10-23 (AI)
+---------------	
+        + (AuxHKaccess.cc, TimeTags.cc)  HK/AUX late reset checking 
+	has been disabled for mosaicing observations.
+	
+Version 3.123 - 2013-07-19 (AI&RDS)
+---------------
+	+ src/AttitudeLocator.cc: - Modification in the RAF contructor 
+	                            to store the time previous 
+				    to the slew time start
+				    (only for slew processing).
+	
+Version 3.122.1 - 2013-03-15 (RDS)
+---------------
+        + src/Odf.cc                  -  fixed problem with the timing of
+					 offset maps (SPR-7098)
+
+Version 3.122 - 2013-01-22 (RDS)
+---------------
+        + various                     -  fully removed CAL dependency
+
+Version 3.121 - 2013-01-21 (RDS)
+---------------
+        + src/Makefile                -  fully removed CAL dependency
+
+Version 3.120 - 2013-01-21 (RDS)
+---------------
+        + src/AuxHKaccess.cc          -  fully removed CAL dependency
+
+Version 3.119 - 2013-01-18 (RDS)
+---------------
+        + src/AuxHKaccess.cc,         -  includes the jump tolerance as
+          src/OalServer.cc/h             a state variable that can be set
+          f90/OalF90cxxGlue.cc/h         from an application. The CAL dependncy
+                                         has been removed.
+                                          (SCR-268)
+
+Version 3.118 - 2012-12-19 (AI)
+---------------
+	+ (src/AttitudeLocator.cc/h)  - Implementation of new methods
+	                                (setAHF and getMedianAtt) to retrieve
+					attitude info to be used by mosaicing 
+					splitting process (preqgti).
+					
+	
+Version 3.117 - 2012-12-19 (RDS)
+---------------
+	+ src/AuxHKaccess.cc/h        -  gets the time jump tolerance from
+				         the CAL.
+					  (SCR-268)
+
+Version 3.116.2 - 2009-07-09 (AI)
+---------------
+	+ Added new ERM timecorrelation functionality. SOC-SCR-284 closed.
+	
+Version 3.116.1 - 2009-07-06 (AI)
+---------------
+	+ Modifications is several source files to make dal gcc 4.3 compliant. 
+	
+Version 3.116 - 2008-04-24 (RDS)
+---------------
+		+ src/AuxHKaccess.cc  -  the default is set to 22 times
+					 TIMDEL for checking for time jumps.
+					 This still may be overridden by the
+					 user with the SAS_JUMP_THRESHOLD
+					 environment variable
+
+Version 3.115 - 2006-06-01 (RDS)
+---------------
+		+ src/AuxHKaccess.cc  -  the JUMP THRESHOLD code set 
+                                 back to original version unless
+                                 user defines the SAS_JUMP_THRESHOLD
+                                 environment variable
+
+        + src/AttitudeLocator.cc -  A delta of 0.75s is subtracted from
+                                 the times in the RAF file to 
+                                 compensate for the star-tracker CCD
+                                 integration time (SPR-2669)
+
+Version 3.114.2 - 2006-01-10 (RDS)
+---------------
+		+ f90/OalF90cxxGlue.cc/h - added routines to access IPPV values
+          f90/oal.f90              which are observation rather than 
+          f90test/oaltest.f90      exposure specific (OAL_hasconfIPPV and
+          odf/0010_PPPPPPOOLL_SCX00000SUM.SAS       
+                                   OAL_getconfIPPV<type>). A new test harness
+                                   has been added (SPR-2649)
+
+Version 3.113.4 - 2005-12-10 (RDS)
+---------------
+        + src/Odf.cc             - solves problem with RGS diagnotic maps
+                                   for the second exposure (SPR-2645)
+                                                                                
+Version 3.113.3 - 2005-12-05 (RDS)
+---------------
+        + src/Odf.cc             - release track version of fix for problem
+                                   with the wrong expanded
+                                   filename being returned for ODFs containing
+                                   a scheduled and unscheduled exposure with
+                                   the same number
+                                                                                
+Version 3.114.1 - 2005-12-02 (RDS)
+---------------
+		+ src/Odf.cc             - fixed a problem with the wrong expanded 
+                                   filename being returned for ODFs containing
+                                   a scheduled and unscheduled exposure with
+                                   the same number
+
+Version 3.114 - 2005-06-08 (JSH)
+---------------
+        copy of 3.113.2 for the development track
+
+Version 3.113.2 - 2005-06-08 (JSH)
+---------------
+		Default to use TCX file in Time Correlation
+
+Version 3.113.1 - 2005-02-21 (RDS)
+---------------
+        copy of 3.113 for the release track
+
+Version 3.113 - 2004-12-21 (RDS)
+---------------
+                + src/AttitudeLocator.cc     -  removed problem when attitude
+                                        interpolation occurs with points
+                                        crossing the 360.0 - 0.0 RA
+                                        boundary (SPR-2589)
+
+Version 3.112 - 2004-12-16 (RDS)
+---------------
+		+ src/AttitudeLocator.cc -  added code to allow the gap between
+		data and attitude records to be 20 times longer for 
+		slew observations.
+
+Version 3.111.6 - 2004-07-27 (JSH)
+---------------
+		+ Time Correlation processing for SAS 6.0.5 defaults to TCS
+		+ Fix problem determining obs boundaries for TCX records
+		for in case of multiple exposures present for instrument being
+		processed
+		
+
+Version 3.111.5 - 2004-07-27 (JSH)
+---------------
+        + Change TimeCorrelator constructors to avoid calling
+	other constructors as default parameters. gcc 2.9x doesn't
+	like that at all.
+
+Version 3.111.4 - 2004-07-20 (JSH)
+---------------
+	+ Update OAL to process TCX data files
+		- New environment variables used by OAL
+		- OalServer uses environment variable to 
+		select TCS or TCX (a la ahf/raf handling)
+		- OalServer then calls TimeCorrelator with
+		appropriate arguments
+		- TimeCorrelator updated to process TCX data
+		- C++ test case updated
+		- Documentation updated :)
+
+Version 3.111.3 - 2004-06-29 (RDS)
+---------------
+	+ Addition of HBR_OFFSET_DATA type and logic to return the
+      best offset map for a given exposure
+      src/Odf.cc/h
+
+Version 3.111.2 - 2004-02-13 (UL - still around :)
+---------------
+	+ more changes to pn AUX data anomaly detection/correction logic to
+	  cope with seen problems in a number of ODFs (see email MJF to
+	  MK/UL dated 2004-01-29):
+		- relax maximum allowed fractional frame time jitter to better
+		  cope with extended counting mode intervals
+		- for jumps that are not +/-1s _always_ look for jumps in the opposite
+		  direction within the next 50 frames even if an integer offset
+		  was found that satisfies the 'delta criterion' (=delta must be
+		  integer multiple of nominal frame time); it used to be that
+		  this check was supressed if a suitable offset was found leading to
+		  the introduction of bogus corrections (e.g. Crab ODFs
+		  0411_0153750[2345]01)
+		- if delta<0: only accept offsets that are odd and that correct jumps
+					  occuring close to the end of a second (FTFINE>40000)
+		- if delta>0: only accept offsets that are +/-1s or larger than
+					  80% of the gap size
+		- all other found deltas will not lead to a correction now but just
+		  appear as 'unidentified deltas' in the log
+
+Version 3.111.1 - 2003-12-12 (RDS)
+-------------
+    + removed f90 interface to RGS diagnostic maps. 
+    + removed call to hasRgsDiagnosticMap - can use hasSet() instead.
+
+Version 3.111 - 2003-12-11 (RDS)
+-------------
+    + finished SCR-133.
+
+Version 3.110 - 2003-12-05 (EO)
+-------------
+	+ oal_description.tex typo corrected.
+
+Version 3.109 - 2003-12-04 (RDS)
+-------------
+	+ added the routine OAL_RGSDiagImage to return a diagnostic image
+      for an RGS configuration (SCR-133)
+
+Version 3.108 - 2003-08-06 (UL)
+-------------
+	+ more changes to the PN-AUX data anomaly detection/correction logic:
+		* for negative jumps limit the search interval for an offset
+		  that makes the difference between consecutive frames an
+		  integer multiple of the frame time to [|i|, |i|+2] (was
+		  [|i|, |i|+10]); i is value of jump (fixed problem in
+		  0156_0095810401_PNS00300AUX CCD7 reported by MJF)
+		* supress verification of very large gap size; e.g. in
+		  0362_0124930301_PNS02500AUX.FIT CCD4 there is gap of >177s
+		  corresponding to >30000 missing frames (Burst mode); the frame
+		  time jitter makes it senseless to verify the gap size
+		* detection of 'premature increments' improved; 
+		  0362_0124930301_PNS02500AUX.FIT CCD4 contains a case where old
+		  logic failed
+	+ fixed very minor problem with output message
+
+Version 3.107 - 2003-07-03 (UL)
+-------------
+	+ pn AUX data anomaly detection+correction logic: there can be blocks
+	  of AUX data whose QUADRANT/CCDID signature is wrong, e.g. they seemingly
+	  stem from different quadrants (see doc comments in src/AusHKaccess.cc
+	  for more info) - the size of these blocks was limited to 25 rows but
+	  0137_0128120401_PNS00200AUX.FIT (source PSR1507) contains an example
+	  of a 31-row block; the allowed size has not been increased to 50 rows
+
+Version 3.106 - 2003-06-27 (UL)
+-------------
+	+ Calculation of signal propagation delay at SAS_OBT_MET_FIT=1,...:
+	  Modified code after confirmation (email Ramon Munoz dated 2003-06-27)
+	  that onboard delays have to be SUBTRACTED instead of added
+
+Version 3.105 - 2003-06-20 (UL)
+-------------
+	+ pn auxiliary data processing: fixed a minor problem in a code branch
+	  that deals with the very rare occurence of apparent CDMU crashes
+	  during an exposure - in this case the determination of pn clock reset
+	  times was incorrect (caused problem with 0104_0111130201_PNS00300AUX)
+
+Version 3.104 - 2003-06-18 (UL)
+-------------
+	+ Implemented SCR 115: oal should not use unprocessed raw attitude file
+      by introduction of new (optional) enviroment variable SAS_ATTITUDE;
+	  if not set default is to use AHF data; doc updated accordingly
+
+Version 3.103 - 2003-06-16 (GV)
+-------------
+	+ Misc. fixes to make gcc-3.3 happy: include <cassert> and/or
+	  proper initialization of base classes.
+
+Version 3.102 - 2003-05-02 (UL)
+-------------
+	+ bug fix to solve (rare) problem with S/U exposure confusion (seen
+	  in e.g. 0591_0144900101 - unscheduled Timing exposure follows
+	  scheduled Imaging exposure with same exposure number; S/U002)
+
+Version 3.101 - 2003-04-04 (UL)
+-------------
+	+ fixed minor problem with new InstrumentalTimer() I/F
+
+Version 3.100 - 2003-04-03 (UL)
+-------------
+	+ added OalServer::instrumentalTimer()
+
+Version 3.99 - 2003-03-18 (UL)
+------------
+	+ closed SPR 2418: class IPPV should not be public string
+
+Version 3.98.2 - 2003-03-12 (UL)
+--------------
+	+ fixed problem with repeated OdfInfo::server.odf() invocations generating
+	  new instances of OdfInfo::Odf() objects
+
+Version 3.98.1 - 2003-02-12 (UL)
+--------------
+	+ fixed minor bug that would cause an 'unidentified delta' in the pn AUX
+	  data anomaly recognition stage to get reported when there is none;
+	  occurs when wrong-quad entries are present within a period after
+	  a FTCOARSE jumps and before a reset [e.g. 0149_0111100301]
+
+Version 3.98 - 2003-02-07 (UL)
+------------
+	+ implemented piecewise-linear interpolation of time correlation data as
+	  alternative method to global polynomial fit; switched on by setting
+	  second field 'degree' in SAS_OBT_MET_FIT to negative values; doc
+	  updated accordingly
+
+Version 3.97 - 2003-01-30 (UL)
+------------
+	+ small improvement in pn AUX anomaly detection logic related to find
+	  blocks of wrong-quadrant/CCD data
+
+Version 3.96 - 2003-01-30 (UL)
+------------
+	+ skip pn AUX data anomaly correction stage if data is found too anomalous
+	  (e.g. old-vintage SciSim AUX data)
+	+ catch pathological case that frame time increment is 0 (caused crash
+	  in epframes test harness)
+
+Version 3.95 - 2003-01-29 (UL)
+------------
+	+ much improved pn AUX data anomaly detection and correction algorithm;
+	  should now be able to reliably find all FTCOARSE counter jumps
+	  [Note: Access to EPN_TIMECORR CCF for AUX data anomaly processing
+	   needed]
+	+ couple of new warning messages about pn AUX anomalies (e.g.
+	  unidentified deltas)
+
+Version 3.94 - 2002-09-11 (JBa)
+--------
+	+ some ANSI C++ compliance fixes (in preparation of moving to gcc>=3.1)
+
+Version 3.93 - 2002-07-02 (JBa)
+------------
+	+ replaced all occurences of 'strstream' with standard-conformant
+	  'stringstream'
+
+Version 3.93 - 2002-07-02 (JBa)
+------------
+	+ Using sstream instead of strstream
+
+Version 3.92 - 2002-06-20 (UL)
+------------
+	+ hasAssociatedSet()/associatedSet() now works for PN DLI data
+	  (association is made by searching for CCD number match in
+	  DLI exposures not later than 15mins after science exposure)
+	+ internal code change to work around out-of-mem compiler problem
+	  at -O2 on Tru64
+
+Version 3.91.8 - 2002-05-28 (UL)
+--------------
+	+ changed text of new error message introduced with 3.91.7
+
+Version 3.91.7 - 2002-05-24 (UL)
+--------------
+	+ issue error message if used with skeleton summary file (odfingest
+	  has not been run)
+
+Version 3.91.6 - 2002-05-03 (UL)
+--------------
+	+ fixed rare problem with highly anomalous pn aux data (extremely
+	  frequent occurence of FTCOARSE=32767 frames, seen in e.g.
+	  odffix'ed 0053_0121500601)
+
+Version 3.91.5 - 2002-04-26 (UL)
+--------------
+	+ fixed minor problem with pathological exposures shorter than 90s
+	+ fixed minor problem with rare anomaly in pn PMH data (seen e.g.
+	  in 0175_0132520301_PNX00000PMH.FIT)
+
+Version 3.91.4 - 2002-04-23 (UL)
+--------------
+	+ fixed new problem seen with ODF 0120_0102640201 (this is related
+	  to a 3.91-change to correct for TM anomaly in Crab ODF 0411_0153750301)
+
+Version 3.91.3 - 2002-04-19 (UL)
+--------------
+	+ end with error if orbit file is empty
+
+Version 3.91.2 - 2002-04-18 (UL)
+--------------
+	+ another improvement in enhancing robustness against EPIC clock
+	  late-reset anomalies
+
+Version 3.91.1 - 2002-04-18 (UL)
+--------------
+	+ small fix in orbit file reading: better robustness againt pathological
+	  empty orbit files (e.g. odffixed data)
+
+Version 3.91 - 2002-04-17 (UL)
+------------
+	+ meliorated robustness against EPIC clock late-reset anomaly
+	  (this fixes problem seen in Crab obs 0411_0153750301)
+	+ fixed another problem with S/U exposure confusion (e.g. in ODF
+	  0418_0110980301)
+	+ fixed minor problem with re-calculation of signal propagation delays
+	+ read entire orbit file instead of just data covering obs window; needed
+	  for recalculation of signal propagation delays in TimeCorrelator
+
+Version 3.90.2 - 2002-04-11 (UL)
+--------------
+	+ fixed minor problem with determination of ODF location when SAS_ODF is
+	  given just name of summary file
+
+Version 3.90.1 - 2002-04-02 (UL)
+--------------
+	+ fixed another problem related to treatment of data blocks with
+	  incorrect QUADRANT/CCDIDs in EPN auxiliary data [lead to negative
+	  GTIs generated by epframes with at least ODF 0078_0124100101]
+
+Version 3.90 - 2002-03-25 (UL)
+------------
+	+ introduced fifth SAS_OBT_MET_FIT field: 0/1 toggle switch controlling
+	  whether or not GS handovers in the TC data are ignored (1) or not (0);
+	  in the latter case all TC data after a handover are not taken into
+	  account; default is 1, i.e. all TC data are considered
+	+ updated doc w.r.t to new SAS_OBT_MET_FIT control parameter
+
+Version 3.89.1 - 2002-03-25 (UL)
+--------------
+	+ changed default parameters controlling OBT-MET FIT from 0,1,1.e-2,.9
+	  to 0,4,5.e-5,.9
+
+Version 3.89 - 2002-03-15 (UL)
+------------
+	+ fixed bug in OBT-MET conversion (prevented correct conversion of OBT=-1
+	  entries to NaN)
+
+Version 3.88.11 - 2002-03-12 (UL)
+---------------
+	+ fixed minor documentation problems
+
+Version 3.88.10 - 2002-03-11 (UL)
+---------------
+	+ fixed problem inadvertendly introduced in 3.88.9 (caused emframes'
+	  test harness to fail)
+
+Version 3.88.9 - 2002-03-08 (UL)
+--------------
+	+ make OAL_setState(set) robust against missing FILENAME attribute in set
+	+ fixed minor problem with treatment of very last frame in frame-counter
+	  to OBT conversion for pn (problem occures in ODF 0093_0124710201)
+
+Version 3.88.8 - 2002-03-04 (UL)
+--------------
+	+ adjustment of internal parameter in pn frame-counter to OBT conversion
+	  fixes processing problems with ODFs 0375_0134521401
+
+Version 3.88.7 - 2002-02-26 (UL)
+--------------
+	+ fixed problem described in SSC-SPR-2777: crash without error msg
+	  (emframes) [exposure confusion problem in Odf-related classes]
+
+Version 3.88.6 - 2002-02-21 (UL)
+--------------
+	+ optimized memory usage in EPN frame-counter to OBT conversion
+	+ updated error labels in doc
+	+ better description of OAL_toAttitudeMatrix()
+
+Version 3.88.5 - 2002-02-14 (UL)
+--------------
+	+ more robust frame time computation in EpnAuxDataServer (fixed problem
+	  with CCD-0/Quad-3 in ODF 0131_0110660101)
+
+Version 3.88.4 - 2002-02-12 (UL)
+--------------
+	+ brought in line with caloalutils-1.64
+
+Version 3.88.3 - 2002-02-06 (UL)
+--------------
+	+ closed SPR 2231: OAL problems with pn event time computation in
+	  development-track [effectively closed with 3.88.2 already]
+	+ minor internal modifications
+
+Version 3.88.2 - 2002-02-05 (UL)
+--------------
+	+ fixed minor compilation problem under optimization
+	+ better robustness in IPPV access (invalid string-number conversions)
+	+ fixed various processing problems of odffixed/PMSFITS data sets
+	  (0032_0117500201)
+
+Version 3.88.1 - 2002-02-04 (UL)
+--------------
+	+ fixed problem with computation of frame time in SmallWindowMode
+	+ summary file may contain CONFIGURATION section
+
+Version 3.88 - 2002-01-21 (UL)
+------------
+	+ fixed couple of problems in OBT tag computation for EPN (related
+	  to FTCOARSE wrap-around)
+	+ fixed minor problem with instrument priorities read from sum file
+	+ fixed minor problem with data mode recognition
+	+ minor doc update
+
+Version 3.87 - 2002-01-15 (UL)
+------------
+	+ fixed problem of SPR 2249: OAL_addCommonAttributes does not work on
+	  odffixed data
+	+ minor doc update
+
+Version 3.86 - 2002-01-08 (UL)
+--------------
+	+ fixed minor problem with OAL_addCommonAttributes() I/F
+	+ setState() accepts now full instrument/exposure identifier (e.g.
+	  'R1U571') in argument 'instrExposureId'; can also be the name of
+	  an ODF set name
+
+Version 3.85 - 2002-01-07 (UL)
+------------
+	+ better robustness against invalid GSID from TCS (this fixes problem of
+	  SPR 2236: OAL_frameCounterToObt core dumps in emframes)
+	+ closed SPR 2234: Implement SCR 84: Source of attitude data wanted
+	  [added OAL_addCommonAttributes()]
+	+ improved ODF ICD compilance: do not require proposal data in SDFs
+
+Version 3.84.1 - 2001-12-14 (UL)
+--------------
+	+ removed forgotten debug statement in TimeTags.cc
+
+Version 3.84 - 2001-12-10 (UL)
+------------
+	+ src/TimeCorrelator:
+		* internal optimizations
+		* user can now force linear OBT-MET relation by setting
+			SAS_OBT_MET_LINEAR=slope,anchor
+		  slope : slope of OBT-MET line
+		  anchor: determines point in TCS to use as 'anchor' to define
+				  OBT-MET line; index is N*anchor (0<=anchor<=1, N: number
+				  of TCS data point)
+	+ coefficients of OBT-MET fit polynomial now printed on VERBOSITY>=7
+
+Version 3.83 - 2001-12-06 (UL)
+------------
+	+ added OalStateable::instrExposureId()
+	+ brought in line with caloalutils-1.61 (class Odf [formerly in Odf.h]
+	  moved to caloalutils)
+
+Version 3.82 - 2001-11-22 (UL)
+------------
+	+ TimeCorrelator object instantiation now robust again too few data points
+	  in TCS
+	+ added OalServer::instrExposureId() to set state from "M1U001"-type
+	  strings
+
+Version 3.81 - 2001-09-11 (UL)
+------------
+	+ OdfSet::scheduled() now only returns true for 'S'-type exposures
+	  (used to give true also for type 'X')
+	+ fixed problem of SPR 2168: Does not distinguish S/U
+	+ end with error when attempting to retrieve numeric IPPV from
+	  string value (e.g. 'UNKNOWN') - requires technology in utils-1.79
+	+ fixed problem of SPR 2213: SCR74: list/document errors
+
+Version 3.80 - 2001-09-06 (GV)
+------------
+	+ (src/TimeCorrelator.cc) fix ieee exception on DEC triggered when
+	  writing some messages to errstr. SOC-SPR-2164. This problem was
+	  also fixed in 3.68.6 (release track).
+	
+Version 3.79 - 2001-08-24 (GV)
+------------
+	+ (src/Odf.h) add Odf::setNames() and Exposure::ippvs().
+	+ (cxxtest/oalserver.cc) exercise the new i/f.
+	
+Version 3.78 - 2001-08-10 (UL)
+------------
+	+ OalState I/F change to support exposure selection by scheduled flag +
+	  ODF exposure designator (e.g. "U571")
+	+ doc updated to describe above change + fixed typos
+
+Version 3.77 - 2001-07-30 (UL)
+------------
+	+ internal changes related to treatment of engineering mode exposures
+
+Version 3.76 - 2001-07-25 (UL)
+------------
+	+ fixed compilation problem under Tru64
+
+Version 3.75 - 2001-07-24 (UL)
+------------
+	+ fixed problem of SPR 2127: attitude data extrapolation artifacts
+	  (only relevant for RAF ODFs)
+	+ fixed minor problem which lead to a crash in the extremely
+	  unlikely case that there are no usable data frames in an EPN aux
+	  file (SciSim EPN AUX files, see SPR 2128)
+	+ fixed problem of SPR 2126: not robust against OBT resets in time
+	  correlation data
+
+Version 3.74 - 2001-07-16 (UL)
+------------
+	+ if EPN Additional Periodic HK file is missing needed parameters
+	  F1534/F1634/F1734/F1834 are given d/f value 0
+	+ name change in OdfInfo.h: scienceExposures() -> observationExposures()
+	  [now returns science+engineering exposures]
+
+Version 3.73 - 2001-07-06 (UL)
+------------
+	+ fixed subtle bug which lead to incorrect treatment of IPPVs
+	  under certain circumstances
+
+Version 3.72 - 2001-07-06 (UL)
+------------
+	+ increased offset by which HK parameter for the frame-counter to
+	  OBT conversion are sought after the exposure start to 90s (EPIC)
+	  (this is to avoid problems with late counter resets)
+
+Version 3.71 - 2001-07-05 (UL)
+------------
+	+ removed inadvertently introduced cal dependency in oal.f90
+	  (causes compilation failure if oal is build before cal)
+
+Version 3.70 - 2001-07-04 (UL)
+------------
+	+ fixed small problem in Makefile related to new additions in 3.69
+
+Version 3.69 - 2001-07-03 (UL)
+------------
+	+ much meliorated and extended frametime-OBT translation algorithm
+	  for EPN implemented; detects and corrects all known anomalies in
+	  auxiliary files; summary log of found problems is printed at the
+	  end - experimental
+	+ new thin access layer to Odf dedicated for odfbrowser application
+	  (odfbrowse/OdfInfo.h)
+
+Version 3.68.2 - 2001-06-07 (UL)
+------------
+	+ fixed problem in RAF reading routine (second field was skipped)
+	+ make interpretation of RAF data robust against negative time jumps
+	  (data with negative time increments w.r.t to previous row are
+	   ignored; problem has been reported to FD)
+	+ ignore entries with UTCDAY==0 in TCS (some early ODFs [e.g.
+	  0078/0124100101] are afflicted with this problem - cause unclear)
+	+ meliorated robustness against unexpected EOF conditions in
+	  summary file reading
+
+Version 3.68.1 - 2001-05-03 (UL)
+--------------
+	+ fixed minor compilation problem under optimization
+	+ implemented SPR 2011: cannot handle duplicate VALTIME entries in AHF
+
+Version 3.68 - 2001-04-18 (UL)
+------------
+	+ time boundaries of non-science data exposures are now set to
+	  observation start/end time (instead of 1958-01-01T00:00:00)
+
+Version 3.67 - 2001-04-04 (UL)
+------------
+	+ fixed another problem caused by consecutive ATS bins of duration 0s
+	  (see also related comment below on v3.65)
+	+ fixed problem introduced with 3.65 for odffix'ed data
+
+Version 3.66 - 2001-04-02 (UL)
+-------------
+	+ moved tcsfix task to package utils to break cyclic dependency
+
+Version 3.65 - 2001-03-27 (UL)
+------------
+	+ open all HK files in lowmem mode
+	+ added tcsfix task (to be run in ODF BRKP chain)
+	+ fixed subtle bug in AttitudeLocator class which caused incorrect
+	  attitude data to be returned for time axis bins of duration 0s after
+	  a data gap (this absorbs oal-3.61.1 in the releasetrack)
+	+ approximately correct for wrong EPIC clock reset times after
+	  CDMU crash (this implements SCR 57: correct wrong clock reset times
+	  after CDMU crash)
+	+ implemented SCR 55: add support for new RAF
+	+ fixed obsolete old-style include statements
+	+ couple of trivial changes to satisfy optimizer
+	
+Version 3.64 - 2001-03-23 (UL)
+------------
+	+ added functionality to access bad pixel tables from ODF
+	  (C++/f90 I/F + updated doc) - this closed SCR 52: Access MOS bad pixels
+	  in the HouseKeeping
+	+ <iostream.h> -> <iostream>
+	+ fixed minor bug in C++/f90 layer
+
+Version 3.63 - 2001-03-21 (UL)
+------------
+	+ fixed SPR 1960: allow for temporal overlap of consecutive AHF entries
+
+Version 3.62 - 2001-03-02 (UL)
+------------
+	+ implemented recalculation of signal propagation delays in time
+	  correlation data (see doc on environment variable SAS_OBT_MET_FIT
+	  for detail)
+	+ support for new environment variable SAS_ORBIT (see doc for detail)
+	+ brought in line with caloalutils-1.44
+
+Version 3.61 - 2000-12-12 (UL)
+------------
+	+ fixed problem unintentionally introduced in 3.59
+
+Version 3.60 - 2000-12-08 (UL)
+------------
+	+ a few trival changes to make the optimizer silent
+
+Version 3.59 - 2000-12-07 (UL)
+------------
+	+ parameters controlling the OBT-MET fit can now be given via environment
+	  variable SAS_OBT_MET_FIT = deg[,rms[,frac]]
+
+Version 3.58.8 - 2000-11-17 (UL)
+--------------
+	+ brought a few test harnesses in line with caloalutils-1.36.3
+	+ ObtVector::toUtc() -> ObtVector::toMET()
+
+Version 3.58.7 - 2000-11-15 (UL)
+--------------
+	+ removed redundant CAL from USEDLIBS in combilib Makefile
+
+Version 3.58.6 - 2000-11-09 (UL)
+--------------
+	+ fixed SPR 1825: Picks wrong AUX file ?
+
+Version 3.58.5 - 2000-11-08 (UL)
+--------------
+	+ fixed SPR 1823: summary file pick up
+
+Version 3.58.4 - 2000-11-02 (UL)
+--------------
+	+ a couple of transparent changes (needed by barycen)
+
+Version 3.58.3 - 2000-10-30 (UL)
+--------------
+	+ fixed minor problem introduced with 3.58.2 (reading of *SUM.ASC can
+	  fail)
+
+Version 3.58.2 - 2000-10-27 (UL)
+--------------
+	+ can now also read skeleton ODF summary file from ODS
+	+ added oal.info file
+
+Version 3.58.1 - 2000-10-19 (UL)
+--------------
+	+ bug fix in Ra/Dec conversion routine (caused sign of small negative
+	  value to be ignored); this closes SSC-SPR-1989
+
+Version 3.58 - 2000-09-25 (UL)
+------------
+	+ access to IPPVs from C++
+	+ fixed SOC-SCR 9: Access the *SUM.SAS summary file by default
+	+ removed obsolete OAL_activeFilter()
+	+ added OAL_getIPPVint()
+	+ updated documentation
+	+ small updated to test harnesses
+
+Version 3.57 - 2000-09-05 (UL)
+------------
+	+ recognize new RGS DPP Non-Periodic-HK files (ODF DCP 128) of type
+	  "D1H"/"D2H"
+
+Version 3.56 - 2000-08-29 (UL)
+------------
+	+ coarse time wrap-around value now taken from periodic HK in case of
+	  EPN; it used to be taken as constant 32768 whereas the most likely
+	  operational value is 32400 - this leads to a ~300 s bogus time gap
+	  in >32ks exposures
+
+Version 3.55 - 2000-07-31 (UL)
+------------
+	+ fixed problem with exposure selection (related to simultaneous
+	  acceptance of new + old style HK sets)
+
+Version 3.54.9 - 2000-07-12 (UL)
+--------------
+	+ another fix to make it work for old+new-style ODFs; the latter contain
+	  HK files that cover the entire observation instead of being broken
+	  down per exposure
+
+Version 3.54.8 - 2000-07-07 (UL)
+--------------
+	+ fixed a problem in exposure recognition related to scheduled/unscheduled
+	  status
+
+Version 3.54.7 - 2000-07-06 (UL)
+--------------
+	+ relaxed RMS criterion for OBT-MET polynomial fit to TCS data from
+	  1.e-10 to 1.e-2
+
+Version 3.54.6 - 2000-07-03 (UL)
+--------------
+	+ closed SPR 1655: OAL does not recognize OM Imaging exposures
+	+ closed SPR 1652: remove \env from Change history 
+	+ closed SPR 1437 : test harness fails on Linux
+
+Version 3.54.5 - 2000-06-22 (UL)
+--------------
+	+ made reading of ODF summay file more robust w.r.t to empty lines,
+	  comments lines, etc.
+	
+Version 3.54.4 - 2000-06-21 (UL)
+--------------
+	+ some transparent fixes to read new ODF summary created by 'odfingest'
+
+Version 3.54.3 - 2000-06-19 (UL)
+--------------
+	+ fix of bug introduced in 3.54.2
+	+ fixed minor doc problem
+
+Version 3.54.2 - 2000-06-15 (UL)
+--------------
+	+ change to behavior in ODF file name expansion: Asking for a
+	  set corresponding to a specified CCD will now fail if that particular
+	  set does not exist
+	+ minor documentation update
+	+ fixed SPR 1492: modifications to the summary file reading routines
+	+ fixed SPR 1552: DOC::broken links
+	+ fixed SPR 1570: make depend fails without make clobber
+
+Version 3.54.1 - 2000-05-31 (UL)
+--------------
+	+ added two convencience functions to f90 API: makes checking
+	  for presence of optional sets (e.g. COUNTING_CYCLE_REPORT for EPN)
+	  easy
+
+Version 3.54 - 2000-05-19 (UL)
+------------
+	+ more diagnostic messages from setState(block/set)
+	+ opening of data set for setState more robust w.r.t to prepending
+	  ODF directory name
+	+ brought in line with cal-3.71
+
+Version 3.53 - 2000-05-08 (UL)
+------------
+	+ fixed SPR 1278: Misusing macros in documentation
+	+ now DEPENDs on sas-210
+
+Version 3.52 - 2000-05-04 (UL)
+------------
+	+ minor bug fix (caused ODF file name expansion to fail under certain
+	  circumstances)
+
+Version 3.51 - 2000-04-14 (UL)
+------------
+	+ another ODF ICD compliance fix
+	+ now depenent on caloalutils-1.26
+
+Version 3.50 - 2000-04-10 (UL)
+------------
+	+ fixed SPR 1126: Problem accessing correct exposure
+	+ fixed SPR 1228: Another problem with exposure number
+	+ two exposure numbering schemes implemented:
+	    exposureIndex/exposureNumber
+	+ a few updates to bring OAL in line with ODF ICD issue 2.4
+	  (mainly additional data modes)
+	+ fixed SPR 1236: Looking for FTCOARSE in MOS periodic housekeeping
+			  file
+	+ fixed SPR 1239: Wrong wrap around at first frame
+
+Version 3.49 - 2000-03-06 (UL)
+------------
+	+ made reading of ODF orbit file more robust w.r.t recognition of EOF
+	  conditions
+	+ shortened dummy orbit file
+
+Version 3.48 - 2000-03-02 (GV)
+------------
+	+ (PositionLocator.cc) bring in line with new STime in utils.
+	+ (DEPEND) updated.
+
+Version 3.47 - 2000-02-25 (UL)
+------------
+	+ PositionLocator class + corresponding f90 wrapper (OAL_getPosition)
+	  properly implemented
+	+ dummy POS file added to odf
+	+ updated test harness for PositionLocator class
+	+ internal name changes
+
+Version 3.46 - 2000-02-03 (UL)
+------------
+	+ fixed SPR 1079: Unwarranted IllegalObtValue warning
+	  (see ChangeLog in src/Tags.cc for more info)
+	+ fixed SPR 1080: Data viewed as SLEW
+
+Version 3.45 - 2000-01-11 (UL)
+------------
+	+ brought in line with ODF ICD 2.4 (w.r.t unsigned interger columns)
+
+Version 3.44 - 2000-01-06 (UL)
+	+ fixed SPR 957 : Problem with OAL and diagnostic files on SVT3
+	+ fixed SPR 1063: Behaviour when exposure is not 1.
+
+Version 3.43 - 1999-12-20 (UL)
+------------
+	+ work around for SciSim bug which generates FTCOARSE values in
+	  MOS/PN AUX files in the range 0..32767,-32768,-32767,...;
+	  in telemetrt these counters are 15 bit, i.e., legal sequence is
+	  0,32767,0,1,2,...,32767,0,1,... (this fixes the problem reported on
+	  1999-11-25 by Matthias Ehle/Mike Denby who saw negative time jumps
+	  in event list time tags and START>STOP times in GTIs)
+
+Version 3.42 - 1999-12-17 (UL)
+------------
+	+ set OAL state from dataSet/Block/setName does no longer use the
+	  name of the set but retrieves state variables values from attributes
+	+ bug fix in InstrFrameCounterVector<EPNcam>::toObt() - was accessing
+	  wrong auxiliary file (see email Matthias Ehle from 1999-11-25)
+
+Version 3.41 - 1999-12-16 (UL)
+------------
+	+ added functionality to access IPPV from summary file
+
+Version 3.40 - 1999-12-15 (UL)
+------------
+	+ closed minor memory leak
+	+ extended input format for Ra/Dec strings in OalUtils
+
+Version 3.39 - 1999-11-30 (UL)
+------------
+	+ dropped support for deprecated SAS_ODFDIR
+
+Version 3.38.2 - 1999-11-12 (UL)
+--------------
+	+ generate error if orbit number in summary file is not an integer
+	  number
+	+ dynamically created ODF files in odf directory are no longer
+	  removed by 'make clean' (such that they can be used by other
+	  packages)
+
+Version 3.38.1 - 1999-11-10 (UL)
+--------------
+	+ brough in line with caloalutils-1.14
+
+Version 3.38 - 1999-11-09 (UL)
+------------
+	+ avail new combilib services in sas-1.169
+	+ fixed SPR 766: OAL_frameCounterToObt calls wrong housekeeping file ? 
+	+ environment variable SAS_ODFDIR changed to SAS_ODF - the latter
+	  can point to a directory or an ODF summary file (old form still
+	  supported); documentation updated
+	+ brought in line with caloalutils-1.13
+	+ fixed problem with wrap-around condition of FTCOARSE for long
+	  exposures (wrap-around counter is now reset at every OAL state change)
+
+Version 3.37 - 1999-11-02 (UL)
+------------
+	+ bail out on attempt to set the CCD number to an invalid value
+	+ fixed SP 755 [a:spr] : OAL_getAttitude does not work on MOS2 
+	  (now the AttitudeLocator reads in the AHF data for the entire
+	   observation)
+
+Version 3.36.4 - 1999-10-29 (UL)
+--------------
+	+ bug fix: reset wrap-around counter in InstrFrameCounterVector objects
+	  every time ccd/node ID changes in state
+	  (otherwise in a loop over the CCDs for a long-exposure ODF time
+	   tags of events from second/third etc. CCD are wrongly offset)
+
+Version 3.36.3 - 1999-10-28 (UL)
+--------------
+	+ remove non-OAL libraries from combilib (does not work)
+
+Version 3.36.2 - 1999-10-27 (UL)
+--------------
+	+ all libraries that OAL needs now in OAL combilib
+
+Version 3.36.1 - 1999-10-25 (UL)
+--------------
+	+ removed forgotten debug statement
+
+Version 3.36 - 1999-10-24 (UL)
+------------
+	+ added Interpolator.h to INTERFACES
+
+Version 3.35 - 1999-10-22 (UL)
+------------
+	+ needed header file TimeAxis.h was not exported
+	+ renamed DalUtils.h -> OalDalUtils.h (name clash with Cal)
+
+Version 3.34 - 1999-10-21 (UL)
+------------
+	+ no longer export DalUtils.h
+
+Version 3.33 - 1999-10-21 (UL)
+------------
+	+ odf/auxhkgen_epn now generates two dummy HK parameter columns +
+	  Additional Periodic HK file (with another dummy parameter)
+	+ use INTERFACE / combilib mechanism
+	+ fixed SPR 798 [s:spr] : broken links in documentation
+
+Version 3.32 - 1999-09-22 (UL)
+------------
+	+ brought in line with caloalutils-1.7
+
+Version 3.31 - 1999-09-14 (UL)
+------------
+	+ brought in line with dal-1.70
+	+ added DISTRIBUTION file
+
+Version 3.30 - 1999-08-25 (UL)
+------------
+	+ cosmetic changes to diagnostic/warning/error messages
+	+ bug fix in Odf::registerOdfFile
+	  (fix to SPR: SPR 748 : OAL_frameCounterToObt fails in scisimmultimode
+	+ frameCounterToObt does no longer die on missing frame numbers
+	  in Auxiliary files but will set the OBT values to -1 (same for
+	  ObtToUtc)
+	
+Version 3.29 - 1999-08-20 (UL)
+------------
+	+ more diagnostic messages
+	+ check for invalid exposure/ccd numbers
+	+ minor update of documentation
+
+Version 3.28 - 1999-08-18 (UL)
+------------
+	+ PositionLocation::positionVelocity()/AttitudeLocatior::attitude()
+	  now throw exceptions; OAL_getAttitude/OAL_getPosition are now
+	  logical functions returning false if there is no data
+
+Version 3.27 - 1999-08-10 (UL)
+------------
+	+ bug fix in one of the C++ test harnesses ;)
+	  (caused a problem in the STime constructor which does now error
+	   checking)
+
+Version 3.26 - 1999-08-05 (UL)
+------------
+	+ fixed bug in Odf class (caused problems with multi-exposure ODFs);
+	  this fixes SPR 728: OAL_setState fails on scisimmultimode for MOS
+	+ fixed SPR 639: Wrong reference to caloaldefs.f90 in doc
+	+ fixed SPR 693: Seg Fault on file expand
+	  (this is fixed with caloalutils-1.3)
+	+ rejected SPR 668: Misleading error message
+	  added some further explanations to documentation
+	+ closed SPR 703: Unclear error message TimeAxis.cc:59
+	  described problem could not be reproduces; assume it is fixed
+	  with odffix>=1.15; introduced more checks in AttitudeLocator classes
+	  to facilitate detection of time mismatch problem with AHF and
+	  exposure start/end times
+
+Version 3.25 - 1999-06-23 (UL)
+------------
+	+ no longer depends on cal
+	+ depends now on caloalutils
+	+ fixed SPR 639: Wrong reference to caloaldefs.f90 in doc
+
+Version 3.24 - 1999-06-15 (UL)
+------------
+	+ getPosition() now returns (optionally) the S/C velocity vector
+
+Version 3.23 - 1999-06-11 (UL)
+------------
+	+ OAL_getPosition uses now KeplerOrbitSimulator object from caloalutils
+	  in the absence of a true orbit file
+
+Version 3.22 - 1999-06-03 (UL)
+------------
+	+ dropped obsolete vector-length arguments from F90 API
+	+ added F90 wrapper for TimeCorrelator::ert2seconds and updated f90 test
+	  harness accordingly
+
+Version 3.21 - 1999-05-25 (UL)
+------------
+	+ fixed SPR 665: OAL_frameCounterToObt() and FTCOARSE counter cycling
+	  was assuming wrong range of coarse time counters for all instruments
+
+Version 3.20 - 1999-05-19 (UL)
+------------
+	+ support for non-continuous exposure sequence numbers in ODF summary
+	  file
+
+Version 3.19 - 1999-05-12 (UL)
+------------
+	+ improved robustness against inconsistencies in ODF summary file
+	+ fixed SPR 639: Wrong reference to caloaldefs.f90 in doc
+
+Version 3.18 - 1999-05-11 (UL)
+------------
+	+ brought in line with error-1.18
+
+Version 3.17 - 1999-05-07 (UL)
+------------
+	+ forgot to update test harness following changes to oal/odf in v3.16
+
+Version 3.16 - 1999-05-05 (UL)
+------------
+	+ improved robustness of ODF inquiry routines
+
+Version 3.15 - 1999-04-28 (UL)
+------------
+	+ all 'fatal' messages changed to 'error'
+
+Version 3.14 - 1999-04-28 (UL)
+------------
+	+ bug fix in src/DalUtils.h
+
+Version 3.13 - 1999-04-15 (UL)
+------------
+	+ changes to test harnesses enforced by error-1.16
+
+Version 3.12 - 1999-04-14 (UL)
+------------
+	+ newlines removed from error/warning messages
+
+Version 3.11 - 1999-04-14 (UL)
+------------
+	+ changes enforced by error-1.16
+
+Version 3.10 - 1999-04-01 (UL)
+------------
+	+ f90: implemented subroutine to initialize state from data set;
+		   OAL_setState comes now on three flavors: accepting list of
+		   state variables, data set name, reference to block; initial
+		   implementation of latter two is through dissection of the file
+		   name for setting the state variables
+
+Version 3.9 - 1999-03-19 (UL)
+-----------
+	+ bug fixes in utility class needed by Attitude/PositionLocator classes
+	  (caused a fatal error in the Interpolator class)
+
+Version 3.8 - 1999-03-17 (UL)
+-----------
+	+ odf/...SUM.ASC: proposal summary record make ODF ICD compliant +
+	  update of reading routine
+	+ f90: better error messages in case of missing mandatory arguments;
+	  routines can now properly deal with empty input vectors
+
+Version 3.7 - 1999-03-15 (UL)
+-----------
+	+ src/Tags.cc: column name "EOSCOARSE" changed to "EOSCOARS" as stated
+	  in ODF ICD
+
+Version 3.6 - 1999-03-10 (UL)
+-----------
+	+ works with TRACER disabled
+
+Version 3.5 - 1999-03-05 (UL)
+-----------
+	+ changes in C++ sources pertaining to low memory Dal; test harness
+	  passes now with low+high memory Dal
+
+Version 3.4 - 1999-03-03 (UL)
+-----------
+	+ src/Odf.cc: bug fix related to handling of multiple exposures
+
+Version 3.3 - 1999-02-22 (UL)
+-----------
+	+ minor change required by Cal-2.6 upgrade
+
+Version 3.2 - 1999-02-22 (UL)
+-----------
+	+ f90/oal.f90: removed '...length' fields from ExposureInfoType as
+	  this can be calculated with new CalOalUtility::toTimeTag
+	+ updated test harness
+
+Version 3.1 - 1999-02-17 (UL)
+-----------
+	+ f90test/oaltest.f90: fixed expected value of psi in toEulerAngles-test
+
+Version 3.0 - 1999-02-10 (UL)
+-----------
+	+ environment variable ODF_DIR no longer recognized
+
+Version 2.12 - 1999-02-09 (UL)
+------------
+	+ renaming of environment variable ODF_DIR -> SAS_ODFDIR
+	+ updated documentation (new routine OAL_toEulerAngles, generic task
+	  command line parameter --odfdir in taskmain >=v1.16)
+
+Version 2.11 - 1999-02-04 (UL)
+------------
+	+ environment variable 'ODF_DIR' is now 'SAS_ODFDIR'
+	+ SPR fixes:
+		o 460: Too cryptic error messages
+		  [have been made more lucid with more parameters being written out]
+		o 477: OAL error message written
+		  [OAL has been made more robust - should no longer core dump
+		   without any message]
+		o 569: Assertion in ODFs with more than one exposure
+		  [test OAL with more than one exposure in oal/odf - worked ok]
+
+Version 2.10 - 1999-02-03 (UL)
+------------
+	+ code overhaul; now there is a single global instance of an
+	  OalServer object
+	+ all attitude related processing uses now the notion of 'astronomical
+	  position angle' as opposed to 'position angle' defined by FD
+	+ bug fix: GO data from ODF summary file was incompletely read
+	+ OAL can be build as shared library
+	+ a couple of new OalUtils methods
+	+ works now with scisimsimpleodf
+
+Version 2.9 - 1999-01-29 (UL)
+-----------
+	+ fixes to make the Oal compile under egcs 1.1.1
+	
+Version 2.8 - 1999-01-27 (UL)
+-----------
+	+ fixes to make the Oal compile under gcc 2.8.1
+
+Version 2.7 - 1998-11-20 (UL)
+-----------
+	+ bug fix in Odf-class method (caused epframes to crash)
+
+Version 2.6 - 1998-11-19 (UL)
+-----------
+	+ more fixes pertaining to ODF ICD 1.0 -> 2.0 change
+
+Version 2.5 - 1998-11-13 (UL)
+-----------
+	+ new build procedure in-line with what is done in the Dal: separate
+	  libaries are build in each src-subdir which get combined in a
+	  new directory 'interface'; this also contains now all needed symbolic
+	  links to *.h/*.f90/*.mod
+
+Version 2.4 - 1998-11-12 (UL)
+-----------
+	+ new sym-link src/oal.f90->../f90/oal.f90 (relates to SPRs 273/274)
+
+Version 2.3 - 1998-10-14
+-----------
+    + changed ODF summary file in sample ODF (ODF ICD 2.0: there are now
+      only 6 INSTRUMENT blocks - ERM was dropped)
+    + frameCounterToObt() methods more robust
+	+ two new fields in	`ExposureInfoType': scheduledExposureTime/
+      actualExposureTime (F90 API)
+	+ new field 'isSlew' in	`OdfInfoType' (F90 API)
+	+ fixed SPR 424: Need to know filter used during exposure
+	  (new inquiry routine 'OAL_activeFilter()')
+
+Version 2.2 - 1998-10-05
+-----------
+	+ added missing include (iomanip.h) (MB)
+
+Version 2.1 - 1998-09-29 (UL)
+-----------
+	+ fixed SPR 417: Problems with frameToTime conversion for EPIC PN
+	+ fixed SPR 420: Extra info. needed from ODF summary file
+
+Version 2.0 - 1998-08-30 (UL)
+-----------
+    + generally overhauled and extended; there is now a proper implementation
+      behind every announced routine in the F90 API; new classes:
+		o TimeCorrelator  for OBT->UTC, ERT->UTC conversions
+		o AttitudeLocator for determination of spacecraft attitude at
+          any point during the observation
+        o PositionLocator for determination of spacecraft position and
+          velocity at any point in time during the observation
+        o FrameCounterVector/ObtVector + support classes to perform
+		  the conversion from CCD frame counters to COBT values to
+          proper event time tags
+        o support classes for the above
+
+    + a couple of non-backwards compatible changes in the F90 API (therefore
+      the 1.4->2.0 transition):
+        o dropped state variables 'status'/verbosity'/'observationStartDate'
+          status    : no need for it any more - OAL uses now general SAS error
+                      handling strategy ('if-error-boom')
+          verbosity : is now controlled by the environment (VERBOSITY)
+          observationStartDate: not needed
+        o added new state variables 'ccdNr'/'nodeNr'/'attitudefromAhf'
+          ccdNr/nodeNr   : the chip/node id
+          attitudeFromAhf: boolean switch determining whether attitude data
+                           are to come from the AHF or from OM tracking
+                           history frames
+        o dropped 'OAL_error' routine
+        o renamed 'OAL_selectType' -> 'OAL_selectScope'
+        o new auxiliary function 'OAL_toAttitudeMatrix' to convert a
+          attitude record as returned by 'OAL_getAttitude' into a matrix
+          representation
+        o new enquiry function 'OAL_exposureInfo'
+        o 'directoryName' fields added to structure returned by 'OAL_odfInfo'
+
+    + a couple of tools in the sample ODF directory 'odf' which generate a
+      dummy Attitude History File, and embryonic EMOS1 periodic HK and
+      auxiliary files for EMOS1 exposure #1; all are needed for the test
+	  harnesses
+
+    + re-organization of directory structure:
+         odf    : dummy ODF for test harness and example task
+         src    : all C++ sources
+         cxxtest: tests of C++ implementation
+         f90    : F90 API, C++/F90 I/F
+         f90test: tests of F90 layer
+         doc    : documentation
+
+    + test harnesses: extentended to test new functionality (from C++ and
+      F90);
+
+    + OAL example task: moved to f90test and extended to demonstrate usage
+      of new features
+
+    + documentation updated to be in line with code changes	
+
+    + remaining issues:
+        o construction of PositionLocator class from data in Reconstructed
+          Orbit File (ROF) is still dummy - need more information on
+          structure of ROF before a proper implementation can commence
+        o construction of AttitudeLocator from OM tacking history data
+          is not implemented yet - algorithms needs to be clarified and
+          meaning of OM telemetry to be confirmed (e.g. roll angle)
+
+Version 1.4 - 1998-07-20 (UL)
+-----------
+    + depends on utils 1.8 now
+
+Version 1.3 - 1998-07-07 (UL)
+-----------
+    + test harness of StringPool class moved to Cal
+    + fixed SOC-SPRs:
+          o 326: Update documentation
+          o 327: Add oal.tex closely following the template
+          o 328: Merge v1status.txt and status.txt into description
+          o 329: Remove spurious files (src/OalAtoms.cc.new,src/OalAtoms.h.new)
+    + doc/oal.tex removed - this is now created on-the-fly by 'make ps/html'
+
+Version 1.2 - 1998-06-08 (UL)
+-----------
+    + new function OAL_expandFileName()
+
+Version 1.1 - 1998-06-03 (UL)
+-----------
+    + fixed SOC-SPR 244 (broken html links in doc)
+
+Version 1.0 - 1998-05-14 (UL)
+-----------
+    + Initial version for SAS v1 integration

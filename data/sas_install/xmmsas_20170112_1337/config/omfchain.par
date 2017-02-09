@@ -1,0 +1,181 @@
+<!-- converted from XPI formatted "omfchain.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="inpdirectory" type="string" default="">
+   <DESCRIPTION>
+    Name of input file directory: 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="outdirectory" type="string" default="">
+   <DESCRIPTION>
+    Name of output file directory: 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="comment" type="string" default="">
+   <DESCRIPTION>
+    Comment for the output
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="nsigma" type="real" default="3">
+   <DESCRIPTION>
+    Number of sigma for a detection
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    nsigma in [0.:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="contrast" type="real" default="0.001">
+   <DESCRIPTION>
+    Contrast parameter (OK if flux &#62; confused source/total flux - originally set to 0.001)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    contrast in [0.:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="smoothsize" type="real" default="12">
+   <DESCRIPTION>
+    Smooth size (pixels)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    smoothsize in [1:264]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="boxscale" type="int" default="2">
+   <DESCRIPTION>
+    Sliding box size for detection
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    boxscale in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="maxscale" type="int" default="1">
+   <DESCRIPTION>
+    Maximum power of 2 to search to
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    maxscale in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="srcradius" type="real" default="-6">
+   <DESCRIPTION>
+    Radius of source extraction circle (in pixels, if negative, and in FWHMs otherwise)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    srcradius in [-20.:20.]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="bkginner" type="real" default="1.2">
+   <DESCRIPTION>
+    Inner radius of the background annulus in terms of source radius
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    bkginner in [1.:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="bkgouter" type="real" default="2.5">
+   <DESCRIPTION>
+    Outer radius of background annulus in terms of source radius
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    bkgouter in [1.:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="timebinsize" type="real" default="10">
+   <DESCRIPTION>
+    Size of time bins for time series files 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    timebinsize in [0.5:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="bkgfromimage" type="bool" mandatory="no" default="yes">
+   <DESCRIPTION>
+    Allows getting the background level from the accompanying imaging data
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="ignoremod8noise" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    Suppresses the increase if the source extraction radius in the presence if the Mod-8 noise pattern 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="subtractbkg" type="bool" mandatory="no" default="yes">
+   <DESCRIPTION>
+    Allows background subtraction
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="psfphotometryenabled" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    Allows psf-photometry in omdetect
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="maxrawcountrate" type="real" default="50">
+   <DESCRIPTION>
+    A counte-rate threshold limiting the applicability of the 
+    PSF-photometry method to fainter sources 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    maxrawcountrate in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="rawattitude" type="int" default="1">
+   <DESCRIPTION>
+    Flag for using either RAF or AHF attitude data 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    rawattitude in [0:2]
+   </CONSTRAINTS>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

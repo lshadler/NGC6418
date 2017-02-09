@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Housekeeping related keywords</TITLE>
+<META NAME="description" CONTENT="Housekeeping related keywords">
+<META NAME="keywords" CONTENT="epframes">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epframes.css">
+
+<LINK REL="previous" HREF="node13.html">
+<LINK REL="up" HREF="node12.html">
+<LINK REL="next" HREF="node15.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epframes (epframes-8.109.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node13.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Event attributes"></A>
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Output Files"></A>
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epframes.html">Home Page</A> / <A  HREF="node12.html">Output Files</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00072000000000000000"></A>
+<A NAME="epframes:description:outputfiles:housekeeping"></A>
+<BR>
+Housekeeping related keywords
+</H2>
+
+<P>
+The task also issues a number of housekeeping related messages and values
+and also writes several keywords to the EXPOSURE extension (the information
+is usually CCD-dependent and it is thus important that it is 
+kept and propagated through
+the event file processing chain).
+The messages appear for verbosities of 4 
+(recommended value for normal processing) and higher, either specified via
+e.g. environment variable <A NAME="1934"></A><TT>SAS_VERBOSITY</TT>=4 or task parameter ``-V 4".
+The keywords are written to the event file regardlessly the verbosity,
+of course.
+
+<P>
+
+<UL>
+<LI>Filter: the filter wheel position is derived from the position sensor
+      potentiometer (housekeeping column <A NAME="1936"></A><TT>F1122</TT> contained in the main periodic 
+      housekeeping file <A NAME="1938"></A><TT>PNPMH1</TT>, HK mnemonic H_CE_FWSPOT).
+      From the fixed positions (CLOSED, THIN1, THIN2, MEDIUM, THICK, OPEN,
+      approximately separated by 60 degrees)
+      the corresponding calibration positions (e.g. CALCLOSED) 
+      are obtained by turning the filter wheel back by about 5 degrees.
+      Verbosity of 4 (or higher) gives the minimum and maximum of this
+      housekeeping parameter during the exposure time and the avarage
+      value together with the translated filter name. These are written
+      to the keywords <A NAME="1940"></A><TT>F1122MIN</TT>, <A NAME="1942"></A><TT>F1122MAX</TT>, <A NAME="1944"></A><TT>F1122AVE</TT>,
+      respectively.
+</LI>
+<LI>High Voltage: V_VC_UHVx, x = 0..3 (quadrant number), 
+      columns <A NAME="1946"></A><TT>F1198</TT>, <A NAME="1948"></A><TT>F1199</TT>, <A NAME="1950"></A><TT>F1200</TT>, <A NAME="1952"></A><TT>F1201</TT>, 
+      typical values are -162.4, -163.1, -151.5, -161.5 [V], respectively.
+      Keywords written: <A NAME="1954"></A><TT>UHV_MIN</TT>, <A NAME="1956"></A><TT>UHV_MAX</TT>, <A NAME="1958"></A><TT>UHV_AVE</TT>.
+</LI>
+<LI>CCD temperature: H_CE_TTMPFPF, column <A NAME="1960"></A><TT>F1128</TT>,
+      typical value -89.97 [<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^\circ$"></SPAN>C], 
+      keywords <A NAME="1962"></A><TT>F1128MIN</TT>, <A NAME="1964"></A><TT>F1128MAX</TT>, <A NAME="1966"></A><TT>F1128AVE</TT>
+</LI>
+<LI>Quadrant box temperature: E_Cx_TEMPQB1, x = 0..3 (quadrant number),
+      columns <A NAME="1968"></A><TT>F1576</TT>, <A NAME="1970"></A><TT>F1676</TT>, <A NAME="1972"></A><TT>F1776</TT>, <A NAME="1974"></A><TT>F1876</TT>
+      in the auxiliary HK file <A NAME="1976"></A><TT>PNPAH1</TT>, respectively. 
+      The typical values depend on the instrument mode.
+      Deviations by several degrees
+      from the average value (e.g. if one or two RGS
+      instruments are switched off) indicate that the energy correction
+      may be incomplete later because these gain-temperature-effects need recalibration
+      at the moment. For CCD 4 (whole quadrant 1) typical values are
+      20.8, 20.8, 20.9, 21.0, 22.7, 21.3 [<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$^\circ$"></SPAN>C] for
+      FF, eFF, LW, SW, TI, BU modes, respectively. Keywords are
+      <A NAME="1978"></A><TT>TQB1_MIN</TT>, <A NAME="1980"></A><TT>TQB1_MAX</TT>, <A NAME="1982"></A><TT>TQB1_AVE</TT>
+</LI>
+<LI>Guard ring current: E_Cx_IGRAy, x = 0..3 (quadrant number), 
+      y = 0..2 (CCD ID), <A NAME="1984"></A><TT>PNPAH1</TT> column numbers 1571+CCDID+100*Quadrant,
+      keywords <A NAME="1986"></A><TT>IGRA_MIN</TT>, <A NAME="1988"></A><TT>IGRA_MAX</TT>,<A NAME="1990"></A><TT>IGRA_AVE</TT>, there
+      is considerable scatter due to rough digitization (<SPAN CLASS="MATH"><IMG
+ WIDTH="49" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$2-4\mu$"></SPAN>A), 
+      values slightly temperature dependent
+</LI>
+<LI>BadPixelTable code: starting in revolution 293 a unique code identifying
+      the uploaded bad pixel table (column offsets and bad pixels) was put
+      into the HK telemetry, keyword <A NAME="1992"></A><TT>BPT_CODE</TT>. This code
+      will also be in the header of the corresponding CCF files
+      ADUCONV and BADPIX (none yet as there was no change of these files
+      since then at the time of writing). It provides an independent check
+      whether the correct ADUCONV and BADPIX calibration files are used.
+</LI>
+<LI>Offset map calculation: before each exposure an offset map is
+      calculated onboard using the filter and mode of the subsequent
+      science exposure. The calculation is performed for all quadrants
+      simultaneously, first all central CCDs, then the middle CCDs, and then
+      the outer CCDs of each quadrant. The involved parameters are written
+      to keywords of the form OT_*. As only a small fraction of the calculated
+      offset maps is transmitted to ground these quantities may serve as a
+      tool if problems with the offset map calculation are suspected.
+</LI>
+<LI>The filter used during offset map computation is written to extensions
+      <A NAME="1994"></A><TT>EVENTS</TT> and <A NAME="1996"></A><TT>EXPOSURE</TT> as keyword <A NAME="1998"></A><TT>OTFILTER</TT>.
+      The default is that it is the same as FILTER.
+</LI>
+<LI>An almost complete list of available HK columns can be obtained from
+      the XMM technical note ``XMM-SOC-TN-0040-SSD'' ([<A
+ HREF="node18.html#ct:XMMPerHK">2</A>])
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node13.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Event attributes"></A>
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Output Files"></A>
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

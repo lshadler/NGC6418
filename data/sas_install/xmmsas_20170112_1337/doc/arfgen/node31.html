@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Out of time event correction</TITLE>
+<META NAME="description" CONTENT="Out of time event correction">
+<META NAME="keywords" CONTENT="arfgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="arfgen.css">
+
+<LINK REL="next" HREF="node32.html">
+<LINK REL="previous" HREF="node30.html">
+<LINK REL="up" HREF="node14.html">
+<LINK REL="next" HREF="node32.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+arfgen (arfgen-1.93.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node30.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="CCD gap and bad"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="A cross-region ARF"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node44.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="arfgen.html">Home Page</A> / <A  HREF="node14.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000611000000000000000"></A>
+<A NAME="arfgen:description:description:oot"></A>
+<BR>
+Out of time event correction
+</H2>
+For EPIC-PN, in particular, there is a mode-dependent loss of photons due to
+the readout cycle. This can result in a
+6% dead-time effect for full frame mode. This has been taken into account in
+the exposure time in the spectrum header for files created with pipeline
+versions greater than 20010618 but wasn't catered for in earlier pipeline
+runs. <A NAME="1450"></A><A NAME="tex2html54"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+checks the PPSVERS keyword in the file header
+and applies the correction to the output ARF if the pipeline version is older
+than 18 June 2001 and if the parameter <TT>modelootcorr</TT> is set to
+true (the default). The PPSVERS keyword is written by pipeline modules and
+not by the SAS <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$\ast$"></SPAN>proc routines; this means that if the data is
+reprocessed to create new event files then this keyword will not be present.
+If <A NAME="1455"></A><A NAME="tex2html55"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+does not find the keyword it issues a warning. This should
+be ignored if the event file has been created with SAS 5.3 or any SAS
+version not older than 18 June 2001. 
+
+<P>
+A PN ARF would be decreased by the following amount:
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>
+<DIV ALIGN="CENTER">
+
+</DIV>
+Mode</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>Factor (%)</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>PRIME_FULL_WINDOW</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>6.2</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>PRIME_FULL_WINDOW_EXTENDED</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>2.3</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>PRIME_SMALL_WINDOW</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>1.1</TD>
+</TR>
+</TABLE>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node30.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="CCD gap and bad"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="A cross-region ARF"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node44.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

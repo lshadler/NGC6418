@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="emtaglenoise">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emtaglenoise.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="emtaglenoise.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emtaglenoise (emtaglenoise-1.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="emtaglenoise.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emtaglenoise.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="emtaglenoise:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+
+<OL>
+<LI>Open the input DataSet, determine if it comes from MOS1 or MOS2,
+	check input errors, initalise counters, and etc.
+</LI>
+<LI>Read the <A NAME="444"></A><TT>EVENTS</TT> table extension.
+</LI>
+<LI>Check if each event:
+	
+<OL>
+<LI>lies outside the field of view
+		(as defined in Kuntz and Snowden, 2008 [<A
+ HREF="node11.html#KuntzSnowden2008">1</A>], Table&nbsp;3), and
+</LI>
+<LI>falls within:
+		
+<OL>
+<LI>the 2.5-&nbsp;5.0keV `hard' band,
+</LI>
+<LI>the 0.4-&nbsp;0.8keV `soft' band, and/or
+</LI>
+<LI>the 0.3-10.0keV count-rate band.
+		
+</LI>
+</OL>
+</LI>
+</OL>
+</LI>
+<LI>For each event that satisfies the conditions above,
+	increment by one the corresponding event counter(s)
+	for the corresponding CCD.
+</LI>
+<LI>For each CCD nn,
+	
+<OL>
+<LI>Read the <A NAME="446"></A><TT>STDGTInn</TT> table extension.
+</LI>
+<LI>Calculate the sum of all GTIs.
+</LI>
+<LI>Calculate the hardness ratio <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$H$"></SPAN> as the ratio
+		of the hard- to soft-band event counts.
+</LI>
+<LI>Calculate the event rate <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$R$"></SPAN> from the event-rate band counter
+		and the GTI sum.
+</LI>
+<LI>Test if the values of <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$H$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$R$"></SPAN> meet the anomalous criteria
+		as stated in Kuntz and Snowden, 2008 [<A
+ HREF="node11.html#KuntzSnowden2008">1</A>], Table&nbsp;1.
+</LI>
+<LI>If the CCD is in an anomalous state,
+		set the corresponding bit of the anomalous bit flag.
+	
+</LI>
+</OL>
+</LI>
+<LI>Write the keywords LENOISnn, nn=02-07,
+	to the header of the input DataSet.
+</LI>
+<LI>If parameter <TT>filterbadccds</TT> is set, call <A NAME="449"></A><A NAME="tex2html7"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+to filter the input
+	Dataset and write the output to the file specified by <TT>filteredset</TT>.
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="emtaglenoise.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

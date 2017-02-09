@@ -1,0 +1,7 @@
+HD_COMPONENT_NAME	= heacore
+
+HD_COMPONENT_VERS	=
+
+HD_INSTALL_PERL_LIBS	= lib/parent.pm
+
+include ${HD_STD_MAKEFILE}

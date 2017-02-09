@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Spatial dependence and averaging</TITLE>
+<META NAME="description" CONTENT="Spatial dependence and averaging">
+<META NAME="keywords" CONTENT="rmfgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rmfgen.css">
+
+<LINK REL="next" HREF="node13.html">
+<LINK REL="previous" HREF="node9.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rmfgen (rmfgen-2.5.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Pattern support"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="CCF dependence"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rmfgen.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00037000000000000000">
+Spatial dependence and averaging</A>
+</H2>
+
+<P>
+The redistribution function of the EPIC-MOS and EPIC-pn cameras
+is spatially dependent. In the pn the spectral resolution of the detector 
+improves for positions further away from the CAM-EX, such that the worst
+resolution is obtained at the RAW-Y=199 position. The MOS redistribution is 
+uniform over the camera except for a small patch in each camera, coincident with the 
+boresight, which shows a broadened response below 1 keV that has evolved 
+with time. This spatial and temporal dependence is coded into CCFs
+and is treated automatically by rmfgen.
+
+<P>
+The task calculates an average RMF over the spatial region used
+to extract the source spectrum. For a correct treatment the task
+does need to know how the source flux is distributed within the extraction region.
+A detector map mechanism, successfully employed in arfgen, has been 
+adopted for this purpose. Essentially a grid is placed over the source
+region and the redistribution parameters calculated at each point.
+These values are then averaged in some way. By means of command line parameters the
+averaging may be performed assuming that the flux distribution is that 
+of the point spread function (PSF),
+a flat uniform distribution or it may be defined explicitly by
+supplying the task with an image containing the source region.
+
+<P>
+Point Sources:
+
+<P>
+For point sources the PSF option should be chosen by setting <TT>detmaptype</TT>=psf.
+The PSF for photons of energy 2 keV is used. For a single circular, 
+annular or rectangular (BOX) region the EXTENDED mode PSF is used which 
+is based upon a King profile and is the most accurate parameterisation. 
+A source region with a different shape, for instance a region with circles excluded to 
+remove other point 
+sources, will use the HIGH mode implementation.
+
+<P>
+Extended Sources:
+
+<P>
+Large, non-pointlike, sources may be either approximated by a uniform 
+distribution, by setting <TT>detmaptype</TT>=flat
+or modelled accurately by creating an image of the source region, using 
+<A NAME="733"></A><A NAME="tex2html16"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+or <A NAME="737"></A><A NAME="tex2html17"
+  HREF="../xmmselect/index.html"><SPAN  CLASS="textbf">xmmselect</SPAN></A>, and supplying this to the task by:
+
+<P>
+<TT>rmfgen detmaptype=array detmaparray=&lt;image_name&gt;
+</TT>
+
+<P>
+The image MUST be created in detector coordinates (not X/Y coords)
+and should entirely cover the region used for extracting the spectrum.
+If the image does not cover the whole region then a warning (<TT>detmapXBoundsExceeded</TT>
+or <TT>detmapYBoundsExceeded</TT>) is issued. 
+It should be noted that this process averages the parameters used to 
+model the redistribution function rather than averaging the function
+itself. Hence there is little computational overhead
+associated with this step. Images should be created with sufficient 
+resolution to sample the variation in flux distribution; a 100 by 100 pixel image
+may be sufficient.
+
+<P>
+For a more in-depth discussion of detector maps please see the <A NAME="742"></A><A NAME="tex2html18"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+user guide, section 7.3.
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html207"
+  HREF="node11.html">CCF dependence</A>
+<LI><A NAME="tex2html208"
+  HREF="node12.html">Bad pixels</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Pattern support"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="CCF dependence"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

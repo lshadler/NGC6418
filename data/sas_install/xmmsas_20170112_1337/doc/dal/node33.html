@@ -1,0 +1,3963 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>C API</TITLE>
+<META NAME="description" CONTENT="C API">
+<META NAME="keywords" CONTENT="dal">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="dal.css">
+
+<LINK REL="next" HREF="node34.html">
+<LINK REL="previous" HREF="node32.html">
+<LINK REL="up" HREF="dal.html">
+<LINK REL="next" HREF="node34.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+dal (dal-1.191.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node32.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="C++ API"></A>
+<A HREF="dal.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node34.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="PERL API"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="dal.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000210000000000000000">
+C API</A>
+</H1>
+
+<P>
+C interface definition for DAL
+
+<P>
+Pointers rather than handles.
+No default values.
+
+<P>
+typedef enum  Read = 1, Create, Modify, Temp, AsParent  AccessMode;
+typedef enum  High = 1, HighLow, Low, UseEnvironment  MemoryModel;
+/*typedef enum   Bool = 1, Int8, Uint16, Int16, Uint32, Int32, Real32, Real64, DString  DataType; */
+typedef enum  TableType = 1, ArrayType  BlockType;
+typedef enum  EraseAllFirst = 1, Merge  CopyMode;
+typedef enum  Fixed = 1, Variable  CellType;
+typedef void Array;
+typedef void Block;
+typedef void Column;
+typedef void DataSet;
+typedef void Table;
+typedef void SubTable;
+typedef void Row;
+typedef void Attribute;
+typedef void Attributable;
+typedef void Labelled;
+typedef void DataComponent;
+typedef void * TableIteratorFunction;	
+/* typedef void(*TableIteratorFunction)( Table * ); */
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_addArray__dataSet__name__dataType__numberofDimensions__dimensions__units__label__position____"></A><SPAN  CLASS="textit"> addArray( dataSet, name, dataType, numberofDimensions, dimensions, units, label, position ); </SPAN> PURPOSE 
+<BR>
+Create and add an array to a dataset.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>DataSet *			dataSet 
+<BR>
+A pointer to the dataset which the new array is to be added.
+</LI>
+<LI>const char *			name 
+<BR>
+The name of the new array.
+</LI>
+<LI>DataType			dataType 
+<BR>
+The type of the data. It must be one of the values: Int8, Int16, Int32, Real32, Real64.
+</LI>
+<LI>int				numberOfDimensions 
+<BR>
+The number of dimensions of the array. This must be in the range 1 &lt;= numberOfDimensions &lt;= 3.
+</LI>
+<LI>unsigned long *			dimensions 
+<BR>
+A vector with numberOfDimensions elements. Each element describes the size along each dimension, of the array, respectively.
+</LI>
+<LI>const char *			units 
+<BR>
+The units of the array.
+</LI>
+<LI>const char *			label 
+<BR>
+A short description (i.e. a user defined comment) to be attached to the array.
+</LI>
+<LI>int				position 
+<BR>
+The ordinal position, within the dataset, which the new array will occupy.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>Array * 
+<BR>
+A pointer to the newly created array.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+String and Boolean types are not supported.
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_addColumn__table__name__dataType__units__label__numberofDimensions__dimensions__position___"></A><SPAN  CLASS="textit"> addColumn( table, name, dataType, units, label, numberofDimensions, dimensions, position ) </SPAN> PURPOSE 
+<BR>
+Create and add a column to a table.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>Table *				table  
+<BR>
+A pointer to the table to which the new column will be added.
+</LI>
+<LI>const char *			name 
+<BR>
+The name of the new column.
+</LI>
+<LI>DataType			dataType 
+<BR>
+The data type of the new column. It can be any of the values in the enumeration type DataType.
+</LI>
+<LI>const char *			units 
+<BR>
+The units of the column.
+</LI>
+<LI>const char *			label 
+<BR>
+A short description (i.e. a user-defined comment) of the column.
+</LI>
+<LI>int				numberofDimensions 
+<BR>
+The number of dimensions of the column.
+</LI>
+<LI>const unsigned long *		dimensions 
+<BR>
+The size along each dimension of the column.
+</LI>
+<LI>int				position 
+<BR>
+The ordinal position wihtin the table which the new column will occupy.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>Column * 
+<BR>
+A pointer to the new column.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_addCommentTo_SPMlt_type_SPMgt___object__comment___"></A><SPAN  CLASS="textit"> addCommentTo&lt;type&gt;( object, comment ) </SPAN> PURPOSE 
+<BR>
+Add a comment record to an object.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>type *				object 
+<BR>
+A pointer to the object to which the comment is to be added. The supported
+types are: Array, Attributable, Block, DataSet, Table
+</LI>
+<LI>const char *			comment 
+<BR>
+The comment which is to be to be added to the object. 
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_addHistoryTo_SPMlt_type_SPMgt___object__history___"></A><SPAN  CLASS="textit"> addHistoryTo&lt;type&gt;( object, history ) </SPAN> PURPOSE 
+<BR>
+Add a history record to an object. 
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>type *				object 
+<BR>
+A pointer to the object to which the history record is to be added. The supported
+types are: Array, Attributable, Block, DataSet, Table
+</LI>
+<LI>char *				history 
+<BR>
+The history record which is to be to be added to the object. 
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_addTable__dataSet__name__numberOfRows__label__position___"></A><SPAN  CLASS="textit"> addTable( dataSet, name, numberOfRows, label, position ) </SPAN> PURPOSE 
+<BR>
+Create and add a table to a dataset.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>DataSet *			dataSet 
+<BR>
+A handle of the dataset to which the new table is to be added.
+</LI>
+<LI>char *				name 
+<BR>
+The name of the new table.
+</LI>
+<LI>int 				numberOfRows 
+<BR>
+The nmber of rows of the new table.
+</LI>
+<LI>const char *			label 
+<BR>
+A short textual description (i.e. user-defined comment) to be attached to the table.
+</LI>
+<LI>int 				position 
+<BR>
+The ordinal position of the new table within the dataset.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>Table * 
+<BR>
+A pointer to the newly created table.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:__SPMlt_type_SPMgt_AttributeComment__object__name___"></A><SPAN  CLASS="textit"> &lt;type&gt;AttributeComment( object, name ) </SPAN> PURPOSE 
+<BR>
+Get the comment associated with an attribute, from an attributable object.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const type *			object 
+<BR>
+The object containing the attribute. Supported types are: Array, Attributable,
+Block, Column, DataSet, Table.
+</LI>
+<LI>const char *			name 
+<BR>
+The name of the attribute.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>const char * 
+<BR>
+A pointer to the comment.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:__SPMlt_type_SPMgt_AttributeUnits__object___name___"></A><SPAN  CLASS="textit"> &lt;type&gt;AttributeUnits( object, 	name ) </SPAN> PURPOSE 
+<BR>
+Get the comment associated with an attribute, from an attributable object.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const type *			object 
+<BR>
+The object containing the attribute. Supported types are: Array, Attributable,
+Block, Column, DataSet, Table.
+</LI>
+<LI>const char *			name 
+<BR>
+The name of the attribute.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>const char * 
+<BR>
+A pointer to the units.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:__SPMlt_type_SPMgt_AttributeWithName__object__name___"></A><SPAN  CLASS="textit"> &lt;type&gt;AttributeWithName( object, name ) </SPAN> PURPOSE 
+<BR>
+Get an attribute from an attributable object.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const type *			object 
+<BR>
+A pointer to the object which contains the required attribute. Supported types
+are: Array, Attributable, Block, Column, DataSet, Table
+</LI>
+<LI>const char *			name 
+<BR>
+The name of the required attribute.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>Attribute * 
+<BR>
+A pointer to the required attribute.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_arrayDataType___array___"></A><SPAN  CLASS="textit"> arrayDataType( 	array ) </SPAN> PURPOSE 
+<BR>
+Get the type of an array.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Array *			array 
+<BR>
+A pointer to the array.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>DataType 
+<BR>
+The type of the array. It will be one of the values: Int8, Int16, Int32,
+Real32, Real64.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_bool8__SPMlt_type_SPMgt_HasAttribute__attributable__name___"></A><SPAN  CLASS="textit"> bool8 &lt;type&gt;HasAttribute( attributable, name ) </SPAN> PURPOSE 
+<BR>
+Determine if an attributable object contains an attribute with a given name.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const &lt;type&gt; *			attributable 
+<BR>
+A pointer to the attributable object. Supported types are: Array, Attributable,
+Block, Column, DataSet, Table.
+</LI>
+<LI>const char *			name  
+<BR>
+The name of an attribute.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>bool8 
+<BR>
+Returns true if an attribute with the given name was found, otherwise falise is
+returned.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:__SPMlt_type_SPMgt_Label__object___"></A><SPAN  CLASS="textit"> &lt;type&gt;Label( object ) </SPAN> PURPOSE 
+<BR>
+Get the label associated with an object.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const &lt;type&gt; *			object 
+<BR>
+A pointer to an object. Supported types are: Array, Block, Column.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>const char * 
+<BR>
+A pointer to the array's label.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:__SPMlt_type_SPMgt_ToAttributable__attributable___"></A><SPAN  CLASS="textit"> &lt;type&gt;ToAttributable( attributable ) </SPAN> PURPOSE 
+<BR>
+Convert an attributable object to the Attributable type.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>&lt;type&gt; *		attributable 
+<BR>
+A pointer to the attributable object to be converted. Supported types are:
+Array, Block, Column, DataSet, Table.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>Attributable *
+A pointer to Attributable.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_arrayUnits__array___"></A><SPAN  CLASS="textit"> arrayUnits( array ) </SPAN> PURPOSE 
+<BR>
+Get the units associated with an array.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Array * 		array 
+<BR>
+A pointer to the array.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>const char * 
+<BR>
+A pointer to the array's units.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_arrayWithName__dataSet__name___"></A><SPAN  CLASS="textit"> arrayWithName( dataSet, name ) </SPAN> PURPOSE 
+<BR>
+Get the array with a given name from a dataset.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const DataSet *			dataSet 
+<BR>
+A pointer to the data set which contains the required array.
+</LI>
+<LI>const char *			name 
+<BR>
+The name of the required array.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>Array * 
+<BR>
+A pointer to the array.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_Array___arrayWithNumber__dataSet__position___"></A><SPAN  CLASS="textit"> Array * arrayWithNumber( dataSet, position ) </SPAN> PURPOSE 
+<BR>
+Get the array with a given ordinal position from a dataset.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const DataSet *			dataSet, 
+<BR>
+A pointer to the data set which contains the required array.
+</LI>
+<LI>unsigned int			position 
+<BR>
+The ordinal position of the required array.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>Array * 
+<BR>
+A pointer to the array.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_attributeDataType__attribute___"></A><SPAN  CLASS="textit"> attributeDataType( attribute ) </SPAN> PURPOSE 
+<BR>
+Get the type of an attribute.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>Attribute *			attribute 
+<BR>
+A pointer to the attribute.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>DataType 
+<BR>
+The data type of the attribute.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_attributeLabel__attribute___"></A><SPAN  CLASS="textit"> attributeLabel( attribute ) </SPAN> PURPOSE 
+<BR>
+Get the label associated with an attribute.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Attribute *		attribute 
+<BR>
+A pointer to the attribute.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>const char * 
+<BR>
+A pointer to the attribute's label.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_attributeUnits__attribute___"></A><SPAN  CLASS="textit"> attributeUnits( attribute ) </SPAN> PURPOSE 
+<BR>
+Get the units associated with an attribute.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Attribute *		attribute 
+<BR>
+A pointer to the attribute.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>const char * 
+<BR>
+Get the units associated with an attribute.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_blockNumber__dataSet__name___"></A><SPAN  CLASS="textit"> blockNumber( dataSet, name ) </SPAN> PURPOSE 
+<BR>
+Get the number of a block (ordinal position within it's dataset) with a given name.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const DataSet *			dataSet 
+<BR>
+A pointer to the dataset containing the block with the given name.
+</LI>
+<LI>const char *			name 
+<BR>
+The name of the block.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>unsigned int 
+<BR>
+The ordinal position of the blockj within the dataset.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_blockType__block___"></A><SPAN  CLASS="textit"> blockType( block ) </SPAN> PURPOSE 
+<BR>
+Get the type of a block.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Block *		block 
+<BR>
+A pointer to the block.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>BlockType 
+<BR>
+The block type.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_blockWithName__dataSet__name___"></A><SPAN  CLASS="textit"> blockWithName( dataSet, name ) </SPAN> PURPOSE 
+<BR>
+Get a block with a given name from a dataset.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const DataSet *			dataSet 
+<BR>
+A pointer to the dataset containing the required block.
+</LI>
+<LI>const char *			name 
+<BR>
+The name of the required block.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>Block * 
+<BR>
+A pointer to the block.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_blockWithNumber__dataSet__position___"></A><SPAN  CLASS="textit"> blockWithNumber( dataSet, position ) </SPAN> PURPOSE 
+<BR>
+Get a block with a given number (ordinal position) from a dataset.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const DataSet *			dataSet 
+<BR>
+A pointer to the dataset containing the required block.
+</LI>
+<LI>int				position 
+<BR>
+The ordinal position of the block within the dataset.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>Block * 
+<BR>
+A pointer to the block.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:__SPMlt_type_SPMgt__SPMlt_attributable_SPMgt_Attribute__object__name____"></A><SPAN  CLASS="textit"> &lt;type&gt;&lt;attributable&gt;Attribute( object, name );
+</SPAN> PURPOSE 
+<BR>
+Get the value of an attribute contained in an attributable object.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const &lt;attributable&gt; *		object 
+<BR>
+A pointer to the attributable object containing the required attribute.
+Supported types are: Array, Attributable, Block, Column, DataSet, and Table.
+</LI>
+<LI>const char *			name 
+<BR>
+The name of the required attribute.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>&lt;type&gt; 
+<BR>
+Supported types are: bool, int8, int16, int32, real32, real64, string
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:__SPMlt_type_SPMgt_ArrayData__array___"></A><SPAN  CLASS="textit"> &lt;type&gt;ArrayData( array ) </SPAN> PURPOSE 
+<BR>
+Get the data from an array.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Array *			array 
+<BR>
+A pointer to the array.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>&lt;type&gt; * 
+<BR>
+A pointer to the data of the appropriate type.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:__SPMlt_type_SPMgt_Attribute__attribute___"></A><SPAN  CLASS="textit"> &lt;type&gt;Attribute( attribute ) </SPAN> PURPOSE 
+<BR>
+Get an attribute's data.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Attribute *		attribute 
+<BR>
+A pointer to the attribute.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>&lt;type&gt; 
+<BR>
+A value of the appropriate type. Supported types are Bool, Inter, Real,
+String.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:__SPMlt_type_SPMgt_CellData__column__rowNumber___"></A><SPAN  CLASS="textit"> &lt;type&gt;CellData( column, rowNumber ) </SPAN> PURPOSE 
+<BR>
+Get the data from a cell in a variable length column.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Column *			column 
+<BR>
+A pointer to the variable length column.
+</LI>
+<LI>unsigned long			rowNumber  
+<BR>
+The number of the column cell to be accessed.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>&lt;type&gt; *
+A pointer, of the appropriate type, to the data. Supported types are: Bool,
+Int8, Int16, Int32, Real32, Real64, String.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:__SPMlt_type_SPMgt_ColumnData__column___"></A><SPAN  CLASS="textit"> &lt;type&gt;ColumnData( column ) </SPAN> PURPOSE 
+<BR>
+Get the data from a fixed length column.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Column *			column 
+<BR>
+A pointer to the fixed length column.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>&lt;type&gt; *
+A pointer, of the appropriate type, to the column's data. Supported types are:
+Bool, Int8, Int16, Int32, Ræal32, Real64, String.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_int_cellSize__column__rowNumber___"></A><SPAN  CLASS="textit"> int cellSize( column, rowNumber ) </SPAN> PURPOSE 
+<BR>
+Get the size of a cell in a variable-length column.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>Column *			column 
+<BR>
+A pointer to the variable-length column.
+</LI>
+<LI>int				rowNumber 
+<BR>
+The cell number.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>int 
+<BR>
+The size of the cell in bytes.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_cellType__column___"></A><SPAN  CLASS="textit"> cellType( column ) </SPAN> PURPOSE 
+<BR>
+Get the cell-type of a column.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>Column *			column 
+<BR>
+A pointer to the cell.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>CellType 
+<BR></LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_clobber___"></A><SPAN  CLASS="textit"> clobber() </SPAN> PURPOSE 
+<BR>
+Get the clobber setting.
+</LI>
+<LI>ARGUMENTS
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>bool8 
+<BR></LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR>
+The clobber setting is determined by the environment variable SAS_CLOBBER.
+</LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_unsigned_long_columnDataIndex__column__rowNumber__numberOfDimensions__dimensions___"></A><SPAN  CLASS="textit"> unsigned long columnDataIndex( column, rowNumber, numberOfDimensions,
+dimensions ) </SPAN> PURPOSE 
+<BR>
+Get the memory offset of a column's row.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Column *			column 
+<BR></LI>
+<LI>unsigned long			rowNumber 
+<BR></LI>
+<LI>unsigned int			numberOfDimensions 
+<BR></LI>
+<LI>const unsigned long *		dimensions 
+<BR></LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>unsigned long 
+<BR>
+The omemory offset.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_columnDataType__column___"></A><SPAN  CLASS="textit"> columnDataType( column ) </SPAN> PURPOSE 
+<BR>
+Get the data type of a column.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Column *			column 
+<BR>
+A pointer to the column.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>DataType 
+<BR></LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_columnNumber__table__name___"></A><SPAN  CLASS="textit"> columnNumber( table, name ) </SPAN> PURPOSE 
+<BR>
+Get the number of a column with a given name (i.e. the ordinal position of the column with it's
+table).
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Table *			table 
+<BR>
+A pointer to the table containing the required column.
+</LI>
+<LI>const char *			name 
+<BR>
+The name of the required column.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>int
+The ordinal position of the column within the given table.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_columnUnits__column___"></A><SPAN  CLASS="textit"> columnUnits( column ) </SPAN> PURPOSE 
+<BR>
+Get the units associated with a column.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Column *			column 
+<BR>
+A pointer to the column.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>const char * 
+<BR>
+A pointer to the column's units.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_columnWithName__table__name___"></A><SPAN  CLASS="textit"> columnWithName( table, name ) </SPAN> PURPOSE 
+<BR>
+Get a column with the given name from a table.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Table *			table 
+<BR>
+A pointer to the table containing the required column.
+</LI>
+<LI>const char *			name  
+<BR>
+The name of the required column.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>Column * 
+<BR>
+A pointer to the column.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_columnWithNumber__table__position___"></A><SPAN  CLASS="textit"> columnWithNumber( table, position ) </SPAN> PURPOSE 
+<BR>
+Get the column with the given ordinal position from a table.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Table *			table 
+<BR>
+A pointer to the table containing the required column.
+</LI>
+<LI>unsigned int			position 
+<BR>
+The ordinal position of the required column.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>Column * 
+<BR>
+A pointer to the column.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_const_char___commentOf_SPMlt_object_SPMgt___attributable__number__"></A><SPAN  CLASS="textit">
+const char * commentOf&lt;object&gt;(	attributable, number) </SPAN> PURPOSE 
+<BR>
+Get a comment record from an attributable object.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>&lt;object&gt;			attributable 
+<BR>
+A pointer to the attributable object. Supported types are: Array, Attributable,
+Block, Column, DataSet and Table.
+</LI>
+<LI>unsigned int 			number 
+<BR>
+The ordinal number of the comment record to be retrieved.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>const char * 
+<BR>
+A pointer to the comment record.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_copyAttributesOf_SPMlt_object_SPMgt___to__from__copyMode___"></A><SPAN  CLASS="textit"> copyAttributesOf&lt;object&gt;( to, from, copyMode ) </SPAN> PURPOSE 
+<BR></LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>&lt;object&gt; *			to 
+<BR>
+A pointer to the destination object.
+</LI>
+<LI>const &lt;object&gt; *		from 
+<BR>
+A pointer to the source object.
+</LI>
+<LI>CopyMode			copyMode 
+<BR>
+The mode to be used for the copy.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR>
+Supported types are: Array, Block, Column, DataSet, Table
+</LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+The source and destination must be of the same attributable type.
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_copyAttributeTo_SPMlt_object_SPMgt___attributable__attribute___"></A><SPAN  CLASS="textit"> copyAttributeTo&lt;object&gt;( attributable, attribute ) </SPAN> PURPOSE 
+<BR>
+Copy an attribute to an attributable object.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>&lt;object&gt; *			attributable 
+<BR>
+A pointer to the attributable object.  Supported types are: Array,
+Attributable, Block, Column, DataSet, Table.
+</LI>
+<LI>const Attribute *		attribute 
+<BR></LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_copyRows__table__from__to__count___"></A><SPAN  CLASS="textit"> copyRows( table, from, to, count ) </SPAN> PURPOSE 
+<BR>
+Copy rows in a table.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>Table *	table 
+<BR>
+A pointer to the table within which the rows are to be copied.
+</LI>
+<LI>unsigned int from 
+<BR>
+The row number (starting at 0) from which to begin the copying.
+</LI>
+<LI>unsigned int to 
+<BR>
+The row number (starting at 0) to which to begin the copying.
+</LI>
+<LI>unsigned int count 
+<BR>
+The number of rows to copy.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_dataServerClient__clientName___"></A><SPAN  CLASS="textit"> dataServerClient( clientName ) </SPAN> PURPOSE 
+<BR>
+Set the name of the dataset server client.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const char *                   clientName 
+<BR></LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_DataSet___dataSet__dataSetName__openMode__memoryModel___"></A><SPAN  CLASS="textit"> DataSet * dataSet( dataSetName, openMode, memoryModel ) </SPAN> PURPOSE 
+<BR>
+Open a dataset.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const char *			dataSetName 
+<BR></LI>
+<LI>AccessMode			openMode 
+<BR></LI>
+<LI>MemoryModel			memoryModel 
+<BR></LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>DataSet * 
+<BR>
+A pointer to the dataset.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_dataSetHasBlock__dataSet__name__"></A><SPAN  CLASS="textit"> dataSetHasBlock( dataSet, name) </SPAN> PURPOSE 
+<BR>
+Determine if a dataset has a block with the given name.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const DataSet * dataSet 
+<BR>
+A pointer to the dataset.
+</LI>
+<LI>const char * name 
+<BR>
+The name of the desired block.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>bool8 
+<BR>
+Returns true if a block with the given name was found in the specified dataset,
+otherwise false is returned.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_delete_SPMlt_type_SPMgt_AttributeWithName__attributable__name___"></A><SPAN  CLASS="textit"> delete&lt;type&gt;AttributeWithName( attributable, name ) </SPAN> PURPOSE 
+<BR>
+Delete the named attribute from an attributable object.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>&lt;type&gt; *			attributable 
+<BR>
+A pointer to the attributable object. Supported types are: Array, Attributable,
+Block, Column, DataSet, Table.
+</LI>
+<LI>const char *			name 
+<BR>
+The name of the attribute to delete.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_delete_SPMlt_type_SPMgt_AttributeWithNumber__attributable__number___"></A><SPAN  CLASS="textit"> delete&lt;type&gt;AttributeWithNumber( attributable, number ) </SPAN> PURPOSE 
+<BR>
+Delete the attribute with the given ordimal position from an attributable object.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>&lt;type&gt; *			attributable 
+<BR>
+A pointer to the attributable object. Supported types are: Array, Attributable,
+Block, Column, DataSet, Table.
+</LI>
+<LI>unsigned int			number 
+<BR>
+The ordinal position of the attribute to delete.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_deleteAttribute__attribute___"></A><SPAN  CLASS="textit"> deleteAttribute( attribute ) </SPAN> PURPOSE 
+<BR>
+Delete the given attribute.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Attribute *		attribute 
+<BR>
+A pointer to the attribute to be deleted.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR>
+The attribute is deleted from it's parent attributable.
+</LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_deleteBlockWithName__dataSet__name___"></A><SPAN  CLASS="textit"> deleteBlockWithName( dataSet, name ) </SPAN> PURPOSE 
+<BR>
+Delete the block with the given name from the specified dataset.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>DataSet *			dataSet 
+<BR>
+A pointer to the dataset containing the block to be deleted.
+</LI>
+<LI>const char *			name 
+<BR>
+The name of the block to be deleted.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_deleteBlockWithNumber__dataSet__position___"></A><SPAN  CLASS="textit"> deleteBlockWithNumber( dataSet, position ) </SPAN> PURPOSE 
+<BR>
+Delete the block with the specified ordinal position from the given dataset.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>DataSet *			dataSet 
+<BR></LI>
+<LI>unsigned int			position 
+<BR></LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_deleteColumnWithName__table__name___"></A><SPAN  CLASS="textit"> deleteColumnWithName( table, name ) </SPAN> PURPOSE 
+<BR>
+Delete the column with the specified name from the given table.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>Table *				table 
+<BR>
+A pointer to the table containing the column to be deleted.
+</LI>
+<LI>const char *			name 
+<BR>
+The name of the column to delete.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_deleteColumnWithNumber__table__position___"></A><SPAN  CLASS="textit"> deleteColumnWithNumber( table, position ) </SPAN> PURPOSE 
+<BR>
+Delete the column with the specified ordinal position from the given table.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>Table *				table 
+<BR>
+A pointer to the table containing the column to be deleted.
+</LI>
+<LI>unsigned int			position 
+<BR>
+The ordinal position of the column to be deleted.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_deleteRows__table__from__count___"></A><SPAN  CLASS="textit"> deleteRows( table, from, count ) </SPAN> PURPOSE 
+<BR>
+Delete a range of rows from a table.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>Table *	table 
+<BR>
+A pointer to the table from which the rows are to be deleted. 
+</LI>
+<LI>unsigned int from 
+<BR>
+The row number (starting at 0) from which to begin the deleting. 
+</LI>
+<LI>unsigned int count 
+<BR>
+The number of rows to delete.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_dimensionsOfArray__array___"></A><SPAN  CLASS="textit"> dimensionsOfArray( array ) </SPAN> PURPOSE 
+<BR>
+Get the dimensions of an array.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Array *			array 
+<BR>
+A pointer to the array.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>unsigned long * 
+<BR>
+The dimensions are returned in a vector, each element of which describes the
+size along each axis.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_dimensionsOfArray__column___"></A><SPAN  CLASS="textit"> dimensionsOfArray( column ) </SPAN> PURPOSE 
+<BR></LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Column *		column 
+<BR>
+A pointer to the column.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>unsigned long * 
+<BR>
+The dimensions are returned in a vector, each element of which describes the
+size along each axis.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_discardDataSet__dataSetName___"></A><SPAN  CLASS="textit"> discardDataSet( dataSetName ) </SPAN> PURPOSE 
+<BR>
+Tell the dataset server object to discard the named dataset.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const char *		dataSetName 
+<BR>
+The name of the dataset.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR>
+This function must only be called by Meta Tasks.
+</LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR>
+keepDataSet
+</LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_forEachSubTable__table__callThisFunction___"></A><SPAN  CLASS="textit"> forEachSubTable( table, callThisFunction ) </SPAN> PURPOSE 
+<BR>
+Subtable iteration.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Table *			table 
+<BR>
+A pointer to the table for which subtable iteration is required.
+</LI>
+<LI>TableIteratorFunction 		callThisFunction 
+<BR>
+The function to be called for each subtable iteration.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_hasScalingOfArray__array___"></A><SPAN  CLASS="textit"> hasScalingOfArray( array ) </SPAN> PURPOSE 
+<BR>
+Determine if an array has been scaled.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Array *			array 
+<BR>
+A pointer to the array.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>bool8 
+<BR>
+Returns true if the array has been scaled, otherwise false is returned.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_bool8_hasScalingOfColumn__column___"></A><SPAN  CLASS="textit"> bool8 hasScalingOfColumn( column ) </SPAN> PURPOSE 
+<BR>
+Determine if a column has been scaled.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Column *			column 
+<BR>
+A pointer to the column. 
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>bool8 
+<BR>
+Returns true if the column has been scaled, otherwise false is returned.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_historyOf_SPMlt_type_SPMgt___attributable__number___"></A><SPAN  CLASS="textit"> historyOf&lt;type&gt;( attributable, number ) </SPAN> PURPOSE 
+<BR>
+Get a history record from an attributable object.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>&lt;type&gt; *			attributable 
+<BR>
+A pointer to the attributable object. Supported types are: Array, Attributable,
+Block, Column, DataSet, Table.
+</LI>
+<LI>unsigned int 			number 
+<BR>
+The ordinal number of the history record to be retrieved.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>const char * 
+<BR>
+A pointer to the history record.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_insertRows__table__pos__count___"></A><SPAN  CLASS="textit"> insertRows( table, pos, count ) </SPAN> PURPOSE 
+<BR>
+Insert rows in a table.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>Table *	table 
+<BR>
+A pointer to the table within which the rows are to be inserted.
+</LI>
+<LI>unsigned int from 
+<BR>
+The row number (starting at 0) from which to begin the insertion.
+</LI>
+<LI>unsigned int count 
+<BR>
+The number of rows to insert.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_keepDataSet__dataSetName___"></A><SPAN  CLASS="textit"> keepDataSet( dataSetName ) </SPAN> PURPOSE 
+<BR>
+Tell the dataset server object not to discard the named dataset.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const char *		dataSetName 
+<BR>
+The name of the dataset.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR>
+This function must only be called by Meta Tasks.
+</LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR>
+discardDataSet
+</LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_mode__dataSet___"></A><SPAN  CLASS="textit"> mode( dataSet ) </SPAN> PURPOSE 
+<BR>
+Get the access mode of a dataset.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const DataSet *			dataSet 
+<BR>
+A pointer to the dataset.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>AccessMode 
+<BR>
+The access mode with which the dataset was opened.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_nameOf_SPMlt_object_SPMgt___labelled___"></A><SPAN  CLASS="textit"> nameOf&lt;object&gt;( labelled ) </SPAN> PURPOSE 
+<BR>
+Get the named of a labelled object.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const &lt;object&gt; * 			attributable 
+<BR>
+A pointer to the labelled object. Supported types are: Array, Attributable,
+Column, Attribute, DataSet, Table, Block.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>const char * 
+<BR>
+A pointer to the name of the object.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_numberOfBlocks__dataSet___"></A><SPAN  CLASS="textit"> numberOfBlocks( dataSet ) </SPAN> PURPOSE 
+<BR>
+Get the number of blocks in a dataset.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const DataSet *			dataSet 
+<BR>
+A pointer to the dataset.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>unsigned int 
+<BR>
+The number of blocks in the dataset.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_numberOfColumns__table___"></A><SPAN  CLASS="textit"> numberOfColumns( table ) </SPAN> PURPOSE 
+<BR>
+Get the number of columns in a table.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Table *			table 
+<BR>
+A pointer to the table.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>unsigned int 
+<BR>
+The number of columns in the table.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_numberOfCommentsOf_SPMlt_object_SPMgt___attributable___"></A><SPAN  CLASS="textit"> numberOfCommentsOf&lt;object&gt;( attributable ) </SPAN> PURPOSE 
+<BR>
+Get the number of comments in an attributable object.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>&lt;object&gt; *	attributable 
+<BR>
+A pointer to the attributable object.  Supported types are: Attributable,
+Array, Block, Column, DataSet, Table
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>unsigned int 
+<BR>
+The number of comments in the attributable object.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_numberOfDimensionsOfArray__array___"></A><SPAN  CLASS="textit"> numberOfDimensionsOfArray( array ) </SPAN> PURPOSE 
+<BR>
+Get the number of dimensions of an array.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Array *			array 
+<BR>
+A pointer to the array.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>unsigned int 
+<BR>
+The number of dimensions of the array.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_numberOfDimensionsOfColumn__column___"></A><SPAN  CLASS="textit"> numberOfDimensionsOfColumn( column ) </SPAN> PURPOSE 
+<BR>
+Get the number of dimensions of a column.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Column *			column 
+<BR>
+A pointer to the column.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>unsigned int 
+<BR>
+The number of dimensions of the column.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_numberOfElementsOfArray__array___"></A><SPAN  CLASS="textit"> numberOfElementsOfArray( array ) </SPAN> PURPOSE 
+<BR>
+Get the total number of elements in an array.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Array *			array 
+<BR>
+A pointer to the array.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>unsigned long 
+<BR>
+The total number of elements in the array.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_numberOfElementsOfColumn__column___"></A><SPAN  CLASS="textit"> numberOfElementsOfColumn( column ) </SPAN> PURPOSE 
+<BR>
+Get the total number of elements in a column's (fixed length column only) cell.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Column *			column 
+<BR>
+A pointer to the column.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>unsigned long 
+<BR>
+The total number of elements in the column's cells.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_numberOfHistorysOf_SPMlt_object_SPMgt___attributable___"></A><SPAN  CLASS="textit"> numberOfHistorysOf&lt;object&gt;( attributable ) </SPAN> PURPOSE 
+<BR>
+Get the number of history records in an attributable object.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>&lt;object&gt; * attributable 
+<BR>
+A pointer to the attributable object. Supported types are: Attributable, Array,
+Block, Column, Array, DataSet, Table.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>unsigned int 
+<BR>
+The number of history records in the attributable object.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+
+<BR><A NAME="dal:reference:f90:_numberOfRowsOfTable__table___"></A><SPAN  CLASS="textit"> numberOfRowsOfTable( table ) </SPAN> PURPOSE 
+<BR>
+Get the number of rows in a table.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Table *			table 
+<BR>
+A pointer to the table.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>unsigned long 
+<BR>
+The number of rows in the table.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_numberOfRowsOfColumn__column___"></A><SPAN  CLASS="textit"> numberOfRowsOfColumn( column ) </SPAN> PURPOSE 
+<BR>
+Get the number of rows in a column.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Column *			column 
+<BR></LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>unsigned long 
+<BR>
+The number of rows in the column.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR>
+Same as the number of rows in the column's (parent) table.
+</LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_relabel_SPMlt_object_SPMgt___labelled__newLabel___"></A><SPAN  CLASS="textit"> relabel&lt;object&gt;( labelled, newLabel ) </SPAN> PURPOSE 
+<BR>
+Relabel an labelled object.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>&lt;object&gt; *			labelled 
+<BR>
+A pointer to the labelled object.  Supported types are: Attributable,
+Attribute, Array, Block, Column, DataSet, Table.
+</LI>
+<LI>const char *			newLabel 
+<BR>
+The new label.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_void_release_SPMlt_object_SPMgt___releasable___"></A><SPAN  CLASS="textit"> void release&lt;object&gt;( releasable ) </SPAN> PURPOSE 
+<BR>
+Release an object.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>&lt;object&gt; * releasable 
+<BR>
+A pointer to the object to be released.  Supported types are: Array, Block,
+Column, DataSet, Table
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_rename_SPMlt_object_SPMgt___labelled__newName___"></A><SPAN  CLASS="textit"> rename&lt;object&gt;( labelled, newName ) </SPAN> PURPOSE 
+<BR>
+Rename a labelled object.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>&lt;object&gt; *			labelled 
+<BR>
+A pointer to the labelled object. Supported types are: Attribute, Array,
+Attributable, Block, Column, DataSet, Table.
+</LI>
+<LI>const char *			newName 
+<BR>
+The new name for the object.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_set_SPMlt_type_SPMgt__SPMlt_object_SPMgt_Attribute__attributable__name__value__comment____"></A><SPAN  CLASS="textit"> set&lt;type&gt;&lt;object&gt;Attribute( attributable, name, value, comment );
+</SPAN> PURPOSE 
+<BR>
+Set the value of an attribute.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>&lt;object&gt; *			attributable 
+<BR>
+A pointer to the attributable object. Supported types are: Array, Attributable,
+Block, Column, DataSet, Table.
+</LI>
+<LI>const char *			name 
+<BR>
+The name of the attribute.
+</LI>
+<LI>&lt;type&gt;				value 
+<BR>
+The value of the attribute.  Supported types are bool8, Int8, Int16, Int32,
+Real32, Real64, String.
+</LI>
+<LI>const char *			comment 
+<BR>
+The comment to associate with the attribute.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_set_SPMlt_type_SPMgt_Attribute__attribute__value__comment___"></A><SPAN  CLASS="textit"> set&lt;type&gt;Attribute( attribute, value, comment ) </SPAN> PURPOSE 
+<BR></LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>Attribute *			attribute 
+<BR>
+A pointer to the attribute.
+</LI>
+<LI>&lt;type&gt;				value 
+<BR>
+The value to assign to the attribute. Supported types are: Bool8, Int8, Int16,
+Int32, Real32, Real64, String.
+</LI>
+<LI>const char *			comment 
+<BR>
+The comment to associate with the attribute.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_setCellSize__column__rowNumber__size___"></A><SPAN  CLASS="textit"> setCellSize( column, rowNumber, size ) </SPAN> PURPOSE 
+<BR>
+Set the size of a cell in a variable-length column.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>Column *			column 
+<BR>
+A pointer to the column.
+</LI>
+<LI>int				rowNumber 
+<BR>
+The number of the cell to be sized.
+</LI>
+<LI>int				size 
+<BR>
+The size to set the cell-size to.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS 
+<BR>
+void
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_setExists__setName___"></A><SPAN  CLASS="textit"> setExists( setName ) </SPAN> PURPOSE 
+<BR>
+Determine if a set exists.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const char *			setName 
+<BR>
+The name of the set.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>bool 
+<BR>
+Returns true if the set exists, otherwise false is returned.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_tableHasColumn__table__name__"></A><SPAN  CLASS="textit"> tableHasColumn( table, name) </SPAN> PURPOSE 
+<BR>
+Determine if a table contains a column with the given name.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const Table * table 
+<BR>
+A pointer to the table.
+</LI>
+<LI>const char * name 
+<BR>
+The name of the desired column.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>bool8 
+<BR>
+Returns true if the column with the given name was found in the table, otherwise
+false is returned.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_tableWithName__dataSet__name___"></A><SPAN  CLASS="textit"> tableWithName( dataSet, name ) </SPAN> PURPOSE 
+<BR>
+Get the table with the specified name from a given dataSet.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const DataSet *			dataSet 
+<BR>
+A pointer to a dataset.
+</LI>
+<LI>const char *			name 
+<BR>
+The name of the desired table.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>Table * 
+<BR>
+A pointer to the table.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+ 
+<UL>
+<LI>NAME
+	
+<BR><A NAME="dal:reference:f90:_tableWithNumber__dataSet__position___"></A><SPAN  CLASS="textit"> tableWithNumber( dataSet, position ) </SPAN> PURPOSE 
+<BR>
+Get the table with the specified ordinal position in a given dataset.
+</LI>
+<LI>ARGUMENTS
+
+<UL>
+<LI>const DataSet *			dataSet 
+<BR>
+A pointer to a dataset.
+</LI>
+<LI>unsigned int			position 
+<BR>
+The ordinal position of the table within the dataset.
+</LI>
+</UL>
+</LI>
+<LI>RETURNS
+
+<UL>
+<LI>Table * 
+<BR>
+A pointer to the table.
+</LI>
+</UL>
+</LI>
+<LI>DESCRIPTION 
+<BR></LI>
+<LI>ERRORS 
+<BR></LI>
+<LI>EXAMPLES 
+<BR><PRE>
+</PRE>
+</LI>
+<LI>SEE ALSO 
+<BR></LI>
+<LI>BUGS AND LIMITATIONS 
+<BR>
+<BR>
+None known. 
+ 
+</LI>
+</UL> 
+
+<P>
+/*
+forEachBlock
+forEachColumn
+forEachSubTable
+setStringCell
+subTable
+table
+*/
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node32.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="C++ API"></A>
+<A HREF="dal.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node34.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="PERL API"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

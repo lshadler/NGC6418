@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="econvolverprep">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="econvolverprep.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="econvolverprep.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+econvolverprep (esensitivity-1.10) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="econvolverprep.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="econvolverprep.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="econvolverprep:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+This task is called, together with <A NAME="411"></A><A NAME="tex2html3"
+  HREF="../sensitivity/index.html"><SPAN  CLASS="textbf">sensitivity</SPAN></A>, by the perl task <A NAME="415"></A><A NAME="tex2html4"
+  HREF="../esensitivity/index.html"><SPAN  CLASS="textbf">esensitivity</SPAN></A>. The descriptions for all three of these tasks should be consulted together.
+
+<P>
+The overall purpose of <A NAME="419"></A><A NAME="tex2html5"
+  HREF="../esensitivity/index.html"><SPAN  CLASS="textbf">esensitivity</SPAN></A>
+is to create maps of the minimum count rate of a point source which would just be detectable by <A NAME="423"></A><A NAME="tex2html6"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>. The first part of the algorithm (which is described in the <A NAME="427"></A><A NAME="tex2html7"
+  HREF="../sensitivity/index.html"><SPAN  CLASS="textbf">sensitivity</SPAN></A>
+task documentation) calculates the minimum counts within the detection box which would just be detectable; in order to convert this counts-within-a-box to total count rate of the whole source<A NAME="tex2html2"
+
+HREF="footnode.html#foot165"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A>, <A NAME="431"></A><A NAME="tex2html8"
+  HREF="../esensitivity/index.html"><SPAN  CLASS="textbf">esensitivity</SPAN></A>
+needs to know the ratio between the two across the width of the instrument field of view. This ratio map is calculated by <A NAME="435"></A><A NAME="tex2html9"
+  HREF="../econvolverprep/index.html"><SPAN  CLASS="textbf">econvolverprep</SPAN></A>
+followed by <A NAME="439"></A><A NAME="tex2html10"
+  HREF="../asmooth/index.html"><SPAN  CLASS="textbf">asmooth</SPAN></A>. <A NAME="443"></A><A NAME="tex2html11"
+  HREF="../econvolverprep/index.html"><SPAN  CLASS="textbf">econvolverprep</SPAN></A>
+first creates a list of small convolver images, each of which is the PSF truncated within the detection box. Each convolver corresponds to a separate section of the camera field of view. The sections are created by dividing up the field of view in a polar fashion into <TT>naxial</TT> by <TT>nradial</TT> divisions. An `index image' relating each convolver to its appropriate section is also constructed by <A NAME="449"></A><A NAME="tex2html12"
+  HREF="../econvolverprep/index.html"><SPAN  CLASS="textbf">econvolverprep</SPAN></A>
+and transmitted to <A NAME="453"></A><A NAME="tex2html13"
+  HREF="../asmooth/index.html"><SPAN  CLASS="textbf">asmooth</SPAN></A>.
+
+<P>
+The ratio between the total count rate of a source and the expected number of counts to fall within the detection box is calculated as follows. Suppose the square detection box, of side <SPAN CLASS="MATH"><IMG
+ WIDTH="66" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$(b-1)/2$"></SPAN> for integer <SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$b \ge 0$"></SPAN>, is centred on image pixel <SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$(k,l)$"></SPAN>. If we assume that a source detected in this box has the centre of its PSF within the central pixel, but that any position within this central pixel is equally likely, then the average number of counts <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$C$"></SPAN> expected in the box, in proportion to the total count rate <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$R$"></SPAN> counts <SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$\rm {s}^{-1}$"></SPAN>, is given by
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+C = R \sum_{i=k-b}^{k+b} \ \sum_{j=l-b}^{l+b} \epsilon_{i,j} \int_{i-0.5}^{i+0.5} \int_{j-0.5}^{j+0.5} dx \ dy \ psfa(x-k,y-l).
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="428" HEIGHT="59" BORDER="0"
+ SRC="img7.png"
+ ALT="\begin{displaymath}
+C = R \sum_{i=k-b}^{k+b} \ \sum_{j=l-b}^{l+b} \epsilon_{i,j...
+..._{i-0.5}^{i+0.5} \int_{j-0.5}^{j+0.5} dx \ dy \ psfa(x-k,y-l).
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+I use here the convention that the continuous coordinate value <SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$(x,y)$"></SPAN> becomes equal to the pixel indices <SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$(k,l)$"></SPAN> at the centre of the pixel. The quantity <!-- MATH
+ $\epsilon_{i,j}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$\epsilon_{i,j}$"></SPAN> is the exposure in seconds at pixel <SPAN CLASS="MATH"><IMG
+ WIDTH="36" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$(i,j)$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$psfa$"></SPAN> is the `pixel-averaged' PSF, ie
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+psfa(x,y) = \int_{-0.5}^{+0.5} \int_{-0.5}^{+0.5} dx' \ dy' \ psf(x-x',y-y').
+\end{equation}
+ -->
+<A NAME="psfa"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="psfa"></A><IMG
+ WIDTH="367" HEIGHT="47" BORDER="0"
+ SRC="img12.png"
+ ALT="\begin{displaymath}
+psfa(x,y) = \int_{-0.5}^{+0.5} \int_{-0.5}^{+0.5} dx' \ dy' \ psf(x-x',y-y').
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">1</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+The PSF (in units of <!-- MATH
+ $\rm {pixel}^{-1}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="54" HEIGHT="38" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\rm {pixel}^{-1}$"></SPAN>) is assumed to be normalized such that
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+{\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} dx \ dy \ psf(x,y)} = 1.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="208" HEIGHT="45" BORDER="0"
+ SRC="img14.png"
+ ALT="\begin{displaymath}
+{\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} dx \ dy \ psf(x,y)} = 1.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+The integrals in equation <A HREF="#psfa">1</A> cannot of course be evaluated directly in a numerical context but must be replaced by sums, viz:
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+psfa(x,y) = \frac{1}{(2N+1)(2M+1)} \sum_{i=-N}^{N} \sum_{j=-M}^{M} psf\big(x-[0.5 i/N],y-[0.5 j/M]\big).
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="529" HEIGHT="58" BORDER="0"
+ SRC="img15.png"
+ ALT="\begin{displaymath}
+psfa(x,y) = \frac{1}{(2N+1)(2M+1)} \sum_{i=-N}^{N} \sum_{j=-M}^{M} psf\big(x-[0.5 i/N],y-[0.5 j/M]\big).
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+At present the task has both <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.png"
+ ALT="$N$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.png"
+ ALT="$M$"></SPAN> set to 0, in other words <SPAN CLASS="MATH"><IMG
+ WIDTH="83" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$psf = psfa$"></SPAN>. If this ever seems to present a major bottleneck on the accuracy of the output of <A NAME="457"></A><A NAME="tex2html14"
+  HREF="../esensivity/index.html"><SPAN  CLASS="textbf">esensivity</SPAN></A>
+I may decide to increase the resolution.
+
+<P>
+The PSF used at present is the medium-accuracy one obtainable from the <A NAME="461"></A><A NAME="tex2html15"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>
+library interface CAL_getPsf. This is returned as an array, I don't know whether of point samples or of the psf integrated across the array pixel size. The medium-accuracy PSF was obtained via <A NAME="465"></A><A NAME="tex2html16"
+  HREF="../scisim/index.html"><SPAN  CLASS="textbf">scisim</SPAN></A>
+ray-tracing experiments rather than any analytical calculation, thus point samples would seem more likely. In any case neither the pixel size nor orientation of the returned array match in general the image coordinate system on which source detection is performed: the PSF image must therefore be rebinned to the source-detection system. This process unavoidably entails an additional loss of precision.
+
+<P>
+Note that the output of <A NAME="469"></A><A NAME="tex2html17"
+  HREF="../econvolverprep/index.html"><SPAN  CLASS="textbf">econvolverprep</SPAN></A>
+and <A NAME="473"></A><A NAME="tex2html18"
+  HREF="../asmooth/index.html"><SPAN  CLASS="textbf">asmooth</SPAN></A>
+is actually <SPAN CLASS="MATH"><IMG
+ WIDTH="36" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$C/R$"></SPAN>, which has units of seconds. This may be considered the exposure `seen' within the detection box by <A NAME="477"></A><A NAME="tex2html19"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="econvolverprep.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,335 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Output source-list file</TITLE>
+<META NAME="description" CONTENT="Output source-list file">
+<META NAME="keywords" CONTENT="omdetect">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omdetect.css">
+
+<LINK REL="next" HREF="node18.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="omdetect.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omdetect (omdetect-5.36.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="omdetect.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Mosaiced images"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node45.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omdetect.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00090000000000000000"></A>
+<A NAME="omdetect:description:source"></A>
+<BR>
+Output source-list file
+</H1> 
+
+<P>
+The source-list file produced by <SPAN  CLASS="textbf">omdetect</SPAN> contains a list of 
+the positions of all the detected sources, the parameterizations of their shapes,
+their extracted count-rates, and "corrected count-rates" which contain
+some of the corrections that are needed to convert the raw rates to the
+rates that can be used to compute instrumental magnitutes. 
+Fully corrected count-rates and instrumental magnitudes are obtained by
+running <SPAN  CLASS="textbf">ommag</SPAN>, with its parameter ``<SPAN  CLASS="textbf">set</SPAN>'' set to the <SPAN  CLASS="textbf">omdetect</SPAN>
+source-list.
+
+<P>
+The source-list file is in <SPAN  CLASS="textbf">FITS</SPAN> file format and contains a <SPAN  CLASS="textbf">SRCLIST</SPAN>
+table with the columns shown in the following table.
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=142>
+<DIV ALIGN="CENTER">
+
+</DIV>
+<P>
+<SPAN  CLASS="textbf">COLUMN NAME</SPAN></TD>
+<TH ALIGN="LEFT" VALIGN="TOP" WIDTH=43><SPAN  CLASS="textbf">KIND</SPAN></TH>
+<TH ALIGN="LEFT" VALIGN="TOP" WIDTH=57><SPAN  CLASS="textbf">UNITS</SPAN></TH>
+<TH ALIGN="LEFT" VALIGN="TOP" WIDTH=227><SPAN  CLASS="textbf">DESCRIPTION</SPAN></TH>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">SRCNUM</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>INT 32</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>none</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Source number - order of detection</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">XPOS</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>pixels</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>x-coordinate of centroided source centre</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">YPOS</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>pixels</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>y-coordinate of centroided source centre</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">POSERR</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>pixels</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>error in x and y centroided position</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">RA</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>DOUBLE</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>degrees</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>RA (J2000)  <SPAN  CLASS="textbf">mosaiced sky-images only</SPAN></TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">DEC</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>DOUBLE</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>degrees</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>DEC (J2000) <SPAN  CLASS="textbf">mosaiced sky-images only</SPAN></TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">RA_CORR</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>DOUBLE</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>degrees</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>RA (J2000) corrected for the boresight offset</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">DEC_CORR</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>DOUBLE</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>degrees</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>DEC (J2000) corrected for the boresight offset</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">LII</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>DOUBLE</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>degrees</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Galactic longitude</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">BII</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>DOUBLE</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>degrees</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Galactic lattitude</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">RATE</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>counts/sec</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Total measured source count-rate   
+(after background subtraction) within source extraction aperture 
+(default aperture=12 un-binned pixels, but a smaller one may have been used), divided by exposure time.</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">RATE_ERR</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>counts/sec</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Error in the raw count-rate</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">BACKGROUND_RATE</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>counts/sec</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Total estimated background 
+count-rate (scaled by area ratio, from the background annulus) 
+within default source extraction aperture, divided by exposure time</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">SIGNIFICANCE</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>none</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>source counts /
+sqrt(source + background counts) i.e. signal-to-noise ratio, where
+the counts refer to the rawcounts, before any corrections have been applied.</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">CORR_RATE</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>counts/sec</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Background subtracted
+source count rate after applying PSF  (if necessary) and coincidence-loss corrections.</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">CORR_RATE_ERR</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>counts/sec</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Error in the corrected rate</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">CORR_BACKGROUND _RATE</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>counts/sec</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>BACKGROUND_RATE after 
+correcting for coincidence losses.</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">PSF1_CORR</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>%</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Point-spread function
+correction applied to extrapolate the <SPAN  CLASS="textbf">RATE</SPAN> value from the measurement aperture area 
+to the default extraction area of 12 unbinned pixels</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">PSF2_CORR</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>%</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Point-spread function
+correction applied to extrapolate the <SPAN  CLASS="textbf">RATE</SPAN> value from the
+extraction area of 12 unbinned pixels to the CAL (photometric) radius</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">SPB_COILOSS</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>%</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Coincidence-loss correction applied
+to the source plus background rate (ratio of the coincidence-loss corrected source + coincincidence-loss corrected 
+background count-rate to the raw source + raw background count-rate)</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">BK_COILOSS</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>%</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Coincidence-loss correction applied
+to the raw-background rate (ratio of the coincidence-loss corrected background count-rate to the raw 
+background count-rate)</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">MAG</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>mag</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Instrumental magnitude</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">MAGERR</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>mag</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Instrumental magnitude error</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">NOPIXELS</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>INT 32</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>none</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Number of pixels contained by an
+extended source (EFLAG=1). Point-sources (EFLAG=0) will have this value set to zero.</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">APERTURE</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>unbinned pixels</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>For point sources
+(EFLAG=0), the aperture radius (unbinned pixels) used in the photometry. For
+extended-sources (EFLAG=1) this value will be set to NULL.</TD>
+</TR>
+</TABLE>
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=142>
+<DIV ALIGN="CENTER">
+
+</DIV>
+<P>
+<SPAN  CLASS="textbf">COLUMN NAME</SPAN></TD>
+<TH ALIGN="LEFT" VALIGN="TOP" WIDTH=43><SPAN  CLASS="textbf">KIND</SPAN></TH>
+<TH ALIGN="LEFT" VALIGN="TOP" WIDTH=57><SPAN  CLASS="textbf">UNITS</SPAN></TH>
+<TH ALIGN="LEFT" VALIGN="TOP" WIDTH=227><SPAN  CLASS="textbf">DESCRIPTION</SPAN></TH>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">FWHM_MAJ</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>arcsecs</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>The full-width-at-half-maximum
+of the semi-major axis of the ellipse describing the shape of the source 
+(computed by moments - Set to NULL if a reliable value couldn't be computed.)</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">FWHM_MAJ_ERR</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>pixels</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>The computed error of the major-axis</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">FWHM_MIN</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>pixels</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>The full-width-at-half-maximum
+of the semi-minor axis of the ellipse describing the shape of the source 
+(computed by moments - Set to NULL if a reliable value couldn't be computed.)</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">FWHM_MIN_ERR</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>arcsecs</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>The computed error of the  minor-axis</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">PA</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>degrees</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>The position-angle (measured
+anti-clockwise from the positive x-axis) of the semi-major axis of the ellipse 
+describing the shape of the source (computed from moments - Set to NULL if a reliable value couldn't be computed.)</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">PA_ERR</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>FLOAT</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>degrees</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>The computed error of the position angle</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">QFLAG</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>INT 16</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>none</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Source quality flag - Please see below</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">CFLAG</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>INT 8</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>none</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Source confusion flag - Please see below</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">EFLAG</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>INT 8</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>none</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>(source extension flag) Either 0  
+point-source (non-extended) or 1 extended.</TD>
+</TR>
+<TR><TH ALIGN="LEFT" VALIGN="TOP" WIDTH=142><SPAN  CLASS="textbf">SRC_ID</SPAN></TH>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=43>INT 32</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=57>none</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Source ID number in the source-list file</TD>
+</TR>
+</TABLE>
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html161"
+  HREF="node10.html">Mosaiced images</A>
+<LI><A NAME="tex2html162"
+  HREF="node11.html">QUALITY FLAGS</A>
+<UL>
+<LI><A NAME="tex2html163"
+  HREF="node12.html">Region Colours</A>
+<LI><A NAME="tex2html164"
+  HREF="node13.html">Examples</A>
+<LI><A NAME="tex2html165"
+  HREF="node14.html">Notes on individual flags</A>
+<LI><A NAME="tex2html166"
+  HREF="node15.html">Short-comings</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html167"
+  HREF="node16.html">Example <SPAN  CLASS="textbf">OM</SPAN> image and ds9 regions</A>
+<LI><A NAME="tex2html168"
+  HREF="node17.html">CONFUSION FLAGS</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="omdetect.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Mosaiced images"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node45.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

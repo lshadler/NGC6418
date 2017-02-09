@@ -1,0 +1,102 @@
+#! /usr/bin/perl -w
+#
+#
+# main for SAS perl tasks.
+#
+require 5;
+use strict;
+use Getopt::Long;
+Getopt::Long::Configure ("pass_through");
+use SAS::error;
+## At build time the following strings (enclosed in --, that is
+## -string-) are replaced:
+##  sasperl  -> This is taken from the PERL variable defined by configure
+##  taskname
+##  version
+##  release
+##  aka
+## Make sure they do not occur anywhere else in main.pl unless you
+## want them to be replaced.
+##  taskname also occurs at the end of main.pl
+##
+my $name = "eimsim_do_nothing";
+SAS::error::client($name);
+my $VERSION = "2.3";
+my $RELEASE = "xmmsas_20170112_1337-16.0.0";
+my $AKA = "16.0.0";
+
+## 
+## Standard options: these follow taskmain.
+##
+## -a|--ccfpath <dir1>[:<dir2>...] --> SAS_CCFPATH
+## -f|--ccffiles <f1> [<f2>...] --> cannot be implemented
+## -c|--noclobber --> SAS_CLOBBER
+## -d|--dialog --> tool(sasdialog)
+## -h|--help --> tool(listparams)
+## -i|--ccf <cif> --> SAS_CCF
+## -m|--manpage --> sashelp
+## -o|--odf <sumfile> --> SAS_ODF
+## -V|--verbosity <level> -- SAS_VERBOSITY
+## -v|--version --> local implementation
+##
+## Getopt::Long provides support for short versions with single "-" except for -v.
+## Therefore all short versions were automatically included either with first letter
+## or via an alias as for -a, -i, -o and -V.
+##
+## -v deserves special care due to the existence of support for $version within the
+## Getopt module. Therefore -v is treated specially. 
+
+my ($ccfpath, $noclobber, $dialog, $help, $ccf, $manpage, $odf, $verbosity, $version);
+
+exit(1) unless
+    GetOptions("ccfpath|a=s"    => \$ccfpath,
+	       "noclobber"      => \$noclobber,
+	       "dialog"         => \$dialog,
+	       "help"           => \$help,
+	       "ccf|i=s"        => \$ccf,
+	       "manpage"        => \$manpage,
+	       "odf|o=s"        => \$odf,
+	       "verbosity|V=i"  => \$verbosity,
+	       "version"        => \$version,
+	      );
+
+my $arg;
+foreach $arg (@ARGV) {
+  $version=1 if ( $arg =~ "-v" );
+}
+
+$ENV{SAS_CCFPATH}   = $ccfpath if($ccfpath);
+$ENV{SAS_CLOBBER}   = 0 if($noclobber);
+$ENV{SAS_CCF}       = $ccf if($ccf);
+$ENV{SAS_ODF}       = $odf if($odf);
+$ENV{SAS_VERBOSITY} = $verbosity if($verbosity);
+
+use SAS::param;
+
+
+if($version){
+    print "$name-$VERSION [$RELEASE-$AKA]\n";
+    exit(0);
+}
+if($manpage){
+    system("sashelp --doc=$name");
+    my $x = $? >> 8; # perldoc -f system
+    exit($x);
+}
+if($help){
+    system("listparams $name");
+    my $x = $? >> 8;
+    exit($x);
+}
+if($dialog){
+    system("sasdialog $name");
+    my $x = $? >> 8;
+    exit($x);
+}
+
+&eimsim_do_nothing();
+
+sub eimsim_do_nothing {
+  # do nothing
+}
+

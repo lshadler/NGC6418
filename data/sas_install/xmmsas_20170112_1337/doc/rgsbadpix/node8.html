@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="rgsbadpix">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsbadpix.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="rgsbadpix.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsbadpix (rgsbadpix-2.19.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="rgsbadpix.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsbadpix.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="rgsbadpix:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+The following inequality must be satisfied for an individual pixel to
+ be found hot.  Here <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$N$"></SPAN> is the number of counts (qualifying
+ telemetered events located there) in the pixel itself and <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.png"
+ ALT="$M$"></SPAN> is the
+ number of counts in whichever of the four directly adjacent active
+ pixels has the fewest counts.  <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$F$"></SPAN> is the number of contributing
+ frames (that is, not counting bad frames).  A pixel is not considered
+ active if it is listed as an uplinked bad pixel in the CCF.  And
+ unless inclusion of the CCF advisory bad pixels has been disabled
+ (<TT>withadvisory</TT>=no), advisory dead pixels are also not
+ considered active.  In the exceptional case of a pixel with no
+ directly adjacent active pixels, it is not judged to be hot
+ regardless of its count rate.
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+N>M+({\tt pixsharpness})\sqrt{N\left(1-\frac{N}{F}\right)+
+				 M\left(1-\frac{M}{F}\right)}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="397" HEIGHT="55" BORDER="0"
+ SRC="img9.png"
+ ALT="\begin{displaymath}
+N&gt;M+({\tt pixsharpness})\sqrt{N\left(1-\frac{N}{F}\right)+
+M\left(1-\frac{M}{F}\right)}
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+Similarly, this next inequality must be satisfied for a whole column
+ to be found hot.  However, here <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$N$"></SPAN> is the average number of counts
+ per pixel associated with <SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$G_N$"></SPAN>, the number of good pixels in the
+ column.  <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.png"
+ ALT="$M$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="31" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$G_M$"></SPAN> are the corresponding average number of counts
+ and number of good pixels for whichever of the two neighboring
+ columns has the lowest average number of counts.  To be considered
+ good at this stage a pixel must be active in the above sense and not
+ have been found to be a hot pixel.  Columns with no good pixels are
+ ignored, both as potential hot columns and as neighboring columns.
+ If both of a column's neighbors have no good pixels, it is not judged
+ to be hot regardless of its count rate.
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+N>M+({\tt colsharpness})\sqrt{\frac{N}{G_N}\left(1-\frac{N}{F}\right)+
+				 \frac{M}{G_M}\left(1-\frac{M}{F}\right)}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="426" HEIGHT="55" BORDER="0"
+ SRC="img12.png"
+ ALT="\begin{displaymath}
+N&gt;M+({\tt colsharpness})\sqrt{\frac{N}{G_N}\left(1-\frac{N}{F}\right)+
+\frac{M}{G_M}\left(1-\frac{M}{F}\right)}
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+In the following schematic description of the program an asterix is
+ used to mark items that do not apply to HTR mode data.
+
+<P>
+<PRE>
+ Initialize the bad pixel map:
+    Large enough for all valid chip coordinates plus a one pixel margin on
+       all sides; this margin and any median between the nodes (in case of
+       windowed telemetry) is initialized with Invalid; the rest with zero
+
+ Initialize the calibration bad pixel list:
+    Ignore advisory bad pixels unless withadvisory == true
+    Ignore defective ("cool") bad columns unless keepcool == false
+    Convert bad pixel node coordinates to chip coordinates
+    Clip bad segments that extend above or below the window
+
+ if withfoundhot:
+    Create two histogram maps in the same dimensions as the bad pixel map,
+       one for the pixel* analysis and the other for the column analysis
+
+    Convert telemetered node coordinates to chip coordinates
+
+    for each telemetered event in a good frame:
+       Ignore and warn if any of the comprising pixels have invalid
+          coordinates; otherwise test against the pixnoiselimit* and
+          colnoiselimit and increment the corresponding histogram
+          maps accordingly at the location of each comprising pixel
+
+    for each calibration bad pixel:
+       if uplinked || DEAD, mark in the bad pixel map
+
+    Search the pixel analysis map* for hot pixels, creating a list of their
+       coordinates and recording as statistics for each column the number
+       of good pixels and associated average event count from the column
+       analysis map
+
+    if not HTR:
+       Mark the found hot pixels in the bad pixel map
+
+    Search the column statistics for hot columns, marking them in the
+       bad pixel map
+
+ for each calibration bad pixel:
+    if advisory &amp;&amp; HOT &amp;&amp; withfoundhot, warn if not already marked as
+       found in the bad pixel map
+    mark and reclassify as appropriate in the bad pixel map
+
+ Construct the merged list of bad pixel segments such that all locations
+    marked bad in the bad pixel map are accounted for and all pixels in
+    each segment have the same classification
+
+ Write the BADPIXn tables
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="rgsbadpix.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

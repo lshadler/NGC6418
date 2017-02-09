@@ -1,0 +1,55 @@
+ChangeLog for bkgfilter
+===============================
+
+Open SPRs:
+----------
+Nil
+
+Version 1.7 - 2012-12-03 (MAS/LUX)
+----------------------
+- Fixed a minor bug of wrong unit output for BKGRATE (as a text) in the output FITS file.  Codes tidied up.  Document updated.
+
+Version 1.6 - 2012-09-25 (MAS/LUX)
+----------------------
+- Fixed a bug of handling incorrectly the input files, which have rows of FRACEXP=0 and where those FRACEXP should be taken into account in calculation.  In practice the cases, where this bug mattered, must have been rare, particularly there was no actual impact in the pipeline.  Both getSN2ofTs() and findOptimumY() in bkgoptrate_aux.f90 are updated (for the double safety net).
+- DEPENDency on fitsutils is upgraded into Ver.1.8.
+- Test harness is updated in testbkgoptrateaux01 and and a new one, testbkgoptratetask4, is added, to test the above.
+	
+Version 1.5 - 2012-07-10 (MAS/LUX)
+----------------------
+- Fixed a bug of failing as Fortran error when the input time-series is uniformly zero, introducing a new error 'allMaskFalse' and warning 'noSignificantBin'.
+- DEPENDency on testprods is upgraded into Ver.1.30.
+- Test harness is updated (testbkgoptrateaux01 and testbkgoptratetask3) to test the above.
+	
+Version 1.4 - 2012-07-05 (MAS/LUX)
+----------------------
+- Closed SPR-6748 (Leaving 1 bin only).
+- Implemented a new command-line parameter: ignorelowcnttail.
+- DEPENDency on testprods is upgraded into Ver.1.29.
+- A new test testbkgoptratetask3 is added in the test harness.
+	
+Version 1.3 - 2012-06-27 (MAS/LUX)
+----------------------
+- Fixed SPR-6743 (Failed to find the true peak S/N).
+- Added testbkgoptratetask2 in the test harness to test it.
+- Now it depends on testprods (Ver.1.28).
+	
+Version 1.2 - 2012-06-11 (MAS/LUX)
+----------------------
+- Fixed SPR-6734 (Column name changed from 'S/N' into 'SN_RATIO').
+	
+Version 1.1 - 2011-05-11 (MAS/LUX)
+----------------------
+- Introduced the new parameters doinsertkwds, dooutputsntab and snsettabname (SCR-316).
+- It now DEPENDs on fitsutils Ver.1.4 and DEPENDency on ssclib is upgraded into Ver.4.23.
+- Minor bugs fixed.
+- The test harness is now more robust, covering a lot more possibilities.
+	
+Version 1.0.1 - 2011-02-08 (MAS/LUX)
+----------------------
+- Tidied up test/testbkgoptratetask (not use an unnecessary library).
+
+Version 1.0 - 2010-12-23 (MAS/LUX)
+----------------------
+- First delivery (SCR-310).
+	

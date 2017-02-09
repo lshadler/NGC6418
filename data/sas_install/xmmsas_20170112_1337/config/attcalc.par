@@ -1,0 +1,139 @@
+<!-- converted from XPI formatted "attcalc.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="eventset" type="dataset" mandatory="yes" default="">
+   <DESCRIPTION>
+    Input events set 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="attitudelabel" type="string" default="ahf">
+   <DESCRIPTION>
+    Source of attitude information 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="fixed">
+      <PARAM id="fixedra" type="angle" default="0">
+        <DESCRIPTION>
+         FIXED attitude RA (deg) 
+        </DESCRIPTION>
+        <CONSTRAINTS>
+         fixedra in [0.0:360.0]
+        </CONSTRAINTS>
+      </PARAM>
+      <PARAM id="fixeddec" type="angle" default="0">
+        <DESCRIPTION>
+         FIXED attitude DEC (deg) 
+        </DESCRIPTION>
+        <CONSTRAINTS>
+         fixeddec in [-90.0:90.0]
+        </CONSTRAINTS>
+      </PARAM>
+      <PARAM id="fixedposangle" type="angle" default="0">
+        <DESCRIPTION>
+         FIXED attitude (Astronimcal) Position Angle (deg) 
+        </DESCRIPTION>
+        <CONSTRAINTS>
+         fixedposangle in [-180.0:360.0]
+        </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+    <ITEM value="ahf">
+    </ITEM>
+    <ITEM value="om">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="refpointlabel" type="string" default="pnt">
+   <DESCRIPTION>
+    Source of reference point information 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="nom">
+    </ITEM>
+    <ITEM value="obj">
+    </ITEM>
+    <ITEM value="pnt">
+    </ITEM>
+    <ITEM value="user">
+      <PARAM id="nominalra" type="angle" default="0">
+         <DESCRIPTION>
+          RA of ref.point (deg) (refpointlabel=user) 
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          nominalra in [0.0:360.0]
+         </CONSTRAINTS>
+      </PARAM>
+      <PARAM id="nominaldec" type="angle" default="0">
+         <DESCRIPTION>
+          Dec of ref.point (deg) (refpointlabel=user) 
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          nominaldec in [-90.0:90.0]
+         </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withatthkset" type="bool" default="yes">
+   <DESCRIPTION>
+    Use atthkgen output file 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+      <PARAM id="atthkset" type="dataset" default="atthk.dat">
+        <DESCRIPTION>
+         atthkgen output file 
+        </DESCRIPTION>
+        <CONSTRAINTS>
+         true
+        </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="withmedianpnt" type="bool" default="yes">
+   <DESCRIPTION>
+    Get median values from atthkgen file (otherwise mean) 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="calctlmax" type="bool" default="no">
+   <DESCRIPTION>
+    Calculate TLMIN, TLMAX values from the event positions ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="imagesize" type="angle" default="0.36">
+   <DESCRIPTION>
+    Image half-size (deg) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    imagesize in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

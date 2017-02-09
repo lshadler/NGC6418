@@ -1,0 +1,263 @@
+Cards
+Page global
+	Row
+		Column
+			Frame Stages
+				Parameter entrystage
+				Parameter finalstage
+				end
+			end
+		Column
+			Frame Scope
+				Enable withinstexpids
+					Parameter instexpids
+					end
+				Parameter orders
+				end
+			end
+		end
+	Enable withprefix
+		Parameter prefix
+		end
+	Parameter expunge
+	Frame "Spectrum Binning Method"
+		Parameter spectrumbinning
+	end
+
+	end
+
+Page events
+  Cards
+	Page attitude
+		Frame atthkgen
+			Parameter timestep
+			end
+		Frame attfilter
+			Parameter driftlimit
+			Parameter onlylastatt
+			end
+		end
+	Page hkfiltering
+		Parameter includeinputfifofull
+	end
+	Page rgsoffsetcalc
+		Enable calcoffsets
+			Parameter withoffsethistogram
+			end
+		end
+	Page rgssources
+		Row
+			Enable withsrc
+				Choice srcstyle
+					Page radec
+						Parameter srcra
+						Parameter srcdec
+						end
+					Page wrtatt
+						Parameter srcdisp
+						Parameter srcxdsp
+						end
+					end
+				Parameter srclabel
+				Parameter srcrate
+				end
+			Column
+				Enable withepicset
+					Parameter epicset
+					end
+				Choice attstyle
+					Page expmedian
+						end
+					Page start
+						end
+					Page user
+						Parameter attra
+						Parameter attdec
+						Parameter attapos
+						end
+					end
+				end
+			end
+		end
+	Page rgsenergy
+		Parameter withdiagoffset
+		Parameter withgain
+		Parameter withcti
+		end
+	Page rgsbadpix
+		Choice badpixalgo
+		Page badpixalgo
+		  Enable withfoundhot
+			Row
+				Frame "Hot Pixel Finder"
+					Parameter pixnoiselimit
+					Parameter pixsharpness
+				end
+				Frame "Hot Column Finder"
+					Parameter colnoiselimit
+					Parameter colsharpness
+				end
+			end		
+		   end
+		end
+		Page embadpixalgo
+	          Parameter embadpixalgo
+		end
+		end
+		Parameter withadvisory
+		Parameter keepcool
+	end
+	Page rgsevents
+		Enable withdetcoord
+			Parameter detcoord
+			end
+		Parameter reconstruct
+		end
+	end
+  end
+
+Page angles
+	Frame rgsangles
+		Row
+			Frame "Dispersion Channels"
+			  Frame "Beta Channels"
+					Choice betabinning
+					Page Range
+						Parameter betamin
+						Parameter betamax
+					end
+					Page binSize
+						Parameter betabinref
+						Parameter betabinwidth
+						end
+					end
+				Parameter nbetabins
+			  end
+			  Frame "Lambda Channels"
+				Parameter lambdabinref
+				Parameter lambdabinwidth	
+				Parameter nlambdabins			
+			  end
+			end
+			Frame "Cross-dispersion Channels"
+				Choice xdispbinning
+					Page Range
+						Parameter xdispmin
+						Parameter xdispmax
+						end
+					Page binSize
+						Parameter xdispbinref
+						Parameter xdispbinwidth
+						end
+					end
+				Parameter nxdispbins
+				end
+			end
+		Parameter withpointingcolumn
+		Parameter withmlambdacolumn
+		Parameter withheliocentriccorr
+		Parameter withsunanglecorr 
+		end
+	end
+
+Page filter
+	Frame rgsfilter
+		Parameter auxgtitables
+		Parameter rejflags
+		Parameter driftbinsize
+		Parameter withcombmap
+		end
+	end
+
+Page spectra
+  Cards
+	Page rgsregions
+		Row
+			Frame "Spatial Regions"
+				Parameter spatialres
+				Parameter xpsfincl
+				Parameter xpsfexcl
+				end
+			Frame "Order Regions"
+				Parameter orderres
+				Parameter pdistincl
+				Enable withpicutoff
+					Parameter picutoff
+				end
+				end
+			end
+		Frame "Point Source"
+			Parameter procsrcsexpr
+			Parameter exclsrcsexpr
+			end
+		Frame "Extended Source"
+			Parameter xdspregions
+			Parameter xdspbackground
+		end
+	end
+	Page rgsspectrum
+		Row
+			Frame Structure
+				Parameter rebin
+				Parameter bkgcorrect
+				Parameter withbkgset
+				Parameter withfracexp
+				end
+			Frame "Bad Channels"
+				Parameter badquality
+				Parameter edgechannels
+				Parameter exposed
+				end	
+			end
+		Frame "Background Model"
+			Parameter withbackgroundmodel
+		   end
+		Frame "Heliocentric velocity Correction"
+			Parameter withheliocorr
+		end		
+		end
+	end
+  end
+
+Page fluxing
+  Cards
+	Page rgsrmfgen
+		Enable withangdist
+			Parameter angdistset
+			end
+		Parameter witharffile
+		Parameter rmfbins
+		Parameter fftdim
+		Parameter withmirrorpsf
+		Parameter withdyneffarea		
+		Parameter withrectification
+		Parameter witheffectiveareacorrection
+	end
+	Page rgsfluxer
+		Parameter mergeorders
+		Parameter flxquality
+		Row
+			Frame "Channel Grid"
+				Parameter flxmode
+				Parameter flxbins
+				Parameter flxmin
+				Parameter flxmax
+				end
+			Frame Formatting
+				Parameter flxformat
+				Enable withflxnan
+					Parameter flxnan
+					end
+				end
+			end
+		end
+	end
+  end
+
+Page lightcurve
+	Frame rgslccorr
+		Parameter timebinsize
+		Parameter withbkgsubtraction
+	end
+end
+end

@@ -1,0 +1,239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Command-line position entry.</TITLE>
+<META NAME="description" CONTENT="Command-line position entry.">
+<META NAME="keywords" CONTENT="esky2det">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="esky2det.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+esky2det (esky2det-1.18) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="FITS file position IO."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="esky2det.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+Command-line position entry.</A>
+</H2>
+
+<P>
+The sky position of a single source may be entered via the parameters <TT>ra</TT>, <TT>dec</TT> and (optionally) <TT>errorradius</TT>. These are parameters of type angle and can therefore be provided in a variety of formats. Eg:
+
+<P>
+<PRE>
+ra=32h06m19.6s dec=-07d44m56.7s errorradius=00d00m01.0s
+</PRE>
+
+<P>
+See the task <A NAME="582"></A><A NAME="tex2html3"
+  HREF="../param/index.html"><SPAN  CLASS="textbf">param</SPAN></A>
+documentation for further details.
+
+<P>
+In this mode, the output positions are printed to a single line of standard output. The format of this output line is given in the following examples.
+
+<P>
+
+<OL>
+<LI>Example 1: command line
+
+<P>
+<PRE>
+esky2det datastyle=user ra=03h47m40.2s dec=24d21m54.62s outunit=raw
+</PRE>
+
+<P>
+gives the output
+
+<P>
+<PRE>
+# Instrument: EPN
+# Coord sytem of output is RAWXY (PIXCOORD1).
+# Source RA =  56.917500 deg.
+# Source dec =  24.365171 deg.
+#
+# rawX      rawY    ccd   On chip?
+  32.05    188.69    8      T
+</PRE>
+
+<P>
+</LI>
+<LI>Example 2: if you want to display the numbers only, add <TT>withheader</TT>=`no' to the command line. In the case above, this would give
+
+<P>
+<PRE>
+  32.05    188.69    8      T
+</PRE>
+
+<P>
+This style is suitable for batch running of <A NAME="587"></A><A NAME="tex2html4"
+  HREF="../esky2det/index.html"><SPAN  CLASS="textbf">esky2det</SPAN></A>
+from scripts.
+
+<P>
+</LI>
+<LI>Example 3: in this example, the DETX/Y coordinate system is chosen and an uncertainty radius is supplied. The command line example is
+
+<P>
+<PRE>
+esky2det datastyle=user ra=03h46m25.3s dec=24d18m30.3s outunit=det
+witherrorradius=yes  errorradius=00d00m05.0s
+</PRE>
+
+<P>
+which gives the output
+
+<P>
+<PRE>
+# Instrument: EPN
+# Coord sytem of output is DETXY (CAMCOORD2 but in units of 0.05 arcsec).
+# Source RA =  56.605415 deg.
+# Source dec =  24.308416 deg.
+#
+# detX       detY       det err
+-15043.9    -2111.8       100.0
+</PRE>
+
+<P>
+</LI>
+<LI>Example 4: The same command, but with <TT>outunit</TT> set now back to `raw', gives
+
+<P>
+<PRE>
+# Instrument: EPN
+# Coord sytem of output is RAWXY (PIXCOORD1).
+# Source RA =  56.605415 deg.
+# Source dec =  24.308416 deg.
+#
+# rawX      rawY    ccd   On chip?      X err       Y err
+  40.11    189.72   12      T       0.455E-01   0.455E-01
+</PRE>
+
+<P>
+</LI>
+</OL>
+
+<P>
+
+<P>
+For the convenience of script authors, I give below the number fields for all four combinations of <TT>outunit</TT> and <TT>witherrorradius</TT>:
+
+<P>
+
+<UL>
+<LI><TT>outunit</TT>=`raw', <TT>witherrorradius</TT>=`no':
+
+<P>
+<PRE>
+# Instrument: &lt;inst&gt;
+# Coord sytem of output is RAWXY (PIXCOORD1).
+# Source RA = &lt;ra&gt; deg.
+# Source dec = &lt;dec&gt; deg.
+#
+# rawX      rawY    ccd   On chip?
++xxx.xx   +xxx.xx   xx      x
+ 123456789 123456789 12345678
+</PRE>
+
+<P>
+</LI>
+<LI><TT>outunit</TT>=`raw', <TT>witherrorradius</TT>=`yes':
+
+<P>
+<PRE>
+# Instrument: &lt;inst&gt;
+# Coord sytem of output is RAWXY (PIXCOORD1).
+# Source RA = &lt;ra&gt; deg.
+# Source dec = &lt;dec&gt; deg.
+#
+# rawX      rawY    ccd   On chip?      X err       Y err
++xxx.xx   +xxx.xx   xx      x       x.xxxE+xx   x.xxxE+xx
+ 123456789 123456789 123456789 123456789 123456789 123456
+</PRE>
+
+<P>
+</LI>
+<LI><TT>outunit</TT>=`det', <TT>witherrorradius</TT>=`no':
+
+<P>
+<PRE>
+# Instrument: &lt;inst&gt;
+# Coord sytem of output is DETXY (CAMCOORD2 but in units of 0.05 arcsec).
+# Source RA = &lt;ra&gt; deg.
+# Source dec = &lt;dec&gt; deg.
+#
+# detX       detY
++xxxxx.x   +xxxxx.x
+ 123456789 12345678
+</PRE>
+
+<P>
+</LI>
+<LI><TT>outunit</TT>=`det', <TT>witherrorradius</TT>=`yes':
+
+<P>
+<PRE>
+# Instrument: &lt;inst&gt;
+# Coord sytem of output is DETXY (CAMCOORD2 but in units of 0.05 arcsec).
+# Source RA = &lt;ra&gt; deg.
+# Source dec = &lt;dec&gt; deg.
+#
+# detX       detY       det err
++xxxxx.x   +xxxxx.x     xxxxx.x
+ 123456789 123456789 123456789
+</PRE>
+
+<P>
+</LI>
+</UL>
+
+<P>
+If <TT>outunit</TT>=`det', and the source is outside the field of view of the instrument, the task halts with an error. This behaviour may be overridden 
+by specifying <TT>checkfov</TT>=`no'. If <TT>outunit</TT>=`raw' and the source is not found to lie within the bounds of any CCD, a warning message is issued; however the task still prints a RAWX/Y position, this being the position of the source in the RAWX/Y coordinate system of the nearest CCD. In this case the value of the `On chip?' column is `F' rather than `T'.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="FITS file position IO."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

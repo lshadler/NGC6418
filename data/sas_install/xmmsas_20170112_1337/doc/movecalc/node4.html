@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>FITS/WCS considerations</TITLE>
+<META NAME="description" CONTENT="FITS/WCS considerations">
+<META NAME="keywords" CONTENT="movecalc">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="movecalc.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+movecalc (movecalc-1.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Usage examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="movecalc.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+FITS/WCS considerations</A>
+</H2>
+Ordinary <A NAME="455"></A><TT>X</TT>/<A NAME="457"></A><TT>Y</TT> sky images have a <A NAME="tex2html6"
+  HREF="http://heasarc.gsfc.nasa.gov/docs/heasarc/fits.html">FITS</A> representation
+that adheres to the World Coordinate System conventions specified in
+[<A
+ HREF="node12.html#ct:WCSFITS">1</A>]. In practice this means that the conversion from
+tangent plane image coordinates <SPAN CLASS="MATH"><IMG
+ WIDTH="51" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$(X/Y)$"></SPAN> to Right Ascension/Declination
+of the mean geocentric equatorial reference frame and vice versa is
+uniquely given by the following set of column attributes:
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">attribute name</TD>
+<TD ALIGN="LEFT">meaning</TD>
+<TD ALIGN="CENTER"><A NAME="466"></A><TT>X</TT>/<A NAME="468"></A><TT>Y</TT> system</TD>
+<TD ALIGN="CENTER"><A NAME="470"></A><TT>X_MOV</TT>/<A NAME="472"></A><TT>Y_MOV</TT> system</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>TCTYPn</TT></TD>
+<TD ALIGN="LEFT">type of projection</TD>
+<TD ALIGN="CENTER"><TT>RA-TAN</TT>/<TT>DEC-TAN</TT></TD>
+<TD ALIGN="CENTER"><TT>RA-TAN</TT>/<TT>DEC-TAN</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>TCRVLn</TT></TD>
+<TD ALIGN="LEFT">R.A./Dec of tangent point</TD>
+<TD ALIGN="CENTER"><!-- MATH
+ $ra_{\mbox{ref}}/dec_{\mbox{ref}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="88" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$ra_{\mbox{ref}}/dec_{\mbox{ref}}$"></SPAN></TD>
+<TD ALIGN="CENTER">0/0</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>TCRPXn</TT></TD>
+<TD ALIGN="LEFT">image coordinates of tangent point</TD>
+<TD ALIGN="CENTER"><!-- MATH
+ $x_{\mbox{ref}}/y_{\mbox{ref}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="67" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$x_{\mbox{ref}}/y_{\mbox{ref}}$"></SPAN></TD>
+<TD ALIGN="CENTER">0/0</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>TCDLTn</TT></TD>
+<TD ALIGN="LEFT">coordinate increment at tangent point</TD>
+<TD ALIGN="CENTER"><!-- MATH
+ $\Delta x/\Delta y$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$\Delta x/\Delta y$"></SPAN></TD>
+<TD ALIGN="CENTER"><!-- MATH
+ $\Delta x/\Delta y$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$\Delta x/\Delta y$"></SPAN></TD>
+</TR>
+</TABLE>
+</DIV>
+In the <A NAME="482"></A><TT>X_MOV</TT>/<A NAME="484"></A><TT>Y_MOV</TT> system the tangent point is moving
+with time. In the absence of a true FITS/WCS standard for this
+situation the point is given the fixed equatorial coordinate <SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$(0/0)$"></SPAN>.
+This allows FITS image viewers like <A NAME="tex2html7"
+  HREF="http://hea-www.harvard.edu/RD/ds9/">Ds9</A> to display 'pseudo' sky
+coordinates for each image pixel which shall at least be useful to estimate
+extents of structures in the <A NAME="488"></A><TT>X_MOV</TT>/<A NAME="490"></A><TT>Y_MOV</TT> image.
+Please note that the coordinate increment in both systems is the same.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Usage examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

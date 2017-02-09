@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Mode 1- Quality-image pixel setting</TITLE>
+<META NAME="description" CONTENT="Mode 1- Quality-image pixel setting">
+<META NAME="keywords" CONTENT="omqualitymap">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omqualitymap.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omqualitymap (omqualitymap-1.4) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Notes"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node27.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omqualitymap.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+Mode 1- Quality-image pixel setting</A>
+</H2>
+
+<P>
+The purpose of this mode is to populate the <SPAN  CLASS="textbf">QUALITY</SPAN> image extension within individual <SPAN  CLASS="textbf">OM</SPAN> images
+using the source-list data produced by <SPAN  CLASS="textbf">omdetect</SPAN>.
+
+<P>
+Source-detection over each individual image is performed in detector coordinates using the task <SPAN  CLASS="textbf">omdetect</SPAN>.
+This yields individual source-lists with catalogued detector pixel-coordinates, count-rates and source morphology data. 
+Quality issues are related to either source-brightness, proximity to other sources, or image location. This information is
+collated from the source-list and recorded in a two-dimensional bit map that we will refer to as the ``quality map''. Quality 
+issues are generally recorded over a cluster of pixels in the quality image.
+
+<P>
+The following is a list of the <SPAN  CLASS="textbf">QUALITY</SPAN> pixel bits set, together with a description of the
+size and shape of the region containing the pixels whose bits are set. All coordinates refer to detector coordinates 
+(0-2048, 0-2048) and heights, radii, etc, to unbinned pixels.  
+
+<P>
+
+<OL>
+<LI><SPAN  CLASS="textbf">Bit 0</SPAN> (Bad Pixel)               <SPAN  CLASS="textbf">Not set- please see section below</SPAN>  
+</LI>
+<LI><SPAN  CLASS="textbf">Bit 1</SPAN> (Read-out streak)         A series of 16 unbinned vertical columns, horizontally-centred on a star of raw 
+                                               count-rate <!-- MATH
+ \begin{math}
+\ge
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\ge$"></SPAN> 60 counts/sec. 
+</LI>
+<LI><SPAN  CLASS="textbf">Bit 2</SPAN> (Smoke-ring)              A circular region centred on the positionally-dependent, empirically-derived centre of a
+                                               smoke-ring. The circle has a radius of 38 arcsecs and the flag is set for all smoke rings with
+                                               parent sources <!-- MATH
+ \begin{math}
+\ge
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\ge$"></SPAN> 60 counts/sec.              
+
+<P>
+</LI>
+<LI><SPAN  CLASS="textbf">Bit 3</SPAN> (Diffraction spikes )     Four rectangular regions rotated from the vertical by <!-- MATH
+ \begin{math}
+\pm 45
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$\pm 45$"></SPAN> and <!-- MATH
+ \begin{math}
+\pm
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$\pm$"></SPAN> 
+                                               135 degrees. The half-width of a rectangle is 10 unbinned pixels and they extend radially, 50 to 250 unbinned pixels
+                                               from the centre of the star. This flag is only set if the central source <!-- MATH
+ \begin{math}
+\ge
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\ge$"></SPAN> 70 counts/sec.
+
+<P>
+</LI>
+<LI><SPAN  CLASS="textbf">Bit 4</SPAN> (Modulo-8 fixed pattern)  Rectangular region centred on a source <!-- MATH
+ \begin{math}
+\ge
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\ge$"></SPAN> 60 counts/sec. The rectangle has a minimum
+           half-width of 16 unbinned pixels. Pattern extent is related to source brightness, source morphology and local field density. The algorithm will
+          attempt to determine the extent of the pattern and will adjust the dimensions of the rectangle accordingly.            
+
+<P>
+</LI>
+<LI><SPAN  CLASS="textbf">Bit 5</SPAN> (Central-enhancement region)  A circular region centred upon detector coordinate (992,1063) with a radius of 160 pixels.
+
+<P>
+</LI>
+<LI><SPAN  CLASS="textbf">Bit 6</SPAN> (Bright-source close proximity) is set by <SPAN  CLASS="textbf">omdetect</SPAN>.
+
+<P>
+</LI>
+<LI><SPAN  CLASS="textbf">Bit 7</SPAN> (Image edge)              Any pixel within a border distance of 12 unbinned pixels.   
+</LI>
+<LI><SPAN  CLASS="textbf">Bit 7</SPAN> (OM detector corner)      Any pixel outside the circle centred on x=979.2, y=1016.0 with a radius of 1300 unbinned pixels.
+
+<P>
+</LI>
+<LI><SPAN  CLASS="textbf">Bit 8</SPAN> (Point-source lies within extended source) is set by <SPAN  CLASS="textbf">omdetect</SPAN>.
+
+<P>
+</LI>
+<LI><SPAN  CLASS="textbf">Bit 9</SPAN> (Weird source- bright (hot) isolated pixels) Box centred on any abnormally isolated bright pixel of half-width 12 unbinned pixels.
+</LI>
+<LI><SPAN  CLASS="textbf">Bit 10</SPAN> (One or more different exposure pixels within source photometry-aperture). This bit is set by <SPAN  CLASS="textbf">omdetect</SPAN> and only when source-photometry is performed
+using an exposure image .
+
+<P>
+</LI>
+</OL>
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html88"
+  HREF="node5.html">Notes</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Notes"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node27.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="rgsfluxer">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsfluxer.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="rgsfluxer.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsfluxer (rgsfluxer-1.9.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="rgsfluxer.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsfluxer.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="rgsfluxer:description:parameters"></A>
+<A NAME="422"></A>
+<tr valign=top bgcolor='silver'><td><b>pha</b></td><td>yes</td><td><A HREF=../param/node3.html>list of files</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    A list of one or more spectrum files, all produced by
+    <A NAME="430"></A><A NAME="tex2html7"
+  HREF="../rgsspectrum/index.html"><SPAN  CLASS="textbf">rgsspectrum</SPAN></A>.  The task does not enforce any constraint on
+
+the combining of dissimilar spectra.
+    <br>&nbsp;</td></tr>
+
+<A NAME="434"></A>
+<tr valign=top bgcolor='silver'><td><b>rmf</b></td><td>no</td><td><A HREF=../param/node3.html>list of strings</A></td><td>@</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    A list of response matrix files, all produced by <A NAME="443"></A><A NAME="tex2html8"
+  HREF="../rgsrmfgen/index.html"><SPAN  CLASS="textbf">rgsrmfgen</SPAN></A>.
+
+Each response matrix is paired with the corresponding spectrum and
+    must be compatible with it.  The only practical requirement for
+    compatibility is that the spectrum and paired response matrix
+    share the same reflection order.  Because of this, it is possible,
+    if not always advisable, to combine several spectra using only one
+    response matrix.  As a shorthand for this, the special filename
+    ``.'' may be used to indicate that the previous response matrix
+    should be repeated.  Any number of successive repeats are allowed,
+    but the number of response matrix files must equal the number of
+    spectrum files.  A further shorthand notation, ``@'', may be used
+    to indicate that the name of the response matrix file can be
+    inferred from the name of the corresponding spectrum file by
+    replacing the ``SRSPEC'' label with ``RSPMAT'' (assuming the
+    PPS-style file naming convention supported by <A NAME="447"></A><A NAME="tex2html9"
+  HREF="../rgsproc/index.html"><SPAN  CLASS="textbf">rgsproc</SPAN></A>).
+
+<br>&nbsp;</td></tr>
+
+<A NAME="451"></A>
+<tr valign=top bgcolor='silver'><td><b>bkg</b></td><td>no</td><td><A HREF=../param/node3.html>list of files</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    A list of one or more background spectrum files, all produced by
+    <A NAME="459"></A><A NAME="tex2html10"
+  HREF="../rgsspectrum/index.html"><SPAN  CLASS="textbf">rgsspectrum</SPAN></A>.  The task does not enforce any constraint on
+
+the combining of dissimilar spectra. The number of background spectra 
+    and pha spectra must equal and they must be in the same order in the 
+    parameter lists.
+    <br>&nbsp;</td></tr>
+
+<A NAME="463"></A>
+<tr valign=top bgcolor='silver'><td><b>witharf</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Switch parameter to enable the possibility os running <A NAME="473"></A><A NAME="tex2html11"
+  HREF="../rgsfluxer/index.html"><SPAN  CLASS="textbf">rgsfluxer</SPAN></A>
+using response matrix and effective area as two different files. This is only
+    possible if <A NAME="477"></A><A NAME="tex2html12"
+  HREF="../rgsrmfgen/index.html"><SPAN  CLASS="textbf">rgsrmfgen</SPAN></A>
+task was executed with the parameter <TT>witharffile</TT> enabled.
+    <br>&nbsp;</td></tr>
+
+<A NAME="482"></A>
+<tr valign=top bgcolor='silver'><td><b>arf</b></td><td>no</td><td><A HREF=../param/node3.html>list of files</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    A list of one or more effective area files, all produced by
+    <A NAME="493"></A><A NAME="tex2html13"
+  HREF="../rgsrmfgen/index.html"><SPAN  CLASS="textbf">rgsrmfgen</SPAN></A>
+using parameter <TT>witharffile</TT>. If using this parameter, 
+    the corresponding rmf file had to be generated by <A NAME="498"></A><A NAME="tex2html14"
+  HREF="../rgsrmfgen/index.html"><SPAN  CLASS="textbf">rgsrmfgen</SPAN></A>
+using the parameter <TT>witharffile</TT>.
+    The number of effective area files and rmf files
+     must be in the same order in the parameter lists.
+    <br>&nbsp;</td></tr>
+
+<A NAME="503"></A>
+<tr valign=top bgcolor='silver'><td><b>format</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>dal</td><td>dal|ascii|qdp</td></tr>
+
+<tr valign=top><td colspan=5>
+    The desired format of the output fluxed spectrum: either a
+    FITS-encoded SAS dataset (dal), a basic ASCII-encoded text file,
+    or a text file formatted as input to qdp.
+    <br>&nbsp;</td></tr>
+
+<A NAME="510"></A>
+<tr valign=top bgcolor='silver'><td><b>file</b></td><td>no</td><td><A HREF=../param/node3.html>file</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The file name for the output fluxed spectrum.  The default name
+    varies according to the <TT>format</TT>: flux.ds (dal), flux.txt,
+    or flux.qdp.
+    <br>&nbsp;</td></tr>
+
+<A NAME="519"></A>
+<tr valign=top bgcolor='silver'><td><b>mode</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>wavelength</td><td>wavelength|energy</td></tr>
+
+<tr valign=top><td colspan=5>
+    The computational mode: wavelength units (&#197;) or energy units
+    (keV).  This sets the units for the fluxing bins as specified by
+    the parameters <TT>min</TT> and <TT>max</TT>, below, and as
+    represented in the output file.
+    <br>&nbsp;</td></tr>
+
+<A NAME="530"></A>
+<tr valign=top bgcolor='silver'><td><b>tryspectrumgrid</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5> 
+  Boolean parameter to use the input spectra grid if they are all consistent. 
+  This parameter overwrites  <TT>min</TT>,   <TT>max</TT> and <TT>bins</TT> parameters 
+     <br>&nbsp;</td></tr>
+
+<A NAME="543"></A>
+<tr valign=top bgcolor='silver'><td><b>min</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>4.0</td><td>non-negative</td></tr>
+
+<tr valign=top><td colspan=5>
+    The lower edge of the first output bin in units determined by the
+    <TT>mode</TT>.  The default is not appropriate if energy units have
+    been selected.
+    <br>&nbsp;</td></tr>
+
+<A NAME="552"></A>
+<tr valign=top bgcolor='silver'><td><b>max</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>40.0</td><td>non-negative</td></tr>
+
+<tr valign=top><td colspan=5>
+    The upper edge of the last output bin in units determined by the
+    <TT>mode</TT>.  The default is not appropriate if energy units have
+    been selected.
+    <br>&nbsp;</td></tr>
+
+<A NAME="561"></A>
+<tr valign=top bgcolor='silver'><td><b>bins</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>3600</td><td>positive</td></tr>
+
+<tr valign=top><td colspan=5>
+    The number of output bins.
+    <br>&nbsp;</td></tr>
+
+<A NAME="568"></A>
+<tr valign=top bgcolor='silver'><td><b>quality</b></td><td>no</td><td><A HREF=../param/node3.html>list of integers</A></td><td>&nbsp;</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$0\leq$"></SPAN> quality <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\leq 5$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter controls how the quality flags from the input
+    spectrum files are propagated into the output fluxed spectrum.  If
+    the quality flag of an input spectral channel is not represented
+    in this list, the associated count rate is simply discarded.
+    Where multiple channels, either from the same or from different
+    spectra, overlap the same output bin, the output quality is
+    degraded to the worst input quality.  This ranking is set by the
+    order of the list itself: from highest quality to lowest.  Thus
+    the list ``0 2 1'' preserves all input channels and degrades the
+    quality in the sequence, ``good'' to ``dubious'' to ``bad''.  The
+    default preserves only the ``good'' channels.  When only one
+    quality value is permitted, the quality column is omitted from the
+    output file.  Quality flags three, four and five are defined
+    within XSPEC, but are not currently used by <A NAME="576"></A><A NAME="tex2html15"
+  HREF="../rgsspectrum/index.html"><SPAN  CLASS="textbf">rgsspectrum</SPAN></A>.
+
+<br>&nbsp;</td></tr>
+
+<A NAME="580"></A>
+<tr valign=top bgcolor='silver'><td><b>withaltnan</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Undefined values (NaN) occur at spectral channels where there is
+    no exposure, such as in the gaps between chips.  To accommodate
+    the many standard analysis packages that do not react well to NaN,
+    assert this parameter to cause all instances of NaN in the output
+    to be replaced with the finite alternative specified by the
+    parameter <TT>nan</TT>, below.
+    <br>&nbsp;</td></tr>
+
+<A NAME="589"></A>
+<tr valign=top bgcolor='silver'><td><b>nan</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If enabled, this value is used instead of the IEEE NaN (or ``no'',
+    in the case of <TT>format</TT>=qdp) to indicate an undefined value
+    in the output fluxed spectrum.
+    <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="rgsfluxer.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

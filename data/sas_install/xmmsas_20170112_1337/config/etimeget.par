@@ -1,0 +1,93 @@
+<!-- converted from XPI formatted "etimeget.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="withfilestem" type="bool" default="yes">
+   <DESCRIPTION>
+    Define file names using the filestem parameter ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="filestem" type="dataset" mandatory="no" default="lcurve">
+      <DESCRIPTION>
+       Stem for output filenames
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+    <ITEM value="no">
+     <PARAM id="srcrateset" type="string" mandatory="yes" default="srcrate.lc">
+       <DESCRIPTION>
+        Name of output source light curve
+       </DESCRIPTION>
+     </PARAM>
+     <PARAM id="bckrateset" type="string" mandatory="yes" default="bckrate.lc">
+       <DESCRIPTION>
+        Name of output background light curve
+       </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="srcexp" type="string" mandatory="yes">
+   <DESCRIPTION>
+    selection expression for source region
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="backexp" type="string" mandatory="yes">
+   <DESCRIPTION>
+    selection expression for background region
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="table" type="dataset" mandatory="yes" default="myevents.ds">
+   <DESCRIPTION>
+    Name of events table
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="timebinstyle" type="string" mandatory="no" default="intrinsic">
+   <DESCRIPTION>
+    Format of time bin width definition (intrinsic, parameter)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="intrinsic">
+    </ITEM>
+    <ITEM value="parameter">
+     <PARAM id="timebinwidth" type="real" default="1.0">
+     <DESCRIPTION>
+       Width of time bins (seconds)
+     </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withtimeranges" type="bool" default="no">
+   <DESCRIPTION> Use min/max values for time series extraction </DESCRIPTION>
+   <CASE>
+       <ITEM value="no"> </ITEM>
+       <ITEM value="yes">
+           <PARAM id="timemin" type="time" default="0" mandatory="yes">
+           <DESCRIPTION> Lower limit for time series </DESCRIPTION>
+           </PARAM>
+                                                                                
+           <PARAM id="timemax" type="time" default="1000" mandatory="yes">
+           <DESCRIPTION> Upper limit for time series </DESCRIPTION>
+           </PARAM>
+       </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

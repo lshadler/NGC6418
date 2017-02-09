@@ -1,0 +1,2636 @@
+ChangeLog for Calibration Access Layer (CAL)
+============================================
+
+Open SOC-SPRs/SCRs:
+	*none*
+
+<<<<<<< ChangeLog
+
+Version 3.239.2 - 2016-11-03 (AI)
+---------------
+	+ (src/EffectiveAreaDataServer.h/cc) New AREACORR methods added.
+
+Version 3.239.1 - 2016-10-18 (RDS)
+---------------
+	+ (cxxtest/fwc.cc)	   	   - Changed FWC test to EMOS1
+
+Version 3.239 - 2016-10-06 (RDS)
+---------------
+	+ (src/FWCDataServer.cc/h)	   - Added a new atom to return
+					     filter wheel closed data
+					     (SCR-7361)
+
+Version 3.238 - 2016-09-02 (RDS&AI)
+---------------
+	+ (f90/CalF90cxxGlue.cc) check of dope vector added to several methods
+	+ (src/CalDataVector.h,CcdQuantumDataServer.cc,Redistribution.cc)
+	gcc-6.2 compatibility changes
+	+ (f90test) Initialization to null of all pointers that are passed 
+	to C++ (Dope vectors). If we do not initizialize the pointers, 
+	we get seg fault at run-time.	
+	
+Version 3.237 - 2016-06-30 (AI)
+---------------
+	+ (f90/CalF90cxxGlue.cc) gfortran compatibility 
+	chaged for Dope (array descriptor) structures.
+	+ (f90test/caltest_epn.f90 _emos.f90 _rgs.f90) gfortran stdout write 
+	compatibility changes.
+	
+Version 3.236.3 - 2016-02-01 (RDS)
+---------------
+	+ (src/GeometryDataServer.cc)     - Remove debug causing problem in
+					    psfgen test (SPR-7341)
+
+Version 3.236.2 - 2016-01-21 (RDS)
+---------------
+	+ (f90/CalF90cxxGlue.cc)          - Fix for time-dependence in 
+					    boresight (SPR-7337)
+
+Version 3.236.1 - 2015-12-14 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc)        - Fixes for algoid=5
+
+Version 3.236 - 2015-12-10 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc/h       - Computes long_term_CTI from a table
+					    stored in CCF (algoid=5). (SPR-7315)
+
+Version 3.235 - 2015-11-18 (RDS)
+---------------
+	+ (src/Boresight.cc               - Made compatible with algoid=1
+	  (f90test/caltest_emos.f90)	    only. The old CCF will now result
+					    in an error message. (SCR-7265)
+
+Version 3.234 - 2015-09-01 (RDS)
+---------------
+	+ (src/Boresight.h)               - Gave public C++ access to
+					    updateBoresight method
+					    (SCR-7265)
+Version 3.233 - 2015-03-11 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc/h       - Added support for BURST mode
+					    RDPHA corrections
+						(SCR-7280)
+Version 3.232.1 - 2014-09-17 (RDS)
+---------------
+	+ (src/Redistribution.cc,
+	   src/SpecQualityServer.cc)      - Removed DEBUG
+
+Version 3.232 - 2014-09-02 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc/h       - Added a new param MAXMIP into the
+	   f90/CalF90cxxGlue.cc/h)	    call to correct for bkgnd level.
+	   				    Now divides by the MIPSEL
+					    correction factor.
+
+Version 3.231 - 2014-08-27 (RDS)
+---------------
+	+ (src/PsfDataServer.cc           - Introduction of the SLEW
+	   src/CalCommon.cc/h               model PSF
+	   f90/caltypes.f90)		       (SCR-7216)
+
+	+ (src/EnergyCorrector.cc)        - Fix for verbosity=5 long-term-cti
+					    problem.
+
+Version 3.230 - 2014-08-07 (RDS)
+---------------
+	+ (src/EffectiveAreaDataServer.cc/h) - Fix a problem with the 
+					       areacorr application for MOS
+
+Version 3.229 - 2014-07-16 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc)        - Uses a conversion factor to 
+					    handle different MIPSEL values in
+					    the correction for bkgnd level.
+
+	+ (src/EnergyCorrector.cc)	  - Returns a NULL in COMB_EVT work
+					    if the input PI is a NULL.
+
+Version 3.228 - 2014-07-07 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc         - Changed working units from ADU
+					    to eV in COMB_EVT work
+
+Version 3.227 - 2014-06-26 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc         - Solved problem with negative
+					    event patterns in COMB_EVT work
+
+Version 3.226 - 2014-06-05 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc         - Solved problem with uninitiated
+					    vectors when COMB_EVT_OFFSET block
+					    not present in CCF
+
+Version 3.225 - 2014-05-30 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc/h       - Added a new param MIPSEL into the
+	   f90/CalF90cxxGlue.cc/h)	    call to correct for bkgnd level.
+	   				    Also added an empirical correction
+					    for the double-pixel energy offset
+					      (SCR-7192, SCR-7195)
+
+Version 3.224 - 2014-05-20 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc/h       - Added a new call to correct the
+	   f90/CalF90cxxGlue.cc/h)	    gain for the background level
+					    defined by the number of discarded
+					    lines. (SCR-7192)
+
+Version 3.223 - 2014-05-15 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc/h))     - Included algoid=4 support for
+					    the long-term CTI:
+					    - 4th order term (SCR-7193)
+					    - Energy dependence (SCR-7194)
+
+Version 3.222 - 2014-24-04 (RDS)
+---------------
+	+ (src/Redistribution.cc)         - Added support for time dependent
+					    EPIC-pn redistribution params
+						(SCR-7196)
+
+Version 3.221 - 2014-04-03 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc/h))     - Added support for a correction
+					    array in the XRT_XAREAEF files
+					       (SCR-7191)
+
+Version 3.220 - 2014-03-19 (RDS)
+---------------
+	+ (calview/CalViewables.cc)       - Removes the option of producing an
+					    encircled energy plot from the
+					    XENCIREN CCF elements
+					     (SCR-158)
+	+ Experimental version of EPIC-pn
+	  combined event energy corrector
+
+Version 3.219 - 2013-10-30 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc/h))      - Also returns coefficient errors 
+					     for rate-dep PHA call
+					     (SCR-7123, SCR-713)
+
+Version 3.218.1 - 2013-10-21 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc/h))      - New algorithm for rate-dep
+					     CTI correction (SCR-7132)
+
+Version 3.218 - 2013-08-27 (RDS)
+---------------
+	+ (calview/CalViewables.cc/h)      - Added contamination as an option 
+					     for calview (SCR-7106)
+
+Version 3.217 - 2013-08-22 (RDS)
+---------------
+	+ (src/ContaminantDataServer.cc/h) - Added a new atom to model the 
+					     MOS contamination. (SCR-7106)
+
+	+ (f90/CalF90cxxGlue.cc)	   - Fixed a problem with 
+					     CAL_camCoord1ToChipRealCoord 
+					     in low memory mode.  
+
+Version 3.216 - 2013-07-04 (RDS)
+---------------
+	+ (src/GeometryDataServer.cc)	 - Problem discovered with onCcd()
+					   method which implicitly changes the
+					   frame to CamCoord2. This now resets
+					   the frame to CamCoord1 if that was
+					   the frame at the time of entry
+
+Version 3.215 - 2013-07-01 (RDS)
+---------------
+	+ (src/GeometryDataServer.cc/h)	 - Added a method to return chip
+					   coordinates as real numbers,
+					   CAL_camCoord1ToChipRealCoord
+					   The call to return integer chip
+					   coords now goes via this routine.
+						(SCR-7104)
+
+Version 3.214.5 - 2013-04-03 (RDS)
+---------------
+	+ (src/PsfDataServer.cc/h)	 - Added a method to return the 
+					   radial offset from the nominal
+					   PSF centre (SCR-348)
+
+Version 3.214.4 - 2013-03-20 (RDS)
+---------------
+	+ (src/Boresight.cc)	 	 - Changed informational message
+					   from verbose to noisy
+
+Version 3.214.3 - 2013-03-15 (RDS)
+---------------
+	+ (src/PsfDataServer.cc	 	  - ELLBETA-encircled energy method
+					    changed to use subpixels
+						(SPR-7099)
+
+Version 3.214.2 - 2013-02-27 (RDS)
+---------------
+	+ (src/RgsSolarAspectAngServer.cc/h) - Changed RgsSolarAspectAngServer
+					       to ouput double precision params
+						(SCR-340)
+
+Version 3.214.1 - 2013-02-26 (RDS)
+---------------
+	+ (src/RgsSolarAspectAngServer.cc/h) - Added new atom
+					       RgsSolarAspectAngServer
+						(SCR-340)
+
+Version 3.214 - 2013-02-18 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc/h)	 - Added support for the RDPHA_DERIV
+					   extension in the EPN_CTI file
+						(SCR-350)
+
+Version 3.213 - 2013-02-15 (RDS)
+---------------
+	+ (src/TimeJumpTolServer.cc,	 - Now works for all modes
+
+Version 3.212 - 2012-12-18 (AI)
+---------------
+	+ (src/GratingDataServer.cc/h)   - Introduction of a new method 
+	                                   lambda2beta. 
+						(SPR-6688)
+	
+Version 3.211 - 2012-12-05 (RDS)
+---------------
+	+ (src/TimeJumpTolServer.cc/h,	 - Support for a new CCF element
+	   f90/CalF90cxxGlue.cc/h)         TIMEJUMPTOL which gives the time 
+					   jump tolerance as a function 
+					   of revolution
+						(SCR-268)
+
+Version 3.210 - 2012-07-27 (RDS)
+---------------
+	+ (src/PsfDataServer.cc/h,	 - Introduction of a new method
+	   calview/CalViewables.cc)	   enclosingCircle(VECTOR<FRACS>)
+					   which calculates the encircled
+					   energy function by image integration
+					   for the ELLBETA mode PSF
+						(SPR-6756)
+
+Version 3.209.3 - 2012-05-17 (RDS)
+---------------
+	+ (src/LowEnergyNoiseServer.cc)  - Fixed error with X-ray loading
+					   coefficients
+
+Version 3.209.2 - 2012-04-17 (RDS)
+---------------
+	+ (src/LowEnergyNoiseServer.cc)  - Removed debug
+
+Version 3.209.1 - 2012-03-30 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc)	 - Remove unused variables
+	+ (src/LowEnergyNoiseServer.cc/h)- Added support for Closed filter
+					   offset maps and X-ray loading 
+					   coefficients (SCR-331)
+
+Version 3.209 - 2012-02-23 (RDS)
+---------------
+	+ (src/Boresight.cc/h)	 	 - Added timedepence for boresight
+					   calculation (SCR-334)
+
+Version 3.208 - 2012-02-20 (RDS)
+---------------
+	+ (src/PsfDataServer.cc)	 - Handles Gaussian term in ELLBETA
+					   PSF correctly if FWHM=0
+
+Version 3.207 - 2011-12-21 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc/h)	 - Tidy up the spatial CTI correction
+					   for release (SPR-6653)
+
+Version 3.206 - 2011-12-07 (RDS)
+---------------
+	+ (src/PsfDataServer.cc)	 - Fixed bug in spoke determination
+					   which caused crash if image
+					   was not square.
+						(SPR-6679)
+
+Version 3.205 - 2011-11-17 (RDS)
+---------------
+	+ (src/PsfDataServer.cc)	 - Change ELLBETA spokes to use
+					   formula with RD1, RD2, RD3
+					   keywords. This in response to the
+					   Owen & Ballet, 2011, v2.1 doc.
+
+Version 3.204.1 - 2011-10-04 (RDS)
+---------------
+	+ (src/PsfDataServer.cc)	 - Remove debug
+
+Version 3.204 - 2011-06-09 (RDS)
+---------------
+	+ (src/PsfDataServer.cc/h)	 - ELLBETA model - fix error with
+					   radial dependence of the spoke
+					   strength (SPR-6540)
+						
+Version 3.203 - 2011-05-05 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc/h)	 - Add the spatial CTI correction
+					        (SPR-6653)
+
+Version 3.202 - 2011-04-13 (RDS)
+---------------
+	+ (src/PsfDataServer.cc/h)	 - ELLBETA model - move constants from
+					   code into CCF and implement a
+					   radial dependence in the spoke
+					   strength
+						(SPR-6654)
+
+Version 3.201.1 - 2011-01-11 (RDS)
+---------------
+	+ (src/CalCommon.cc/h,           - Complies with template standard 
+	   src/PsfDataServer.cc)	   and fixes issue with "for"
+					   statement with no action introduced 
+					   in GCC 4.1 
+ 
+Version 3.201 - 2010-09-09 (RDS)
+---------------
+	+ (src/Redistribution.cc/h)      - Implements a new redistribution 
+					   model for the MOS (SCR-309)
+
+Version 3.200.5 - 2010-04-12 (RDS)
+---------------
+	+ (src/RgsBackgroundServer.cc/h) - Uses integer channel ranges for
+					   RGS (SPR-6606)
+
+Version 3.200.4 - 2010-04-06 (RDS)
+---------------
+	+ (src/RgsBackgroundServer.cc/h) - Updated to handle CCF containing 
+					   template background for BETA and
+					   LAMBDA spectra.
+						(SPR-6606)
+
+Version 3.200.3 - 2010-03-17 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc/h)    - removed debug
+
+Version 3.200.2 - 2010-03-08 (RDS)
+---------------
+	+ (src/SpecQualityServer.cc/h)  - Returns bad channel ranges for RGS
+					  order 1 and 2.
+						(SPR-6596)
+
+Version 3.200.1 - 2010-03-02 (RDS)
+---------------
+	+ (src/SpecQualityServer.cc/h)  - Extra methods to return the bad
+					  channel ranges in BETA or Lambda
+					  space.
+						SPR-6596
+
+Version 3.200 - 2010-02-25 (AI)
+---------------
+	+ (src/EffectiveAreaCurve.cc/h) - Rectification implementation done 
+						(SCR-296).
+
+Version 3.199 - 2010-02-22 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc/h)    
+
+		- Gives two options of processing the long-term 
+		  CTI trend. 
+
+		algoid=2:  the current method
+		algoid=3:  a delta to the 1st order correction
+
+		SPR-6592
+
+	+ (src/EffectiveAreaCurve.cc/h) - Introduction of outline for
+					  rectification of RGS effective
+					  areas (SCR-296)
+
+Version 3.198 - 2010-02-17 (RDS)
+---------------
+	+ (src/PsfDataServer.cc/h)      - The ELLBETA model has its parameters
+					  linearly interpolated.
+
+	+ (src/SpecQualityServer.cc/h)  - Accesses the EMOS1_RESOLUTION,
+					  EMOS2_RESOLUTION etc. blocks
+					  which give the energy resolution
+					  of each instrument.
+
+Version 3.197 - 2010-01-19 (RDS)
+---------------
+	+ (src/EffectiveAreaDataServer.cc) - Error in RGS contamination loop
+				             SPR-6583
+
+Version 3.196 - 2009-10-05 (RDS)
+---------------
+	+ (src/PsfDataServer.cc/h)       - This is a TEST version !!
+
+	The ELLBETA model is interpolated using the closest calibration point
+
+	The ELLBETA encircled energy is calculated by integrating the
+	image rather than by using the analytic formula. This leads to
+	non-smooth curves but allows the radial profile of the PSF image
+	to be checked.
+
+	+ (src/GemoetryDataServer.cc)    - Emits message bout CORNER table
+					   only for MOS or PN
+
+Version 3.195 - 2009-09-23 (RDS)
+---------------
+        + (src/ScreenThresholdServer.cc) - Really Fixed bug in call to CCD=1 server
+
+Version 3.194 - 2009-07-31 (RDS)
+---------------
+	+ (src/PsfDataServer.cc)        - Solved problem with ELLBETA 
+					  normalisation at large ellipticites.
+
+					  Also cleaning, commenting and 
+					  updating the documentation
+
+Version 3.193 - 2009-07-30 (RDS)
+---------------
+        + (src/PsfDataServer.cc)        - The psf->image code returns
+					  a MEDIUM mode or ELLBETA mode
+					  model with the X/Y axes unflipped
+					  Previously, they were flipped in
+					  the wrong way.
+
+	+ (calview/CalViewables.cc)     - This was flipping the X/Y axes.
+					  of the PSF image. It now displays 
+					  the image as received from the CAL.
+ 
+Version 3.192 - 2009-07-22 (RDS)
+---------------
+        + (src/PsfDataServer.cc)        - Restored references to ELLBETA
+                                          and SetPosAngle code
+
+                                        - The code returns a PSF image which
+                                          is rotated in a clockwise direction
+                                          with phi and in an anti-clockwise
+                                          direction with position_angle
+
+        + (src/ScreenThresholdServer.cc) - Fixed bug in call to CCD=1 server
+ 
+
+Version 3.191.4 - 2009-07-06 (AI)
+---------------	
+	+ Modifications is several source files to make dal gcc 4.3 compliant. 
+	
+Version 3.191.3 - 2009-06-12 (RDS)
+---------------
+	+ (src/PsfDataServer.cc)        - Removed references to ELLBETA
+					  Commented out all SetPosAngle code
+	+ (src/CalCommon.cc/h)		- Removed references to ELLBETA
+
+Version 3.191.2 - 2009-06-05 (RDS)
+---------------
+	+ (src/PsfDataServer.cc)        - Reset the addition to PHI as + (90-PA) but
+					  use -PA as the rotation angle for spokes + shape
+
+Version 3.191.1 - 2009-05-29 (RDS)
+---------------
+	+ (src/PsfDataServer.cc)        - Made the internal position angle
+					  = - input position_angle. 
+				          Previously it was 90-PA.
+
+Version 3.191 - 2009-04-29 (RDS)
+---------------
+	+ (src/PsfDataServer.cc)        - Fixed a problem with the total
+					  rotation angle > 2 * PI.
+
+Version 3.190 - 2009-04-20 (RDS)
+---------------
+	+ (src/PsfDataServer.cc/h)      - Added a method CAL_setPosAngle
+					  which rotates the 2-d PSF by an
+					  input position angle.
+
+					  In the case of the ELLBETA PSF
+					  the spokes are also rotated by 
+					  the PA.
+
+	+ (src/SpecQualityServer.cc/h) - New atom to access the spectral
+					 quality ranges defined in the
+					 XMM_SPECQUAL CCF.
+
+Version 3.189 - 2009-04-13 (RDS)
+---------------
+	+ (src/ScreenThresholdServer.cc/h) - New atom to access the screen
+					     threshold values for MOS CCFs
+					     EMOSn_SCREENTHRESH_*.CCF
+
+	+ (src/GeometryDataServer.cc/h) - Access to new table, CORNER, in 
+					  EMOSn_LINCOORD files. This gives
+					  the out-of-FOV corners.
+
+						(SCR_279)
+
+
+Version 3.188.4 - 2009-03-12 (RDS)
+---------------
+	+ (src/PsfDataServer.cc)      - Fixed problem with rectangular
+					images in ELLBETA mode
+					
+Version 3.188.3 - 2009-03-10 (RDS)
+---------------
+	+ (src/PsfDataServer.cc)      - Fixed minor problem with Gaussian norm.
+					
+
+Version 3.188.2 - 2009-03-09 (RDS)
+---------------
+	+ (src/PsfDataServer.cc/h)    - Added spokes into the EBG image model
+					- Main spokes
+					- Secondary spokes
+					- Triangular (M1) or Pentagon (M2)
+					  shapes
+					- Light smooth
+
+Version 3.188.1 - 2009-01-21 (RDS)
+---------------
+	+ (src/PsfDataServer.cc)      - Fixed problem with Gaussian 
+					encircled energy -> nan.
+
+Version 3.188 - 2009-01-19 (RDS)
+---------------
+	+ (src/PsfDataServer.cc/h)    - Added extra Gaussian component to
+					the Elliptical King PSF.
+
+Version 3.187.3 - 2008-06-23 (RDS)
+---------------
+	+ (src/PsfDataServer.cc)      - Remove Warning message if elliptical
+					CCF not found.
+
+Version 3.187.2 - 2008-05-23 (RDS)
+---------------
+	+ (src/PsfDataServer.cc)      - Remove debug
+
+=======
+Version 3.187.2 - 2008-05-23 (AI)
+---------------
+	+ (src/GratingDataServer.cc) - New method energy to convert wavelength to energy
+	
+>>>>>>> 1.381
+Version 3.187.1 - 2008-04-24 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc)    - Added access to rate-dependent 
+					CTI correction parameters for EPIC-pn
+
+Version 3.187 - 2008-04-15 (RDS)
+---------------
+	+ (src/PsfDataServer.cc)      - Added support for the ELLBETA
+					elliptical 2-d PSF model
+
+Version 3.186.14 - 2007-07-04 (AI)
+---------------
+	+ (src/EnergyCorrector.cc)    - Long-term CTI correction. Added a new Nominal Quadrant Box
+					Temperature that depends on the mode and ccd (_TNominal). 
+					These temperatures are readed from a new column (T_NOM) in the
+					QBOXTEMP_GAIN table.
+				      	Variables _TgainSlope and _TNominal changed to map.
+	
+	
+Version 3.186.13 - 2007-06-28 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc)    - Revert back to the original algorithm
+									but maintaining the CCD-dependence
+									for the Long-term CTI correction.
+
+Version 3.186.12 - 2007-06-27 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc/h)    - Long-term CTI correction +
+
+Version 3.186.11 - 2007-06-26 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc/h)    - Long-term CTI correction 
+
+Version 3.186.10 - 2007-06-20 (RDS)
+---------------
+	+ (cxxtest/quantumef.cc)        - Test harness is not setting the CCD
+									  correction factors before accessing
+									  QE values (SPR-2713)
+
+Version 3.186.9 - 2007-06-14 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc/h)    - Solved problem with SW mode long
+									  term CTI correction
+
+Version 3.186.8 - 2007-04-26 (RDS)
+---------------
+	+ (src/OmFluxConverter.cc/h)    - Handles the case where degradation coeffs
+									  are requested for a filter which doesn't 
+									  exist.
+
+Version 3.186.7 - 2007-03-23 (RDS)
+---------------
+	+ (src/OmColorTransformator.cc/h)   - Returns the VEGA zero point
+										  in addition to the AB zero point
+
+Version 3.186.6 - 2007-03-06 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc/h)    - Solved problem with QBOXTEMP access
+										for SW,TI,BU modes
+
+Version 3.186.5 - 2007-03-02 (RDS)
+---------------
+	+ (src/OmFluxConverter.cc/h)    - Added CAL_omGetDegradationCoeffs
+										call which returns the OM
+										degradation coeeficients (SCR-212)
+
+Version 3.186.4 - 2007-02-16 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc/h)    - Added cal_eVToPi call
+
+Version 3.186.3 - 2007-02-05 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc)    - Long-term CTI correction made CCD-dept
+                                    (ALGOID=2).
+                                  - New temperature-dept gain structure,
+									QBOXTEMP_GAIN supported in EPN_CTI.
+
+    + (src/LowEnergyNoiseServer.cc) - Support for MASTER_OFFSET maps
+										in EPN_REJECT.
+
+										(SCR-228,229)
+
+Version 3.186.2 - 2007-01-05 (RDS)
+---------------
+	+ (src/GratingDataServre.cc)  - Now attempts to use the calServer to
+									find the Incidence Angle. This avoids
+									a problem where the CIF file is reopened
+									causing the ccf paremeter to be temporarily
+									ignored (SPR-2611)
+
+Version 3.186.1 - 2006-12-15 (RDS)
+---------------
+	+ (doc/cal_description.tex)  - Document the fact that a cal_setState(inst)
+                                   call, also resets the accuracy_level to 0 
+									(SPR-2603)
+
+Version 3.186 - 2006-11-08 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc)  - EFF_GAIN extension in EPN_CTI becomes 
+                                  CCD specific. ALGOID increased to 1
+
+Version 3.185.5 - 2006-06-27 (RDS)
+---------------
+	+ (src/CtiCorrector.cc)   - Fixed a bug with the deleting the pointer
+                                to the column-dep CTI block.
+
+Version 3.185.4 - 2006-06-23 (RDS)
+---------------
+	+ (src/CtiCorrector.cc)   - Only applies col-dep CTI correction for
+                                pixels lying within nominal chip area
+
+Version 3.185.3 - 2006-06-19 (RDS)
+---------------
+	+ (src/OmGrismDataServer.cc)   - Now accepts algoid=1 GRISMCAL
+                                     CCFs, but rejects the algoid=0 version. 
+                                     (SPR-2672)
+
+Version 3.185.2 - 2006-06-09 (RDS)
+---------------
+	+ (src/CtiCorrector.cc)   - Corrected bug in column-dependent CTI
+                                subtraction.
+
+Version 3.185.1 - 2006-06-06 (RDS)
+---------------
+	+ (src/CalServer.cc)      - Only emits warning about mandatory CCDID
+                                attribute from setState(block) if the block
+                                does not contain a CCDNR column (SPR-2604) 
+
+Version 3.185 - 2006-06-01 (RDS)
+---------------
+	+ (src/CtiCorrector.cc/h) - Added support for MOS column-dependent
+                                CTI (SCR-216)
+
+Version 3.184 - 2006-05-17 (RDS)
+---------------
+	+ (src/RgsBackgroundServer.cc/h) - Mod to set the Xpsf frac to 1.0
+
+Version 3.183 - 2006-05-15 (RDS)
+---------------
+	+ (src/RgsBackgroundServer.cc/h) - Upgraded to select the background
+										values depending on PI and X-disp 
+										psf fractions selected (SPR-2678)
+
+Version 3.182 - 2006-04-11 (AI)
+---------------
+	+ (src/CcdQuantumDataServer.cc/h) - Added a new method to deal with the new 
+	CCD correction factors that depend on the order. We also read the new 5 columns
+	(SENS_Mx) of the QUANTUMEF CCF file.
+	
+Version 3.181 - 2006-03-04 (RDS)
+---------------
+	+ (src/RgsCoolPixDataServer.cc/h)     - Added a new atom to access RGS
+											Cool pixels from the CCF. 
+											(SCR-209)
+ 
+Version 3.180 - 2006-02-22 (AI)
+---------------
+	+ (src/EffectiveAreaDataServer.cc/h) - Removed code to access the RGS
+	effective area correction parameters from RGSn_AREACHEBY.
+	+ (src/EffectiveAreaDataServer.cc/h) - Added code to access the RGS
+	effective area correction from RGSn_EFFAREACORR.
+	+ (src/EffectiveAreaDataServer.cc/h) - Added code to deal with the 
+	time depended effective area correction. New methods added: 
+	- realisticEffectiveAreaCurve
+	- epochInterpolation
+	
+Version 3.179 - 2006-02-08 (RDS)
+---------------
+    + (src/EffectiveAreaDataServer.cc/h)  - Added code to access the RGS
+                                          effective area correction parameters
+                                          from RGSn_AREACHEBY (SPR-2658)
+
+Version 3.178 - 2005-10-07 (RDS)
+---------------
+	+ (src/CcdQuantumDataServer.cc)  - Changed error status to a warning
+                                       for NoQEData when part of the extraction
+                                       region falls outside a small or large
+                                       window (SPR-2531)
+
+Version 3.177 - 2005-09-15 (RDS)
+---------------
+	+ (src/Redistribution.cc)   - updated to include support for algoid=2
+                                  to avoid problems with SAS 6.1 and earlier
+
+    + (src/OmColorTransformator.cc/h)  Added code to pass count rate to
+                                       flux conversion factors (SCR-197)
+
+Version 3.175.3 - 2005-08-04 (RDS)
+---------------
+	Copy of 3.176 for the release track.
+
+Version 3.176 - 2005-08-03 (RDS)
+---------------
+	+ (src/Redistribution.cc)   - fixed bug in the threshold calculation
+                                  code for MOS
+
+Version 3.175.2 - 2005-07-22 (RDS)
+---------------
+	+ (src/Redistribution.cc)   - fixed bug in the Spatial region
+                                  averaging algorithm
+
+Version 3.175.1 - 2005-06-15 (RDS)
+---------------
+	+ (src/Redistribution.cc)   - remove excessive debug
+
+Version 3.175 - 2005-06-14 (RDS)
+---------------
+	+ (src/Redistribution.cc/h) - new structure including region specification
+                                  for MOS redistribution parameters
+                                  (SPR-2515)
+
+Version 3.174.6 - 2005-05-26 (RDS)
+---------------
+	+ (src/CalAtomsMisc.h,      - now returns frameTime as a double precision
+       f90/CalF90cxxGlue.cc,      number (rather than float) from 
+       CalF90cxxGlue.h,           CAL_getModeParameters both Fortan and C++
+       caltypes.f90,              interfaces (SPR-2615)
+       f90test/calexample_epn.f90) ! Test updated to include frame time             
+Version 3.174.5 - 2005-01-27 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc   - simplified CAL_piToeV to return the
+                                  PI channel number * 1.0 (SPR-2424)
+
+Version 3.174.4 - 2005-01-18 (RDS)
+---------------
+	+ (f90test/vigtest.f90,   -   fixed bug with getVignettingFactor which
+       f90/CalF90cxxGlue.cc)      returned the same value when the instrument
+                                  was changed but not the theta,phi and
+                                  added new test (SPR-2594)
+
+Version 3.174.3 - 2004-11-22 (RDS)
+---------------
+	+ (f90test/caltest_epn.f90) New values for test of distribution CCFs
+
+Version 3.174.2 - 2004-11-16 (RDS)
+---------------
+	+ (src/EnergyCorrector.cc) -  cut down verbose output
+
+Version 3.174.1 - 2004-11-08 (RDS)
+---------------
+	+ (src/Redistribution.h/cc) - added retrieval of PN RMF parameters from
+                                  CCF (SCR-183)
+
+Version 3.174 - 2004-09-20 (RDS)
+---------------
+    + upload of 3.172.6 into the dev track
+
+Version 3.172.6 - 2004-08-04 (RDS)
+---------------
+	+ (src/EnergyCorrector.h/cc) - added gain correction for PN FF mode
+                                   (SCR-159)
+
+Version 3.172.5 - 2004-08-03 (RDS)
+---------------
+	+ Replaced RGS background server code from 3.172.3
+      (src/EnergyCorrector.h/cc) - added gain correction for PN Eff mode
+
+Version 3.172.4 - 2004-07-23 (EO)
+---------------
+	+ Undone all changes made to 3.172.3 in order to let
+	  temporarily make good RT builds:
+	  - cxxtest/Makefile: removed rgsbackground as target object
+	  - f90test/caltest_emos.f90: removed "! call CAL_getFOVmap..."
+	  - src/CalAtomServer.cc: removed getCol(RgsBackgroundServer)
+                                  removed relCol(RgsBackgroundServer)
+	  - src/CalAtomServer.h: removed #include "RgsBackgroundSrver.h"
+	  - src/CalServer.cc: removed getAtomImp(RgsBackgroundServer)
+                              removed relAtomImp(RgsBackgroundServer)
+          - src/Makefile: removed RgsBackgroundServer.h
+                          removed RgsBackgroundServer \
+          - src/PsfDataServer.cc: removed errstr<<"p1: "<<p1v.size()<<" p2: "<<p2v.size()<<" p: "<<p.size() << Sas::message(Msg::App, Msg::Verbose);
+
+Version 3.172.3 - 2004-07-22 (RDS)
+-------------
+        + src/RgsBackgroundServer    - added a new atom RgsBackgroundServer
+                                       to serve the RGS template background
+                                       files RGSn_TEMPLATEBCKGND (SCR-165)
+
+Version 3.172.2 - 2004-02-19 (RDS)
+-------------
+        + src/OmGeoLinearizer.cc     - make filter checks uppercase (SPR-2486)
+
+Version 3.172.1 - 2004-01-27 (RDS)
+-------------
+        + equivalent to 3.173 for the release track
+
+Version 3.173 - 2004-01-20 (RDS/UL)
+-------------
+        + added more code documentation
+        + changed DarkFrameServer.cc to swap the ROW_Y0, COL_X0 arrays
+          which are indirectly served in CAL_MOSoffsets.
+
+Version 3.172 - 2003-12-04 (RDS)
+-------------
+	+ fixed problem with test harness for LowEnergyNoiseServer 
+
+Version 3.171 - 2003-11-27 (RDS)
+-------------
+	+ added atom for LowEnergyNoiseServer (EPN) (SCR-132) 
+    + removed the fix for the CTI corrector (SCR-124) as the special
+      case of MOS Timing mode CTI correction will now 
+      be applied in the emenergy task.
+    + src/OmGeoLinearizer.cc - fixed bug in polycalc routine, delta-X/Y
+                               now come out ok.
+
+Version 3.170 - 2003-11-18 (RDS)
+-------------
+	+ src/OmGeoLinearizer.cc - fixed typos in polycalc routine causing
+                               delta-X and delta-Y to be wrong
+
+Version 3.169 - 2003-11-05 (RDS)
+-------------
+	+ added test for Ccd window routine
+    + src/CtiCorrector.cc  - attempts to read the SW_PAR, LW_PAR arrays
+                             from the CTI-HIGH_ADD_APR extension. If not
+                             found it reads the old LWSW_PAR array (SCR-128)
+
+Version 3.168 - 2003-11-04 (RDS)
+-------------
+	+ added new CAL routine omInverseDistortion to close SCR-118.
+
+Version 3.167 - 2003-10-28 (UL/RDS)
+-------------
+	+ src/CtiCorrector.cc  - use raw-y=299 for MOS timing mode (SCR-124)
+                             this is for testing - probably code the numbers
+                             294 for MOS-1 and 299 for MOS-2 into a CCF.
+
+Version 3.166 - 2003-10-22 (UL/RDS)
+-------------
+	+ added new CAL atom OmGrismDataServer (accesses new CCF OM_GRISMCAL)
+	  [this closes SCR 120]
+
+Version 3.165 - 2003-10-01 (RDS)
+-------------
+	+ support for MOS large_pixel values (SPR-2421).
+          Updated CcdQuantumDataServer.cc/h, cxxtest/quantumef.cc,
+                  CalF90cxxGlue.cc/h, cal.f90, docs.
+
+Version 3.164 - 2003-08-13 (UL)
+-------------
+	+ brought in line with testccf-1.105 (updated f90test/epntime.f90)
+
+Version 3.163 - 2003-07-02 (UL)
+-------------
+	+ fixed problem of SPR 2442: Test harness failure on Mac OS X
+	  [initialisation of vector<string> from char *[] does not work
+	   under Mac OSX/gcc-3.x - workaround implemented in
+	   src/CcdQuantumDataServer.cc]
+
+Version 3.162 - 2003-06-16 (GV)
+-------------
+	+ Misc. fixes to make gcc-3.3 happy: include <cassert> and/or
+	  proper initialization of base classes.
+
+Version 3.161 - 2003-06-13 (GV)
+-------------
+	+ (CalServer.cc) Fix template instantiation that would ahev
+	otherwise failed with gcc-3.3.
+	
+Version 3.160 - 2003-05-23 (UL)
+-------------
+	+ removed couple of forgotten debug statements
+	+ added Verbose message on restart of atom server
+	+ changed description of envrionment variable SAS_CCFFILES in doc
+	+ CalServer.setState() now honors value of 'silent' argument when setting
+	  certain state variable (this mutes warning about too short exposure
+	  duration seen by running odfingest on e.g. DLI files) [requires
+	  caloalutils-1.85]
+
+Version 3.159 - 2003-04-11 (UL)
+-------------
+	+ added EPN_CTI_0001-0008.CCF to config/ccf.conf
+
+Version 3.158 - 2003-03-13 (UL)
+-------------
+	+ changes to fix problem in SPR 2416: core dumps in evigweight
+	+ added EMDHLOW/UPP to f90test/emos.fits (needed by extended
+	  mode detection logic in caloalutils-1.82)
+
+Version 3.157 - 2003-03-07 (UL)
+-------------
+	+ un-did changes related to resolution of SPR 1996 which wrongly stated
+	  that in RGS HTR mode the OCB in dispersion direction is always 1
+
+Version 3.156 - 2003-02-19 (UL)
+-------------
+	+ now DEPENDs on testtccf-1.101 with updated E*QUANTUMEF that contain
+	  CHBINS_FRACTION data; updated test harnesses
+	+ a few further changes related to new 3.155-features
+
+Version 3.155 - 2003-02-17 (UL)
+-------------
+	+ EPIC: transparent pattern fraction rebinning in channel space if desired
+	  input PI channel axis is different from intrinsic one in
+	  QUANTUMEF:CHBINS_FRACTION (fixes SPR 2329)
+
+Version 3.154.1 - 2003-02-12 (UL)
+---------------
+	+ fixed subtle bug in EnergyCorrector::offsetCorrect() [did not show
+	  up before gcc-3.2]
+
+Version 3.154 - 2003-01-30 (UL)
+-------------
+	+ setState(block) no longer generates warning messages about missing
+	  CCDID/NODEID when invoked on merged event lists
+	+ be tolerant when encountering DATE-END=-1 in setState() [needed as of
+	  3.152.1 to determine exposure duration]
+
+Version 3.153 - 2003-01-29 (UL)
+-------------
+	+ brought in line with caloalutils-1.79
+
+Version 3.152.2 - 2002-12-09 (UL)
+---------------
+	+ fixed bug in EpnRedist::spectrum() - caused incorrect mode information
+	  to be passed to calpnalgo for TI/BU mode
+	  (SPR 2381: bug in I/F to calpnalgo redist code)
+	+ minimum exposure duration now 300s; setting exposureDuration to
+	  value less than that causes state warning
+	  (SPR 2382: minimum exposure duration too large)
+
+Version 3.152.1 - 2002-12-03 (UL)
+---------------
+	+ fixed bug which caused reading of EMOS/EPN_QUANTUMEF CCF to terminate
+	  in error for last science mode (FastCompressed/FastBurst) [SPR 2375]
+	+ state variable 'exposureDuration' can now be set/obtained from f90
+	  [SPR 2376]
+
+Version 3.152 - 2002-11-20 (UL)
+-------------
+	+ closed SPR 2303: CAL_psfValidityRanges with ACCURACY_HIGH
+	+ fixed problem with CAL_pnAdditionalGainCorrect() in C++/f90 layer
+	+ fixed problem with missing virtual declaration in EnergyCorrector.h
+	+ implemented ALGOID=1 of EPN long-term CTE model (time-dependence modelled
+	  as 3. order polynomial; all parameters mode dependent); goes with
+	  structural change in EPN_CTI CCF; all changes fully backward compatible
+	+ implemented access to mode-dependent EMOS?_REDIST CCF with new MODE_ID
+	  column; changes backward compatible
+
+Version 3.151 - 2002-08-23 (UL)
+-------------
+	+ frame time parameter of ModeParam atom now obtained from TIMECORR CCF
+	+ additional parameter passed to CTE code in calpnalgo
+
+Version 3.150 - 2002-08-19 (UL)
+-------------
+	+ more transparent fixes to enhance C++ standard compliance
+
+Version 3.149 - 2002-08-16 (UL)
+-------------
+	+ added various f90 routines to retrieve pattern fraction data from CCF
+	+ fixed wrong name of CAL_psfEnboxedEnergy() in c++/f90 I/F layer
+	+ gcc-2.96/3.1 portability fixes
+
+Version 3.148 - 2002-08-02 (UL)
+-------------
+	+ fixed problem in CAL_releaseMemory I/F (3D vectors could not be released)
+
+Version 3.147 - 2002-07-31 (UL)
+-------------
+	+ implemented ALGOID=2 MOS CTI correction
+
+Version 3.146 - 2002-07-26 (UL)
+-------------
+	+ read additional gain/CTI parameters from CCF and pass to CTI/gain
+	  correction codes in calpnalgo>=2.39 [requires EPN_CTI_>=0009.CCF]
+	+ implemented new routines
+		CAL_pnAdditionalGainCtiCorrect
+		CAL_pnGainTimingCorrect
+		CAL_pnGainBurstCorrect
+	  these replace corresponding ones in calpnalgo which become obsolete;
+	  needed parameters are likewise read from EPN_CTI_>=0009.CCF; updated
+	  doc w.r.t to new routines
+	+ closed SPR 2246: Useof CCDID from EMOSn_QUANTUMEFF in calview
+	  [QE Calviewable was not sensitive to theta/phi values in state]
+
+Version 3.145 - 2002-07-22 (JBa)
+-------------
+	+ changes in source files in order to comply with ANSI C++
+
+Version 3.144.1 - 2002-07-01 (UL)
+---------------
+	+ fixed minor problem in one test harness related to 3.144 changes
+
+Version 3.144 - 2002-06-28 (UL)
+-------------
+	+ replaced all occurences of 'strstream' with standard-conformant
+	  'stringstream'
+
+Version 3.143 - 2002-06-26 (UL)
+-------------
+	+ bug fix in misalignmentFigureDistribution() related to recent addition
+	  of ICO argument
+	+ CAMCOORD1->CHIPCOORD conversion will now yield CCD with higest elevation
+	  in focal plane (only relevant for EMOS for overlapping chip areas)
+	  (closes SPR 2326)
+
+Version 3.142 - 2002-06-14 (UL+JDR)
+-------------
+	+ changes to alignment of first moment in dispersion figure distribution
+	  (relevant for rgsrmfgen only)
+	+ added new BackgroundDataServer atom with support for RGS HTR mode
+	+ added inChannelOffset argument to
+		GratingDataServer::misalignmentFigureDistribution()
+
+Version 3.141 - 2002-06-12 (UL)
+-------------
+	+ fixed bug in calculation of errors of converted OM count rates
+	+ fixed minor problem caused by not capturing invalid atan2() arguments
+	  in CAMCOORD2->TELCOORD conversion
+	+ added CAL_getMiscallaneousDataCcd()
+
+Version 3.140 - 2002-05-24 (GV)
+-------------
+	+ Merge changes made on the RT at 3.138.{3,4}
+	+ (Ccf.cc) remove some print statements that had been left in the
+	  constructor of CCfAccessLog. Modify operator<<() for
+	  CcfAccessLog, so that it also re-issues warnings about expired
+	  CCF constituents. This operator is used in taskmain before the
+	  task is exited, so these warnings are again prominently shown. Is
+	  this an example of a 'critical' warning? ;-)
+
+	+ (Ccf.{cc,h}) Change the class CcfAccessLog so that it knows
+	  about possible expired CCF constituents. In Ccf.cc rename the
+	  FileLocator fileLocator to myfileLocator to avoid a name clash
+	  with extern fileLocator (from SasFileLocator.h).  + Add the
+	  configuration file ccf.conf to the config subdirectory.  + Write
+	  test harness for the above: testccfconf
+
+Version 3.139 - 2002-04-18 (UL)
+-------------
+	+ *-vs-theta calview plots go out to theta=1200" now
+	+ brought in line with utils-1.88
+	+ some code aesthetics
+
+Version 3.138 - 2002-03-14 (UL)
+-------------
+	+ empirical correction to RGS effective area (driven by table
+	  RGS?_QUANTUMEF_????.CCF:RGA_EFFAREACORR) now done through interpolation
+	  of correction data
+
+Version 3.137 - 2002-03-06 (UL)
+-------------
+	+ added CAL_toDirectionCosineMatrix()/CAL_toEulerAngles()
+	  (meant to replace CAL_getBoresightMatrix()/CAL_euler321toMatrix()
+	  which will be phased out of the API at some point)
+	+ extended and revised documentation of boresight related routines
+	+ adapted f90 test harnesses w.r.t above additions
+
+Version 3.136.1 - 2002-02-19 (UL)
+---------------
+	+ relaxed interval for allowed chip/camera temperatures in CAL state
+	  to now [0, 300] K for all instruments (was only EMOS in 3.132)
+	+ updated error labels in doc
+
+Version 3.136 - 2002-02-15 (UL)
+-------------
+	+ CAMCOORD2<->TELCOORD conversions now properly take values of
+	  OPTICS_X/OPTICS_Y in XMM_MISCDATA CCF into account
+	+ more precise definition of TELCOORD/CAMCOORD2 in doc
+
+Version 3.135.8 - 2002-02-15 (UL)
+---------------
+	+ bug fix in CrossPsf construction - distributions were wrongly
+	  centered
+	+ changes to CrossPsf Viewable (now show 90% contour + first moment
+	  of distribution vs beta)
+	+ minor bug fix in EMOS redistribution code which prevented pattern-0-only
+	  spectra from being accepted
+
+Version 3.135.7 - 2002-02-12 (UL)
+---------------
+	+ return values of new CAL_getEffectiveArea() are again close to
+	  pre-3.135.6 values (used to be significantly different for large
+	  off-axis angles); now depends on caloalutils-1.64
+
+Version 3.135.6 - 2002-02-08 (UL)
+---------------
+	+ bug fix in EmosRedist::at()
+	+ significantly improved performance of CAL_getEffectiveArea()
+
+Version 3.135.5 - 2002-02-05 (UL)
+---------------
+	+ fixed minor compilation problem under Linux
+
+Version 3.135.4 - 2002-01-30 (UL)
+---------------
+	+ RgsCcdQuantumDataServer: added support for virtual H2O layer on RGS CCD
+	  to model observed absorption feature around O-edge in QE cuves
+	+ brought in line with testccf-1.96
+
+Version 3.135.3 - 2002-01-29 (UL)
+---------------
+	+ fixed minor problem in RgsCcdQuantumDataServer inadvertently
+	  introduced during code reorganization in cal-3.134
+	+ fixed problem in GratingDataServer inadvertently introduced
+	  with cal-1.135.1 (caused failure in case of old-style RGS QUANTUMEF
+	  CCF w/o reflection efficiency correction data)
+	+ fixed coding bug in PsfDataServer helper class (caused crash under
+	  Linux)
+
+Version 3.135.2 - 2002-01-28 (UL)
+---------------
+	+ fixed minor problem with caching of PsfDataServer atom in case accuracy
+	  level was changed autonomously and CAL is used in metatask context
+	+ closed SPR 2261: problem with error propagation in CAL_omPhotoNatural
+
+Version 3.135.1 - 2002-01-25 (UL)
+---------------
+	+ new algorithm to interpret CCF data RGS?_QUANTUMEF.CCF:RGA_EFFCORR
+	  (fudge data are interpolated before being applied to reflection
+	   efficiencies curves)
+
+Version 3.135 - 2002-01-18 (UL)
+---------------
+	+ downgraded CTI mode-mismatch warning to message (Verbose)
+	+ extended list of possible cmode values passed to calpnalgo
+	+ harmonized CcdQuantumDataServer/Redistribution classes w.r.t
+	  event grade selections
+
+Version 3.134 - 2002-01-15 (UL)
+-------------
+	+ new class PatternFractionDataServer which gives access to new
+	  tables in CCF::QuantumEf
+	+ extensive internal re-organization of CcdQuantumDataServer code
+	  in conjunction with addition of new PatternFractionDataServer class
+	+ cal{mos|pn}nalgo I/F: added pattern and patternFraction argument
+	+ failure to find EXTENDED-accuracy PSF in CCF will change accuracy
+	  level to HIGH also in the CAL state
+	+ downgraded couple of CAL warnings to messages (Msg::Noisy)
+	+ temporarily disabled
+		o cxxtest/emosredist
+		o f90test/calexample_emos[redist]
+	  until updated QuantumEf CCF constituent (with pattern fractions)
+	  is in testccf
+	+ check that bad pixel locations read from CCF are within valid bounds -
+	  otherwise end in error (used to give assertion failure)
+
+Version 3.133 - 2001-12-21 (UL) - the Christmas 2001 CAL!
+-------------
+	+ fall back upon HIGH-accuracy PSF model if CCF table for EXTENDED
+	  model is not found (used to fall back to MEDIUM)
+	+ fixed problem with size of last pixel row in case RGS OCB 3x3
+
+Version 3.132 - 2001-12-20 (UL)
+-------------
+	+ fixed another problem with the pixel size of the outermost RGS pixel
+	  columns for OCB>1; work now correctly for all OCBs (tested 1x1, 2x2,
+	  3x3, 4x4, 5x5)
+	+ added new CalViewable which plots outer perimeter of all CCD pixels in
+	  CAMCOORD1 space (can be used to check RGS pixel sizes for OCB>1)
+	+ relaxed interval for allowed chip/camera temperatures in CAL state
+	  to now [0, 300] K
+	+ in new test harness rgspixel: d is now .5 as it ought to be
+
+Version 3.131 - 2001-12-18 (UL)
+-------------
+	+ internal meliorations in CalDataVector class (implemented ref counting);
+	  fixes a problem with instantiation of XmmPixelList from real-valued
+	  coordinates; overhaul of C++/F90 glue in view of changes; added
+	  test harness to test correct RGS pixel size in OCB 3x3
+	+ removed re-normalization of Lorentzian CrossPsf component
+
+Version 3.130 - 2001-12-13 (UL)
+-------------
+	+ changes to CrossPsf normalization; resulting probability spectrum
+	  is no longer re-normalized to given cross dispersion window to
+	  properly account for light loss outside the window; also arbitrary
+	  combination of Gaussian+Lorentzians is now correctly handled
+	+ bug fix to CalDataVector::operator=
+	+ fixed minor problem with peaking EE-curve in calview
+
+Version 3.129 - 2001-12-05 (UL)
+-------------
+	+ altered reading of *CTI*::CTI-EXTENDED to make it compliant with
+	  emos-cti-0.7 changes (CTI_X/CTI_Y are now vector columns of length 4)
+	  related to new ALGOID-1 EMOS CTI correction
+	+ added CAL_getBadPixelCode()/CAL_getAduconvCode() for access to
+	  attributes *BADPIX*CCF:BADPIX%BPT_CODE/*ADUCONV*CCF:OFFSET_GAIN%BPT_CODE;
+	  updated test harnesses + doc accordingly
+
+Version 3.128 - 2001-11-26 (UL)
+-------------
+	+ new King-model PSF (activated on accuracy level EXTENDED) fully
+	  fully implemented (PSF map + EE + inverse EE)
+	+ EE(PSF) viewable now plots EE vs r [arcmin]
+	+ fixed bug in CalDataVector.h (caused crash in HTR offset correction)
+	+ mode recognition in setting state: make use of SUBMODE attribute if
+	  present
+	+ no exception handling in CalView backend to allow GUI to catch
+	  and present errors
+
+Version 3.127 - 2001-11-21 (UL)
+-------------
+	+ RgsEnergyCorrector:
+		- bug fix in HTR offset correction: was testing against wrong mode
+		- added HTR CTI I/F
+	+ more changes related to CCD QE construction with EXAFS data (RGS only)
+	+ bug fix in GeometryDataServer: lead to wrong sizes of outermost pixels
+	  columns of RGS in OCB 3x3/5x5
+
+Version 3.126 - 2001-11-20 (UL)
+-------------
+	+ fixed bug with instantiation of new EXTENDED-level PsfDataServer
+	+ several bug fixes related to new EXAFS scheme affecting
+	  RgsCcdQuantumDataServer
+
+Version 3.125 - 2001-11-06 (UL)
+-------------
+	+ added virtual HTR-specific offset correction method to EnergyCorrector
+	+ new experimental Psf model (from CNR; analytical King model) selected
+	  with new accuracy level 'EXTENDED'
+	+ fixed couple of problems with applying empirical correction curves to
+	  various RGS entities (see 3.123 changes)
+
+Version 3.124 - 2001-10-30 (UL)
+-------------
+	+ added dedicated RgsEnergyCorrector::offsetCorrect() for HTR mode
+	+ fixed problem of SPR 2214: SCR74: list/document errors
+	+ fixed problem of SPR 2220: raw rate input parameter description for
+	  om_phottonatural
+
+Version 3.123 - 2001-10-29 (UL)
+-------------
+	+ brought in line with CAL HB 2.2 changes
+		o construction of RGS QE curves amended by fine structure in
+		  RGS?_EXAFS CCF
+		o self-vignetting + reflection efficiencies constructed with
+		  empirical correction curves (driven by tables in RGS?_QUANTUMEF)
+		o multiplicative empirical correction curve to overall RGS effective
+		  area (driven by table in RGS?_QUANTUMEF
+		all changes are fully backwards compatible; missing CCF data will
+		give pre-3.123 results
+	+ mode determination logic:
+		o in line with caloalutils-1.57 changes; now more reliable for
+		  engineering modes
+		o can identify mode from 'SUBMODE' attribute
+	+ added 'std::' prefix to all standard C++ lib constructs in header files
+	  and 'using namespace std;' in all .cc
+
+Version 3.122 - 2001-10-18 (UL)
+-------------
+	+ fixed problem of SPR 2215: coding error in CAL_omPhotoMagnitude
+	+ requesting filter transmission outside FOV will now yield
+	  warning + transmission=0 instead of error
+
+Version 3.121 - 2001-10-17 (UL)
+-------------
+	+ CAMCOORD1/2/SACCCORD/ROWCOORD coordinates now in double precision to
+	  resolve accuracy problem with sub-pixel positions; affects C++/F90 APIs
+	+ implemented CHIPCOORD->PIXCOORD1 conversion also for non-binodal
+	  readout modes
+	+ added to cal.f90 routine to release int8 1-D array
+
+Version 3.120 - 2001-09-27 (UL)
+-------------
+	+ bug fix: if a CCF constituent was specified with path component (in CIF
+	  or as replacement on command line) it was nevertheless searched along
+	  SAS_CCFPATH
+	+ modiciations to new experimental MOS CTI correction (ALGOID=1)
+
+Version 3.119.1 - 2001-09-26 (UL)
+---------------
+	+ another harmless optimizer related change
+
+Version 3.119 - 2001-09-25 (UL)
+-------------
+	+ fixed SPR 1996: different OCB factors in X/Y for RGS HTR mode not taken\
+					  into account
+	+ couple of trivial changes to make optimizer happy
+	+ new experimental MOS CTI correction (ALGOID=1)
+
+Version 3.118 - 2001-09-14 (UL)
+-------------
+	+ hot/discarded pixel data for EPN CTI correction are now read from
+	  CCF::EPN_BADPIX instead of dedicated tables in CCF::EPN_CTI
+
+Version 3.117 - 2001-08-15 (UL)
+-------------
+	+ in RgsEnergyCorrector::shapeToGrade: turned error into warning
+	+ reading of selectlib-regions from CCF (LinCoord, FilterTrans,
+	  QuantumEf) will now transparently replace "polygon" by "polygon2"
+	  filters to include points on the boundary (see selectlib doc for
+	  more details on new polygon2 filter);
+	  requires selectlib-4.44 + utils-1.76
+
+Version 3.116 - 2001-07-27 (UL)
+-------------
+	+ fixed minor doc problem
+	+ fixed problem of SPR 2140: mode dependence of bad pixels not taken into
+	  account
+
+Version 3.115 - 2001-07-18 (UL)
+-------------
+	+ brought in line with caloalutils-1.54 (one of the tests depends
+	  on value of Xmm::missionStartTime which has changed 1.54)
+	+ also allow FILTER="UNDEFINED" in definition of state
+
+Version 3.114 - 2001-06-01 (UL)
+-------------
+	+ implemented SPR 2054: CAL_rowCoordToSacCoord produces wrong result
+	+ implemented SCR 61: Obtaining the integrated PSF function for OM
+	+ fixed couple of broken links in doc
+
+Version 3.113.3 - 2001-05-15 (UL)
+---------------
+	+ commented out diagnostic output statements in PsfDataServer
+
+Version 3.113.2 - 2001-05-11 (UL)
+---------------
+	+ fixed SPR 2027: Normalization of dispersed PSF distribution wrong
+
+Version 3.113.1 - 2001-05-07 (UL)
+---------------
+	+ updated I/F description of new
+	  GratingDataServer::broadeningDistribution()
+	+ CHIPCOORD->CAMCOORD1 now also works for negative pixel numbers
+
+Version 3.113 - 2001-05-04 (UL)
+---------------
+	+ bug fix in assignment operator of Spectrum class
+	+ added GratingDataServer::broadeningDistribution()
+	+ fix of minor bug in GeometryDataServer::lsfDefocusDistribution()
+	+ access tables in CCF::OM_ASTROMET/CCF::LARGESCALESENS related to
+	  magnifier filter as "FILTER-MAGNI" instead of "FILTER-MAGNIFIER"
+	  (this fixes SOC-SPR 2002: wrong table name in OM_ASTROMET)
+
+Version 3.112 - 2001-05-01 (UL)
+-------------
+	+ brought in line with calmosalgo-2.6
+	  (fixes SPR 2007: Update to EPIC-MOS redistribution code)
+	+ implemented RGS LSF defocus distribution for usage by rgsrmfgen
+	  + corresponding Calviewable
+
+Version 3.111 - 2001-04-23 (UL)
+-------------
+	+ changed return type of CAL_getMOSdarkFrameMap to real32 (was int16)
+	+ CIF is now always opened in low-mem mode
+	+ additional offset value in RGA defocus-length (Eq. 22, CAL-HB 2.1)
+	  from RGS?_LINESPREADFUNC:FIGURE%DXOFFS
+	+ implemented SPR 1990: Extra parameter for observation mode in PN
+	  redistribution code (=> needs calpnalgo-2.18)
+	+ bug fix in EpnRedist::spectrum(): caused erroneous message about
+	  null-spectrum being returned
+	+ new state variable 'auxiliaryParameter'
+
+Version 3.110 - 2001-04-10 (UL)
+-------------
+	+ brought EPN test harness in line with calpnalgo-2.16
+
+Version 3.109 - 2001-04-09 (UL)
+-------------
+	+ fixed SPR 1984: pnCtiCorrect: wrong type of frame counter argument
+	+ MODE_N/A column in EMOS?_BADPIX can be of type fixed or variable length
+	  vector
+
+Version 3.108 - 2001-04-04 (UL)
+-------------
+	+ fixed SPR 1973: MOSdarkFrameMap is incorrect
+	+ fixed minor documenation problem (CAL_omGetPSFmap)
+	+ removed forgotten debug statement
+
+Version 3.107 - 2001-04-02 (UL)
+-------------
+	+ brought GeometryDataServer::rowlandDefocusLength() in line with
+	  CAL HB 2.1
+	+ brought RgsEnergyCorrector::offsetCorrect() in line with
+	  CAL HB 2.1 (offset is time-dependent - triggered by ALGOID-1 in
+	  RGS?_ADUCONV)
+	+ fixed SPR 1977: Wrong link to cal.f90
+	+ removed obsolete debug statements in OmPsfDataServer
+
+Version 3.106 - 2001-03-29 (UL)
+-------------
+	+ minor transparent change in GratingDataServer
+	+ bug fix in GeometryDataServer introduced with method onCcd() in
+	  3.97.1 - caused problem in RGS (ALGO-1) CTI correction when
+	  OCB!=1 && CCD!=1 (fixes SPR 1971: wrong results from RGS CTI correction)
+
+Version 3.105 - 2001-03-23 (UL)
+-------------
+	+ better error message if filter transmission is requested for point
+	  outside FOV
+	+ moved BadPixel/BadPixelMap class to caloalutils
+	+ <iostream.h> -> <iostream>
+
+Version 3.104 - 2001-03-15 (UL)
+-------------
+	+ changed "error"s to "fatal"s in same cases to signal that execution
+	  must really stop (the procs catch some errors and carry on
+	  which can lead to bizarre problems further downstream ...)
+	+ implemented I/F to new EMOS redistribution code in calmosalgo
+	  package (updated DEPEND); usage of this I/F is triggered by
+	  ALGOID=1 in EMOS?_REDIST
+
+Version 3.103 - 2001-03-12 (UL)
+-------------
+	+ added version of GratingDataServer::scatteringDistribution()
+	  which takes number of channels in output spectrum explictely
+	+ added 'fail-safe' mode to Redistribution object
+	+ fixed small problem in new f90/sky2pix test (causes crash under
+	  True64)
+	+ fixed SPR 1949: Wrong verbosity level
+
+Version 3.102 - 2001-03-09 (UL)
+-------------
+	+ extended capabilities of Boresight class: can now project equatorial
+	  directions onto TELCOORD frame (+f90 I/F)
+	+ fix of minor bug in GratingDataServer::scatteringDistribution()
+	+ EncircledEnergyDataServer now works for off-axis angles
+
+Version 3.101 - 2001-02-26 (UL)
+-------------
+	+ implemented workaround for linking problem under True64/gcc
+
+Version 3.100 - 2001-02-20 (UL)
+-------------
+	+ small improvement in mode exception vector reading of CCF::BadPixel
+	+ added GratingDataServer::bowingFigureDistribution()
+	+ added XmmCartesianPointList::rowlandDefocusLength()
+	+ closed SCR 37: update CAL
+
+Version 3.99 - 2001-02-19 (UL)
+------------
+	+ I/F roll-back in GratingDataServer::scatteringDistribution():
+		(betaM, alpha, E)->(alpha, order, E)
+	+ added forgotten dependency on caloalutils-1.40
+	+ implemented mode dependence of CCF::BadPix (fully backwards compatible)
+
+Version 3.98 - 2001-02-15 (UL)
+--------------
+	+ brought various OM quantities in line with updated descriptions
+	  in issue 2.0 of CAL HB
+		* new color-color transformation algorithm with possibility to
+		  specify different branches in Herzsprung-Russel diagram
+		* new count rate conversion (with optional empirical linearity
+		  correction)
+		* CCF based OM PSF
+		* new function CAL_omGetApertureRadius
+	+ new Viewable showing OM PSF
+	+ GratingDataServer::scatteringDistribution():
+		* revised I/F: can now be directed to suppress small- or large angle
+					   contribution; inputs betaM instead of order
+		* bug fixes (due to error in CAL HB)
+	+ scattering distribution viewable now plots small+large angle constituents
+	  together with total spectrum
+	+ brought doc in line with above changes
+
+Version 3.97.1 [for SAS 5.03] - 2001-02-01 (UL)
+--------------
+	+ new CAL atom: EncircledEnergyDataServer which gives access to
+	  encircled energy data from CCF::XEncirEn constituent
+	+ added Viewable associated with new atom
+	+ RgsRedist::spectrum(): return null-spectrum and give warning
+	  message if input energy is outside energy axis bounds
+	+ added GeometryDataServer::onChip()/isOnAnyChip()
+
+Version 3.97 - 2001-01-29 (UL)
+------------
+	+ new CalViewable: RGS X-PSF vs beta
+	+ changed integration boundaries in
+	  PsfDataServer::dispersionFigureDistribution() back to what they were
+	  in cal<=3.91
+
+Version 3.96 - 2001-01-25 (UL)
+------------
+	+ fixed minor problem with CalViewable plot title introduced in 3.95
+	+ fixed SPR 1904: bug in RGS CTI correction (readout from node D was
+	  treated incorrectly)
+
+Version 3.95 - 2001-01-12 (UL)
+------------
+	+ GratingDataServer::alpha() does now include rotation of RGA about
+	  Y-axis
+	+ increased precision of alpha in GratingDataServer CalViewables
+
+Version 3.94 - 2001-01-11 (UL)
+------------
+	+ brought RGS redistribution model in line with latest update in CAL HB
+
+Version 3.93 - 2001-01-10 (UL)
+------------
+	+ CrossPsf Viewable does now take theta/phi into account to compute source
+	  position in X-dispersion direction
+	+ added SelfVignetting-vs-beta plot as SubViewable of GratingDataServer
+	+ print grating incidence angle in all Grating Viewables plots
+
+Version 3.92 - 2000-12-20 (UL) - the new Millenium CAL!
+------------
+	+ bug fix in GratingDataServer::misalignmentFigureDistribution()
+	  [spectrum was not aligned on first moment]
+	+ brought in line with testccf-1.90
+	+ introduced concept of ALGOID selector to prepare for support
+	  of different calibration algorithms; this is fully backwards
+	  compatible
+	+ pre-3.89 RGS CTI correction re-instantiated; old/new algorithm
+	  is now selected with ALGOID=0/1 in CCF
+	+ PsfDataServer::dispersionFigureDistribution():
+	    * removed constraint: 0<=inChannelOffset<1
+	    * more precise I/F description
+	+ fixed SPR 1880: Tries accessing RGS cal files
+
+Version 3.91 - 2000-12-04 (UL)
+------------
+	+ bug fix in GratingDataServer::alpha(): bug caused effective area maximum
+	  at phi=180 (it must be a phi=0)
+	+ PN gain correction: better message in case of calpnalgo failure
+
+Version 3.90 - 2000-11-23 (UL)
+------------
+	+ fixed problem in RGS test harness introduced with v3.89
+	+ added GratingDataServer::reflectionEfficiency(alpha, order)
+	+ absorbed releasetrack change 3.88.9->3.88.10
+	  [fixed SPR 1834: Task aborts with Bus Error]
+	+ added GratingDataServer::misalignmentDistribution()
+	+ added GratingDataServer::scatteringDistribution()
+	+ added PsfDataServer::dispersionFigureDistribution()
+	+ PN gain correction: better message in case of calpnalgo failure
+	+ updated implementation of CrossPsf::probability() in line with
+	  latest CAL HB changes; new implementation uses extended
+	  CCF::CrossPsf but is backwards compatible, i.e., old CCFs can
+	  still be read
+	
+Version 3.89 - 2000-11-10 (UL)
+------------
+	+ trivial changes to eliminate warning messages from optimizer
+	+ new RGS CTI correction
+
+Version 3.88.9 - 2000-11-09 (UL)
+--------------
+	+ fixed SPR 1827: Does not recognize PrimeFullWindow for MOS 1
+
+Version 3.88.8 - 2000-11-08 (UL)
+--------------
+	+ RealCcf has a new friend ShowCcf
+	+ gain correction for EMOS in modes FastUncompressed/FastCompressed
+	  for CCD 1 takes additional multiplicative factor (FAST_G in
+	  CCF::AduConv) into account
+
+Version 3.88.7 - 2000-11-07 (UL)
+--------------
+	+ fixed SPR 1819: Does not identify PRI PART W6 MOS mode
+	+ minor change to description of ROWCOORD in the doc
+
+Version 3.88.6 - 2000-11-01 (UL)
+--------------
+	+ another minor change to the description of TELCOORD in the doc
+	+ CAL_omColorTransform() now provides a means to inquire the transformation
+	  validity ranges
+	+ Ccf class has a new friend ShowCcf
+	+ added reading of absorption data in EPN::REDIST if present; otherwise
+	  absorption lengths are calculated from Henke data
+
+Version 3.88.5 - 2000-10-31 (UL)
+--------------
+	+ better definition of TELCOORD frame in doc (Please note: The
+	  definition as such has NOT been changed, just the wording to
+	  describe it)
+	+ fixed problem in routine which computes the grating incidence angle
+	  as a function of input TELCOORD-(theta, phi); as a result of this
+	  fix the effective area maximum for EMOS1/2 is now correctly at
+	  phi=180 deg (was at 0 deg)
+
+Version 3.88.4 - 2000-10-27 (UL)
+--------------
+	+ added config/cal.info
+
+Version 3.88.3 - 2000-10-20 (UL)
+--------------
+	+ fixed SPR 1667: MOS RFS mode: Outer CCDs are not in RFS
+
+Version 3.88.2 - 2000-10-19 (UL)
+--------------
+	+ bug fix in PsfDataServer::enboxedEnergy() - caused wrong (unnormalized)
+	  integral value to be returned
+
+Version 3.88.1 - 2000-10-17 (UL)
+--------------
+	+ extended I/F of PsfDataServer()
+	+ supressed confusing warning message in TimeCorrector::correct()
+	+ minor modification in doc
+	
+Version 3.88 - 2000-10-06 (UL)
+------------
+	+ re-activated `quantumef' test
+	+ use handler()
+
+Version 3.87 - 2000-10-06 (GV)
+------------
+	+ more of the same.
+
+Version 3.86 - 2000-10-05 (GV)
+------------
+	+ disable task quantumeff in cxxtest, as this requires taskmain.
+	+ setHandler no longer available, use handler instead (CalView.cc)
+
+Version 3.85 - 2000-10-04 (UL)
+------------
+	+ new time-dependent EMOS CTI correction algorithm; is backwards
+	  compatible, i.e., pre-issue-5 CTI CCF constituents will give the
+	  same result as with old algorithm
+	+ QE curves use again CubicHermiteInterpolant
+	+ construction of CalViewable list is now robust against missing
+	  constituents
+	+ made one of the tests a proper task
+	+ fixed failing test in 3.84
+	+ internal changes related to CCF access
+
+Version 3.84 - 2000-10-02 (UL)
+------------
+	+ QE curves now implemented using LinearInterpolant instead of
+	  CubicHermiteInterpolant
+	+ prototype of CcfAccessLog object (accessible through CalServer)
+	+ search for CCF constituents along SAS_CCFPATH
+	+ fixed SPR 1757: Wrong hierarchy in HTML doc
+	+ internal changes in documentation
+
+Version 3.83 - 2000-09-29 (UL)
+------------
+	+ internal change to bring in line with caloalutils-1.34
+	+ moved test 'xmm' to caloalutils
+	+ setting of filter in CalServer::setState() is optional
+	+ internal changes in documentation
+
+Version 3.82 - 2000-09-26 (UL)
+------------
+	+ bug fix in PsfDataServer
+	+ more precise definition of TELCOORD frame in doc
+	+ RGS CTI correction: now uses cubic-Hermite (instead of cubic-spline)
+	  interpolation for the parallel coefficients
+	+ CAL_setState() now also tries to set the 'filterId' variable
+	  from "FILTER" attribute in data set
+
+Version 3.81 - 2000-09-22 (UL)
+------------
+	+ PSF implementation now in line with CAL HB
+	  (three accuracy levels implemented in terms of
+	   single-gaussian/pre-computed PSF maps/triple-Gaussian)
+	+ added dedicated PSF test harness
+	+ updated documentation (new PSF routines)
+	+ replaced interim CAL_omGetPlateScale() in f90 layer
+	+ new CalServer::setState() methods
+	+ fixed problem with negative theta angles in effective-area related
+	  classes
+	+ bug fix in several CalViewables (deg->rad conversion of phi)
+
+Version 3.80 - 2000-08-29 (UL)
+------------
+	+ fixed SPR 1736: Cannot get QE for chipy=1
+	  for pixels outside the FOV a constant QE=0 curve is now returned instead
+	  of bailing out with error
+	+ internal changes to MirrorDataServer enforced by structural changes
+	  to CCF::XareaEf as of issue 6
+	+ fixed F/L bug in internal computation of RGA alpha-incidence angle from
+	  mirror FOV angles (theta/phi)
+	+ fixed bug in GratingDataServer (caused segfault under certain
+	  circumstances)
+	+ added EpnRedist() class for usage by EPN response generator;
+	  implementation in terms of redistribution model code in package
+	  calpnalgo
+	+ added two new CalViewables: RGA obscuration/intercept efficiency
+	  vs. theta/phi
+ 	+ changed theta range in CalViewables to [0, 900"] to match instrument
+	  FOV
+
+Version 3.79 - 2000-08-03 (UL)
+------------
+	+ implemented QE computation for RGS; updated test harness + corresponding
+	  CalViewable; uses I/F designed for EMOS
+
+Version 3.78 - 2000-08-01 (UL)
+------------
+	+ added DarkFrameDataServer atom + f90 routines to access EMOS
+	  offset vectors/darkframe images; documentation updated
+
+Version 3.77 - 2000-07-31 (UL)
+------------
+	+ fixed bug in OmGeoLinearizer class (caused polynomial coefficients
+	  to be read always from last table row irrespective of the filter)
+	+ brought in line with calpnalgo-2.10
+
+Version 3.76 - 2000-07-27 (UL)
+------------
+	+ fixed SPR 1612: algorithm to CAL_omLEDTemplate not implemented
+	+ implemented GratingDataServer::misalignmentFigureError()
+
+Version 3.75.8 - 2000-07-04 (UL)
+--------------
+	+ depends on selectlib-4.35
+
+Version 3.75.7 - 2000-06-27 (UL)
+--------------
+	+ fixed SPR 1436: test harness fails on Linux
+	+ bug fix in CcdQuantumDataServer (caused spatial variation of QE
+	  to be incorrectly retrieved)
+
+Version 3.75.6 - 2000-06-20 (UL)
+--------------
+	+ fixed minor problem with broken doc link
+
+Version 3.75.5 - 2000-06-15 (UL)
+--------------
+	+ another compilation problem under gcc-2.95.1
+	+ fixd SPR 1569: make depend fails without make clobber
+
+Version 3.75.4 - 2000-06-15 (UL)
+--------------
+	+ fixed compilation problem under gcc-2.95.1
+
+Version 3.75.3 - 2000-06-14 (UL)
+--------------
+	+ fixed SPR 1488: RGA misalignment not considered in ROWCOORD
+					  transformation
+	  (bug in Rowland coordinate transformation caused RGA misalignment
+	   correction to go in wrong direction: positive RGA +Y axis angles lead
+	   errorneouly to greater BETA values)
+	+ fixed SPR 1472: lincoord viewable not alway clear
+	  (problem was OCB value in viewable)
+
+Version 3.75.2 - 2000-06-05 (UL)
+--------------
+	+ removed paramter default values of GratingDataServer methods
+
+Version 3.75.1 - 2000-05-30 (UL)
+------------
+	+ MirrorDataServer: intrinsic RGS effective area available for rgsrmfgen
+	+ GratingDataServer: alternative form of self-vignetting efficiency
+	  available for rgsrmfgen
+	+ alternative form of EMOS redistribution I/F from Fortran-90
+	  (tasks can specify energy axis)
+	+ default EMOS redistribution method now evaluates model on energy
+	  axis from CCF::REDIST::BINNEDPI_EBOUNDS
+
+Version 3.75 - 2000-05-24 (UL)
+------------
+	+ camera mode determination logic is now CCF::ModeParam driven
+	  (needs caloalutils-1.28)
+	+ fixed SPR 1347: CAT_getQuantum Efficiency: EPN/PATTERNLIB
+	+ depends on testccf-1.83 (reconciled test harnesses)
+
+Version 3.74 - 2000-05-23 (UL)
+------------
+	+ several bug fixes in new EMOS redistribution code
+	  (verified correctness against rmfgen code of Steve Sembay)
+	+ made SUBDATE attribute in CCF constituents optional
+
+Version 3.73 - 2000-05-22 (UL)
+------------
+	+ bug fix in EnergyCorrector (caused RGS gain correction to fail)
+	+ fall back upon CCF numbers if given RGS offset override table is
+	  empty
+
+Version 3.72 - 2000-05-22 (UL)
+------------
+	+ fixed compilation problem under True64
+	+ bug fix in CanonicalRedist constructor
+
+Version 3.71 - 2000-05-19 (UL)
+------------
+	+ fixed SPR 972 : CAL_getRedistribution and CAL_gainCorrect are incoherent
+	  (new EMOS redistribution model implemented)
+	+ more functionality in CcdQuantumDataServer
+	+ test harnesses resynced with testccf-1.81
+	+ abscissa in Redist CalViewable is now in eV
+	+ brought in line with dal-1.119
+
+Version 3.70 - 2000-05-16 (UL)
+------------
+	+ reverted f90 test harnesses to programs
+
+Version 3.69 - 2000-05-09 (UL)
+------------
+	+ bug fix in RGS vignetting curve construction
+	+ new MOS gain model implemented
+	+ fixed minor problem in GeometryDataServer I/F
+	+ f90 test harnesses are proper tasks
+	+ CAL_pnReEmissionThreshold is now CCF-driven
+	+ depends on testccf-1.79
+
+Version 3.68 - 2000-05-05 (UL)
+------------
+	+ bug fix in reading of grating efficiency data
+	+ implemented access to vignetting information from f90
+	+ closed SPR 1279: Misusing macros in documentation
+	+ closed SPR 1327: Misspelling and inconsistency of var names
+	+ closed SPR 1264: Too sparse error message
+
+Version 3.67 - 2000-05-04 (UL)
+------------
+	+ really fixed problem in reading of RGS CTI coefficients (was supposed
+	  to be fixed in 3.66)
+
+Version 3.66 - 2000-05-02 (UL)
+------------
+	+ fixed small problem with reading of RGS CTI coefficients from CCF
+	+ set default energy in CalView state to 100eV
+
+Version 3.65 - 2000-04-27 (UL)
+------------
+	+ added GratingProperties viewables
+	+ added AeVs{E/theta/phi} viewables
+	+ added vignettingVs{E/theta/phi} viewables
+	+ moved contents of ccftools directory to package ccftools
+	+ VALDATE/DATE in CCF constituents can contain invalid dates
+	+ minor documentation fix
+
+Version 3.64 - 2000-04-25 (UL)
+------------
+	+ fixed problem with RGS CTI correction (scale factor was not considered)
+	+ additional mode parameters access methods
+	+ temporarily disabled instantiation of low-accuracy MirrorDataServer
+	  (numerical problems with 2-D polynomial fit from IDL)
+
+Version 3.63 - 2000-04-13 (UL)
+------------
+	+ fixed problem in Makefile which caused a stale symlink
+	+ brought in-line with calpnalgo-2.6 (new error code from
+	  gain correction)
+	+ bug fix in GratingDataServer::~GratingDataServer()
+	  (caused assert failure when releasing cal atom)
+	+ added retrieval of effective area data through f90
+	+ fixed SPR 1259: CAL_getEffectiveArea argument order different in
+			  cal.f90 and cal.ps
+	+ fixed SPR 1250: Invalid absolute links
+
+Version 3.62 - 2000-04-12 (UL)
+------------
+	+ disabled consistency check of CTI coefficient values for MOS
+	+ minor fixes in RgsCrossPsf/EnergyCorrector
+	+ StateVariable.h moved to caloalutils package
+
+Version 3.61 - 2000-03-29 (UL)
+------------
+	+ reconciled with testccf-1.71/slatec-1.31
+
+Version 3.60 - 2000-03-27 (UL)
+------------
+	+ new CTI correction for EMOS (constant charge loss per transfer model)
+	+ test harnesses reconciled with testccf-1.70
+
+Version 3.59 - 2000-03-24 (UL)
+------------
+	+ dropped time dependence of CAL_pn{Gain, Cti}Correct
+	+ implemented CAL_rgsEffectiveArea + associated CalViewable
+	+ implemented Viewable Vignetting curve
+
+Version 3.58 - 2000-03-22 (UL)
+------------
+	+ minor bug fix in CalViewables
+
+Version 3.57 - 2000-03-21 (UL)
+------------
+	+ workaround for Dal bug implemented (to make test harness go through)
+
+Version 3.56 - 2000-03-20 (UL)
+------------
+	+ implemented CAL_getEffectiveArea
+	+ brought in line with calpnalgo-2.5
+
+Version 3.55 - 2000-03-09 (UL)
+------------
+	+ fixed problem with CalDataVector::clone()
+	+ added XmmPixelList::insideFOV() to determine whether a pixel in
+	  within the FOV
+	+ FOV info is obtained from LinCoord::FOV table (optional)
+	+ added CAL_getFOVmap + corresponding test harness
+
+Version 3.54 - 2000-03-09 (UL)
+------------
+	+ FilterDataServer/CcdQuantumDataServer return now weighted integrals
+	  of filter/QE curves
+	+ fixed compilation problem under gcc-2.95.2
+	+ added CalDataVector::clone() (= deep copy constructor)
+	+ fixed another problem with RgsEnergyCorrector::offsetCorrect()
+	+ "CoordTransformer" -> "GeometryDataServer"
+
+Version 3.53 - 2000-03-03 (UL)
+------------
+	+ RgsCrossPsf::probablity: center channel is _negative_ of input source
+	  off-axis angle
+	+ reconciled implementation of OM routines with latest descriptions in
+	  CAL HB
+
+Version 3.52 - 2000-03-01 (UL)
+------------
+	+ brought in line with utils-1.66
+	+ RgsEnergyCorrector::offsetCorrect(): bug fix + more sensible handling of
+	  illegal event shapes
+
+Version 3.51 - 2000-02-29 (UL)
+------------
+	+ fixed typo in documentation of CAL_setState
+	+ RGS offset correction I/F:
+		o grade -> shape
+		o changed type of Ein from real32 to int16
+	  changes are in line with CAL HB
+
+Version 3.50 - 2000-02-23 (UL)
+------------
+	+ fixed (another) bug in Rgs::Redistribution()
+	+ added f90 I/F to retrieve Boresight angles + conversion to
+	  matrix
+	+ implemented RGS offset correction according to CAL HB incl.
+	  optional usage of offset file produced by rgsoffsetcalc
+	+ altered I/F of CAL_getFilterTransmission/CAL_getQuantumEfficiency +
+	  make use of underlying C++ classes
+	+ brought in line with dal-1.104 (changed compound name syntax)
+
+Version 3.49 - 2000-02-17 (UL)
+------------
+	+ prototype of CcdQuantumDataServer atom + simple test harness added
+	+ added CalViewable for QE data
+	+ defintion of cross-dispersion angle in ROWCOORD system has changed:
+	  is is now defined w.r.t the center of the mirror (now longer w.r.t
+	  to the G-point)
+	+ now depends on selectlib
+
+Version 3.48 - 2000-02-16 (UL)
+------------
+	+ another bug fix in f90-wrapper of RGS redistribution function
+	+ test harness for RGS tests now peak position and width at two
+	  different energies
+	+ fixed SPR 1162: [PATCH] caltest_om: The 'Cut&Paste' strikes back with
+	  DEBUG=no
+	+ fixed compilation problem under Linux in CoordTransformer.cc
+	+ depends now on selectlib
+	+ FilterDataServer now accepts new structure of CCF::FilterTransX
+	  constituents (REGION column)
+
+Version 3.47 - 2000-02-11 (UL)
+------------
+	+ dependent on testccf-1.63
+	+ EPN gain/CTI test harness also tests the low-accuracy algorithm
+
+Version 3.46 - 2000-02-09 (UL)
+------------
+	+ bug fix in AbsCoef Viewable
+	+ fixed more compilation problems under gcc-2.95
+	+ bug fix in f90-wrapper to RGS redistribution function
+	+ better test harness for RGS redistribution from F90
+
+Version 3.45 - 2000-02-04 (GV/UL)
+------------
+	+ Redistribution.cc: the RGS::noise spectrum was too narrow, due
+	to a misinterpretation of Slatec::derf.
+	
+Version 3.44 - 2000-02-03 (UL)
+------------
+	+ now depends on slatec-1.26
+	+ made presence of keywords EXTSEQU/EXTSEQID in CCF override constituents
+	  optional
+
+Version 3.43 - 2000-02-02 (UL)
+------------
+	+ low-accuracy EPN gain correction implemented
+	+ low-accuracy EPN CTI correction implemented
+	+ prototype of FilterDataServer
+	+ AbsCoef CalCiewable with SubViewables to select different elements
+	+ new CalViewable for the FilterDataServer
+	+ test harness for FilterDataServer
+	+ added RgsEnergyCorrector::qSplitRatios()
+
+Version 3.42 - 2000-01-31 (UL)
+------------
+	+ fixed compilation problem with gcc-2.95
+	+ adapted to new AbsCoef structure in CCF (one table per element
+	  each with own energy scale)
+
+Version 3.41 - 2000-01-13 (UL)
+------------
+	+ fixed convolution + gain problem in Rgs::Redistribution()
+	+ implemented CAL_omDistorition() according to Cal HB
+	+ implemented CAL_omColorTransform() according to Cal HB
+	+ implemented CAL_omPhotoMagnitude() according to Cal HB
+	+ implemented CAL_omPixelSenseVariation/omLargeSenseVariation according
+	  to Cal HB
+	+ implemented CAL_omPhotoNatural according to CAL HB
+	+ implemented CAL_omGetFrameParameters according to CAL HB
+
+Version 3.40 - 2000-01-05 (UL)
+------------
+	+ retrival of atoms produces now proper error messages in case of missing
+	  data in CCF (related to SPR 1056 : CAL_getModeParameters core dumps in
+	  Timing mode for MOS)
+	+ fixed SPR 1052 : CAL_gainCorrect does not work in Timing mode for EMOS
+
+Version 3.39 - 2000-01-04 (UL)
+------------
+	+ fixed wrong normalization of RGS redistribution function (norm is now
+	  tested in test harness)
+
+Version 3.38 - 1999-12-23 (UL) - the Christmas CAL!
+------------
+	+ added Int32Vector instantiation
+
+Version 3.37 - 1999-12-17 (UL)
+------------
+	+ RGS redistribution model fudged
+
+Version 3.36 - 1999-12-16 (UL)
+------------
+	+ added state variable 'temperatureTracking'
+	+ added support for calmosalgo
+
+Version 3.35.2 - 1999-12-10 (UL)
+--------------
+	+ brought-in line with calpnalgo-2.2
+	+ fixed SPR 1017 : [PATCH] cal still broken with TRACE=yes
+
+Version 3.35.1 - 1999-11-30 (UL)
+--------------
+	+ bug fix related to new compound syntax for attributes in CCF/MiscData
+
+Version 3.35 - 1999-11-30 (UL)
+------------
+	+ data items in MiscData can now point to attributes in different
+	  constituents (new colunm "FIND_IT_IN")
+	+ tasks can access attributes in CCF constituents with compound
+	  syntax CONSTITNAME:[BLOCKNAME]:ATTRNAME
+	+ normalization of RGS cross-dispersion PSF tested in test harness
+	+ bug fix in fine time computation of EPN in timing mode
+	+ dropped support for old SAS_CCFDIR environment variable
+	+ ROWCOORD now in RGA frame (takes into account rotation of
+	  RGA w.r.t S/C frame)
+	+ fixed SPR 979 : buggy SAS_DEBUG statements break cal build [PATCH]
+
+Version 3.34 - 1999-11-24 (UL)
+------------
+	+ added CalInt32Vector to CalDataVector.h
+	+ added TimeCorrector atom class
+	  (EPN: implementation + test harness; EMOS, RGS: leave input
+	   unchanged)
+	+ updated I/F to calpnalgo-2.0
+	+ renames libcalview -> libcalviewbase to resolve name conflict
+	  with 'calview' task
+	+ modified CAL_crossPsf I/F
+
+Version 3.33 - 1999-11-15 (UL)
+------------
+	+ minor documentation update
+	+ bug fix in f90 wrapper to pixCoord1->chipCoord conversion
+	+ updated RGS test harness
+	+ bug fix in XmmCartesianPointList::toRowCoord()
+	+ bug fix in RgsCrossPsf::probability()
+
+Version 3.32 - 1999-11-10 (UL)
+------------
+	+ avail new combilib features in sas-1.169
+	+ fixed error in documentation (TELCOORD frame is related to CAMCOORD2
+	  _not_ CAMCOORD1)
+	+ boresight calibration related changes:
+	    o new Boresight class with I/F to explicitely set the angles
+	    o f90: + CAL_getBoresightMatrix returns pure matrix that
+		     no longer incorporates CC2->SACCOORD transformation
+		   + new explicit I/F to retrieve CC2->SACCOORD transformation
+	+ all sources + test harnesses brought in line with testccf-1.42
+	  (updated column/attribute/table names)
+	+ brought in line with caloalutils-1.14
+	
+Version 3.31.1 - 1999-10-28 (UL)
+--------------
+	+ only calpnalgo is merged into the combilib (merging in slatec +
+	  caloalutils does not work)
+
+Version 3.31 - 1999-10-27 (UL)
+------------
+	+ all libraries that CAL needs now in CAL combilib
+	+ reintroduced eBins()/eBounds distinction in Redistribution classes
+	  (this fixes: SPR 911 : Reinstate CAL_getEbins())
+	+ return now correct number of bins for EMOS redistribution
+
+Version 3.30 - 1999-10-26 (UL)
+------------
+	+ calpnalgo lib now part of the cal combilib
+
+Version 3.29 - 1999-10-21 (UL)
+------------
+	+ added HKParmInt Viewable
+	+ renamed doc/sources to doc/calsources
+
+Version 3.28 - 1999-10-19 (UL)
+------------
+	+ added HKvalRangesServer atom
+
+Version 3.27 - 1999-10-12 (UL)
+------------
+	+ use INTERFACE / combilib mechanism
+	+ fixed SPR 795: broken links in documentation
+	+ fixed SPR 616: examples
+	  (all PGPLOT calls in example tasks have been commented out; should
+	   be replaced with proper CalViewables)
+
+Version 3.26 - 1999-10-11 (UL)
+------------
+	+ fixed SPR 888: CATEGORY = `SCISIMCCF' not accepted by option --ccffiles
+	  (no longer check value of CATEGORY against "XMMCCF"; print actual value
+	   as message if verbosity is >= VERBOSE
+	+ fixed SPR 889: Local replacement of a CCF does not work
+	  (dirname of $SAS_CCFDIR was always prepended to constituent name
+	   even if it came with an abosolute path)
+	+ fixed SPR 853 : non-descriptive NotYetImplemented warnings
+	+ boundary check of state variable `observationStartTime':
+		o lower bound check against Xmm::missionReferenceTime
+		o no check on upper bound (may XMM live forever ;)
+
+Version 3.25 - 1999-09-30 (UL)
+------------
+	+ fixed bug in CHIPCOORD->CAMCOORD1 conversion routines which caused
+	  PN chip gaps to come out wrongly; the gaps are now checked for
+	  in a dedicated test harness
+
+Version 3.24 - 1999-09-27 (UL)
+------------
+	+ bug fix in CoordTransformer
+	+ brought in line with caloalutils-1.7
+
+Version 3.23 - 1999-09-17 (UL)
+------------
+	+ fixed wrap-around problem of RGS-response/noise convolution
+	+ pnReEmissionThreshold expects energy in ADU
+	+ automatic flush of memory buffered atoms if new CCF constituent
+	  is inserted (only relevant for calview)
+	+ added AbsCoefPlot viewable
+	+ RGS cross-dispersion PSF + corresponding Viewable implemented
+	+ removed DOCS=cal.html from cal/doc/Makefile
+
+Version 3.22 - 1999-09-15 (UL)
+------------
+	+ bug fix in implementation of RGS redistribution model
+
+Version 3.21 - 1999-09-14 (UL)
+------------
+	+ added DISTRIBUTION file
+	+ various changes following fix of DAL SPR 589 : incorrect treatment
+	  of FITS B-type
+	+ added few utility classes to src/CalCommon.h
+	+ fixed SPR 692: calexample_emos and calexample_epn segfaults on Linux
+	  (probably utils-1.43->1.44 has fixed this)
+	+ added BinnedAxis class family to src/CalCommon.h
+	+ GainCorrector -> EnergyCorrector
+	+ MiscData -> MiscDataServer
+	+ implemented fractional CHIPCOORD pixels (available from C++ I/F only)
+	+ implemented retrieval of RGS event thresholds
+	+ implemented access to absorption coefficients in CCF (Henke data)
+	+ new RGS CCD redistribution model implemented
+	+ new RGS CTI correction model implemented
+	+ EPN CTI correction takes now E_PER_ADU factor into account
+
+Version 3.20 - 1999-09-13 (UL)
+------------
+	+ brought in line with dal-1.70
+
+Version 3.19 - 1999-09-09 (GV)
+------------
+	+ added slatec to USEDLIBS in ccftools/Makefile
+
+Version 3.18 - 1999-08-26 (UL)
+------------
+	+ more diagnostic messages
+	+ udated documentation
+
+Version 3.17 - 1999-08-20 (UL)
+------------
+	+ fixed LaTeX problem in documentation
+
+Version 3.16 - 1999-08-19 (UL)
+------------
+	+ construction of boresight misalignment matrix overhauled; includes
+	  now the transformation from CAMCOORD2->SACCCORD as agreed with
+	  the author of the attcalc task (Andy Read)
+	+ fixed SPR 635: "pure virtual method called" is not an error messsage
+	+ removed obsolete state variables `status' and `verbosityLevel'
+
+Version 3.15 - 1999-08-12 (UL)
+------------
+	+ bug fix in operator<<(ostream &, CalState &);
+	+ new method Ccf::cifName()
+	+ changes to calview I/F
+	+ coordinate conversion routines: TELCOORD->CAMCOORD2 and
+	  CAMCOORD1->CHIPCOORD completed
+
+Version 3.14 - 1999-08-05 (UL)
+------------
+	+ bug fix in toChipCoord conversion routine (OCB was not taken
+	  into account)
+	+ fixed SPR 719: [PATCH] Unresolved symbol: CartesianVector::operator-= in 
+      libcal; was actually rectified by fix in caloalutils-1.3
+
+Version 3.13 - 1999-07-27 (GV)
+------------
+	+ change dnumber of bins in calhack.f90
+
+Version 3.12 - 1999-07-09 (GV)
+------------
+	+ added calhack.f90, f90-only implementation of some urgent RGS
+	  functions. Must be replaced with proper implementation. 
+	+ DEPEND: slatec >= 1.13 is now required, together with sas >=
+	  1.141, where the slatec library is added by Make.include
+
+Version 3.11 - 1999-07-09 (GV)
+------------
+	+ change DEPEND
+	+ comment out rgslincoordgrcal in Makefile in ccftools as this does not link.
+Version 3.10 - 1999-07-09 (UL)
+------------
+	+ better error/warning messages in CtiCorrector
+	+ coordinate conversion routines (CCRs) re-written (functionality is now
+	  in new Cal atom CoordTransformer)
+	+ CCRs take thermal expansion effects into account
+	+ CCRs are in line with new CAMCOORD1 data in LinCoord sets
+	+ added functionality to convert to new ROWCOORD system (Rowland
+	  coordinates beta/delta) for RGS
+	+ new RgsGainCorrector class which implements RGS-specific offset
+	  correction (with SER-dependency)
+	+ new state variables
+		o ocb (on-chip-binning factor for RGS; is taken into account by CCRs)
+		o temperatureCamera (temperature of the camera structure which drives
+							 the thermal expansion of the inter-CCD gaps)
+	+ ccftools: two new tools to generate RGS LinCoord data from ground
+	  alignment data
+
+Version 3.9 - 1999-06-30 (UL)
+-----------
+	+ bug fix in PIXCOORD -> CAMCOORD1/2 transformation (incorrect
+	  treatment of last pixel for EPN)
+
+Version 3.8 - 1999-06-25 (UL)
+-----------
+	+ bug fix interface directory
+	+ documentation updated (section on coordinate system revised
+	  and extented; has now pictures with camera geometries)
+
+Version 3.7 - 1999-06-23 (UL)
+-----------
+	+ contents of subdirectory caloalutils moved into separate package
+	  which the Cal now depends on; this has the advantage that tasks
+	  which just use the Oal do not depend on the Cal any longer
+
+Version 3.6 - 1999-06-22 (UL)
+-----------
+	+ new class CtiCorrector which performs CTI corrections for EMOS/RGS/EPN;
+	  the latter uses the code in new package calpnalgo
+	+ several internal changes
+	+ updates to GainCorrector related to EPN (uses now code in calpnalgo)
+	+ several changes in f90/C++ interface part as a consequence of above
+	  changes
+
+Version 3.5 - 1999-06-15 (UL)
+-----------
+	+ minor bug fix in KeplerOrbitSimulator
+	+ added computation of velocity vectors to KeplerOrbitSimulator
+
+Version 3.4 - 1999-06-14 (UL)
+-----------
+	+ removed dependency on calpnalgo for the time being
+
+Version 3.3 - 1999-06-11 (UL)
+-----------
+	+ fixed SPR 610 : perl modules: no longer needed and/or in the wrong place
+	+ added KeplerOrbitSimulator class to caloalutils
+
+Version 3.2 - 1999-06-08 (UL)
+-----------
+	+ minor bug fixes related to offset correction for PN
+	+ fixed portability problem on Dec Alpha (SPR 681: CalF90cxxGlue.cc:
+	  portability bug; assumption sizeof(int)==sizeof(ptr)
+	+ CAL_setRandom() added
+
+Version 3.1 - 1999-06-07 (UL)
+-----------
+	+ documentation updated; now in line with latest code changes in v3.0
+	  (this fixes SPR 686: Doc is obsolete)
+
+Version 3.0 - 1999-06-03 (UL)
+-----------
+	+ tidying up of F90 API:
+		+ energy conversion routines (offset, gain, CTI) harmonized across
+		  instruments
+		+ removed obsolete parameters in F90 API (vector sizes)
+		+ naming of routines is more coherent
+		+ a couple of obsolete routines dropped from API (e.g. CAL_error)
+		+ overloaded version of routines which accept Dal column pointers
+		  now obsolete and dropped (vector-processing routines accept
+		  now pointers to allocated vector as well as uninitialized pointers)
+		+ new: CAL_integerToReal() - with (optional) randomization
+			   CAL_realToInteger()
+	+ RAWXY->DETXY does now make use of pixel randomization (optional)
+	+ pnReEmissionThreshold added to F90 API
+	+ internal changes
+
+Version 2.21 - 1999-05-12 (UL)
+------------
+	+ brought in-line with error-1.18
+
+Version 2.20 - 1999-04-27 (UL)
+------------
+	+ more fixes to make the build under Dec succeed
+	+ no longer use fatal()
+	+ changed all error/warning/message tags
+	+ redistribution channel range now from 0-4095 for EMOS+EPN
+
+Version 2.19 - 1999-04-22 (UL)
+------------
+	+ in setting the state: unit of attribute "FRMTIME" is taken into
+	  account
+	+ mode-recognition logic for EMOS slightly changed
+
+Version 2.18 - 1999-04-19 (UL)
+------------
+	+ src/CalState:
+		+ minor bug fix in operator<<
+		+ state can now be read from DataSet or Block (also available from F90)
+	+ caloalutils/Xmm.cc:
+		+ fixed minor bug in recognition of RGS modes
+
+Version 2.17 - 1999-04-15 (UL)
+------------
+	+ added newlines to some source files to avoid warning from C++
+
+Version 2.16 - 1999-04-15 (UL)
+------------
+	+ minor changes in test harnesses enforced by error-1.16
+
+Version 2.15 - 1999-04-14 (UL)
+------------
+	+ minor bug fix in f90/C++ layer
+	+ newlines removed from error/warning messages
+
+Version 2.14 - 1999-04-14 (UL)
+------------
+	+ changes enforced by error-1.16
+
+Version 2.13 - 1999-04-12 (UL)
+------------
+	+ caloalutils/Xmm.h: minor improvements
+	+ calview: renamed lib calview.a to calviewbase.a to resolve name conflict
+			   with the calview task
+	+ src/StateVariable.h: fixed minor problem resulting from a name conflict
+	  with a global function in a Qt header file (caused compilation
+	  problems for tasks using Cal and Qt together)
+
+Version 2.12 - 1999-04-01 (UL)
+------------
+	+ f90: minor bug fix in mode conversion routines (caused caltest_misc
+		   to fail)
+
+Version 2.11 - 1999-04-01 (UL - this is no April-fools-day version ;)
+------------
+	+ first working version of CalView backend (three Viewables are
+	  implemented: CcdPlot, RmfCutPlot, BadPixPlot
+	+ fixed SPR 543: Improvements to CAL_setStateFromScienceFile
+	+ caloalutils: new mode and filter names
+	+ new implementation of Cal state: setting variables to illegal values
+	  now caught + other improvements; it is now possible to inquire the
+	  legal range/list of legal values of variables
+	+ resolved problem with vector constructor (unsigned -> size_t) which
+	  caused compilation problem on Dec Alpha
+
+Version 2.10 - 1999-03-17 (UL)
+------------
+	+ new EMOS RMF parameterization from Dave
+	+ default name for CIF changed to "ccf.cif"
+	+ documentation has now table of contents to simplify searches
+	  for particular routines
+
+Version 2.9 - 1999-03-12 (UL)
+-----------
+	+ documentation updated with description of CAMCOORD systems
+
+Version 2.8 - 1999-03-10 (UL)
+-----------
+	+ upgrades pertaining to low memory Dal
+	+ ERM part of xmmPayLoad
+	+ f90/cal.f90: 'LOW/MEDIUM/HIGH' -> 'ACCURACY_LOW'/'ACCURACY_MEDIUM'/
+										'ACCURACY_HIGH'
+	+ caloalutils/Xmm.h: o nNodes() for RGS was giving the wrong answer
+						 o maxX/maxY were swapped
+	+ several changes to test harnesses
+	+ detector coordinate systems introduced
+	+ works with TRACER disabled
+
+Version 2.7 - 1999-02-24 (UL)
+-----------
+	+ caloalutils: global object xmmPayLoad
+
+Version 2.6 - 1999-02-23 (UL)
+-----------
+	+ moved common OAL/CAL functionality to separate new directory;
+	  will be moved to a separate package later
+
+Version 2.5 - 1999-02-22 (UL)
+-----------
+	+ f90/caloaldefs.f90: new routine toTimeTag to convert
+	  "yyyy-mm-ddThh:mm:ss" into event time tag
+
+Version 2.4 - 1999-02-17 (UL)
+-----------
+	+ fixed initialization problem in src/Ccf.cc
+
+Version 2.3 - 1999-02-12 (UL)
+-----------
+	+ minor change in documentation
+
+Version 2.2 - 1999-02-12 (UL)
+-----------
+	+ tests in cxxtests no longer need pgplot
+
+Version 2.1 - 1999-02-12 (UL)
+-----------
+	+ fixed problem with failing tests in f90test
+	
+Version 2.0 - 1999-02-10 (UL)
+-----------
+	+ renamed environment variable CCF_DIR to SAS_CCFDIR; the old name is
+	  no longer recognized which might break several tasks/test harnesses
+	+ fixed SPR 436: Task subroutines should not initialise the CAL
+	  the usage of CAL_openCcf in task code is now deprecated; the global
+	  calServer object will access the default CCF pointed at via the
+	  environment variable SAS_CCFDIR upon first usage of CAL services;
+	  alternatively, taskmain loads a particular CCF which is triggered by
+	  naming a CCF directory via the generic task parameter "--ccfdir"
+
+Version 1.21 - 1999-02-03 (UL)
+------------
+	+ needed file src/Xmm.h was missing from 1.20 by mistake
+
+Version 1.20 - 1999-02-03 (UL)
+------------
+	+ code overhaul: there is now only a single global instance of a CalServer
+	  object
+	+ CAL can now be built as shared library
+    + Xmm.h: new global object XmmPayLoad
+    + use of 'status' and 'error' state variables is now deprecated - usage
+      of these in setState/getState will produce a corresponding warning
+      message
+
+Version 1.19 - 1999-01-29 (UL)
+------------
+	+ make the Cal compile under egcs 1.1.1
+
+Version 1.18 - 1999-01-26 (UL)
+------------
+	+ make the Cal compile under gcc 2.8.1
+
+Version 1.17 - 1998-11-13 (UL)
+------------
+    + new build procedure in-line with what is done in the Dal: separate
+      libaries are build in each src-subdir which get combined in a
+      new directory 'interface'; this also contains now all needed symbolic
+      links to *.h/*.f90/*.mod; this closes
+	o SPR 294: Can't the library be built without additional rules?
+	o SPR 297: Can't the library be built without additional rules?
+		   (f90/Makefile)
+
+Version 1.16 - 1998-11-12 (UL)
+------------
+	+ in *.f90: made declaration of function return types explicit (fixes
+	  compilation failure problem when 'f90 -u' is used
+
+Version 1.15 - 1998-11-12 (UL)
+------------
+	+ fixed SPR 273: Need symbolic link to cal.f90 and caloaldefs.f90
+
+Version 1.14 - 1998-11-04 (UL)
+------------
+    + minor problem in ccftools/Makefile fixed
+
+Version 1.13 - 1998-10-30 (UL)
+------------
+    + in documentation:
+		o fixed min/max pixel values for EMOS, i.e., 1/600 _not_ 0/599
+	- eduThreshold parameter in CAL_getEventPatterns now optional
+	+ fixed SPRs:
+		SPR 455 : caltest_emos fails (core dumps)
+		SPR 474 : Definition of optional arguments in CAL_getBadPixelList
+		SPR 476 : ccdNodeId for EPIC PN
+	+ fixed crash of calexample_emos due to arithmetic exception
+
+Version 1.12 - 1998-10-15 (UL)
+------------
+    + in f90:
+		o fixed typo: rgs_CTIcorrrection -> rgs_CTIcorrection
+		o fixed version of rawxy2mm, gainCorrection, CTIcorrection
+		  which work on Dal Columns (Dal now returns Handle<Column>)
+		o minor change in filterIdToString()
+		o new routine OAL_rgsOffset()
+	+ in f90test:
+		o added test for CTI and gain correction to caltest_rgs
+		o fix in caltest_emos.f90 (one CAL_releaseMemory too many -
+		  caused crash under OSF)
+
+Version 1.11 - 1998-10-06 (UL)
+------------
+    + fixed broken link in documentation
+
+Version 1.10 - 1998-10-06 (UL)
+------------
+    + added #include<iomanip.h> in several places
+
+Version 1.9 - 1998-10-01 (UL)
+------------
+    + three new routines added to API (CAL_getParticleBackground,
+      CAL_getDiffuseXBackground, CAL_rgsGetRefinedWaveScale);
+      calexample_emos.f90/caltest_emos.f90 extended accordingly;
+      documentation updated
+	+ CAL_mm2thetaPhi/CAL_thetaPhi2mm propagated to f90 layer
+    + fixed broken link in doc to CCF ICD
+    + fixed SPR 438: wrong format of atom in warning
+    + fixed 442: Do not use STOP, call error instead
+    + reading of EMOS pattern lib mode dependent
+    + setStateFromScienceFile() implemented and corresponding tests added
+      to f90test
+    + gainCorrection() now CCF-based (for PN uses ADUConv file provided by
+	  hardware group)
+	+ added missing includes (iomanip.h) (MB)
+	+ fixed improper return (ALTRETURNV) (MB)
+	+ upgraded message calls in test harness (MB)
+	+ now creates links to perl files in $SAS_DIR/lib/perl (MB)
+
+Version 1.8 - 1998-08-26 (UL)
+-----------
+	+ changes to Xmm.h (new methods in class `EPNcam')
+	+ new output operator for AttitudeMatrix
+	+ closed tiny memory leak in CalOalUtility::stringColumnRow()
+	+ internal changed to Ccf.h
+
+Version 1.7 - 1998-07-24 (UL)
+-----------
+	+ CAL_getEventPatterns is now CCF-based
+	+ various changes following testccf upgrade to v1.7
+
+Version 1.6 - 1998-07-20 (UL)
+-----------
+    + fixed SOC-SPR 360 about linking problem on Dec
+    + changes to Makefiles following upgrade of package 'sas'
+    + moved 'common.h' -> utils
+
+Version 1.5 - 1998-07-09 (UL)
+-----------
+    + fixed SOC-SPRs:
+          o 242: CAL documentation
+          o 265: Package documentation has wrong name
+          o 295: Remove the spurious subdirectory ccftools
+          o 296: Rename calapi.tex to cal_description.tex and add cal.tex
+          o 363: doc makes use of raw HTML directives
+          o 375: Positions of detector centres.
+          o 360: calviewdummy fails to link on Digital Unix
+          o 380: calsample fails 
+
+Version 1.4 - 1998-07-08 (UL)
+-----------
+    + blocks in CCF constituents are now accessed by name - necessary
+      due to changes in Dal-1.0 -> Dal-1.1 - because of this, testccf
+      needs to be in version 1.4 or higher
+
+Version 1.3 - 1998-07-07 (UL)
+-----------
+    + added test harness for StringPool class
+
+Version 1.2 - 1998-05-06 (UL)
+-----------
+    + fixed SOC-SPRs:
+          o 95: Symbol bloat
+          o 174: Wrong CIF file
+          o 193: OAL/CAL should use error instead of exitval
+          o 196: getEventPatterns returns transposed patterns
+          o 201: Detector coordinates for EPIC MOS
+          o 205: MOS pixel size
+
+Version 1.1 - 1998-05-14 (UL)
+-----------
+    + Initial version for SAS v1 integration

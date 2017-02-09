@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="eimagecombine">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eimagecombine.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="eimagecombine.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eimagecombine (eimagecombine-0.8) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="eimagecombine.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eimagecombine.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="eimagecombine:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+The meta-task <A NAME="435"></A><A NAME="tex2html1"
+  HREF="../eimagecombine/index.html"><SPAN  CLASS="textbf">eimagecombine</SPAN></A>
+combines the individual output images from the task <A NAME="439"></A><A NAME="tex2html2"
+  HREF="../eimageget/index.html"><SPAN  CLASS="textbf">eimageget</SPAN></A>
+to produce a background-subtracted, vignetting-corrected, and smoothed image of EPIC exposures.
+
+<P>
+<A NAME="443"></A><A NAME="tex2html3"
+  HREF="../eimagecombine/index.html"><SPAN  CLASS="textbf">eimagecombine</SPAN></A>
+uses all images, which are found in the directory the script is executed in and follow the naming convention of the output of <A NAME="447"></A><A NAME="tex2html4"
+  HREF="../eimageget/index.html"><SPAN  CLASS="textbf">eimageget</SPAN></A>.
+Note that alternatively the file-name extension ``.fits.gz'' is allowed to enable the usage of compressed input images. 
+Compression becomes very efficient for larger mosaic images. 
+In the case of existence of both files, the uncompressed file will be used.
+
+<P>
+The script can be started and interrupted at several steps.
+In this case, the user must ensure that the output files of the previous steps were created properly and not removed (<TT>keepinterstage</TT>=1).
+
+<P>
+The task operates as follows:
+
+<UL>
+<LI>Step 1 (Optional, <TT>withcheckinput</TT>=1): 
+<BR>
+The individual input-image sets are checked for completeness.
+
+<P>
+</LI>
+<LI>Step 2 (Optional, <TT>maskindividual</TT>=1): 
+<BR>
+All images of an individual exposure will be multiplied with the corresponding mask (if existing and having the file name P<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$&lt;$"></SPAN>obsid<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$&gt;$"></SPAN><SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$&lt;$"></SPAN>expid<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$&gt;$"></SPAN>_ima_mask.fits). 
+      This can e.g. be used to remove artefacts or point sources.
+
+<P>
+</LI>
+<LI>Step 3 (<TT>withaddimages</TT>=1):
+<BR>
+For each energy band (0,1,...), for each image type (observed image, exposure map, filter-wheel-closed image, and out-of-time image), and for each instrument (pn, MOS1, MOS2)
+      the images of the individual exposures are merged into one mosaic image.
+
+<P>
+</LI>
+<LI>Step 4 (<TT>withcombineimages</TT>=1):
+<BR>
+The exposure maps will be weighted according to the <TT>epn_weight</TT>, <TT>em1_weight</TT>, <TT>em2_weight</TT> parameters. 
+      Default is 0.4 for MOS and 1.0 for pn. 
+      The weights allow to account for differences in the effective area, which can e.g. cause CCD gaps being visible in the combined images. 
+      For instance, at the location of an EPIC-pn CCD gap which is covered by one EPIC-MOS CCD with same exposure time, 
+      the (unweighted) combined exposure will decrease to <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$\sim$"></SPAN>50% in the gap, but the counts in the combined image will decrease to <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$\sim$"></SPAN>28% resulting in a lower count rate in the CCD gap.  
+<BR>
+A mask will be created to ensure the total (weighted) exposure to be above the cut value <TT>ecut</TT>. 
+      This mask is applied to the mosaic images and allows to remove areas with low exposure, which would appear noisy in the final images.  
+<BR>
+The background mosaic images (filter-wheel-closed and out-of-time) are subtracted from the observation images and the images of all instruments are finally combined.
+
+<P>
+</LI>
+<LI>Step 5 (<TT>withasmooth</TT>=1):
+<BR>
+The combined images will be smoothed using <A NAME="461"></A><A NAME="tex2html5"
+  HREF="../asmooth/index.html"><SPAN  CLASS="textbf">asmooth</SPAN></A>. Per default, a constant smoothing is applied.
+
+When setting <TT>smoothstyle</TT> to ``adaptive'', a smoothing template will be created using all energy bands defined in <TT>templatebands</TT> and used to smooth all individual output images consistently with this template. 
+<BR>
+The final images are divided by the weighted mosaic exposure maps to correct for vignetting effects.
+
+<P>
+</LI>
+</UL>
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html71"
+  HREF="node4.html">Examples</A>
+<UL>
+<LI><A NAME="tex2html72"
+  HREF="node5.html">Simple image combination</A>
+<LI><A NAME="tex2html73"
+  HREF="node6.html">More sophisticated</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="eimagecombine.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

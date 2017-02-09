@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="epevents">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epevents.css">
+
+<LINK REL="next" HREF="node29.html">
+<LINK REL="previous" HREF="node13.html">
+<LINK REL="up" HREF="epevents.html">
+<LINK REL="next" HREF="node29.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epevents (epevents-6.50.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node27.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="SAS coding via PATTERN"></A>
+<A HREF="epevents.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node29.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epevents.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="epevents:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+   subroutine epevents
+
+   *** Get program parameters from parameter input
+
+   *** Open and check input file, copy to output file and condition outfile  
+   infile   = dataSet(stringParameter("eventset"),READ)
+     check if infile has EVENTS extension
+     check if infile has EXPOSURE extension
+   copyDataSet infile =&gt; outfile
+   outfile = dataSet(stringParameter("outset"),MODIFY)
+     create event attributes in EVENTS extension
+     addColumn DETX,DETY,PHA\_GAIN,PHA\_CTI,PI,PAT\_TYP,PAT\_IND,PAT\_ORI,
+                 PAT\_ID,PAT\_SEQ,PATTERN
+     setNullValue PHA\_CTI,PI,PAT\_TYP,PAT\_IND,PAT\_ORI,PAT\_ID,
+                 PAT\_SEQ,PATTERN
+     open columns needed 
+     do checks on quadrant and ccd numbers
+
+   *** Get program parameters from dataset attributes
+     get datamode to guide further processing 
+        EpnPrimeFullWindow
+        FastTiming          =&gt; no trailing event rejection
+                               source position used to determine event time 
+        FastBurst           =&gt; source position used to determine event time
+     get number of events in data set
+     get window dimensions and determine edges
+     get source position for timing and burst mode
+     get MIP rejection mode used in epframes
+        NONE = mip columns not flagged
+        SAS  = mip columns flagged
+        COM  = mip columns and neighbours flagged
+
+   *** Read and convolve bad pixel map
+     check if bad pixel extension exists
+     create bad pixel map (intensity codes bad pixel type)
+     create convolved bad pixel map (mark pixels above, below, left and right 
+       of a bad pixel, and mark edge pixels)
+   
+   *** Determine frame boundaries and discarded lines in frame 
+     read number of frames and frame boundaries from exposure extension
+     read discarded lines in frame from exposure extension
+
+   do frame = firstFrame, lastFrame
+
+      set parameters and allocate array size according to number of events
+          in frame
+     
+      *** adjust bad pixel map and convolved bad pixel map according to
+        mip rejection mode (MIP flagged columns correspond to bad pixels,
+        neighbour columns are flagged like edge pixels)
+
+      *** flag reemission events (if not timing mode)
+        determine trailing event
+        flag if PHA of trailing event is &lt; reemissionthreshold 
+          determined from PHA of preceding event
+        count trailing events
+  
+      *** perform pattern analysis
+        determine the pattern parameters PAT_TYP, PAT_IND, PAT_ORI 
+          and PAT_SEQ
+        mark uncertain patterns as invalid: if a single or the maximum of a 
+          pattern coincides with a pixel of the convolved bad pixel map, 
+          edge pixels are treated as if there was a bad pixel just outside 
+          the sensitive area of the CCD
+        check for MIPs
+        count different pattern types
+   
+      *** collect PAT_Infos and combine into PATTERN and PAT_ID columns
+
+      *** perform gain correction, use CAL routine CAL_pnGainCorrect
+
+   enddo
+   
+   *** perform cti correction, use CAL routine CAL_pnCtiCorrect
+
+   *** recombine the corrected amplitudes from each pattern (=&gt; PI column)
+
+   show results of trailing event and pattern analysis   
+
+   *** convert raw unlinearized detection coordinates RAWX/Y into 
+   corresponding physical location DETX/Y 
+
+   *** Store statistics of pattern analysis as attributes in exposure extension
+
+   end subroutine epevents
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

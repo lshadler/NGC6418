@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Image alignment</TITLE>
+<META NAME="description" CONTENT="Image alignment">
+<META NAME="keywords" CONTENT="ommosaic">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ommosaic.css">
+
+<LINK REL="next" HREF="node20.html">
+<LINK REL="previous" HREF="node15.html">
+<LINK REL="up" HREF="node13.html">
+<LINK REL="next" HREF="node18.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ommosaic (ommosaic-2.8.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node16.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Initialization example"></A>
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Algorithm- Sky Images"></A>
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="MAD test for data"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ommosaic.html">Home Page</A> / <A  HREF="node13.html">Algorithm- Sky Images</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00093000000000000000">
+Image alignment</A>
+</H2>
+
+<P>
+Two images are ``aligned'' by computing the cross-correlation coefficient <SPAN  CLASS="textbf">R</SPAN> between them
+(please see section 11.5) for a range of x and y offset values that are added to the
+reference pixel coordinates of the second image. The x and y offsets that give the maximum
+<SPAN  CLASS="textbf">R</SPAN> are subtracted from the reference pixel coordinates of the second image to
+<SPAN  CLASS="textbf">align</SPAN> it with the first.
+
+<P>
+In the case of sky-images, the reference pixel coordinates is that given in the image file FITS
+header by the keywords <SPAN  CLASS="textbf">CRPIX1</SPAN> and <SPAN  CLASS="textbf">CRPIX2</SPAN>.
+
+<P>
+In the case of unrotated images, the reference pixel coordinates is that given in the image file FITS
+header by the keywords <SPAN  CLASS="textbf">WINDOWX0)</SPAN> and <SPAN  CLASS="textbf">WINDOWY0</SPAN>.  
+
+<P>
+The algorithm works as follows
+<PRE>
+    Read the input parameter mincorr (the minimum correlation coefficient for a
+    successful correlation)
+
+    Take the absolute value of mincorr.
+    Find the size (n) of the vector of alignment paramters (see previous section)
+    Record that image i index of the value stored in alignment[0] has been aligned
+    (this will be the reference image). 
+
+    Loop from iter=1 to no upper bound 
+        Loop through from k=1 to k=n
+            Obtain the image file indices i and j from aligment[k]
+            If neither image i or image j have been aligned skip this value of k
+            If both image i and image j have been aligned skip this value of k
+            If(image i has been aligned then cross-correlate image j with image i,
+            otherwise cross-correlate image i with image j
+            If the computed cross-correlation coefficient is at least equal to mincorr
+            then record that these two images have been aligned, store the correlation
+            coefficient and the x and y shifts between the two.
+            Otherwise record that these two images cannot be aligned.  
+
+        End loop
+        If all the images have been aligned or none were aligned during the current
+        value of iter, exit the iter loop
+
+    End Loop
+</PRE>
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html251"
+  HREF="node18.html">MAD test for data outliers</A>
+<LI><A NAME="tex2html252"
+  HREF="node19.html">Alignment example</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

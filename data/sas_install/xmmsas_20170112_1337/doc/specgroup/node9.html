@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Minimum number of counts</TITLE>
+<META NAME="description" CONTENT="Minimum number of counts">
+<META NAME="keywords" CONTENT="specgroup">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="specgroup.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node8.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+specgroup (specgroup-1.6) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Statistical grouping"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Statistical grouping"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Minimum signal-to-noise ratio"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node26.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="specgroup.html">Home Page</A> / <A  HREF="node5.html">Grouping options and examples</A> / <A  HREF="node8.html">Statistical grouping</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00043100000000000000">
+Minimum number of counts</A>
+</H3>
+With this option the spectrum is grouped such that each group contains
+a minimum number of (source+background) counts. This is the equivalent
+to the <I>"group min 25"</I> command available in the <TT>f</TT>tool <EM>GRPPHA</EM>.
+e.g.
+
+<P>
+<BR>
+<IMG
+ WIDTH="375" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="\begin{code}
+{\em specgroup spectrumset=srcspec.ds mincounts=50}
+\end{code}">
+<BR>
+
+<P>
+which would produce a group for each set of bins which contained 50 or
+more counts. By default the grouping begins from the low energy end 
+(usually the first channel). To reverse this and start from the high energy 
+end use:
+
+<P>
+<BR>
+<IMG
+ WIDTH="492" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="\begin{code}{\em
+specgroup spectrumset=srcspec.ds mincounts=50 hightolow=yes
+}\end{code}">
+<BR>
+
+<P>
+Note this grouping is based on the number of counts in the source spectrum,
+which may also contain background.
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

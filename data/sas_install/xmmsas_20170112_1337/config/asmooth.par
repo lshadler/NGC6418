@@ -1,0 +1,371 @@
+<!-- converted from XPI formatted "asmooth.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="inset" type="dataset" mandatory="yes" default="dummy_default">
+   <DESCRIPTION>
+    Name of input dataset
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="outset" type="dataset" default="outimage.ds">
+   <DESCRIPTION>
+    Name of output dataset
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="tempset" type="dataset" default="tempimage.ds">
+   <DESCRIPTION>
+    Name of a temporary dataset
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="smoothstyle" type="string" default="adaptive">
+   <DESCRIPTION>
+    Smoothing type
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="simple">
+     <PARAM id="convolverstyle" type="string" default="gaussian">
+      <DESCRIPTION>
+       Convolver type
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="gaussian">
+       </ITEM>
+
+       <ITEM value="tophat">
+       </ITEM>
+
+       <ITEM value="squarebox">
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="width" type="real" default="5.0">
+      <DESCRIPTION>
+       Characteristic width of the convolver
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       width in [0.0:100.0]
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="normalize" type="bool" default="yes">
+      <DESCRIPTION>
+       Whether to normalize the convolver
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="adaptive">
+     <PARAM id="withuserwidths" type="bool" default="no">
+      <DESCRIPTION>
+       Whether to look for a user-supplied list of convolver widths.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="yes">
+        <PARAM id="userwidths" type="real" list="yes" default="0.0">
+         <DESCRIPTION>
+          List of convolver widths.
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          userwidths in [0.0:100.0]
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+
+       <ITEM value="no">
+        <PARAM id="nconvolvers" type="int" default="20">
+         <DESCRIPTION>
+          Number of convolvers in the list
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          nconvolvers in [2:126]
+         </CONSTRAINTS>
+        </PARAM>
+        <PARAM id="minwidth" type="real" default="0.0">
+         <DESCRIPTION>
+          Width of the smallest convolver in the list
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          minwidth in [0.0:100.0]
+         </CONSTRAINTS>
+        </PARAM>
+        <PARAM id="maxwidth" type="real" default="10.0">
+         <DESCRIPTION>
+          Width of the largest convolver in the list
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          maxwidth in [0.0:100.0]
+         </CONSTRAINTS>
+        </PARAM>
+        <PARAM id="widthliststyle" type="string" default="linear">
+         <DESCRIPTION>
+          Style of spacing in the list of convolver widths.
+         </DESCRIPTION>
+         <CASE>
+          <ITEM value="linear">
+          </ITEM>
+          <ITEM value="log">
+          </ITEM>
+          <ITEM value="sqrt">
+          </ITEM>
+         </CASE>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+
+     <PARAM id="desiredsnr" type="real" default="10.0">
+      <DESCRIPTION>
+       Desired signal-to-noise ratio in the adaptively-smoothed image.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       desiredsnr &gt; 0.0
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="writetemplateset" type="bool" default="yes">
+      <DESCRIPTION>
+       Whether to write the template image to file.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+        <PARAM id="outtemplateset" type="dataset" default="template.ds">
+         <DESCRIPTION>
+          Name of a dataset containing the template
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+
+     <PARAM id="writeconvolvers" type="bool" default="no">
+      <DESCRIPTION>
+       Whether to write the list of convolvers to file.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+        <PARAM id="outconvolversset" type="dataset" default="outconvolvers.ds">
+         <DESCRIPTION>
+          Name of a dataset containing the list of convolvers
+         </DESCRIPTION>
+        </PARAM>
+        <PARAM id="outindeximageset" type="dataset" default="outindeximage.ds">
+         <DESCRIPTION>
+          Name of a dataset containing the associated index image
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="withset">
+     <PARAM id="inconvolversarray" type="array" default="inconvolvers.ds:CONV_000">
+      <DESCRIPTION>
+       Name of a dataset+array containing the cube of convolver images.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="withindeximagearray" type="bool" default="yes">
+      <DESCRIPTION>
+       Whether to also look for an index image dataset+array.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+        <PARAM id="inindeximagearray" type="array" default="inindeximage.ds:INDEXIMG">
+         <DESCRIPTION>
+          Name of a dataset+array containing the associated index image.
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+
+     <PARAM id="normalizeset" type="bool" default="no">
+      <DESCRIPTION>
+       Whether to normalize the convolvers
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="template">
+     <PARAM id="intemplateset" type="dataset" default="template.ds">
+      <DESCRIPTION>
+       Name of a dataset containing the template
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="nopslimit" type="real" default="1.5e6">
+   <DESCRIPTION>
+    Number of multiplications required by direct convolution before FFT is invoked.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    nopslimit &gt; 0.0
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="forcecalctype" type="bool" default="no">
+   <DESCRIPTION>
+    Turn off time-optimisation of code and read the parameter --calcbyfft.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="calcbyfft" type="bool" default="yes">
+      <DESCRIPTION>
+       true: all pixels smoothed via FFT; false: all by direct calculation.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="readvarianceset" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to supply a variance image.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="invarianceset" type="dataset" default="invariance.ds">
+      <DESCRIPTION>
+       Name of input variance dataset.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="writevarianceset" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to supply a variance image.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="outvarianceset" type="dataset" default="outvariance.ds">
+      <DESCRIPTION>
+       Name of output variance dataset.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="withweightset" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to supply a weight image.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="weightset" type="dataset" default="weight.ds">
+      <DESCRIPTION>
+       Name of the weight dataset.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withoutmaskset" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to supply an `out' mask image.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="outmaskset" type="dataset" default="outmask.ds">
+      <DESCRIPTION>
+       Name of the &quot;out&quot; mask dataset. This mask specifies for which pixels the convolution should be calculated.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="writebadmaskset" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to write the mask of pixels where the weight value was found to be too low.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="badmaskset" type="dataset" default="badmask.ds">
+      <DESCRIPTION>
+       Name of the mask which records pixels where the weight value was found to be too low.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withexpimageset" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to supply an exposure map.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="expimageset" type="dataset" default="expmap.ds">
+      <DESCRIPTION>
+       Name of the exposure-map dataset.
+      </DESCRIPTION>
+     </PARAM>
+     <PARAM id="expmapuse" type="string" default="samesnr">
+      <DESCRIPTION>
+       Controls the appearence of a smoothed image which had exposure variations.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="samesize">
+       </ITEM>
+       <ITEM value="samesnr">
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="remultiply" type="bool" default="no">
+      <DESCRIPTION>
+       Whether to remultiply the output image by the exposure map.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

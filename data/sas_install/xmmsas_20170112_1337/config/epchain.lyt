@@ -1,0 +1,242 @@
+Cards
+  Page General
+    Frame Data
+      Parameter odf
+      Parameter datamode
+      Parameter exposure
+      Parameter ccds
+      Parameter schedule
+      Parameter odfaccess
+    end
+    Frame Calibration
+      Enable withdefaultcal
+        Parameter withxrlcorrection
+        Parameter withrdpha
+        Parameter runepfast
+      end
+    end
+    Frame Output
+      Parameter usecanonicalnames
+      Parameter outset
+      Parameter keepintermediate
+      Parameter withpatplot
+      Parameter optloadingimage
+      Parameter optloadingimageset 
+    end
+    Frame "Background lightcurve"
+      Enable runbackground
+        Parameter withmask
+        Parameter maskset
+        Parameter hrdmskset
+        Parameter rateset
+        Parameter specset
+        Parameter timebinsize
+      end
+    end
+  end
+  Page Badpix
+    Frame badpixfind
+      Enable runbadpixfind
+#       Parameter hithresh
+#       Parameter flickertimesteps
+        Parameter badpixset
+      end
+    end
+    Frame badpix
+      Enable runbadpix
+        Parameter getuplnkbadpix
+        Parameter getotherbadpix
+        Parameter getnewbadpix
+        Parameter emptyextension
+        Parameter windowfilter
+      end
+    end
+  end
+  Page Epframes
+    Frame epframes
+      Enable runepframes
+        Enable withsrccoords
+          Parameter srcra
+          Parameter srcdec
+        end
+        Enable withsrcrawy
+          Parameter srcposition
+        end
+        Enable witheventmap
+          Parameter eventmapset 
+        end
+        Enable withsrccoords
+	  Parameter srcra
+	  Parameter srcdec
+	end
+        Parameter withfinetime
+        Parameter lowerthreshold
+        Parameter withfifogti
+        Parameter fifogtithresh
+        Parameter guessdeltap
+        Parameter wrongpixlimit
+        Parameter mipthreshold
+        Parameter mipmethod
+        Parameter mipdist
+        Parameter qualmax
+        Parameter ecntempqb1    # temporary
+        Parameter f1294         # temporary
+        Parameter f1052         # temporary
+        Parameter f1118         # temporary
+        Parameter odfok
+        Parameter hkok
+        Parameter ccfok
+        Parameter automode      # not active yet
+        Parameter autofilter    # not active yet
+        Parameter showaux       # not active yet
+        Parameter showccx       # not active yet
+        Parameter showpmh       # not active yet
+        Parameter showpah       # not active yet
+##      Parameter showve        # not active yet
+        Parameter anchop
+##      Parameter ancmloth
+        Parameter ancmcorr
+        Parameter aneamipsel
+        Parameter anmaxmip
+        Parameter anmip
+        Parameter setupbpx
+      end
+    end
+  end
+  Page Epevents
+    Frame epevents
+      Enable runepevents
+        Enable withphotonmap
+          Parameter photonmapset
+        end
+        Parameter withoutoftime
+        Parameter withctisrcpos
+        Parameter reemissionthresh
+        Parameter randomizeposition
+        Parameter randomizeenergy
+        Parameter gainctiaccuracy
+        Parameter withgaintiming
+        Parameter withgainburst
+        Parameter withgainff
+        Parameter withgaineff
+        Parameter withphagaincolumn
+        Parameter testenergywidth
+        Parameter lowgainenergyscale
+        Enable withctilongterm
+          Parameter ctilongtermy
+          Parameter ctilongtermsoft
+#         Parameter ctilongtermpar    # read from CCF instead
+        end
+        Parameter withpatternoffset
+        Parameter withbackgroundgain
+        Parameter withccdoffsets
+        Parameter withtempcorrection
+#       Parameter withrdpha
+        Parameter rdphatimebinsize
+#       Parameter patternanalysis  # not used yet
+        Parameter withframecti     # not recommended
+        Parameter checksasmip
+      end
+    end
+  end
+  Page Epreject
+    Frame epreject
+      Enable runepreject
+#       Parameter withxrlcorrection
+        Parameter withoffsetmap
+        Enable withoffsetlist
+          Parameter odilist
+        end
+        Parameter sigma
+        Parameter badcolumnset
+        Parameter noiseparameters
+        Enable withsoftflarescreening
+          Parameter softflarethreshold1
+          Parameter softflarethreshold2
+          Parameter softflaresmooth
+          Parameter softflareenergyrange
+          Parameter softflaresmoothparams
+        end
+      end
+    end
+    Frame epxrlcorr
+      Parameter runepxrlcorr
+      Parameter withxrlimage
+    end
+    Frame epnoise
+      Enable runepnoise
+        Parameter identifynoisyframes
+        Parameter applyfilter
+        Parameter noisecut
+        Parameter sigmacut
+        Parameter savemasks
+      end
+    end
+  end
+  Page Attitude
+    Frame atthkgen
+      Enable runatthkgen
+        Parameter timestep
+      end
+    end
+    Frame attcalc
+      Enable runattcalc
+        Parameter attitudelabel
+        Parameter fixedra
+        Parameter fixeddec
+        Parameter fixedposangle
+        Parameter refpointlabel
+        Parameter nominalra
+        Parameter nominaldec
+        Parameter withmedianpnt
+        Parameter imagesize
+      end
+    end
+  end
+  Page Exposure
+    Frame epexpsoure
+      Enable runepexposure
+        Parameter randomizetime
+        Parameter screenexposure
+        Parameter spatialexposure
+      end
+    end
+  end
+  Page Evlistcomb
+    Frame Screening
+      Enable screen
+        Parameter screenlowthresh
+      end
+      Parameter runscreen
+      Parameter screenrejected
+    end
+    Frame evlistcomb
+      Enable runevlistcomb
+        Parameter memorymodel
+        Parameter othertables
+        Parameter epnimgcolnames
+        Parameter epnimgcoltypes
+        Choice propagatecolumns
+          Page auto
+            Parameter epntimcolnames
+            Parameter epntimcoltypes
+          end
+          Page imaging
+          end
+          Page subset
+          end
+          Page icd
+          end
+          Page all
+          end
+        end
+      end
+    end
+    Frame evselect
+      Parameter runevselect
+    end
+#   Frame epfast
+#     Parameter runepfast
+#   end
+  end
+end

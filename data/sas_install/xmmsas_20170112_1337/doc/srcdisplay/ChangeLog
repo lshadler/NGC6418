@@ -1,0 +1,162 @@
+ChangeLog for srcdisplay
+========================
+
+Version 1.19.1 - 2016-12-07 (AI)
+------------
+	+ (src/srcdisplay.cc) Temporary string object is created to hold the 
+	const char pointer. 
+
+Version 1.19 - 2014-01-22 (RDS)
+------------
+        + src/srcdisplay.cc		- added option to use the positional
+	+ src/SourceList.cc/h		- error from the source list to
+	+ Documentation			- determine the source radius
+					  (SPR-7170)
+
+Version 1.18.1 - 2004-03-15 (AI)
+------------
+        + Documentation updated: parameters overhauled.
+
+Version 1.18 - 2003-11-03 (AI)
+------------
+	+ changed USEDLIBS order in Makefile for static builds.
+
+Open SPRs:
+    *none*
+
+Version 1.17 - 2003-05-23 (UL)
+------------
+	+ added new SourceList constructur to support new input mode of
+	  epicbscalgen (related to SCR 63 closure)
+	+ setting of new BS misalignment angles for the CAL in SourceList
+	  constructor works now via SAS_CCFFILES environment variable
+	+ bug fix in Source::angularSeparation()
+	+ various transparent changes in source code
+	+ parameter 'imageset' is now optional and has controlling boolean
+	  'withimageset' to allow overplotting of new marker on existing
+	  image in ds9
+	+ added new parameters (doc also updated)
+		- overlay: to suppress deletion of existing region markers on
+				   already displayed image
+		- srccolor: to contol color of source markers
+
+Version 1.16 - 2003-03-28 (UL)
+------------
+	+ closure SPR 2295: SRCDISPLAY Implementation for SPR2148 not correct
+	  Look now for source extent in columns BOX_SIZE(eboxdetect),
+	  EXTENT(ewavelet), EXT(emldetect) and source counts in
+	  SCTS(boxdetect/ewavelet), SCNTS(emldetect)
+
+Version 1.15 - 2003-03-21 (UL)
+------------
+	+ updated out-of-date SourceList constructor used by epicbscalgen
+
+Version 1.14 - 2003-02-21 (UL)
+------------
+	+ brought in line with imgdisplay-1.37 as of which combined regions
+	  are retrieved in two separate components (included+excluded)
+
+Version 1.13 - 2003-01-21 (UL)
+------------
+	+ now DEPENDs on dsslib-5.0
+
+Version 1.12 - 2003-01-21 (UL)
+------------
+	+ minor stdc++ compliance change enforced by gcc-3.2
+
+Version 1.11 - 2002-11-21 (UL)
+------------
+	+ fixed another DEPEND problem
+
+Version 1.10 - 2002-11-18 (UL)
+------------
+	+ re-upload of 1.9 with param-2.0 compliant parameter file
+
+Version 1.9 - 2002-11-18 (UL)
+-----------
+	+ fixed DEPEND problem
+
+Version 1.8 - 2002-11-18 (UL)
+-----------
+	+ brought in line with imgdisplay-1.32
+
+Version 1.7 - 2002-08-19 (UL)
+-----------
+	+ minor transparent change to improve standard C++ compliance
+
+Version 1.6 - 2002-07-12 (UL)
+-----------
+	+ strstream -> stringstream
+	+ minor cosmetic enhancements
+
+Version 1.5 - 2002-05-27 (UL)
+-----------
+	+ made param-2.0 compliant
+
+Version 1.4 (HS)
+-----------
+	+ Bug fix: For source ID, now take first row as row #1, 
+	   not row #0 as with previous version.
+	
+Version 1.3 (HS)
+-----------
+	+ Added feature for optionally annotating an ID to the displayed source.
+	
+Version 1.2 (HS)
+-----------
+	+ Requirement for a RADEC_ERR column in source list now optional instead of mandatory - Source list needs only RA & DEC columns for task to run.
+	
+Version 1.1 (HS)
+-----------
+	+ now supports emldetect, ewavelet 
+	and srcmatch source lists.
+	
+Version 0.7 (UL)
+-----------
+	+ brought in line with selectlib 4.41
+
+Version 0.6 (UL)
+-----------
+	+ updated DEPEND (eboxdetect 4.0)
+	
+Version 0.5 (UL)
+-----------
+	+ brought in line with caloalutils-1.43
+
+Version 0.4.1 - 2000-11-08 (UL)
+-------------
+	+ fixed problem introduced in 0.2.2 (?) by changing type of sourceradius
+	  from integer->real; the problem shows up only in epicbscalgen
+	+ added a few forgotten 'delete ColumnDatas'
+
+Version 0.4 - 2000-09-14 (HS)
+-----------
+	+ (src/srcdisplay.cc, config/srcdisplay.par,
+	  doc/srcdisplay_description.tex) now generates regions in terms of
+	  equatorial coordinates instead of raw image coordinates. Code now
+	  checks whether WCS info in image dataset is valid, and raises a warning
+	  if not.
+	
+Version 0.3 - 2000-08-17 (HS)
+-----------
+	+ (config/srcdisplay.lyt) typo: enable -> Enable. This caused
+	  tighter integration checks to fail.
+	
+Version 0.2.2 - 2000-07-03 (HS)
+-----------
+	+ (config/srcdisplay.lyt) typo: parameter sourceRadius -> sourceradius and
+	  includeSources -> includesources (SOC-SPR-1581).
+
+Version 0.2.1 - 2000-06-15 (HS)
+-----------
+	+ (doc/srcdisplay_description.tex) fixed typo imagedisplay->imgdisplay
+	  (SOC-SPR-1559 : DOC::broken links)
+	+ (config/Makefile): Appended srcdisplay.info and srcdisplay.lyt to
+	  Makefile's CONFIGFILES list (SOC-SPR-1564 : srcdisplay .info and .lyt
+	  files not specified in Makefile:CONFIGFILES, SOC-SPR-1532 : task info
+	  file missing [srcdisplay] )
+	
+
+Version 0.2 - 2000-05-26 (GV)
+-----------
+	+ DEPEND updated.

@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Response matrix</TITLE>
+<META NAME="description" CONTENT="Response matrix">
+<META NAME="keywords" CONTENT="calpnalgo">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="calpnalgo.css">
+
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+calpnalgo (calpnalgo-2.44.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Gain correction"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="calpnalgo.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00034000000000000000">
+Response matrix</A>
+</H2>
+
+<P>
+The model which is used to describe the energy response of the pn-CCD
+is the so-called partial event model
+(see []). 
+The model accounts for the effects of 
+incomplete charge collection close to the detector surface. 
+An efficiency function CCE is defined that reflects the portion of 
+charge collected if a photon is absorbed in a certain depth. 
+This function is folded with the probability of 
+absorption in that depth which is given by the absorption law.
+The resulting analytical function for the spectral shape is then 
+folded with the 
+Gaussian noise distribution given by the Fano noise and the system 
+noise (electronic and transfer noise).
+
+<P>
+Different processes are responsible for different spectral features 
+that are visible in the detected channel distribution of infalling 
+monochromatic X-rays.
+Absorption in the oxide causes detection of very few electrons, 
+resulting in a 
+flat shelf that extends down to the detector noise peak. 
+If the photon is absorbed 
+in the silicon, but close to the silicon surface, 
+only a part of the generated electrons
+will reach the readout node, causing a shoulder at the low-energy 
+side of the main peak. 
+The variation of this portion with absorption depth is described by the CCE. 
+If the absorption takes place deep in the detector all generated electrons 
+will be detected.
+The relative strength of the flat shelf, shoulder and main peak is dependent 
+on energy.
+
+<P>
+Monochromatic synchrotron radiation at 15 different energies ranging from
+0.150keV to 15keV was used to calibrate the energy response of the 
+pn-CCD detector. The resulting channel spectra were fit with the partial 
+event model
+and the model parameters derived as function of energy.
+The detector response matrix is then filled using the partial event 
+model with the parameters derived from the ground calibrations.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Gain correction"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

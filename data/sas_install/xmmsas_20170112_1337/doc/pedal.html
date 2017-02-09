@@ -1,0 +1,960 @@
+<HTML>
+<HEAD>
+<TITLE>DAL - aka pedal</TITLE>
+<LINK REV="made" HREF="mailto:">
+</HEAD>
+
+<BODY>
+
+<!-- INDEX BEGIN -->
+
+<UL>
+
+	<LI><A HREF="#NAME">NAME</A>
+	<LI><A HREF="#SYNOPSIS">SYNOPSIS</A>
+	<LI><A HREF="#Differences_from_previous_releas">Differences from previous releases</A>
+	<LI><A HREF="#DESCRIPTION">DESCRIPTION</A>
+	<UL>
+
+		<LI><A HREF="#pedal_objects">pedal objects</A>
+		<LI><A HREF="#pedal_data_types">pedal data types</A>
+		<LI><A HREF="#pedal_access_modes">pedal access modes</A>
+		<LI><A HREF="#pedal_memor_model">pedal memor model</A>
+	</UL>
+
+	<LI><A HREF="#STATIC_METHODS">STATIC METHODS</A>
+	<LI><A HREF="#CONSTRUCTORS">CONSTRUCTORS</A>
+	<UL>
+
+		<LI><A HREF="#Data_set_contructor">Data set contructor</A>
+		<LI><A HREF="#Table_constructors">Table constructors</A>
+		<LI><A HREF="#Column_constructors">Column constructors</A>
+		<LI><A HREF="#Array_constructors">Array constructors</A>
+		<LI><A HREF="#Attribute_constructor">Attribute constructor</A>
+	</UL>
+
+	<LI><A HREF="#OTHER_METHODS">OTHER METHODS</A>
+	<UL>
+
+		<LI><A HREF="#Any_pedal_object">Any pedal object</A>
+		<LI><A HREF="#Any_pedal_object_but_attributes">Any pedal object but  attributes</A>
+		<LI><A HREF="#Any_pedal_object_but_attributes_">Any pedal object but attributes and columns</A>
+		<LI><A HREF="#Any_pedal_object_but_data_sets_a">Any pedal object but data sets and tables</A>
+		<LI><A HREF="#Data_set_objects">Data set objects</A>
+		<LI><A HREF="#Table_objects">Table objects</A>
+		<LI><A HREF="#Column_and_array_objects">Column and array objects</A>
+		<LI><A HREF="#Table_and_Column_objects">Table and Column objects</A>
+		<LI><A HREF="#Column_objects_variable_length_">Column objects (variable length)</A>
+	</UL>
+
+	<LI><A HREF="#DATA_METHODS">DATA METHODS</A>
+	<UL>
+
+		<LI><A HREF="#Attribute_methods">Attribute methods</A>
+	</UL>
+
+	<LI><A HREF="#DEVELOPERS_NOTES">DEVELOPERS NOTES</A>
+	<LI><A HREF="#TODO">TODO</A>
+	<LI><A HREF="#AUTHORS">AUTHORS</A>
+	<LI><A HREF="#HISTORY">HISTORY</A>
+	<LI><A HREF="#SEE_ALSO">SEE ALSO</A>
+</UL>
+<!-- INDEX END -->
+
+<HR>
+<P>
+<H1><A NAME="NAME">NAME</A></H1>
+<P>
+<PRE>  DAL - aka pedal (Perl Enhanced Data Access Layer)
+</PRE>
+<P>
+<HR>
+<H1><A NAME="SYNOPSIS">SYNOPSIS</A></H1>
+<P>
+<PRE>  use DAL;
+</PRE>
+<P>
+<PRE>  my $ds = DAL::dataset-&gt;new(-name =&gt; 'set', -mode =&gt; CREATE);
+  my $tab = $ds-&gt;addTable(-name =&gt; 'table', -rows =&gt; 1234);
+  my $col = $tab-&gt;addColumn(-name =&gt; 'column', -type =&gt; REAL32);
+</PRE>
+<P>
+<PRE>  etc.
+</PRE>
+<P>
+<HR>
+<H1><A NAME="Differences_from_previous_releas">Differences from previous releases</A></H1>
+<P>
+As of version 1.0 of the pedal, the static method
+
+<P>
+<PRE>  DAL-&gt;register($string) 
+</PRE>
+<P>
+is no longer supported. The corresponding actions are now carried out by
+default once the `use DAL' statement is executed.
+
+<P>
+If the application defined the variable $VERSION, this will be used to
+create a unique string with which the application is registered with the
+DAL.
+
+<P>
+The DAL module does no longer export data type and access mode constants
+into the application's name space. These constants must be fully qualified
+
+<P>
+The pedal makes use of named parameters. These are specified like so:
+
+<P>
+<PRE>  $ob-&gt;method(par1 =&gt; value, par2 =&gt; value ...);
+</PRE>
+<P>
+The adoption of a new parameter handling library means that parameter names
+preceeded by a dash (-par1 =&gt; value) are no longer supported.
+
+<P>
+There has been a change in nomenclature in the DAL. Previously, tables,
+arrays, columns and attributes had a comment field. This is now called
+label.
+
+<P>
+<HR>
+<H1><A NAME="DESCRIPTION">DESCRIPTION</A></H1>
+<P>
+The pedal is a Perl OO interface to the <STRONG>XMM Data Access Layer</STRONG> (DAL) libraries. In the following I assume that you are familiar with the
+DAL data model and the terminology that goes with it.
+
+<P>
+If you have successfully built this package, you can find more about the
+XMM DAL (and SAS) by following the links to the local documentation,
+usually <STRONG>file://${SAS_DIR}/README.html</STRONG> .
+
+<P>
+Most methods require one or more options to be set. In some cases default
+values are provided. Note that in general the pedal does not try to ensure
+that the parameters needed by a method are being set to something sensible
+(or at all). I made the design choice to make the Perl layer as simple as
+possible. That means, the parameter values are used in the Perl code are
+handed down to the underlying libraries that then decide whether this input
+makes sense or not.
+
+<P>
+<HR>
+<H2><A NAME="pedal_objects">pedal objects</A></H2>
+<P>
+In the following I shall use the following variables to label DAL objects:
+
+<UL>
+<LI>
+<P>
+*
+
+<P>
+<CODE>$ds</CODE> is a data set.
+
+<LI>
+<P>
+*
+
+<P>
+<CODE>$tb</CODE> is a table.
+
+<LI>
+<P>
+*
+
+<P>
+<CODE>$co</CODE> is a column.
+
+<LI>
+<P>
+*
+
+<P>
+<CODE>$ar</CODE> is an array.
+
+<LI>
+<P>
+*
+
+<P>
+<CODE>$bl</CODE> is a block.
+
+<LI>
+<P>
+*
+
+<P>
+<CODE>$ob</CODE> is any of the above, unless otherwise noted.
+
+</UL>
+<P>
+<HR>
+<H2><A NAME="pedal_data_types">pedal data types</A></H2>
+<P>
+The variable <STRONG>$datatype</STRONG> is also used to indicate one of the following constants.
+
+<UL>
+<LI>
+<P>
+$DAL::BOOL: logical
+
+<LI>
+<P>
+$DAL::INT8: one-byte integer (unsigned)
+
+<LI>
+<P>
+$DAL::INT16: two-byte integer (signed)
+
+<LI>
+<P>
+$DAL::INT32: four-byte integer (signed) 
+
+<LI>
+<P>
+$DAL::REAL32: eight-byte float
+
+<LI>
+<P>
+$DAL::REAL64: sixteen-byte float
+
+<LI>
+<P>
+$DAL::STRING: character string
+
+</UL>
+<P>
+<HR>
+<H2><A NAME="pedal_access_modes">pedal access modes</A></H2>
+<P>
+The variable <STRONG>$mode</STRONG> is used to indicate one of the following constants. These too are exported
+by default. The variable <CODE>$mode</CODE> refers to the way the DAL opens
+a data set.
+
+<UL>
+<LI>
+<P>
+$DAL::READ: the data set cannot be modified.
+
+<LI>
+<P>
+$DAL::CREATE: the data set is created if it does not exist. If it exists,
+it is overwritten.
+
+<LI>
+<P>
+$DAL::MODIFY: the data set can be modified.
+
+<LI>
+<P>
+$DAL::TEMP: the data set is temporary, that is it is erased once it is
+released.
+
+</UL>
+<P>
+<HR>
+<H2><A NAME="pedal_memor_model">pedal memor model</A></H2>
+<P>
+The variable <STRONG>$mem</STRONG> is used to indicate one of the following constants. These too are exported
+by default. The variable <CODE>$mem</CODE> refers to the way the DAL makes
+use of the available memory.
+
+<UL>
+<LI>
+<P>
+$DAL::HI: the DAL reads all the data in memory.
+
+<LI>
+<P>
+$DAL::LO: the DAL reads in memory the least possible amount of data, only
+when the data is actually needed.
+
+</UL>
+<P>
+<HR>
+<H1><A NAME="STATIC_METHODS">STATIC METHODS</A></H1>
+<P>
+<PRE>  DAL::version(); # returns the pedal version in use.
+</PRE>
+<P>
+<PRE>  DAL::clobber(); # returns the clobber status.
+</PRE>
+<P>
+<HR>
+<H1><A NAME="CONSTRUCTORS">CONSTRUCTORS</A></H1>
+<P>
+<HR>
+<H2><A NAME="Data_set_contructor">Data set contructor</A></H2>
+<UL>
+<LI>
+<P>
+<CODE>$ds</CODE> = DAL::dataset-&gt;new(name =&gt; $data_set_name,
+accessmode =&gt; $mode, memorymodel =&gt; $mem); 
+
+<P>
+Defaults:
+
+<P>
+accessmode =&gt; $DAL::CREATE
+
+<P>
+memorymodel =&gt; $DAL::HI
+
+</UL>
+<P>
+<HR>
+<H2><A NAME="Table_constructors">Table constructors</A></H2>
+<UL>
+<LI>
+<P>
+<CODE>$tb</CODE> = $ds-&gt;addTable(name =&gt; $table_name, nrows =&gt; $n,
+position =&gt; $p, label =&gt; $label);
+
+<P>
+Defaults:
+
+<P>
+nrows =&gt; 0
+
+<P>
+position =&gt; -1 (leave it to the DAL to decide, a wise choice)
+
+<P>
+label =&gt; ''
+
+<LI>
+<P>
+<CODE>$tb</CODE> = $ds-&gt;table(name =&gt; $table_name);
+
+<P>
+Returns the named table, if it exists.
+
+</UL>
+<P>
+<HR>
+<H2><A NAME="Column_constructors">Column constructors</A></H2>
+<UL>
+<LI>
+<P>
+<CODE>$co</CODE> = $tb-&gt;addColumn(name =&gt; $column_name, datatype
+=&gt; $datatype, label =&gt; $string, units =&gt; $string, dimensions =&gt;
+$arrayRef, position =&gt; $n);
+
+<P>
+Defaults:
+
+<P>
+datatype =&gt; $DAL::REAL32
+
+<P>
+label =&gt; ''
+
+<P>
+units =&gt; ''
+
+<P>
+dimensons =&gt; [1]
+
+<P>
+position =&gt; -1 (leave it to the DAL, a wise choice)
+
+<LI>
+<P>
+<CODE>$co</CODE> = $tb-&gt;column(name =&gt; $column_name);
+
+<P>
+Returns the named column, if it exists.
+
+</UL>
+<P>
+<HR>
+<H2><A NAME="Array_constructors">Array constructors</A></H2>
+<UL>
+<LI>
+<P>
+<CODE>$ar</CODE> = $ds-&gt;addArray(name =&gt; $array_name, datatype =&gt;
+$type, dimensions =&gt; $arrayRef, position =&gt; $integer);
+  
+
+<P>
+Defaults:
+
+<P>
+datatype =&gt; $DSAL::REAL32
+
+<P>
+dimensions =&gt; [0]
+
+<P>
+position =&gt; -1 (leave it to the DAL, a wise choice)
+
+<LI>
+<P>
+<CODE>$ar</CODE> = $ds-&gt;arrays(name =&gt; $array_name);
+
+<P>
+Returns the named array, if it exists.
+
+</UL>
+<P>
+<HR>
+<H2><A NAME="Attribute_constructor">Attribute constructor</A></H2>
+<UL>
+<LI>
+<P>
+<CODE>$at</CODE> = $ob-&gt;attribute(name =&gt; $attribute_name);
+
+<P>
+Returns the named attribute, if it exists.
+
+</UL>
+<P>
+<HR>
+<H1><A NAME="OTHER_METHODS">OTHER METHODS</A></H1>
+<P>
+<HR>
+<H2><A NAME="Any_pedal_object">Any pedal object</A></H2>
+<UL>
+<LI>
+<P>
+$ob-&gt;data();
+
+<P>
+Returns a pointer to the data structure behind the object. See <A HREF="#DATA_METHODS">DATA METHODS</A>.
+
+<LI>
+<P>
+$ob-&gt;label();
+
+<P>
+Returns the object's label.
+
+<LI>
+<P>
+$ob-&gt;relabel(newlabel =&gt; $new_object_label);
+
+<P>
+Relabels the object.
+
+<LI>
+<P>
+$ob-&gt;name();
+
+<P>
+Returns the name of the object.
+
+<LI>
+<P>
+$ob-&gt;rename(newname =&gt; $new_object_name);
+
+<P>
+Renames the object.
+
+</UL>
+<P>
+<HR>
+<H2><A NAME="Any_pedal_object_but_attributes">Any pedal object but  attributes</A></H2>
+<UL>
+<LI>
+<P>
+$ob-&gt;mode();
+
+<P>
+Returns the access mode used to open the data set.
+
+<LI>
+<P>
+$ob-&gt;release();
+
+<P>
+Releases the object. The DAL could decide to free the memory allocated to
+the object.
+
+<LI>
+<P>
+$ob-&gt;hasAttribute(-name =&gt; $attribute_name);
+
+<P>
+Returns true if the object has the named attribute.
+
+<LI>
+<P>
+$ob-&gt;addAttribute(name =&gt; $attribute_name, datatype =&gt; $datatype,
+value =&gt; $value, units =&gt; $units, label =&gt; $string);
+
+<P>
+Adds an attribute to the object. For columns the list of possible
+attributes is defined in the DAL.
+
+<P>
+Defaults:
+
+<P>
+datatype =&gt; $DAL::REAL32
+
+<P>
+value =&gt; 0
+
+<P>
+units =&gt; ''
+
+<P>
+label =&gt; ''
+
+<LI>
+<P>
+$ob-&gt;deleteAttribute(name =&gt; $attribute_name);
+
+<P>
+Removes the named attribute.
+
+</UL>
+<P>
+<HR>
+<H2><A NAME="Any_pedal_object_but_attributes_">Any pedal object but attributes and columns</A></H2>
+<UL>
+<LI>
+<P>
+$ob-&gt;addComment(value =&gt; $string);
+
+<P>
+Adds a comment entry to the object.
+
+<P>
+Defaults:
+
+<P>
+value =&gt; ''
+
+<LI>
+<P>
+$ob-&gt;comments();
+
+<P>
+Returns the number of comment entries.
+
+<LI>
+<P>
+$ob-&gt;comment(position =&gt; $n); 
+
+<P>
+Returns the n-th comment entry.
+
+<P>
+Defaults:
+
+<P>
+position =&gt; 0
+
+<LI>
+<P>
+$ob-&gt;addHistory(value =&gt; $string);
+
+<P>
+Add a history entry to the object.
+
+<P>
+Defaults:
+
+<P>
+value =&gt; ''
+
+<LI>
+<P>
+$ob-&gt;historys(); 
+
+<P>
+Returns the number of history entries for the object.
+
+<LI>
+<P>
+$ob-&gt;history(position =&gt; $n); 
+
+<P>
+Returns the n-th history entry.
+
+<P>
+Defaults:
+
+<P>
+position =&gt; 0
+
+</UL>
+<P>
+<HR>
+<H2><A NAME="Any_pedal_object_but_data_sets_a">Any pedal object but data sets and tables</A></H2>
+<UL>
+<LI>
+<P>
+$ob-&gt;units();
+
+<P>
+Returns the units of the object.
+
+<LI>
+<P>
+$ob-&gt;type();
+
+<P>
+Returns the data type of the object.
+
+</UL>
+<P>
+<HR>
+<H2><A NAME="Data_set_objects">Data set objects</A></H2>
+<UL>
+<LI>
+<P>
+$ds-&gt;addArray(...);
+
+<P>
+See <A HREF="#Array_constructors">Array  constructors</A>.
+
+<LI>
+<P>
+$ds-&gt;array(...);
+
+<P>
+See <A HREF="#Array_constructors">Array  constructors</A>.
+
+<LI>
+<P>
+$ds-&gt;hasArray(name =&gt; $array_name);
+
+<P>
+Returns true if the named array exists.
+
+<LI>
+<P>
+$ds-&gt;deleteArray(name =&gt; $array_name);
+
+<P>
+Deletes the named array.
+
+<LI>
+<P>
+$ds-&gt;addTable(...);
+
+<P>
+See <A HREF="#Array_constructors">Array constructors</A>.
+
+<LI>
+<P>
+$ds-&gt;table(...);
+
+<P>
+See <A HREF="#Array_constructors">Array constructors</A>.
+
+<LI>
+<P>
+$ds-&gt;hasTable(name =&gt; $table_name);
+
+<P>
+Returns true if the named table exists.
+
+<LI>
+<P>
+$ds-&gt;deteleTable(name =&gt; $table_name);
+
+<P>
+Deletes the named table.
+
+<LI>
+<P>
+$ds-&gt;blocks(); 
+
+<P>
+Returns the number of blocks in the data set.
+
+<LI>
+<P>
+$ds-&gt;hasBlock(name =&gt; $block_name); 
+
+<P>
+Returns true if the named block exists.
+
+<LI>
+<P>
+$ds-&gt;deleteBlock(name =&gt; $block_name);
+
+<P>
+Deletes the named block.
+
+</UL>
+<P>
+<HR>
+<H2><A NAME="Table_objects">Table objects</A></H2>
+<UL>
+<LI>
+<P>
+$ob-&gt;columns();
+
+<P>
+Returns the number of columns in the object.
+
+<LI>
+<P>
+$tb-&gt;hasColumn(name =&gt; $column_name);
+
+<P>
+Returns true if the named column exists in the table.
+
+<LI>
+<P>
+<CODE>$co</CODE> = $tb-&gt;addColum(...);
+
+<P>
+See <A HREF="#Column_constructors">Column constructors</A>.
+
+<LI>
+<P>
+<CODE>$co</CODE> = $tb-&gt;column(...);
+
+<P>
+See <A HREF="#Column_constructors">Column constructors</A>.
+
+<LI>
+<P>
+$tb-&gt;deleteColumn(name =&gt; $column_name);
+
+<P>
+Deletes the named column.
+
+</UL>
+<P>
+<HR>
+<H2><A NAME="Column_and_array_objects">Column and array objects</A></H2>
+<UL>
+<LI>
+<P>
+$ob-&gt;dimensions();
+
+<P>
+In list context it returns a list with the dimensions of the object. In
+scalar context it returns the number of dimensions of the object.
+
+<LI>
+<P>
+$ob-&gt;elements();
+
+<P>
+This returns the number of elements in a data cell. This is the product of
+the elements in the list returned by the previous method.
+
+</UL>
+<P>
+<HR>
+<H2><A NAME="Table_and_Column_objects">Table and Column objects</A></H2>
+<UL>
+<LI>
+<P>
+$ob-&gt;rows();
+
+<P>
+Returns the number of rows in the object.
+
+</UL>
+<P>
+<HR>
+<H2><A NAME="Column_objects_variable_length_">Column objects (variable length)</A></H2>
+<P>
+These methods work on variable length column. A varaible length column is
+created by setting <CODE>dimensions =</CODE> []&gt; in the <CODE>addColumn</CODE> call.
+
+<UL>
+<LI>
+<P>
+$ob-&gt;setCellSize(row =&gt; $row, size =&gt; $size);
+
+<P>
+Sets <CODE>$row</CODE> to contain <CODE>$size</CODE> elements.
+
+<P>
+Defaults:
+
+<P>
+row =&gt; 0
+
+<P>
+size =&gt; 1
+
+<LI>
+<P>
+$ob-&gt;cellSize(row =&gt; $row);
+
+<P>
+Inquires the size of a row.
+
+<P>
+Defaults:
+
+<P>
+row =&gt; 0
+
+<LI>
+<P>
+<CODE>$v</CODE> = $ob-&gt;cellData(row =&gt; $row);
+
+<P>
+Returns the data object corresponsing to a given row. See <A HREF="#DATA_METHODS">DATA METHODS</A>.
+
+<P>
+Defaults:
+
+<P>
+row =&gt; 0
+
+</UL>
+<P>
+<HR>
+<H1><A NAME="DATA_METHODS">DATA METHODS</A></H1>
+<P>
+Note that these methods are not efficient (i.e., they are slow). Good
+enough to manipulate small data sets.
+
+<UL>
+<LI>
+<P>
+<CODE>$v</CODE> = $ob-&gt;data();
+
+<P>
+Returns a pointer to the data associated with te object.
+
+<LI>
+<P>
+$v-&gt;set($value, $index); 
+
+<P>
+Assigns <CODE>$value</CODE> to the $index-th elemnth of the object.
+
+<LI>
+<P>
+<CODE>$oneElement</CODE> = $v-&gt;value($index);
+
+<P>
+Returns the current elements.
+
+</UL>
+<P>
+<HR>
+<H2><A NAME="Attribute_methods">Attribute methods</A></H2>
+<UL>
+<LI>
+<P>
+$at-&gt;asInt8();
+
+<P>
+Returns the attribute as $DAL::INT8.
+
+<LI>
+<P>
+$at-&gt;asInt16();
+
+<P>
+Returns the attribute as $DAL::INT16.
+
+<LI>
+<P>
+$at-&gt;asInt32();
+
+<P>
+Returns the attribute as $DAL::INT32.
+
+<LI>
+<P>
+$at-&gt;asString();
+
+<P>
+Returns the attribute as $DAL::STRING.
+
+<LI>
+<P>
+$at-&gt;asBool();
+
+<P>
+Returns the attribute as $DAL::BOOL.
+
+<LI>
+<P>
+$at-&gt;asReal32();
+
+<P>
+Returns the attribute as $DAL::REAL32.
+
+<LI>
+<P>
+$at-&gt;asReal64();
+
+<P>
+Returns the attribute as $DAL::REAL64.
+
+</UL>
+<P>
+<HR>
+<H1><A NAME="DEVELOPERS_NOTES">DEVELOPERS NOTES</A></H1>
+<P>
+The pedal is based on a C interface to the XMM Data Access Layer C++
+libraries. The C interface was then converted to a set of Perl-callable
+routines via SWIG (<EM>http://www.swig.org/</EM>). Then, an object oriented interface was built over the flat Perl
+interface.
+
+<P>
+<HR>
+<H1><A NAME="TODO">TODO</A></H1>
+<UL>
+<LI>
+<P>
+*
+
+<P>
+The data methods are extremely slow. They are based on SWIG's pointer
+libraries, that possibly where never intended to handle large amounts of
+data. The pedal should interface to PDL (<EM>http://pdl.perl.org/</EM>).
+
+<LI>
+<P>
+*
+
+<P>
+It should be possible to insert/remove rows from a table.
+
+<LI>
+<P>
+*
+
+<P>
+It should be possible to copy rows from one table to another.
+
+</UL>
+<P>
+<HR>
+<H1><A NAME="AUTHORS">AUTHORS</A></H1>
+<P>
+Giuseppe Vacanti, cosine science &amp; comuting, XMM Science Operations
+Team
+
+<P>
+Mark Thomas, Cara, XMM Science Operations Team
+
+<P>
+Edward Chapin, XMM Science Operations Centre
+
+<P>
+<HR>
+<H1><A NAME="HISTORY">HISTORY</A></H1>
+<P>
+The pedal was born out of an idea of Giuseppe Vacanti. It was made
+possible by Mark Thomas's hard work. Edward Chapin added a patch that
+fixes the use of BOOL, INT8 and STRING types.
+
+<P>
+<HR>
+<H1><A NAME="SEE_ALSO">SEE ALSO</A></H1>
+<P>
+DAL::utils.
+
+</BODY>
+
+</HTML>

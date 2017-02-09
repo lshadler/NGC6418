@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Output Files</TITLE>
+<META NAME="description" CONTENT="Output Files">
+<META NAME="keywords" CONTENT="atthkgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="atthkgen.css">
+
+<LINK REL="next" HREF="node8.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="atthkgen.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+atthkgen (atthkgen-1.21) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input Files"></A>
+<A HREF="atthkgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="atthkgen.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00070000000000000000"></A>
+<A NAME="atthkgen:description:outputfiles"></A>
+<BR>
+Output Files
+</H1>
+
+<P>
+
+<OL>
+<LI>FITS file with a single bintable extension (<A NAME="520"></A><TT>ATTHK</TT>), 
+containing the entire
+attitude information for the complete observation. The file will contain, along
+with the time (<A NAME="522"></A><TT>TIME</TT>), the AHF and OM attitude information (i.e. RA,
+Dec, position angle - <A NAME="524"></A><TT>AHFRA</TT>, <A NAME="526"></A><TT>AHFDEC</TT>, <A NAME="528"></A><TT>AHFPA</TT>,
+<A NAME="530"></A><TT>OMRA</TT>, <A NAME="532"></A><TT>OMDEC</TT>, <A NAME="534"></A><TT>OMPA</TT>), with NULL (`INDEF') values in all
+three fields indicating bad attitude quality.
+If the attitude quality is good, then the absolute pointing differences
+between the instantaneous 
+AHF and the median AHF star-tracker pointing (<A NAME="536"></A><TT>DAHFPNT</TT>), between the 
+instantaneous OM and
+the median OM THF pointing (<A NAME="538"></A><TT>DOMPNT</TT>), and between the AHF and OM pointings
+(<A NAME="540"></A><TT>DAHFOM</TT>) are also given (NULL (`INDEF') values will be given
+in the bad quality cases). All columns are of type real64, and all, 
+except <A NAME="542"></A><TT>TIME</TT> (in sec) are
+given in units of degrees. Attributes in the primary header give the mean and
+median values of the nine tabulated attitude columns. They are named as the
+columns prefixed by an `A' for average (i.e. mean) and an `M' for median.
+Keywords written to file: <A NAME="544"></A><TT>TELESCOP</TT> <A NAME="546"></A><TT>DETNAM</TT> <A NAME="548"></A><TT>FILTER</TT> 
+<A NAME="550"></A><TT>OBS_ID</TT> <A NAME="552"></A><TT>OBS_MODE</TT>
+<A NAME="554"></A><TT>ORIGIN</TT> <A NAME="556"></A><TT>DATE-OBS</TT> <A NAME="558"></A><TT>DATE-END</TT> <A NAME="560"></A><TT>RA_OBJ</TT> <A NAME="562"></A><TT>DEC_OBJ</TT> <A NAME="564"></A><TT>RA_NOM</TT>
+<A NAME="566"></A><TT>DEC_NOM</TT> <A NAME="568"></A><TT>AAHFRA</TT> <A NAME="570"></A><TT>AAHFDEC</TT> <A NAME="572"></A><TT>AAHFPA</TT> <A NAME="574"></A><TT>AOMRA</TT> <A NAME="576"></A><TT>AOMDEC</TT>
+<A NAME="578"></A><TT>AOMPA</TT> <A NAME="580"></A><TT>ADAHFPNT</TT> <A NAME="582"></A><TT>ADOMPNT</TT> <A NAME="584"></A><TT>ADAHFOM</TT> <A NAME="586"></A><TT>MAHFRA</TT> <A NAME="588"></A><TT>MAHFDEC</TT>
+<A NAME="590"></A><TT>MAHFPA</TT> <A NAME="592"></A><TT>MOMRA</TT> <A NAME="594"></A><TT>MOMDEC</TT> <A NAME="596"></A><TT>MOMPA</TT> <A NAME="598"></A><TT>MDAHFPNT</TT> <A NAME="600"></A><TT>MDOMPNT</TT>
+<A NAME="602"></A><TT>MDAHFOM</TT> <A NAME="604"></A><TT>NATT</TT> <A NAME="606"></A><TT>NGAHF</TT> <A NAME="608"></A><TT>NGOM</TT> <A NAME="610"></A><TT>NGAHFOM</TT>
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input Files"></A>
+<A HREF="atthkgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Calculating the PNT keywords</TITLE>
+<META NAME="description" CONTENT="Calculating the PNT keywords">
+<META NAME="keywords" CONTENT="evproject">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="evproject.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+evproject (attcalc2-1.3.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Source of the spacecraft"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Binning up the attitude"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="evproject.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00035000000000000000"></A>
+<A NAME="evproject:description:pnt"></A>
+<BR>
+Calculating the PNT keywords
+</H2>
+
+<P>
+The <A NAME="758"></A><TT>RA_PNT</TT>, <A NAME="760"></A><TT>DEC_PNT</TT> and <A NAME="762"></A><TT>PA_PNT</TT> keywords, together with the <A NAME="764"></A><TT>AVRG_PNT</TT> keyword which records the type of average used, are meant to describe the average value of the spacecraft attitude during the exposure. The way in which they are calculated however is controlled by the source chosen for the attitude information, as follows:
+
+<P>
+
+<UL>
+<LI><TT>attsource</TT>=`binned': whatever values of the PNT keywords calculated by <A NAME="767"></A><A NAME="tex2html28"
+  HREF="../attbin/index.html"><SPAN  CLASS="textbf">attbin</SPAN></A>
+and stored in the <TT>inbinnedattset</TT> dataset are simply copied over.
+
+<P>
+</LI>
+<LI><TT>attsource</TT>=`odf': PNT values are sought from the header of the dataset pointed to by <TT>pntkwdset</TT>. This should normally be the output file of <A NAME="774"></A><A NAME="tex2html29"
+  HREF="../atthkgen/index.html"><SPAN  CLASS="textbf">atthkgen</SPAN></A>, which is the SSC product file with the name string ATTTSR. The sought keywords have the form `tsa', where `t' is either `M' for median or `A' for mean, `s' is either `AHF' or `OM', and `a' is either `RA', `DEC' or `PA'. The exact values of `t' and `s' looked for depend on the parameters <TT>withmedianpnt</TT> and <TT>odfattsource</TT>.
+
+<P>
+</LI>
+<LI><TT>attsource</TT>=`fixed': the values <TT>attra</TT>, <TT>attdec</TT> and <TT>attapos</TT> are also used for the PNT output. In this case <A NAME="784"></A><TT>AVRG_PNT</TT> is set to `FIXED'.
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Source of the spacecraft"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Binning up the attitude"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,187 @@
+ChangeLog for atthkgen
+===============================
+Open SPRs: 
+- SSC-SPR-2854: Funny AAHFDEC mean value [0044_0119710201]
+
+Version 1.21 - 2012-12-18 (AI)
+--------------------------------
+- New parameters "withtimerange" and "withpreqgti". With these two parameters 
+you can enter a specefic start and stop time through command line (timebegin 
+and timeend parameters) or through a FITS file (preqgtifile) to  calculate the attitude.
+- Documentation updated.
+	
+Version 1.20.1 - 2004-03-16 (HB)
+--------------------------------
+- (config/atthkgen.lyt): old .lyt file used again; "temporary fix" of
+	                 version 1.20 removed
+	
+Version 1.20 - 2002-07-17 (MJF)
+-------------------------------
+- (config/atthkgen.lyt): temporary fix for "make dist" problem on Tru64
+- (DEPEND): added "sas" as required by new infrastructure (sas-1.302)
+
+Version 1.19 - 2002-05-27 (MJF)
+-------------------------------
+- (src/atthkgen_mod.f90): corrected median determination (as in 1.17.3)
+- (src/atthkgen_mod.f90): minor code rectifications
+closed SPR:
+- SSC-SPR-2853: median values calculated incorrectly (as in 1.17.3)
+
+Version 1.18  - 2002-05-23 (MJF)
+--------------------------------
+- (config/atthkgen.par): updated for `param-2.0'
+- (DEPEND): needs `param-2.0', updated all other entries to latest
+
+Version 1.17.2 - 2002-03-10 (MJF)
+---------------------------------
+ + (odf*/0001_0000000000_SCX00000TCS.FIT): make columns OBTFINE proper "uint16"
+   format via TZERO3=32768 and TSCAL3=1 FITS header keywords
+
+Version 1.17.1 - 2002-03-08 (MJF)
+---------------------------------
+ + (src/atthkgen_mod.f90): added call "OAL_addCommonAttributes()" [SOC-SCR-84]
+ + (doc/atthkgen_description.tex): added all OAL calls to section "OAL usage"
+
+Version 1.17 - 2001-12-07 (MJF)
+-------------------------------
+ + resubmitted 1.16 for start of 5.3 RT
+
+Version 1.16 - 2000-11-28 (AMR)
+------------
+ + (src/atthkgen_mod.f90) Changed task to calculate instantaneous 
+ pointing differences with respect to the median spacecraft pointing 
+ (and not to the nominal RA/Dec summary file values) (SSC-SPR-2077).
+ + (doc/atthkgen_description.tex) Updated as regards above. 
+ 
+Version 1.15.2 - 2000-11-23 (AMR)
+--------------
+ + (doc/atthkgen_description.tex) Updated (SSC-SPR-2110)
+
+Version 1.15.1 - 2000-11-17 (GV/SOC)
+--------------
+ + (test/checkoutput.f90) add 63.184s to the time boundaries in the
+ test harness, to match the change in the Mission Reference Time in
+ caloalutils-1.36.3. This moved MRT to 1997-12-31T23:58:56.816 UTC.
+ 
+Version 1.15 2000-10-02 (AMR)
+------------
+ + (src/atthkgen_mod.f90) Removed instrument-specific keywords
+
+Version 1.14 2000-09-28 (AMR)
+------------
+ + (src/atthkgen_mod.f90) Altered filter handling to OAL_hasIPPV
+
+Version 1.13.3 2000-06-21 (AMR)
+------------
+ + (DEPEND) altered to solve SOC releasetrack error
+
+Version 1.13.2 2000-06-20 (AMR)
+------------
+ + (doc/atthkgen_description.tex) Removed non-existent links (SSC-SPR-1815)
+ 
+Version 1.13.1 2000-06-12 (AMR)
+------------
+ + (config/Makefile) added .lyt file to CONFIGFILES (SSC-SPR-1735)
+ + (Changelog) format updated
+ 
+Version 1.13 2000-05-26 (AMR)
+------------
+
+- New Changelog format. Info file included. Documentation updated. 
+ 
+Version 1.12 (29-02-99)
+----------------------
+
+- Odf updated to try and solve failure at ESTEC
+
+Version 1.11 (03-12-99)
+----------------------
+
+- Test harness updated
+- Documentation version number changed
+
+Version 1.10 (19-11-99)
+----------------------
+
+- Test harness changed - handles new SAS_ODF and SAS_CCF
+- DISTRIBUTION file and newline in ./Makefile included
+
+Version 1.9 (03-11-99)
+----------------------
+
+- As 1.8 with a few useless messages deleted
+
+Version 1.8 (24-09-99)
+----------------------
+
+- Handles completely bad attitude quality ODFs correctly. 
+- Test harness updated. Includes exit status checking for each subtest program.
+
+Version 1.7 (17-09-99)
+----------------------
+
+- NULL settings are now used for column values, in cases of bad attitude data.
+  `INDEF' appears in the relevant bad attitude columns. 
+- Documentation updated to atthkgen v1.7. New latex macros used. 
+- Test harness updated to include testing of bad attitude/NULL functions.
+
+Version 1.6 (01-09-99)
+----------------------
+
+- Median attitude information calculated now of only good attitude entries
+- True dynamic memory allocation used (closes SSC-SPR-1219)
+- History updated
+
+Version 1.5 (19-8-99)
+----------------------
+
+- As v1.4, but with small change in usage of OAL_getAttitude
+- Depends on oal-3.28 and cal-3.16
+
+Version 1.4 (18-8-99)
+----------------------
+
+- Task now calculates mean and median of all attitude parameters over the 
+  observation. These are stored as attributes and can be accessed by 
+  attcalc-4.5
+- Usage of OAL_getAttitude changed to reflect expected changes in oal (v3.28)
+- Documentation and test harness updated. 
+- NB `Blind' delivery (DEPEND on oal-3.28)
+
+Version 1.3 (16-8-99)
+----------------------
+
+- Fixed error in absolute pointing difference calculations (closed SSC-SPR-1184)
+
+Version 1.2 (08-6-99)
+----------------------
+
+- in line with CAL v3.0
+
+Version 1.1 (28-5-99)
+----------------------
+
+- Redelivery of v1.0, due to uploadsas problem
+- documentation changed accordingly
+
+Version 1.0 (27-5-99)
+----------------------
+
+- Task approved (version number = 1.0)
+- couple of minor changes
+
+Version 0.3 (28-4-99)
+----------------------
+
+- Couple of bugs solved
+
+Version 0.2 (26-4-99)
+----------------------
+
+- First submitted version
+
+Version 0.1
+----------------------------
+
+- Directory structure created by pkgmaker.
+

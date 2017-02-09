@@ -1,0 +1,228 @@
+<!-- converted from XPI formatted "emdiag.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="diagnosticset" type="dataset" mandatory="yes" default="">
+   <DESCRIPTION>
+    Input CCD map file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="windowx0" type="int" default="1">
+   <DESCRIPTION>
+    First column of the selected window
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    windowx0 in [1:600]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="windowy0" type="int" default="1">
+   <DESCRIPTION>
+    First line of the selected window
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    windowy0 in [1:600]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="windowdx" type="int" default="600">
+   <DESCRIPTION>
+    Horizontal width of the selected window
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    windowdx in [1:600]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="windowdy" type="int" default="600">
+   <DESCRIPTION>
+    Vertical width of the selected window
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    windowdy in [1:600]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="offsets" type="string" default="compute">
+   <DESCRIPTION>
+    Compute offsets or read from file
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="compute">
+     <PARAM id="nsigmas" type="real" default="10">
+      <DESCRIPTION>
+       Number of sigmas for rejection in OFFSET
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       nsigmas in [1.:]
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="maskbadpix" type="bool" default="no">
+      <DESCRIPTION>
+       Mask out the bad pixels from the CCF in OFFSET
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="selectfov" type="bool" default="yes">
+      <DESCRIPTION>
+       Select area within the field of view in OFFSET
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="writeoffvarset" type="bool" default="no">
+      <DESCRIPTION>
+       Write output offset/variance file
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+        <PARAM id="outoffvarset" type="dataset" default="offvar.out">
+         <DESCRIPTION>
+          Output offset/variance file
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          true
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+    <ITEM value="read">
+     <PARAM id="inoffvarset" type="dataset" mandatory="yes" default="">
+      <DESCRIPTION>
+       Input offset/variance file
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="eduthreshold" type="int" default="1">
+   <DESCRIPTION>
+    EDU threshold for event detection
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    eduthreshold in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="emdhlowerthreshold" type="int" default="0">
+   <DESCRIPTION>
+    EMDH lower threshold for event detection
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    emdhlowerthreshold in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="writemaskedccdset" type="bool" default="no">
+   <DESCRIPTION>
+    Write output masked CCD map file
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="maskedccdset" type="dataset" default="masked.out">
+      <DESCRIPTION>
+       Output masked CCD map file
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="findevents" type="bool" default="yes">
+   <DESCRIPTION>
+    Use edusoft sub_task
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="emdhupperthreshold" type="int" default="4095">
+      <DESCRIPTION>
+       EMDH upper threshold for event detection
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       emdhupperthreshold in [1:]
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="writeeventset" type="bool" default="no">
+      <DESCRIPTION>
+       Write output event file
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+        <PARAM id="eventset" type="dataset" default="event.out">
+         <DESCRIPTION>
+          Output event file
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          true
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="cutabovethreshold" type="bool" default="yes">
+   <DESCRIPTION>
+    Use thresh sub_task
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="writebrightpixset" type="bool" default="no">
+      <DESCRIPTION>
+       Write output CCD map file for bright pixels
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+        <PARAM id="brightpixset" type="dataset" default="bright.out">
+         <DESCRIPTION>
+          Output CCD map file for bright pixels
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          true
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

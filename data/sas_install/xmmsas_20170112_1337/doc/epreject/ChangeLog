@@ -1,0 +1,250 @@
+ChangeLog for epreject
+======================
+
+Version 5.17 - 2016-05-06 (MJF)
+-------------------------------
+- (src/epreject_mod.f90): test on existence and completeness of offset map
+  list introduced in previous version. Write also keyword OFSTFILE to EXPSOURE
+  extension as the used offset map may originate from a different ODF.
+
+Version 5.16 - 2015-03-24 (MJF)
+-------------------------------
+- (src/epreject_mod.f90): allow input list of offset maps (instead of the ones
+  identified by the OAL, or sometimes not identified ;-)
+  This is useful in the case when the offset maps were dumped before or after
+  the observation with different ObsID (e.g., early mission data, slews, ...)
+  Moreover, this new feature enables calibration work without changing contents
+  of ODF/SDF data or CCF files.
+  This is controlled via new boolean parameter "withoffsetlist" (default "N")
+  that takes precedence over "withoffsetmap" if set to "Y": it opens the file
+  specified in new parameter "odilist" and reads the ODI name to be used
+  from there. The input list is an ASCII with 2-digit CCD number followed
+  by a blank and then the path to the offset map for that CCD (there can be
+  more than one offset map in that file so that the input file can be used
+  for the whole observation processing; only the first entry for a particular
+  CCD is used; the order does not matter). (SOC/SAS-SCR-7284)
+- (config/epreject.*): as above
+- (doc/epreject_description.tex): as above
+
+Version 5.15 - 2014-05-02 (MJF)
+-------------------------------
+- (src/epreject_mod.f90): write boolean keyword "OFSTCOR4" whether calibration
+  parameters for offset correction have been available (SOC/SAS-SCR-7199)
+
+Version 5.14.6 - 2013-11-06 (MJF)
+---------------------------------
+- (src/epreject_mod.f90): make sure that epreject is not called twice, and
+  that epreject and epxrlcorr are not called together to avoid double correction
+
+Version 5.14.5 - 2013-06-14 (MJF)
+---------------------------------
+- (src/epreject_mod.f90): make sure that X-ray loading correction is not
+  applied if filter during offset map calculation was CLOSED. Also ensure
+  that it is not applied twice (e.g. accidentally in interactive analysis)
+- (test/epreject_test): added SAS_CCF and "withxrlcorrection=Y"
+closed SPR:
+- SPR-7115: epreject applies X-ray loading correction also if offset map was
+  computed with Closed filter
+
+Version 5.14.4 - 2012-05-23 (MJF)
+---------------------------------
+- (doc/epreject_description.tex): describe algorithm for X-ray loading
+  correction (SOC-SCR-331)
+
+Version 5.14.3 - 2012-05-18 (MJF)
+---------------------------------
+- (src/epreject_mod.f90): avoid uninitialized pointer I2OFFSET in the case of
+  3dim (i.e. HDI) offset maps
+
+Version 5.14.2 - 2012-05-17 (MJF)
+---------------------------------
+- (src/epreject_mod.f90): write keyword XRLCORR if X-ray loading correction
+  has been applied (SOC-SCR-331)
+
+Version 5.14.1 - 2012-03-30 (MJF)
+---------------------------------
+- (src/epreject_mod.f90): X-ray loading correction completed (SOC-SCR-331)
+- (doc/epreject_description.tex): as above
+- (DEPEND): needs "cal-3.209.1"
+
+Version 5.14 - 2012-03-20 (MJF)
+-------------------------------
+- (src/epreject_mod.f90): added X-ray loading correction for fast (TI+BU)
+   modes (SCR-331), not fully implemented
+- (config/epreject.*): added new parameter "withxrlcorrection" (default "N") 
+
+Version 5.13 - 2012-02-22 (MJF)
+-------------------------------
+- (src/epreject_mod.f90): added new parameter "withnoisehandling"
+  (default N) to separate CCD offset and noise handling (latter
+  could be covered by new task "epnoise" instead)
+- (config/epreject.*): as above
+- (doc/epreject_description.tex): as above
+- (doc/epreject_description.tex): some editorial changes
+
+
+Version 5.12 - 2010-02-19 (HB)
+--------------------------------
+	
++ (src/epreject_mod.f90) Corrects an error which caused epreject to crash
+	                 when attempting tho read *HDI.FIT offset maps.
+	
+	
+Version 5.11 - 2008-04-08 (HB)
+------------------------------
++ (src/epreject_mod.f90) writes keywords OFSTCOR1, OFSTCOR2, OFSTCOR3,
+	                 to exposure extension, giving offset correction 
+	                 method, number of corrected events, and number 
+	                 of events shifted below the threshold;
+	                 sets new flag EVATT_BELOW_ACCEPTANCE for events 
+	                 below threshold (this replaces the temporary 
+	                 use of flag EVATT_TRAILING for the same purpose
+                  implemented in v5.8)             
+	                   
+	                 
+		
+ersion 5.10.1 - 2007-11-08 (EO)
+--------------
+        + This version contains the same code than 5.10 but it is
+          made to restate the flow of versions after previous upload.
+
+
+Version 5.9.1 - 2007-11-08 (EO)
+-------------
+        + In order to make a patch to SAS 7.1.0 with the contents of
+          version 5.10 of this package, a copy of its code was made into
+          version number 5.9.1. That way, SAS 7.1.0 binaries depending
+          on libepreject.so.5.9, i.e. epproc and odfbrowser, could find it
+          without trouble.
+        + Therefore a package epreject-5.9.1 will exist with a release date
+          after epreject-5.10.
+        + In order to restate the normal flow of package releases,
+          after this package is uploaded, a new version 5.10.1 with
+          the same contents that 5.10, will be uploaded.
+
+
+Version 5.10 - 2007-08-09 (HB)
+------------------------------
++ (src/epreject_mod.f90) prevented PHA values from going negative if
+                         illegal values in master offset are encountered;
+                         corrected error in soft flare screening code
+
+
+Version 5.9 - 2007-03-22 (HB)
+-----------------------------
++ (src/epreject_mod.f90) reads and applies MasterOffsetMap (needs devtrack 
+	                 CCF EPN_REJECT_0004.CCF); changed LaTex description 
+	                 to fix problem with image display in LaTex to 
+	                 HTML conversion (SSC-SPR-3655 closed)
+	
+	
+Version 5.8 - 2006-08-04 (MJF)
+--------------------------------
+
++ (src/epreject_mod.f90): assign temporarily to events below the event threshold
+                   (i.e. after offset correction) a rejection flag like for
+                   reemission events to prevent inclusion in pattern recognition
+                   and energy corrections. 
+
+	
+Version 5.7 - 2005-04-26 (HB)
+-----------------------------
+
++ (src/epreject_mod.f90): if noise screening is not yet calibrated:
+	                  skip noise screening, only perform offset 
+	                  correction
+
+Version 5.6 - 2005-04-18 (HB)
+-----------------------------
+
++ (test/epreject_test): test harness fixed	
+
+Version 5.5 - 2005-03-23 (MJF, HB)
+----------------------------------	
+
++ (src/epreject_mod.f90): if uncalibrated mode do nothing
++ (src/epreject_mod.f90): check for (yet) uncalibrated modes, issue warnings
++ (src/epreject_mod.f90): added/modified diagnostic output
++ (config/epreject.par): changed default of "withoffsetmap" from "N" to "Y"
+
+Version 5.4 - 2004-11-08 (HB)
+-------------------------------
+
++ (src/epreject_mod.f90): calculation of offset correction directly from
+	                  offset maps (new default); old method (offset
+	                  correction based on 20 adu images) still available
+	                  for datasets where no offset maps are available;
+	                  new task parameter: -set, -withoffsetmap
++ (config/epreject.par): new task parameters added
++ (config/epreject.lyt): new task parameters added
++ (doc/epreject_description.tex): new algorithm and task parameters added
+
+Version 5.3.1 - 2004-01-29 (HB)
+-------------------------------	
+
++ (doc/epreject_description.tex): included soft flare screening code in
+	                  description
+
+Version 5.3 - 2003-12-11 (HB)
+-------------------------------
+
++ (src/epreject_mod.f90): code to flag soft flare events added (turned off
+	                  by default)
+	
+Version 5.2 - 2003-12-08 (HB)
+-------------------------------
+
++ (src/epreject_mod.f90): call to random number generator corrected
++ (doc/epreject_description.tex): figures added
+	
+Version 5.1 - 2003-12-07 (HB)
+-------------------------------
++ (config/Makefile): epreject.lyt removed from Makefile
+	
+Version 5.0 - 2003-12-05 (HB)
+-------------------------------	
+
+changed version to 5.0 to avoid clash with
+previous task epreject
+	
+Version 0.7 - 2003-12-05 (HB)
+-------------------------------
+
+CAL interface included; first submitted version	
+	
+Version 0.6 - 2003-11-06 (HB)
+-------------------------------
+	
+now uses fixed median reference images	
+	
+Version 0.5 - 2003-03-12 (HB)
+-------------------------------
+
+sigma threshold for offset correction added
+hardoced chip specific corection factors removed
+rows 1-15 of mask set to bad	
+	
+Version 0.4 - 2003-03-06 (HB)
+-------------------------------
+
+offset correction thesholds now defined
+per pixel; offsetcorr.tab modified accordingly.
+	
+Version 0.3 - 2003-03-05 (HB)
+-------------------------------
+
+Mask out offset columns, selected bad columns, 
+bad pixels from BADPIX extension, sources 
+found in 30-40 ADU image, and hot pixels found in
+20 ADU image. Calculation of mean and offset 
+correction is only performed inside the mask. 
+ 		
+Version 0.2 - 2003-02-27 (HB)
+-------------------------------
+
+offset correction values now read from file	
+	
+Version 0.1 - 2003-02-26 (HB)
+-------------------------------	
+	
+1st version. 

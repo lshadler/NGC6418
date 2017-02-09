@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Suppression of detector noise at low energies</TITLE>
+<META NAME="description" CONTENT="Suppression of detector noise at low energies">
+<META NAME="keywords" CONTENT="epreject">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epreject.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epreject (epreject-5.17) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Correction of the energy"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Soft flare rejection for"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epreject.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000">
+<B>Suppression of detector noise at low energies</B></A>
+</H2>
+
+<P>
+
+<P>
+<BR>
+While there is practically no detector noise present at energies above
+<SPAN CLASS="MATH"><IMG
+ WIDTH="52" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.png"
+ ALT="$250\mbox{ eV}$"></SPAN>, X-ray data below <!-- MATH
+ $\sim200\mbox{ eV}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="69" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.png"
+ ALT="$\sim200\mbox{ eV}$"></SPAN> are considerably
+contaminated by noise events, which become more and more dominant towards the
+lowest transmitted energies (Fig.<A HREF="node4.html#pn059207_003">1</A>). Investigations of
+40&nbsp;hours of in-orbit calibration data with the filter wheel closed, taken
+over a period of more than two years, showed that the noise properties vary
+with position and energy, but are fairly stable in time for most areas on the
+detector. This property enables a statistical approach for suppressing the
+detector noise. The task uses the information about the spatial and spectral
+dependence of the detector noise in order to flag and optionally remove, on a statistical basis, the
+amount of events which correspond to the expected noise.
+Apart from a dramatic reduction of the event file size (if the noise
+events are physically removed) this procedure thus has the additional 
+advantage to correctly treat the spatial and spectral
+properties of the detector noise in a more straightforward manner than
+would be possible by conventional background subtraction.  
+
+<P>
+
+<P></P>
+The noise properties were derived from a total of 10 exposures with
+closed filter wheel between
+XMM-Newton revs. 129 and 532, yielding a total exposure time of 144&nbsp;ks. These
+measurements were first corrected for offset shifts (see above) and then used
+for accumulating PHA spectra below 65&nbsp;adu, individually for each CCD row. The
+fine spacing in RAWY was chosen because the noise properties change
+considerably with distance from the readout node, in particular close to the
+CAMEX. In order to get a sufficient number of events, no subdivision was made
+along the CCD rows (i.e. along RAWX). This approach was motivated by the fact
+that the noise properties do not show a pronounced dependence along this
+direction (unless there is a bright column). As the resulting spectra suffered
+somewhat from low count rate statistics, they were smoothed along RAWY with a
+running median filter extending over <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$\pm5$"></SPAN> rows. This smoothing was not
+applied to rows with <!-- MATH
+ $\mbox{RAWY}<20$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="91" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$\mbox{RAWY}&lt;20$"></SPAN>, where the spectra contained more counts
+and where the dependence of the spectra on RAWY was high.
+
+<P>
+
+<P></P>
+For the flagging of potential noise events in a specific observation, the
+number of events in each (CCDNR, RAWY, PHA) bin is compared with the
+corresponding value in the noise data (scaled to the same exposure). According
+to the ratio between the actual number of events and the expected noise
+contribution in each (CCDNR, RAWY, PHA) bin, individual events are then
+randomly flagged. In order to improve the statistics somewhat, the spectra
+from the observation to be corrected are internally smoothed by a running
+median filter along RAWY, for rows with <!-- MATH
+ $\mbox{RAWY}\ge20$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="91" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$\mbox{RAWY}\ge20$"></SPAN>, in a similar way
+as the noise spectra, before the noise contribution is computed. The data set
+itself, however, remains unchanged by this task, except for receiving the
+additional flags.
+
+<P>
+
+<P></P>
+The data from exposures where the filter wheel was closed, show that the noise
+properties may exhibit some temporal variations, which are usually similar in
+all CCDs of a quadrant. In order to allow some fine tuning to an individual
+observation, twelve parameters can be controlled by the user. 
+These parameters <TT>noiseparameters</TT>
+specify the relative amount of noise in each CCD. An additional parameter
+controls the maximum percentage of events in each (CCDNR, RAWY, PHA) bin,
+which may be considered as noise. This parameter should be set to a value
+which is slightly below 100% (default: 98%), to take the fact into account
+that even in the exposures with the filter wheel closed, which were used for
+deriving the noise properties, not all events are due to detector noise. There
+is, e.g., some additional flux present from fluorescence at the filter wheel
+itself, triggered by energetic particles. This component would change with the
+position of the filter wheel. The appropriate setting of these parameters
+should be checked by accumulating an image of all events with low PHA values
+(below <!-- MATH
+ $\sim25\mbox{ adu}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="68" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$\sim25\mbox{ adu}$"></SPAN>) which were not flagged as noise events. If there
+was no bright, extended X-ray source in the field of view, then the events
+should be distributed homogeneously across the image.
+
+<P>
+
+<P></P>
+If a satisfactory suppression of noise events can be achieved, then this task
+allows to extend the useful energy range to an instrumental energy of
+<!-- MATH
+ $\sim120\mbox{ eV}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="69" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$\sim120\mbox{ eV}$"></SPAN>. Below this energy, parts of the detector become
+essentially insensitive due to the low energy threshold applied onboard and
+the combined effect of charge transfer loss and gain variations within the 768
+amplifiers in the EPIC-pn camera. In addition to the improvement of the data
+quality, removing the events which were flagged as noise events will also make
+the files considerably smaller and easier to handle. Tests have shown that up
+to <SPAN CLASS="MATH"><IMG
+ WIDTH="50" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$\sim90\%$"></SPAN> of all the events can be removed from the original data set by
+this method (e.g.Fig.<A HREF="node4.html#pn0462ff_cls_3">6</A>).
+
+<P>
+
+<P><P>
+<BR>
+<DIV CLASS="leftline" ID="par1521" ALIGN="LEFT">
+<B>Caveats:</B></DIV>
+
+<P>
+
+<P></P>
+Tests with exposures taken between XMM-Newton revs. 129 and 532 indicate
+that the noise properties did not change much during this period. However,
+there may be cases where the noise properties deviate significantly from the
+behavior expected by this task. This may have happened in particular early in
+the mission when the offset map was computed with a different method
+
+<P>
+
+<P></P>
+This task was verified to yield satisfactory results down to exposures of
+<!-- MATH
+ $\sim5\mbox{ ks}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="49" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$\sim5\mbox{ ks}$"></SPAN>. For considerably shorter exposures, however, there is
+a limitation due to count rate statistics (how should one remove, e.g.,
+20% of the events if there is only one event present?). It is therefore
+always recommended to check the results with the method described above.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Correction of the energy"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Soft flare rejection for"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="embadpixfind">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="embadpixfind.css">
+
+<LINK REL="next" HREF="node17.html">
+<LINK REL="previous" HREF="node15.html">
+<LINK REL="up" HREF="embadpixfind.html">
+<LINK REL="next" HREF="node17.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+embadpixfind (embadpixfind-2.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node15.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="embadpixfind.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="embadpixfind.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="embadpixfind:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+    Read the parameters
+
+    Define goodPixel array, set to True
+
+    if incremental then
+       Read the bad pixels already in file
+       goodPixel(bad pixels) = False
+    endif
+
+    if usecal then
+       Read the bad pixels in CAL
+       goodPixel(uplinked and dead pixels) = False
+       if not ignoreccfbright then goodPixel(bright pixels) = False
+       if includedeadpixels then Write dead pixels to output list
+    endif
+
+    Read map = projected image
+
+    Iterate
+       call findAllBad(map, goodPixel, bad)
+    until nothing new is found or niter is reached
+
+    Write bad pixels file
+
+
+subroutine findAllBad(map, goodPixel, bad)
+
+! Get local average around each pixel and estimated significance
+    call avMedFilter(map, goodPixel, medsmooth, badtest)
+! Look for bright pixels
+    call findBadPix(map, goodPixel, medsmooth, badtest, False, bad)
+    if findbadsegments then
+! Look for bright/dark columns
+       profil = sum(map,2)
+       call findBad1D(profil, bad)
+! Look for bright/dark rows
+       profil = sum(map,1)
+       call findBad1D(profil, bad)
+       Update goodPixel and medsmooth/badtest around bad columns/rows
+    endif
+! Look for dark pixels
+    call findBadPix(map, goodPixel, medsmooth, badtest, True, bad)
+
+end subroutine findAllBad
+
+subroutine avMedFilter(map, goodPixel, medsmooth, badtest)
+
+    Loop over current pixel
+       Consider all good pixels in window around current pixel
+       Extract average (or median+1 if smaller) into medsmooth
+       Estimate dispersion from average absolute deviation divided by 0.8
+       Estimate significance S1 of excess using Gaussian law
+       If larger than 3, estimate significance S2 of excess using Li and Ma
+       badtest = min(S1,S2)
+    endloop
+
+end subroutine avMedFilter
+
+subroutine findBadPix(map, goodPixel, medsmooth, badtest, negative, bad)
+
+    Loop over current bad pixel
+       Find maximum in badtest (minimum if negative) down to probathreshold
+       Get probability of excess using binomial law
+       if probability &lt; probathreshold  then
+          add bad pixel to list
+          Update goodPixel and  medsmooth/badtest around maximum
+       endif
+    endloop
+
+end subroutine findBadPix
+
+subroutine findBad1D(profil, psf1D, bad)
+
+    Find bad columns in profil (same as findBadPix)
+    Loop over bad columns
+       Get expected distribution along column from its neighbours
+       width = 1/(expected count rate per pixel)
+       Get running integral over bins of width pixels
+       While total(rest of column) larger (lower if negative) than expected
+          Find maximum integral (minimum if negative)
+          Remove segment of width pixels around it
+       endwhile
+    endloop
+
+end subroutine findBad1D
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

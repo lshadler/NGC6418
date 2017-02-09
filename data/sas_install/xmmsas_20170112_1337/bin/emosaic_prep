@@ -1,0 +1,342 @@
+#! /usr/bin/perl -w
+use warnings;
+use SAS;
+use Getopt::Long;
+
+require "obsid_structure.pl";
+require "mosaic_structure.pl";
+
+use vars qw( 
+	     $Master_Analysis_path
+	     $Analysis_path
+	     $global_mosaic_path
+	     $pn_path
+	     $mos_path
+	     $gti_path  
+	     $mosaic_path
+	     $ccf_file
+	     $sumsas_file 
+	     $att_file
+	     $pn_evt_file
+	     $m1_evt_file
+	     $m2_evt_file
+	     $pseudoexpid
+	     @e_band    
+	     @pn_pmin   
+	     @pn_pmax   
+	     @mos1_pmin  
+	     @mos1_pmax   
+	     @mos2_pmin  
+	     @mos2_pmax
+	     $debug
+	     $master_obs
+	     @instr_arr
+	    );
+	    
+
+#.. Init Program Parameters
+    &parameters_init(@ARGV);	
+
+#.. Set Paths
+
+chomp(my $Master_Analysis_path = `pwd`) ;
+$Master_Analysis_path = $Master_Analysis_path."/";
+$global_mosaic_path="prep_mosaic";
+
+#&build_dir_structure($Master_Analysis_path,$global_mosaic_path);
+
+
+#.. Single  ODF
+
+my $singleodf = 1; # 1: true ; 0: false
+if ($singleodf) {
+    my $Analysis_path = $Master_Analysis_path;
+    
+#    $pn_path="./";
+#    $mos_path="./";
+#    $gti_path="./";
+#    $mosaic_path="./"; 
+    
+    $ccf_file         = &getCCFFile("ccf.cif");    # Common for all poitings
+    $sumsas_file      = &getSUMFile("SUM.SAS"); # Common for all poitings
+
+    my $ats_file      = &getATSFile($sumsas_file,"ATS.FIT"); # Common for all poitings
+	if ($ats_file eq "No File"){&error_code(103); }
+	
+#.. Check that the user has introduced any event file
+
+	if (!$pn_evt_file && !$m1_evt_file && !$m2_evt_file) { &error_code(101); }  
+	 
+
+#.. Divide the ODF
+	
+    $div_odf_flag=&divide_odf($Analysis_path,$sumsas_file,$ats_file,$ccf_file);
+    
+    if (!$div_odf_flag) {exit;}   
+}
+# End of single ODF
+
+##############################################################################
+sub divide_odf{
+
+    my $Analysis_path = $_[0];
+    my $sumsas_file   = $_[1];    
+    my $ats_file      = $_[2];
+    my $ccf_file      = $_[3];
+	
+    my $gti_positions_file = &get_gti_positions_file($Analysis_path);  
+    my $OBSSTART           = &getobsstarttime(&dirname($att_file,$Analysis_path).&basename($att_file),0);
+    my $OBSEND             = &getobsstoptime(&dirname($att_file,$Analysis_path).&basename($att_file),0);
+   
+	
+    @args = ("preqgti"
+	     ,"atsfile=$ats_file"
+	     ,"preqgtifile=$gti_positions_file" 	    
+	     );
+    
+    if ($debug) {foreach (@args){print ">> DEBUG: $_\n";}}
+    system(@args)== 0 or return(0);  
+	
+    $numer_pointings=&get_number_of_poitings($gti_positions_file,1);
+    print ">> Number of pointings... $numer_pointings\n";
+	
+    for ($count = 1; $count <= $numer_pointings ; $count++) {
+		if ($count < 10) {$new_obs  = "prep_mosaic_00".$count;}
+		if ($count >= 10) {$new_obs = "prep_mosaic_0".$count;}
+
+		&build_dir_structure($Master_Analysis_path.$new_obs);
+	
+		$gti_positions = "gti_pointing_position.ds";
+		$temp_gti      = $Master_Analysis_path.$gti_positions;
+		system("rm","-f","$temp_gti");
+		system("ftabcopy","$gti_positions_file","$temp_gti","columns=START,STOP","rows=$count")== 0 or return(0);
+		if ($pn_evt_file)
+		{
+			$file1 = &dirname($pn_evt_file,$Analysis_path).&basename($pn_evt_file);
+			$file2 = $Master_Analysis_path.$new_obs."/".&basename($pn_evt_file); 
+			system("ln","-s","-f","$file1","$file2");
+		}
+		if ($m1_evt_file)
+		{
+			$file1 = &dirname($m1_evt_file,$Analysis_path).&basename($m1_evt_file);
+			$file2 = $Master_Analysis_path.$new_obs."/".&basename($m1_evt_file); 
+			system("ln","-s","-f","$file1","$file2");
+		}
+		if ($m2_evt_file)
+		{
+			$file1 = &dirname($m2_evt_file,$Analysis_path).&basename($m2_evt_file);
+			$file2 = $Master_Analysis_path.$new_obs."/".&basename($m2_evt_file); 
+			system("ln","-s","-f","$file1","$file2");
+		}
+		$file1 = $Master_Analysis_path.&basename($gti_positions);
+		$file2 = $Master_Analysis_path.$new_obs."/".&basename($gti_positions);
+		system("mv","-f","$file1","$file2");
+		$file1 = &dirname($att_file,$Analysis_path).&basename($att_file);	
+		$file2 = $Master_Analysis_path.$new_obs."/".&basename($att_file);
+		system("ln","-s","-f","$file1","$file2");
+	#	$file1 = $Master_Analysis_path.$ats_file;
+	#	$file2 = $Master_Analysis_path.$new_obs."/".&basename($ats_file);
+	#	system("ln","-s","-f","$file1","$file2"); 
+		$file1 = &dirname($sumsas_file,$Analysis_path).&basename($sumsas_file);
+		$file2 = $Master_Analysis_path.$new_obs."/".&basename($sumsas_file);
+		system("ln","-s","-f","$file1","$file2"); 
+		$file1 = &dirname($ccf_file,$Analysis_path).&basename($ccf_file);
+		$file2 = $Master_Analysis_path.$new_obs."/".&basename($ccf_file);
+		system("ln","-s","-f","$file1","$file2");
+		
+		&fill_structure($new_obs,"pn","AttFile",&basename($att_file));
+		&fill_structure($new_obs,"pn","AtsFile",&basename($ats_file));
+		&fill_structure($new_obs,"pn","SUMSASFile",&basename($sumsas_file));
+		&fill_structure($new_obs,"pn","EvtFile",&basename($pn_evt_file));
+		&fill_structure($new_obs,"pn","GTIFile_P",&basename($gti_positions));
+		&fill_structure($new_obs,"mos1","AttFile",&basename($att_file));
+		&fill_structure($new_obs,"mos1","AtsFile",&basename($ats_file));
+		&fill_structure($new_obs,"mos1","SUMSASFile",&basename($sumsas_file));
+		&fill_structure($new_obs,"mos1","EvtFile",&basename($m1_evt_file)); 
+		&fill_structure($new_obs,"mos1","GTIFile_P",&basename($gti_positions));
+		&fill_structure($new_obs,"mos2","SUMSASFile",&basename($sumsas_file));
+		&fill_structure($new_obs,"mos2","AttFile",&basename($att_file));
+		&fill_structure($new_obs,"mos2","AtsFile",&basename($ats_file));
+		&fill_structure($new_obs,"mos2","EvtFile",&basename($m2_evt_file)); 
+		&fill_structure($new_obs,"mos2","GTIFile_P",&basename($gti_positions)); 
+		
+		foreach (@instr_arr) {
+			
+		    $tmp_evt_file        = &get_prep_evt_file($_,$new_obs,$Master_Analysis_path);
+		    $filtered_event_file = $Master_Analysis_path.$new_obs."/tmp_filtered_evt.ds";
+	
+	# Filter event file by GTI position
+		    $gti_sposition_file = &get_singlegti_positions_file($_,$new_obs);
+		    $expr               = "gti($Master_Analysis_path$gti_sposition_file,TIME)";
+		    
+		    @args = ("evselect"
+			     ,"table=$Master_Analysis_path$tmp_evt_file"
+			     ,"filteredset=$filtered_event_file", "withfilteredset=yes", "keepfilteroutput=yes", "destruct=yes"
+			     ,"expression=$expr"
+			     );
+		    
+		    if ($debug) {foreach (@args){print ">> DEBUG: $_\n";}}	
+		    system(@args)== 0 or return(0);
+			
+		    system("mv","-f","$filtered_event_file","$Master_Analysis_path$tmp_evt_file");
+	
+	# Change headers to add a pseudo-exposure	    	
+		    $val1 = $pseudoexpid+$count;
+		    &change_header_key($Master_Analysis_path.$tmp_evt_file,0,$val1,"EXP_ID");
+		    $val2 = "S".$val1;
+		    &change_header_key($Master_Analysis_path.$tmp_evt_file,0,$val2,"EXPIDSTR");
+		    
+		    $val1 = $pseudoexpid+$count;
+		    &change_header_key($Master_Analysis_path.$tmp_evt_file,1,$val1,"EXP_ID");	
+		    $val2 = "S".$val1;
+		    &change_header_key($Master_Analysis_path.$tmp_evt_file,1,$val2,"EXPIDSTR");
+		}
+	
+
+    }
+    
+    return(1);
+}   
+
+##############################################################################
+sub build_dir_structure(){
+
+    foreach (@_) {
+	if (!-e $_) {
+	    mkdir ($_, 0755) or die "Cannot mkdir newdir: $!";
+	}
+    }
+    
+    return(1); 
+}
+
+##############################################################################
+sub getobsstarttime(){
+    my $event_file = $_[0]; 
+    my $ext        = $_[1]; 
+ 
+    chomp(my $tstart   = `fkeyprint infile=$event_file+$ext keynam=DATE-OBS outfil=STDOUT exact=yes | grep s | tail -1 | cut -c10-31`);
+    $tstart     =~ s/\s+//;
+    $tstart     =~ s/\'+//;
+    if ($tstart eq "DATE-OBS" || $tstart eq "") {$tstart ="unknown";}
+    return($tstart);
+}
+
+##############################################################################
+sub getobsstoptime(){
+    my $event_file = $_[0]; 
+    my $ext        = $_[1]; 
+    chomp(my $tstop   = `fkeyprint infile=$event_file+$ext keynam=DATE-END outfil=STDOUT exact=yes | grep s | tail -1 | cut -c10-31`);
+    $tstop     =~ s/\s+//;
+    $tstop     =~ s/\'+//;
+    if ($tstop eq "DATE-END" || $tstop eq "") {$tstop ="unknown";}
+    return($tstop);
+}
+
+##############################################################################
+sub get_gti_positions_file(){ 
+    my $obs   = $_[0];
+    if ($obs eq "") {return(0);}
+
+    return($Master_Analysis_path."/gti_positions.ds");
+    return(1);
+}
+
+##############################################################################
+sub getrevnumber(){
+    my $event_file = $_[0]; 
+    my $ext        = $_[1]; 
+    chomp(my $tstart   = `fkeyprint infile=$event_file+$ext keynam=REVOLUT outfil=STDOUT exact=yes | grep R | tail -1 | cut -c28-30`);
+    $revnum     =~ s/\s+//;
+    $revnum     =~ s/\'+//;
+    if ($revnum eq "REVOLUT" || $revnum eq "") {$revnum ="unknown";}
+    return($revnum);
+}
+
+
+##############################################################################
+sub get_number_of_poitings(){
+    my $event_file = $_[0]; 
+    my $ext        = $_[1]; 
+    chomp(my $np   = `fkeyprint infile=$event_file+$ext keynam=NAXIS2 outfil=STDOUT exact=yes | grep s | tail -1 | cut -c10-31`);
+    $np     =~ s/\s+//;
+    $np     =~ s/\'+//;
+    if ($np eq "NAXIS2" || $np eq "") {$np ="unknown";}
+    return($np);
+}
+
+
+##############################################################################
+sub change_header_key(){
+
+    $file = $_[0];
+    $ext  = $_[1];
+    $val  = $_[2];
+    $key  = $_[3];
+ 
+    my $file_name = $file.'['.$ext.']';
+
+    system("fparkey","$val","$file_name","$key");
+
+}
+
+#========================================================================
+sub parameters_init(){
+
+#.. Read Script Options
+
+    my $name="emosaic_prep";
+    my $line="@ARGV"; 
+    my @save;
+   
+    if ( @save = grep /^\-p/ , @ARGV) {
+       &usage($name);
+    };
+
+    if ( @save = grep /^-d/ , @ARGV) {
+	     system("sasdialog $name");
+		 my $x = $? >> 8;
+    	 exit($x);      
+    }
+
+    if ( @save = grep /^-v/ , @ARGV) {
+		&getVersion($name);
+    }
+#.. Default parameters (Start)
+    
+	if ( @save = grep /^pnevtfile=/ , @ARGV) {
+      $pn_evt_file="$save[-1]";
+      $pn_evt_file =~ s/^.*=//; 
+      $pn_evt_file =~ s/\+/\_/;   
+      push(@instr_arr, "pn")      		
+    } else { undef $pn_evt_file; }    
+	if ( @save = grep /^mos1evtfile=/ , @ARGV) {
+      $m1_evt_file="$save[-1]";
+      $m1_evt_file =~ s/^.*=//; 
+      $m1_evt_file =~ s/\+/\_/;
+      push(@instr_arr, "mos1")         		
+    } else { undef $m1_evt_file; }    
+	if ( @save = grep /^mos2evtfile=/ , @ARGV) {
+      $m2_evt_file="$save[-1]";
+      $m2_evt_file =~ s/^.*=//; 
+      $m2_evt_file =~ s/\+/\_/;
+      push(@instr_arr, "mos2")         		
+    } else { undef $m2_evt_file;}    
+ 	
+ 	if ( @save = grep /^atthkfile=/ , @ARGV) {
+      $att_file="$save[-1]";
+      $att_file =~ s/^.*=//; 
+      $att_file =~ s/\+/\_/;         		
+    } else { error_code(105); }  
+      
+   	if ( @save = grep /^pseudoexpid=/ , @ARGV) {
+       $pseudoexpid="$save[-1]";
+       $pseudoexpid =~ s/^.*=//; 
+       $pseudoexpid =~ s/\+/\_/;         		
+    } else { $pseudoexpid=10; }  
+    return (0);
+}
+
+
+1;
+

@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>What the task does</TITLE>
+<META NAME="description" CONTENT="What the task does">
+<META NAME="keywords" CONTENT="ebadpixupdate">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ebadpixupdate.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ebadpixupdate (ebadpixupdate-1.10) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="How to provide the"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="What the task does"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ebadpixupdate.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00033000000000000000">
+What the task does</A>
+</H2>
+
+<P>
+
+<UL>
+<LI>If <TT>fromccf</TT>=Y, 
+      <A NAME="475"></A><A NAME="tex2html15"
+  HREF="../ebadpixupdate/index.html"><SPAN  CLASS="textbf">ebadpixupdate</SPAN></A>
+loops over all CCDs selected
+      by the <TT>ccds</TT> parameter and
+      reads all bad pixels for that CCD
+</LI>
+<LI>If <TT>fromfiles</TT>=Y, <A NAME="481"></A><A NAME="tex2html16"
+  HREF="../ebadpixupdate/index.html"><SPAN  CLASS="textbf">ebadpixupdate</SPAN></A>
+loops over all tables (or files)
+      listed in the <TT>badpixtables</TT> parameter
+      and reads the corresponding CCD
+      in the header of the table.
+</LI>
+</UL>
+
+<P>
+In both cases, it flags all events belonging to that CCD and:
+
+<OL>
+<LI>on a bad pixel, whether bright or dead (<A NAME="486"></A><TT>ON_BADPIX</TT>)
+</LI>
+<LI>next to a dead pixel/line/column (<A NAME="488"></A><TT>CLOSE_TO_DEADPIX</TT>)
+</LI>
+<LI>next to a bright pixel (<A NAME="490"></A><TT>CLOSE_TO_BRIGHTPIX</TT>)
+</LI>
+</OL>
+CLOSE_TO means that the bad pixel is immediately next to the main pixel
+ of the event (not diagonal).
+
+<P>
+As a second step, <A NAME="492"></A><A NAME="tex2html17"
+  HREF="../ebadpixupdate/index.html"><SPAN  CLASS="textbf">ebadpixupdate</SPAN></A>
+updates the bad pixels
+ extensions (<A NAME="496"></A><TT>BADPIXnn</TT>) appended to the merged events lists, or
+ adds a bad pixel extension if it is missing.  This ensures that the
+ bad pixel information will be propagated to the exposure map (by
+ <A NAME="498"></A><A NAME="tex2html18"
+  HREF="../eexpmap/index.html"><SPAN  CLASS="textbf">eexpmap</SPAN></A>) and the effective area (by <A NAME="502"></A><A NAME="tex2html19"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>).  The
+
+<A NAME="506"></A><TT>BADFLAG</TT> column is set to 1 for uplinked bad pixels,
+ to 2 for a CCF origin, to 3 for a file
+ origin.  For the case where the same bad pixel is present with both
+ origins (<I>e.g.</I> a bad pixel with <A NAME="508"></A><TT>BADFLAG</TT>=3 originally
+ and now present in the CCF) the smaller number is written
+ (<A NAME="510"></A><TT>BADFLAG</TT>=2, CCF origin).
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="How to provide the"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="What the task does"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

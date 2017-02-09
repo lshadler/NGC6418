@@ -1,0 +1,86 @@
+Cards
+Page Input
+	Frame "Event table"
+		Parameter table
+		Parameter xcolumn
+		Parameter ycolumn
+		Frame "Level column"
+			Parameter ecolumn
+			Choice ecolumnminmax
+				Page explicitminmax
+					Parameter min
+					Parameter max
+				end
+				Page actualminmax
+				end
+				Page legalminmax
+				end
+			end
+		end
+	end
+	Frame "Color table"
+		Choice colortablechoice
+			Page external
+				Parameter colortableset
+			end
+			Page internal
+				Parameter colortable
+			end
+		end
+		Parameter invertcolortable
+	end
+end
+
+Page "Image generation"
+	Frame X
+		Enable withxranges
+			Parameter ximagemin
+			Parameter ximagemax
+		end
+		Choice imagebinning
+			Page imageSize
+				Parameter ximagesize
+				Parameter squarepixels
+			end
+			Page binSize
+				Parameter ximagebinsize
+			end
+		end
+	end
+	Frame Y
+		Enable withyranges
+			Parameter yimagemin
+			Parameter yimagemax
+		end
+		Choice imagebinning
+			Page imageSize
+				Parameter yimagesize
+				Parameter squarepixels
+			end
+			Page binSize
+				Parameter yimagebinsize
+			end
+		end
+	end
+	Frame Scaling
+		Choice scale
+			Page log
+				Parameter decades
+			end
+			Page lin
+			end
+		end
+	end
+end
+Page Output
+	Choice outputchoice
+		Page "dataset"
+			Parameter colorset
+			Parameter ascube
+		end
+		Page "ppmfile"
+			Parameter ppmfile
+		end
+	end
+end
+end

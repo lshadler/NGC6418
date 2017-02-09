@@ -1,0 +1,119 @@
+ChangeLog for omfastflat
+===============================
+Version 1.21 - 2011-10-04 (VNY) +(src/omfastflat_mod.f90)
+	Further improvements of the calculation of the mod-8 factor
+	by excluding the source region from calculations
+Version 1.20 - 2011-09-29 (VNY) +(src/omfastflat_mod.f90)
+	Improved the calculation of the mod-8 modulation factor 
+	by removing the first and the last raws and columns 
+	from the analysis (as these raws and columns are 
+	likely to be affected by the tracking shifts
+Version 1.19.2 - 2010-03-24 (VNY) +(src/omfastflat_mod.f90)
+	Improved the calculation of the mod-8 modulation factor
+	(fixing SSC-SPR-6604), which was overestimated for some
+	of the Fast-window images due to the source size and 
+	position. 
+Version 1.19.1 - 2010-03-11 (VNY)  +(src/omfastflat_mod.f90)
+	Fixing a bug related to the usage of pointers, which 
+	was affecting the calculation of the mod-8 modulation factor
+        (ssc-spr-6599). Also increasing the threshold from 0.25 to 0.35
+	for the exposure flagging when it is affected by the mod-8 noise  
+	in order to avoid possible sudden increases of the source extraction 
+	radius for moderately mod-8 corrupted exposures. 
+Version 1.19 - 2010-01-31 (VNY) +(ChangeLog) two misprints
+	are corrected.
+Version 1.18 - 2010-01-26 (VNY) +(src/omfastflat_mod.f90) 
+	A new keyword is introduced into the output file header
+	(MOD8FACTOR). Its value changes from 0 to 1 and indicated
+	the degree of mod-8 modulation of the image.
+Version 1.17 - 2009-04-05 (VNY) +(DEPEND) Removed the dependency
+	on ssclib to avoid build failure.
+Version 1.16.2 - 2007-06-07 (VNY) +(src/omfastflat_mod.f90) Introducing 
+	analysis of the image as to the possible modulo-8 and coincidence
+	loss corruption. 
+	Setting the new flag MOD8FLAG to 1 to indicate the possible 
+	corruption, otherwise the flag is set to 0 (fixing 
+	SPR-3144)
+Version 1.16.1 - 2007-06-06 (VNY) +(src/omfastflat_mod.f90) A check is
+	introduced to make sure that when creating a new column in the data 
+	table of the event-list file this column does not exist. This
+	might possibly cause a crash when rinning the task twice on the
+	same data set (SSC-SPR-3667)
+Version 1.16 - 2003-11-21 (VNY) DEPEND file updated (to match the new 
+	version (3.0) of ssclib
+Version 1.15 - 2002-09-26 (VNY) DEPEND file updated (dependence on 
+	SAS-1.312 is introduced)
+Version 1.14 - 2002-06-10
+        (VNY) +(config/omfastflat.info) GROUP parameter
+	set to 'om pipeline' instead of 'pipeline'
+Version 1.13 13/05/2002 (VNY) DEPEND and +config/omfastflat.par files
+	in order to work with new PARAM-2.0
+Version 1.12.1 26/03/2002 (CB) DISTRIBUTION changed to world
+Version 1.12 08/01/2002 (VNY) DEPEND file ammended
+Version 1.11 14/12/2001 (VNY) Prepared for a new SAS release
+Version 1.10.7 25/10/2001  A bug with the use of factorP pointer has been
+ fixed which caused test-harness in the omdetect task. 
+Version 1.10.6 24/10/2001  pointers to window parameters (windowX0P, windowY0P, windowDXP, windowDYP)
+ were replaced with int32 variables in the cases when these parameters are 
+ passed to inner subroutines (in order to avoid possible subscripts in
+ slewflat array).   
+Version 1.10.5 23/10/2001   additional check and integer data conversion
+ to CheckArrayBounds in order to avoid a failure at Cosine3 machine 
+Version 1.10.4 22/10/2001   a clarifying massage added to CheckArrayBounds subroutine
+Version 1.10.3 19/10/2001   more robust call to CheckArrayBounds subroutine	
+Version 1.10.2 18/10/2001   data set in /test directory has been updated in order
+	                    to rectify task test
+Version 1.10.1 08/10/2001   DEPEND file modified to rectify SOC build program.
+Version 1.10  08/05/2001    Corrections in slewFlat fastImgP arrays calculations
+Version 1.9   01/11/2000    /src/Makefile ammended- cal added to fix .
+Version 1.8   05/10/2000    Missing layout file rectified.
+Version 1.7   02/10/2000    No changes
+	
+Version 1.6.1 21/6/00
+
+added info file SPR 1797
+chaged DEPEND order SPR 1412
+
+Version 1.6: 2nd December
+
+Added DISTRIBUTION (world) file	
+	
+Version 1.5: 8 June 1999
+
+Updated dependencies for V3 delivery.	
+	
+Version 1.4: 27 May 1999
+
+Removed call to open CAL.
+Edited Config file for mandatory parameters
+
+SPR 0766 Closed: Missing mandatory parameter message
+SPR 0767 Closed: Missing mandatory parameter message 
+	
+Version 1.3: 16 April 1999
+
+'Spring clean' of code (tidy, comment and fix bugs).
+Changed input parameters to conform to new standards.
+Added checks on input file types.
+Updated documentation
+Updated testomfastflat for new input parameters
+	
+SPR 553 closed: Coding standards
+
+Version 1.2: 10 December 1998
+
+updated Dependancy file RE: mssllib
+
+Version 1.1: 28 Sep 1998
+
+SPR 542 closed: .par file edited
+
+Version 1.0: 10 Sep 1998
+----------------------
+
+First version
+
+Version 0.1
+----------------------------
+
+- Directory structure created by pkgmaker.

@@ -1,0 +1,64 @@
+Cards
+
+  Page General
+
+    Frame "Individual steps"
+      Parameter withcheckinput
+      Parameter maskindividual
+      Parameter withaddimages
+      Parameter withcombineimages
+      Parameter withasmooth
+    end
+
+    Frame "Processing"
+        Parameter prefix
+        Parameter n_parallel
+        Parameter keepinterstage
+    end
+  end
+
+
+  Page Combineimages
+
+    Enable withcombineimages
+        Frame "Weighting"
+          Parameter epn_weight
+          Parameter em1_weight
+          Parameter em2_weight
+        end
+        Frame "Masking"
+          Parameter exposureband
+          Parameter ecut
+        end
+    end
+    
+  end
+
+  Page Smoothing
+    Enable withasmooth
+      Choice smoothstyle
+        Page simple
+              Parameter convolverstyle
+              Parameter width
+              Parameter normalize
+        end
+        Page adaptive
+           Parameter templatebands
+           Frame withuserwidths
+              Choice withuserwidths
+                  Page yes
+                    Parameter userwidths
+                  end
+                  Page no
+                    Parameter nconvolvers
+                    Parameter minwidth
+                    Parameter maxwidth
+                    Parameter widthliststyle
+                   end
+                  end
+              end
+           end
+       end
+    end
+  end
+end

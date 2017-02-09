@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="ewavelet">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ewavelet.css">
+
+<LINK REL="next" HREF="node17.html">
+<LINK REL="previous" HREF="node15.html">
+<LINK REL="up" HREF="ewavelet.html">
+<LINK REL="next" HREF="node17.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ewavelet (ewavelet-3.11.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node15.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="ewavelet.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ewavelet.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="ewavelet:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+The wavelet detection involves the following steps:
+
+<UL>
+<LI>Read the input image and the exposure map.
+</LI>
+<LI>Generate the countrate image from the input image and exposure map.
+</LI>
+<LI>Generate the initial background map by scaling the exposure map in such
+a way that the background map contains as many ``counts'' as the input image.
+</LI>
+<LI>Do the following for several wavelet scales:
+<DL COMPACT>
+<DT>1</DT>
+<DD>generate a background map for this particular scale
+</DD>
+<DT>2</DT>
+<DD>convolve image with the MH wavelet function
+</DD>
+<DT>3</DT>
+<DD>find local maxima in the convolved image
+</DD>
+<DT>4</DT>
+<DD>Check if the local maximum is significant
+</DD>
+<DT>5</DT>
+<DD>If the maximum is significant, add the point to the source list
+and calculate the number of counts from the wavelet 
+correlation value (<SPAN CLASS="MATH"><IMG
+ WIDTH="30" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$C_{i,j}$"></SPAN>)
+</DD>
+</DL>
+</LI>
+<LI>Determine if some sources were detected at several wavelets scales.
+If so, choose the wavelet scale with the highest local correlation value.
+</LI>
+<LI>Use the  detections of the same source at several wavelet scale to 
+get some information on the source properties.
+</LI>
+<LI>Make a new iteration or generate the final source list.
+</LI>
+</UL>
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="ewavelet:description:fig:4"></A><A NAME="672"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 4:</STRONG>
+Block diagram of the wavelet source detection algorithm.
+</CAPTION>
+<TR><TD><IMG
+ WIDTH="451" HEIGHT="681" BORDER="0"
+ SRC="img76.png"
+ ALT="\begin{figure}\hbox{
+\parbox[b]{100mm}{
+\epsfig{figure=algorithm.ps,width=10cm}
+\hfill
+}
+\parbox[b]{55mm}{
+\vfill}}
+\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node15.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="ewavelet.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,206 @@
+ChangeLog for elcplot
+===============================
+
+Open SPRs:
+----------
+Nil
+
+Version 2.5.3 - 2014-10-24 (RDS)
+----------------------------
+        Documentation update (lccorr -> epiclccorr) - SPR-7235
+
+Version 2.5.2 - 2012-19-04 (NW)
+----------------------------
+
+        The coordinates given in the header of the output of elcplot 
+	are now displayed to .00 for RA and .0 for Dec. even when the 
+	(arc)seconds are inferior to 10, as requested in SPR 6715.
+	
+
+Version 2.5.1 - 2012-04-04 (NW)
+----------------------------
+
+        The coordinates given in the header of the output of elcplot 
+	are now fixed to .00 for RA and .0 for Dec., as requested in SPR 6495.
+	
+
+
+Version 2.5 - 2006-12-12 (NW)
+----------------------------
+
+        To solve the problem that the declination given in the header of the
+        output plot had the minus sign missing if the declination was between
+        0 and -1 (SSC-SPR-3636) a further character has been added to include
+        the minus sign for this case (fortran 90 does not seem to accept any
+        -0 values)
+
+
+Version 2.4 - 2006-10-16 (NW)
+----------------------------	
+
+
+	Ensured that the plotted bin size is given as an integer multiple 
+	of the data bin size (closes SSC-SPR-3629).
+
+
+Version 2.3 - 2005-10-21 (IMS/LUX, NW)
+----------------------------	
+
+      - The task seg faulted on some data sets (spr 3524), on entrance to
+        subroutine make_one_plot. This appears to be more f95 sillies. I 
+	removed some evaluations which were being done within the argument 
+	list of the call to make_one_plot, which has fixed the problem for 
+	the test data set in any case.
+
+	Further testing carried out on both linux and solaris with other data 
+	sets which verified that the task runs OK for this subset of datasets
+ 	too.
+	
+
+Version 2.2 - 2005-09-20 (NW)
+----------------------------	
+
+        Increased the y-scale range of the GTI plot following a request from 
+	Leicester.  Previously the fracexp histogram plotted on the 
+	same plot overlapped with the GTI points making it difficult to read.
+	
+
+Version 2.1 - 2005-02-21 (NW)
+----------------------------	
+
+        Changed the table from which the header information is read, back
+	to the first extension (previous alterations having modified the
+	selection of the original table).
+	
+
+Version 2.0 - 2005-01-28 (IMS/LUX, NW)
+----------------------------	
+
+	Elcplot now reads and plots the corrected source RA and DEC.
+	Header spacings changed.  Made documentation updates with regards
+	to all the changes made below.  Updated the test harness, again
+	with regards to all the changes made below.
+
+- Corrected a bug in which the time axis was always shown in seconds, regardless of the value of --units.
+- FRACEXP axis label now gets plotted in same colour as data points (dark blue).
+- Main header character height reduced to 0.9.
+
+- Plot header printing now copes with negative MJD value.
+
+- Fixed bugs in which (i) fracexp values were not being binned properly; (ii) null bkg values were being plotted as 0; (iii) funny plotting occurred when offsets were large. Number (iii) cannot be fully fixed in a simple fashion as part of the problem is pgplot's requirement for single-precision arguments.
+- Made parameter --tscaleoffset mandatory.
+- Added a warning to check --ounits when abs(tscaleoffset) > 10^5.
+- Changed the functioning of the --offsetstyle=user behaviour back to the way it was before.
+- Added a warning when the task decides to alter the value of --binsize.
+- Some errors and warning calls had the task name instead of the error summary in the first field. This now fixed.
+- Changed size of numeric labels from 0.9 to 0.7.
+
+- Code rearrangement by IMS (& 1 extra parameter, --offsetstyle). cal has also been added to DEPEND. elcplot_ims may replace elcplot, this will be up to the task maintainer. Until this is decided, this package should NOT be uploaded into the official SAS.
+
+	
+Version 1.2.7 - 2004-09-10 (NW)
+----------------------------
+
+        Default is now usegtiset=no and useflareset=no.  Changed the
+	aesthetics of the plot as well as added further information to the
+	top of the plot (obs. ID, Exp. ID, Source no., original bin size).
+	Fixed bug that existed when using the task on Solaris (x-axis data
+	incorrectly plotted).  Also included a new parameter - forcestart
+	- that the user may flag if they wish to plot the data set from
+	the very beginning, regardless if the observation has started yet,
+	and finish at the very end.  Further, the RA and dec are now
+	written as HH:MM:SS.S and +/-DD:MM:SS.SS on the outplut plot.
+
+
+Version 1.2.6 - 2004-09-03 (NW)
+----------------------------
+
+        Fixed a small bug that caused the program to take the wron
+	Time_Vect value when there were a lot of NULL values in the file.
+
+Version 1.2.5 - 2004-08-26 (NW)
+----------------------------
+
+	All data is now plotted (previously RATE == 0.0 and BACKV == 0.0
+	were alllowed, but not ERROR == 0.0 and BACKE == 0.0 - all
+	combinations are now always plotted).  The GTI and flare curves
+	are now plotted in their entirety, nothing is deleted.  A small
+	bug that did not allow the negative mean rate value to be plotted
+	has now been rectified.
+
+Version 1.2.4 - 2004-08-13 (NW)
+----------------------------
+
+	Changed small bug introduced when converting to the code to use
+	time vector and also allows BACKV == 0.0 now too.
+
+Version 1.2.3 - 2004-08-09 (NW)
+----------------------------
+
+	Made sure that ONLY the NULL values are taken out and not the 0.0
+	values as well.  The time vector (instead of the row number) is
+	used, as it is now provided in the input file.
+
+Version 1.2.2 - 2004-08-02 (NW)
+----------------------------
+
+	Negative net count rates are now kept and the flare lightcurve is
+	plotted as a line plot.  Elcplot is also able to accept an input
+	that contains neither a GTI nor a flare file.  The documentation
+	has been updated.
+
+Version 1.2.1 - 2004-07-26 (NW)
+----------------------------
+    
+	When all the data points were negative, elcplot finished with a
+	fatal error, it now finishes with an error.  An error is now also
+	given when when the user tries to run the program without a flare
+	nor a gti set.  A warning is now raised when a non-background
+	subtracted file is provided and the net count rate from the total
+	source count rate and the background count rate is calculated and
+	plotted.  The first and last data points are now plotted either
+	one or two bin widths (depending on the size of the bins) from the
+	plot frame and a small bug was rectified, which caused the wrong
+	FRACEXP value top be plotted.  The full flare background is now
+	plotted (and not the binned lightcurve), and the colour of the
+	FRACEXP label now is the same as the plotted FRACEXP points.  The
+	documentation of the task as duly been updated.
+
+	
+Version 1.2 - 2004-07-01 (NW)
+	----------------------------
+
+        There is now the option to plot the flare time series instead of
+	the GTI series and the user can choose to use the DATE-OBS keyword
+	for the offset time.  Some warnings have been modified and the
+	documentation has been updated.
+
+	
+Version 1.1 - 2004-05-25 (NW)
+----------------------------
+
+        A few small changes to make sure that the binsize at the top of
+	the plot is reported correctly, that all the GTIs are shown, that
+	more significant figures are shown on the x-axis label display and
+	to reduce the size of the points used in the timeseries and for
+	the FRACEXP values.  The third panel showing GTIs and FRACEXP now
+	shows two scales one on either side of the panel, the left axis is
+	labelled 'GTI' and has two values marked '0' amd '1' and the right
+	axis is labelled 'FRACEXP' and has values marked by with the
+	original tickmarks.  The test and the dependencies have been
+	modified so they pass the checks during the compilation of the
+	SAS.  The documentation has also been updated.
+	
+Version 1.0 - 2004-05-19 (NW)
+----------------------------
+
+	Elcplot, a version of lcplot with no variability tests and a
+	slightly modified output plot showing three windows, the net and
+	background lightcurves as before and the GTI and Fractional
+	Exposure values.
+
+	
+Version 0.1 - 2004-04-01
+----------------------------
+- Directory structure created by pkgmaker.
+

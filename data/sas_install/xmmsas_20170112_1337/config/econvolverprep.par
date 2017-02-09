@@ -1,0 +1,85 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="boxhalfsize" type="int" mandatory="yes">
+   <DESCRIPTION>
+    The size of the detection box = 2*boxhalfsize+1.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    boxhalfsize in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="naxial" type="int" default="36">
+   <DESCRIPTION>
+    Number of rays in the polar grid of PSF sample locations.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    naxial in [4:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="nradial" type="int" default="10">
+   <DESCRIPTION>
+    Number of circles in the polar grid of PSF sample locations.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    nradial in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="expmapset" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    Input exposure map.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="convolversset" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    Output datset containing the convolvers.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="efraction" type="real" default="0.9">
+   <DESCRIPTION>
+    Fraction of energy under the PSF profile. Used by the CAL to calculate the size of the returned PSF array.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    efraction in (0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="psfestyle" type="string" default="user">
+   <DESCRIPTION>
+    Style of input of the PSF energies.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="user">
+     <PARAM id="psfenergy" type="real" mandatory="yes">
+      <DESCRIPTION>
+       PSF energy (eV).
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       psfenergy in [1.0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="dss">
+     <PARAM id="dssimageset" type="dataset" mandatory="yes">
+      <DESCRIPTION>
+       Image dataset with energy-selection information in its DSS.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withboresightfudge" type="bool" default="yes">
+   <DESCRIPTION>
+    Flip the sign of the boresight euler%psi. This parameter should be removed after the boresight is fixed. 
+   </DESCRIPTION>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

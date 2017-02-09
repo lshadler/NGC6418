@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>ARF options</TITLE>
+<META NAME="description" CONTENT="ARF options">
+<META NAME="keywords" CONTENT="especget">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="especget.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+especget (especget-1.44.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="RMF options"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Header keywords"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node22.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="especget.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000">
+ARF options</A>
+</H2>
+By default, an ARF will be created which has been corrected for the
+area lost by the gaps between CCDs and by bad pixels. This latter
+correction relies on a list of bad pixels being present in the header 
+of the eventset specified in the <TT>table</TT> parameter. These
+corrections may be turned off by specifying <TT>withbadpixcorr</TT>=no.
+The ARF generation stage can itself be turned off by setting 
+<TT>witharfset</TT>=no.
+
+<P>
+If the spatial selection has been specified in sky coordinates (X/Y)
+then <A NAME="592"></A><A NAME="tex2html12"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+needs to internally convert these into detector
+coordinates. The default conversion uses attitude
+information taken from the header of the newly created spectrum. On rare occasions this can cause a problem and so the option exists, (<TT>useodfatt</TT>=yes),
+to use the raw attitude files stored in the ODF directory pointed to by the
+environment parameter <B>SAS_ODF</B>. 
+
+<P>
+The <TT>extendedsource</TT> option tells <A NAME="598"></A><A NAME="tex2html13"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+to produce the ARF
+relevant for an extended source. The distinction between the ARF needed for
+a point-like and extended source is rather subtle. In practice, for an
+extended source the ARF has 
+no correction for encircled energy, the mirror vignetting is averaged
+over the whole source area and area lost due to bad pixels and chip
+gaps is not convolved with the Point Spread Function (PSF). 
+All of these effects are toggled
+by the <TT>extendedsource</TT> parameter.
+
+<P>
+To calculate the effective area curve <A NAME="603"></A><A NAME="tex2html14"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+averages over a
+grid known as a detector map, which by default has five by five elements.
+In certain cases, such as a narrow annulus or large complicated region,
+this is insufficient to sample the region and can result in a null ARF
+or BACKSCAL value being returned. To avoid this the number of bins may be
+specified on the command line using the parameters <TT>detxbins</TT> and
+<TT>detybins</TT>.
+
+<P>
+See the <A NAME="609"></A><A NAME="tex2html15"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+documentation for further details.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="RMF options"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Header keywords"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node22.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

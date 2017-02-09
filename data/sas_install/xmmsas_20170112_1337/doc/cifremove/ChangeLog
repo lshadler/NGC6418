@@ -1,0 +1,331 @@
+ChangeLog for cifbuild
+======================
+
+Version 4.8 - 2012-12-18 (AI)
+-----------	
+	+ Cal library depence added.
+	
+Version 4.7.2 - 2011-02-16 (AI)
+-----------
+	+ CalIndex::removeConstituent: This method erase an element of a 
+	class attribute using an iterator. Then the iterator is used 
+	and produce a seg fault in OSX (no in Linux... strange). 
+	We simply do not use the iterator after the erase call.
+	
+Version 4.7.1 - 2004-03-18 (RDS)
+-----------
+	+ config/cifbuild.lyt - included missing parameters.
+	
+Version 4.7 - 2003-05-30 (GV)
+-----------
+	+ (tools/Makefile) Add oal to USEDLIBS.
+	
+Version 4.6 - 2003-05-13 (GV)
+-----------
+	+ (cifbuild.cc) remove a couple of remaining ends.
+	
+Version 4.5 - 2003-02-14 (GV)
+-----------
+	+ (cifbuild.cc) Make the name of the CIF available to calling meta-tasks.
+
+Version 4.4 - 2003-02-13 (GV)
+-----------
+	+ (cifbuild.cc) Do not delete const Odf *, or cifbuild cannot be
+	called in a meta-task.
+	
+Version 4.3 - 2002-09-16 (GV)
+-----------
+	+ Code adjustments for gcc-3.1
+	
+Version 4.2 - 2002-05-13 (GV)
+-----------
+	+ Updated for param-2.0
+	
+Version 4.1 - 2001-12-21 (GV)
+-----------
+	+ (test/testcifbuildwitheval.cc) extend to also test mif generation.
+	+ (CalIndexSet.cc VirtualCcfConstituent.cc) make sure EVALDATE is
+	written/read correctly. Make the column in the CIF/MIF blank when
+	EVALDATE does not exist.
+	+ (cifbuild_description.tex) updated with excerpts from the new
+	ODF ICD (issue 4.0).
+
+	
+Version 4.0 - 2001-09-07 (GV)
+-----------
+	+ (src/CcfConstituent.h) introduce endvaldate() and
+	hasEndvaldate(). Implementation in {Common, Real,
+	Virtual}CcfConstituent. If a CCF constituent has the attribute
+	EVALDATE this is read in.
+	+ (src/cifbuild.cc) change container type from list<CcfConstituent
+	*> to vector.
+	Makes use of the notion of end of validity date, if such a date
+	exists in the CCF constituents.
+	+ (test/testcifbuildwitheval.cc) test harness for CCF constituents
+	with and end of validity date. Makes use of data in
+	mytestcc-with-endvaldate. 
+	
+Version 3.2.1 - 2001-06-10 (GV)
+-------------
+	+ (doc/cifbuild_description.tex) fix broken links.
+
+Version 3.2 - 2001-03-30 (GV)
+-----------
+	+ (src/CalIndexSet.cc) Update value of ORIGIN.
+	
+Version 3.1 - 2001-02-23 (GV)
+-----------
+	+ (test/testcifinsertremove.cc) run cifbuild with --withccfpath=yes.
+	+ (test/testcifidiff.cc) run cifbuild with --withccfpath=yes.
+	
+Version 3.0 - 2001-02-16 (GV)
+-----------
+	+ (config/cifbuild.par) withccfpath=no by default (SOC-SCR-38).
+	+ (src/cifbuild.cc) re-organize messages.
+	+ (" ") introduce warning NoCcfPath (also documented in
+	doc/cifbuild_description.tex).
+	+ (tools/findcalindex.cc) debug tool.
+	+ (doc/cifbuild_description.tex) make it clear that if a master
+	index is used to create the CIF, then the parameter fullpath is
+	ignored. This is also compatible with the new defaulkt
+	behavior. SOC-SPR-1922).
+	+ (config/cifbuild.{par,lyt}) add parameter usecanonicalname.
+	+ (src/cifbuild.cc) implement the logic required by the parameter
+	above.
+	+ (doc/cifbuild_description.tex) document it.
+	
+Version 2.4.2 - 2000-12-14 (GV)
+-------------
+	+ (src/cifbuild.cc) reports full ODF identifier SOC-SPR-1815.
+	
+Version 2.4.1 - 2000-11-09 (GV)
+-------------
+	+ (config/cifbuild.lyt) add missing parameters.
+	
+Version 2.4 - 2000-10-10 (GV)
+-----------
+	+ (src/cifbuild.cc) was not working when asked to build a CIF from
+	a MIF (SOC-SPR-1764).
+	+ (src/VirtualCcfConstituent.*) add method to return category. The
+	category is taken to be the value of the CATEGORY attribute in the
+	CALINDEX table.
+
+Version 2.3 - 2000-10-04 (GV)
+-----------
+	+ (src/cifbuild.cc) pass the analysis and observation dates to the
+	CIF. They are stored as ANALDATE and OBSVDATE.
+	+ (src/CalIndex*) changes to make the above possible.
+	
+Version 2.2 - 2000-09-27 (GV)
+----------- 
+	+ (src/cifbuild.cc) if using a MIF to build a CIF, the MIF can be
+	on a readonly medium now.
+	+ (src/CalIndexSet.{cc,h}) add bool readonly to one of the
+	constructors, so that the above can work.
+	+ (cifbuild.par) edit labels, remove unused parameters:
+	withmissingfile and missingfile.
+
+Version 2.1 - 2000-09-26 (GV)
+----------- 
+	+ (src/cifbuild.cc) if building a MIF, observation and analysis
+	date are set to Jan 1, 1990 and now respectively.
+	+ (src/cifbuild.cc) ask the observation date the OAL only if it is
+	trying to build a CIF. The MIF does not require an active ODF.
+	+ (src/CalIndexSet.cc) write CCF attributes in the output set.
+
+Version 2.0 - 2000-09-22 (GV)
+----------- 
+	+ (src/cifbuild.cc) can read the observation date from
+	the ODF currently active. This behavior is controlled by
+	(config/cifbuild.par) withobservationdate. This implements
+	SCR-0008.
+	+ (tools/cifdiff.cc) add parameter withfile to toggle writing to
+	file or to stdout.
+	
+Version 1.14 - 2000-08-15 (GV)
+------------
+	+ (config/cifbuild.info) fix typo in GROUPS entry.
+	
+Version 1.13.1 - 2000-06-23 (GV)
+--------------
+	+ (src/RealCCfConstituent.h) remove virtual destructor, make the
+	inheritance public instead of vrtual public (SOC-SPR-840).
+
+Version 1.13 - 2000-05-22 (GV)
+------------
+	+ update for new dal that enforces DATE/CREATOR being reserved
+	attributes.
+	+ add task info files.
+	
+Version 1.12 - 2000-04-22 (GV)
+------------
+	+ typos in documentation removed.
+
+Version 1.11 - 2000-04-20 (GV)
+------------
+	+ package name changed to ciftools. VERSION and everything else
+	carried over from cifbuild. 
+	+ (tools/cifremove.cc) add warning(NoMatchingCcfConstituent).
+	+ (  "            "  ) allow list of scopes/types.
+	+ (                  ) add error(ParameterCountMismatch).
+	+ update test harness and config file for the above.
+	+ update documentation for the above and comments from review.
+	+ cifremove approved.
+	+ cifinsert documentation updated after review.
+	+ cifinsert approved.
+Version 1.10 - 2000-04-11 (GV)
+------------
+	+ (src/cifbuild.cc) add cif->sort(CcfConstituent::compare) in case
+	the cif is being appended to, so the file list is always ordered.
+	
+Version 1.9 - 2000-04-05 (GV)
+-----------
+	+ (src/CalIndex.*) add:
+	  virtual bool removeConstituent(CcfConstituent * c)
+	  virtual bool removeConstituent(const string type, const string scope)
+	+ (src/CalIndex.*) addConstituentFromSet(string) implemented.
+	+ (test/testcalindex.cc) added. Tests the new interface above.
+	+ (test/testcifinsertremove.cc) added. Tests cifinsert and cifremove.
+	+ (tools/cifinsert.cc) new task, with par file and doc.
+	+ (tools/cifremove.cc) new task, with par file and doc.
+	+ (tools/cifdiff.cc) new task with par file and doc.
+	+ (test/testcifdiff.cc) added. Tests cifdiff.
+
+	
+Version 1.8 2000-03-02 (GV)
+----------- 
+	+ (cifdiff.cc) lists the difference between two CIFs.
+	+ (src/CommonCcfConstituent.cc) close SPR 1143: at some stage
+	operator< on CcfConstituent was left broken.
+	+ (src/cifbuild.cc) make list of potential CCF constituents uniqe,
+	to prevent confusing messages about duplicate entries in the
+	CIF. This required the addition of a static member function
+	(compare) to CcfConstituent.h.
+	+ (src/CommonCcfConstituent.cc) when examining CCF constituents
+	all attributes as per CCF ICD must be present, or the constituent
+	will be discarded. It no longer issues warnings at this stage,
+	only messages. Warnings are issued during the compilation of the cif.
+	+ (cifbuild.cc) now write out the cif even if it is empty.
+	+ (test) extend test harness.
+	
+Version 1.7 2000-02-08 (GV)
+-----------
+	+ delete ColumnData pointers: it was a memory leak.
+
+Version 1.6 1999-11-11
+-----------
+	+ fix test harness that was looking for a testccf in the wrong place.
+	+ fix major problem with the sorting algorithm that was failing
+	since the introduction of polymorphic CcfConstituent.
+	+ add test harness to chek for the above.
+	+ fix --append=yes, that wouldn't always work (some datasets were not closed properly).
+
+Version 1.5 1999-11-04
+-----------
+	+ (cifbuild.{cc,par}) add parameter --ignorecategory to indicate
+	that the CCF constituent's category should be ignored.
+
+Version 1.4 1999-10-08
+-----------
+	+ after the sort, cifbuild extracts CCF constituents in reverse
+	order, so that later (in the CCF sort sense) constituents are
+	chosen first.
+	+ add support for append mode (see doc).
+	+ add lsccf, a utility to print out a summary of CCF constituent
+	properties. 
+
+Version 1.3 1999-08-19
+-----------
+	+ made a few more changes to make the task take the correct
+	decision when some of the attributs not used by the DAL are
+	missing from the CCF constituents.
+
+Version 1.2 1999-08-19
+-----------
+	+ table name changed in accordance with CAL documentation. It was
+	Calibration_Index but it should have been CALINDEX.
+	+ enable filter on CCF category.
+
+Version 1.1 1999-08-09
+-----------
+        + fix problme with doc in make file.
+
+Version 1.0 1999-08-03
+-----------
+	+ SAS v3 version
+	+ renamed from ccftools
+	+ implement sorting algorithm for CCF constituents
+	+ implements CIF generation from MIF
+
+
+===[The following is ChangeLog from ccftools as it was on 1999-07-28]===
+	
+Version 0.14 1999-07-26
+------------
+        + fix order of libraries in makefile.
+
+Version 0.13 1999-06-11
+------------
+	+ cifbuild approved. Updated task description.
+	
+Version 0.12 1999-06-10
+------------
+        + change type of time parameters to s so that "now" will work.
+          This is to be changed back w when the parameter i/f supports
+          the time parameters better.
+Version 0.11 1999-06-09
+------------
+        + updated DEPEND
+
+Version 0.10 1999-05-12
+------------
+	+ bring in line with new error (1.18)
+	
+Version 0.9 1999-04-13
+-----------
+	+ bring in line with new error.
+	
+Version 0.8 1999-02-10
+-----------
+	+ adhere to sas-1.80 with #include "cifbuild.h"
+	+ removed . from test harness (was a mistake) (MB)
+
+Version 0.7 1999-01-29
+-----------
+        + fix . in the path problem in the test harness.
+
+Version 0.6 1998-12-12
+-----------
+	+ bring in line with latest saslib.
+	+ make use of STime for time-related variables.
+	
+Version 0.5 1998-10-21
+-----------
+
+- eliminate a warning (comparison between sugned and unsigned)
+
+- change name to cifbuild (was makecif) to comply with naming convention.
+
+- move PosixDir to saslib, and closes SPR 448 there (ifdef around
+  _POSIX_SOURCE)  
+
+Version 0.4
+-----------
+
+- change glob flags.
+	
+Version 0.3 1998-10-07
+----------
+
+- Fix glob related functions.
+	
+Version 0.2 1998-10-02
+-----------
+
+- Submitted to saslib. Simple test harness. Runs in compatibility mode, to
+  generate a CIF that does not break the current CAL. THis will change.
+	
+Version 0.1
+-----------
+
+- Directory structure created by pkgmaker.

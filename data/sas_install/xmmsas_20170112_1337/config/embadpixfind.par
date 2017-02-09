@@ -1,0 +1,157 @@
+<!-- converted from XPI formatted "embadpixfind.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="evimageset" type="dataset" mandatory="yes" default="">
+   <DESCRIPTION>
+    Input image file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="badpixset" type="dataset" default="badpix.out">
+   <DESCRIPTION>
+    Output bad pixels file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="incremental" type="bool" default="no">
+   <DESCRIPTION>
+    Add new bad pixels to the bad pixels file
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="halfwidth2d" type="int" default="2">
+   <DESCRIPTION>
+    Half width for 2D searches (images)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    halfwidth2d .ge. 1
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="probathreshold" type="real" default="1e-06">
+   <DESCRIPTION>
+    False detection probability per pixel
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    probathreshold in [1.e-30:1.e-3]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="findbadsegments" type="bool" default="yes">
+   <DESCRIPTION>
+    Also detect bad segments of rows or columns
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="halfwidth1d" type="int" default="3">
+      <DESCRIPTION>
+       Half width for 1D searches (columns/rows)
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       halfwidth1d .ge. 2
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="findbright" type="bool" default="yes">
+   <DESCRIPTION>
+    Detect bright pixels, rows or columns
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="minratio" type="real" default="1.5">
+      <DESCRIPTION>
+       Minimum ratio to neighbours for bright features
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       minratio .ge. 1.
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="finddead" type="bool" default="yes">
+   <DESCRIPTION>
+    Detect dark pixels, rows or columns
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="maxratio" type="real" default="0.5">
+      <DESCRIPTION>
+       Maximum ratio to neighbours for dark features
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       maxratio in [0.:1.]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="niter" type="int" default="10">
+   <DESCRIPTION>
+    Maximum number of iterations
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    niter in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="usecal" type="bool" default="yes">
+   <DESCRIPTION>
+    Get uplinked and dead pixels from the CAL
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="includedeadpixels" type="bool" default="no">
+      <DESCRIPTION>
+       Add dead pixels from CAL in output bad pixels list
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="ignoreccfbright" type="bool" default="no">
+      <DESCRIPTION>
+       Ignore the bright pixels declared in the CAL (except uplinked)
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

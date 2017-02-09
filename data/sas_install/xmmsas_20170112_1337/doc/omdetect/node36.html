@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Point-Spread Function Fitting</TITLE>
+<META NAME="description" CONTENT="Point-Spread Function Fitting">
+<META NAME="keywords" CONTENT="omdetect">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omdetect.css">
+
+<LINK REL="next" HREF="node38.html">
+<LINK REL="previous" HREF="node35.html">
+<LINK REL="up" HREF="node34.html">
+<LINK REL="next" HREF="node37.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omdetect (omdetect-5.36.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node35.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Point-like Sources (non-mosaiced images)"></A>
+<A HREF="node34.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Photometry"></A>
+<A HREF="node37.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Weighting of the equations"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node45.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omdetect.html">Home Page</A> / <A  HREF="node34.html">Photometry</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000172000000000000000">
+Point-Spread Function Fitting</A>
+</H2>
+
+<P>
+If the parameter <SPAN  CLASS="textbf">psfphotometryenabled</SPAN> is set to true (default is false) then after the photometry
+of point-sources is performed (using an aperture)  the photometry will be repeated using point-spread 
+function fitting. <B>Please note, that the implementation of this algorithm in the task 
+is still under development, so that the source photmetry based on PSF-fitting might
+not be accurate enough; in the current task version the usage of this parameter is disabled</B>. 
+Sources that have a computed raw-count rate greater than the value specified through the parameter 
+<SPAN  CLASS="textbf">rawcountrate</SPAN> will be excluded from PSF-fitting, because a strong mod-8 pattern 
+will make the fitting procedure unreliable. 
+
+<P>
+In the case of <SPAN  CLASS="textbf">FAST</SPAN> mode images, every source with a raw-count rate no greater 
+than <SPAN  CLASS="textbf">maxrawcountrate</SPAN> will have its
+photometry re-computed, but in the case of <SPAN  CLASS="textbf">IMAGING</SPAN> mode data sources with no close 
+neighbours will also be
+excluded.
+
+<P>
+The algorithm is a development of the psf-fitting algorithm introduced into the task <SPAN  CLASS="textbf">omphotom</SPAN> 
+several years ago and works as
+follows: 
+
+<P>
+The counts for a source are obtained by solving the following set of equations for each pixel 
+included in the fit 
+by least-squares
+
+<P>
+<!-- MATH
+ \begin{math}
+c(i, j) = background + \sum_{k=1}^n a_k  PSF( \Delta x_k, \Delta y_k)
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="339" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$c(i, j) = background + \sum_{k=1}^n a_k PSF( \Delta x_k, \Delta y_k)$"></SPAN> , 
+
+<P>
+where,
+the background is either the constant term in the least-squares fit or a fixed value, n the number
+of sources are included in the fit, <!-- MATH
+ \begin{math}
+a_k
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$a_k$"></SPAN> is the central height of the fitted PSF source k
+and <!-- MATH
+ \begin{math}
+\Delta x_k, \Delta y_k
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="70" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$\Delta x_k, \Delta y_k$"></SPAN> are the distances from
+the centre of source k to the image point (i, j) in the x and y directions, respectively. 
+All pixels within a radius of 7 unbinned pixels from the centre of a source are included in the fit.
+
+<P>
+A discrete PSF function is used based on the PSF image obtained through the <SPAN  CLASS="textbf">CAL</SPAN> routine
+
+<P>
+<SPAN  CLASS="textbf">CAL_omGetPSFmap</SPAN>. 
+
+<P>
+Interpolation is used to compute the value of the PSF at any 
+<!-- MATH
+ \begin{math}
+\Delta x, \Delta y
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\Delta x, \Delta y$"></SPAN>, distance from the centre.  
+
+<P>
+The total raw counts of a source k is then equal to the value of <!-- MATH
+ \begin{math}
+a_k
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$a_k$"></SPAN>
+multiplied by the total counts in the PSF image within a radius of 12 unbinned pixel from it centre, 
+which has been normalized to a central height of 1. The corrected count-rate is computed
+from this raw count-rate in an identical way to that for aperture photometry (no aperture correction
+is needed).
+
+<P>
+Since the width of the PSF is narrow, source centroiding errors can have a significant effect on the
+computed raw-count rates, and to reduce this error the algorithm ``fits'' the source coordinates
+by allowing the positions of all the sources to vary within strict bounds. For each set of trial positions,
+the least-squares fit is performed and the set of positions that gives the best least-squares fit are used-
+the source being fitted has its coordinates replaced with the best fit values. All sources (up to a maximum of 9) within a radius
+of 26 unbinned pixels, are included in the fit- each one is used in order of increasing distance from the central one. 
+
+<P>
+The function that is minimized carries out the least-squares fit
+just discussed, using the current coordinates of each source, and the function value is the weighted 
+sum of squares of the residuals. 
+Obviously, the CPU time increases rapidly with the number of sources included in the fit. 
+The minimization algorithm is based on that described in J, Canto, S. Curiel and E. Martinez-Gomez, 2009,  
+Astonomy and Astrophysics, 501, 1259. "A simple algorithm for optmization and model fitting: AGA (asexual 
+genetic algorithm)".
+Other minimization routines have been considered but this one is particularly simple and robust, not requiring derivatives
+to be calculated, allowing upper and lower bounds on the variables and not being fooled by local minima. 
+
+<P>
+The algorithm is designed for robustness and since the minimization algorithm is relatively slow compared 
+to more sophisticated but less
+reliable methods, performing psf photometry on a large source-list could take a considerable amount of time. 
+
+<P>
+When a source has its photometry re-computed with psf photometry, some of the computed values such as the raw-count rate are
+compared to the aperture-photometry values.
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html501"
+  HREF="node37.html">Weighting of the equations</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node35.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Point-like Sources (non-mosaiced images)"></A>
+<A HREF="node34.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Photometry"></A>
+<A HREF="node37.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Weighting of the equations"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node45.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

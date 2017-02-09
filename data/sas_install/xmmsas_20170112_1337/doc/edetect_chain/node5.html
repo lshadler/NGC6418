@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Use of edetect_chain</TITLE>
+<META NAME="description" CONTENT="Use of edetect_chain">
+<META NAME="keywords" CONTENT="edetect_chain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="edetect_chain.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+edetect_chain (edetect_chain-3.15) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Overview on detection chain"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="edetect_chain.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000">
+Use of edetect_chain</A>
+</H2>
+
+<P>
+The user can specify an arbitrary combination of images from different
+energy bands and different EPIC instruments. All images must have
+identical binning and WCS keywords. <SPAN  CLASS="textbf">Up to three instruments</SPAN> (MOS1, MOS2, PN)
+<SPAN  CLASS="textbf">with up to six images in different energy bands</SPAN> can be processed simultaneously
+(but beware of the memory limitations of your machine). Users are encouraged
+not to use more than five energy bands.
+
+<P>
+The detection tasks <A NAME="839"></A><A NAME="tex2html34"
+  HREF="../eexpmap/index.html"><SPAN  CLASS="textbf">eexpmap</SPAN></A>, <A NAME="843"></A><A NAME="tex2html35"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>, and <A NAME="847"></A><A NAME="tex2html36"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+require the energy boundaries of the input images as input
+parameters <TT>pimin</TT> and <TT>pimax</TT>.
+<A NAME="853"></A><A NAME="tex2html37"
+  HREF="../edetect_chain/index.html"><SPAN  CLASS="textbf">edetect_chain</SPAN></A>
+checks whether the number of input values for  <TT>pimin</TT> and <TT>pimax</TT>
+matches the number input images. Otherwise <A NAME="859"></A><A NAME="tex2html38"
+  HREF="../edetect_chain/index.html"><SPAN  CLASS="textbf">edetect_chain</SPAN></A>
+will be
+terminated with an error. Details on the individual tasks are given in their
+respective documentations.
+
+<P>
+The most important parameters of the detection tasks are accepted as input 
+parameters by <A NAME="863"></A><A NAME="tex2html39"
+  HREF="../edetect_chain/index.html"><SPAN  CLASS="textbf">edetect_chain</SPAN></A>
+and passed on to the tasks. 
+Nevertheless <A NAME="867"></A><A NAME="tex2html40"
+  HREF="../edetect_chain/index.html"><SPAN  CLASS="textbf">edetect_chain</SPAN></A>
+can be run with a relatively small set of mandatory parameters,
+leaving the parameters of the constituent tasks at their default values.
+
+<P>
+If the exposure maps have already been created in an earlier run of <A NAME="871"></A><A NAME="tex2html41"
+  HREF="../edetect_chain/index.html"><SPAN  CLASS="textbf">edetect_chain</SPAN></A>
+(or the PPS produced exposures maps have been renamed to the   <A NAME="875"></A><A NAME="tex2html42"
+  HREF="../edetect_chain/index.html"><SPAN  CLASS="textbf">edetect_chain</SPAN></A>
+standard
+file names), the calculation of exposure maps can be omitted by setting <TT>witheexpmap</TT>=''no''.
+
+<P>
+If the event lists corresponding to the images are not available, a dummy EPIC file (e.g. the image itself)
+can be given as parameter <TT>eventsets</TT>. This will lead to a less accurate calculation of the exposure maps.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Overview on detection chain"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

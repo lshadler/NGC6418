@@ -1,0 +1,261 @@
+<!-- converted from XPI formatted "hkauxplot.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="useodf" type="bool" default="yes">
+   <DESCRIPTION>
+    Input file part of ODF (yes/no)? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="set" type="dataset" mandatory="yes" default="ODF(RGS1,PERIODIC_HOUSEKEEPING)">
+   <DESCRIPTION>
+    Name of input FITS file or ODF set
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="useblock" type="bool" default="no">
+   <DESCRIPTION>
+    Input block name to get x-axis column (yes/no)? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="block" type="string" default="R1PEH1">
+   <DESCRIPTION>
+    Name of block for x-axis column 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="xcolumnname" type="string" mandatory="yes" default="TIME">
+   <DESCRIPTION>
+    Name of x-axis column (eg. TIME, FRAME, etc) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="ycolumnnames" type="string" list="yes" mandatory="yes" default="TIME">
+   <DESCRIPTION>
+    Name of y-axis column(s) to plot
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="usegtiset" type="bool" default="no">
+   <DESCRIPTION>
+    Plot GTI(s) for each y-axis value (yes/no)? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="gtiset" type="dataset" default="hkauxplot_GTI.fit">
+   <DESCRIPTION>
+    Name of the GTI file to plot 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="useccds" type="bool" default="no">
+   <DESCRIPTION>
+    Plot any CCDs (if applicable) (yes/no)? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="selectccds" type="bool" default="no">
+   <DESCRIPTION>
+    Select individual CCDs or use all (default) for Instrument (yes/no)? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="ccds" type="int" list="yes" default="1">
+   <DESCRIPTION>
+    Selected individual CCD(s) to plot (if applicable) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="outfile" type="string" default="hkauxplot.ps">
+   <DESCRIPTION>
+    Name of output plot filename (eg. plot.ps) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="plotdevice" type="string" default="/PS">
+   <DESCRIPTION>
+    Name of output plot device (eg. /PS) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="convertframe" type="bool" default="no">
+   <DESCRIPTION>
+    Convert Frame column to timetag (if applicable)? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="offsettime" type="bool" default="yes">
+   <DESCRIPTION>
+    Use HK file TSTART as offset for xaxis (yes/no)? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="selectrows" type="bool" default="no">
+   <DESCRIPTION>
+    Select rowrange to plot (yes/no)? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="startrow" type="real" default="1">
+   <DESCRIPTION>
+    First row of infile to plot (default 1) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="stoprow" type="real" default="1">
+   <DESCRIPTION>
+    Last row of infile to plot (default nrows) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="selecttimes" type="bool" default="no">
+   <DESCRIPTION>
+    Select timerange to plot (yes/no)? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="starttime" type="real" default="1">
+   <DESCRIPTION>
+    Start time in infile to plot (default timemin) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="stoptime" type="real" default="1">
+   <DESCRIPTION>
+    Last row of infile to plot (default timemax) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="selectframes" type="bool" default="no">
+   <DESCRIPTION>
+    Select framerange to plot (yes/no)? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="startframe" type="real" default="1">
+   <DESCRIPTION>
+    First frame of infile to plot (default 1) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="stopframe" type="real" default="1">
+   <DESCRIPTION>
+    Last frame of infile to plot (default highest frame) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="points" type="int" default="600">
+   <DESCRIPTION>
+    Number of points per page to plot (default 600) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

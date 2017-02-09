@@ -1,0 +1,1732 @@
+<!-- converted from XPI formatted "epchain.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="odf" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    Name of input EPIC PN ODF directory 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="datamode" type="string" default="IMAGING">
+   <DESCRIPTION>
+    data mode 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="BURST">
+    </ITEM>
+    <ITEM value="IMAGING">
+    </ITEM>
+    <ITEM value="TIMING">
+    </ITEM>
+    <ITEM value="ALL">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="exposure" type="int" default="1">
+   <DESCRIPTION>
+    exposure number of instrument mode 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    exposure in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="ccds" type="string" default="1-12">
+   <DESCRIPTION>
+    List of CCDs to process 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="schedule" type="string" default="S">
+   <DESCRIPTION>
+    exposure schedule flag 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="S">
+    </ITEM>
+    <ITEM value="U">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="odfaccess" type="string" default="oal">
+   <DESCRIPTION>
+    how to access the ODF 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="name">
+    </ITEM>
+    <ITEM value="oal">
+    </ITEM>
+    <ITEM value="odf">
+    </ITEM>
+    <ITEM value="all">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withdefaultcal" type="bool" default="yes">
+   <DESCRIPTION>
+    Autogenerate calibration switches ? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="usecanonicalnames" type="bool" default="yes">
+   <DESCRIPTION>
+    Autogenerate output fileanames ? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="outset" type="dataset" default="events.fits">
+   <DESCRIPTION>
+    Output name of final event file [if usecanonicalnames=N]? 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="timestep" type="real" default="1">
+   <DESCRIPTION>
+    Attitude time step (seconds) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    timestep in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withsrccoords" type="bool" default="no">
+   <DESCRIPTION>
+    Use user-supplied RA,DEC coordinates for TIMING and BURST mode ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="srcra" type="angle" default="0">
+   <DESCRIPTION>
+    User-supplied source position RA [deg]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    srcra in [0.0:360.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="srcdec" type="angle" default="0">
+   <DESCRIPTION>
+    User-supplied source position DEC [deg]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    srcdec in [-90.0:90.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withsrcrawy" type="bool" default="no">
+   <DESCRIPTION>
+    Use user-supplied RAWY coordinates for TIMING and BURST mode ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="srcposition" type="int" default="190">
+   <DESCRIPTION>
+    Source position for TIMING and BURST mode (in RAWY pixel coordinates)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    srcposition in [1:200]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withfinetime" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply fine time corrections for TIMING and BURST mode ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="lowerthreshold" type="int" default="20">
+   <DESCRIPTION>
+    minimum PHA to include in further processing [adu]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    lowerthreshold in [0:4095]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="mipthreshold" type="int" default="3000">
+   <DESCRIPTION>
+    maximum PHA for non-MIP events [adu]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    mipthreshold in [0:4095]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="mipmethod" type="string" default="onboard">
+   <DESCRIPTION>
+    method to reject MIPs
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="com">
+    </ITEM>
+    <ITEM value="none">
+    </ITEM>
+    <ITEM value="onboard">
+    </ITEM>
+    <ITEM value="sas">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="qualmax" type="int" default="0">
+   <DESCRIPTION>
+    maximum quality flag value to keep event in list
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    qualmax in [0:2000000000]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="mipdist" type="bool" default="no">
+   <DESCRIPTION>
+    Create MIPDIST columns and MIPHIST extension in output (yes/no) 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="wrongpixlimit" type="int" default="10">
+   <DESCRIPTION>
+    Allowed percentage of wrong pixels without producing a warning
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    wrongpixlimit in [0:100]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="ecntempqb1" type="real" default="-9999.9">
+   <DESCRIPTION>
+    E_Cn_TEMPQB1    F1576 F1676 F1776 F1876   [deg C]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="f1294" type="int" default="0">
+   <DESCRIPTION>
+    CMS TIMINTREAQUA frame time parameter []
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    f1294 in [0:15]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="f1052" type="int" default="32400">
+   <DESCRIPTION>
+    DTIMAUTRSTPREVAL coarse time reset [s]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    f1052 in [0:32767]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="f1118" type="string" default="UNKNOWN">
+   <DESCRIPTION>
+    F1118            HFWPOTPOSSENSORST
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="CalClosed">
+    </ITEM>
+    <ITEM value="CalMedium">
+    </ITEM>
+    <ITEM value="CalOpen">
+    </ITEM>
+    <ITEM value="CalThick">
+    </ITEM>
+    <ITEM value="CalThin1">
+    </ITEM>
+    <ITEM value="CalThin2">
+    </ITEM>
+    <ITEM value="Closed">
+    </ITEM>
+    <ITEM value="Medium">
+    </ITEM>
+    <ITEM value="Open">
+    </ITEM>
+    <ITEM value="Thick">
+    </ITEM>
+    <ITEM value="Thin1">
+    </ITEM>
+    <ITEM value="Thin2">
+    </ITEM>
+    <ITEM value="UNKNOWN">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="anchop" type="int" default="0">
+   <DESCRIPTION>
+    An_CHOP          F1534 F1634 F1734 F1834
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    anchop in [0:31]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="ancmcorr" type="int" default="512">
+   <DESCRIPTION>
+    An_CMCORR  F1525 F1625 F1725 F1825
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    ancmcorr in [0:4095]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="aneamipsel" type="int" default="1">
+   <DESCRIPTION>
+    An_EAMIPSEL  F1536 F1636 F1736 F1836
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    aneamipsel in [0:63]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="anmaxmip" type="int" default="63">
+   <DESCRIPTION>
+    An_MAXMIP   F1527 F1627 F1727 F1827
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    anmaxmip in [0:4095]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="anmip" type="int" default="3512">
+   <DESCRIPTION>
+    An_MIP       F1526 F1626 F1726 F1826
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    anmip in [0:4095]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="witheventmap" type="bool" default="no">
+   <DESCRIPTION>
+    Create several event CCD maps ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="eventmapset" type="file" default="./eventmap##.dat">
+   <DESCRIPTION>
+    Name of output event CCD map file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="automode" type="bool" default="no">
+   <DESCRIPTION>
+    Try to determine F1294 and An_CHOP (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="autofilter" type="bool" default="no">
+   <DESCRIPTION>
+    Try to determine FILTER (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="showccx" type="bool" default="no">
+   <DESCRIPTION>
+    Display CCX intervals (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="showaux" type="bool" default="no">
+   <DESCRIPTION>
+    Display AUX intervals (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="showpmh" type="bool" default="no">
+   <DESCRIPTION>
+    Display PMH intervals (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="showpah" type="bool" default="no">
+   <DESCRIPTION>
+    Display PAH intervals (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+<!-- ###################################################################
+# <PARAM id="showve" type="bool" default="no">
+#   <DESCRIPTION>
+#    Display valid event intervals (yes/no) ?
+#   </DESCRIPTION>
+#   <CASE>
+#    <ITEM value="no">
+#    </ITEM>
+#    <ITEM value="yes">
+#    </ITEM>
+#   </CASE>
+#  </PARAM>
+################################################################### -->
+
+  <PARAM id="guessdeltap" type="bool" default="no">
+   <DESCRIPTION>
+    Estimate oscillator frequency shift from HK data (yes/no)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="checksasmip" type="bool" default="no">
+   <DESCRIPTION>
+    Check results of MIP rejection within SAS, meaningful only for SW TI BU modes (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withfifogti" type="bool" default="no">
+   <DESCRIPTION>
+    Search for short-duration FIFO overflow data gaps (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="fifogtithresh" type="real" default="76">
+   <DESCRIPTION>
+    Threshold for FIFO GTI search
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    fifogtithresh in [0.0:4095.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withframecti" type="bool" default="no">
+   <DESCRIPTION>
+    Supply time-converted FRAME numbers to CTI correction routine for non-IMAGING modes (Y/N
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="testenergywidth" type="bool" default="yes">
+   <DESCRIPTION>
+    Use 1eV output energy bin width (yes/no)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withoffsetmap" type="bool" default="yes">
+   <DESCRIPTION>
+     Use offsetmap to derive offset correction values ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withoffsetlist" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    use file list of offsetmaps to derive offset correction values ?
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="odilist" type="dataset" mandatory="no" default="odilist.asc">
+   <DESCRIPTION>
+    Name of input file with ODI files for the CCDs to be used
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withxrlcorrection" type="bool" default="no">
+   <DESCRIPTION>
+     Turns on X-ray loading correction code for TI+BU modes
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withxrlimage" type="bool" default="no">
+   <DESCRIPTION>
+     Whether to create a diagnostic X-ray loading image
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="runbackground" type="bool" default="yes">
+   <DESCRIPTION>
+    Run creation of background lightcurve ? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="runatthkgen" type="bool" default="yes">
+   <DESCRIPTION>
+    Run atthkgen ? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="runbadpix" type="bool" default="yes">
+   <DESCRIPTION>
+    Run badpix ? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="runbadpixfind" type="bool" default="yes">
+   <DESCRIPTION>
+    Run badpixfind ? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="runepframes" type="bool" default="yes">
+   <DESCRIPTION>
+    Run epframes ? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="runepreject" type="bool" default="no">
+   <DESCRIPTION>
+    Run epreject ? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="runepxrlcorr" type="bool" default="no">
+   <DESCRIPTION>
+    Run epxrlcorr ? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="runepnoise" type="bool" default="no">
+   <DESCRIPTION>
+    Run epnoise ? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="runepevents" type="bool" default="yes">
+   <DESCRIPTION>
+    Run epevents ? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="runattcalc" type="bool" default="yes">
+   <DESCRIPTION>
+    Run attcalc ? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="runepexposure" type="bool" default="yes">
+   <DESCRIPTION>
+    Run epexposure ? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="runevlistcomb" type="bool" default="yes">
+   <DESCRIPTION>
+    Run evlistcomb ? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="runepfast" type="bool" default="no">
+   <DESCRIPTION>
+    Run epfast ? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="runevselect" type="bool" default="yes">
+   <DESCRIPTION>
+    Run (final) evselect ? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="runscreen" type="bool" default="yes">
+   <DESCRIPTION>
+    Perform screening of events with rejection flags and below threshold? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="screen" type="bool" default="yes">
+   <DESCRIPTION>
+    Screen low-energy events ? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="screenlowthresh" type="real" default="150">
+   <DESCRIPTION>
+    Low-energy threshold for output events [eV] 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    screenlowthresh in [0.0:32767.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="screenrejected" type="bool" default="no">
+   <DESCRIPTION>
+    Screen rejected events (apply #XMMEA_EP) ? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="getuplnkbadpix" type="bool" default="yes">
+   <DESCRIPTION>
+    Get uplinked bad pixels [not for TI and BU modes]
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="getotherbadpix" type="bool" default="yes">
+   <DESCRIPTION>
+    Get non-uplinked bad pixels
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="getnewbadpix" type="bool" default="yes">
+   <DESCRIPTION>
+    Get new bad pixels (from badpixset) 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="emptyextension" type="bool" default="no">
+   <DESCRIPTION>
+    Create an empty BADPIX extension 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="windowfilter" type="bool" default="no">
+   <DESCRIPTION>
+    Just get pixels within input file X/Y window 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="badpixset" type="string" default="./bpxf_##.fits">
+   <DESCRIPTION>
+    Badpixfind output file 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="maskset" type="string" default="./mask_##.fits">
+   <DESCRIPTION>
+    Badpixfind output masks 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="hrdmskset" type="string" default="./hrdmask_##.fits">
+   <DESCRIPTION>
+    Badpixfind hard band output masks  
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="rateset" type="string" default="rate_bkg.fits">
+   <DESCRIPTION>
+    Name of background lightcurve file 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="specset" type="string" default="spec_bkg.fits">
+   <DESCRIPTION>
+    Name of background spectrum file 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="timebinsize" type="real" default="0">
+   <DESCRIPTION>
+    Size of time bin for background lightcurve [0=automatic] 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    timebinsize in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withmask" type="bool" default="yes">
+   <DESCRIPTION>
+    use maskset for background lightcurve? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withhardmask" type="bool" default="yes">
+   <DESCRIPTION>
+    use hard energy band for maskset instead of soft? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="flaremaxrate" type="real" default="6">
+   <DESCRIPTION>
+    maximum RATE for flare GTI [cts/ks/arcmin**2]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    flaremaxrate in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="reemissionthresh" type="int" default="0">
+   <DESCRIPTION>
+    Re-emission trigger threshold [adu]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    reemissionthresh in [0:4095]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="gainctiaccuracy" type="int" default="2">
+   <DESCRIPTION>
+    Accuracy of gain/cti correction [0,1,2]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    gainctiaccuracy in [0:2]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="randomizeposition" type="bool" default="yes">
+   <DESCRIPTION>
+    Trigger for spatial randomization
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="randomizeenergy" type="bool" default="yes">
+   <DESCRIPTION>
+    Trigger for energy randomization
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="patternanalysis" type="bool" default="yes">
+   <DESCRIPTION>
+    Run patternanalysis [not active yet in epevents]? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withoutoftime" type="bool" default="no">
+   <DESCRIPTION>
+    Perform out-of-time events analysis instead (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withctisrcpos" type="bool" default="no">
+   <DESCRIPTION>
+    Apply CTI corrections as if all events were from RAWY = SRCPOS (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withgaintiming" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply special gain if TIMING mode (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withgainburst" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply special gain if BURST mode (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withgainff" type="bool" default="no">
+   <DESCRIPTION>
+    Apply special gain if FULL FRAME mode (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withgaineff" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply special gain if EXTENDED FULL FRAME mode (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withphagaincolumn" type="bool" default="no">
+   <DESCRIPTION>
+    Create column PHA_GAIN (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="lowgainenergyscale" type="bool" default="no">
+   <DESCRIPTION>
+    Apply correct energy scale if low-gain mode (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withctilongterm" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply long-term CTI increase corrections (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="ctilongtermsoft" type="bool" default="yes">
+   <DESCRIPTION>
+    ... special soft energy function (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="ctilongtermy" type="bool" default="yes">
+   <DESCRIPTION>
+    ... special Y dependence (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+<!--
+# <PARAM id="ctilongtermpar" type="real" list="yes" default="1.5e-05 1.15 -0.26 0.1 1">
+#  <DESCRIPTION>
+#   ... special long-term CTI increase parameter values
+#  </DESCRIPTION>
+#  <CONSTRAINTS>
+#   true
+#  </CONSTRAINTS>
+# </PARAM>
+-->
+
+  <PARAM id="withpatternoffset" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply pattern energy offset corrections (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withbackgroundgain" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply quiescent background gain corrections (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withccdoffsets" type="bool" default="no">
+   <DESCRIPTION>
+    Apply CCD offset corrections  Y/N), discouraged
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withtempcorrection" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply temperature correction (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withrdpha" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply rate-dependent PHA correction for TI+BU modes (Y/N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="rdphatimebinsize" type="real" default="100">
+   <DESCRIPTION>
+    Time-bin size for rate-dependent PHA correction for TI+BU modes (seconds)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withphotonmap" type="bool" default="no">
+   <DESCRIPTION>
+    Create several photon CCD maps ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="photonmapset" type="file" default="./photonmap##.dat">
+   <DESCRIPTION>
+    Name of output photon CCD map file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withpatplot" type="bool" default="no">
+   <DESCRIPTION>
+    Create EPN pattern plot stuff (PS + FLAG maps) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="attitudelabel" type="string" default="ahf">
+   <DESCRIPTION>
+    Source of attitude information 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="ahf">
+    </ITEM>
+    <ITEM value="fixed">
+    </ITEM>
+    <ITEM value="om">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="refpointlabel" type="string" default="pnt">
+   <DESCRIPTION>
+    Source of reference point information 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="nom">
+    </ITEM>
+    <ITEM value="obj">
+    </ITEM>
+    <ITEM value="pnt">
+    </ITEM>
+    <ITEM value="user">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withmedianpnt" type="bool" default="yes">
+   <DESCRIPTION>
+    Get median values from atthkgen file (otherwise mean) 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="fixedra" type="angle" default="0">
+   <DESCRIPTION>
+    FIXED attitude RA (degrees) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="fixeddec" type="angle" default="0">
+   <DESCRIPTION>
+    FIXED attitude DEC (degrees) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="fixedposangle" type="angle" default="0">
+   <DESCRIPTION>
+    FIXED attitude (astronimcal) position angle (degrees) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="nominalra" type="angle" default="0">
+   <DESCRIPTION>
+    RA of ref.point (degrees) (refpointlabel=user) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="nominaldec" type="angle" default="0">
+   <DESCRIPTION>
+    Dec of ref.point (degrees) (refpointlabel=user) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="imagesize" type="angle" default="0.36">
+   <DESCRIPTION>
+    Image half-size (degrees) 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    imagesize in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="optloadingimage" type="bool" default="no">
+   <DESCRIPTION>
+    Create ADU 20-30 image to assess optical loading ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="optloadingimageset" type="string" default="optloading.img">
+   <DESCRIPTION>
+    Name of ADU 20-30 image 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="randomizetime" type="bool" default="yes">
+   <DESCRIPTION>
+    Randomize TIME within one readout frame
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="screenexposure" type="bool" default="yes">
+   <DESCRIPTION>
+    Remove extra columns in EXPOSU** extensions
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="spatialexposure" type="bool" default="yes">
+   <DESCRIPTION>
+    Determine spatial exposure inhomogeneities (CCD columns)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="memorymodel" type="string" default="high">
+   <DESCRIPTION>
+    memory model for task evlistcomb 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="high">
+    </ITEM>
+    <ITEM value="highlow">
+    </ITEM>
+    <ITEM value="low">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="othertables" type="string" list="yes" default="EXPOSURE BADPIX OFFSETCO">
+   <DESCRIPTION>
+    other tables/arrays to propagate
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="BADPIX">
+    </ITEM>
+    <ITEM value="EXPOSURE">
+    </ITEM>
+    <ITEM value="OFFSETCO">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="epnimgcolnames" type="string" list="yes" default="TIME RAWX RAWY DETX DETY X Y PHA PI FLAG PAT_TYP PAT_ORI PATTERN PAT_ID PAT_SEQ">
+   <DESCRIPTION>
+    EPN imaging mode column list
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="epnimgcoltypes" type="string" list="yes" default="double int16 int16 int16 int16 int32 int32 int16 int16 int32 int16 int16 int8 int16 int8">
+   <DESCRIPTION>
+    EPN imaging mode output column type
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="boolean">
+    </ITEM>
+    <ITEM value="double">
+    </ITEM>
+    <ITEM value="int16">
+    </ITEM>
+    <ITEM value="int32">
+    </ITEM>
+    <ITEM value="int8">
+    </ITEM>
+    <ITEM value="single">
+    </ITEM>
+    <ITEM value="string">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="epntimcolnames" type="string" list="yes" default="TIME RAWX RAWY DETX DETY X Y PHA PI FLAG PAT_TYP PAT_ORI PATTERN PAT_ID PAT_SEQ">
+   <DESCRIPTION>
+    EPN timing mode column list
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="epntimcoltypes" type="string" list="yes" default="double int16 int16 int16 int16 int32 int32 int16 int16 int32 int16 int16 int8 int16 int8">
+   <DESCRIPTION>
+    EPN timing mode output column type
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="boolean">
+    </ITEM>
+    <ITEM value="double">
+    </ITEM>
+    <ITEM value="int16">
+    </ITEM>
+    <ITEM value="int32">
+    </ITEM>
+    <ITEM value="int8">
+    </ITEM>
+    <ITEM value="single">
+    </ITEM>
+    <ITEM value="string">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="propagatecolumns" type="string" default="auto">
+   <DESCRIPTION>
+    how to propagate columns to final event file for TI and BU modes
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="auto">
+    </ITEM>
+    <ITEM value="icd">
+    </ITEM>
+    <ITEM value="imaging">
+    </ITEM>
+    <ITEM value="subset">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="keepintermediate" type="string" default="none">
+   <DESCRIPTION>
+    Keep intermediate files ? 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="all">
+    </ITEM>
+    <ITEM value="cal">
+    </ITEM>
+    <ITEM value="clean">
+    </ITEM>
+    <ITEM value="none">
+    </ITEM>
+    <ITEM value="notmerged">
+    </ITEM>
+    <ITEM value="raw">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="ingtiset" type="dataset">
+   <DESCRIPTION>
+    Input HK GTI file for epchain [not active yet]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="odfok" type="bool" default="yes">
+   <DESCRIPTION>
+    Is this correct/nominal ODF/SDF (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="hkok" type="bool" default="yes">
+   <DESCRIPTION>
+    Is this correct/nominal PMH/PAH (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="ccfok" type="bool" default="yes">
+   <DESCRIPTION>
+    Is this correct/nominal CCF/CAL (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="setupbpx" type="string" default="nom6">
+   <DESCRIPTION>
+    setup for badpix/offset correction vector (used only if ccfok=N)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="cal4">
+    </ITEM>
+    <ITEM value="nom0">
+    </ITEM>
+    <ITEM value="nom1">
+    </ITEM>
+    <ITEM value="nom2">
+    </ITEM>
+    <ITEM value="nom3">
+    </ITEM>
+    <ITEM value="nom4">
+    </ITEM>
+    <ITEM value="nom5">
+    </ITEM>
+    <ITEM value="nom6">
+    </ITEM>
+    <ITEM value="none">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+<!-- epnoise -->
+  <PARAM id="identifynoisyframes" type="bool" default="yes">
+   <DESCRIPTION>
+    Identify Noisy Frames
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+<PARAM id="noisecut" type="int" mandatory="no" default="2">
+  <DESCRIPTION>
+    Noise cut (maximum allowed number of soft events in frame)
+  </DESCRIPTION>
+  <CONSTRAINTS>
+    noisecut in [0:]
+   </CONSTRAINTS>
+</PARAM>
+
+  <PARAM id="sigmacut" type="real" mandatory="no" default="3.0">
+   <DESCRIPTION>
+    sigma cut for bright sources
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    sigmacut in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="savemasks" type="bool" default="no">
+   <DESCRIPTION>
+    Save CCDs mask to a file
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="applyfilter" type="bool" default="no">
+   <DESCRIPTION>
+    Save CCDs mask to a file
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+<!-- epreject -->
+  <PARAM id="badcolumnset" type="string" default="badcolumns.tab">
+   <DESCRIPTION>
+    bad column file 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="sigma" type="real" default="4.0">
+   <DESCRIPTION>
+    sigma threshold for offset correction
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    sigma in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="noiseparameters" type="real" list="yes" default="0.98 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0">
+   <DESCRIPTION>
+    noise fraction parameters
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withsoftflarescreening" type="bool" default="no">
+   <DESCRIPTION>
+    turns on flare screening code
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="softflarethreshold1" type="real" default="10.0">
+   <DESCRIPTION>
+    threshold for flare screening
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    softflarethreshold1 in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="softflarethreshold2" type="real" default="1.0">
+   <DESCRIPTION>
+    threshold for flare screening
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    softflarethreshold2 in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="softflaresmooth" type="string" default="BOX">
+   <DESCRIPTION>
+    smoothing method for flare screening
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+ 
+  <PARAM id="softflareenergyrange" type="int" list="yes" default="40 50">
+   <DESCRIPTION>
+    energy range for flare screening
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="softflaresmoothparams" type="real" list="yes" default="2.0 0.0 0.0">
+   <DESCRIPTION>
+    energy range for flare screening
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+ 
+ </CONFIG>
+</FILE>

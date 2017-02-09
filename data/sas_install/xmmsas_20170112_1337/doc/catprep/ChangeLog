@@ -1,0 +1,77 @@
+ChangeLog for catprep
+====================
+
+Open SPRs:
+----------
+Nil
+
+Version 0.4.2 - 2016-12-05 (AI)
+-------------
+	+ (src/catprep_aux.f90) The variables used to store the 
+	catalogue directory paths have been increased to 250 legnth.
+
+Version 0.4.1 - 2016-10-10 (EO)
+-------------
+	+ Added missing test/testdata subdirectory to hold test fits files.
+
+Version 0.4 - 2016-09-07 (AI)
+-------------
+- (src/cat_prepaux.f90) Parameters in catprep_read subrotuine  must 
+be declared as "inout" instead of "out", otherwise a seg-fault is 
+thrown out at run-time (gcc-6.2)	
+	
+Version 0.3.9 - 2014-03-30 (EC)
+-------------
+- Moved test/cat_data into testprods/test/catprep_data
+- cleaned up some additional unused binary data
+
+Version 0.3.8 - 2012-12-12 (CGP/LUX)
+-------------
+- Changed catalogue identifier from "USNO-B1.0" to "USNO" because omatt objects
+
+Version 0.3.7 - 2012-12-03 (CGP/LUX)
+-------------
+- Changed RMAG for 2MASS catalogue to be the 2MASS k magnitude
+
+Version 0.3.6 - 2012-11-23 (CGP/LUX)
+-------------
+- Detects SDSS data release and propagates name to cat extract file
+
+Version 0.3.5 - 2012-11-05 (CGP/LUX)
+-------------
+- Fixed bug which caused sequential scan of USNO files in some cases where
+a binary search is faster.  In response to SPR 6771. 
+
+Version 0.3.4 - 2012-08-22 (CGP/LUX)
+-------------
+- Fixed bug in computing deltaRA in USNO/2MASS access, see SPR 6763.
+
+Version 0.3.3 - 2012-06-13 (CGP/LUX)
+-------------
+- Changed distribution to "world" in response to SPR 6736
+- Also has improved error reporting and documentation now that it is to be
+distributed more widely.
+
+Version 0.3.2 - 2012-04-17 (CGP/LUX)
+-------------
+	+ src/catprep_aux.f90: append / to each path variable.
+
+Version 0.3.1 - 2012-04-04 (CGP/LUX)
+-------------
+	+ src/catprep_aux.f90: Added ub1_path, twomass_path and sdss_path
+	variables to set the paths to USNOB1, 2Mass and SDSS catalogues
+	trhough environment variables.
+
+Version 0.3 - 2012-03-04 (CGP/LUX)
+----------------------
+- Changed catprep output file so USNO extract in first HDU for compatibility with eposcorr
+and omatt.  Discussed at 2011 Consortium Meeting.
+
+Version 0.2 - 2012-03-02 (CGP/LUX)
+----------------------
+- Replaced OBSMLI_read with read_pointing: allows any suitable data product and not just an OBSMLI file to provide pointing information.  Requested by Simon Rosen to simplify integration into pipeline.
+
+Version 0.1 - 2011-08-03 (CGP/LUX)
+----------------------
+- Initial delivery.  Approved in SCR-320 (see the catcorr package as well).
+	

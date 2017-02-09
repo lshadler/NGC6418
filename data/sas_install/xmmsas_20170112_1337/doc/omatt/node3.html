@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="omatt">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omatt.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="omatt.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omatt (omatt-2.56.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="omatt.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Astrometric correction"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omatt.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="omatt:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+This task takes an OM OSW source list, with source positions in
+pixels, and converts to sky coordinates. The task also produces a
+sky-rotated image and tries to perform sky aspect-correction of 
+both the image and the source list..
+
+<P>
+The task requires the user to enter the name of an OSW source list and
+its corresponding OSW image. The name of the output sky coordinate
+image must also be passed to the task, along with a tolerance
+parameter (see below).
+
+<P>
+The task first reads the binning factors (BINAX1 and BINAX2) from the
+FITS header, along with the BPE binning flag (TWIXEL) and the <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$x$"></SPAN> and
+<SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$y$"></SPAN> size of the OSW window (in centrioded pixels) along with the <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$x$"></SPAN>
+and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$y$"></SPAN> offsets of the window. The pixel coordinates of the OSW source
+list are then converted to the PIXCOORD reference frame (2048 by 2048
+centroided pixels).
+
+<P>
+The OM optics have a small amount of distortion, and the CAL call
+omDistortion is used to get the offsets of the pixel position from a
+linear scale. These offsets are then applied to the pixel positions. A
+CAL to GetPlateScale is subsequently used to convert from pixels to
+radians. (The center of the detector, i.e. the position of the OM
+boresight is pixel 1024.5, 1024.5).
+
+<P>
+The shift and add process is all performed relative to a reference
+frame (used to find the tracking stars), so a call to OAL_getAttitude
+is used, with the time of the reference exposure, to get the
+spacecraft attitude. The CAL Boresight routine is used to obtain the
+boresight offset matrix, which is applied to the s/c attitude to get
+the OM boresight direction, which is then rotated by the roll angle
+about the s/c boresight direction, as are the tangent plane
+coordinates. The tangent plane coordinates are then converted to sky
+coordinates.
+
+<P>
+The source positions, in RA and DEC, are then written to the source
+list, along with the positional error (the initial pixel coordinates are
+retained in the source list).
+
+<P>
+The second (optional) part of the task employs the USNO catalogue (if
+available) to correct the RAs and DECs of the sources for any difference
+between the nominal pointing direction of the satelliet and the true one. 
+The OM pointing vector and field of view are used as parameters to a search of 
+the USNO, which lists all catalog stars in the field of view. The algorithm 
+sets up a grid of offsets in the x and y directions to be used to match up
+stars in the source list to those in the catalogue. For each set of offsets 
+a maximum likelihood parameter is computed, and the offsets with the maximum 
+parameter value are taken to be the best offsets. If sufficient stars are 
+matched then a least-squares fit is performed, to yield more accurate
+astrometry. The fit yields more accurate values for the offsets, and also 
+any small rotation bewteen the two coordinate systems. Error for the parameters 
+are computed by Monte Carlo simulations, in which new data sets are generated 
+and the parameters computed. The mean and standard deviations of all the 
+fitted parameters from the simulations are computed, and the standard
+deviations are used as the errors. Corrected RA and DEC columns are added to
+the source-list file.
+
+<P>
+The final section of the code takes the OM OSW image and rotates and
+rebins it into sky coordinates. From SAS 9.0 onwards, the 16-bit
+<SPAN  CLASS="textbf">QUALITY</SPAN> image is also rotated and added to the output
+sky-image file. For this image, instead of using an interpolation scheme
+to set each of its pixels, each pixel is set by checking bits 0 to 10 of the
+nine pixels of the unrotated-image centred at the interpolation point and 
+setting the corresponding bit if any of those is set.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="omatt.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Astrometric correction"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

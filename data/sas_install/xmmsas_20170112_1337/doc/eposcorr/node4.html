@@ -1,0 +1,363 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Statistical method</TITLE>
+<META NAME="description" CONTENT="Statistical method">
+<META NAME="keywords" CONTENT="eposcorr">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eposcorr.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eposcorr (eposcorr-3.12.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="The errors in the"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eposcorr.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+Statistical method</A>
+</H2>
+The statistic for optimizing the match between optical and X-ray sources is:
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+L = \sum_{i=1}^{n_x} \sum_{j=1}^{n_o}
+\exp( -\frac{1}{2} (\frac{r_{ij}}{\sigma_{ij}} )^2 ),
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="191" HEIGHT="55" BORDER="0"
+ SRC="img1.png"
+ ALT="\begin{displaymath}
+L = \sum_{i=1}^{n_x} \sum_{j=1}^{n_o}
+\exp( -\frac{1}{2} (\frac{r_{ij}}{\sigma_{ij}} )^2 ),
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">1</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+with <SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$r_{ij}$"></SPAN> the distance between an X-ray (i) and an optical source (j),
+<SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$\sigma_{ij}$"></SPAN> the associated error and <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$n_x$"></SPAN> resp. <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$n_o$"></SPAN> the number of X-ray sources and optical sources in the list. In the eposcorr task only those 
+optical sources are considered which are within <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$5\sigma$"></SPAN> of an X-ray source 
+(for a given position offset).
+
+<P>
+In the following we will assume that the errors in the RA and DEC are equal
+and uncorrelated and follow a Gaussian distribution, 
+we can then write <!-- MATH
+ $\sigma_x = \sigma_y = \sigma$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="90" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$\sigma_x = \sigma_y = \sigma$"></SPAN><A NAME="tex2html2"
+  HREF="footnode.html#foot588"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A>.
+For the expectation value of <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$L$"></SPAN> for a given 
+X-ray source we get:
+<BR>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+L = \frac{1}{2\pi \sigma^2}
+\int dx \int dy \exp( -\frac{1}{2} \frac{x^2+y^2}{\sigma^2}) \ 
+\exp( -\frac{1}{2} \frac{x^2+y^2}{\sigma^2} ) =
+ \frac{1}{2\pi \sigma^2} 
+\int dr\ 2\pi r\ \exp( - \frac{r^2}{\sigma^2} ) = \frac{1}{2}.
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="630" HEIGHT="44" BORDER="0"
+ SRC="img10.png"
+ ALT="\begin{displaymath}
+L = \frac{1}{2\pi \sigma^2}
+\int dx \int dy \exp( -\frac{1}...
+...\int dr\ 2\pi r\ \exp( - \frac{r^2}{\sigma^2} ) = \frac{1}{2}.
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">2</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+The associated variance in <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$L$"></SPAN> is:
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+<L^2>-<L>^2 =
+\int dr\ 2\pi r\ \exp( - \frac{1}{2}\frac{r^2}{\sigma^2} )
+\Bigl(\exp( - \frac{1}{2}\frac{r^2}{\sigma^2}) \Bigr)^2-\Bigl(\frac{1}{2}\Bigr)^2 = \frac{1}{3} - \frac{1}{4} = \frac{1}{12}
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="563" HEIGHT="44" BORDER="0"
+ SRC="img11.png"
+ ALT="\begin{displaymath}
+&lt;L^2&gt;-&lt;L&gt;^2 =
+\int dr\ 2\pi r\ \exp( - \frac{1}{2}\frac{r^2}...
+...\frac{1}{2}\Bigr)^2 = \frac{1}{3} - \frac{1}{4} = \frac{1}{12}
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">3</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+Of course, in practice there will be chance coincidences. 
+For chance coincidences the chance that an optical counter part will be within
+a distance <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.png"
+ ALT="$r$"></SPAN> from the source is <!-- MATH
+ $\pi r^2/ \pi(5\sigma)^2$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="83" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\pi r^2/ \pi(5\sigma)^2$"></SPAN> 
+(i.e. within an error circle of <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$5\sigma$"></SPAN>).
+This gives for the expected value <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$L$"></SPAN> for a chance coincidence:
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+L = \int_0^{5\sigma} dr \frac{2\pi r}{\pi 25 \sigma^2} \exp( - \frac{1}{2} \frac{r^2}{\sigma^2} ) = \frac{2}{25} \Bigl(1 - \exp(-\frac{25}{2})\Bigr) \simeq
+\frac{2}{25}.
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="412" HEIGHT="46" BORDER="0"
+ SRC="img14.png"
+ ALT="\begin{displaymath}
+L = \int_0^{5\sigma} dr \frac{2\pi r}{\pi 25 \sigma^2} \exp(...
+...{25} \Bigl(1 - \exp(-\frac{25}{2})\Bigr) \simeq
+\frac{2}{25}.
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">4</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+And for the variance in <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$L$"></SPAN>:
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+<L^2>-<L>^2 = \int_0^{5\sigma} dr \frac{2\pi r}{\pi 25 \sigma^2} \exp( - \frac{r^2}{\sigma^2} ) - \Bigl(\frac{2}{25}\Bigr)^2
+= \frac{1}{25} \Bigl(1 - \exp(-25)\Bigr) - \Bigl(\frac{2}{25}\Bigr)^2
+\simeq
+\frac{1}{25}  - \Bigl(\frac{2}{25}\Bigr)^2 = \frac{21}{25^2} .
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="720" HEIGHT="46" BORDER="0"
+ SRC="img15.png"
+ ALT="\begin{displaymath}
+&lt;L^2&gt;-&lt;L&gt;^2 = \int_0^{5\sigma} dr \frac{2\pi r}{\pi 25 \sigm...
+...
+\frac{1}{25} - \Bigl(\frac{2}{25}\Bigr)^2 = \frac{21}{25^2} .
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">5</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+The number of chance coincidences can be estimated using poison statistics
+with a poison parameter of <!-- MATH
+ $\mu = 25 \pi \sigma^2 \lambda$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="86" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$\mu = 25 \pi \sigma^2 \lambda$"></SPAN>,
+with <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.png"
+ ALT="$\lambda$"></SPAN> the average number of optical sources per unit area.
+The expected number of sources is thus <!-- MATH
+ $\sum_{i=1}^{n_x} \mu_i$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="60" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$\sum_{i=1}^{n_x} \mu_i$"></SPAN>
+(where the subscript <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$i$"></SPAN> denotes values for each X-ray source, thus allowing for fluctuations in the number of optical sources per area). 
+The expected value for <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$L$"></SPAN> is:
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+L = \sum_{i=1}^{n_x}
+\mu_i \int_{0}^{5\sigma_i} dr \ \frac{2\pi r}{\pi\ 25\sigma^2} 
+\exp( - \frac{1}{2} \frac{r^2}{\sigma^2} ) =
+\frac{2}{25} \sum_{i=1}^{n_x} \mu_i .
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="357" HEIGHT="53" BORDER="0"
+ SRC="img20.png"
+ ALT="\begin{displaymath}
+L = \sum_{i=1}^{n_x}
+\mu_i \int_{0}^{5\sigma_i} dr \ \frac{...
+...\frac{r^2}{\sigma^2} ) =
+\frac{2}{25} \sum_{i=1}^{n_x} \mu_i .
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">6</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+How many counterparts do we need to discriminate between chance coincidences
+or real counter parts? This question is not easy to answer, 
+as <A NAME="629"></A><A NAME="tex2html4"
+  HREF="../eposcorr/index.html"><SPAN  CLASS="textbf">eposcorr</SPAN></A>
+optimizes <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$L$"></SPAN> and also for the number of counter parts. 
+This means that Poissonian statistics may not be valid. 
+To get at least an approximate answer, we equate:
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+(L_{exp} - 2\sigma_L)_{gaussian} = (L_{exp} + 2\sigma_L)_{poissonian},
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="320" HEIGHT="29" BORDER="0"
+ SRC="img21.png"
+ ALT="\begin{displaymath}
+(L_{exp} - 2\sigma_L)_{gaussian} = (L_{exp} + 2\sigma_L)_{poissonian},
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">7</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+or,
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+\frac{N}{2} - 2\sqrt{\frac{N}{12}} = \frac{2N}{25} + 2\sqrt{\frac{2N}{25^2}}.
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="201" HEIGHT="45" BORDER="0"
+ SRC="img22.png"
+ ALT="\begin{displaymath}
+\frac{N}{2} - 2\sqrt{\frac{N}{12}} = \frac{2N}{25} + 2\sqrt{\frac{2N}{25^2}}.
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">8</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+The solution of this equation is <SPAN CLASS="MATH"><IMG
+ WIDTH="60" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img23.png"
+ ALT="$N = 5.1$"></SPAN>.
+I therefore propose to use this number plus the number of degrees of freedom
+as the minimum threshold for accepting a result of <A NAME="633"></A><A NAME="tex2html5"
+  HREF="../eposcorr/index.html"><SPAN  CLASS="textbf">eposcorr</SPAN></A>.
+This means that when offsets and in  RA and DEC are corrected for the minimum
+number of optical counter parts should be 7, including a rotational correction
+this will be 8. This number will be contained in the keyword <A NAME="637"></A><TT>NMATCHES</TT>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="The errors in the"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

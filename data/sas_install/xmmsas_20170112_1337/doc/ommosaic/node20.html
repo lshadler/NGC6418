@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Cross-correlation</TITLE>
+<META NAME="description" CONTENT="Cross-correlation">
+<META NAME="keywords" CONTENT="ommosaic">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ommosaic.css">
+
+<LINK REL="previous" HREF="node17.html">
+<LINK REL="up" HREF="node13.html">
+<LINK REL="next" HREF="node21.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ommosaic (ommosaic-2.8.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node19.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Alignment example"></A>
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Algorithm- Sky Images"></A>
+<A HREF="node21.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Stacking examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ommosaic.html">Home Page</A> / <A  HREF="node13.html">Algorithm- Sky Images</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00094000000000000000">
+Cross-correlation</A>
+</H2>
+
+<P>
+The cross-correlation coefficient, <SPAN  CLASS="textbf">R</SPAN><!-- MATH
+ \begin{math}
+(\Delta x,\Delta y)
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="67" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$(\Delta x,\Delta y)$"></SPAN> between 2 images, <!-- MATH
+ \begin{math}
+image_1 \quad and \quad image_2
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="163" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$image_1 \quad and \quad image_2$"></SPAN>, with
+offsets <!-- MATH
+ \begin{math}
+\Delta x \quad and \quad \Delta y
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="106" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$\Delta x \quad and \quad \Delta y$"></SPAN> between their x and y origins, respectively, is computed from
+
+<P>
+<SPAN  CLASS="textbf">R</SPAN><!-- MATH
+ \begin{math}
+(\Delta x,\Delta y) = \frac{sum_1}{\sqrt{sum_2 \times sum_3}}
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="175" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$(\Delta x,\Delta y) = \frac{sum_1}{\sqrt{sum_2 \times sum_3}}$"></SPAN> , 
+
+<P>
+where <!-- MATH
+ \begin{math}
+sum_1= \sum_{i=1}^{nx} \sum_{j=1}^{ny} image_1(x_i, y_j) \times image_2(x_i+\Delta x,y_j+\Delta y)
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="446" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$sum_1= \sum_{i=1}^{nx} \sum_{j=1}^{ny} image_1(x_i, y_j) \times image_2(x_i+\Delta x,y_j+\Delta y)$"></SPAN> , 
+
+<P>
+<!-- MATH
+ \begin{math}
+sum_2=\sum_{i=1}^{nx}\sum_{j=1}^{ny}  image_1(x_i, y_j) \times image_1(x_i, y_j )
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="363" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$sum_2=\sum_{i=1}^{nx}\sum_{j=1}^{ny} image_1(x_i, y_j) \times image_1(x_i, y_j )$"></SPAN> , 
+
+<P>
+<!-- MATH
+ \begin{math}
+sum_3=\sum_{i=1}^{nx}\sum_{j=1}^{ny}  image_1(x_i, y_j) \times image_2(x_i+\Delta x, y_j+\Delta y )
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="446" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$sum_3=\sum_{i=1}^{nx}\sum_{j=1}^{ny} image_1(x_i, y_j) \times image_2(x_i+\Delta x, y_j+\Delta y )$"></SPAN> , 
+
+<P>
+where nx and ny are the image dimensions in the x and y directions, respectively.
+In the above formulae it is assumed that the mean image values have been subtracted from the
+images. <SPAN  CLASS="textbf">R</SPAN> can vary from -1 to +1.
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>tanToRaDec</TITLE>
+<META NAME="description" CONTENT="tanToRaDec">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node68.html">
+<LINK REL="previous" HREF="node66.html">
+<LINK REL="up" HREF="node60.html">
+<LINK REL="next" HREF="node68.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node66.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="raDecToTan"></A>
+<A HREF="node60.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Routines for performing coordinate"></A>
+<A HREF="node68.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="polarsToRaDec"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node60.html">Routines for performing coordinate</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00067000000000000000">
+tanToRaDec</A>
+</H2>
+
+<P>
+<PRE>
+  interface tanToRaDec
+    subroutine tanToRaDecScalar(refRaDeg, refDecDeg, tanX, tanY, raDeg, decDeg)
+      real(double), intent(in)  :: refRaDeg,&amp;
+                                   refDecDeg,&amp;
+                                   tanX,&amp;
+                                   tanY
+      real(double), intent(out) :: raDeg,&amp;
+                                   decDeg
+    end subroutine tanToRaDecScalar
+
+    subroutine tanToRaDecVector(refRaDeg, refDecDeg, tanX, tanY, raDeg, decDeg)
+      real(double), intent(in)  :: refRaDeg,&amp;
+                                   refDecDeg,&amp;
+                                   tanX(:),&amp;
+                                   tanY(size(tanX))
+      real(double), intent(out) :: raDeg(size(tanX)),&amp;
+                                   decDeg(size(tanX))
+  end interface
+
+! tanToRaDecArray not yet done
+</PRE>
+
+<P>
+This transform is a projection to celestial coordinates from that tangent plane normal to the direction defined by refRaDeg and refDecDeg. The signs of the the returned values are such that tanX increases in the direction of decreasing ra and tanY increases in the direction of increasing dec. If the tangent plane were viewed from the centre of the celestial sphere, with the celestial north pole at the zenith, tanX would increase to rightwards and tanY upwards.
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

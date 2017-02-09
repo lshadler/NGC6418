@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Encircled energy correction</TITLE>
+<META NAME="description" CONTENT="Encircled energy correction">
+<META NAME="keywords" CONTENT="arfgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="arfgen.css">
+
+<LINK REL="next" HREF="node26.html">
+<LINK REL="previous" HREF="node23.html">
+<LINK REL="up" HREF="node14.html">
+<LINK REL="next" HREF="node26.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+arfgen (arfgen-1.93.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node24.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Conversion to DET coordinates"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node26.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Optional RMF dataset as"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node44.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="arfgen.html">Home Page</A> / <A  HREF="node14.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00065000000000000000"></A>
+<A NAME="arfgen:description:description:ee"></A>
+<BR>
+Encircled energy correction
+</H2>
+
+<P>
+In the case of a point source, 
+<A NAME="1366"></A><A NAME="tex2html39"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+can correct for the flux that is outside
+the region(s) over which the spectrum was accumulated. 
+These regions are read from
+the spectrum's DSS information. 
+The correction works by taking a model of the PSF from the CAL,
+centred at the source position
+and calculating the total fraction of that PSF
+within the regions of interest.
+
+<P>
+To enable the encircled energy correction for point sources, 
+the parameter <TT>extendedsource</TT>
+must be set to <TT>false</TT>, 
+as well as <TT>modelee</TT> being set to <TT>true</TT>.
+
+<P>
+The encircled energy correction is energy dependent, so ideally
+the EE should be computed for each 
+and every point on the energy grid. 
+However, given that the EE calculation 
+is computationally intensive, the option to resample the energy
+grid is provided by the parameter <TT>eegridfactor</TT>. The resultant
+EE correction vector is interpolated back onto the original energy
+grid, and each ARF element is corrected using the corresponding
+EE correction factor. See section&nbsp;<A HREF="node37.html#arfgen:description:algorithm">10</A>
+for further information.
+
+<P>
+By default <A NAME="1375"></A><A NAME="tex2html40"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+uses a fomulation of the PSF as a
+function of energy and off-axis angle, known as the ELLBETA model,
+to calculate the
+ encircled energy correction. This model is valid for all extraction
+region shapes as it works by summing up contributions to the PSF 
+over a grid of pixels which fall within the region. The resolution
+of this grid (and of the bad pixel calculation) is set by the
+parameter <TT>badpixelresolution</TT> which has a default of 0.5
+arcseconds. The PSF model may be overridden using the 
+<TT>psfmodel</TT> parameter.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node24.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Conversion to DET coordinates"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node26.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Optional RMF dataset as"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node44.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

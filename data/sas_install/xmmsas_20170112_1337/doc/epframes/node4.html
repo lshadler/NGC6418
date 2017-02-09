@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>General</TITLE>
+<META NAME="description" CONTENT="General">
+<META NAME="keywords" CONTENT="epframes">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epframes.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epframes (epframes-8.109.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Diagnostic images and columns"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epframes.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000"></A>
+<A NAME="epframes:description:description:general"></A>
+<BR>
+General
+</H2>
+
+<P>
+<A NAME="948"></A><A NAME="tex2html5"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>
+reads a raw event list of a single CCD and exposure 
+from an EPIC PN ODF 
+([<A
+ HREF="node18.html#ct:SOCODFICD">1</A>]) 
+<A NAME="tex2html3"
+  HREF="footnode.html#foot883"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A>. 
+The input file is specified 
+giving the actual filename or a symbolic form of it (which will be expanded 
+with OAL_expandFileName). The ODF in use is defined via the SAS
+environment variable <A NAME="956"></A><TT>SAS_ODF</TT> prior to execution. <A NAME="958"></A><A NAME="tex2html6"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>
+uses
+the summary file from the ODF to display info about the selected
+observation and to fill in standard header keywords. The auxiliary, main
+periodic housekeeping and spacecraft time correlation files corresponding
+to the selected EPIC PN raw event list are needed for the computation of 
+event time tags.
+
+<P>
+<A NAME="962"></A><A NAME="tex2html7"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>
+flags events with faulty coordinates or times in a
+<A NAME="966"></A><TT>FLAG</TT> column. The flags are bit-masked following the same code as for 
+the MOS (see [<A
+ HREF="node18.html#stn:event_attributes">5</A>]). 
+<A NAME="968"></A><A NAME="tex2html8"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>
+stores statistics
+about these wrong events in FITS keywords (<A NAME="972"></A><TT>WRGCOORD</TT>, <A NAME="974"></A><TT>WRGORDER</TT> and 
+<A NAME="976"></A><TT>WRGTIME</TT>) in the output event list. The statistics of bad 
+frames is stated in the history of the output file. 
+
+<P>
+The raw event list is converted into a table to be processed by
+other SAS tasks: The existing columns <A NAME="978"></A><TT>RAWX</TT>, <A NAME="980"></A><TT>RAWY</TT> and 
+<A NAME="982"></A><TT>ENERGY</TT> in the ODF files are renamed to <A NAME="984"></A><TT>RAWX</TT>, <A NAME="986"></A><TT>RAWY</TT> and 
+<A NAME="988"></A><TT>PHA</TT>, respectively. We note that the RAWX and RAWY coordinates in the 
+output file have values increased by +1 with respect to the raw coordinates in 
+the ODF/SDF file. For the same reason <A NAME="990"></A><A NAME="tex2html9"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>
+adds 1 to the
+<A NAME="994"></A><TT>WINDOWX0</TT>, <A NAME="996"></A><TT>WINDOWY0</TT> attributes giving the bottom left corner of the
+readout window. The <A NAME="998"></A><TT>PHA</TT> values are the event raw amplitudes 
+corrected for column offsets. A <A NAME="1000"></A><TT>CCDNR</TT> column gives the overall 
+CCD number (1 - 12). 
+
+<P>
+The <A NAME="1002"></A><TT>FRAME</TT> counter column (in TIMING and BURST mode together with the 
+<A NAME="1004"></A><TT>RAWY</TT> events coordinate and the <TT>srcposition</TT> parameter or in the case of
+<TT>withsrccoords</TT>=Y <TT>srcra</TT> and <TT>srcdec</TT> instead) is 
+used to compute the <A NAME="1010"></A><TT>TIME</TT> for each event. The time tag computation is
+based on equations given in EPIC-EST-OP-002 Sects.8.3.1 and 8.3.2 
+(version Sept.99) 
+[<A
+ HREF="node18.html#ct:EPICPNUM">4</A>].                        Please, see the <B>warning</B> in the description of the parameter
+<TT>withsrccoords</TT>!
+
+<P>
+A GTI file is produced listing start and stop times of the 
+observation and taking care of missing or bad frames.
+
+<P>
+<A NAME="1013"></A><A NAME="tex2html10"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>
+creates an EXPOSURE extension (renamed by <A NAME="1017"></A><A NAME="tex2html11"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A>
+to EXPOSUxx, xx = 01 - 12) giving details 
+about frame time tags and integration times. These have been corrected formode dependent readout gaps (livetime factor FC0).  
+
+<P>
+<A NAME="1021"></A><A NAME="tex2html12"
+  HREF="../evlistcomb/index.html"><SPAN  CLASS="textbf">evlistcomb</SPAN></A> does not apply changes to the exposure extensions and
+these thus contain CCD specific information also in the FITS headers
+(the individual <A NAME="1025"></A><TT>EVENTS</TT> extensions are merged and individual
+FITS header information is lost there).
+Besides housekeeping related quantities (see
+Sect.<A HREF="node14.html#epframes:description:outputfiles:housekeeping">7.2</A>)
+there is also processing relevant information like the occurrence
+of the SAS infrastructure warning ``InvalidObtValue'' in the keyword
+<A NAME="1027"></A><TT>OBT_WARN</TT>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Diagnostic images and columns"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

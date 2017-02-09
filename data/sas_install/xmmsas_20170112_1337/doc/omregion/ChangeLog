@@ -1,0 +1,177 @@
+ChangeLog for omregion	
+======================
+Version 2.14.1 - 2016-01-12 (AI) 
+------------------------------
+	+(src/omregion_mod.f90)  New NAGFor compiler 6.2 throws an Overflow exception 
+	for some integer values. To solve this problem we have added two new null Int8 and Int16 
+	definitions.
+
+Version 2.14 - 2012-11-30 (VNY) 
+------------------------------
+	+(src/omregion_mod.f90): Added the capability of picking up
+	the columns from the combined and merged source lists 
+	produced by the tasks omsrclistcomb and ommergelists
+Version 2.13 - 2012-11-30 (VNY) 
+------------------------------
+	+(src/omregion_mod.f90):
+	Replaced the source column names from RA, DEC to RA_CORR, 
+	DEC_CORR to get the region file corresponding to the 
+	astrometry-corrected source positions.
+Version 2.12 - 2012-11-30 (VNY) 
+------------------------------
+	+(src/omregion_mod.f90):
+ 	Introduced the possibility for creating a region file 
+	for sky images in the OM Imaging mode.
+Version 2.11.2 - 2010-03-14 (VNY)
+--------------------------------	
+	+(src/omregion_mod.f90): 
+	Protected against the possibility of duplication of 
+	the main source (SSC-SPR-6601). In the case the distance between 
+	the main and contaminating sources is less than 3 pixels, 
+	the avoiding source is considered to be a duplicate and, thus, is not
+        included into the output region file
+Version 2.11.1 - 2007-06-22 (VNY)
+-------------------------------	
+	+/test/checkoutput.f90 
+	To fix SSC-SPR-3684 the running of the code checkoutput.f90
+	is suppressed since it was doing quite unimportant checks, but
+	casusing a problem on the Mac computer.
+Version 2.11 - 2003-11-21 (VNY)
+-------------------------------	
+	DEPEND file updated to match the new
+	version (3.0) of ssclib
+Version 2.10 - 2003-07-16 (VNY)
+------------------------------	
+	(+/src/omregion_mod.f90, +/test/checkoutput.f90) A small mistake 
+	is corrected, which was producing one-pixel shift 
+	of the source region with respect to the source position given 
+	by OMDETECT (SSC-SPR-3138)
+	
+Version 2.9 - 2002-09-26 (VNY)
+-----------------------------
+	DEPEND file has been updated (dependence on sas-1.312 included)
+	
+Version 2.8 - 2002-06-10
+        (VNY) - +(config/omregion.info) GROUP parameter
+ 	is set to 'om pipeline' instead of previous 'pipeline'
+Version 2.7 - 13.05.2002 (VNY) - DEPEND and +/src/omregion.par files
+	are updated in order to work with new PARAM-2.0
+Version 2.6.4 - 09.05.2002 (VNY) - ChangeLog-file corrected	
+Version 2.6.3 - 14/03/2002 (CB) (+/doc/omregion_description.tex) 
+	Documentation corrected.
+Version 2.6.2 - 28/01/2002 (VNY)
+	(+/config/omregion.par) - meanings for the obligatory and optional
+	parameters have been updated.
+Version 2.6.1 - 28/01/2002 (VNY) 
+	(+/src/omregion_mod.f90): the output background extraction area is
+	analysed from the point of view of its size. If neighbour sources
+	in the vicinity of the target have large avoiding circles, the
+	background extraction area could became too small or even of zero
+	size. In this case EVSELECT, which uses the region expression 
+	created by OMREGION, will not extract background events. In order
+	to avoid this situation, OMREGION task, analyses the background area and, in
+	the case of its being smaller than 100, attempts to reduce the
+	contaminating source's radius down to 6 pixels or, if there are
+	no contaminating sources nearby, OMREGION produces a warning
+	message (SSC-SPR-2702).	
+Version 2.6 - 08/01/2002 (VNY)
+	(DEPEND): dependencies file has been updated to work with higher
+	version of ssclib (2.0)
+Version 2.5 - 12.12.2001 (VNY)
+	(+/src/omregion_mod.f90): the radius for the avoiding circles
+	is taken from the input parameter "srcradius" for the case if
+	it is negative. This permits to improve the exposure-to-exposure
+	stability of the output lightcurves. The avoiding circle radius
+	within the background area is set to abs(srcradius). If the
+	avoiding circle is within the source area, it is set
+	to 0.8*abs(srcradius).
+Version 2.4 - 10.12.2001 (VNY)
+	(+/src/omregion_mod.f90):  possible contamination of the source
+	extraction area by a neighbour source is fixed:
+	avoiding circles have been added to the source region table
+        (similar to the avoiding circles in the background extraction
+	area), SSC-SPR-2669.
+Version 2.3.1: - 18 October 2001 (VNY)
+	Dependencies have been updated to rectify the task build.
+	No srcRadius reduction applied when another
+	source is in the vicinity of the target (only for the case when
+	the srcradius parameter is negative, and only for the FAST mode)
+Version 2.3: - 07 August 2001 (VNY)
+	the meaning of the "srcradius" parameter has been changed: now it is in pixels if it is negative.
+        In this case the radius is taken fixed as ABS(SRCRADIUS). If the paraneter 
+        is positive, its meaning is as before, i.e. the radius of the source region 
+        expressed in the units of FWHMs. 
+Version 2.2.1 - 27 July 2001 (VNY)
+    DESCRIPTION keyword has been added in the omregion.info file
+
+Version 2.2: - 28 May 2001 (VNY)
+	variables with the OSW origin have been added (window0, windowX0, windowY0, windowX1, windowY1);
+        necessary attributes have been added to the source and background region tables;
+        windowX0 and windowY0 have been added to the coordinates of the avoid circle.
+
+	
+Version 2.1: - 05 October (CB)
+	Added miising info file.
+
+
+Version 2.0:  - 07 July 2000 (AMK)
+------------
+	
+      + (config/omregion.info) Added. (SSC-SPR-1802)	
+
+Version 1.9: 18 April 2000
+
+cahnge agin to solve build problem
+                                        
+Version 1.8: 13 April 2000
+
+change to solve omfchain failure
+
+
+Version 1.7: 17 March 2000
+
+Updated copyattributes to copyallattributes
+Removed check on SHAPE column in test harness.
+	
+Version 1.6: 2nd December 1999
+
+Added DISTRIBUTION (world) file	
+	
+Version 1.5: 8th June 1999
+
+Updated dependencies for V3 delivery.	
+Update testomprep for exit values.
+	
+Version 1.4: 27th May 1999
+
+'Spring clean' of code (tidy, comment and fix bugs).
+Changed input parameters to conform to new standards.
+Update testomprep for new parameters
+Updated Dependancy and make files RE: mssllib/pgplot.
+Added Final lines in Makefiles.
+	
+Version 1.3: 10th December 1998
+
+updated Dependancy file RE: mssllib	
+	
+Version 1.2: 28th October 1998
+
+SPR 552 closed: code conforms to coding standards
+SPR 696 closed: test tests for binner < backouter
+	
+Version 1.1: 28th Sep 1998
+
+SPR 537 closed: dot removed from par file
+	
+Version 1.0: 26th August 1998
+
+make check passed
+
+
+
+Version 0.1
+----------------------------
+
+- Created 28 May 1998
+
+- Directory structure created by pkgmaker.

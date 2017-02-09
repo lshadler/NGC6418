@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>findEdges</TITLE>
+<META NAME="description" CONTENT="findEdges">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node33.html">
+<LINK REL="previous" HREF="node31.html">
+<LINK REL="up" HREF="node29.html">
+<LINK REL="next" HREF="node33.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node31.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="normalizeVector"></A>
+<A HREF="node29.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Array or vector array"></A>
+<A HREF="node33.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="invertMask"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node6.html">General-purpose array-processing utilities</A> / <A  HREF="node29.html">Array or vector array</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00027300000000000000">
+findEdges</A>
+</H3>
+
+<P>
+<PRE>
+  subroutine findEdges(mask, figureEdges, groundEdges)
+    logical(bool), intent(in)  :: mask(:,:)
+    logical(bool), intent(out), optional ::&amp;
+      figureEdges(size(mask, 1),size(mask, 2)),&amp;
+      groundEdges(size(mask, 1),size(mask, 2))
+  end subroutine findEdges
+</PRE>
+
+<P>
+Given an input logical array <SPAN CLASS="MATH"><IMG
+ WIDTH="43" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.png"
+ ALT="$mask$"></SPAN>, this subroutine returns (optionally) an array <SPAN CLASS="MATH"><IMG
+ WIDTH="95" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$figureEdges$"></SPAN> which is true at all true-valued pixels in <SPAN CLASS="MATH"><IMG
+ WIDTH="43" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.png"
+ ALT="$mask$"></SPAN> which have at least 1 false-valued pixel among their 8 nearest neighbours. (For pixels at the edges of the input array, the number of nearest neighbours is of course reduced to 5 or 3 as appropriate.)
+
+<P>
+I give an example as follows, in which false pixels are represented by 0 and true by 1. For an input mask
+
+<P>
+<PRE>
+	11110000111
+	11111000011
+	11111100011
+	11111100001
+	00000000000
+	11111110000
+	11101111100
+</PRE>
+
+<P>
+the returned <SPAN CLASS="MATH"><IMG
+ WIDTH="95" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$figureEdges$"></SPAN> should be
+
+<P>
+<PRE>
+	00010000110
+	00011000010
+	00001100011
+	11111100001
+	00000000000
+	11111110000
+	00101011100
+</PRE>
+
+<P>
+A second array <SPAN CLASS="MATH"><IMG
+ WIDTH="98" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$groundEdges$"></SPAN> is also optionally returned, which is equivalent to <SPAN CLASS="MATH"><IMG
+ WIDTH="95" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$figureEdges$"></SPAN> calculated for .not.<SPAN CLASS="MATH"><IMG
+ WIDTH="43" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img25.png"
+ ALT="$mask$"></SPAN>.
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

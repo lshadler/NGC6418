@@ -1,0 +1,264 @@
+<!-- converted from XPI formatted "colimchain.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="prodsdir" type="string" default=".">
+   <DESCRIPTION>
+    Location of input images.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="clobberprods" type="bool" default="no">
+   <DESCRIPTION>
+    Overwrite output file.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="astest" type="bool" default="no">
+   <DESCRIPTION>
+    Run without invoking tasks.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="instrument" type="string" default="m1">
+   <DESCRIPTION>
+    XMM instrument.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="m1">
+    </ITEM>
+    <ITEM value="m2">
+    </ITEM>
+    <ITEM value="pn">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="idtype" type="string" default="index">
+   <DESCRIPTION>
+    Method of inputting the observation/exposure information.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="full">
+     <PARAM id="obsid" type="string">
+      <DESCRIPTION>
+       10-digit obs ID number.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="expid" type="string">
+      <DESCRIPTION>
+       4-character exposure ID string (S or U followed by the exposure number)
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="index">
+     <PARAM id="obsindex" type="int" default="0">
+      <DESCRIPTION>
+       Index number of observation occurring in --prodsdir.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       obsindex in [0:]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="expindex" type="int" default="0">
+      <DESCRIPTION>
+       Index number of exposure for a given observation.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       expindex in [0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="bandlist" type="int" list="yes" default="2 3 4">
+   <DESCRIPTION>
+    List of energy bands to use for colour plot.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    bandlist in [1:9]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withthumbnails" type="bool" default="no">
+   <DESCRIPTION>
+    Surround png image with a frame.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="thumbnaildir" type="string" default="./thumbnails">
+      <DESCRIPTION>
+       Location to place thumbnail images.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="smooth" type="bool" default="yes">
+   <DESCRIPTION>
+    Adaptively smooth images before making colour plot.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="maxwidth" type="real" default="20.0">
+      <DESCRIPTION>
+       Maximum allowed width in pixels of smoothing gaussians.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       maxwidth in [0.0:20.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="desiredsnr" type="real" default="7.0">
+      <DESCRIPTION>
+       Minimum desired signal/noise in output.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       desiredsnr in [1.0:]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="nconvolvers" type="int" default="30">
+      <DESCRIPTION>
+       Maximum number of adaptive-smoothing gaussian kernels.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       nconvolvers in [2:126]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="rebinimage" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to rebin the image.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="newnxbins" type="int" default="250">
+      <DESCRIPTION>
+       New num x bins of rebinned image.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       newnxbins in [10:1000]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="newnybins" type="int" default="250">
+      <DESCRIPTION>
+       New num y bins of rebinned image.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       newnybins in [10:1000]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="weirdness" type="real" default="-0.7">
+   <DESCRIPTION>
+    Deform hues orthogonal to the 'thermal' track.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    weirdness in [-1.0:1.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="heat" type="real" default="0">
+   <DESCRIPTION>
+    Deform hues parallel to the 'thermal' track.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    heat in [-1.0:1.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="heatspread" type="real" default="0.3">
+   <DESCRIPTION>
+    Stretch hues along the 'thermal' track.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    heatspread in [-1.0:1.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="cutoff" type="real" default="0.05">
+   <DESCRIPTION>
+    For refclrstyle=internal, only pixels with relative total flux greater than this are included in the calc.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    cutoff in [0.0:1.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="gainstyle" type="string" default="auto">
+   <DESCRIPTION>
+    Controls how the gain of the image is calculated.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="auto">
+    </ITEM>
+    <ITEM value="user">
+     <PARAM id="gain" type="real" default="8">
+      <DESCRIPTION>
+       Saturation factor by which image is multiplied before display.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       gain in [0.0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="pgdev" type="string" default="/png">
+   <DESCRIPTION>
+    Pgplot output device.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="expandtomask" type="bool" default="yes">
+   <DESCRIPTION>
+    Expand the image so that the masked areas fill the frame.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="plotfile" type="string" default="temp.png">
+   <DESCRIPTION>
+    Output filename.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withframe" type="bool" default="no">
+   <DESCRIPTION>
+    Surround png image with a frame.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

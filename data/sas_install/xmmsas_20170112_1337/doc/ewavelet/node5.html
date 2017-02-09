@@ -1,0 +1,282 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>The detection threshold</TITLE>
+<META NAME="description" CONTENT="The detection threshold">
+<META NAME="keywords" CONTENT="ewavelet">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ewavelet.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ewavelet (ewavelet-3.11.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Countrate estimation"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="The convolution"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ewavelet.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000">
+The detection threshold</A>
+</H2>
+
+<DIV ALIGN="CENTER"><A NAME="ewavelet:description:fig:2"></A><A NAME="656"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 2:</STRONG>
+
+Histograms of wavelet convolved images. 
+The wavelet scale was <SPAN CLASS="MATH"><IMG
+ WIDTH="33" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img39.png"
+ ALT="$2\sqrt 2$"></SPAN> and the background value were
+respectively <SPAN CLASS="MATH"><IMG
+ WIDTH="60" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img40.png"
+ ALT="$b = 0.01$"></SPAN>/<SPAN CLASS="MATH"><IMG
+ WIDTH="53" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img41.png"
+ ALT="$q \simeq 0.5$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="60" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img42.png"
+ ALT="$b = 0.05$"></SPAN>/<SPAN CLASS="MATH"><IMG
+ WIDTH="53" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img43.png"
+ ALT="$q \simeq 2.5$"></SPAN>,
+ <SPAN CLASS="MATH"><IMG
+ WIDTH="52" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img44.png"
+ ALT="$b = 0.1$"></SPAN>/<SPAN CLASS="MATH"><IMG
+ WIDTH="53" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img45.png"
+ ALT="$q \simeq 5.0$"></SPAN> and  <SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img46.png"
+ ALT="$b = 1$"></SPAN>/<SPAN CLASS="MATH"><IMG
+ WIDTH="49" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img47.png"
+ ALT="$q \simeq 50$"></SPAN> 
+(cf. Damiani et al. [<A
+ HREF="node19.html#ct:Damiani97a">2</A>]).
+</CAPTION>
+<TR><TD><IMG
+ WIDTH="713" HEIGHT="500" BORDER="0"
+ SRC="img48.png"
+ ALT="\begin{figure}\centering
+\epsfig{figure=hist_bgd0_01.ps,height=5.4cm}%
+\hspace{...
+...}%
+\hspace{ 0.2cm}%
+\epsfig{figure=hist_bgd1.ps,height=5.4cm}
+\par\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+In order to determine the significance of a detection, we have to
+calculate what the chance is that we find a peak in the wavelet convolved 
+image in the absence of real sources.
+The fluctuations in the wavelet map is given by eq.&nbsp;(<A HREF="node4.html#variance">8</A>).
+For large number of (background) photons we may expect that the fluctuations 
+in <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img49.png"
+ ALT="$W$"></SPAN> approach a Gaussian distribution, with standard deviation 
+<!-- MATH
+ $\sqrt{\frac{b}{2\pi\sigma^2}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="52" HEIGHT="48" ALIGN="MIDDLE" BORDER="0"
+ SRC="img50.png"
+ ALT="$\sqrt{\frac{b}{2\pi\sigma^2}}$"></SPAN>:
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+P(C_{max} > C_0) = \frac{\sigma}{\sqrt{b}}
+\int_{C_0}^{\infty} \exp\Bigl( -\frac{1}{2}\frac{2\pi\sigma^2C^2}{b}\Bigr) dC.
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="330" HEIGHT="46" BORDER="0"
+ SRC="img51.png"
+ ALT="\begin{displaymath}
+P(C_{max} &gt; C_0) = \frac{\sigma}{\sqrt{b}}
+\int_{C_0}^{\infty} \exp\Bigl( -\frac{1}{2}\frac{2\pi\sigma^2C^2}{b}\Bigr) dC.
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">9</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+Because we used a different normalization constant in eq.&nbsp;(<A HREF="node3.html#correlation">5</A>), 
+this equation is different from 
+Damiani et al. ([<A
+ HREF="node19.html#ct:Damiani97a">2</A>]) and Dobrzycki et al. ([<A
+ HREF="node19.html#ct:ChandraDet">1</A>]).
+However, using the transformation <!-- MATH
+ $q = 2\pi \sigma^2  b$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="74" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img52.png"
+ ALT="$q = 2\pi \sigma^2 b$"></SPAN> and 
+<!-- MATH
+ $C' = 2\pi\sigma^2$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="76" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img53.png"
+ ALT="$C' = 2\pi\sigma^2$"></SPAN> we obtain:
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+P(C_{max}' > C_0') = \frac{1}{\sqrt{2\pi q}}
+\int_{C_0'}^{\infty} \exp\Bigl( -\frac{1}{2}\frac{C'^2}{q}\Bigr) dC' =
+\frac{1}{2}\Bigl[ 1 - {\rm erf}\Bigl(\frac{C'}{\sqrt{2q}}\Bigr)\Bigr].
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="470" HEIGHT="49" BORDER="0"
+ SRC="img54.png"
+ ALT="\begin{displaymath}
+P(C_{max}' &gt; C_0') = \frac{1}{\sqrt{2\pi q}}
+\int_{C_0'}^{\i...
+...{2}\Bigl[ 1 - {\rm erf}\Bigl(\frac{C'}{\sqrt{2q}}\Bigr)\Bigr].
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">10</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>  
+
+<P>
+The transformation is useful, as both Dobrzycki et al. ([<A
+ HREF="node19.html#ct:ChandraDet">1</A>]) 
+and Damiani et al. ([<A
+ HREF="node19.html#ct:Damiani97a">2</A>]) 
+have made Monte Carlo simulations to approximate the statistical behaviour 
+in case the Gaussian approximation is not valid.
+They observed that this is the case for <SPAN CLASS="MATH"><IMG
+ WIDTH="84" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img55.png"
+ ALT="$\log q &lt; 3.25$"></SPAN>. 
+To determine significant thresholds for the case the Gaussian approximation is
+not valid Damiani et al. ([<A
+ HREF="node19.html#ct:Damiani97a">2</A>]) fitted the results of Monte Carlo
+simulations to the following formula:
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+C_0'(k,q) = C_0 2\pi\sigma^2 = k\sqrt{q} + (c_1 + c_2k + c_3 k^2),
+\end{equation}
+ -->
+<A NAME="threshold"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="threshold"></A><IMG
+ WIDTH="320" HEIGHT="29" BORDER="0"
+ SRC="img56.png"
+ ALT="\begin{displaymath}
+C_0'(k,q) = C_0 2\pi\sigma^2 = k\sqrt{q} + (c_1 + c_2k + c_3 k^2),
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">11</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+where <SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img57.png"
+ ALT="$C_0'$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img58.png"
+ ALT="$C_0$"></SPAN> are the detection threshold for MH wavelets with and 
+without normalization constants respectively, 
+and <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img59.png"
+ ALT="$k$"></SPAN> is the number of Gaussian sigmas. 
+The numerical constants were found to be: 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="96" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img60.png"
+ ALT="$c_1 = -0.2336$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="83" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img61.png"
+ ALT="$c_2 = 0.0354$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="83" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img62.png"
+ ALT="$c_3 = 0.1830$"></SPAN>.
+Clearly, this fit has the correct asymptotic behaviour.
+
+<P>
+Note that all the above apply to correlation values of individual pixels.
+In reality the probabilities to detect spurious sources above the background
+is a little bit smaller, as detections are defined as <EM>local maxima</EM> 
+above the threshold. Furthermore, since we are only interested in maxima 
+not in minima eq <A HREF="#threshold">11</A> refers to the ``single tail'' probability 
+of a Gaussian distribution. 
+As an example, in a <!-- MATH
+ $1024 \times 1024$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="87" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img63.png"
+ ALT="$1024 \times 1024$"></SPAN> image, 
+<!-- MATH
+ $1363 = 0.0013 \times 1024^2$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="160" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img64.png"
+ ALT="$1363 = 0.0013 \times 1024^2 $"></SPAN> pixels 
+are expected above the <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img65.png"
+ ALT="$3\sigma$"></SPAN> threshold.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Countrate estimation"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="The convolution"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

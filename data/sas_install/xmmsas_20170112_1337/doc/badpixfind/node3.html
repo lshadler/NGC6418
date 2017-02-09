@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="badpixfind">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="badpixfind.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="badpixfind.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+badpixfind (badpixfind-1.40) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="badpixfind.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="badpixfind.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="badpixfind:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+<A NAME="571"></A><A NAME="tex2html2"
+  HREF="../badpixfind/index.html"><SPAN  CLASS="textbf">badpixfind</SPAN></A>
+searches for pixels identified as containing no useful
+data, and uses this information to produce an output file. This output file
+can then be used by the task <A NAME="575"></A><A NAME="tex2html3"
+  HREF="../badpix/index.html"><SPAN  CLASS="textbf">badpix</SPAN></A>
+to append the information to the
+events file. A bad pixel map (or mask) can also be produced. 
+
+<P>
+An important point regarding the bad pixels is that there are essentially
+<EM>three separate</EM> (though not exclusive) sets of bad pixels that must be
+dealt with. These are (1) the bad pixels uplinked to the satellite and
+eliminated on-board, (2) the bad pixels identified in the 
+Current Calibration File (CCF) but not uplinked,
+and (3) the bad pixels associated with the particular observation in question.
+<A NAME="579"></A><A NAME="tex2html4"
+  HREF="../badpixfind/index.html"><SPAN  CLASS="textbf">badpixfind</SPAN></A>
+searches for this third set of bad pixels, which may of 
+course, contain within it part (or all) of the other two sets.
+
+<P>
+There are two modes to <A NAME="583"></A><A NAME="tex2html5"
+  HREF="../badpixfind/index.html"><SPAN  CLASS="textbf">badpixfind</SPAN></A>. Mode&nbsp;1 involves all the searching
+and statistical techniques and makes up the bulk of the task. 
+Within mode&nbsp;1 (<TT>searchbadpix</TT>='Y', [=default]), the user can search for...
+
+<P>
+<B>1</B> Hot and dead pixels. The user is able to specify maximum and minimum
+allowed values (via the parameters <TT>lothresh</TT> and <TT>hithresh</TT>) to
+screen for hot and dead pixels. These threshold
+levels can be input (via the parameter <TT>thresholdlabel</TT>) in terms of
+number of counts, count rate, or percentages of the peak value in the dataset.
+In cases of supposed hot pixels, the pixel in question and its neighbours are
+compared with the local PSF to check whether the pixel is
+genuinely 'hot' or may be due to a source [see comments]. Here the user can set
+the <TT>cellsize</TT> of the box around the hot pixel to be compared with the
+PSF (total box width = twice <TT>cellsize</TT> +1). Here, known uplinked
+bad pixels and previously found bad pixels are removed from the PSF
+comparison. The user can also set the parameter <TT>narrowerthanpsf</TT>. This
+is a measure of how much more compact the pixel and its neighbours are when
+compared with the PSF (1 means of similar width, greater than 1 means that
+feature is narrower than the PSF, and hence likely a bad pixel [if
+<TT>narrowerthanpsf</TT> is set to zero, the PSF comparison is removed and all
+hot features, whether sources, bad pixels or whatever, can be found]).
+Essentially, <TT>narrowerthanpsf</TT> is the ratio A/B, where A is the ratio of
+the target (bad) pixel to the total (twice <TT>cellsize</TT> +1 by twice
+<TT>cellsize</TT> +1) square, and B is the equivalent for the PSF. The user may
+also set a <TT>backgroundrate</TT> (ct/s/pix) here. A negative value indicates
+that the mean value over the whole field is to be calculated and used. In
+cases where very bright, extended sources exist (and thus the mean is not too
+representative of the true background mean), a typical <TT>backgroundrate</TT>
+value should be given (see comments).
+
+<P>
+<B>2</B> Hot and dead whole columns (channels)
+(<TT>withsearchbadcolumn</TT>='Y'). Here a column may appear bad because of a
+small number of individual pixels that are bad (these perhaps, depending on
+the threshold levels, being detected by the previously described part of the
+task), or it may be bad because the entire column as a whole appears bad. Via
+the parameter <TT>columnsearchlabel</TT>, one can specify whether the minimum
+and maximum <EM>column</EM> threshold values (<TT>locolthresh</TT> &amp;
+<TT>hicolthresh</TT>) refer to the total counts/count rate of the column or to
+the median value within each column. The median choice is more sensitive to
+finding bad whole columns with no particularly bad pixels within them. Again,
+the threshold levels can be input (via the parameter <TT>thresholdlabel</TT>)
+in terms of number of counts, count rate, or percentages of the peak value in
+the dataset.
+
+<P>
+<B>3</B> Flickering pixels. The parameter <TT>flickertimesteps</TT> sets the
+number of `timesteps' into which the dataset can be split (if
+<TT>flickertimesteps</TT> is set to 1, no attempt is made to seach for
+flickering pixels). Here, each pixel is searched for significant variations.
+In the case of low count pixels, the distribution of counts per timestep is
+compared with a Poisson distribution, and a Kolmogorov-Smirnov (KS) test is
+applied. Pixels with a KS-statistic above the input threshold
+<TT>flickerksthresh</TT> are deemed flickering. In the high count pixel case, a
+chi-squared statistic about the mean counts per timestep is calculated. Pixels
+with a reduced chi-squared statistic above the input threshold
+<TT>flickerchisqthresh</TT> are deemed flickering. [see comments]
+
+<P>
+The whole of mode&nbsp;1 above can be performed between user-defined energy bands, 
+via the parameters <TT>loenergythresh</TT> and <TT>hienergythresh</TT> (in keV). 
+Also, the high threshold values <TT>hithresh</TT> and <TT>hicolthresh</TT> can 
+(in the <TT>thresholdlabel</TT> = COUNTS or RATE cases) refer to either a total 
+count or countrate value or to a count or countrate value above the (either
+set or calculated) background (<TT>backgroundrate</TT>). This choice is set via
+the parameter <TT>threshabovebackground</TT>.
+
+<P>
+Within mode&nbsp;2 of <A NAME="616"></A><A NAME="tex2html6"
+  HREF="../badpixfind/index.html"><SPAN  CLASS="textbf">badpixfind</SPAN></A>, 
+the user can explicitly flag invalid pixels or sets of pixels via the list
+parameters <TT>rawxlist</TT>, <TT>rawylist</TT>, <TT>typelist</TT> and
+<TT>yextentlist</TT>. 
+
+<P>
+After searching for pixels which may contain double (or more) entries, and 
+warning the user thereof, a final output file is constructed, containing for
+each bad pixel (or, to be precise, for each set (in RAWY-extension) of bad
+pixels), the position RAWX/RAWY, any extent in the Y direction, and the type
+of fault; 1 Hot, 2 Flickering, 3 Dead. 
+Statistics as to the input file values are provided also
+by the task, before and after the individual sections of the task.
+
+<P>
+A badpixfind map may be produced via the parameter <TT>withbadpixmap</TT>. Here
+an image is formed whereby bad pixels (and if desired, surrounding neighbours
+[chosen via the parameter <TT>mappixcellsize</TT>]) are assigned a value of zero, good
+pixels a value of one. This map includes the pixels found by the current
+<A NAME="626"></A><A NAME="tex2html7"
+  HREF="../badpixfind/index.html"><SPAN  CLASS="textbf">badpixfind</SPAN></A>
+run, and the XMM-uplinked bad pixels contained within the
+CCF. Furthermore, regions outside the field of view (FOV) can be set to zero 
+in the map via the parameter <TT>withfovmask</TT>. 
+This map can be used in <A NAME="631"></A><A NAME="tex2html8"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+to select images, spectra or time
+series with these pixels ignored (e.g. to produce a background [source and bad
+pixel/column-removed] lightcurve).
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="badpixfind.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

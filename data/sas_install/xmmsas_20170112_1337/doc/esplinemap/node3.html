@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="esplinemap">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="esplinemap.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="esplinemap.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+esplinemap (esplinemap-5.0) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="esplinemap.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="esplinemap.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="esplinemap:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+Sources found in the local detection step (task <A NAME="446"></A><A NAME="tex2html2"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>) 
+
+at significance levels (column SIGMA of eboxdetect source list) exceeding
+  a user-specifiable threshold (input parameter <TT>mlmin</TT>) in the 
+  respective energy band are removed 
+  from the image using a suitable PSF and source brightness 
+  dependent cut-out radius (determined to be the radius at which each 
+  source contributes more than a user-specifiable number of 
+  counts/arcsec<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$^2$"></SPAN> to the background; parameter <TT>scut</TT>; 
+  default value: 0.01).  The resulting image can optionally be output for diagnostic purposes.
+  After the removal of the sources the image is rebinned to a grid
+  of the dimension <TT>nsplinenodes</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\times$"></SPAN> <TT>nsplinenodes</TT>.
+
+<P>
+Division of the image by the exposure image removes gradients due to spatial 
+  variations of the exposure from the image 
+  which otherwise would not be well represented by the spline fit. 
+  A two dimensional spline fit of the rebinned and exposure corrected 
+  image is performed.
+  The number of spline nodes (default value: 16) is user-selectable.
+  Finally, the resulting spline image is again multiplied by the exposure 
+  images. 
+  If the parameter <TT>nfitrun</TT> is set to values <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$&gt;1$"></SPAN>, remaining excesses
+  of the input image over the result of spline fit can be removed iteratively: 
+  if pixels of the rebinned image deviate from the spline fit by more 
+  than a specifiable number of sigmas (default value: 4 sigmas)
+  the excesses are removed by setting their statistical weights to zero and the 
+  spline fit is repeated (maximum number of iterations may be specified). 
+  The number of removed bins and the  reduced chi<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$^2$"></SPAN> values are displayed
+  when using verbosity level 5 or higher. Note that removal of a large number 
+  of contiguous bins will lead to areas where the spline fit is unconstrained.  
+
+<P>
+The reduced chi<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$^2$"></SPAN> and 
+  corresponding number of degrees of freedom of the
+  background map with respect to the input image is stored
+  in the keywords CHISQR and NDOF of the output background map.
+
+<P>
+From version 3.0 esplinemap is able to determine the background caused by out-of-time
+  events registered during the readout process of the PN CCDs. If the flag
+  <TT>withootset</TT> is set, the photon event table specified in  <TT>ooteventset</TT>
+  is read and the background caused by OOT events is included in the output background map.
+  As input table <A NAME="457"></A><A NAME="tex2html3"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>
+can use either a normal photon event data-set
+  or a photon events table created with <A NAME="461"></A><A NAME="tex2html4"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>
+with flag <TT>withoutoftime</TT>
+  set.
+  Note that in both cases a photon event set has to be filtered with the same temporal
+  and flag selections as the image used as input to <A NAME="466"></A><A NAME="tex2html5"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>. 
+
+The parameters <TT>pimin</TT> and  <TT>pimax</TT> are used to specify the energy range
+  of the input image and to select those photons from the input event list that fall into
+  this energy range. If the input event table contains only photons within the energy range
+  of the input image, the parameters can be left at their default values
+  <TT>pimin</TT>=1 and  <TT>pimax</TT>=30000. 
+
+<P>
+With version 4.0 an alternative method to fit the background of an image has been implemented:
+  If the option <TT>fitmethod</TT>=model is set, a 2-component model for the 
+  detector (particle) and the cosmic X-ray backgrounds is fit to the masked and binned
+  input image. This model consist of a linear combination of the vignetted exposure map
+  and the unvignetted exposure mask of the input image. The exposure maps are 
+  specified by the user via the parameters <TT>expimageset</TT> and <TT>expimageset2</TT>.
+  An example call of <A NAME="477"></A><A NAME="tex2html6"
+  HREF="../eexpmap/index.html"><SPAN  CLASS="textbf">eexpmap</SPAN></A>
+and <A NAME="481"></A><A NAME="tex2html7"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>
+is given here:
+
+<P>
+<PRE>
+   eexpmap imageset=image.fits eventset=events.fits attitudeset=attitude.fits \
+           withvignetting=yes expimageset=expmap1.fits pimin=500 pimax=2000
+
+   eexpmap imageset=image.fits eventset=events.fits attitudeset=attitude.fits \
+           withvignetting=no expimageset=expmap2.fits pimin=500 pimax=2000
+
+   esplinemap imageset=image.fits boxlistset=eboxlist.fits withexpimage=yes \
+              bkgimageset=bkg_model.fits \
+              withexpimage2=yes expimageset=expmap1.fits expimageset2=expmap2.fits \
+              pimin=500 pimax=2000  \
+              fitmethod=model
+</PRE>
+
+<P>
+If only one exposure map is provided, it is assumed to be a vignetted exposure map
+   and a flat image is used as the second model component. All other parameters of 
+   <A NAME="485"></A><A NAME="tex2html8"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>
+can be used as in the case of <TT>fitmethod</TT>=spline.
+
+<P>
+A third <TT>fitmethod</TT> has been introduced with version
+   5.0. <TT>fitmethod</TT>=smooth invokes an adaptive smoothing of the cheesed
+   background image. It is convolved with an Gaussian kernel whose width is
+   increased by factors of <SPAN CLASS="MATH"><IMG
+ WIDTH="25" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$\sqrt{2}$"></SPAN> in eight consecutive steps. For each
+   image position, the layer with the best signal-to-noise ratio is chosen out
+   of the eight smoothed image layers. Neighboured layers are interpolated to
+   achieve the final smoothed background map. The adaptive smoothing is
+   particularly useful if the background is varying strongly over the field of
+   view and set as default in <A NAME="492"></A><A NAME="tex2html9"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="esplinemap.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Correction for gaps and dead pixels</TITLE>
+<META NAME="description" CONTENT="Correction for gaps and dead pixels">
+<META NAME="keywords" CONTENT="evigweight">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="evigweight.css">
+
+<LINK REL="previous" HREF="node11.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node13.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+evigweight (evigweight-1.7) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node11.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Background correction"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="evigweight.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00039000000000000000"></A>
+<A NAME="evigweight:description:description:gaps"></A>
+<BR>
+Correction for gaps and dead pixels
+</H2>
+
+<P>
+<A NAME="504"></A><A NAME="tex2html12"
+  HREF="../evigweight/index.html"><SPAN  CLASS="textbf">evigweight</SPAN></A>
+does not offer an automatic way to deal with
+gaps, dead/hot pixels and columns in the detector.
+
+<P>
+An easy and simple approach is to assume that the source in
+the extracted region emits homogeneously.  In this case one can
+directly compute the <A NAME="508"></A><TT>BACKSCAL</TT> keyword and add it to the spectral file
+via <A NAME="510"></A><A NAME="tex2html13"
+  HREF="../backscale/index.html"><SPAN  CLASS="textbf">backscale</SPAN></A>. For images one may get the corresponding
+exposure map via <A NAME="514"></A><A NAME="tex2html14"
+  HREF="../eexpmap/index.html"><SPAN  CLASS="textbf">eexpmap</SPAN></A>, switching off all the vignetting corrections
+(mirror, filter, quantum efficiency) in <A NAME="518"></A><A NAME="tex2html15"
+  HREF="../eexpmap/index.html"><SPAN  CLASS="textbf">eexpmap</SPAN></A>
+except the gaps
+and bad pixels. This is done by calling <A NAME="522"></A><A NAME="tex2html16"
+  HREF="../eexpmap/index.html"><SPAN  CLASS="textbf">eexpmap</SPAN></A>
+with
+<TT>withvignetting</TT>=N and <TT>withpatterns</TT>=N.
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

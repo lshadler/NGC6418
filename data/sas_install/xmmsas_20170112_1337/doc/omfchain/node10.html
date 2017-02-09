@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Input Files</TITLE>
+<META NAME="description" CONTENT="Input Files">
+<META NAME="keywords" CONTENT="omfchain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omfchain.css">
+
+<LINK REL="next" HREF="node11.html">
+<LINK REL="previous" HREF="node9.html">
+<LINK REL="up" HREF="omfchain.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omfchain (omfchain-1.42.6) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Parameters"></A>
+<A HREF="omfchain.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Output Files"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omfchain.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00050000000000000000"></A>
+<A NAME="omslewchain:description:inputfiles"></A>
+<BR>
+Input Files
+</H1>
+Before attempting to use the <I>omfchain</I>, first run the <I>odfingest</I> SAS
+task. This will create a *SUM.SAS file from *SUM.ASC file that comes with the
+ODF. It is better to keep this in the same directory as the ODF. With this, and
+the other files listed below, which should already be in the ODF, it should be
+possible to process the OM Fast mode event list files.
+
+<P>
+
+<OL>
+<LI>rrrr_iiiiiiiiii_SCX00000NPH.FIT - OM Non-periodic Housekeeping file
+</LI>
+<LI>rrrr_iiiiiiiiii_SCX00000PEH.FIT - OM Periodic Housekeeping file
+</LI>
+<LI>rrrr_iiiiiiiiii_SCX00000FFX.FIT - PPS OSW Flatfield Image
+</LI>
+<LI>rrrr_iiiiiiiiii_SCX00000TCS.FIT - Spacecraft time correlation file
+</LI>
+<LI>rrrr_iiiiiiiiii_SCX00000ATS.FIT - Spacecraft attitude history file
+</LI>
+</OL>
+
+<P>
+For each exposure to be processed there are also files:
+
+<OL>
+<LI>rrrr_iiiiiiiiii_OMSeeewwTHX.FIT - OM Tracking History Data Auxiliary file
+</LI>
+<LI>rrrr_iiiiiiiiii_OMSeeewwFAE.FIT - OM Fast Mode Event List file 
+</LI>
+<LI>rrrr_iiiiiiiiii_OMSeeewwWDX.FIT - OM Priority Window Data Auxiliary file
+</LI>
+<LI>rrrr_iiiiiiiiii_OMSeeewwIMI.FIT - OM Imaging Mode data file (optional)
+</LI>
+</OL>
+
+<P>
+where <B>rrrr</B> is the 4 digit XMM rev. number, <B>iiiiiiiiii</B> is the 10
+digit observation id, <B>eee</B> is the exposure number (e.g. 006 etc.), and
+<B>ww</B> is the window identifier (00 or 01).
+
+<P>
+If <B>THX</B>-file are not present, no tracking corrections can be applied but
+this is often not critical since XMM's tracking appears to be good to around 1
+arc-second. If <B>THX</B> files are absent, a dummy file is created by <I>omprep</I> - this this the default action of <I>omfchain</I>.
+
+<P>
+Often a raw image FIT-file corresponding to the OM Fast mode window is also
+present in the input data set, as well as a larger image corresponding to the
+OM imaging window for the same exposure (rrrr_iiiiiiiiii_OMSeeewwIMI.FIT).
+The latter file can be used in the Fast mode chain (in the task <I>omlcbuild</I>)
+to determine the background level (since the Fast-mode window is pretty small
+and the background obtained from this window is not fully reliable).  
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Parameters"></A>
+<A HREF="omfchain.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Output Files"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

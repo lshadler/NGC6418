@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Environment variables.</TITLE>
+<META NAME="description" CONTENT="Environment variables.">
+<META NAME="keywords" CONTENT="rgssources">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgssources.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgssources (rgssources-6.2.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Introduction."></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Where the data comes"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgssources.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000">
+Environment variables.</A>
+</H2>
+
+<P>
+In nearly all cases, <A NAME="1160"></A><A NAME="tex2html3"
+  HREF="../rgssources/index.html"><SPAN  CLASS="textbf">rgssources</SPAN></A>
+requires information from the CCF. (The exceptions are trivial cases such as running with <TT>filemode</TT>=`modify' but with both <TT>addusersource</TT> and <TT>withepicset</TT> = `no'.) Because the exceptions are insignificant and involve complicated logic to disentangle, it has been made mandatory to supply a CCF to the task. The location of the CCF is pointed to in the usual way, ie via the environment variable SAS_CCF.
+
+<P>
+The CCF interface needs to know whether the instrument is RGS1 or RGS2 in order to provide the correct boresight etc. Although the <TT>instexpid</TT> parameter has not been made mandatory, the task will fail with an error if the information is not ultimately available. See the algorithm section <A HREF="node32.html#rgssources:description:algorithm">7</A> for details of the way the task attempts to deduce the instrument.
+
+<P>
+The task may also require information from the ODF summary file, in which case the variable SAS_ODF must be set before running the task. This information may be necessary for one of two reasons:
+
+<P>
+
+<UL>
+<LI>The attitude must be calculated.
+</LI>
+<LI>It is desired to write observation-specific keywords to the source list header.
+</LI>
+</UL>
+
+<P>
+Every attempt has been made to avoid this requirement where possible and thus cater to the user who does not have the entire ODF at their fingertips.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Introduction."></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Where the data comes"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,1801 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="esas">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="esas.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="esas.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+esas (esas-0.9.39) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="esas.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="esas.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="esas:description:parameters"></A>
+
+<OL>
+<LI>Task adapt parameters:
+
+<A NAME="1600"></A>
+<tr valign=top bgcolor='silver'><td><b>smoothingcounts</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>50</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The number of counts to accumulate for the smoothing 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1607"></A>
+<tr valign=top bgcolor='silver'><td><b>thresholdmasking</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>0.02</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The scale factor for excluding regions from the smoothing based on a mask image.  
+    In the default mode the average exposure is calculated and then any pixel with 
+    exposure less than fraction*average value is excluded.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1614"></A>
+<tr valign=top bgcolor='silver'><td><b>detector</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>&nbsp;</td><td>0|1</td></tr>
+
+<tr valign=top><td colspan=5>
+    Detector, <TT>1</TT> for a specific instrument and exposure, <TT>0</TT> for the 
+    combined image (i.e., the output of <TT>comb</TT>).  <br>&nbsp;</td></tr>
+
+  <A NAME="1624"></A>
+<tr valign=top bgcolor='silver'><td><b>elow</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>400</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The low energy for the band in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1631"></A>
+<tr valign=top bgcolor='silver'><td><b>ehigh</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1250</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The high energy for the band in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1638"></A>
+<tr valign=top bgcolor='silver'><td><b>binning</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Binning control with <TT>1</TT> for no binning, and integers greater than 1 for
+    binning that number of pixels in each dimension.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1646"></A>
+<tr valign=top bgcolor='silver'><td><b>withpartcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>bool</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Particle background control, "yes" to subtract the model particle background image.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1653"></A>
+<tr valign=top bgcolor='silver'><td><b>withsoftcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>bool</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Soft proton background control, "yes" to subtract the soft proton background image.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1660"></A>
+<tr valign=top bgcolor='silver'><td><b>withswcxcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>bool</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Solar wind charge exchange background control, "yes" to subtract the SWCX background image.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1667"></A>
+<tr valign=top bgcolor='silver'><td><b>withmaskcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>bool</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Control for including an additional masking image.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1674"></A>
+<tr valign=top bgcolor='silver'><td><b>maskfile</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The file name for an image to provide additional masking if desired.  
+    If left blank then there will be no additional masking.
+    The mask images must be the same size and projection as the other images.
+   <br>&nbsp;</td></tr>
+
+  <A NAME="1681"></A>
+<tr valign=top bgcolor='silver'><td><b>prefix</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>1S001</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Prefix defining the exposure used, with the <TT>esas</TT> nomenclature, eg.
+    S003 means PN S003 exposure, while 1S002 and 2S003 mean MOS1 S002 and MOS2
+    S003 exposures, respectively.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1689"></A>
+<tr valign=top bgcolor='silver'><td><b>clobber</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>T/F</td></tr>
+
+<tr valign=top><td colspan=5>
+    Clobber existing files?
+    <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task adapt_merge parameters:
+
+<A NAME="1696"></A>
+<tr valign=top bgcolor='silver'><td><b>smoothingcounts</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>100</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The number of counts to accumulate for the smoothing 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1703"></A>
+<tr valign=top bgcolor='silver'><td><b>thresholdmasking</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>0.02</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The scale factor for excluding regions from the smoothing based on a mask 
+    image.  In the default mode the average exposure is calculated and then 
+    any pixel with exposure less than fraction*average value is excluded.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1710"></A>
+<tr valign=top bgcolor='silver'><td><b>elowlist</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>400 750</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Low energy for successive bands in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1717"></A>
+<tr valign=top bgcolor='silver'><td><b>ehighlist</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>750 1250</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    High energy for successive bands in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1724"></A>
+<tr valign=top bgcolor='silver'><td><b>binning</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Binning control, number of pixels (in both dimensions) to be binned.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1731"></A>
+<tr valign=top bgcolor='silver'><td><b>withpartcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>bool</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Particle background control, "yes" to subtract the model particle background image.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1738"></A>
+<tr valign=top bgcolor='silver'><td><b>withsoftcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>bool</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Soft proton background control, "yes" to subtract the soft proton background image.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1745"></A>
+<tr valign=top bgcolor='silver'><td><b>withswcxcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>bool</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Solar wind charge exchange background control, "yes" to subtract the SWCX 
+    background image.
+    <br>&nbsp;</td></tr>
+
+   <A NAME="1752"></A>
+<tr valign=top bgcolor='silver'><td><b>withoffsetbkgcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>bool</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Offset background control, "yes" to subtract the offset background image.
+    This is a feature currently under development and is not yet functional. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1759"></A>
+<tr valign=top bgcolor='silver'><td><b>withmaskcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>bool</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Mask control, "yes" for using a mask image (pixel with 1 in image will be
+    included, pixel with 0 will be excluded).
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1766"></A>
+<tr valign=top bgcolor='silver'><td><b>mask</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>mask.fit</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Mask image file name.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1773"></A>
+<tr valign=top bgcolor='silver'><td><b>fill</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Number of passes to fill in empty pixels. If a zero pixel has three or more
+    non-zero neighbors, the pixel will be the average value of those neighbors.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1780"></A>
+<tr valign=top bgcolor='silver'><td><b>clobber</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>T/F</td></tr>
+
+<tr valign=top><td colspan=5>
+    Clobber existing files?
+    <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task bin_image parameters:
+
+<A NAME="1787"></A>
+<tr valign=top bgcolor='silver'><td><b>thresholdmasking</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>0.02</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The scale factor for excluding regions from the smoothing based on a mask 
+    image. In the default mode the average exposure is calculated and then 
+    any pixel with exposure less than fraction*average value is excluded.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1794"></A>
+<tr valign=top bgcolor='silver'><td><b>detector</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Detector selection, 0: combined exposures, 1: MOS, 2: PN.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1801"></A>
+<tr valign=top bgcolor='silver'><td><b>prefix</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>1S001</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Prefix defining the exposure used, with the <TT>esas</TT> nomenclature, eg.
+    S003 means PN S003 exposure, while 1S002 and 2S003 mean MOS1 S002 and MOS2
+    S003 exposures, respectively.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1809"></A>
+<tr valign=top bgcolor='silver'><td><b>elow</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>400</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Low energy for band in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1816"></A>
+<tr valign=top bgcolor='silver'><td><b>ehigh</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1250</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    High energy for band in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1823"></A>
+<tr valign=top bgcolor='silver'><td><b>binning</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Binning control with <TT>1</TT> for no binning, other integers for binning.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1831"></A>
+<tr valign=top bgcolor='silver'><td><b>withpartcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>bool</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Particle background control, "yes" to subtract the model particle background image.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1838"></A>
+<tr valign=top bgcolor='silver'><td><b>withsoftcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>bool</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Soft proton background control, "yes" to subtract the soft proton background image.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1845"></A>
+<tr valign=top bgcolor='silver'><td><b>withswcxcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>bool</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Solar wind charge exchange background control, "yes" to subtract the 
+    SWCX background image.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1852"></A>
+<tr valign=top bgcolor='silver'><td><b>withmaskcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>bool</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Solar wind charge exchange background control, "yes" to subtract the 
+    SWCX background image.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1859"></A>
+<tr valign=top bgcolor='silver'><td><b>mask</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>mask.fit</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Mask image file name (defaults to using exposure mask).
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1866"></A>
+<tr valign=top bgcolor='silver'><td><b>clobber</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>T/F</td></tr>
+
+<tr valign=top><td colspan=5>
+    Clobber existing files?
+    <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task bin_image_merge parameters:
+
+<A NAME="1873"></A>
+<tr valign=top bgcolor='silver'><td><b>thresholdmasking</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>0.02</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The scale factor for excluding regions from the smoothing based on a mask image.  
+     In the default mode the average exposure is calculated and then any pixel with 
+     exposure less than <TT>fraction*average</TT> value is excluded.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1881"></A>
+<tr valign=top bgcolor='silver'><td><b>elowlist</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>350 800</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Low energy for successive bands in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1888"></A>
+<tr valign=top bgcolor='silver'><td><b>ehighlist</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>800 1300</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    High energy for successive bands in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1895"></A>
+<tr valign=top bgcolor='silver'><td><b>binning</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Binning control with <TT>1</TT> for no binning, <TT>2,4,8,16,32</TT> for binning by 2,
+    4,8,16,32.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1904"></A>
+<tr valign=top bgcolor='silver'><td><b>withpartcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>bool</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Particle background control, "yes" to subtract the model particle background image.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1911"></A>
+<tr valign=top bgcolor='silver'><td><b>withsoftcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>bool</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Soft proton background control, "yes" to subtract the soft proton background image.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1918"></A>
+<tr valign=top bgcolor='silver'><td><b>withswcxcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>bool</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Solar wind charge exchange background control, "yes" to subtract the swcx background image.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1925"></A>
+<tr valign=top bgcolor='silver'><td><b>withmaskcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>bool</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    For masking with an additional image.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1932"></A>
+<tr valign=top bgcolor='silver'><td><b>mask</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>mask.fit</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Mask image file name.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1939"></A>
+<tr valign=top bgcolor='silver'><td><b>clobber</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>T/F</td></tr>
+
+<tr valign=top><td colspan=5>
+    Clobber existing files?
+    <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task cheese parameters:
+
+<A NAME="1946"></A>
+<tr valign=top bgcolor='silver'><td><b>prefixm</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Detector and exposure identifiers (eg. "1S001 2S002") for the MOS exposures
+    (in the example MOS1 S001 and MOS2 S002) to be processed. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1953"></A>
+<tr valign=top bgcolor='silver'><td><b>prefixp</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Detector and exposure identifiers (eg. "S003") for the PN exposures
+    (in the example PN S003) to be processed. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1960"></A>
+<tr valign=top bgcolor='silver'><td><b>verb</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>4</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    SAS verbosity level.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1967"></A>
+<tr valign=top bgcolor='silver'><td><b>scale</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>0.5</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Energy fraction, which sets the exclusion radius of point sources.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1974"></A>
+<tr valign=top bgcolor='silver'><td><b>rate</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>1.0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Flux threshold (in units of <SPAN CLASS="MATH"><IMG
+ WIDTH="95" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$1.0E-14 cgs$"></SPAN> for the exclusion of point sources.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1981"></A>
+<tr valign=top bgcolor='silver'><td><b>dist</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Minimum separation in arc seconds between masked sources.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1988"></A>
+<tr valign=top bgcolor='silver'><td><b>elow</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>400</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The low energy for the band in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1995"></A>
+<tr valign=top bgcolor='silver'><td><b>ehigh</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1250</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The high energy for the band in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2002"></A>
+<tr valign=top bgcolor='silver'><td><b>clobber</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>T/F</td></tr>
+
+<tr valign=top><td colspan=5>
+    Clobber existing files?
+    <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task cheese_bands parameters:
+
+<A NAME="2009"></A>
+<tr valign=top bgcolor='silver'><td><b>prefixm</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Detector and exposure identifiers (eg. "1S001 2S002") for the MOS exposures
+    (in the example MOS1 S001 and MOS2 S002) to be processed. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2016"></A>
+<tr valign=top bgcolor='silver'><td><b>prefixp</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Detector and exposure identifiers (eg. "S003") for the PN exposures
+    (in the example PN S003) to be processed. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2023"></A>
+<tr valign=top bgcolor='silver'><td><b>verb</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>4</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    SAS verbosity level.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2030"></A>
+<tr valign=top bgcolor='silver'><td><b>scale</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>0.5</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Energy fraction, which sets the exclusion radius of point sources.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2037"></A>
+<tr valign=top bgcolor='silver'><td><b>ratet</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1.0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Total flux threshold for exclusion of pt srcs
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2044"></A>
+<tr valign=top bgcolor='silver'><td><b>rates</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1.0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Soft flux threshold for exclusion of pt srcs
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2051"></A>
+<tr valign=top bgcolor='silver'><td><b>rateh</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1.0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Hard flux threshold for exclusion of pt srcs
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2058"></A>
+<tr valign=top bgcolor='silver'><td><b>dist</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Minimum separation in arc seconds between masked sources
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2065"></A>
+<tr valign=top bgcolor='silver'><td><b>elowlist</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>400 2000</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Lower energy limit list for the energy bands in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2072"></A>
+<tr valign=top bgcolor='silver'><td><b>ehighlist</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1300 7200</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Higher energy limit list for the energy bands in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2079"></A>
+<tr valign=top bgcolor='silver'><td><b>clobber</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>T/F</td></tr>
+
+<tr valign=top><td colspan=5>
+    Clobber existing files?
+    <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task clean parameters: none
+
+</LI>
+<LI>Task comb parameters:
+
+<A NAME="2086"></A>
+<tr valign=top bgcolor='silver'><td><b>caldb</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Directory containing all the ESAS specific calibration files 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2093"></A>
+<tr valign=top bgcolor='silver'><td><b>withpartcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>boolean</A></td><td>true</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Particle background flag, 'true' to include it. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2100"></A>
+<tr valign=top bgcolor='silver'><td><b>withsoftcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>boolean</A></td><td>true</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Soft proton background flag, 'true' to include it. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2107"></A>
+<tr valign=top bgcolor='silver'><td><b>withswcxcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>boolean</A></td><td>true</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    SWCX background flag, 'true' to include it. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2114"></A>
+<tr valign=top bgcolor='silver'><td><b>alpha</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>1.7</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Assumed spectral index for the filter correction scaling.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2121"></A>
+<tr valign=top bgcolor='silver'><td><b>elowlist</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>400 750</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Energy low limit(s) (in eV) for the different bands.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2128"></A>
+<tr valign=top bgcolor='silver'><td><b>ehighlist</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>750 1250</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Energy high limit(s) (in eV) for the different bands.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2135"></A>
+<tr valign=top bgcolor='silver'><td><b>mask</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Masking control. <I>0</I>: No additional masking,  
+<I>1</I>: uses the mask produced by the <TT>cheese</TT> task, <I>2</I>: uses the 
+normal mask images produced by <TT>eexpmap</TT>, and <I>3</I>: uses the normal mask 
+images produced by <TT>eexpmap</TT> modified by <TT>make-mask</TT>. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2150"></A>
+<tr valign=top bgcolor='silver'><td><b>prefixlist</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>1S001 2S002 S003</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Exposure identifiers (eg. "1S001 2S002 S003") for the exposures
+    (in the example MOS1 S001, MOS2 2S002, and PN S003) to be processed. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2157"></A>
+<tr valign=top bgcolor='silver'><td><b>clobber</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>T/F</td></tr>
+
+<tr valign=top><td colspan=5>
+    Clobber existing files?
+    <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task conv_reg parameters:
+
+<A NAME="2164"></A>
+<tr valign=top bgcolor='silver'><td><b>detector</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The instrument identifier (EMOS1, EMOS2, or PN). 
+    <br>&nbsp;</td></tr>
+ 
+  <A NAME="2171"></A>
+<tr valign=top bgcolor='silver'><td><b>mode</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    conv_reg operational mode: 
+<BR>
+mode=1 - region fits files are both input and output 
+<BR>
+mode=2 - ascii files with region parameters are both input and output 
+<BR>
+mode=3 - command line input of individual region parameters and screen output 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2178"></A>
+<tr valign=top bgcolor='silver'><td><b>imagefile</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Filename image in sky coordinates - used to extract observation position angle. 
+    <br>&nbsp;</td></tr>
+ 
+  <A NAME="2185"></A>
+<tr valign=top bgcolor='silver'><td><b>ra</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>mode=3 RA input<br>&nbsp;</td></tr>
+
+  <A NAME="2192"></A>
+<tr valign=top bgcolor='silver'><td><b>dec</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>mode=3 Dec input<br>&nbsp;</td></tr>
+
+  <A NAME="2199"></A>
+<tr valign=top bgcolor='silver'><td><b>shape</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>mode=3 region shape input, only circle and ellipse
+     at this time (either all upper or all lower case, along with their ``nots'',
+     e.g., ``!ELLIPSE'')<br>&nbsp;</td></tr>
+
+  <A NAME="2206"></A>
+<tr valign=top bgcolor='silver'><td><b>radius</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>mode=3 radius for circular region input<br>&nbsp;</td></tr>
+
+  <A NAME="2213"></A>
+<tr valign=top bgcolor='silver'><td><b>semimajor</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>mode=3 semimajor axis (in arc minutes) for 
+     elliptical region input<br>&nbsp;</td></tr>
+
+  <A NAME="2220"></A>
+<tr valign=top bgcolor='silver'><td><b>semiminor</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>mode=3 semiminor axis (in arc minutes) for 
+     elliptical region input<br>&nbsp;</td></tr>
+
+  <A NAME="2227"></A>
+<tr valign=top bgcolor='silver'><td><b>rotangle</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>mode=3 rotation angle (in degrees) for 
+     elliptical region input<br>&nbsp;</td></tr>
+
+  <A NAME="2234"></A>
+<tr valign=top bgcolor='silver'><td><b>inputfile</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>mode=1,2 input file name<br>&nbsp;</td></tr>
+ 
+  <A NAME="2241"></A>
+<tr valign=top bgcolor='silver'><td><b>outputfile</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>mode=1,2 input file name<br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task espfilt parameters:
+
+<A NAME="2248"></A>
+<tr valign=top bgcolor='silver'><td><b>eventset</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>none</td></tr>
+
+<tr valign=top><td colspan=5>list of event files<br>&nbsp;</td></tr>
+
+<A NAME="2255"></A>
+<tr valign=top bgcolor='silver'><td><b>method</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>corner</td></tr>
+
+<tr valign=top><td colspan=5>which method to use.<br>&nbsp;</td></tr>
+
+<A NAME="2262"></A>
+<tr valign=top bgcolor='silver'><td><b>withsmoothing</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>Smooth data?<br>&nbsp;</td></tr>
+
+<A NAME="2269"></A>
+<tr valign=top bgcolor='silver'><td><b>smooth</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>50</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$&gt;$"></SPAN> 1</td></tr>
+
+<tr valign=top><td colspan=5>Smoothing factor in seconds<br>&nbsp;</td></tr>
+
+<A NAME="2276"></A>
+<tr valign=top bgcolor='silver'><td><b>withbinning</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>Bin data?<br>&nbsp;</td></tr>
+
+<A NAME="2283"></A>
+<tr valign=top bgcolor='silver'><td><b>binning</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>50</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$&gt;$"></SPAN> 1</td></tr>
+
+<tr valign=top><td colspan=5>Bin width in seconds<br>&nbsp;</td></tr>
+
+<A NAME="2290"></A>
+<tr valign=top bgcolor='silver'><td><b>withspecranges</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>N</td><td>Y/N</td></tr>
+
+<tr valign=top><td colspan=5>Use upper/lower spec chans?<br>&nbsp;</td></tr>
+
+<A NAME="2297"></A>
+<tr valign=top bgcolor='silver'><td><b>specchanmin</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>2500</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$&gt;$"></SPAN> 1 ev, <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&lt;$"></SPAN> 32766</td></tr>
+
+<tr valign=top><td colspan=5>Low Spectral Channel<br>&nbsp;</td></tr>
+
+<A NAME="2304"></A>
+<tr valign=top bgcolor='silver'><td><b>specchanmax</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>12000</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$&gt;$"></SPAN> 2 ev, <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&lt;$"></SPAN> 32767</td></tr>
+
+<tr valign=top><td colspan=5>High Spectral Channel<br>&nbsp;</td></tr>
+
+<A NAME="2311"></A>
+<tr valign=top bgcolor='silver'><td><b>ratio</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1.2</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$&gt;$"></SPAN> 0.01, <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&lt;$"></SPAN> 10.0</td></tr>
+
+<tr valign=top><td colspan=5>Flaring ratio of annulus_cnts  corn_area  corn_cnst  annu_area<br>&nbsp;</td></tr>
+
+  <A NAME="2318"></A>
+<tr valign=top bgcolor='silver'><td><b>clobber</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>T/F</td></tr>
+
+<tr valign=top><td colspan=5>
+    Clobber existing files?
+    <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task make_mask parameters:
+
+<A NAME="2325"></A>
+<tr valign=top bgcolor='silver'><td><b>inimage</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>inimage.fit</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Event image for the exposure
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2332"></A>
+<tr valign=top bgcolor='silver'><td><b>inmask</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>inmask.fit</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Exposure mask
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2339"></A>
+<tr valign=top bgcolor='silver'><td><b>outmask</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>outmask.fit</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The output file name for the cheese mask
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2346"></A>
+<tr valign=top bgcolor='silver'><td><b>reglist</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>reglist.fit</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The filtered source region list.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2353"></A>
+<tr valign=top bgcolor='silver'><td><b>clobber</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>T/F</td></tr>
+
+<tr valign=top><td colspan=5>
+    Clobber existing files?
+    <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task make_mask_merge parameters:
+
+<A NAME="2360"></A>
+<tr valign=top bgcolor='silver'><td><b>srclist</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>merged-source-list.fits</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Merged source list from <TT>merge_source_list</TT>
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2368"></A>
+<tr valign=top bgcolor='silver'><td><b>prefix</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>1S001</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Exposure identfier.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2375"></A>
+<tr valign=top bgcolor='silver'><td><b>inmask</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>mos1S001-mask-im-750-1250.fits</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Input mask file name.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2382"></A>
+<tr valign=top bgcolor='silver'><td><b>flimtot</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Combined band source flux threshold (<SPAN CLASS="MATH"><IMG
+ WIDTH="43" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$10^{-14}$"></SPAN> cgs).
+    <br>&nbsp;</td></tr>
+   
+  <A NAME="2390"></A>
+<tr valign=top bgcolor='silver'><td><b>flimsoft</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Soft band source flux threshold (<SPAN CLASS="MATH"><IMG
+ WIDTH="43" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$10^{-14}$"></SPAN> cgs). 
+    <br>&nbsp;</td></tr>
+   
+  <A NAME="2398"></A>
+<tr valign=top bgcolor='silver'><td><b>flimhard</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Hard band source flux threshold (<SPAN CLASS="MATH"><IMG
+ WIDTH="43" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$10^{-14}$"></SPAN> cgs). 
+    <br>&nbsp;</td></tr>
+   
+  <A NAME="2406"></A>
+<tr valign=top bgcolor='silver'><td><b>scale</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Scale factor for W90 radius.
+    <br>&nbsp;</td></tr>
+   
+  <A NAME="2413"></A>
+<tr valign=top bgcolor='silver'><td><b>seper</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Minimum allowed source separation in arc second.
+    <br>&nbsp;</td></tr>
+   
+  <A NAME="2420"></A>
+<tr valign=top bgcolor='silver'><td><b>maxlikelim</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Minimum accepted value for the maximum likelihood detetion parameter.
+    <br>&nbsp;</td></tr>
+   
+  <A NAME="2427"></A>
+<tr valign=top bgcolor='silver'><td><b>clobber</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>T/F</td></tr>
+
+<tr valign=top><td colspan=5>
+    Clobber existing files?
+    <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task merge_comp_xmm parameters:
+
+<A NAME="2434"></A>
+<tr valign=top bgcolor='silver'><td><b>caldb</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Directory containing all the ESAS specific calibration files 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2441"></A>
+<tr valign=top bgcolor='silver'><td><b>dirfile</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>mydir</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    File containing the list of exposures, including the 
+directory string, for data to be merged.  For instance, if the merging 
+processing is being done in the directory <I>/DATA/merge</I> and the 
+individual observations are located in the parallel directories 
+<I>/DATA/obs1/proc</I> and <I>/DATA/obs2/proc</I>, the file <I>dirlist</I> 
+could have entries such as: 
+<BR>
+<BR><TT>/DATA/obs1/proc/mos1S001</TT> 
+<BR><TT>/DATA/obs1/proc/mos2S002</TT> 
+<BR><TT>/DATA/obs1/proc/pnS003</TT> 
+<BR><TT>/DATA/obs2/proc/mos1S001</TT> 
+<BR><TT>/DATA/obs2/proc/mos2S002</TT> 
+<BR><TT>/DATA/obs2/proc/pnS003</TT> 
+<BR>    <br>&nbsp;</td></tr>
+
+  <A NAME="2458"></A>
+<tr valign=top bgcolor='silver'><td><b>coord</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Selects which coordinate system should be used,  
+1: ecliptic, 2: equatorial, 3: galactic. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2465"></A>
+<tr valign=top bgcolor='silver'><td><b>crvaln1</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Central longitude of the projection. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2472"></A>
+<tr valign=top bgcolor='silver'><td><b>crvaln2</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Central latitude of the projection. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2479"></A>
+<tr valign=top bgcolor='silver'><td><b>pixelsize</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Pixel size of the projection in decimal degrees.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2486"></A>
+<tr valign=top bgcolor='silver'><td><b>component</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Component to be cast, 1: count image, 2: exposure, 3: QPB counts, 4: SP counts..
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2493"></A>
+<tr valign=top bgcolor='silver'><td><b>alpha</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>1.7</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Assumed spectral index for the filter correction scaling.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2500"></A>
+<tr valign=top bgcolor='silver'><td><b>elow</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>400</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Energy low limit (in eV) for the band.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2507"></A>
+<tr valign=top bgcolor='silver'><td><b>ehigh</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1250</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Energy high limit (in eV) for the band.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2514"></A>
+<tr valign=top bgcolor='silver'><td><b>maskcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+   Mask control, 0: no masking, 1: point source masking
+using the output from <TT>cheese</TT>, 2: good area masking using the masks
+produced by <TT>mos-spectra</TT>, 3: mask from merged source list 
+output from <TT>make_mask_merge</TT>.
+    <br>&nbsp;</td></tr>
+   
+  <A NAME="2524"></A>
+<tr valign=top bgcolor='silver'><td><b>xdim</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>2000</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    X dimension of the output image
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2531"></A>
+<tr valign=top bgcolor='silver'><td><b>ydim</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>2000</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Y dimension of the output image
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2538"></A>
+<tr valign=top bgcolor='silver'><td><b>clobber</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>T/F</td></tr>
+
+<tr valign=top><td colspan=5>
+    Clobber existing files?
+    <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task merge_source_list parameters:
+
+<A NAME="2545"></A>
+<tr valign=top bgcolor='silver'><td><b>dirfile</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>mydir</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    File containing the list of ObsID directory strings for source 
+lists to be merged.  For instance, if the merging 
+processing is being done in the directory <TT>/DATA/merge</TT> and the 
+individual observations are located in the parallel directories 
+<TT>/DATA/obs1/proc</TT> and <TT>/DATA/obs2/proc</TT>, the file <I>dirlist</I> 
+could have entries such as: 
+<BR>
+<BR><TT>/DATA/obs1/proc/</TT> 
+<BR><TT>/DATA/obs2/proc/</TT> 
+<BR>    <br>&nbsp;</td></tr>
+
+  <A NAME="2558"></A>
+<tr valign=top bgcolor='silver'><td><b>maxlikelim</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Minimum accepted value for the maximum likelihood detetion parameter.
+    <br>&nbsp;</td></tr>
+   
+  <A NAME="2565"></A>
+<tr valign=top bgcolor='silver'><td><b>clobber</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>T/F</td></tr>
+
+<tr valign=top><td colspan=5>
+    Clobber existing files?
+    <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task mos_back parameters:
+
+<A NAME="2572"></A>
+<tr valign=top bgcolor='silver'><td><b>prefix</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>S003</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Detector and exposure identifier,(e.g., 1S001 for MOS1 S001 exposure). 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2579"></A>
+<tr valign=top bgcolor='silver'><td><b>caldb</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Directory containing all the ESAS specific calibration files 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2586"></A>
+<tr valign=top bgcolor='silver'><td><b>diag</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+   Controls the amount of diagnostic output (0 low, 1 medium, 2 high)
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2593"></A>
+<tr valign=top bgcolor='silver'><td><b>elow</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>400</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Energy low limit (in eV) for the band.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2600"></A>
+<tr valign=top bgcolor='silver'><td><b>ehigh</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1250</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Energy high limit (in eV) for the band.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2607"></A>
+<tr valign=top bgcolor='silver'><td><b>ccd[1-7]</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Selects which ccd's should be included.  
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2614"></A>
+<tr valign=top bgcolor='silver'><td><b>clobber</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>T/F</td></tr>
+
+<tr valign=top><td colspan=5>
+    Clobber existing files?
+    <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task mos-filter parameters: None
+
+</LI>
+<LI>Task mos-spectra parameters:
+
+<A NAME="2621"></A>
+<tr valign=top bgcolor='silver'><td><b>prefix</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>1S001</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Detector and exposure identifier (eg. "1S001") for MOS1 S001 exposure
+   to be processed. 
+    <br>&nbsp;</td></tr>
+
+   <A NAME="2628"></A>
+<tr valign=top bgcolor='silver'><td><b>caldb</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Directory containing all the ESAS specific calibration files 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2635"></A>
+<tr valign=top bgcolor='silver'><td><b>region</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>reg.txt</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+the selection expression for the desired region for the
+generation of the model background spectrum.  If no file with the input name 
+exists, or if the file is empty, then the default is to model the data from 
+the entire field of view.  If a specific region is desired, the region 
+expression must be in detector coordinates.  For example, a file containing
+<TT>&amp;&amp;((DETX,DETY) IN circle(201,-219,3600))</TT> would extract the central 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$3'$"></SPAN> of the cluster Abell&nbsp;1795.  Note that the leading ``<TT>&amp;&amp;</TT>'' are 
+required as the selection expression is added to other constraints.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2644"></A>
+<tr valign=top bgcolor='silver'><td><b>mask</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+Flag to mask out point sources.  <TT>0</TT> selects no masking
+while <TT>1</TT> will cause <TT>mos-spectra</TT> to use the output filtered source
+region file from <TT>cheese</TT> or <TT>cheese-bands</TT>.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2656"></A>
+<tr valign=top bgcolor='silver'><td><b>elow</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>400</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Energy low limit (in eV) for the band. If 
+<TT>elow</TT> and <TT>ehigh</TT> are set to <TT>0</TT>, the image processing will 
+be eliminated and only spectral files will be produced.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2666"></A>
+<tr valign=top bgcolor='silver'><td><b>ehigh</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1250</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Energy high limit (in eV) for the band. If 
+<I>elow</I> and <TT>ehigh</TT> are set to <TT>0</TT>, the image processing will 
+be eliminated and only spectral files will be produced.
+    <br>&nbsp;</td></tr>
+
+ <A NAME="2676"></A>
+<tr valign=top bgcolor='silver'><td><b>ccd1-7</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+ Flag to include individual CCDs. <TT>1</TT> to include, <TT>0</TT> to not. 
+ <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task pn_back parameters:
+
+<A NAME="2685"></A>
+<tr valign=top bgcolor='silver'><td><b>prefix</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>S003</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Detector and exposure identifier,(e.g., S003 exposure). 
+    <br>&nbsp;</td></tr>
+
+   <A NAME="2692"></A>
+<tr valign=top bgcolor='silver'><td><b>caldb</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Directory containing all the ESAS specific calibration files 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2699"></A>
+<tr valign=top bgcolor='silver'><td><b>diag</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+Controls the amount of diagnostic output (0 low, 1 medium, 2 high)
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2706"></A>
+<tr valign=top bgcolor='silver'><td><b>elow</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>400</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Energy low limit (in eV) for the band.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2713"></A>
+<tr valign=top bgcolor='silver'><td><b>ehigh</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1250</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Energy high limit (in eV) for the band.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2720"></A>
+<tr valign=top bgcolor='silver'><td><b>quad[1-4]</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Selects which PN quadrants should be included.  
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2727"></A>
+<tr valign=top bgcolor='silver'><td><b>clobber</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>T/F</td></tr>
+
+<tr valign=top><td colspan=5>
+    Clobber existing files?
+    <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task pn-filter parameters: None
+
+</LI>
+<LI>Task pn-spectra parameters:
+
+<A NAME="2734"></A>
+<tr valign=top bgcolor='silver'><td><b>prefix</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>1S001</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+   Detector and exposure identifier (eg. "S001") for the PN S001 exposure
+   to be processed. 
+   <br>&nbsp;</td></tr>
+
+  <A NAME="2741"></A>
+<tr valign=top bgcolor='silver'><td><b>caldb</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+   Directory containing all the ESAS specific calibration files 
+   <br>&nbsp;</td></tr>
+
+  <A NAME="2748"></A>
+<tr valign=top bgcolor='silver'><td><b>region</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>reg.txt</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+the selection expression for the desired region for the
+generation of the model background spectrum.  If no file with the input name 
+exists, or if the file is empty, then the default is to model the data from 
+the entire field of view.  If a specific region is desired, the region 
+expression must be in detector coordinates.  For example, a file containing
+<TT>&amp;&amp;((DETX,DETY) IN circle(201,-219,3600))</TT> would extract the central 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img6.png"
+ ALT="$3'$"></SPAN> of the cluster Abell&nbsp;1795.  Note that the leading ``<TT>&amp;&amp;</TT>'' are 
+required as the selection expression is added to other constraints.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2757"></A>
+<tr valign=top bgcolor='silver'><td><b>mask</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+Flag to mask out point sources.  <I>0</I> selects no masking
+while <I>1</I> will cause <TT>pn-spectra</TT> to use the output filtered source
+region file from <TT>cheese-bands</TT>.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2768"></A>
+<tr valign=top bgcolor='silver'><td><b>elow</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>2000</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Energy low limit (in eV) for the band. If 
+<I>elow</I> and <I>ehigh</I> are set to <I>0</I>, the image processing will 
+be eliminated and only spectral files will be produced.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2778"></A>
+<tr valign=top bgcolor='silver'><td><b>ehigh</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>7200</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Energy high limit (in eV) for the band. If 
+<I>elow</I> and <I>ehigh</I> are set to <I>0</I>, the image processing will 
+be eliminated and only spectral files will be produced.
+    <br>&nbsp;</td></tr>
+
+ <A NAME="2788"></A>
+<tr valign=top bgcolor='silver'><td><b>quad1-4</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+ Flag to include individual quadrants.
+ <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task point_source parameters:
+
+<A NAME="2795"></A>
+<tr valign=top bgcolor='silver'><td><b>func</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>mateos</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Name of logN-logS function. 
+<BR>
+hms (Hasinger, Miyaji, &amp; Schmidt 2005) 
+<BR>
+mushotzky (REF TBD) 
+<BR>
+cappelluti (Cappelluti et al. 2008) 
+<BR>
+mateos (Mateos et al. 2008) 
+<BR>    <br>&nbsp;</td></tr>
+
+  <A NAME="2802"></A>
+<tr valign=top bgcolor='silver'><td><b>min_src_flux</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>1.0e-14</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Source flux cutoff in erg/cm2/s. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2809"></A>
+<tr valign=top bgcolor='silver'><td><b>cxrb_norm</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>10.6</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Normalization of the cosmic X-ray background. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2816"></A>
+<tr valign=top bgcolor='silver'><td><b>index</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>1.46</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Photon power law index.
+    <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task proton parameters:
+
+<A NAME="2823"></A>
+<tr valign=top bgcolor='silver'><td><b>prefix</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Detector and exposure identifiers (eg. "1S001") for the MOS exposure
+   S001) to be processed. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2830"></A>
+<tr valign=top bgcolor='silver'><td><b>caldb</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Directory containing all the ESAS specific calibration files 
+    <br>&nbsp;</td></tr>
+ 
+   <A NAME="2837"></A>
+<tr valign=top bgcolor='silver'><td><b>ccd[1-7]</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Flag to include (1) or not (0) a CCD.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2844"></A>
+<tr valign=top bgcolor='silver'><td><b>elow</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>400</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The low energy for the band in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2851"></A>
+<tr valign=top bgcolor='silver'><td><b>ehigh</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1250</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The high energy for the band in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2858"></A>
+<tr valign=top bgcolor='silver'><td><b>spectrumcontrol</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    1 for a power law model, 2 for a broken power law
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2865"></A>
+<tr valign=top bgcolor='silver'><td><b>pindex</b></td><td>no</td><td><A HREF=../param/node3.html>unknown</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Fitted power law index, only if spectrumcontrol=1
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2872"></A>
+<tr valign=top bgcolor='silver'><td><b>pnorm</b></td><td>no</td><td><A HREF=../param/node3.html>unknown</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Scale factor for power law index, only if spectrumcontrol=1
+  <br>&nbsp;</td></tr>
+
+  <A NAME="2879"></A>
+<tr valign=top bgcolor='silver'><td><b>binds</b></td><td>no</td><td><A HREF=../param/node3.html>unknown</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Fitted soft broken power law index, only if spectrumcontrol=2
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2886"></A>
+<tr valign=top bgcolor='silver'><td><b>bbreak</b></td><td>no</td><td><A HREF=../param/node3.html>unknown</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Break energy for broken power law model, only if spectrumcontrol=2
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2893"></A>
+<tr valign=top bgcolor='silver'><td><b>bindh</b></td><td>no</td><td><A HREF=../param/node3.html>unknown</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Fitted hard broken power law index, only if spectrumcontrol=2
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2900"></A>
+<tr valign=top bgcolor='silver'><td><b>bnorm</b></td><td>no</td><td><A HREF=../param/node3.html>unknown</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Normalization for broken power law, only if spectrumcontrol=2   
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2907"></A>
+<tr valign=top bgcolor='silver'><td><b>clobber</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>T/F</td></tr>
+
+<tr valign=top><td colspan=5>
+    Clobber existing files?
+    <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task proton_scale parameters:
+
+<A NAME="2914"></A>
+<tr valign=top bgcolor='silver'><td><b>caldb</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Directory containing all the ESAS specific calibration files 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2921"></A>
+<tr valign=top bgcolor='silver'><td><b>mode</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    mode - 1: do a single region, 2: do multiple regions with the 
+    required input provided in a text file (parameter spfile).
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2928"></A>
+<tr valign=top bgcolor='silver'><td><b>det</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>1|2|3</td></tr>
+
+<tr valign=top><td colspan=5>
+    FOR MODE=1 - Detector, <TT>1</TT> for MOS1, <TT>2</TT>  for MOS2, 
+    and<TT>3</TT>  for PN
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2938"></A>
+<tr valign=top bgcolor='silver'><td><b>maskfile</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>region</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    FOR MODE=1 - File name for the mask file.  This is the 
+    <TT>mos<I>prefix</I>-obj-im-sp-det.fits</TT> file produced for the 
+    region by <I>mos-spectra</I>.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2948"></A>
+<tr valign=top bgcolor='silver'><td><b>specfile</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>specfile</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    FOR MODE=1 - File name for the spectral file for the region.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2955"></A>
+<tr valign=top bgcolor='silver'><td><b>spfile</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    FOR MODE=2 - ASCII text file with the input for multiple regions.  The
+   file should contain, on separate lines, the detector number (det), 
+   mask file name (mask), and spectral file name (spec) for each region.
+   <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task rot_det_sky parameters:
+
+<A NAME="2962"></A>
+<tr valign=top bgcolor='silver'><td><b>mode</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Selection on particle (1), soft proton (2), SWCX (3) backgrounds, 
+    (4) MASK, (5) MASKIT.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2969"></A>
+<tr valign=top bgcolor='silver'><td><b>prefix</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>1S001</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Detector and exposure identifiers (eg. "1S001") for the MOS exposure
+   S001) to be processed. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2976"></A>
+<tr valign=top bgcolor='silver'><td><b>elow</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>350</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The low energy for the band in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2983"></A>
+<tr valign=top bgcolor='silver'><td><b>ehigh</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>800</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The high energy for the band in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2990"></A>
+<tr valign=top bgcolor='silver'><td><b>detx</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The DETX reference pixel location
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2997"></A>
+<tr valign=top bgcolor='silver'><td><b>dety</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The DETY reference pixel location
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3004"></A>
+<tr valign=top bgcolor='silver'><td><b>skyx</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The X location of the reference pixel 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3011"></A>
+<tr valign=top bgcolor='silver'><td><b>skyy</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The Y location of the reference pixel location
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3018"></A>
+<tr valign=top bgcolor='silver'><td><b>maskfile</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The file name for an image to provide additional masking
+    if desired.  If left blank then there will be no additional masking.
+    The mask images must be the same size and projection of the other images.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3025"></A>
+<tr valign=top bgcolor='silver'><td><b>clobber</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>T/F</td></tr>
+
+<tr valign=top><td colspan=5>
+    Clobber existing files?
+    <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task rotimdetsky parameters:
+
+<A NAME="3032"></A>
+<tr valign=top bgcolor='silver'><td><b>prefix</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>1S001</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Detector and exposure identifiers (eg. "1S001") for the MOS exposure
+    S001) to be processed. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3039"></A>
+<tr valign=top bgcolor='silver'><td><b>mask</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>none</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The file name for an image to provide additional masking
+    if desired.  If left blank then there will be no additional masking.
+    The mask images must be the same size and projection of the other images.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3046"></A>
+<tr valign=top bgcolor='silver'><td><b>elow</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>400</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The low energy for the band in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3053"></A>
+<tr valign=top bgcolor='silver'><td><b>ehigh</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1250</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The high energy for the band in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3060"></A>
+<tr valign=top bgcolor='silver'><td><b>mode</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Selection on particle (1), soft proton (2), SWCX (3) backgrounds, 
+    (4) MASK, (5) MASKIT.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3067"></A>
+<tr valign=top bgcolor='silver'><td><b>clobber</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>T/F</td></tr>
+
+<tr valign=top><td colspan=5>
+    Clobber existing files?
+    <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task sp_partial parameters:
+
+<A NAME="3074"></A>
+<tr valign=top bgcolor='silver'><td><b>caldb</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>1S001</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Directory containing the ESAS calibration files. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3081"></A>
+<tr valign=top bgcolor='silver'><td><b>detector</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Detector to be processed 1-MOS1, 2-MOS2, and 3-PN.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3088"></A>
+<tr valign=top bgcolor='silver'><td><b>fullimage</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>mos1S001-sp-ps.fits</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Image from the full field of view. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3095"></A>
+<tr valign=top bgcolor='silver'><td><b>fullspec</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>mos1S001-obj-ps.pi</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Spectrum from the full field of view.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3102"></A>
+<tr valign=top bgcolor='silver'><td><b>regionimage</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>mos1S001-sp-nps.fits</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Image from the selected region. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3109"></A>
+<tr valign=top bgcolor='silver'><td><b>regionspec</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>mos1S001-obj-nps.pi</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Spectrum from the selected region.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3116"></A>
+<tr valign=top bgcolor='silver'><td><b>rnorm</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>0.05</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Xspec normalization of the SP component.
+    <br>&nbsp;</td></tr>
+
+</LI>
+<LI>Task swcx parameters:
+
+<A NAME="3123"></A>
+<tr valign=top bgcolor='silver'><td><b>prefix</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Detector and exposure identifiers (eg. "1S001") for the MOS exposure
+   S001) to be processed. 
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3130"></A>
+<tr valign=top bgcolor='silver'><td><b>caldb</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Directory containing all the ESAS specific calibration files 
+    <br>&nbsp;</td></tr>
+ 
+  <A NAME="3137"></A>
+<tr valign=top bgcolor='silver'><td><b>ccd[1-7]</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Flag to include (1) or not (0) a CCD.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3144"></A>
+<tr valign=top bgcolor='silver'><td><b>elow</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>400</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The low energy for the band in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3151"></A>
+<tr valign=top bgcolor='silver'><td><b>ehigh</b></td><td>yes</td><td><A HREF=../param/node3.html>int</A></td><td>1300</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The high energy for the band in eV
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3158"></A>
+<tr valign=top bgcolor='silver'><td><b>elinelist</b></td><td>yes</td><td><A HREF=../param/node3.html>unknown</A></td><td>1 2</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Energies of SWCX lines to be included
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3165"></A>
+<tr valign=top bgcolor='silver'><td><b>gnormlist</b></td><td>yes</td><td><A HREF=../param/node3.html>unknown</A></td><td>0.1 0.03</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Gaussian normalizations from Xspec
+    <br>&nbsp;</td></tr>
+
+  <A NAME="3172"></A>
+<tr valign=top bgcolor='silver'><td><b>objrmf</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    RMF for the region 
+    <br>&nbsp;</td></tr>
+ 
+  <A NAME="3179"></A>
+<tr valign=top bgcolor='silver'><td><b>objarf</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    ARF for the region 
+    <br>&nbsp;</td></tr>
+ 
+  <A NAME="3186"></A>
+<tr valign=top bgcolor='silver'><td><b>objspec</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Spectrum for the region 
+    <br>&nbsp;</td></tr>
+ 
+  <A NAME="3193"></A>
+<tr valign=top bgcolor='silver'><td><b>clobber</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>T/F</td></tr>
+
+<tr valign=top><td colspan=5>
+    Clobber existing files?
+    <br>&nbsp;</td></tr>
+
+</LI>
+</OL>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="esas.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,304 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Detection sensitivity</TITLE>
+<META NAME="description" CONTENT="Detection sensitivity">
+<META NAME="keywords" CONTENT="imweightadd">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="imweightadd.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+imweightadd (tools-1.67) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Source detection"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Null-hypothesis probability distribution for"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="imweightadd.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00033000000000000000"></A>
+<A NAME="imweightadd:description:sensitivity"></A>
+<BR>
+Detection sensitivity
+</H2>
+
+<P>
+Suppose one has a random variate <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.png"
+ ALT="$c$"></SPAN> with a probability distribution <SPAN CLASS="MATH"><IMG
+ WIDTH="31" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$p(c)$"></SPAN>. The nett probability that a given sample of <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.png"
+ ALT="$c$"></SPAN> is due to chance is the integral of <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$p$"></SPAN> from <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.png"
+ ALT="$c$"></SPAN> to <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$\infty$"></SPAN>:
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+P(c) = \int_c^\infty dx \ p(x).
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="140" HEIGHT="44" BORDER="0"
+ SRC="img20.png"
+ ALT="\begin{displaymath}
+P(c) = \int_c^\infty dx \ p(x).
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+In the case of a single pixel of a single image, <SPAN CLASS="MATH"><IMG
+ WIDTH="31" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$p(c)$"></SPAN> is the Poisson distribution about the expectation value of the counts due to background, <!-- MATH
+ $\langle b\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$\langle b\rangle$"></SPAN>. As described in section <A HREF="node5.html#imweightadd:description:detection">3.2</A>, we say there is a source present in this pixel if <SPAN CLASS="MATH"><IMG
+ WIDTH="79" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$L = -\ln{P}$"></SPAN> is larger than a cutoff value <!-- MATH
+ $L_{\rm {cutoff}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="48" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$L_{\rm {cutoff}}$"></SPAN>. In principle it is possible to invert the relationship between detected counts <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.png"
+ ALT="$c$"></SPAN> and likelihood <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$L$"></SPAN>, to calculate that value of <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.png"
+ ALT="$c$"></SPAN> which would give <!-- MATH
+ $L = L_{\rm {cutoff}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="80" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$L = L_{\rm {cutoff}}$"></SPAN>. This value of <!-- MATH
+ $c_{\rm {cutoff}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="44" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$c_{\rm {cutoff}}$"></SPAN>, minus the expectation due to background <!-- MATH
+ $\langle b\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$\langle b\rangle$"></SPAN>, is defined here as the detection sensitivity.
+
+<P>
+Note that this does not mean that a source with an expectation value of counts <!-- MATH
+ $\langle s\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="$\langle s\rangle$"></SPAN> which is greater than <!-- MATH
+ $c_{\rm {cutoff}} - \langle b\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="83" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$c_{\rm {cutoff}} - \langle b\rangle$"></SPAN> will always be detected. There are always statistical fluctuations to consider. The probability that a source with <!-- MATH
+ $\langle s\rangle = c_{\rm {cutoff}} - \langle b\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="124" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$\langle s\rangle = c_{\rm {cutoff}} - \langle b\rangle$"></SPAN> will be detected is the integral from <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.png"
+ ALT="$a$"></SPAN> to infinity of the Poisson distribution with expectation value <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.png"
+ ALT="$a$"></SPAN> equal to <!-- MATH
+ $c_{\rm {cutoff}} - \langle b\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="83" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$c_{\rm {cutoff}} - \langle b\rangle$"></SPAN>. This is equal to 0.5 in the limit of large <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img28.png"
+ ALT="$a$"></SPAN>, but becomes significantly less than 0.5 for <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.png"
+ ALT="$a &lt;$"></SPAN> about 1. Also, the detection cutoff is naturally not sharp: fainter sources have still some non-zero probability of detection, and sources brighter than cutoff have always some non-zero probability of <SPAN  CLASS="textit">non</SPAN>-detection.
+
+<P>
+Where one is performing source detection in parallel on <SPAN CLASS="MATH"><IMG
+ WIDTH="48" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$N&gt;1$"></SPAN> images, there are <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$N$"></SPAN> inputs to the calculation of nett likelihood at any given pixel. In this circumstance it is no longer possible to invert this calculation to obtain a single detection sensitivity, since there may be more than one combination of counts which yield the same nett <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$L$"></SPAN>. Here a definition of sensitivity only makes sense in connection with a fixed source spectrum, as follows. Suppose that at the pixel in question the expected count values <!-- MATH
+ $\langle c_i\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$\langle c_i\rangle$"></SPAN> are made up from background <!-- MATH
+ $\langle b_i\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$\langle b_i\rangle$"></SPAN> plus source <!-- MATH
+ $\langle s_i\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.png"
+ ALT="$\langle s_i\rangle$"></SPAN>. (The expectation value of two summed Poisson variates is equal to the sum of the two expectation values.) Suppose also that we know the source spectrum and are thus able to express the source counts as a product between this spectrum and some nett intensity <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.png"
+ ALT="$S$"></SPAN>:
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+\langle s_i\rangle = \langle S\rangle \frac{\langle s_i\rangle}{\sum_i^N \langle s_i\rangle}.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="129" HEIGHT="48" BORDER="0"
+ SRC="img35.png"
+ ALT="\begin{displaymath}
+\langle s_i\rangle = \langle S\rangle \frac{\langle s_i\rangle}{\sum_i^N \langle s_i\rangle}.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+Regardless of the precise algorithm employed, likelihood <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$L$"></SPAN> is some function of the counts <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$c_i$"></SPAN>, ie
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+L = f(c_i).
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="69" HEIGHT="28" BORDER="0"
+ SRC="img37.png"
+ ALT="\begin{displaymath}
+L = f(c_i).
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+The detection sensitivity <!-- MATH
+ $S_{\rm {cutoff}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="47" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$S_{\rm {cutoff}}$"></SPAN> can therefore be defined implicitly as follows:
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+L_{\rm {cutoff}} = f\bigg(\langle b_i\rangle + S_{\rm {cutoff}} \frac{\langle s_i\rangle}{\sum_i^N \langle s_i\rangle}\bigg).
+\end{equation}
+ -->
+<A NAME="sens"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="sens"></A><IMG
+ WIDTH="246" HEIGHT="48" BORDER="0"
+ SRC="img39.png"
+ ALT="\begin{displaymath}
+L_{\rm {cutoff}} = f\bigg(\langle b_i\rangle + S_{\rm {cutoff}} \frac{\langle s_i\rangle}{\sum_i^N \langle s_i\rangle}\bigg).
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">2</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Source detection"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Null-hypothesis probability distribution for"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

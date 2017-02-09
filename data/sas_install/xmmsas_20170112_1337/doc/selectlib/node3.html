@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Boolean operators and functions</TITLE>
+<META NAME="description" CONTENT="Boolean operators and functions">
+<META NAME="keywords" CONTENT="selectlib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="selectlib.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+selectlib (selectlib-4.74.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Arithmetic constants and identifiers"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node30.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="selectlib.html">Home Page</A> / <A  HREF="node2.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00021000000000000000">
+Boolean operators and functions</A>
+</H2>
+Table filtering requires the specification of a single boolean expression
+which must evaluate to either true or false for all rows of the table.
+Rows are selected if the expression evaluates to true, otherwise
+they are not selected. The notion of a valid boolean expression
+is identical to the one in the programming languages C/C++ and Fortran:
+An expression is comprised of a sequence of sub-expressions combined
+with the logical operators <TT>&amp;&amp;</TT> (and) and <TT>||</TT> (or).
+Sub-expressions are constructed from table column names (the equivalent
+of variable names in C/C++/Fortran), boolean operators, and symbolic
+or numeric constants or other arithmetic expressions. The following
+table lists the available operators which can be used
+in their C/C++ or Fortran form:
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">description</TD>
+<TD ALIGN="LEFT">C/C++ form</TD>
+<TD ALIGN="LEFT">Fortran form</TD>
+</TR>
+<TR><TD ALIGN="LEFT">equal</TD>
+<TD ALIGN="LEFT"><TT>==</TT></TD>
+<TD ALIGN="LEFT"><TT>.eq.</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">not equal</TD>
+<TD ALIGN="LEFT"><TT>!=</TT></TD>
+<TD ALIGN="LEFT"><TT>.ne.</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">less than</TD>
+<TD ALIGN="LEFT"><TT>&lt;</TT></TD>
+<TD ALIGN="LEFT"><TT>.lt.</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">less than or equal</TD>
+<TD ALIGN="LEFT"><TT>&lt;=</TT></TD>
+<TD ALIGN="LEFT"><TT>.le.</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">greater than</TD>
+<TD ALIGN="LEFT"><TT>&gt;</TT></TD>
+<TD ALIGN="LEFT"><TT>.gt.</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">greater than or equal</TD>
+<TD ALIGN="LEFT"><TT>&gt;=</TT></TD>
+<TD ALIGN="LEFT"><TT>.ge.</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">or</TD>
+<TD ALIGN="LEFT"><TT>||</TT></TD>
+<TD ALIGN="LEFT"><TT>.or.</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">and</TD>
+<TD ALIGN="LEFT"><TT>&amp;&amp;</TT></TD>
+<TD ALIGN="LEFT"><TT>.and.</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">logical negation</TD>
+<TD ALIGN="LEFT"><TT>!</TT></TD>
+<TD ALIGN="LEFT"><TT>.not.</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT">inclusion test</TD>
+<TD ALIGN="CENTER" COLSPAN=2><SPAN><TT>in</TT> <A HREF="node21.html#selectlib:user:inoper">(see below)</A></SPAN></TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+Operator precedences are as in C/C++ and parentheses may be used as
+necessary to group sub-expressions. Case is insignificant, i.e.,
+<TT>.and.</TT>, <TT>.AND.</TT>, and <TT>.aNd.</TT> are all valid specifications
+for the logical and-operator. The C/C++ forms and Fortran forms can
+be mixed within a single expression.
+
+<P>
+In addition to the above operators, a limited set of boolean functions is
+available as well. These take a number of arguments and return either true
+or false. The following table lists the available boolean functions:
+
+<P>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">function name</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=150>meaning</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=125>comment</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>ifthenelse(expr1, expr2, expr3)</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=150>if <TT>expr1</TT> is true value of construct is value of <TT>expr2</TT>,
+otherwise value of <TT>expr3</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=125>all three arguments
+must be boolean expressions</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>near(val1,val2,tol)</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=150>true if <!-- MATH
+ $\frac{|{\tt val1}-{\tt val2}|}%
+{|{\tt val1}|}<= {\tt tol}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="131" HEIGHT="40" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\frac{\vert{\tt val1}-{\tt val2}\vert}%
+{\vert{\tt val1}\vert}&lt;= {\tt tol}$"></SPAN></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=125>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>point(...)</TT>, <TT>line(...)</TT>, <SPAN CLASS="MATH"><IMG
+ WIDTH="22" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\ldots$"></SPAN></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=150>point-in-figure test</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=125><A HREF="node15.html#selectlib:user:spatfunc">see below</A></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>gti(...), mask(...), region(...)</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=150>value-in-GTI/point in region tests</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=125><A HREF="node17.html#selectlib:user:filebased">see below</A></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>selected()</TT> or <TT>selected</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=150>selection status test</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=125><A HREF="node22.html#selectlib:user:selected">see below</A></TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Arithmetic constants and identifiers"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node30.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

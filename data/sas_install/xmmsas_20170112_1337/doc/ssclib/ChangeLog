@@ -1,0 +1,866 @@
+ChangeLog for ssclib
+====================
+
+Open SPRs:
+----------
+Nil
+
+Version 4.32 - 2016-07-21 (AI)
+------------
+	+ (src/ssc_misc.f90) gfortran compatibility changes applied (string to integer conversion.
+	+ (test/testregridders1.f90) "oldimage" array initialization 
+	(error in gfortran)
+	
+Version 4.31 - 2016-07-21 (AI)
+------------
+	+ (test/testarrayutils.f90) gfortran compatibility changes applied.
+	
+Version 4.30 - 2015-07-28 (RDS)
+------------
+	+ (src/wcs_aux.f90) Added routine, readWcsSkyKeys, to read the
+		WCS structure from the REFxxx keywords.
+		Also removed hard error when CUNITs not set and 
+		transform is not RA---TAN
+		(SCR-7300)
+
+Version 4.29 - 2015-07-07 (RDS)
+------------
+	+ (src/coordinate.f90) added routines to convert real format,
+		decimal, RAW coordinates to detector coords
+		rawToDetScalard, rawToDetArrayd, rawToDetVectord 
+		(SCR-7300)
+
+Version 4.28.1  - 2014-10-28 (AI)
+------------	
+	+ (test/testsourcecutouts1.f90) clone method called with MODIFY param instead of TEMP
+	
+Version 4.28 - 2014-06-02 (AI)
+------------
+	+ (src/SSClib.pm) deprecated "defined" statement removed.
+	+ (src/PairCoordsSys.pm) foreach syntax corrected. 
+	
+Version 4.27.1 - 2013-03-06 (MAS/LUX)
+----------------------
+- test/:
+  + Added to USEDLIBS in Makefile: cal dss caloalutils sasdal; hopefully this fixes SPR-7092, where compiling fails in Fedora 17 32-bit environment.
+
+Version 4.27 - 2012-07-31 (MAS/LUX)
+----------------------
+- array_utils:
+  + New function getAnnularMaskAry() added.  It is tested in testarrayutils.  It is used in the fitsstat package.
+	
+Version 4.26.3 - 2012-05-22 (MAS/LUX)
+----------------------
+- wcs_aux
+  + Fixed a bug, where writeWcsExtendedArray() might cause an error due to Nan in some environment for some data.
+  + Added a private function setAttributeIfNumeric().
+- ssc_misc
+  + Added Int32 interface for isNaN().
+	
+Version 4.26.2 - 2012-05-10 (MAS/LUX)
+----------------------
+- test/testregridders1.f90:
+  + Fixed a failure in test/testssclibpm, which only appears in Mac.
+	
+Version 4.26.1 - 2012-05-09 (MAS/LUX)
+----------------------
+- test/testregridders1.f90:
+  + Fixed a failure in the test harness due to floating-point calculation and comparison, which only appears in 64-bit machines.
+	
+Version 4.26 - 2011-07-19 (MAS/LUX)
+----------------------
+- array_utils:
+  + calcAryStatInfoMask() (and hence getAryEdgesInfo()) is more robust for rounded errors in calculating realsum, mean and sigma, when the input is real(single).  It is tested in testarrayutils.  This would affect particularly the fitsstat package.
+
+Version 4.25 - 2011-06-14 (MAS/LUX)
+----------------------
+- array_utils:
+  + printAryEdgesInfo() is now more robust.
+- save_image:
+  + saveDetImage() is now more robust.
+
+Version 4.24 - 2011-06-07 (MAS/LUX)
+----------------------
+- DEPENDency on testprods upgraded to 1.25 (for testdssaux02.f90 in the test harness).
+- epic_aux:
+  + Added function getCcdNodeNumInteger().
+- dss_aux:
+  + Added optional arguments in subroutines getNum1stDssCompWithValue(), numDssCompsWithValue(), dssCompNumsWhichPassThisValue(), allFiltersPassValue().
+  + Fixed a bug in subroutine readGtisFromDss().
+  + Made slightly more robust function valueIsPassedByFilter().
+  + Added testdss_aux02 in the test harness and modified dss1_test accordingly.
+	
+Version 4.23 - 2011-05-11 (MAS/LUX)
+----------------------
+- coordinate:
+  + Added subroutines raDecToPixels() and pixelsToRaDec() as well as their tests in test/testcoordinate.f90.
+- ssc_misc:
+  + Added subroutines/functions stripStr(), splitStr(), getFirstSpaceIndex() and getFirstNonSpaceIndex().
+- SSCLib.pm
+  + Added minloc(), maxloc(), replacestrinarywithmin(), replacestrinarywithmax() as well as their tests (in test/testssclibpm).
+  + strip() now copes with undef input (and its test is added in test/testssclibpm).
+  + test/testssclibpm now uses List::Util .
+	
+Version 4.22 - 2011-04-08 (MAS/LUX)
+----------------------
+- Added epic_aux.f90, as well as its test (testepicaux).
+- array_utils:
+  + Added type AryEdgesInfoT and subroutines/functions getAxesFromIndices(), getIndicesFromAxes(), calcIndicesFromIndices(), getUbound(), printAryEdgesInfo(), getAryEdgesInfo() as well as their tests.
+  + Fixed a minor bug in maskArrayLimitsLogical()
+  + Fixed a bug in calcAryStatInfoMask() and accordingly getAryStatInfo(), where it aborted when an inconsistent pair of the arguments of minAreaIndices and maxAreaIndices are given.  It now issues the warning 'inconsistentAreaIndices', as well as reporting the status.
+- coordinate:
+  + Fixed a minor bug related to initialisation in cc1ToRawMasterCcd().
+- dal_aux: Minor cosmetic changes.
+- dss_aux:
+  + getNum1stDssCompWithValue() and allFiltersPassValue() now accept the optional argument filterType.  readGtisFromDssBlock() changed accordingly to be more robust.
+  + getGtiFromFilter() is now slightly more robust.
+- regridders:
+  + Added a new subroutine calcOldPixelCornersAffine() as well as its tests.
+  + A few cosmetic changes.
+- save_image:
+  + Added subroutines/functions saveDetImage() and getDetImageEdgesInfo() as well as their tests.
+- wcs_aux:
+  + Added a type WcsAxesExtendedT and subroutines dumpWcsExtended() and convertWcsToExtended().
+- Test Harness:
+  + Added testepicaux, testregridders1, testsaveimage.
+  + Numerous additions to the existing test codes, particularly to testarrayutils.f90.
+
+Version 4.21.2 - 2011-02-18 (AI)
+----------------------
+	+ (testcoordinates.f90) Tolerance of 107a test changed from 1e-20 to 1e-06. 
+	Using optimization -O4 this test gives a result of 3.6549898E-07. But using 
+	optimization -O2 the same test gives 0 as results. 
+
+Version 4.21.1 - 2011-02-08 (MAS/LUX)
+----------------------
+- Replaced an external module URI with DirHandle in test/testssclibpm because the former is not included in the standard Perl package.
+
+Version 4.21 - 2010-08-13 (MAS/LUX)
+----------------------
+- Added an option 'verbosity' in isNearlyEqual() in Coords.pm and fixed a minor bug.
+
+Version 4.20 - 2010-08-10 (MAS/LUX)
+----------------------
+- Added a method merge() in PairCoordsSys as well as its tests.
+
+Version 4.19 - 2010-08-06 (MAS/LUX)
+----------------------
+- Added a function deepcopy() in SSCLib.pm .
+- Added DeepCopy.pm module as well as its tests in testcoordspm and testcelcoordspm .
+- Added PairCoordsSys.pm as well as its test harness testpaircoordssyspm .
+
+Version 4.18 - 2010-07-30 (MAS/LUX)
+----------------------
+- Added compact() and isNil() in SSCLib.pm as well as its tests.
+- Added isNil() in Coords.pm as well as its tests.
+	
+Version 4.17 - 2010-07-29 (MAS/LUX)
+----------------------
+- Changed the specification of areHashesEqual() in SSCLib.pm so that it now takes the hash, which may have a key of "exceptions" for a reference to array, in the argument, instead of a normal array as used to be.  The test harness is modified accordingly.
+- isnumber() in SSCLib.pm now accepts a list of input arguments too.
+- Fixed minor bugs in SSCLib.pm, which may have appeared in some unusual cases, and addded a number of tests.
+- Added methods arraySignificantValIndex(), firstSignificantValIndex(), lastSignificantValIndex(), areValsFilled(), distanceCartesian(), isAxisAngle() in Coords.pm as well as their tests.
+- Implemented isNearlyEqual() in the Coords (and accordingly CelCoords) class as well as their tests.
+	
+Version 4.16 - 2010-07-27 (MAS/LUX)
+----------------------
+- Now areScalarsEqual() (and accordingly areArraysEqual() and areHashesEqual()) in SSCLib.pm handles objects blessed to a class.  Test routines are added.
+- Exception_key(s) are now recursively considered in areHashesEqual() in SSCLib.pm although this update is not tested.
+	
+Version 4.15 - 2010-07-23 (MAS/LUX)
+----------------------
+- Added another new keyword "allarg" for new() in the Coords and CelCoords classes, together with its test routines.
+- Fixed minor bugs in the Coords and CelCoords classes, regarding to "sys" and "epoch".
+	
+Version 4.14 - 2010-07-20 (MAS/LUX)
+----------------------
+- Changed a specification of the input arguments (the symbol of "_" into "%") in the Coords and CelCoords classes in order to go better with the FITS standard.
+	
+Version 4.13 - 2010-07-19 (MAS/LUX)
+----------------------
+- Created Coords.pm as well as its test harness, testcoordspm .  It defines the class Coords, which is now used as the base class for CelCoords .
+	
+Version 4.12 - 2010-07-12 (MAS/LUX)
+----------------------
+- Added isnumber() in SSCLib.pm as well as its test routines in the test harness, testssclibpm .
+- Created CelCoords.pm as well as its test harness, testcelcoordspm .  It uses Math::Trig package.
+	
+Version 4.11.2 - 2010-04-21 (MAS/LUX)
+----------------------
+- Fixed a compile error in LaTeX document.
+	
+Version 4.11.1 - 2010-03-26 (MAS/LUX)
+----------------------
+- Upgrade DEPENDency on testprods to 1.19 (for the test harness of sourcecutouts_test).
+- source_cutouts.f90
+  + Closed SOC-SPR-6594.
+  + Changed the threshold for the very small BG_MAP, introduced in Ver.4.11.
+  + Developed the test harness.
+
+Version 4.11 - 2010-02-25 (MAS/LUX)
+----------------------
+- source_cutouts.f90: Introduction of the Parameter ThLowerBkgFluxPerPixel to work around a very small BG_MAP value (in the task region) (see SOC-SPR-6594).
+
+Version 4.10.2 - 2009-11-24 (AI)
+----------------------
+- interpolation.f90: Parameter (kind=single) in cmplx function call changed to (kind=double). Needed for new nagfor compiler. (I forgot to modify two "cmplx" function. Now they are all properly called)
+
+Version 4.10.1 - 2009-11-23 (AI)
+----------------------
+- Same modification as in version 4.9.1 (merge from reltrack)	
+- interpolation.f90: Parameter (kind=single) in cmplx function call changed to (kind=double). Needed for new nagfor compiler.
+	
+Version 4.10 - 2009-08-12 (MAS/LUX)
+----------------------
+- SSCLib.pm
+  + Now setsasvars() accepts an optional argument for improved convenience in specifying SAS_CCF.
+	
+Version 4.9 - 2009-06-05 (MAS/LUX)
+----------------------
+- coordinate.f90
+  + Added a new routine angleBetweenCelCoords() in order to close SOC-SPR-6543, as well as its test-harness of testcoordinate .
+  + skyToCartesian() now accepts (and returns) Real(single) as well.
+- Added a new module oal_aux (a subroutine transferred from rgssources-6.1.1).
+- Added odfdump .
+- SSCLib.pm
+  + Now gettestdata_dir() accepts an optional parameter of Sub-directory .
+  + Fixed a minor bug in gettestdata_dir(), where copying files of normal suffixes from .gz style used to fail.
+
+Version 4.8.1 - 2009-05-13 (MAS/LUX)
+----------------------
+- dss_aux
+  + Fixed some potentially dodgy statements for NAG Fortran 5.1.
+
+Version 4.8 - 2009-05-01 (MAS/LUX)
+----------------------
+- Moved fitsstat , fits_utils.f90 , Fitsplutils.pm and related files to the newly created fitsutils package.
+	
+Version 4.7 - 2009-04-16 (MAS/LUX)
+----------------------
+- Fixed a bug where fitsstat config files were not copied to the appropriate directory.
+- test_utils
+  + Changed the type of isNearlyEqual() from logical(bool) into logical .
+  + Fixed a serious bug, where "Arithmetic exception" was raised when a pair of completely different values are given in isNearlyEqual().
+  + Changed the algorithm in isNearlyEqual() slightly, so now isNearlyEqual(1.2349, 1.2351, 3) returns .true. instead of .false., which I suppose is a more desirable behaviour.
+  + The argument precision in isNearlyEqual() now has to be positive (0 is not allowed any more).
+  + Test harness is updated to test the above features.
+	
+Version 4.6 - 2009-03-30 (MAS/LUX)
+----------------------
+- Fixed a bug in the test harness, which used to fail in the first trial.
+- array_utils:
+  + Change the name of the function convertAryStatInt2dToInt32() into convertAryStatIntToInt32().
+  + Fixed a serious bug in convertAryStatInt16ToInt32(), which used to fail to copy realsum component, which practically means that the AryStatInfo for Int16 used to have an uninitialised realsum.
+  + calcAryStatInfoMask() and getAryStatInfo(), as well as convertAryStatInt2dToInt32() and printAryStatInfo(), now accept 1-dimensional arrays, too.  Test harnesses to test the new features are also developed.
+  + Changed the set of private (=internal) subroutine names from printAryStatInfo.*2d() into printAryStatInfo.*().  This is just a cosmetic change. 
+- dal_aux:
+  + In the function getDataType(), the order of the priority to consider among the given arguments that have potentially clash each other is clarified.  It is now extName > tabName > extNum.  Test harness for it is written.
+- fits_utils:
+  + Added new functions getFitsVecStatInfo{Double,Single,Int{32,16,8}}().
+- fitsstat:
+  + Now it accepts the command-line option of datatype=column.
+- Fitsplutils.pm:
+  + The above new features in array_utils (hence fits_utils, hence fitsstat) are automatically included (i.e., without any change in the code in this library itself).
+  + Created a new test harness testfitsplutils_col to test them.
+	
+Version 4.5 - 2009-03-11 (MAS/LUX)
+----------------------
+- array_utils:
+  + Added %realsum in type(aryStatInfo.+T) .
+  + New subroutines/functions invertMask() sumInt32(), sumInt32Dbl(), as well as their test harnesses.
+  + Fixed a bug in calcAryStatInfoMask(), which affects getAryStatInfo() and printAryStatInfo() as well as the fits_utils library and the task fitsstat, where the calculation of the sigma used to be wrong in some (in reality, likely many) cases for Integer-valued input, particularly int8.
+	
+Version 4.4 - 2009-03-03 (MAS/LUX)
+----------------------
+- dal_aux:
+  + New subroutines getDataType(), getTypeName() and getAttributeTypeName().
+  + In splitSetTabName(), the optional argument noColonFound changed from logical(bool) into simple logical (the package colsmooth is modified accordingly).
+  + In splitSetTabName(), warning('missingBlockName') and error('missingFile') (in some cases) are not raised any more if the optional argument  noColonFound is specified.
+  + In splitSetTabName(), a new optional boolean parameter useBlock is introduced.
+  + Wrote a test-harness (to test getTypeName() and splitSetTabName()): testdalaux.f90
+- fits_utils:
+  + New functions getFitsImgStatInfoInt32(), getFitsImgStatInfoInt16(), getFitsImgStatInfoInt8().
+- Fitsplutils:
+  + Added a comment, $VERSION = '1.3.1', now.
+- fitsstat:
+  + Now, it handles (signed) Integer and Real as accurately as possible, instead of blindly converting them into Real32 (single) as used to.
+
+Version 4.3 - 2009-02-26 (MAS/LUX)
+----------------------
+- SSCLib.pm:
+  + New functions nint(), getcartesiandistance(), isNearlyEqual(), areScalarsEqual(), areArraysEqual(), areHashesEqual().  Also wrote a test harness code for it in the usual testssclibpm.
+  + Fixed a minor bug in getsascommandstring() where an empty value for a key used to raise a warning.
+- fitsstat:
+  + Wrote the documentation.
+
+Version 4.2 - 2009-02-25 (MAS/LUX)
+----------------------
+- Fitsplutils.pm:
+  + New function readFitsStatInfo().
+  + Added a new test-harness code, test/testfitsplutils_img in order to test it.  It is practically a test harness for fitsstat as well.
+- SSCLib.pm:
+  + New functions quote_string() and getsascommandstring().
+  + Added several test routins in its test harness, testssclibpm.
+- array_utils:
+  + Added type(aryStatInfoFlagT) .
+  + Changed the element of type(aryStatInfo.+T) -- now it includes aryStatInfoFlagT instead of having a long list of direct elements.
+- fitsstat:
+  + Fixed a serious bug that most of the options used to have to be specified.
+  + Wrote the documentation.
+- fits_utils:
+  + Modified, following the changes in array_utils.
+	
+Version 4.1 - 2009-02-23 (MAS/LUX)
+----------------------
+- Change the dependency to dsslib into 5.6 (which in fact should be 5.5.7 (from ssclib-3.33.4 on), however the patch version is not allowed in the DEPEND file).
+- fftw3_aux:
+  + Rename the subroutine name symmetrise to symmetriseAryForFFT.
+  + Added new functions/subroutines of calcFftwRedundantXSize(), unfoldFftwRedundantX() cyclicConvolutionFft(), which are basically developed by IMS/LUX, (though modified by MAS/LUX a bit to comply with the change in Ver.4.0.  Note that this change is basically the first step to remove the dependency on FFTW-2 external package, which is used in asmooth.
+- fftw2_aux:
+  + Rename the subroutine name symmetrise to symmetriseAryForFFT.
+- array_utils:
+  + Added type(aryStatInfo.+T) .
+  + Added subroutines/functions calcAryStatInfoMask(), getAryStatInfo(), convertAryStatInt2dToInt32(), printAryStatInfo().
+  + Created a test-harness, testarrayutils.f90, which now tests getAryStatInfo().
+- Added a new module fits_utils .
+- Added a task fitsstat .
+	
+Version 4.0 - 2009-02-12 (MAS/LUX)
+----------------------
+- New function isoptdefined() in SSCLib.pm .
+- The followings were originally developed by IMS/LUX on 2005-12-02.
+- Renamed fftw_aux to fftw2_aux.
+- Superceded splines with interpolations.
+- New module fftw3_aux.
+- New module pgplot_aux.
+- Changed name of interpolate.f90 to interpolations.f90 (there was a clash with a subroutine name).
+- Removed some surplus and obsolete files.
+- Moved some modules from the ebkgmap and eimchip2sky packages to here.
+- array_utils:
+  + Changed the type of the argument 'mask' to minloc1d and maxloc1d from logical(bool) to logical.
+  + Replaced getBinNumber by a new algorithm, derived from Press et al, which ought to be quicker.
+  + Subroutine linearInterpolate is made obsolete, and has been removed from the public routines of array_utils. Routines from module interpolate.f90 should now be used instead.
+  + Changed argument of maskArrayLimits from logical(bool) to logical.
+  + Swapped selectArraySubsetBool for selectArraySubsetLogical.
+  + Added subroutines addPatch and makeGaussianConvolver.
+- confusion:
+  + Changed logical(bool) variables to logical.
+- dal_aux:
+  + Added some logical-valued overloading to readArrayData to replace the bools.
+  + Logical(bool) to logical in maxNonNullValue and minNonNullValue.
+- detection_stats:
+  + Added subroutine mighellsChi2.
+  + Eliminated a global public variable, numBands .
+- dss_aux:
+  + Changed calls to dal_aux:readArrayData to conform with abolition of logical(bool) args.
+- dss_ranges_aux:
+  + Added function calcNearestToRange.
+- dump:
+  + Added logical overloading to dumpImageToFits.
+- ellipse:
+  + Changed 3rd argument of calcEllipseFromAngle from degrees to radians.
+- exposure:
+  + Now requires interpolations (in ssclib) as splines is removed.
+- fftw2_aux:
+  + Removed routine 'recenter' (fortran intrinsic 'cshift' does the same job).
+- geometric_types:
+  + Introduced types r2VecType and r3VecType.
+- histogram_utils:
+  + Re-wrote the module: many changes.
+  + Added initializeWeightedHistoSingle, initializeWeightedHistoDouble, makeWeightedHistogram, calcBinEdges .
+- interpolat:
+  + Superceded by interpolations.f90 .
+- interpolations:
+  + Old routines bilinearSample and bilinearValue are made non-public.
+  + Module splines.f90 is abolished, its routines being transferred to module interpolate.f90. splines:calcCubicSplines is renamed to calcY2ForCubicSplines in the process.
+  + Subroutines/Funcions are interpolate, interpolate2d, calcY2ForCubicSplines, cubicSplineInterpolate, bilinearInterpolateSscLib, estimateGradsForBicubic, loadWeightsForBicubic, calcCoeffsForBicubic, bicubicInterpolate, interpolateInPolarCoord, some of which have been transferred from array_utils.f90 , interpolat.f90 and splines.f90 .
+  + bilinearInterpolate() is renamed into bilinearInterpolateSscLib() to avoid a potential crash in the namespace with mssllib.
+- linear:
+  + Status arguments removed from invertPosDefMatrix, decomposeCholesky and solveLinearTriDiag. Module errorHandling used instead.
+  + Subroutines invertPosDefMatrix, decomposeCholesky and solveLinearTriDiag overloaded for single and double.
+- math_utils:
+  + Removed useless declaration of J0 and J1 in besselJ0Zero and besselJ1Zero.
+  + Hard-wired max number of iterations in incompleteGammaPbySeries increased from 100 to 150 (a kludge). NOTE! The sla routines for gamma P and Q should be used instead of the math_utils ones.
+  + Added sinc function.
+- minimizations:
+  + Changed calls to ssc_misc:maxLoc1d to conform with abolition of logical(bool) args.
+- random_aux:
+  + Improved the getSineRandoms algorithm, and removed the status argument.
+  + Added function sineRandom.
+  + Changed type of coinIsHeads from logical(bool) to logical, and introduced an optional arguments 'weights.'
+  + The parameter 'hsize' which occurs in many random_aux routine changed to 'bufferSize' and made global.
+- rebinners:
+  + Changed all logical(bool) to logical.
+- save_image:
+  + Overloaded saveImage to take logical-valued images.
+- sort_mod:
+  + quickSortStatic overloaded to single.
+- source_cutouts:
+  + Changed getSourceCutoutsManyArgs arguments from logical(bool) to logical.
+- ssc_misc:
+  + Added decideOption.
+  + Added calcLineIntersect.
+- wcs_aux:
+  + The argument rotAngle in convertNewToOld() now becomes optional.
+
+Version 3.33.4 - 2008-06-26 (AI)
+----------------------
+- (dss_aux.f90) calls to the new dssRanges interface (dsslib) changed. SOC-SPR-6488 fixed
+
+Version 3.33.3 - 2008-05-14 (MAS/LUX)
+----------------------
+- In Fitsplutils.pm, fixed a bug that the rows after 19th are ignored in &tbl2arrays() and &tbl2arraysingle().  The corresponding test case is added in test/testfitsplutils .
+
+Version 3.33.2 - 2008-04-16 (MAS/LUX)
+----------------------
+- In dss_aux.f90, fixed a point to cause a possible memory leak.  trim() are added in a number of points.  Subroutine deallocateDssCompSubsets is added.
+- In dss_ranges_aux.f90, subroutine areRangesEqual is added.
+- Added dss1_test (which runs testdssaux.f90 and testexposure.f90) and testdssrangesaux.f90 in test/ .  Because of this it now requires testprods-1.10.
+
+Version 3.33.1 - 2008-04-01 (MAS/LUX)
+----------------------
+- In exposure.f90, now call CAL_piToeV (in cal) from convertPiToEeV, as SOC-SPR-2424 was already fixed and closed.  This eliminates the warning piToEvWorkaround, and it follows the request in SSC-SPR-3682 (for lccorr).  Also, convertPiToEeV now also accepts real(single) scalar/vector as the input.  The test harness for it testexposure.f90 is also created.
+
+Version 3.33 - 2008-03-19 (MAS/LUX)
+----------------------
+- Added Fitsplutils.pm::fparkey() (and its tests in testfitsplutils).
+
+Version 3.32 - 2008-03-18 (MAS/LUX)
+----------------------
+- Added Fitsplutils.pm::getattribute() (and its tests in testfitsplutils).
+
+Version 3.31 - 2008-03-07 (MAS/LUX)
+----------------------
+- Added SSCLib.pm and Fitsplutils.pm as well as its test harnesses (testssclibpm and testfitsplutils).
+
+Version 3.30 - 2007-10-31 (MAS/LUX)
+----------------------
+- Added test_utils.  Modified the document accordingly.
+- Added test/testdetectionstats.f90 test/testtestutils.f90 .
+
+Version 3.29.3 - 2007-05-31 (MAS/LUX)
+----------------------
+- Fixed fftw_aux (eliminating an initialization) which causes a compiling problem in asmooth.
+
+Version 3.29.2 - 2007-05-30 (MAS/LUX)
+----------------------
+- Modified by Aitor Ibarra, changing the variable names etc in boxchains.f90 and coordinate.f90 _in order to_ avoid the possible memory leak troubles.
+
+Version 3.29.1 - 2007-04-15 (MAS/LUX)
+----------------------
+- Surveying all the codes, fixed places which possibly cause the memory leak.
+
+Version 3.29 - 2005-12-02 (IMS/LUX)
+----------------------
+- Changed dss_aux.f90 slightly to fix a funny problem seemingly related to interaction with dsslib.
+- Removed correctForGtiAndAlias from exposure.f90 and updated other of its routines from their lccorr equivalents (fixes SPR 3586: duplicated exposure routines)
+- Fixed typos in Bessel function routines added in previous version.
+
+Version 3.28 - 2005-12-02 (IMS/LUX)
+----------------------
+- Added Bessel function routines to math_utils.
+- Fixed bug in minimizations:powellsMethod in which the optional input argument axisIsPinned is unilaterally accessed (ie without being first tested for presence).
+- Filled in most of the error/warning messages in the code.
+
+Version 3.27 - 2005-11-01 (IMS/LUX)
+----------------------
+- Overloaded wcs_aux:pixelsToTan to accept 2D array arguments.
+
+Version 3.26 - 2005-09-14 (IMS/LUX)
+----------------------
+- Fixed a problem in writeColDataInt8 and writeColDataInt16 in which an attempt was made to access a non-present optional argument.
+- Fixed a division by zero in ssc_misc.f90:sprintEvery when total==1.
+- Fixed a problem in array_utils:findUniqueValues in which optional mask argument was being unilaterally accessed.
+
+Version 3.25 - 2005-09-07 (IMS/LUX)
+----------------------
+- Added public logical applyAttcalcFudge to module coordinate.f90. When this is set .true., the sign of the boresight psi is inverted.
+- Added some checks on array size in array_utils:median.
+- Overloaded all coordinate:tanTo* or *ToTan routines to take a wcs argument instead of refRa and refDec.
+- Optional mask() argument added to array_utils:findUniqueValues.
+- Some new (private) subroutines, + additional optional arguments to existing subroutines, added to minimizations.f90 so as to enable rudimentary constraint handling in multi-dimensional minimization.
+- dss_ranges_aux:swapRangeBounds made public.
+- Added dss_ranges_aux:compareRangeBounds + some more public constants.
+- Overloaded dss_ranges_aux:initializeRangeT to take scalar and vector arguments. (Vector should be enough! Deprecate the scalar.)
+- In dss_ranges_aux:initializeBoundT bound%type is now set to UNDEFINED (was INCLUSIVE).
+- Made coordinate:ims_getFocalLength public.
+- Overloaded rebinners:rebinImage to take cubes as arguments as well as images.
+
+Version 3.24 - 2005-04-01 (IMS/LUX)
+----------------------
+- Added subroutine tanRadiusToPixelsEllipse to wcs_aux with overloading to scalar and vector arguments.
+- Overloaded detection_stats.f90:pearsonsChi2 to take 3D array arguments.
+- Added hasWcsColumnsName, hasWcsColumns to wcs_aux.
+- Overloaded detection_stats.f90:chi2Prob, integratedChi2Prob and chi2Unlike to take either integer or real(single) degfree argument.
+- Added inverseIntChi2Prob to detection_stats.
+
+Version 3.23 - 2005-02-21 (IMS/LUX)
+----------------------
+- Added brentsMethod and powellsMethod to minimizations.f90.
+- Type of the 'equivalent' argument of wcs_aux.f90:checkImageEqivalence changed from logical(bool) to logical. This only seems to affect package edetect, which has been modified accordingly.
+- Added chi2Unlike to detection_stats.
+- Added optional intent(in) argument maxNumIterationsArg to minimizations.f90:simplexMinimization.
+
+Version 3.22 - 2004-11-29 (IMS/LUX)
+----------------------
+- dal_aux:readGtis now checks to see if the table is present before trying to open it. If not, it issues a warning and allocates the gti pointer vector to size 0.
+- The array-argument array_utils:median overloads failed if the optional mask argument was not present. This has now been corrected.
+- Added function findUniqueValues to array_utils.
+- Corrected an error in rebinners in which vectors of uncertainties were not being initialized.
+- Overloaded ssc_misc:orLists to int8, int16 and int32.
+- Overloaded sort_mod:quickSort to int8.
+- random_aux:getPoissonRandoms overloaded to take either 1D or 2D array arguments.
+- Fixed bug in math_utils:incompleteGammaQ and :incompleteGammaP in which the status return integer could in some circumstances be uninitialized.
+
+Version 3.21 - 2004-11-18 (IMS/LUX)
+----------------------
+- Overloaded detection_stats:pearsonsChi2 to take either 2D or 1D array arguments.
+- readGtis with several overloads introduced into dal_aux. The two subroutines readGtis and readGtisFromDss in dss_aux have been condensed into a single (overloaded) routine readGtisFromDss.
+- The changes to coordinate:raDecToTel and :tanToTel done in version 3.18 introduced errors, which have now been fixed.
+- Introduced a workaround in coordinate:cc1ToRawMasterCcd to avoid trouble associated with SOC SPR 2586. This should fix SSC SPR 3354 on esky2det.
+
+Version 3.20 - 2004-11-14 (IMS/LUX)
+----------------------
+- Now making sure that values of phi returned from coordinate:raDecToTel and :tanToTel are between 0 and 2*pi (fixes SPR 3427 on lccorr).
+
+Version 3.19 - 2004-11-10 (IMS/LUX)
+----------------------
+- Overloaded ssc_misc:isNaN also to single or double 2D array arguments.
+
+Version 3.18 - 2004-11-08 (IMS/LUX)
+----------------------
+- Added routines intBitMaskToBinaryStr, intBitMaskToHexStr, binaryStrToIntBitMask and hexStrToIntBitMask to ssc_misc.
+- Changed ssc_misc:isNaN function data type from logical(bool) to logical (doesn't seem to break anything) and overloaded it to single/double precision, scalar or vector arguments.
+- Modified the real-valued routines in sort_mod so that they test the input for NaN values before attempting to sort. These subroutines now return a non-zero (optional) status return if any NaNs are found. This should close SPR 3123.
+- Slight mods to some routines in coordinate, to remove duplicated code, also so that all chip<->sky routines now access the boresight information via coordinate:ims_getBoresightMatrix.
+- Fixed SPR 3423 (TELCOORD theta was not being converted to radians in coordinate:telToRaDec).
+- Some unnecessary pointer arrays changed to allocatables in module coordinate.
+
+Version 3.17 - 2004-10-28 (IMS/LUX)
+----------------------
+- Added RootFive, RootSeven and GoldenRatio to constants.
+- Added function chooseRandomNewColName (and so also 'use random_aux') to dal_aux.
+- Added subroutine writeColData to dal_aux.
+- Added optional argument integerNullValue to dal_aux:addOrOpenColumn.
+- Added double-precision overload to array_utils:median and array_utils:valueAtHistoFraction.
+- Mask argument to array_utils:median and array_utils:valueAtHistoFraction changed from logical(bool) to logical.
+- Changed name of detection_stats:chi2Prob to integratedChi2Prob, and added new chi2 probability-density routine which will now take the name of chi2Prob.
+- Added subroutine pearsonsChi2 to detection_stats.
+- Overloaded ssc_misc:swap function to 3 integer and 3 real types.
+- Fixed error in detection_stats:minDetPoissonCountsScalar in which total counts was used instead of the correct src counts.
+
+Version 3.16.1 - 2004-10-20 (IMS/LUX)
+----------------------
+- Fixed SPR 3410 by including selector in the USEDLIBS line of the makefile.
+
+Version 3.16 - 2004-09-06 (IMS/LUX)
+----------------------
+- Moved gtiVecType (was intervalVecType) structure definition from eimchip2sky:cube_aux to intervals_aux, and an integer 'gtiType' added to the definition.
+- Added 'set' type to overload of dal_aux:readArrayData.
+
+Version 3.15 - 2004-08-18 (IMS/LUX)
+----------------------
+- Changed data type of argument vigSamplesCube of exposure.f90:constructVignettingCube from real(double) to real(single).
+- save_image:saveImage routines now delete any DSS keywords.
+- wcs_aux.f90:readWcs now made more generic.
+- wcs_aux column access now reads/writes TMPTCROT keyword.
+- Introduced wcs as an optional argument to saveImage.
+
+Version 3.14 - 2004-08-13 (IMS/LUX)
+----------------------
+- Fixed bug in linear.f90:decomposeCholesky.
+- linear.f90:solveLinearEquations argument pivotPlease: changed type from logical(bool) to logical.
+
+Version 3.13 - 2004-07-27 (IMS/LUX)
+----------------------
+- Overloaded array_utils:getBinNumber to accept also real(double).
+- Overloaded wcs_aux:hasWcs to accept just the set name as an argument. These 'hasWcs' functions have also all been changed from logical(bool) to logical.
+- Rearranged the arguments of minimizations:simplexMinimization to a more orderly arrangement.
+
+Version 3.12 - 2004-06-25 (IMS/LUX)
+----------------------
+- Added double-precision overloading to array_utils:getBinNumber.
+- Changed wcs_aux:tanToPixels and pixelsToTan so they accept any wcs for which both CTYPE1 and CTYPE2 end in 'TAN'.
+- Added a warning if the user attempts to store a non-zero CROTA value to a column (dal doesn't yet allow this).
+- Made wcs_aux:checkWcsType a little more general.
+- Added sensyDegradnFromGaussSmooth to detection_stats.
+- Fixed SPR 3351 (doubled the size of the frame buffer).
+- Changed exposure:correctForGtiAndAlias so it takes an optional binPrecisionArg argument. Where this is not supplied, binPrecision is calculated from 2.5e-11 times the time of the 1st bin. Where the event times are not randomized (ie all present PN), bins are discarded which contain frame centre times within binPrecision of the bin edge.
+
+Version 3.11 - 2004-06-11 (IMS/LUX)
+----------------------
+- Removed pointless checks on CTYPE in wcs_aux:readWcs, convertOldToNew and convertNewToOld.
+- coordinate:calcTransformAndOffset now sets cal randomize=.false. during its processing (then restores the previous randomize setting).
+- In dss_bitmasks_aux:andBitMasksVecVecVec the pointer andedBitMasks was not being allocated under some conditions (SPR 3339). Fixed this.
+
+Version 3.10 - 2004-06-10 (IMS/LUX)
+----------------------
+- Added convertPhaToEeV to exposure.
+- Fixed the problem in dss_ranges_aux:rangeToStr where the lower limit was 0.1. This has been changed to -99999. (spr 3281)
+- exposure:getQe and constructQeArray now take optional rawX and rawY arguments (so as to fix SPR 3297 and allow lccorr to fix SPR 3306).
+- Added readGtisFromDss to dss_aux.
+- Added optional argument isNewAtt to coordinate:detToTan and telToTan. This won't break anything which calls these routines.
+- Created new module 'regridders' to take much of the non-generic stuff in polygon.
+- Old routine polygon:regrid renamed to regridders:regridCartesian.
+- dss_ranges_aux, dss_aux, dump_dss: calls to dumpRanges and dumpBounds changed a little (optional integer argument supplied instead of a complicated string expression). This seems to be another compiler problem - seg faults at point of call of a subroutine.
+- dsslib routine dssFilterName replaces dssFilterComps in dss_bitmask_aux.f90:getBitMasksDssComp (fixes SPR 3313).
+- Removed nearly all instances of declarations of variables to the size of an argument, since these occasionally seem to cause seg faults (see eg SPR 3301). I've left them in only when 'variable' is the name of a vector function.
+- Rearranged the argument order in exposure:getVigMap.
+- Changed '>' to '<' in some routines of dss_ranges_aux in order to fix SPR 3317.
+- Changed a sign in routine getPsfImagePixelCorners of coordinate.f90 to fix SPR 3201.
+- Added routines regridCartesianToPolar and regridPolarToCartesian to regridders.
+- In module polygon, changed structure name curvedSideType to CurvedSideT to adhere to sas formalism; also added structure PolycurveVectorT.
+- Added regridScalarDouble to overloading of regridders:regridCartesian.
+- Added interpolateVigMap to module exposure.
+- exposure:constructPsfCubeTelcoord amended (error replaced by warning) so as to fix SPR 3309.
+
+Version 3.9 - 2004-04-19 (IMS/LUX)
+----------------------
+- Most of the routines in coordinate have been changed rather extensively in an effort to rationalize them.
+- Work-arounds have been put in place until SOC SPR 2518 is fixed.
+- The 'getInstrumentAttitude' and 'getScAttitude' routines have been moved from cal_aux to coordinate.
+- Module source_cutouts has been adjusted to accord with the above changes.
+- 'use coordinate' was removed from exposure.f90 because it appears to be obsolete.
+- Modified the dss_ranges_aux.f90:dumpRanges call a little so as to have better indenting.
+- Added dss_ranges_aux.f90:dumpBounds.
+- wcs_aux.f90:convertNewToOld made public.
+- Temporarily stopped wcs_aux from trying to write TCROT keyword to columns. See SOC SPR 2523.
+- Changed presized local arrays to allocatable in wcs_aux.f90:tanToPixelsVector in order to work around what seems to be a compiler bug. See SPR 3301 on lccorr.
+
+Version 3.8 - 2004-04-16 (IMS/LUX)
+----------------------
+- Deleted 'use datafilter' from exposure.f90, 'selector' from the src/Makefile USEDLIBS and selectlib from DEPEND. No routine in exposure uses any selectlib functions. This surplus 'use' seems to have been giving problems in the compilation of other tasks which 'use exposure'.
+- Added routine getRandomOrder to random_aux.
+- Modified dal_aux.f90:splitSetTabName to better cope with the situation in which the user wants to write rather than read a dataset table.
+- Deleted some obsolete backed-up code.
+- Changed detection_stats to fix SPR 3290.
+- Added a boolean mask as an optional argument to array_utils:median.
+- Added int16, int32 and double overloading to array_utils:selectArraySubset.
+
+Version 3.7 - 2004-03-25 (IMS/LUX)
+----------------------
+- Copy of patches to devtrack.
+
+Version 3.6.8 - 2004-03-04 (IMS SSC/LUX)
+-------------
+- Some changes and bug fixes to accommodate fixes in lccorr-2.2.4.
+
+Version 3.6.7 - 2004-01-30 (IMS SSC/LUX)
+-------------
+- Uploaded now before lccorr is fixed so as to be consistent with region-7.1.5 upload.
+- Documentation more or less complete to the end of module intervals.
+- New routines added to module dss_aux to accommodate necessary changes in lccorr. 
+- Relevant dss_aux routines moved to new module boxchains.
+- Relevant exposure routines moved to new lccorr module exposure_map.
+- Writing of new-style wcs keywords turned off in module wcs_aux.
+
+Version 3.6.6 - 2004-01-30 (IMS SSC/LUX)
+-------------
+- Changes in wcs_aux and save_image to fix SPR 3227.
+
+Version 3.6.5 - 2004-01-29 (IMS SSC/LUX)
+-------------
+- Fix of SPR 3237 on lccorr required changes to interface of exposure.f90:calcCcdExpMap.
+- Modules dump and ellipse documented.
+
+Version 3.6.4 - 2004-01-16 (IMS SSC/LUX)
+-------------
+- Fixed bug in coordinate.f90:calcTransformAndOffset (fixes SPR 3216).
+- Rearranged argument lists for overloaded coordinate.f90:instToRaw (fixes SPR 3217).
+- Fixed SPR 3209.
+
+Version 3.6.3 - 2004-01-14 (IMS SSC/LUX)
+-------------
+- Fixed SPR 3208 (corrected bug in ellipse.f90:ellipsePhaseToAngle).
+- Fixed SPR 3207 (submitted on region, but it was in fact a bug in source_cutouts.f90:getSourceCutoutsFewArgs).
+
+Version 3.6.2 - 2003-12-18 (IMS SSC/LUX)
+-------------
+- Modified valueAtHistoFractionVector and valueAtHistoFractionArray in array_utils to fix SPR 3187.
+- Added psfToDet to coordinate in order to fix a problem with lccorr (SPR 3189).
+- Modified getPsfImagePixelCorners (plus a couple of other minor bug fixes) in coordinate for the same reason.
+
+Version 3.6.1 - 2003-12-12 (IMS SSC/LUX)
+-------------
+- Fixed bug in coordinate:getPsfImagePixelCorners (SPR 3171).
+- Fixed bug in detection_stats:minDetPoissonCounts (SPR 3172).
+
+Version 3.6 - 2003-12-11 (IMS SSC/LUX)
+-------------
+- andIntervals removed from dss_aux - it already exists in intervals_aux!
+- The routines in intervals_aux converted from functions to subroutines. exposure modified to be consistent with this.
+- bilinearSample, bilinearValue moved from math_utils to a new module interpolate.
+- interpolateInPolarCoord added to interpolate.
+- calcAitoff moved from math_utils to coordinate.
+
+Version 3.5 - 2003-12-10 (IMS SSC/LUX)
+-------------
+- Introduced a check on -ve args in loadXYindices of coordinate.
+- Added andIntervals to dss_aux.
+
+Version 3.4 - 2003-12-08 (IMS SSC/LUX)
+-------------
+- Module dss_aux documented.
+- Added a task dssremove.
+- Added checkImageEquivalence and readWcsColumns to wcs_aux.
+- Added calcChi2HalfDegFree to detection_stats.
+- Added tanToPsf and psfToTan to coordinate.
+- Added some extra overloading to integrateRanges in dss_aux.
+- Increased the generality of findConfusedSets in confused (won't break any interfaces).
+- Fixed a bug in getRealKwd, getIntKwd in dal_aux (was using column/array data type variable definitions for attribute data-type check).
+- Modified incompleteGammaP and incompleteGammaQ in math_utils so as to cope better with zero arguments.
+- Added lnIncompleteGammaP and lnIncompleteGammaQ to math_utils.
+- Modified maxNonNullValueSingle, readColToFixedColReal32 in dal_aux to deal with 1- or 2-dimensional columns.
+- Amended dumpWcs in wcs_aux.
+
+Version 3.3 - 2003-11-21 (IMS SSC/LUX)
+-------------
+- Added a new module minimizations.f90 which will take routines such as hybridNewtonsMethod and riddersMethod, formerly in math_utils.f90.
+- Added a new subroutine simplexMinimization to this module.
+- Slight changes to minLoc1d and maxLoc1d in array_utils.
+- Changed incorrect TAN---RA and TAN--DEC to correct form RA---TAN, DEC--TAN.
+- Fixed bug in wcs_aux:readWcsSourceList.
+- Rearrangement in dss_aux.
+- Some work on documentation.
+- Removed some old code.
+
+Version 3.2 - 2003-11-21 (IMS SSC/LUX)
+-------------
+- Included a task dssdump.
+- Included param on the USEDLIBS line in src/makefile to cater for this task. I note that ssclib already depended on param, which it should not have before.
+- Documentation complete for module detection_stats.
+- Restored the module parse_list_mod (this was causing test problems).
+- Slight modifications to module detection_stats.
+- Fixed test/testsort.f90.
+
+Version 3.1 - 2003-11-21 (IMS SSC/LUX)
+-------------
+- Removed ssclib from the DEPEND(!)
+- Removed old code and unnecessary files.
+- Updated cal, sas and saslib entries in DEPEND.
+
+Version 3.0 - 2003-11-20 (IMS SSC/LUX)
+-------------
+- Massive distillation into ssclib of stuff that was in separate tasks before.
+- All logical arguments and function values changed to boolean (because overloading with a logical and a logical(boolean) assumes, unsafely, that the two kinds will always be different)
+
+Version 2.5 - 2002-08-12 (IMS/LUX)
+-------------
+- Now depends on sas.
+
+Version 2.4.1 - 05 Jun 2002 (IMS/LUX)
+-------------
+- Fixed SPR 2868 (on rgssources). It was a 'status' in coordinate_mod that was not initialised.
+
+Version 2.4 - 08 Mar 2002 (IMS/LUX)
+-------------
+- Functionally this is exactly the same as 2.3.9, it is just uploaded as 2.4 so that dependencies of other tasks can be updated.
+
+Version 2.3.9 - 07 Mar 2002 (IMS/LUX)
+-------------
+- (Sigh) yet another bug, that showed up on Dean's build, but not on mine!
+
+Version 2.3.8 - 07 Mar 2002 (IMS/LUX)
+-------------
+- Changes to my_psf_mod and coordinate_mod as more bugs, this time affecting the interface with rgssources, are dicovered. These concern replacing rates with fluxes in some of the getPsfEllipseAxes() interfaces, and changing the type srcEnvelopeType.
+
+Version 2.3.7 - 07 Mar 2002 (IMS/LUX)
+-------------
+- o22 at MPE didn't like select case(<int16 var>), case(<integer value>), so I changed the select case to 'select case(int(<int16 var>))'.
+
+Version 2.3.6 - 06 Mar 2002 (IMS/LUX)
+-------------
+- A few more subtle bugs found and fixed in my_psf_mod and mathutils_mod.
+
+Version 2.3.5 - 05 Mar 2002 (IMS/LUX)
+-------------
+- Slight change to my_psf_mod:getPsfEllipseAxes_kernel - variable 'status' was not initialized under all circumstances.
+- Fixed a problem in mathutils_mod:mergeStatuses - changed an incorrect iand() to a simple addition.
+
+Version 2.3.4 - 04 Mar 2002 (IMS/LUX)
+-------------
+- Added hybridNewtonsMethod (which implements a more robust Newton's method) to mathutils_mod and adapted routines in my_psf_mod to make use of it.
+
+Version 2.3.3 - 25 Feb 2002 (IMS/LUX)
+-------------
+- Added some explanatory comments and did some rearrangements to the function getInstrumentAttitude() in coordinate_mod.
+
+Version 2.3.2 - 15 Feb 2002 (IMS/LUX)
+-------------
+- Added some noisy messages to help debugging.
+
+Version 2.3.1 - 11 Feb 2002 (IMS/LUX)
+-------------
+- Added caloalutils, oal, taskmain and utils to DEPEND and removed param.
+- Added oal to USEDLIBS line in src/Makefile.
+- Changes to coordinate_mod, mathutils_mod and my_psf_mod to correct mistakes (SPR 2744 on region).
+
+Version 2.3 - 23 Jan 2002 (IMS/LUX)
+-------------
+- Slight changes to subroutine calcEllipse in mathutils_mod.
+- Added function pointInEllipse to mathutils_mod.
+
+Version 2.2 - 18 Jan 2002 (IMS/LUX)
+-------------
+- Added cal dependency now required by coordinate_mod.
+
+Version 2.1 - 17 Jan 2002 (IMS/LUX)
+-------------
+- Added my_psf_mod, coordinate_mod and confusion_mod (not yet documented).
+
+Version 2.0 - 17 Nov 2001 (IMS/LUX)
+-------------
+- Version upgrade as per GV request. Some as-yet-undocumented modules added.
+
+Version 1.6.2 - 2001-09-01 (GV/SOC)
+-------------
+	+ param version should have been 1.62.
+
+Version 1.6.1 - 2001-08-24 (DH)
+-------------
+        + Add dependency on the param packages.  Closes SSC-SPR-2541
+
+Version 1.6 - 2001-07-20 (IMS)
+-------------
+	+ Added a bit more doco for sort_mod;
+	+ Expanded and modernized constants.
+
+Version 1.5.1 - 2000-10-31 (DH)
+-------------
+	+ Add info file.
+
+Version 1.5 - 2000-10-10 (GV/SOC)
+-----------
+	+ re-uploaded for v5.
+
+Version 1.4.1 - 2000-06-20 (DH)
+-------------
+	+ Modify quick sort such that it will work with
+	  arrays whose range does not start at 1.  Closes
+	  SPR 1383.
+
+Version 1.4 - 05-01-00  (DH)
+-----------
+  	+ Remove param from USEDLIBS in test/Makefile .
+
+Version 1.3 - 30-11-99 (DH)
+-----------
+  	+ Change documentation version number.  Add DISTRIBUTION file.
+
+Version 1.2 - 17-11-98 (DH)
+-----------
+  	+ More changes to make makedepend happy.
+
+Version 1.1 - 17-11-98 (DH)
+-----------
+   	+ Delete spurious files which were causing
+          problems for the new makedepend.
+
+Version 1.0 - 29-6-98 (DH)
+-----------
+   	+ Just a change to the version number.
+
+Version 0.1 - 19-6-98 (DH)
+-----------
+   	+ Initial version, not deemed complete.
+

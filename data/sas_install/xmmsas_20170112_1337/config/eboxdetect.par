@@ -1,0 +1,213 @@
+<!-- converted from XPI formatted "eboxdetect.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="usemap" type="bool" default="no">
+   <DESCRIPTION>
+    true: map detection; false: local detection
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+  	<PARAM id="bkgimagesets" type="dataset" list="yes" default="bgimage.fits">
+   		<DESCRIPTION>
+    		names of background maps
+   		</DESCRIPTION>
+   	</PARAM>
+    </ITEM>
+   </CASE>
+  <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="usematchedfilter" type="bool" default="no">
+   <DESCRIPTION>
+    matched filter flag
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withdetmask" type="bool" default="no">
+   <DESCRIPTION>
+    detection mask flag
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+  	<PARAM id="detmasksets" type="dataset" list="yes" default="detmask.fits">
+   		<DESCRIPTION>
+    		name of detection mask
+   		</DESCRIPTION>
+	   <CONSTRAINTS>
+    		true
+   	   </CONSTRAINTS>
+  	</PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withexpimage" type="bool" default="yes">
+   <DESCRIPTION>
+    exposure image flag
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+  	<PARAM id="expimagesets" type="dataset" list="yes" default="expoimage.fits">
+   		<DESCRIPTION>
+    		names of exposure images
+   		</DESCRIPTION>
+   		<CONSTRAINTS>
+    		true
+   		</CONSTRAINTS>
+  	</PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="nruns" type="int" default="3">
+   <DESCRIPTION>
+    number of detection runs
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    nruns in [1:4]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="likemin" type="real" default="10">
+   <DESCRIPTION>
+    minimum detection likelihood
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    likemin in [1.0:50.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="boxsize" type="int" default="5">
+   <DESCRIPTION>
+    detection box size: permitted values: 3 or 5
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    boxsize in [3:5]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withimagebuffersize" type="bool" default="no">
+   <DESCRIPTION>
+    for the use of the imagebuffersize parameter
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="imagebuffersize" type="int" default="640">
+   <DESCRIPTION>
+    image buffer size
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    imagebuffersize in [100:10000]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="ecf" type="real" list="yes" default="1">
+   <DESCRIPTION>
+    energy conversion factors
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    ecf in [0.0:1000.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="imagesets" type="dataset" list="yes" mandatory="yes" default="image.fits">
+   <DESCRIPTION>
+    names of input EPIC fits images
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="boxlistset" type="dataset" mandatory="yes" default="boxlist.fits">
+   <DESCRIPTION>
+    name of output source list (not yet implemented)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withoffsets" type="bool" default="no">
+   <DESCRIPTION>
+    flag for reading offsets from eident source list - obsolete
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="mergedlistset" type="dataset" default="mergedlist.fits">
+   <DESCRIPTION>
+    eident source list (not yet implemented)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="hrdef" type="int" list="yes" default="1 2 2 3 3 4">
+   <DESCRIPTION>
+    hardness ratio band definitions
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="pimin" type="int" list="yes" default="2000">
+   <DESCRIPTION>
+    lower PI energy boundaries of input images
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    pimin in [1:30000]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="pimax" type="int" list="yes" default="4500">
+   <DESCRIPTION>
+    upper PI energy boundaries of input images
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    pimax in [1:30000]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="obsmode" type="string" default="pointing">
+   <DESCRIPTION>
+     Observation mode of input data: pointing (default) or slew
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="pointing">
+    </ITEM>
+    <ITEM value="slew">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

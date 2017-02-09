@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>MATRIX table creation</TITLE>
+<META NAME="description" CONTENT="MATRIX table creation">
+<META NAME="keywords" CONTENT="rmfgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rmfgen.css">
+
+<LINK REL="next" HREF="node28.html">
+<LINK REL="previous" HREF="node26.html">
+<LINK REL="up" HREF="node24.html">
+<LINK REL="next" HREF="node28.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rmfgen (rmfgen-2.5.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node26.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Main Stage - Generate"></A>
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Algorithm"></A>
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="EBOUNDS table creation"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rmfgen.html">Home Page</A> / <A  HREF="node24.html">Algorithm</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00083000000000000000"></A><A NAME="1291"></A>
+<BR>
+<TT>MATRIX</TT> table creation
+</H2>
+
+<P>
+<UL>
+<LI>Go through corrected matrix to find 
+          out the following statistics:
+
+<P>
+
+<OL>
+<LI>The largest number of channel groups in a row
+</LI>
+<LI>The largest number of channel elements in a row above threshold
+          
+</LI>
+</OL>
+
+<P>
+</LI>
+<LI>Create empty output table header and structure.
+
+<P>
+</LI>
+<LI>Create a linked list (GROUP_LIST) 
+          to store groups of contiguous elements
+
+<P>
+</LI>
+<LI>Foreach row in corrected matrix:
+
+<P>
+
+<UL>
+<LI>Create a linked list corresponding to a single group (GROUP).
+
+<P>
+</LI>
+<LI>Foreach element in row
+
+<P>
+
+<UL>
+<LI>If element is above threshold, add element to GROUP.
+
+<P>
+</LI>
+<LI>Else push GROUP onto GROUP_LIST, 
+	      and create a new instance of
+              the GROUP structure for the next group of contiguous elements.
+
+<P>
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI>End element loop
+
+<P>
+</LI>
+<LI>Write out GROUP_LIST to output table.
+
+<P>
+</LI>
+<LI>Create a new instance of GROUP_LIST for the next row.
+
+<P>
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI>end row loop
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node26.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Main Stage - Generate"></A>
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Algorithm"></A>
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="EBOUNDS table creation"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

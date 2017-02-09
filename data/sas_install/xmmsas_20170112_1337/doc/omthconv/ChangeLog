@@ -1,0 +1,253 @@
+ChangeLog for omthconv
+
+===============================
+
+Version 1.34.1 - 2009-07-21 (CB)
+------------------------------
+        +src Deleted ssc lib (not needed) from Makefilefile to
+        fix gcc4 build failure
+     
+	
+Version 1.34 - 2009-02-14 (CB)
+------------------------------
+        Deleted ssclib from DEPEND file again to
+        fix build problem on xmac02 machine
+        
+
+===============================
+Version 1.33 - 2009-02-11 (CB)
+------------------------------
+        Deleted ssclib from DEPEND file to
+        fix build problem on xmac02 machine
+ 
+
+Version 1.32 - 2005-08-17 (CB)  
+--------------------------------
+	Made a minor modification to get the exposure identifier
+	from the header from the thxset file (fixes SPR 3501)
+
+	
+Version 1.31.1 - 2005-03-02 (CB)  
+--------------------------------
+	Made a minor modification to fix SPR 3439
+
+
+
+Version 1.31 - 2003-12-01 (CB)  
+--------------------------------
+	Variable OBTStart initialised to 0 to fix test-harness failure
+	in low-memory test.
+	
+Version 1.30 - 2003-11-21 (CB)  
+--------------------------------
+	Small fix to DEPEND file
+	
+Version 1.29 - 2003-11-21 (CB)  
+--------------------------------
+	DEPEND file ammended for ssclib 3.0
+	
+Version 1.28 - 2003-02-26 (CB)  
+--------------------------------
+    Uploaded into development track
+	
+Version 1.27.12 - 2003-01-20 (CB)  
+--------------------------------
+    +(src/omthconv_mod.f90) modified code tp get exposure identifier
+	string to correct failure in Leicester pipeline
+         
+  
+Version 1.27.11 - 2003-01-09 (CB)  
+--------------------------------
+         Fixed test-harness failure.
+  
+Version 1.27.10 - 2003-01-08 (CB)  
+--------------------------------
+         +(src/omthconv_mod.f90) exposure id string checked to ensure 
+	not X... to prevent oal call failure- fixes omfchain problem.
+   
+	
+Version 1.27.9 - 2003-01-06 (CB)  
+--------------------------------
+        Updated files in test directory to fix test failure. 
+	
+Version 1.27.8 - 2002-11-04 (CB)  
+--------------------------------
++(src/omthconv_mod.f90) Replaced call to "getstartendexp" by oal call.
+	                Fixes SPR 3056
+   	
+Version 1.27.7 - 2002-11-04 (CB)  
+--------------------------------
+   Makefile in config directory ammended to cure build failure
+ 
+Version 1.27.6 - 2002-11-01 (CB)  
+--------------------------------
+   DEPEND file ammended to cure build failure
+ 
+Version 1.27.5 - 2002-10-31 (CB)  
+--------------------------------
+   Invalid layout file deleted to cure build failure
+ 
+Version 1.27.4 - 2002-05-28 (CB)  
+--------------------------------
+  +(src/omthconv_mod.f90) Added attributes EXPIDTR and ATT_SRC
+	   (SPRS 2879 & 2880)
+       
+	
+Version 1.27.3 - 2002-05-28 (CB/SRR)  
+--------------------------------
+        Documentation updated.
+	
+Version 1.27.2 - 2002-03-14 (CB)  
+--------------------------------
+        Documentation corrected.
+	
+Version 1.27.1 - 2002-01-27 (CB) Configuration file ammended (SPR 2722). 
+___________
+
+Version 1.27 - 2002-01-08 (CB) 
+___________
+	DEPEND file ammended.
+
+Version 1.26 - 2001-12-14 (VNY) prepared for new SAS release
+Version 1.25.1 - 2001-10-18 (VNY) 
+	dependencies have been updated to rectify the task build
+	
+Version 1.25: - 2001-09-28 (VNY) 
+	+(src/omthconv_mod.f90) obtTags was already in the correct time
+	format (not Tags). Therefore, it was not necessary to convert it
+	to time units using OAL_obtToTimeTag. This call was replaced with
+	an asiggment statement.
+	
+Version 1.24: - 2000-02-07 (CB)
+------------
+	+(src/omthconv_mod.f90) Call to MSSLIB function "getStartendexp"
+	modified to use the new argument setting the instrument mode.  
+
+Version 1.23: - 2000-12-05 (CB)
+------------
+	+(src/omthconv_mod.f90) Value of attribute MJDREF corrected (SPR 2084)  
+
+
+Version 1.22.1: - 2000-11-09 (CB)
+------------
+	+(config/omthconv.info) "om" added. 
+
+
+Version 1.22: - 2000-10-11 (AMK)
+------------
+	+/(test) SSC-SPR-1979. Brought data in test harness
+	up-to-date. Data is now from reprocessed cycle_0070.
+
+Version 1.21: - 2000-10-04 (CB)
+------------
+	+(src/omthconv_mod.f90) Removed "use convertstringtointeger_mod"
+	to rectify build problem..
+	
+Version 1.20: - 2000-09-22 (AMK)
+------------
+	+(src/omthconv_mod.f90) changed the call to getstartendexp to
+	include the new parameter filterString. This is not used in the
+	task but required for consistency..
+
+Version 1.19: - 2000-09-22 (AMK)
+------------
+	+(src/Makefile) changed order of libraries in order to make the
+	static build.
+	
+Version 1.18: - 2000-09-19 (AMK)
+------------
+	+(test/testomthconv) changed 'export' statement
+	
+Version 1.17: - 2000-09-08 (AMK)
+------------
+	+(src.omthconv_mod.f90) fixed bug connected with opening a file.
+	
+Open SPRs
+Version 1.16.2 : 8th June 2000 (AMK)
+Corrected COFIGFILES entry in config Make File. SPR 1731
+	
+Version 1.16.1 : 30th May 2000 (AMK)
+Added info files to task
+	
+Version 1.16 : 11 April 2000 (JFR)
+
+Updated task to exit gracefully when no tracking information present.	
+	
+Version 1.16: 17 March 2000 (JFR)
+
+Modified TCS file to work with "uint" oal
+	
+Version 1.15: 6 Jan 2000
+
+Test harness altered. --odfdir changed to --odf 	
+	
+Version 1.14: 2nd December 1999
+	
+Added DISTRIBUTION (world) file
+	
+Version 1.13: 18th August 1999
+
+Updated TCS file in test oal dir.
+
+Version 1.12: 8th June 1999
+
+Updated dependancies for V3.
+
+Version 1.11: 27 May 1999
+
+SPR 591 accepted.
+Removed call to open oal.
+
+Version 1.10: 21 April 1999
+
+Updated 'message' call to conform to new syntax.
+
+Version 1.9: 15 April 1999
+
+'Spring clean' of code (tidy, comment, update dependancies and fix bugs).
+Changed input parameters to conform to new standards.
+Added checks on input file types.
+Corrected exposure time calculation for new getstartendexp_mod call (no periodic hk needed now).
+Updated test for new dataset and task parameters.
+Updated Documentation.
+	
+Version 1.8: 5 January 1999
+
+SPR 603 closed: Task checks ODF datatype keyword	
+SPR 556 closed: Coding standards
+Documentation updated
+	
+Version 1.7: 10 December 1998
+
+updated Dependancy file RE: mssllib
+
+Version 1.6: 3 November 1998
+
+Deleted missed line from ODF summary file
+
+Version 1.5: 28 October 1998
+
+Deleted lines from ODF summary file.
+
+Version 1.4: 15 October 1998
+
+SPR 604 closed: TIMEUNIT written in caps to both header and extension
+
+Version 1.3: 28 Sep 1998
+
+Bug fix in test harness
+
+Version 1.2: 16 Sep 1998
+
+Changed OAL path re: mail wrt 15 Sep. Problem still exists	
+
+Version 1.1: 15 Sep 1998
+
+Added line 'Call release(outTable)' to fix test FAILURE 
+re: email Mike Denby, Version 2 SAS tasks (fwd)
+
+Version 1.0: 10 Sep 1998
+----------------------
+First version
+Version 0.1
+----------------------------

@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Input Files</TITLE>
+<META NAME="description" CONTENT="Input Files">
+<META NAME="keywords" CONTENT="asmooth">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="asmooth.css">
+
+<LINK REL="next" HREF="node20.html">
+<LINK REL="previous" HREF="node18.html">
+<LINK REL="up" HREF="asmooth.html">
+<LINK REL="next" HREF="node20.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+asmooth (asmooth-2.30) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node18.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Errors"></A>
+<A HREF="asmooth.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Output Files"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="asmooth.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00060000000000000000"></A>
+<A NAME="asmooth:description:inputfiles"></A>
+<BR>
+Input Files
+</H1>
+
+<P>
+The input FITS images listed below need not be XMM images and all of them (even the mask) can be of any numeric data type output by <A NAME="1847"></A><A NAME="tex2html11"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>, eg int8, int16, int32, real32 or real64. All optional images (except the convolvers in <TT>inconvolversarray</TT>) must however be of the same dimensions as the <TT>inset</TT>.
+
+<P>
+
+<OL>
+<LI>(Mandatory) <TT>inset</TT>: the image to be smoothed.
+
+<P>
+</LI>
+<LI>(Optional) <TT>inconvolversarray</TT>: both this file and <TT>inindeximagearray</TT> are read when <TT>smoothstyle</TT> = `withset'. <TT>inconvolversarray</TT> should contain a cube or 3-dimensional array which is a stack of convolver images. The first two dimensions of the cube must be the common <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$y$"></SPAN> dimensions of the convolver arrays; the third dimension must equal the number of convolvers. Convolvers are assigned an index which is their position (starting with 1) along the third-dimension sequence. A convolver of index <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img60.png"
+ ALT="$i$"></SPAN> is then used to smooth portions of the image for which the <TT>inindeximagearray</TT> value is also <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img60.png"
+ ALT="$i$"></SPAN>.
+
+<P>
+In the future this specification may be expanded to accommodate convolvers of varying array size.
+
+<P>
+</LI>
+<LI>(Optional) <TT>inindeximagearray</TT>: both this file and <TT>inconvolversarray</TT> are read when <TT>smoothstyle</TT> = `withset'. <TT>inindeximagearray</TT> should contain a 2-dimensional array. The values of this array after rounding to the nearest integer are taken to refer to the convolvers in the list read from <TT>inconvolversarray</TT>. The <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img60.png"
+ ALT="$i$"></SPAN>th convolver in this list is then used to smooth portions of the image for which the <TT>inindeximagearray</TT> value is also <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img60.png"
+ ALT="$i$"></SPAN>.
+
+<P>
+</LI>
+<LI>(Optional) <TT>intemplateset</TT>: this file is read when <TT>smoothstyle</TT>=`template'. It should contain a 2-dimensional array in the primary extension. The value of a given pixel of <TT>intemplateset</TT> is taken to be the characteristic width (sigma value) of the gaussian convolver to be used to smooth the corresponding pixel of <TT>inset</TT>. This facility doesn't offer any advantages over the <TT>smoothstyle</TT>=`withset' and I will eventually delete it.
+
+<P>
+</LI>
+<LI>(Optional) <TT>invarianceset</TT>: this file is read when <TT>readvarianceset</TT>=`true'. It should contain a 2-dimensional array in the primary extension. The array values should be the variances (ie, squares of standard deviations) in the values of <TT>inset</TT>. If the task needs these variances, but <TT>readvarianceset</TT>=`no', the task assumes that <TT>inset</TT> is Poissonian and thus can be used as an approximation of its own variance.
+
+<P>
+</LI>
+<LI>(Optional) <TT>weightset</TT>: this file is read when <TT>withweightset</TT>=`true'. It should contain a 2-dimensional array in the primary extension. The array values are used as the weights <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img61.png"
+ ALT="$w$"></SPAN> in equation <A HREF="node4.html#convolution">1</A> or <A HREF="node13.html#masked">4</A>.
+
+<P>
+</LI>
+<LI>(Optional) <TT>outmaskset</TT>: this file is read when <TT>withoutmaskset</TT>=`true'. It should contain a 2-dimensional array in the primary extension. The array values are translated to logicals by replacing values <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img59.png"
+ ALT="$&gt;0$"></SPAN> by TRUE, the rest FALSE. The array values perform as the <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img62.png"
+ ALT="$\delta$"></SPAN> values in equation <A HREF="node13.html#masked">4</A>.
+
+<P>
+The parameter name is now (with the abolition of the corresponding `inmask') is a little misleading and I think I'll replace it in the next version with plain `maskset'.
+
+<P>
+</LI>
+<LI>(Optional) <TT>expimageset</TT>: this file is read when <TT>withexpimageset</TT>=`true'. It should contain a 2-dimensional array in the primary extension. The array values should record the exposure of <TT>inset</TT>, if this is a well-defined quantity.
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node18.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Errors"></A>
+<A HREF="asmooth.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Output Files"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

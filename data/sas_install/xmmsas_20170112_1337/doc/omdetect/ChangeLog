@@ -1,0 +1,922 @@
+ChangeLog for omdetect
+=========================
+
+Version 5.36.1 - 2016-11-18 (RDS)
+-------------------------------			
+	+ (src/omdetectdetection_mod.f90) set default value to 
+	                                  .true. in the function
+				          backgroundGradientOkay1 
+
+Version 5.36 - 2016-09-21 (AI)
+-------------------------------			
+	+ (src/omdetect_mod.f90) (nx,ny) variables cast to integer kind 9 
+	to avoid multiplication overflow in ImagingDetection subroutine
+
+Version 5.35 - 2016-07-18 (AI)
+-------------------------------			
+	+ (rc/parameters_mod.f90) gfortran compatibility changes applied.
+
+Version 5.34.1 - 2016-01-12 (AI)
+-------------------------------			
+	+ (src/sourceanalysis_mod.f90)  use modules reordering to avoid error  
+	with NAG fortran compiler 6.2
+	
+Version 5.34 - 2014-03-19 (VNY)
+-------------------------------		
+	+src/omdetect_mod.f90: the calculation of the coincidence-loss
+	corrected error bars is modified by using the postulation of the
+	s/n ratio being the same for the corrected count rates 
+	as for the raw count rates; Setting to NULL the corrected count rates 
+	for the sources with raw+nkg count rate >0.97 counts per frame.
+Version 5.33.2 - 2013-11-12 (VNY)
+-------------------------------		
+	+src/omdetect_mod.f90: Fixed the problem of changing variable
+ 	photometryRadius reported in SSC-SPR-0007155. The problem consisted
+	in the fact that the variable apertureRadius declared as a local
+	variable in omdetect was also declared as a global variable in the 
+	library mssllib. This was leading to the same memory location
+	for the variables photometryRadius and apertureRadius, which 
+	was wrong.
+Version 5.33.1 - 2013-11-10 (VNY)
+-------------------------------		
+	+src/omdetect_mod.f90: added two new columns for the background
+	errors, BKG_RATE_ERR and CORR_BKG_RATE_ERR by using mssllib
+	module omsrctable_mod.f90; updated the calculation of source and 
+	background count rate errors to fix the problem reported
+	in SSC-SPR-7153. Introduced the rounding the source x- and y-
+	coordinates to the accuracy of 0.1 pixel size in order to make 
+	the source photometry output similar on different 
+	computers.
+Version 5.33 - 2013-08-16 (VNY)
+	+(src/omdetect_mod.f90) Skipping the check of the binning
+	factor for mosaiced images as this check is designed for 
+	detector-coordinate images only.
+--------------------------------
+	+(doc/omdetect_description.tex) Documentation corrected		
+--------------------------------	
+Version 5.32 - 2013-07-13 (VNY) 
+--------------------------------
+	+(doc/omdetect_description.tex) Documentation corrected	
+--------------------------------	
+Version 5.31 - 2013-07-11 (VNY) 
+--------------------------------
+	+(src/omdetect_mod.f90) Introduced the check of the binnig factor
+	by using the header-based window size and the actual window size. 
+--------------------------------	
+Version 5.30 - 2012-11-23 (VNY) 
+--------------------------------
+	+(src/omdetect._mod.f90, src/omdetectdetection_mod.f90) Improved the
+	algorithm for detecting large scattered-light features (in terms
+	of computer time usage).
+--------------------------------	
+Version 5.29 - 2012-11-23 (VNY) 
+--------------------------------
+ 	+(src/omdetect._mod.f90, src/omdetectdetection_mod.f90) Included
+	the detection of large scattered-light features (large extended
+	sources) whose masks are transferred to the quality map extension
+	of the input image file; the sources within these regions 
+	are flagged as sitting on an extended source (bit 8 of the 
+	quality flag).
+--------------------------------	
+Version 5.28 - 2011-11-20 (VNY) 
+-------------------------------- 
+	+(ompsfphotometry_mod.f90) Further improvements of the 
+	psf-photmetry algorithm: the calculation of the slope of the 
+	psf-profile is removed; the psf-photometry of close neighbouring
+	sources is made by using the calibration PSF from CAL
+--------------------------------	
+Version 5.27.2 - 2011-02-19 (VNY) 
+-------------------------------- 
+	+(config/omdetect.par): the use of the parameter psfphotometryenabled
+	is restricted for test purposes only; documentation updated.
+--------------------------------	
+Version 5.27.1 - 2010-12-10 (VNY) 
+--------------------------------	
+	+(/test/createtest.f90) Changes in calling the random_seed routine
+	introduced by Eduardo Ojero to make the task working on 64-bit 
+	machines (SSC-SPR-6639).
+--------------------------------	
+Version 5.27 - 2010-11-14 (VNY)
+--------------------------------	
+	+(ompsfphotometry_mod.f90) The psf-photmetry algorithm is improved:
+	a few bugs are fixed; new method for calculating the slope of 
+	the psf-profile is introduced; the least-squares solution is removed 
+	from one of the subroutines to accelerate the calculation.
+--------------------------------	
+Version 5.26 - 2010-11-07 (VNY)
+--------------------------------
+	+(ompsfphotometry_mod.f90) Fixed a bug in the subroutine 
+	findNeighbours, which  might cause a crash due to the usage of
+	unallocated pointer;
+	+(omdetect_mod.f90) a new parameter (neighboursforpsfphotometry)
+	is introduced to get more flexibility in implementing the 
+	PSF-photometry of sources
+Version 5.25 - 2010-10-17 (VNY)
+--------------------------------
+	+(config/omdetect.par): new parameter (psfphotometryset) 
+	is introduced to separate the source lists with the aperture photometry
+	and PSF-photometry. The range of the parameter 
+	psfphotometryenabled is returned to normal (yes/no) as now the 
+	aperture photometry source list is not overwritten when
+	PSF-photometry is requasted.
+	+(src/omdetect_mod.f90, ompsfphotometry_mod.f90, omphotometry_mod.f90)
+	The algorithm for PSF-photometry is improved. 
+Version 5.24.5 - 2010-04-20 (VNY)
+--------------------------------
+	+(config/omdetect.par): The range of the parameter 
+	psfphotometryenabled is restricted to a single "no" value
+	because the performance of the task using the psf-photometry
+	is not yet satisfactory (following the recommendation of SAS-CCB 
+	panel of 2010-04-20).
+Version 5.24.4 - 2010-04-02 (VNY)
+--------------------------------	
+	+(src/parameters_mod.f90): Better protection against
+	source duplication in the Fast-mode detection is introduced
+	(further fixing of SSC-SPR-6601).
+Version 5.24.3 - 2010-04-01 (VNY)
+--------------------------------
+	+(src/omdetect_mod.f90, omdetectdetection_mod.f90, 
+	parameters_mod.f90): modified the algorithm for calculation
+	of the source position in the case of processing Fast-mode
+	images. Instead of using the moments the coordinates are
+	obtained by weighting the image pixels around the brightest
+	source pixel (fixing SSC-SPR-6605).
+Version 5.24.2 - 2010-03-19 (VNY) 
+--------------------------------	
+	+(src/omdetect_mod.f90): Introduced checking of the 
+	source proximity to each other in order to avoid 
+	duplicated detections of the same source in the 
+	Fast mode (SSC-SPR-6601)
+Version 5.24.1 - 2010-03-03 (VNY) 
+--------------------------------
+	+(src/ompsfphotometry): introduced 
+	the re-calculation of the coincidence-loss correction factor
+	after implementing the psf-photometry
+
+Version 5.24 - 2010-01-29 (CB)
+--------------------------------
+        +src ompsfphotometry_mod
+	reduced memory requirements
+
+Version 5.23 - 2010-01-27 (CB)
+--------------------------------
+        +doc Corrected description
+	about psf photometry
+
+Version 5.22 - 2010-01-25 (CB)
+--------------------------------
+        +src Amended bounds on psf fitting
+	when source near an edge
+
+	
+Version 5.21 - 2010-01-22 (CB)
+--------------------------------
+        +doc Corrected a section of
+	the documentation
+	
+Version 5.20 - 2010-01-22 (CB)
+--------------------------------
+        +src Introduced the ability
+	to do photometry through psf fitting
+	through new module ompsfphotometry_mod
+        Introduced new default parameters psfphotometryenabled
+	and maxrawcountrate for this purpose
+	(SCR's 289 and 295). Introduced new
+	parameter backgroundmethod for changing
+	the method to determine the background.
+
+	
+Version 5.19.5 - 2009-07-20 (CB)
+--------------------------------
+        +src Deleted ssc from Makefile
+	to fix gcc4 build failure
+
+	
+Version 5.19.4 - 2009-06-08 (CB)
+--------------------------------
+        +src Added short subroutine modifyQualityImage
+	to omdetect_mod.f90 to reset quality pixels
+	to false if image pixels are >= 0, not nans and
+	not "hot" to fix SPR 6544.
+
+	
+Version 5.19.3 - 2009-05-28 (CB)
+--------------------------------
+        +doc Further minor Amendment to document 
+	to fix compilation failure on cld.mpe.mpg.de
+Version 5.19.2 - 2009-05-27 (CB)
+--------------------------------
+        +doc Ammended doc to fix
+	comp failure on cld.mpe.mpg.de
+Version 5.19.1 - 2009-05-18 (CB)
+--------------------------------
+        +src Set parameter nsources to 0
+	in subroutine fastdetection
+	in omdetect_mod.f90 to prevent
+	spurious source-list when no
+	actual sources on image (SPR 6533)
+Version 5.19 - 2009-04-28 (CB)
+--------------------------------
+        Added some pointer nullify statements
+	to point-source detection algorithm
+	to prevent possible dangling pointers
+Version 5.18 - 2009-04-24 (CB)
+--------------------------------
+        Ammended documentation
+        Removed some obsolete modules
+	
+Version 5.17 - 2009-03-11 (CB)
+--------------------------------
+        Modified to be able to process
+	mosaiced sky-images containing
+	an exposure image. Added a few extra checks
+	in source-parameterisation routines for
+	nan values. 
+
+
+Version 5.16 - 2008-10-07 (CB)
+        Modified omdetectdetection_mod-
+	added a few nullify statements
+	in extended-source detection routines.
+	This is a further fix for SPR 3704.
+
+Version 5.15 - 2008-07-30 (CB)
+        Adjusted a parameter for FAST-mode
+	detection to pick up fainter sources
+
+Version 5.14.1 - 2008-06-18 (CB)
+        Added two checks for nan values in
+	subroutine sourcecircle in omdetectdetection_mod
+	to exclude them before calling median function
+	(which couldn't cope with them).
+	Fixes SPR 6483
+
+	
+Version 5.14 - 2008-05-07 (CB)
+        Made some small improvements to
+	the documentation.
+
+	
+Version 5.13 - 2008-05-02 (CB)
+        Made some small improvements for
+	detecting smoke rings
+
+Version 5.12 - 2008-04-23 (CB)
+        Made some improvements of flagging
+	of smoke-ring sources and some small mods
+	to reduce execution time and improve
+	detection reliability
+	
+Version 5.11 - 2008-03-13 (CB)
+        Added a nullify statement after the pointer
+	"image" is deallocated to fix SPR 3711
+
+
+Version 5.10 - 2008-01-17 (CB)
+        Made small modification to omdetect_mod.f90
+	to stop rare problem where program stops
+	prematurely (SPR 3704).
+
+Version 5.9.1 - 2007-06-20 (CB)
+--------------------------------
+        Made some small modifications to 
+	subroutine "refinesourcemap3" in
+	omsourcemap_mod and a further
+	few minor mods in module 
+	"omdetectdetection_mod" to fix
+	SPR 3670. 
+
+Version 5.9 - 2007-05-21 (CB)
+--------------------------------
+        Made a small modification to function
+	"checkvicinity" in omdetectdetection_mod
+	
+
+Version 5.8 - 2007-03-28 (CB)
+--------------------------------
+        Made a small modification to parameters_mod
+
+Version 5.7 - 2007-03-09 (CB)
+--------------------------------
+        Made a few minor modifications to reduce
+	run-time.
+
+	
+Version 5.6 - 2006-05-31 (CB)
+--------------------------------
+        Removed some test write statements
+	
+Version 5.5 - 2006-05-30 (CB)
+--------------------------------
+        Made a small modification to the way the background
+	image is computed to reduce the cpu time. Also made
+	a minor change the faint-source detection algorithm
+
+
+
+Version 5.4.3 - 2005-12-01 (CB)
+--------------------------------
+        Small bug fixed on omdetectdetection_mod.f90 in
+	subroutine isvalidfirstordersource to fix
+	crash processing a grism image(to fix SPR 3558)
+	
+Version 5.4.2 - 2005-12-01 (CB)
+--------------------------------
+        Made small modification to background estimation in
+	central enhancement region (to fix SPR 3528)
+Version 5.4.1 - 2005-10-07 (CB)
+--------------------------------
+        Removed a subroutine call that masks
+	out the centre region prior to extended-source
+	detection (to fix SPR 3527)
+	
+Version 5.4 - 2005-09-12 (CB)
+--------------------------------
+        Updated documentation and a couple of minor tweaks
+	made to module omdetecdetection_mod.
+	
+Version 5.3 - 2005-08-25 (CB)
+--------------------------------
+        Removed all mention of  minim_mod to fix build problem.
+	(fixes SPR 3510).
+
+	
+Version 5.2 - 2005-08-25 (CB)
+--------------------------------
+        Removed module minim_mod to fix build problem.
+
+	
+Version 5.1 - 2005-08-16 (CB)
+--------------------------------
+        Modified subroutine fastdetection in omdetect_mod.f90
+	so that point-source detection pointers only deleted
+	after call to extendedsource algorithm (fixes SPR 3499)
+        Ammended test harness.
+Version 5.0.7 - 2005-08-09 (CB)
+--------------------------------
+        Made a small modification to omdetectdetection_mod.f90 to make
+	the number of pixels above the background to be a minimum of 2
+	for those pixels to be checked for a possible source (fixes SPR 3492).
+	Also made minor modification to grism detection module to fix zeroth
+	order sources lying close to first order sources being missed.
+        Removed some test statements to reduce execution time. Updated
+	documentation. Removed some redundant code.
+Version 5.0.6 - 2005-06-10 (CB)
+--------------------------------
+        Additional line of code added to subroutine mergeextendedsources
+	in omdetect_mod.f90 to fix SPR 3477 (extended sources being 
+	misclassified)..
+
+Version 5.0.5 - 2005-06-09 (CB)
+--------------------------------
+        Reduced image size in test harness and increased parameter nsigma to 
+	prevent test-harness failure due to timing-out (fixes SPR 3475)
+
+Version 5.0.4 - 2005-06-08 (CB)
+--------------------------------
+        Added a call to subroutine aperturephotometry in suboutine
+        fastdetection to make the fast-mode source-list files
+	similar to those produced by earlier versions (fixes SPR 3466)
+
+Version 5.0.3 - 2005-05-24 (CB)
+--------------------------------
+        Further small mod to  fix SPR 3459.
+
+Version 5.0.2 - 2005-05-24 (CB)
+--------------------------------
+        Added check to prevent an array-bound error when a source is detected close
+	to edge (fixes SPR 3459).
+
+Version 5.0.1 - 2005-05-23 (CB)
+--------------------------------
+        Ammended Makefile in config directory to fix SPR 3456.
+	
+Version 5.0 - 2005-05-20 (CB)
+--------------------------------
+        Incorporates many improvements - better detection of faint-
+	sources, sources with close neighbours and extended sources.
+	Better classification of sources and additional flags set.
+	A background image is produced which can be viewed.
+	
+
+Version 4.19.5 - 2004-03-02 (CB)
+--------------------------------
+        Made a minor modification to subroutine imagedetection to fix
+	a failure when the parameter detectextended=false (couldn't raise 
+	an SPR because netscape not working here).
+	
+Version 4.19.4 - 2004-02-27 (CB)
+--------------------------------
+	A small modification has been made to the grism-detection routine,
+	so that the actual source-detection routine is run 3 times with
+	decreasing image threshold values. This reduces the risk of
+	bright detected spectra being contaminated by scattered light
+	which prevents omgrism from constructing spectra for them
+	(fixes SPR 3261).
+	
+	
+Version 4.19.3 - 2004-02-19 (CB)
+--------------------------------
+	Ammended omdetectdetection_mod.f90 to carry out another search
+	for point-sources after main search, using smaller radii to 
+	compute counts, which enables more fainter sources to be detected and
+	also more sources that are in close proximity to another one
+	(fixes SPR 3252).
+	
+	
+Version 4.19.2 - 2004-01-06 (CB)
+--------------------------------
+	Ammended module omdetectdetection_mod to fix compilation failure 
+	on TRU 64 at MPE (fixes SPR 3192). Ammended parameter constant
+	in omdetectdetection_mod and added check in omdetect_mod for fast
+	mode data to check that a source has been detected by point-source
+	detection algorithm- if not extended-source detection made to find
+	possible source.
+	
+Version 4.19.1 - 2003-12-12 (CB)
+--------------------------------
+	Module matrix_mod deleted to fix build problem 
+	on Darwin 6.8 (fixes SPR 3174)
+	
+Version 4.19 - 2003-12-11 (CB)
+--------------------------------
+	Some source-detection parameters adjusted.
+	
+	
+Version 4.18 - 2003-12-09 (CB)
+--------------------------------
+	Some paremeters for grism source-detection tweaked.
+	
+	
+Version 4.17 - 2003-12-05 (CB)
+--------------------------------
+	Improved detection alogorithim added for grism spectra.
+Version 4.16 - 2003-11-21 (CB)
+--------------------------------
+	DEPEND file ammended for ssclib 3.0
+	
+Version 4.15 - 2003-11-19 (CB)
+--------------------------------
+        A couple of minor changes for ssclib version 3.0.
+	
+Version 4.14 - 2003-11-12 (CB)
+--------------------------------
+        Added check for zero detected sources to prevent array problem.
+Version 4.13 - 2003-10-10 (CB)
+--------------------------------
+        Added optional parameter "background" to enable the user
+	to fix the global background value for source-detection.
+	Module omdetectdetection moved into mssllib, since it 
+	is now also needed by omgsource.
+	
+Version 4.12 - 2003-08-13 (CB)
+--------------------------------
+	Documentation correction for SPR 3088. 
+Version 4.11 - 2003-07-16 (CB)
+--------------------------------
+	+ (src/omdetection_mod.f90) A parameter adjustment to extended
+	source detection routine for grism data.
+	
+Version 4.10 - 2003-07-14 (CB)
+--------------------------------
+	+ (src/omdetection_mod.f90) A couple of minor modifications made
+	to reduce executiuon time.
+	
+Version 4.9 - 2003-07-11 (CB)
+--------------------------------
+	+ (src/omdetecttest_mod.f90) Parameter adjustment for grism data..
+	
+Version 4.8 - 2003-06-17 (VNY)
+--------------------------------
+	+ (test/testomdetecttest) some lines in the testomdetect script are 
+	uncommented to ensure the correct finishing of the test
+	
+Version 4.7 - 2003-06-03 (CB)
+--------------------------------
+        + (src/omdetecttest_mod.f90) Minor mod to fix build problem.
+	
+Version 4.6 - 2003-05-07 (CB)
+--------------------------------
+        + (src/omdetect_mod.f90) Added OmConstants_mod to list
+	of modules to fix build problem.
+	
+	
+Version 4.5 - 2003-05-01 (CB)
+--------------------------------
+        Minor modification made to enable it to be used in the omgrism chain.
+	
+Version 4.4 - 2003-04-29 (CB)
+--------------------------------
+        A couple of minor modifications made to rectify problem reported 
+	on xmmsas-20030427-0057.
+	
+Version 4.3 - 2003-03-15 (CB)
+--------------------------------
+        Now uses modules in mssllib to perform photometry, smooth image,
+	create source-list file and compute magnitudes, as will omsource shortly.
+	
+Version 4.2 - 2003-14-02 (CB)
+--------------------------------
+        Uploaded into development track.
+	
+Version 4.1.11 - 2003-14-02 (CB)
+--------------------------------
+        Corrected 0.5 pixel error in positions & reduced size of centroiding
+	box to reduce contamination by nearby sources (fixes SPRs 3071 &
+	3077). Made small improvements to source-detection routine (to fix
+	SPR 3078). Point-source detection algorithm now searches for
+	sources in order of decreasing pixel value. Faint sources now less
+	likely to be missed.
+	
+Version 4.1.10 - 2003-01-08 (CB)
+--------------------------------
+	+ (src/omdetect_mod.f90) Modified to obtain ccdframe time
+	 and deadfraction from wdx file if not present in image header,
+	so that omdetect is backwards compatible with old images.
+	added optional parameter wdxset to config file to get information.
+	
+
+Version 4.1.9 - 2002-12-20 (CB)
+--------------------------------
+	Remove write statement in omdetectbackground_mod.f90
+
+Version 4.1.8 - 2002-12-18 (CB)
+--------------------------------
+	Documentation correction.
+
+	
+Version 4.1.7 - 2002-12-03 (CB)
+--------------------------------
+	Test harness ammended to fix test failure.
+Version 4.1.6 - 2002-12-03 (CB)
+--------------------------------
+	Ammended program to fix SPRs 3039 & 3035.
+Version 4.1.5 - 2002-11-01 (CB)
+--------------------------------
+	Ammended program to fix SPRs 3018 & 3019.
+Version 4.1.4 - 2002-11-01 (CB)
+--------------------------------
+	Blundered in making minor code modification.. 
+
+Version 4.1.3 - 2002-11-01 (CB)
+--------------------------------
+	Minor ammendment to code that validates extended source. 
+
+Version 4.1.2 - 2002-10-29 (CB)
+--------------------------------
+	Test harness modified to cure failure. 
+
+Version 4.1.1 - 2002-10-24 (CB)
+--------------------------------
+	+ (src/omdetectdetection_mod.f90) Modified to deal better with
+	sources surrounded by strong mod-8 patterns.
+
+Version 4.1 - 2002-10-15 (CB)
+--------------------------------
+	+ (src/omdetectphotometry_mod.f90) modified to do extended
+	photometry more accurately. New columns in source-list added.
+	Source detection algorithm improved. Program tidied up.
+
+
+Version 3.5.7 - 2002-07-11 (CB)
+--------------------------------
+        Code tidied up. Number of connected pixels in a source
+        limited to maximum of 10000 to prevent program crashing
+	(fixes SPR 2851) 
+        New source detection routine (in module sourcedetection)
+        added to detect point sources that the original source
+        detection code misses in extended source regions. Memory
+        requirements reduced. Two minor bugs fixed. 
+
+
+Version 3.5.5   2002-03-26 (CB)
+--------------------------------
+	Some write statements removed.
+
+Version 3.5.4   2002-03-14 (CB)
+--------------------------------
+	Documentation corrected.
+	
+Version 3.5.3   2002-01-28 (CB)
+	+ (src/omdetectphotometry_mod.f90) Code for getting the background
+	mode from a histogram of sky values replaced with a more reliable 
+	method and pixels in the vicinity of sources excluded (fixes SPR
+	2780). In doing this the magnitudes are more reliable (fixes SPR
+	2731). Background map found to be okay (SPR 2764).
+	
+	
+
+Version 3.5.2   2002-01-28 (CB)
+	+ (src/omdetectphotometry_mod.f90) Removed some write statements.
+	Test harness ammended to prevent occasional failure when in fact
+	program is working satisfactorily.
+
+Version 3.5.1   2002-01-28 (CB)
+	+ (src/omdetectphotometry_mod.f90) Modification made to trap a
+	problem that occurred (SPR 2682) analysing a strange image that 
+	caused the source detection algorithm to go hay-wire, resulting 
+	in a crash- One initially detected source was subsequently
+	analysed and split into about 80 sources (normally no more than
+	3), causing an array bound crash. If this problem now occurs 
+	omdetect will add the keyword "SRC_DET" to the source list file
+	header, mentioning the problem- warning message also output 
+	(Fixes SPR 2682).
+	
+Version 3.5 2002-08-02 (CB) 
+___________
+	DEPEND file ammended for SSCLIB
+
+Version 3.4 2001-15-12 (CB) Minor improvements to source
+        detection made - code for smoothing images modified so that a rectangle
+	instead of a box can be made. Documentation ammended (SPR 2653)   
+
+======================
+Version 3.3 - 2001-11-22 (JBa)
+------------
+        + (doc/omdetect_description.tex): fixed documentation
+
+
+
+Version 3.2.5   2001-11-02 (VNY)
+	+ (test/createtest.f90, test/checkoutput.f90) calculation of exp
+	and division operations are made more robusts
+	
+Version 3.2.4   2001-10-30 (CB)
+	+ (test/checkoutput.f90) Array subscripting error rectified. 
+	
+Version 3.2.3   2001-10-23 (VNY)
+	+ (src/omdetect_mod.f90) A protection against negative values
+	was introduced before calculation of log and lnFactrl 
+Version 3.2.2   2001-09-20 (CB)
+	+ (src/omdetectsourceparams_mod.f90) Negative
+	background-subtracted pixel values reset to zero to prevet
+	crashing (fixes SPR 2605).
+	
+Version 3.2.1   2001-09-20 (CB)
+	+ (src/omdetectsourceparams_mod.f90) Sources were being rejected
+	if the source semi-minor axis squared, computed from the moments, 
+	was negative (usually a the source is close to another one). A minor
+	modification has been made to overcome this (fixes SPR 2602). 
+        Test harness modified to conduct a test for the fast-chain. 	
+Version 3.2   2001-09-20 (VNY)
+	+ (src/omdetect_mod.f90) A bug in the sourcePars array indexation has been fixed. 
+Version 3.1   2001-09-17 (VNY)
+	+ (src/omdetect_mod.f90) Correction of X and Y positions 
+	was introduced for the cases when the source is near 
+	the edge of the field of view (only for the FAST mode).
+	
+Version 3.0.5   2001-08-20 (CB)
+	+ (test/createtest.f90) The dimensions of the quality array
+	set equal to those of the image (instead of 1, 1 as in 
+	previous versions)- fixes SPR 2539. Some compiler warning messages
+        eradicated.                     
+
+	
+Version 3.0.4   2001-08-07 (VNY, CB)
+	+ (src/omdetect_mod.f90)    A code in the COMPUTEMODE routine
+	which  causes underestimation of the background median value
+        has been removed. The parameter TOLERANCE has been set to 1 pixel
+	for the IMAGING mode and to the maximum of two sources semi major
+	axis for the FAST mode chain (within the code eliminating 
+        multiple sources). omMode variable has been introduced to
+	differentiate FAST and IMAGING modes. In order to improve the
+	program's detection ability, negative values appearing after 
+	background substraction have been zeroed (in the detection routine)
+        + (config/omdetect.par) Default value for contrast parameter set
+	to 0.001 to improve source detection in regions contaminated by
+	scattered light (fixes SPR 2515). Bug in background computation
+	fixed (also SPR 2515).
+
+
+                       	
+Version 3.0.3   2001-07-28 (CB)
+        + (src/omdetect_mod.f90) The photometry aperture radius is now
+	fixed at 12 pixels, instead of being obtained from a call to get
+	CAL_getApertureRadius (fixes SPR 2495). 
+
+
+Version 3.0.2   2001-07-24 (CB)
+        + (src/omdetect_mod.f90) In the first call to subroutine
+	"smoothImage", the smoothing parameter has been changed back to
+	its original value of 3 (it had been changed for the fast-chain
+	but further tests have shown that the value 3 works okay for the fast-chain)  (fixes SPR 2490). 
+
+Version 3.0.1   2001-07-24 (CB)
+        + (src/omdetect_mod.f90) Array bounds for quality image array changed to
+	start at 0 instead of 1 (fixes SPR 2482) 
+	
+	
+Version 3.0   2001-07-20 (CB/VNY) Module "omdetectphotometry_mod.f90" added
+        to do aperture photometry on the sources (SPR 2091). Quality flag for each
+	source now set by omdetect (SPR 2092). Extra columns (source aperture radius,
+	x and y positions) output by omdetect so that ommag can correctly
+	convert the source counts to instrumental magnitudes. The extended
+	flag for each source now set by comparing the gaussian-fit
+	parameters with those fitted to the point-spread function. The
+	confusion flag for each source set according to the distance to
+	its nearest neighbour source. Boxscale parameter now should be 
+	given in arcsecs (SPR 2094). Program split-up into more modules to
+	make it easier to read and maintain. Some minor changes made to
+	make it run faster. Program now works with filter "MAGNIFIER" (SPR 2192) 
+        Algorithm for searching for overlapping sources modified. Some
+	momory leaks rectified. The improvement in the photometry is
+	quantified in the tex file.
+
+	
+Version 2.24.2 2001-05-01 (CB)
+	Limiting plate count rate ammended so that the limiting counts per pixel is
+	multiplied by the photometry aperture area (fixes SPR
+	2090). Aperture radius obtained from CAL routine. Parameter
+	"device" deleted and all pgplot code. Program also tidied up.
+	
+Version 2.24.1 2001-02-06 (CB)
+	Removed old versions of omdetect.
+	
+Version 2.24   2001-01-11 (CB)
+        + (src/omdetect_mod.f90) Program checks that mediam background >
+	0.0 before calculating background limitomng count rate (fixes bug
+	- SPR 2204)
+
+Version 2.23   2001-01-11 (CB)
+        + (src/omdetect_mod.f90) Program now stores the source background
+	count rates in the source-list file so that ommag can correctly
+	apply the corrections for coincidence losses, etc.
+
+
+Version 2.22.2   2000-11-08 (JPDM)
+        + (src/omdetect_mod.f90) Program now calculates the
+	detection-limit count rate and outputs the value to the
+	source-list file.
+
+Version 2.22.1   2000-10-25 (JPDM)
+        + (src/omdetectsourceparams_mod.f90) Fix argument list error in
+        simplex code and rewrote nexttopostion to nearestNeighbourNewParam
+	to remove recursive nature of call (fix run time problem at estec)
+
+Version 2.22   2000-10-03 (AMK)
+------------------------------
+	+ (src/omdetect_mod.f90) Added 'White ' to the list of possible
+	filters. Just covers the lower case of 'WHITE' which has been seen in
+	cycle 0070 SAS file. Filter WHITE is also in the list.
+	
+Version 2.20   2000-10-03 (AMK)
+------------------------------
+	+ (src/omdetect_mod.f90) REplace call to getFilterId by OAL call
+	to filterIdToInt
+	
+Version 2.19   2000-0904  (AMK)
+	+ (src/omdetect_mod.f90) Reinstated the call to CAL_omGetPLa
+	teScale.
+	
+Version 2.19   2000-0904  (AMK)
+	+ (src/omdetect_mod.f90) added code to read in the quality array. 
+	The task will have to be modified eventually so that the quality
+	array is processed in order to deal with image pixels that are zero
+	in the flatfield. Currently these problem image pixels have been
+	sent to zero. 
+
+Version 2.18.3 2000-06-22 (JPDM)
+        + (src/omdetect_mod.f90) changed tolerance for extent flag (SSC-SPR-1865)
+    
+Version 2.18.2 2000-06-21 (JPDM)
+    + (config/omdetect.info) fixed VISIBLE keyword (SSC-SPR-1859)
+    
+Version 2.18.1 2000-06-16 (AMK/JPDM)
+--------------
+    + (config/omdetect.info) added (SSC-SPR 1701)`
+    + (src/omdetect_mod.f90) changed RA/DEC from 32 to 64 bit numbers in output file. (SSC-SPR-1769)
+    + (src/omdetect_mod.f90) fixed problem with deblending sources giving spurious bad sources
+    + (src/omdetect_mod.f90) fixed some memory leaks.
+    + (src/omdetectsourceparams.f90) fixed part of deblending code.
+
+Version 2.18: 28 April 2000
+
+Modified documentation to conform to new requirements - SPR 1644
+Also fixed checkoutput in test bed
+
+Version 2.17: 14 March 2000
+
+Removed superfluous call release causing seg. fault.
+	
+Version 2.16: 1 March 2000
+
+Test harness fixed.	
+array oveflow problem fixed	
+	
+Version 2.15: 21 February 2000
+
+Added Cal to Makefile	
+	
+Version 2.14: 27 January 2000
+	
+Effectively complete rewrite of main routines in OMDETECT.  New source
+detection (multiple scales) + extractor like deblend algorithm and source
+parameterisation
+
+Fixed small bug with background determination
+
+Version 2.13: 06 January 2000
+
+Add in flat field and mod8 noise image to create background map to compare
+against raw image (maintains poisson nature of data)
+
+Version 2.12.1 (Marco Beijersbergen, 199-12-15)
+--------------
+- fixed obsolete DAL call
+- fixed message calls
+
+
+version 2.12: 25 November 1999
+
+Fixed problem with stripy images
+
+version 2.11: 22 November 1999
+
+Fixed problem with very small windows (i.e. fast mode windows)
+
+version 2.10: 12 November 1999
+
+Fixed bug in getCounts changed an nx-1 to ny-1
+
+version 2.9: 09 November 1999
+
+Changed background determination method to smoothing+sigma clipping
+Changed source detection to sliding box including Poisson statistics if
+	needed
+	
+version 2.8: 29 September 1999
+
+Made omdetect exit cleanly when image is empty.
+
+version 2.7: 28 September 1999
+
+Added error when image is empty.
+
+version 2.6: 24 September 1999
+
+Added checks to allow processing of images with blank areas.
+
+version 2.5: 8 June 1999
+
+Updated Dependencies for V3 delivery.
+Updated testomdetect for exit values.	
+Updated parameters to comply with Standardisation Rules.
+Added new subroutine getCounts to sum counts in an elliptical apperture.
+		
+Version 2.4: 4 May 1999
+
+Updated DEPEND and src/Makefile for new structure of SAS
+Updated 'message' calls in code for new error library.
+RA column now produces sensible values	
+	
+Version 2.3: 10 December 1998
+
+updated Dependancy file RE: mssllib	
+	
+Version 2.2: 22 October 1998
+
+bug fix in checkoutput in test harness
+
+Version 2.1: 15th Sep 1998
+
+diagnostic message added to print out number of iterations
+	
+Version 2.0: 17th August 1998
+
+Algorithm changed to an island search
+Test harness improved
+
+	
+Version 1.5: 28th July 1998
+
+images moved to primary array
+
+Version 1.4: 25th June 1998
+
+A workaround was included for the nagace do,while bug. This work around
+simply consists of an additional line of output per iteration - it has
+no impact on the scientific functionality
+
+Version 1.3: 16th June 1998
+
+SPR 410 closed: gotos replaced by exit
+SPR 409 closed: file deleted
+SPR 408 closed: .par file editted
+
+
+Version 1.2
+
+ChangeLog added
+DEPEND file edited
+
+
+Version 1.1: 8 May 1998
+
+Task test harness updated
+SPR 224 closed: access privs changed
+SPR 225 closed: .par added
+SPR 226 closed: fatal call changed to error
+SPR 227 closed: copy deleted
+SPR 230 closed: datestamp call removed
+Version 1.0: 20 March 1998
+

@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="evarimgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="evarimgen.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="evarimgen.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+evarimgen (evarimgen-0.8.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="evarimgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="evarimgen.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="evarimgen:description:parameters"></A>
+<A NAME="473"></A>
+<tr valign=top bgcolor='silver'><td><b>evlistset</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>`foo.bar'</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the event list.
+    <br>&nbsp;</td></tr>
+
+<A NAME="480"></A>
+<tr valign=top bgcolor='silver'><td><b>xcolumn</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>X</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Name of the column to supply image <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$"></SPAN> coordinate.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="487"></A>
+<tr valign=top bgcolor='silver'><td><b>ycolumn</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>Y</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Name of the column to supply image <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$y$"></SPAN> coordinate.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="494"></A>
+<tr valign=top bgcolor='silver'><td><b>xrangetype</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>maxlegal</td><td>`maxlegal'/`maxactual'/`user'</td></tr>
+
+<tr valign=top><td colspan=5>
+    This controls the cutoff points for <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$"></SPAN> values. If <TT>xrangetype</TT> is set to `maxlegal', the values of <A NAME="513"></A><TT>TLMINn</TT> and <A NAME="515"></A><TT>TLMAXn</TT> are used, where <A NAME="517"></A><TT>n</TT> is the number of the column whose name is given by the <TT>xcolumn</TT> parameter. A value of <TT>xrangetype</TT>=`maxactual' dictates that <A NAME="521"></A><TT>TDMINn</TT> and <A NAME="523"></A><TT>TDMAXn</TT> (the true minimum and maximum values of the column entries) should be used instead. If <TT>xrangetype</TT>=`user', the task looks for user-supplied minimum and maximum values in the parameters <TT>xmin</TT> and <TT>xmax</TT>. Events which have <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$"></SPAN> values outside the range are discarded.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="528"></A>
+<tr valign=top bgcolor='silver'><td><b>yrangetype</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>maxlegal</td><td>`maxlegal'/`maxactual'/`user'</td></tr>
+
+<tr valign=top><td colspan=5>
+    Similar to <TT>xrangetype</TT>, but for the <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$y$"></SPAN> coordinate.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="537"></A>
+<tr valign=top bgcolor='silver'><td><b>imagebinning</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>numberofpixels</td><td>`numberofpixels'/`pixelsize'</td></tr>
+
+<tr valign=top><td colspan=5>
+    Controls the way in which the number of <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$y$"></SPAN> pixels are calculated. If <TT>imagebinning</TT>=`numberofpixels', the numbers of <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$y$"></SPAN> pixels are entered directly via the parameters <TT>nxpixels</TT> and <TT>nypixels</TT>. On the other hand if <TT>imagebinning</TT>=`pixelsize', the user must enter the <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$y$"></SPAN> dimensions of the pixel via the parameters <TT>xpixelsize</TT> and <TT>ypixelsize</TT>.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="556"></A>
+<tr valign=top bgcolor='silver'><td><b>xmin</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>-3000.0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    When <TT>xrangetype</TT> is set to `user', this parameter is expected.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="565"></A>
+<tr valign=top bgcolor='silver'><td><b>xmax</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>3000.0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    When <TT>xrangetype</TT> is set to `user', this parameter is expected.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="574"></A>
+<tr valign=top bgcolor='silver'><td><b>ymin</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>-3000.0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    When <TT>yrangetype</TT> is set to `user', this parameter is expected.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="583"></A>
+<tr valign=top bgcolor='silver'><td><b>ymax</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>3000.0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    When <TT>yrangetype</TT> is set to `user', this parameter is expected.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="592"></A>
+<tr valign=top bgcolor='silver'><td><b>nxpixels</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>600</td><td><!-- MATH
+ $1<=nxpixels<=1000$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="172" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$1&lt;=nxpixels&lt;=1000$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    When <TT>imagebinning</TT> is set to `numberofpixels', this parameter is expected.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="601"></A>
+<tr valign=top bgcolor='silver'><td><b>nypixels</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>600</td><td><!-- MATH
+ $1<=nypixels<=1000$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="171" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.png"
+ ALT="$1&lt;=nypixels&lt;=1000$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    When <TT>imagebinning</TT> is set to `numberofpixels', this parameter is expected.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="610"></A>
+<tr valign=top bgcolor='silver'><td><b>xpixelsize</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1.0</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="106" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$xpixelsize&gt;0$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    When <TT>imagebinning</TT> is set to `pixelsize', this parameter is expected.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="619"></A>
+<tr valign=top bgcolor='silver'><td><b>ypixelsize</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1.0</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="105" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ypixelsize&gt;0$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    When <TT>imagebinning</TT> is set to `pixelsize', this parameter is expected.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="628"></A>
+<tr valign=top bgcolor='silver'><td><b>cutoff</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>4</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="94" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$cutoff&gt;=0$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    Pixels with fewer events than the value of <TT>cutoff</TT> are set to zero in the variability image.
+    <br>&nbsp;</td></tr>
+
+<A NAME="637"></A>
+<tr valign=top bgcolor='silver'><td><b>withimageset</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This is set if the total flux image should be read (using the name given in parameter <TT>imageset</TT>) rather than created. Note that, if <TT>withimageset</TT>=no, the total flux image is created within the task and saved to the name given in parameter <TT>imageset</TT>.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="650"></A>
+<tr valign=top bgcolor='silver'><td><b>imageset</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>`outimage.ds'</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Name of the total flux image. If <TT>withimageset</TT>=yes, the task attempts to read the total flux image from a file of this name. If <TT>withimageset</TT>=no, the task generates the total flux image internally and saves it to a file of this name.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="661"></A>
+<tr valign=top bgcolor='silver'><td><b>varimageset</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>`outvarimage.ds'</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The variability image is saved to a file of this name.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="668"></A>
+<tr valign=top bgcolor='silver'><td><b>sortevlist</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The algorithm works best if the events are sorted in time. This parameter tells the task to do this sort. The task generates a warning if <TT>sortevlist</TT>=no and the events are out of time order.
+    <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="evarimgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Light Curve Extraction</TITLE>
+<META NAME="description" CONTENT="Light Curve Extraction">
+<META NAME="keywords" CONTENT="evselect">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="evselect.css">
+
+<LINK REL="next" HREF="node12.html">
+<LINK REL="previous" HREF="node10.html">
+<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node12.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+evselect (evselect-3.62) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node10.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Image Extraction"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Extraction Stage (extractor)"></A>
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Histogram Extraction"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node25.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="evselect.html">Home Page</A> / <A  HREF="node3.html">Description</A> / <A  HREF="node6.html">Extraction Stage (extractor)</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00032500000000000000">
+Light Curve Extraction</A>
+</H3>
+
+<P>
+Light curve extraction is controlled by setting the parameter
+<TT>rateset</TT>, which is the name of the output file containing the
+ligh curve.  Light curves are OGIP compliant histogram
+files of counts as a function of time.  The name of the time column is
+set using the parameter <TT>timecolumn</TT>.  Unlike spectrum
+extraction, light curve extraction supports real-valued columns.  The
+range of times used is determined using the same algorithm as for the
+energy column in spectral extraction.  The parameters used to control
+this are <TT>timemin</TT> and <TT>timemax</TT>.
+The bin size is set with the parameter <TT>timebinsize</TT>.  All range
+and binning parameters are in the units of the column from which the
+data is being extracted.
+
+<P>
+The OGIP standard allows for several variations on how a light curve can be
+stored in a <A NAME="tex2html17"
+  HREF="http://heasarc.gsfc.nasa.gov/docs/heasarc/fits.html">FITS</A> table.  In the first variation, only a
+<A NAME="1155"></A><TT>COUNTS</TT> column is required in the table.  Timing information is
+stored in the keywords <A NAME="1157"></A><TT>TSTART</TT>, <A NAME="1159"></A><TT>TSTOP</TT> and <A NAME="1161"></A><TT>TIMEDEL</TT>.  Each
+row in the table represent a sequential time bin, with the first bin
+starting at <A NAME="1163"></A><TT>TSTART</TT> and a bin size of <A NAME="1165"></A><TT>TIMEDEL</TT>.  This is the
+type of light curve which evselect produces by default.  
+
+<P>
+In a second variation, the table also contains a <A NAME="1167"></A><TT>TIME</TT> column, giving
+the time of each bin in the light curve.  Production of this type of
+light curve is enabled in evselect by setting to true the parameter
+<TT>maketimecolumn</TT>.
+
+<P>
+In either of the variations above, it is possible to replace the <A NAME="1170"></A><TT>COUNTS</TT> column
+with a <A NAME="1172"></A><TT>RATE</TT> column.  In addition, an <A NAME="1174"></A><TT>ERROR</TT> column, giving the
+error on the rates, is also supplied.  Use of the <A NAME="1176"></A><TT>RATE</TT> column is
+activated by setting the <TT>makeratecolumn</TT> parameter to true.  It is false
+by default.
+
+<P>
+The OGIP standard also specifes the keywords <A NAME="1179"></A><TT>CHANMIN</TT>, <A NAME="1181"></A><TT>CHANMAX</TT>
+and <A NAME="1183"></A><TT>CHANTYPE</TT>, which describe the energy range of the events
+used to extract the light curve.  These keywords are set in 
+<A NAME="1185"></A><A NAME="tex2html18"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+by querying information from the input table column.
+As with images, rather than just accumulating counts in each bin of a
+light curve, one can sum up the values of a another column in the input
+table, by specifying
+the name of the column in the parameter <TT>zcolumn</TT>.  In the case
+of light curves one can also specify the error on the value
+of the <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$z$"></SPAN> column.  A column in the input table containing this information
+should be specified using the parameter <TT>zerrorcolumn</TT>.  If <TT>zerrorcolumn</TT>
+is not set, then the values in <TT>zcolumn</TT> are used as
+the error values.
+
+<P>
+Note that no exposure correction of time bins is done in evselect.
+Thus, for example, the possibility that a time bin might partially overlap with
+a GTI is not corrected for.  Exposure correction of light curves is handle
+by the task <A NAME="1193"></A><A NAME="tex2html19"
+  HREF="../epiclccorr/index.html"><SPAN  CLASS="textbf">epiclccorr</SPAN></A>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node10.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Image Extraction"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Extraction Stage (extractor)"></A>
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Histogram Extraction"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node25.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

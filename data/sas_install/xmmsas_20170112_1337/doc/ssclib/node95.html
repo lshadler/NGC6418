@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Source detection limits</TITLE>
+<META NAME="description" CONTENT="Source detection limits">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node98.html">
+<LINK REL="previous" HREF="node94.html">
+<LINK REL="up" HREF="node91.html">
+<LINK REL="next" HREF="node96.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node94.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Integrated Poisson probability"></A>
+<A HREF="node91.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Poissonian statistics and source"></A>
+<A HREF="node96.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Single-band detection"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node91.html">Poissonian statistics and source</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00084000000000000000">
+Source detection limits</A>
+</H2>
+
+<P>
+The logic of source detection goes as follows. Let us assume to begin with that there is no source at a given location, only background. Let us calculate the probability that the observed counts at that location are due solely to background. If this probability is less than a specified value, our initial assumption was incorrect and there is in fact a source at that location.
+
+<P>
+The routines described in the present section are designed to take as arguments the probability cutoff (actually a cutoff in likelihood is used) and the background, or expectation value for the counts, and use them to calculate the minimum value of source counts which is detectable at those levels.
+
+<P>
+To elaborate: given a discrete probability distribution <SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img97.png"
+ ALT="$p(j)$"></SPAN> of event counts <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img98.png"
+ ALT="$j$"></SPAN>, any sample value <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img52.png"
+ ALT="$c$"></SPAN> is associated with a certain probability <SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img99.png"
+ ALT="$p_{\rm {int}}$"></SPAN> (and therefore likelihood <!-- MATH
+ $L = -ln(p_{\rm {int}})$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="99" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img100.png"
+ ALT="$L = -ln(p_{\rm {int}})$"></SPAN>) of it <SPAN  CLASS="textit">not</SPAN> being due to chance. This probability is obtained by summing the probability values <SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img97.png"
+ ALT="$p(j)$"></SPAN> from <SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img101.png"
+ ALT="$j=c$"></SPAN> to <SPAN CLASS="MATH"><IMG
+ WIDTH="52" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img102.png"
+ ALT="$j=\inf$"></SPAN>. For <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img93.png"
+ ALT="$p$"></SPAN> given by the Poisson distribution, this sum is equal to the incomplete gamma function <SPAN CLASS="MATH"><IMG
+ WIDTH="51" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img103.png"
+ ALT="$P(c,a)$"></SPAN>, where <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img91.png"
+ ALT="$a$"></SPAN> is the expectation value of <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img52.png"
+ ALT="$c$"></SPAN>. In mathematical terms, the Poissonian likelihood is thus
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+L = -ln[P(c,a)].
+\end{equation}
+ -->
+<A NAME="equ1"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="equ1"></A><IMG
+ WIDTH="118" HEIGHT="28" BORDER="0"
+ SRC="img104.png"
+ ALT="\begin{displaymath}
+L = -ln[P(c,a)].\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">1</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+<BR>
+<P>
+(Note: This is ONLY true if the uncertainty in the background or expectation value is insignificant.) The two subroutines described in the present section invert equation <A HREF="#equ1">1</A> to return that value of <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img52.png"
+ ALT="$c$"></SPAN> which is associated with specified <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img105.png"
+ ALT="$L$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img91.png"
+ ALT="$a$"></SPAN>.
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html1484"
+  HREF="node96.html">Single-band detection</A>
+<LI><A NAME="tex2html1485"
+  HREF="node97.html">Parallel detection over <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$N$"></SPAN> bands (with no assumptions made about source spectrum)</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node94.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Integrated Poisson probability"></A>
+<A HREF="node91.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Poissonian statistics and source"></A>
+<A HREF="node96.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Single-band detection"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Stacked output source list</TITLE>
+<META NAME="description" CONTENT="Stacked output source list">
+<META NAME="keywords" CONTENT="edetect_stack">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="edetect_stack.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+edetect_stack (edetect_stack-0.1.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input / output file"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Usage hints"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="edetect_stack.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00035000000000000000">
+Stacked output source list</A>
+</H2>
+
+<P>
+The final output source list comprises all detections of the intermediate
+<A NAME="2741"></A><A NAME="tex2html98"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+source list that have an equivalent detection likelihood
+<SPAN  CLASS="textbf"><A NAME="2745"></A><TT>DET_ML</TT> above <TT>mlmin</TT> in total or in at least one
+  pointing</SPAN>. For each valid detection, it gives one summary line with the
+combined values of all input observations, one per camera, one per camera and
+energy band, one all-EPIC summary line per valid pointing and one summary line
+per instrument per valid pointing. In these summary rows per pointing, the
+column <A NAME="2748"></A><TT>ID_INST</TT> includes the observation ID followed by the usual 0
+which marks summary rows. They are calculated by <A NAME="2750"></A><A NAME="tex2html99"
+  HREF="../edetect_stack/index.html"><SPAN  CLASS="textbf">edetect_stack</SPAN></A>
+in the
+same way as the summary rows by <A NAME="2754"></A><A NAME="tex2html100"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>, but they are <SPAN  CLASS="textit">not</SPAN>
+necessarily identical to the results of a separate <A NAME="2758"></A><A NAME="tex2html101"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+run on the
+single pointing. Figure&nbsp;<A HREF="#edetect_stack:description:fig:sourcelist">3</A> shows a
+sketch of a stacked source list. A complete list of the table columns is given
+in Table&nbsp;<A HREF="node15.html#edetect_stack:description:tab:2">2</A> in
+Section&nbsp;<A HREF="node15.html#edetect_stack:description:outputfiles">8</A>. Since the final stacked
+source list is created from the intermediate <A NAME="2762"></A><A NAME="tex2html102"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+product and
+detections of low likelihood are rejected, the detection
+identifiers <A NAME="2766"></A><TT>ML_ID_SRC</TT> may have gaps, and the
+maximum <A NAME="2768"></A><TT>ML_ID_SRC</TT> may be larger than the total number of valid
+detections.
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="edetect_stack:description:fig:sourcelist"></A><A NAME="1991"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 3:</STRONG>
+Sketch of the rows per detection in a stacked source list.
+  </CAPTION>
+<TR><TD><IMG
+ WIDTH="460" HEIGHT="294" BORDER="0"
+ SRC="img7.png"
+ ALT="\begin{figure}\centering
+\psfig{figure=stackedsl.eps,height=6.5cm}
+\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+<BR>
+<DIV ALIGN="CENTER">
+<A NAME="edetect_stack:description:tab:1"></A><A NAME="1992"></A>
+<TABLE CELLPADDING=3 BORDER="1" ALIGN="CENTER">
+<CAPTION><STRONG>Table 1:</STRONG>
+Default band assignments of hardness ratios HR<SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$_i$"></SPAN> for the EPIC
+  instruments and default energy intervals during pipeline processing
+  (cf. 3XMM-DR5 Catalogue User Guide  <A NAME="tex2html96"
+  HREF="http://xmmssc.irap.omp.eu/Catalogue/3XMM-DR5/3XMM-DR5_Catalogue_User_Guide.html#TabBands">http://xmmssc.irap.omp.eu/Catalogue/3XMM-DR5/3XMM-DR5_Catalogue_User_Guide.html#TabBands</A>).</CAPTION>
+<TR><TD ALIGN="CENTER"><SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$i$"></SPAN></TD>
+<TD ALIGN="CENTER"><SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$n$"></SPAN></TD>
+<TD ALIGN="CENTER"><SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$m$"></SPAN></TD>
+<TD ALIGN="CENTER">Pipeline energy bands [keV]</TD>
+</TR>
+<TR><TD ALIGN="CENTER">1</TD>
+<TD ALIGN="CENTER">1</TD>
+<TD ALIGN="CENTER">2</TD>
+<TD ALIGN="CENTER">0.2-0.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.5-1.0&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="CENTER">2</TD>
+<TD ALIGN="CENTER">2</TD>
+<TD ALIGN="CENTER">3</TD>
+<TD ALIGN="CENTER">0.5-1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.0-2.0&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="CENTER">3</TD>
+<TD ALIGN="CENTER">3</TD>
+<TD ALIGN="CENTER">4</TD>
+<TD ALIGN="CENTER">1.0-2.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.0-4.5&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="CENTER">4</TD>
+<TD ALIGN="CENTER">4</TD>
+<TD ALIGN="CENTER">5</TD>
+<TD ALIGN="CENTER">2.0-4.5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.5-12.0</TD>
+</TR>
+</TABLE>
+</DIV>
+<BR>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input / output file"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Usage hints"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

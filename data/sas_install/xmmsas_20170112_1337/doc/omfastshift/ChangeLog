@@ -1,0 +1,137 @@
+ChangeLog for omfastshift
+===============================
+Version 1.25.1 - 2004-06-03 (VNY) (+src/omfastshift_mod.f90) The value 
+	of the keyword MJDREF is changed to 50814.0 to remove the 
+	63-seconds descrepancy with the lightcurves originated
+	from the X-ray instruments
+Version 1.25 - 2003-11-21 (VNY) DEPEND file updated (to match 
+	the new version (3.0) of ssclib
+Version 1.24 - 2002-09-26 (VNY)
+	DEPEND file updated (introduced dependence on SAS-1.312)
+Version 1.23 - 2002-06-10
+        VNY (+config/omfastshift.par) GROUP
+	keyword has been set to 'om pipeline'.
+Version 1.22: 13th of May, 2002 (VNY) DEPEND and +config/omfastshift.par
+	files have been updated in order to work with new PARAM-2.0
+Version 1.21.3: 26th of March, 2002 (CB)
+        DISTRIBUTION changed to world.
+Version 1.21.2: 24th of March, 2002 (CB)
+        Documentation corrected.
+Version 1.21.1: 28th of January, 2002 (VNY)
+	(+config/omfastshift.par) - meanings of optional and obligatory
+	parameters has been updated.
+Version 1.21 : 07th of January, 2002 (SRR, VNY)
+	(+src/omfastshift_mod.f90, DEPEND): TIMEZERO is set to 0.d0 in
+	order to get times referred to MJDREF. Dependencies are updated
+	(ssclib  V2.0 will be used). 	
+Version 1.20.1: 08th of January, 2002 (VNY) TIMEZERO is set to 0.d0
+Version 1.20 : 18th of December, 2001 (VNY)
+	(+src/omfastshift_mod.f90): MJDREF keyword in the output
+	temporary event list is set to 50814, which corresponds 
+	to 1998.01.01 reference date (previosly it was erroneously
+	set to 50813) - SPR-2676.  
+Version 1.19 : 14 December 2001 (VNY - prepared for new SAS release
+Version 1.18.3 : 18 October 2001 (VNY) - Libraries dependencies updated
+        to rectify static build problems 
+Version 1.18.2 : 09 October 2001 (CB) - Further dependency check error rectified.	
+Version 1.18.1 : 08 October 2001 (CB) - Depend file updated to rectify
+         SOC build problem.
+Version 1.18 : 29 September 2001 (VNY)
+	call to OAL_obtToTimeTag(obtEvent, timeP) has been removed:
+	obtEvent is already in seconds elapsed since the mission
+	reference time; the calculation of ftFine was also corrected.
+
+Version 1.17 : 11 July 2001 (VNY)
+          11 July 2001 Checking negative values in the output table (for the corrX and corrY values)
+          16 May 2001  - TIMEZERO corrected to be the obs. start time relative to MJDREF (necessary for lcplot)	
+          14 May 2001  - windowX0P and windowY0P have been added for calculation of zero-point of the scientific window
+          10 May 2001  - actual initial time of the observation has been added (obtStart)
+                      when calculating  On board Time for each event	
+          03 May 2001 - InstrumentMode argument has been added to the getStartEndExp routine	
+	
+Version 1,16  : 04.10.2000 Parameter list  to "call getstartendexp" rectified.
+Version 1.15  : October 2 2000)
+Version 1.14.1: June 2000 (JES)
+
+ Info file added for spr 1798
+
+Version 1.14: 17 March 2000 (JFR)
+
+ Added modified TCS file to work with "uint" oal
+	
+Version 1.13: 6 Jan 2000
+
+ Test harness altered. --odfdir changed to --odf 	
+	
+Version 1.12: 2nd December 1999
+
+ Added DISTRIBUTION (world) file	
+	
+Version 1.11: 18 August 1999
+
+ Updated TCS file in test oal dir.
+
+Version 1.10: 8 June 1999
+
+ Updated Dependencies for V3 delivery.	
+	
+Version 1.9: 27 May 1999
+
+ Removed call to open odf.
+ SPR 0769 closed: CREATOR keyword check removed.
+ SPR 0768 rejected: SAS infrastructure problem.
+ SPR 0589 accepted: Alpha problem.
+
+Version 1.8: 16 April 1999
+ 
+ 'Spring clean' of code (tidy, comment, update dependancies and fix bugs).
+ Changed input parameters to conform to new standards.
+ Added checks on input file types.
+ Corrected exposure time calculation for new getstartendexp_mod call (no periodic hk needed now).
+ Updated test for new dataset and task parameters.
+ Updated Documentation.
+ SPR 555 closed: Coding standards
+
+Version 1.7: 10 December 1998
+
+ Updated Dependancy file RE: mssllib
+
+Version 1.6: 28 October 1998
+
+ Deleted lines in summary file Re mail: SAS delivery Mon, 26 Oct 1998
+
+Version 1.5: 13 October 1998
+
+ Changed 'event-frame' tagging subroutine 'locate' output to solve array
+ out of bounds problem.
+
+Version 1.4: 9 October 1998
+
+ Changed 'event-frame' tagging algorithm	to use subroutine 'locate'
+ to solve array out of bounds problem
+
+Version 1.3: 28 Sep 1998
+
+ SPR 536 closed:
+
+Updated DEPEND file mssllib 1.6 -> mssllib 1.8
+
+ Version 1.2: 16 Sep 1998
+
+ Changed OAL path re: mail wrt 15 Sep. Problem still exists
+
+Version 1.1: 15 Sep 1998
+
+ Changed to fix test FAILURE re: email Mike Denby, Version 2 SAS tasks (fwd)
+
+Version 1.0: 10 Sep 1998
+----------------------
+
+
+First version
+
+
+Version 0.1
+----------------------------
+
+- Directory structure created by pkgmaker.

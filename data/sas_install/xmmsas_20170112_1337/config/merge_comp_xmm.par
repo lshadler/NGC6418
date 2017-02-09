@@ -1,0 +1,124 @@
+<!-- converted from XPI formatted "merge_comp_xmm.par.xpi"-->
+<FILE>
+ <CONFIG>	
+	<PARAM id="caldb" type="string" mandatory="yes" >
+ 		<DESCRIPTION>
+   	 		ESAS CCF data directory
+   		</DESCRIPTION>
+  	</PARAM>
+  
+        <PARAM id="dirfile" type="string" mandatory="yes" default="mydir">
+         <DESCRIPTION>
+              ASCII list of directories and prefixes to be merged
+         </DESCRIPTION>
+        </PARAM>  
+
+	<PARAM id="coord" type="int" mandatory="yes" default="1">
+	<DESCRIPTION>
+ 	 	 Coordinate Control (1 => ecliptic; 2 => equatorial; 3 => galactic)
+ 	</DESCRIPTION>
+ 		<CONSTRAINTS>
+  		coord in [1:3]
+ 		</CONSTRAINTS>
+	</PARAM>
+
+	<PARAM id="crvaln1" type="real" mandatory="yes" default="">
+ 	<DESCRIPTION>
+   	 	Central longitude (decimal degrees)
+   	</DESCRIPTION>
+   		<CONSTRAINTS>
+    		true
+   		</CONSTRAINTS>
+  	</PARAM>
+
+	<PARAM id="crvaln2" type="real" mandatory="yes" default="">
+ 	<DESCRIPTION>
+   	 	Central latitude (decimal degrees)
+   	</DESCRIPTION>
+   		<CONSTRAINTS>
+    		true
+   		</CONSTRAINTS>
+  	</PARAM>
+
+	<PARAM id="pixelsize" type="real" mandatory="yes" default="">
+ 	<DESCRIPTION>
+   	 	Pixel size in decimal arc minutes
+   	</DESCRIPTION>
+   		<CONSTRAINTS>
+    		true
+   		</CONSTRAINTS>
+  	</PARAM>
+
+	<PARAM id="component" type="int" mandatory="yes" default="1">
+	<DESCRIPTION>
+ 	 	 Component Selection (1 => count image; 2 => exposure; 3 => QPB counts; 4 => SP counts; 5 => SWCX counts)
+ 	</DESCRIPTION>
+ 		<CONSTRAINTS>
+		  component in [1:7]
+ 		</CONSTRAINTS>
+	</PARAM>
+
+	<PARAM id="elow" type="int" mandatory="yes" default="400">
+	<DESCRIPTION>
+ 	 	 Lower energy limit for the energy in eV
+ 	</DESCRIPTION>
+ 		<CONSTRAINTS>
+  		true
+ 		</CONSTRAINTS>
+	</PARAM>
+	
+	<PARAM id="ehigh" type="int" mandatory="yes" default="1250">
+	<DESCRIPTION>
+ 	 	 Upper energy limit for the energy in eV
+ 	</DESCRIPTION>
+ 		<CONSTRAINTS>
+  		true
+ 		</CONSTRAINTS>
+	</PARAM>
+  	
+        <PARAM id="alpha" type="real" mandatory="no" default="1.7">
+ 	<DESCRIPTION>
+   	 	Hardness correction spectral index
+   	</DESCRIPTION>
+   		<CONSTRAINTS>
+  			alpha in [1.0:2.4] 
+		</CONSTRAINTS>
+  	</PARAM>
+
+	<PARAM id="maskcontrol" type="int" mandatory="yes" default="3">
+	<DESCRIPTION>
+ 	 	 Masking control (0 - No Masking; 1 - Point Source Masking; 2 - Good Area Masking; 3 - Mask from merged source list (output from make-mask-merge))
+ 	</DESCRIPTION>
+ 		<CONSTRAINTS>
+  		maskcontrol in [0:3] .or. maskcontrol in [11:12] .or. maskcontrol in [31:32]
+ 		</CONSTRAINTS>
+	</PARAM>
+
+	<PARAM id="xdim" type="int" mandatory="yes" default="2000">
+	<DESCRIPTION>
+ 	 	 Output merged image X dimension
+ 	</DESCRIPTION>
+ 		<CONSTRAINTS>
+  		true
+ 		</CONSTRAINTS>
+	</PARAM>
+
+	<PARAM id="ydim" type="int" mandatory="yes" default="2000">
+	<DESCRIPTION>
+ 	 	 Output merged image Y dimension
+ 	</DESCRIPTION>
+ 		<CONSTRAINTS>
+  		true
+ 		</CONSTRAINTS>
+	</PARAM>
+
+	<PARAM id="clobber" type="bool" mandatory="no" default="yes">
+ 	<DESCRIPTION>
+   	 	 Clobber parameter, 1: clobber, 0 not
+   	</DESCRIPTION>
+        <CONSTRAINTS>
+                clobber in [0:1]
+        </CONSTRAINTS>
+  	</PARAM>
+ </CONFIG>
+</FILE>

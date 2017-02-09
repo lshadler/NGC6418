@@ -1,0 +1,70 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="inset" type="dataset" mandatory="yes" default="dummy_default">
+   <DESCRIPTION>
+    Name of the image to work on.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="outset" type="dataset" default="smoothed_image.ds">
+   <DESCRIPTION>
+    Name of the output image.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="tempset" type="dataset" default="cropped_image.ds">
+   <DESCRIPTION>
+    Name of a temporary image.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="maskstyle" type="string" default="rectangle">
+   <DESCRIPTION>
+    Style of input of the median mask.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="rectangle">
+     <PARAM id="xsize" type="int" mandatory="yes">
+      <DESCRIPTION>
+       Mask width (pixels).
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       xsize in [1:]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="ysize" type="int" mandatory="yes">
+      <DESCRIPTION>
+       Mask height (pixels).
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       ysize in [1:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="round">
+     <PARAM id="radius" type="int" mandatory="yes">
+      <DESCRIPTION>
+       Mask radius (pixels).
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       radius in [0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="set">
+     <PARAM id="maskset" type="dataset" mandatory="yes">
+      <DESCRIPTION>
+       Name of an image dataset which contains the median mask.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>
+

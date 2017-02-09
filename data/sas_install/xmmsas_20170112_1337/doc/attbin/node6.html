@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Average attitude</TITLE>
+<META NAME="description" CONTENT="Average attitude">
+<META NAME="keywords" CONTENT="attbin">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="attbin.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+attbin (attcalc2-1.3.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Limits on attitude wander"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Construction of the binned-attitude"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="attbin.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00033000000000000000"></A>
+  <A NAME="attbin:description:average"></A>
+<BR>
+Average attitude
+</H2>
+
+<P>
+Besides being used in equation <A HREF="node5.html#equ0">1</A>, the average attitude is written to the output dataset in the form of the following keywords:
+
+<P>
+
+<UL>
+<LI><A NAME="528"></A><TT>RA_PNT</TT>: the average right ascension of the spacecraft -X axis during the time period of interest.
+
+<P>
+</LI>
+<LI><A NAME="530"></A><TT>DEC_PNT</TT>: the average declination of the spacecraft -X axis during the time period of interest.
+
+<P>
+</LI>
+<LI><A NAME="532"></A><TT>PA_PNT</TT>: the average roll angle, ie the position angle of the spacecraft -Z axis during the time period of interest.
+
+<P>
+</LI>
+<LI><A NAME="534"></A><TT>AVRG_PNT</TT>: records the type of average. In the present case this can take values `MEAN' or `MEDIAN'.
+  
+</LI>
+</UL>
+
+<P>
+The way in which the average attitude is calculated depends on the <TT>attsource</TT> and <TT>odfattsource</TT> parameters as follows:
+
+<P>
+
+<UL>
+<LI><TT>attsource</TT>=`odf':
+      
+<UL>
+<LI><TT>timesource</TT>=`eventlist': in this case the average values are not calculated at all, rather they are sought from the file pointed to by parameter <TT>pntkwdset</TT>. Why doesn't <A NAME="541"></A><A NAME="tex2html7"
+  HREF="../attbin/index.html"><SPAN  CLASS="textbf">attbin</SPAN></A>
+calculate the average itself in this circumstance? Because the time difference between successive events in the event list can vary. `Average attitude' only makes sense if the times of the attitude samples are regularly spaced.
+
+<P>
+The filename supplied to <TT>pntkwdset</TT> should normally be the output file of <A NAME="546"></A><A NAME="tex2html8"
+  HREF="../atthkgen/index.html"><SPAN  CLASS="textbf">atthkgen</SPAN></A>, which is the SSC product file with the name string ATTTSR. The sought keywords have the form `tsa', where `t' is either `M' for median or `A' for mean, `s' is either `AHF' or `OM', and `a' is either `RA', `DEC' or `PA'. The exact values of `t' and `s' looked for depend on the parameters <TT>withmedianpnt</TT> and <TT>odfattsource</TT>. The relevant keywords are copied to the output dataset, but in the *_PNT format. The value written to <A NAME="552"></A><TT>AVRG_PNT</TT> is `MEDIAN' if <TT>withmedianpnt</TT>=`yes' and 'MEAN' if <TT>withmedianpnt</TT>=`no'.
+
+<P>
+</LI>
+<LI><TT>timesource</TT>=`user': here the time samples are evenly spaced, so it makes sense to calculate an average. The attitude is obtained from the ODF via an <A NAME="557"></A><A NAME="tex2html9"
+  HREF="../oal/index.html"><SPAN  CLASS="textbf">oal</SPAN></A>
+call for each time sample. This call returns either true, for successful, or false, for unsuccessful. The average of each attitude component (ie RA, dec and apos) is calculated as either the mean or the median (depending on the value of <TT>withmedianpnt</TT>) of all the successful values.
+      
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI><TT>attsource</TT>=`atthk': in this case the time samples are obtained from the atthk file (<TT>atthkset</TT>), therefore are expected to be uniform; however the averages of these values have already been calculated and are present as keywords. The action of the task in this circumstance is thus identical to that described in the first item above (except that the choice between AHF and OM is governed by parameter <TT>atthkattsource</TT>).
+  
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Limits on attitude wander"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Construction of the binned-attitude"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

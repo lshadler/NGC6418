@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Processing of the data for each filter</TITLE>
+<META NAME="description" CONTENT="Processing of the data for each filter">
+<META NAME="keywords" CONTENT="omichain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omichain.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omichain (omichain-1.71.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Initial processing"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="OPERATION"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Production of the mosaiced"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omichain.html">Home Page</A> / <A  HREF="node6.html">OPERATION</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00052000000000000000">
+Processing of the data for each filter</A>
+</H2>
+
+<P>
+The <SPAN  CLASS="textbf"> omichain</SPAN> cycles through the filters in the filter list and for each one processes each exposure 
+in the exposure list for that filter. The following summarizes the steps taken by the <SPAN  CLASS="textbf"> omichain</SPAN>
+in this stage. 
+
+<P>
+
+<OL>
+<LI>First it checks to see if the exposure is a full-frame low-resolution mode image (<SPAN  CLASS="textbf">Engineering 2</SPAN>), and if so it runs 
+<SPAN  CLASS="textbf">omcomb</SPAN> to combine the four separate image segments into a single full-frame image, which is
+then processed instead of the individual image segments. 
+
+<P>
+</LI>
+<LI>The tracking-history pipeline (please see Figure 2) is first run to produce tracking history information using <SPAN  CLASS="textbf">omprep</SPAN>, 
+<SPAN  CLASS="textbf">omdrifthist</SPAN> and <SPAN  CLASS="textbf">omthconv</SPAN>.  
+
+<P>
+</LI>
+<LI>The imaging pipeline (Figure 3) is then run  to process the image for this  exposure, 
+and the following programs are executed in turn:
+
+<P>
+
+<OL>
+<LI><B>omprep</B> - converts the image from <B>integer</B> to <B>real</B> and adds some key-words to the header. 
+</LI>
+<LI><B>omcosflag</B> - adds the quality array to the image.
+</LI>
+<LI><B>omflatfield</B> - flatfields the image.
+</LI>
+<LI><B>ommodmap</B> - attempts to correct for mod-8 patterning.
+</LI>
+<LI><B>omdetect</B> - detects sources, computes source positions, source moments (semi-major, minor and position angle),
+raw and corrected count rates, and sets some flags for each source.
+</LI>
+<LI><B>omqualitymap</B>  - transfers source quality-flag information from the source-list table 
+to the <SPAN  CLASS="textbf">QUALITY</SPAN> image of the image file.
+</LI>
+<LI><B>ommag</B>  - computes instrumental magnitudes for each source.
+</LI>
+<LI><B>omatt</B>. - computes celestial coordinates (Right-Ascension and declination) from the 
+X and Y pixel coordinates and produces a ``sky-image''. If a USNO catalogue fits file is available,
+and the parameter <SPAN  CLASS="textbf">usecat</SPAN> is set to <SPAN  CLASS="textbf">true</SPAN> then it will also correct the astrometry for
+any offset between the OM and USNO RA and dec axes, adding the columns <SPAN  CLASS="textbf"> RA_CORR</SPAN> and <SPAN  CLASS="textbf">DEC_CORR</SPAN> to the
+source-list. Details about the catalogue fits file are given in the documentation on <SPAN  CLASS="textbf">omatt</SPAN> and 
+<SPAN  CLASS="textbf">omsrclistcomb</SPAN>.It should be noted that in the case when the USNO subset catalogue is not available
+bu the parameter <SPAN  CLASS="textbf">usecat</SPAN> is set to <SPAN  CLASS="textbf">true</SPAN> then the task <B>omatt</B> will attempt to generate
+its own subset of the USNO catalagoe by using the <I>scat</I> tool from the package WCSTOOLS, which in 
+this case should be installed on the user's computer.If the package WCSTOOLS is not installed, the 
+task <B>omatt</B> will skip aspect-correcting stage of processing and the output image and source lists
+will remain uncorrected.  
+
+<P>
+</LI>
+</OL>
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Initial processing"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="OPERATION"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Production of the mosaiced"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

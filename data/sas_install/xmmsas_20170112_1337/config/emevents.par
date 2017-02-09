@@ -1,0 +1,316 @@
+<!-- converted from XPI formatted "emevents.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="odfeventset" type="dataset" mandatory="yes" default="">
+   <DESCRIPTION>
+    Input events file from ODF (or previous emevents run)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="newoutput" type="bool" default="yes">
+   <DESCRIPTION>
+    Create output events file (no for overwriting input)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="eventset" type="dataset" default="events.out">
+      <DESCRIPTION>
+       Output events file
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withframeset" type="bool" default="no">
+   <DESCRIPTION>
+    Need input frames file
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="frameset" type="dataset" mandatory="yes" default="">
+      <DESCRIPTION>
+       Input frames file from emframes
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="flagbadtimes" type="bool" default="yes">
+      <DESCRIPTION>
+       Use CUT_GTI sub_task
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="flagtruncatede1" type="bool" default="yes">
+      <DESCRIPTION>
+       Use SP_GATTI sub_task
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+        <PARAM id="writegattispecset" type="bool" default="no">
+         <DESCRIPTION>
+          Create output GATTI spectrum file
+         </DESCRIPTION>
+         <CASE>
+          <ITEM value="no">
+          </ITEM>
+          <ITEM value="yes">
+           <PARAM id="gattispecset" type="dataset" default="gattispec.out">
+            <DESCRIPTION>
+             Output GATTI spectrum file
+            </DESCRIPTION>
+            <CONSTRAINTS>
+             true
+            </CONSTRAINTS>
+           </PARAM>
+          </ITEM>
+         </CASE>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="withothernode" type="bool" default="no">
+      <DESCRIPTION>
+       Need files for other node (2-node CCD read-out only)
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+        <PARAM id="othereventset" type="dataset" mandatory="yes" default="">
+         <DESCRIPTION>
+          Input events file for other node
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          true
+         </CONSTRAINTS>
+        </PARAM>
+        <PARAM id="otherframeset" type="dataset" mandatory="yes" default="">
+         <DESCRIPTION>
+          Input frames file for other node
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          true
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withoffvarsets" type="bool" default="no">
+   <DESCRIPTION>
+    Need input offset/variance file
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="offvarsets" type="dataset" list="yes" mandatory="yes" default="">
+      <DESCRIPTION>
+       Offset/variance files from ODF
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="analysepatterns" type="bool" default="yes">
+   <DESCRIPTION>
+    Use EV_REC sub_task
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="flagbadpixels" type="bool" default="yes">
+   <DESCRIPTION>
+    Use CUT_BAD sub_task
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="splitdiagonals" type="bool" default="yes">
+   <DESCRIPTION>
+    Use DIAGO sub_task
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="keepsifluor" type="bool" default="no">
+      <DESCRIPTION>
+       Keep as one event diagonals with Si fluorescence
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="setcoordinates" type="bool" default="yes">
+   <DESCRIPTION>
+    Use PUT_XY sub_task
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="randomizeposition" type="bool" default="yes">
+      <DESCRIPTION>
+       Randomize DETX/DETY within one pixel
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="rejectrows" type="bool" default="yes">
+   <DESCRIPTION>
+    Throw away rows/frames with too many events
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="maxeventsperrow" type="int" default="4">
+      <DESCRIPTION>
+       Maximum number of events per row/frame
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       maxeventsperrow in [1:]
+      </CONSTRAINTS>
+     </PARAM>
+      <PARAM id="widthnexttorow" type="int" default="10">
+      <DESCRIPTION>
+       How far to check for other events next to bad row (pixels)
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       widthnexttorow in [0:600]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="rejectbade3" type="bool" default="yes">
+   <DESCRIPTION>
+    Throw away events with non-physical E3
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="detectbadoffsets" type="bool" default="yes">
+      <DESCRIPTION>
+       Detect automatically bad offsets in the data (not in SW mode)
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="rejectflickering" type="bool" default="yes">
+   <DESCRIPTION>
+    Throw away groups of events in FRAME/RAWX/RAWY space
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="tolfxy" type="int" list="yes" default="5 2 2">
+      <DESCRIPTION>
+       Window size(s) along FRAME, RAWX, RAWY
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       tolfxy in [0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="settimes" type="bool" default="yes">
+   <DESCRIPTION>
+    Use PUT_TI/PUT_TT sub_task
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="randomizetime" type="bool" default="no">
+      <DESCRIPTION>
+       Randomize TIME within one frame
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="blocksize" type="int" default="10000">
+   <DESCRIPTION>
+    Size of event blocks
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    blocksize in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

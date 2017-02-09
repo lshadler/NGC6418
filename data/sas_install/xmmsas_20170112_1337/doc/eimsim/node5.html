@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Quick cookbook</TITLE>
+<META NAME="description" CONTENT="Quick cookbook">
+<META NAME="keywords" CONTENT="eimsim">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eimsim.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eimsim (eimsim-2.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Overview of the eimsim"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node29.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eimsim.html">Home Page</A> / <A  HREF="node4.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00041000000000000000"></A>
+<A NAME="eimsim:description:cookbook"></A>
+<BR>
+Quick cookbook
+</H2>
+
+<P>
+For a minimum-fuss run of the simulation code, do as follows:
+
+<P>
+
+<OL>
+<LI>Create a subdirectory `product' off your present working directory (PWD).
+
+<P>
+</LI>
+<LI>Put into this directory the following files:
+    
+<UL>
+<LI>A Calibration Index File (CIF);
+</LI>
+<LI>An attitude history file;
+</LI>
+<LI>calibrated event lists for one or more EPIC instruments;
+</LI>
+<LI>for each of the instruments for which you have supplied an event list, vignetted exposure maps in 5 energy bands.
+    
+</LI>
+</UL>
+
+<P>
+These files are expected to have the standard XMM-SSC product filenames. Examples for EPIC MOS1 are as follows:
+
+<P>
+<PRE>
+	P0123456789OBX000CALIND0000.FIT
+	P0123456789OBX000ATTTSR0000.FIT
+	P0123456789M1S002MIEVLI0000.FIT
+	P0123456789M1S002EXPMAP1000.FIT
+	P0123456789M1S002EXPMAP2000.FIT
+	P0123456789M1S002EXPMAP3000.FIT
+	P0123456789M1S002EXPMAP4000.FIT
+	P0123456789M1S002EXPMAP5000.FIT
+</PRE>
+
+<P>
+Note that all these files are used merely as templates - that is, the only parts of them which are used by <A NAME="1015"></A><A NAME="tex2html8"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+are those parts which give information about image exposure, plus the pixel grid location (from the WCS keywords) and dimensions. No data values are used which depend on real, observed x-ray events.
+
+<P>
+</LI>
+<LI>Set the SAS_CCFPATH environment variable to the location of a CCF set which you know to be valid for the version of the SAS which you are running.
+
+<P>
+</LI>
+<LI>Copy the source template dataset <TT>srcspec_1xmm.fits</TT> (or <TT>srcspec_2xmm.fits</TT>) from the directory <TT>$SAS_DIR/lib/data/eimsimdata/</TT> to your PWD and rename it `<TT>srcspec.fits</TT>'.
+
+<P>
+</LI>
+<LI>Run in succession the following commands:
+      <PRE>
+        eimsimprep
+        eimsimbatch
+        eimsimreduce
+</PRE>
+</LI>
+</OL>
+
+<P>
+The files produced are described in the `Output Files' sections in the documentation for these three tasks. Expect the middle script to take on the order of 10 minutes to run (the 1st and 3rd should be much quicker). If you want to understand exactly what these commands have done you will have to find out what the default values of all parameters were set to, either by looking in the <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$&lt;$"></SPAN>command<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$&gt;$"></SPAN>.par file or doing `<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$&lt;$"></SPAN>command<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$&gt;$"></SPAN> -h' or `<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$&lt;$"></SPAN>command<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$&gt;$"></SPAN> -d'.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Overview of the eimsim"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node29.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

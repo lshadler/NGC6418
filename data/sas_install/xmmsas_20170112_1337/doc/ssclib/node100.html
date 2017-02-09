@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>DSS utilities</TITLE>
+<META NAME="description" CONTENT="DSS utilities">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node137.html">
+<LINK REL="previous" HREF="node91.html">
+<LINK REL="up" HREF="ssclib.html">
+<LINK REL="next" HREF="node101.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node99.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="`Degrees of freedom' for"></A>
+<A HREF="ssclib.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node101.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Routines which involve the"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00090000000000000000"></A>
+<A NAME="ssclib:description:dss_aux"></A>
+<BR>
+DSS utilities
+</H1>
+
+<P>
+Module name: <TT>dss_aux</TT>
+
+<P>
+Author: Ian Stewart (University of Leicester, ims@star.le.ac.uk)
+
+<P>
+The routines are designed to act as an additional layer over the <A NAME="1644"></A><A NAME="tex2html31"
+  HREF="../dsslib/index.html"><SPAN  CLASS="textbf">dsslib</SPAN></A>
+library. They implement many useful short cuts.
+
+<P>
+Full information about the Data Sub Space (DSS) should of course be sought in the <A NAME="1648"></A><A NAME="tex2html32"
+  HREF="../dsslib/index.html"><SPAN  CLASS="textbf">dsslib</SPAN></A>
+task documentation. However a few explanatory words here would not be out of place.
+
+<P>
+The function of the DSS is to store information about the criteria used to select events. Thus an XMM event list may contain a DSS if it has been filtered in some way; XMM products such as light curves or spectra, which have been created from event lists, nearly always filtered, may also contain them.
+
+<P>
+The formal structure of a DSS comprises a list of components, each of which may contain a list of filters. Suuposedly the selection should be reconstructed by ANDing all the filters for each component then ORing all the components, but many filter types (eg GTIs) imply a logical OR internal to the filter.
+
+<P>
+The DSS is implemented in terms of keywords and extensions, but it is not intended that the user should need to know how the DSS is encoded in these things: the <A NAME="1652"></A><A NAME="tex2html33"
+  HREF="../dsslib/index.html"><SPAN  CLASS="textbf">dsslib</SPAN></A>
+library supplies subroutines to permit basic access to the DSS details without this knowledge.
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html1542"
+  HREF="node101.html">Routines which involve the whole DSS</A>
+<UL>
+<LI><A NAME="tex2html1543"
+  HREF="node102.html">hasDss</A>
+<LI><A NAME="tex2html1544"
+  HREF="node103.html">dumpDss</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html1545"
+  HREF="node104.html">Routines which return information about DSS components</A>
+<UL>
+<LI><A NAME="tex2html1546"
+  HREF="node105.html">getNum1stDssCompWithValue</A>
+<LI><A NAME="tex2html1547"
+  HREF="node106.html">numDssCompsOfAxis</A>
+<LI><A NAME="tex2html1548"
+  HREF="node107.html">numDssCompsWithValue</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html1549"
+  HREF="node108.html">Routines which return information about the filters in a specific component</A>
+<UL>
+<LI><A NAME="tex2html1550"
+  HREF="node109.html">valueIsPassedByDssComp</A>
+<LI><A NAME="tex2html1551"
+  HREF="node110.html">anyFilterOfThisAxis</A>
+<LI><A NAME="tex2html1552"
+  HREF="node111.html">numFiltersOfAxis</A>
+<LI><A NAME="tex2html1553"
+  HREF="node112.html">get1stFilterThisAxis</A>
+<LI><A NAME="tex2html1554"
+  HREF="node113.html">allFiltersPassValue</A>
+<LI><A NAME="tex2html1555"
+  HREF="node114.html">valueIsPassedByFilter</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html1556"
+  HREF="node115.html">Routines which act on DSS RangeT scalars</A>
+<UL>
+<LI><A NAME="tex2html1557"
+  HREF="node116.html">copyRange</A>
+<LI><A NAME="tex2html1558"
+  HREF="node117.html">checkRangeOverlap</A>
+<LI><A NAME="tex2html1559"
+  HREF="node118.html">andRangePair</A>
+<LI><A NAME="tex2html1560"
+  HREF="node119.html">orRangePair</A>
+<LI><A NAME="tex2html1561"
+  HREF="node120.html">valueIsWithinRange</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html1562"
+  HREF="node121.html">Routines which act on DSS RangeT vectors</A>
+<UL>
+<LI><A NAME="tex2html1563"
+  HREF="node122.html">rangesAreWellFormed</A>
+<LI><A NAME="tex2html1564"
+  HREF="node123.html">copyRanges</A>
+<LI><A NAME="tex2html1565"
+  HREF="node124.html">readRanges</A>
+<LI><A NAME="tex2html1566"
+  HREF="node125.html">correctRanges</A>
+<LI><A NAME="tex2html1567"
+  HREF="node126.html">integrateRanges</A>
+<LI><A NAME="tex2html1568"
+  HREF="node127.html">andRangesPair</A>
+<LI><A NAME="tex2html1569"
+  HREF="node128.html">orRangesPair</A>
+<LI><A NAME="tex2html1570"
+  HREF="node129.html">dumpRanges</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html1571"
+  HREF="node130.html">Routines which deal with DSS GTI filters</A>
+<UL>
+<LI><A NAME="tex2html1572"
+  HREF="node131.html">readGtis</A>
+<LI><A NAME="tex2html1573"
+  HREF="node132.html">getGtiFromFilter</A>
+<LI><A NAME="tex2html1574"
+  HREF="node133.html">andGtis</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html1575"
+  HREF="node134.html">Routines which deal with DSS bitmask filters</A>
+<UL>
+<LI><A NAME="tex2html1576"
+  HREF="node135.html">getBitMasksFromFilter</A>
+<LI><A NAME="tex2html1577"
+  HREF="node136.html">allBitsEquiv</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node99.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="`Degrees of freedom' for"></A>
+<A HREF="ssclib.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node101.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Routines which involve the"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

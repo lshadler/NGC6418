@@ -1,0 +1,83 @@
+ChangeLog for omgprep
+===================
+
+Version 1.10 - 2016-09-07 (AI) 
+-------------
+	+ (src/omgprep_mod.f90) Initialization to null of all pointers 
+	that are passed to C++ (Dope vectors). If we do not initizialize 
+	the pointers, we get seg fault at run-time with gcc-6.2.	
+
+Version 1.9.1 - 2016-01-12 (AI) 
+-------------
+	+ (src/utility_mod.f90)  Memory allocation error using NAG fortran 
+	6.2 fixed.
+	
+Version 1.9 - 2009-04-06 (VNY) (+src/background_mod.f90) make it possible
+	to deal with two types of data in the quality map: int8 or int16
+	in order to adjust this task to the recent changes in omdetect.
+Version 1.8 - 2008-09-26 (VNY) (+src/background_mod.f90) Fixing a small
+	bug, which might cause a crash with the array limits subscript
+	message (for imageMask2 array).
+Version 1.7 - 2008-09-17 (VNY) (+src/omgprep_mod.f90, +src/background_mod.f90)
+	Introducing two new (not mandatory) parameters: removescatteredlight
+	and backgroundset in order to add the capability of removing the
+	scattered light features from the grisn rotated image.
+Version 1.6 - 2007-01-25 (VNY) (+src/omgprep_mod.f90) A bug was fixed
+	(which was probably introduces in version 1.1.3) causing a shift
+	of the wavelength scale by about 50 Angstroems (SPR-3645)
+Version 1.5 - 2006-11-09 (VNY) (+src/omgpreo_mod.f90) A lot of small
+	changes are introduced to get more accurate grism source
+	voordinates (SSC-SPR-3633)
+Version 1.4 - 2006-08-02 (VNY) (+src/omgprep_mod.f90) When computing
+        the spectra extractability factor the binning of the image was
+	mistakenly applied to the cooordinates of the reference (target)
+	source. This was causing a  possibly wrong extractability factor 
+	for the low-resolution mode and, as a result, skipping the 
+	exposure from further processing - fixing the SSC-SPR-3623.
+Version 1.3 - 2006-07-11 (VNY) (+src/omgprep_mod.f90) The values given
+	in the MODES table of the output file are corrected (to correspond
+	to the values given by DETSEC keyword in the header of the 
+	main table (SSC-SPR-3622)
+Version 1.2 - 2006-06-30 (VNY) VERSION
+	The same as the version 1.1.3
+Version 1.1.3 - 2006-06-26 (VNY) (+src/omgprep_mod.f90) A new keyword is
+        introduced to indicate the extractability of the spectrum 
+	from OSW (SSC-SPR-3616); also a correction 
+	of the RA and DEC values for the reference pixel in the 
+	header of the output file is made (previously the reference 
+	pixel corresponded to the centre of the image, which is not
+	the case for the grism filter)
+Version 1.1.2 - 2006-06-09 (VNY) (+src/omgprep_mod.f90) A small bug
+	causing a subscription error message is fixed ((SSC-SPR-3607)
+Version 1.1.1 - 2006-06-09 (VNY) (+src/omgprep_mod.f90)
+        Introducing a flag indicating (by returning a zero or non-zero value) 
+	that the spectrum is extractable from the grism-image or not (SSC-SPR-3606).
+Version 1.1 - 2005-09-28 (VNY) (+src/omgprep_mod.f90) : fixed a problem
+	of propagation of keywords in the header of the output file
+	(SSC-SPR-3525)
+Version 1.0.4 - 2005-06-01 (VNY) (+src/omgprep_mod.f90): the moire
+	pattern, which appeared due to undistortion of the image 
+	is removed (fixing SSC-SPR-3462)
+Version 1.0.3 - 2004-07-26 (VNY) (+src/omgprep_mod.f90) 
+	The WSC keywords are removed from the output
+	file, because they were causing the appearence of a
+	very odd coordinate grid when working with ds9 and fv
+	tools (SSC-SPR-3363)
+Version 1.0.2 - 2004-07-01 (VNY) The number of extra pixels added 
+	at the edges of the image is divided by the binning factor
+	(SSC-SPR-3346)
+Version 1.0.1 - 2004-05-13 (VNY) The output image enlarged in order 
+	not to miss pixels at the edge due to the distortion
+	correction (SSC-SPR-3318)
+Version 1.0 - 2003-12-04 (VNY) Version number passed to 1.0
+Version 0.5 - 2003-11-25 (VNY) +(src/omgprep_mod.f90) a bug in 
+	the distortion correction procedure is fixed
+Version 0.4 - 2003-11-21 (VNY) DEPEND file ammended to the new
+	version (3.0) of ssclib
+Version 0.3 - 2003-11-11 (VNY) +src/omgprep_mod.f90 the code tiden
+	      +test/testoutput_mod.f90 the dataset read option relaxed
+Version 0.2 - 2003-11-07 (VNY) +src/omgprep_mod.f90, +config/omgprep.par:
+              the parameter name "ppsoswset" replaced with "outset" 
+Version 0.1 - 2003-10-24 (VNY) +src/omgprep_mod.f90 
+	New task created, SAS-SCR-116 
+

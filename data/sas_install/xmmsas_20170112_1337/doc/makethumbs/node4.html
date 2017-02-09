@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Overview</TITLE>
+<META NAME="description" CONTENT="Overview">
+<META NAME="keywords" CONTENT="makethumbs">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="makethumbs.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+makethumbs (makethumbs-0.6) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Note on the processing"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="makethumbs.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+Overview</A>
+</H2>
+
+<P>
+The task <A NAME="624"></A><A NAME="tex2html1"
+  HREF="../makethumbs/index.html"><SPAN  CLASS="textbf">makethumbs</SPAN></A>
+reads an EPIC image,
+as well as optionally the source list file
+in each observation (as is included in the standard distribution
+of the pipe-line processing) and/or the external catalogue file
+in the format of the 2XMM catalogue, then outputs
+the thumbnail GIF images of the sources of user's choice.
+This task is mainly designed to produce a GIF image of each source
+or simply of a sky position so that the user can have
+a quick look at it.
+
+<P>
+This task has two processing modes: a single source (hence
+a single output file) and multiple sources (hence multiple
+output files).  Only in the former case (single-source mode),
+users can specify the name of the discrete and complete output filename
+via the command-line parameter <TT>outfilename</TT>.
+If not, users can specify the root filename via <TT>gifroot</TT>
+and can control the rules of subsequent identifier via a few command-line
+arguments.  If none is specified, the default filename(s) will be used.
+
+<P>
+Note that SAS tasks in default have the clobber setting activated. 
+Therefore, unless users explicitly specify <TT>-noclobber</TT> (see
+Section&nbsp;<A HREF="node17.html#makethumbs:description:comments">9</A> for an important note
+for <TT>-noclobber</TT> option),
+all the existing files with the identical names will be overwritten.
+
+<P>
+The basic input parameters for each source, such as its
+celestial coordinates, are read from the given source-list
+and/or the external catalogue in default.  
+Only in the single-source mode,
+the position can be given via the command-line arguments,
+<TT>ra</TT> and <TT>dec</TT>.
+Some strings displayed in all the output GIF files can be
+given via several command-line arguments.
+
+<P>
+In determining the output filenames (unless a user specifies
+the discrete filename in the single-source mode), this task uses
+either or all of <TT>SRC_NUM</TT> (source number, which
+can be given via the command-line parameter <TT>srcnum</TT> 
+in the single-source mode), <TT>DETID</TT> (meaning detection ID
+in the 2XMM catalogue) or <TT>SRCID</TT> (unique source ID in 2XMM),
+all of which are derived from either the input source-list
+or the given external catalogue.
+
+<P>
+Users can also make a fine control over the size and colour
+of the output GIF image, size and thickness of the hair-line
+cross in the image and strings of information displayed in the image. 
+
+<P>
+See the following and Section&nbsp;<A HREF="node12.html#makethumbs:description:parameters">4</A>
+for detail.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Note on the processing"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

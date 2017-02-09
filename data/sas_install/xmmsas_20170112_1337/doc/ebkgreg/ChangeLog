@@ -1,0 +1,72 @@
+ChangeLog for ebkgreg
+===============================
+
+Version 0.7.2 - 2016-10-28 (JVP)
+-----------
+	+ Documentation updated
+
+Version 0.7.1 - 2016-07-20 (JVP)
+-----------
+	+ Documentation updated
+
+Version 0.7 - 2016-06-22 (JVP)
+-----------
+	+ (src/ebkgreg.cc	- In addition to PN, MOS1/2 cameras are also covered by this task.
+	   src/ProcSrcList.cc	- Background extraction region is CIRCLE, or ANNULUS only for MOS1/2 in
+	   src/Bkgreg.cc	  SmallWindow mode (PrimePartialW2/3) and the source is in the
+	   src/Bkgreg.h		  central CCD (CCDnr = 1). In this case the annulus has always the same size
+	   src/Lookupradius.cc	  and it covers the external CCDs, but enclosing the central CCD into the inner
+	   src/Lookupradius.h	  radius of the annulus. Thus no counts from the central CCD are taken
+	   config/ebkgreg.par	  into account for the background estimate.
+				- Include instrument label: PN, M1, M2 in the Source List columns
+				- Three new columns included in Source List:
+				- Background extraction region shape: CIRCLE or ANNULUS
+					- *_RAD1 ( = Circle radius or inner radius for Annulus)
+					  *_RAD2 ( = 0 for Circle or outer radius for Annulus)
+				- New output parameters for RAD1 and RAD2 (arcsec and detector units)
+				- Pixel size set depending on the EPIC camera (pixsizePN = 4.18, pixsizeM1/2 = 1.10)
+
+Version 0.6.2 - 2015-12-21 (JVP)
+-----------
+	+ No background region is produced if the background extraction radius is less than 3 pixels
+
+Version 0.6.1 - 2015-12-17 (RDS)
+-----------
+	+ test/ebkgreg_test_pn      - changed test for Boresight_0015.CCF
+
+Version 0.6 - 2015-09-02 (JVP)
+-----------
+	+ Changed DISTRIBUTION into world
+
+Version 0.5 - 2015-08-21 (JVP)
+-----------
+	+ Distance between edges of (source region) and (background region) dr0 = 
+	  = Source extraction radius, but clamp to 12 arcsec < dr0 < 40 arcsec.
+
+Version 0.4 - 2015-08-13 (JVP)
+-----------
+	+ In the multiple-sources case from an input Source List
+	  the extraction region radius for each source can be obtained from:
+	    - Counts and off-axis information from LOOKUP.FITS table
+	    or
+	    - Directly from the input source list as SRC_RAD column
+	+ Documentation updated
+
+Version 0.3 - 2015-08-11 (JVP)
+-----------
+	+ Open/close dataset correction
+	+ GUI layout update
+
+Version 0.2 - 2015-08-04 (JVP)
+-----------
+	+ Input as Source List file. Background region estimate
+	  to the same input file in extra columns (BKG_*).
+	+ Input as individual source from the command line. 
+	  Background region estimate to stdout.
+	+ Documentation.
+	
+Version 0.1 - 2015-06-16 (JVP)
+-----------
+	+ Original and Development version
+	+ Directory structure created by pkgmaker.
+

@@ -1,0 +1,278 @@
+<!-- converted from XPI formatted "dstoplot.par.xpi"-->
+<FILE>
+<CONFIG>
+
+<PARAM id="withtable" type="bool" default="yes">
+	<DESCRIPTION>
+		Plot table column data?
+	</DESCRIPTION>
+	<CASE>
+		<ITEM value="no"/>
+		<ITEM value="yes">
+			<PARAM id="table" type="table">
+				<DESCRIPTION>
+					Input table
+				</DESCRIPTION>
+			</PARAM>
+			<PARAM id="withscatter" type="bool" default="no">
+				<DESCRIPTION>
+					Produce scatter plot?
+				</DESCRIPTION>
+				<CASE>
+					<ITEM value="no"/>
+					<ITEM value="yes">
+						<PARAM id="setsymbols" type="int" list="yes">
+							<DESCRIPTION>
+								Symbols for different graphs
+							</DESCRIPTION>
+						</PARAM>
+						<PARAM id="setcolors" type="int" list="yes">
+							<DESCRIPTION>
+								Colors for different graphs
+							</DESCRIPTION>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+
+			<PARAM id="index" type="bool" default="no">
+				<DESCRIPTION>
+					Use row index as x-axis?
+				</DESCRIPTION>
+				<CASE>
+					<ITEM value="no"/>
+					<ITEM value="yes"/>
+				</CASE>
+			</PARAM>
+
+			<PARAM id="withx" type="bool" default="no">
+				<DESCRIPTION>
+					Name x-axis explicitely?
+				</DESCRIPTION>
+				<CASE>
+					<ITEM value="no"/>
+					<ITEM value="yes">
+						<PARAM id="x" type="column">
+							<DESCRIPTION>
+								Column name for x
+							</DESCRIPTION>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+
+			<PARAM id="withxmin" type="bool" default="no">
+				<DESCRIPTION>
+					Specify lower bound of x-axis?
+				</DESCRIPTION>
+				<CASE>
+					<ITEM value="no"/>
+					<ITEM value="yes">
+						<PARAM id="xmin" type="real" default="0">
+							<DESCRIPTION>
+								Lower bound of x-axis
+							</DESCRIPTION>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+
+			<PARAM id="withxmax" type="bool" default="no">
+				<DESCRIPTION>
+					Specify upper bound of x-axis?
+				</DESCRIPTION>
+				<CASE>
+					<ITEM value="no"/>
+					<ITEM value="yes">
+						<PARAM id="xmax" type="real" default="0">
+							<DESCRIPTION>
+								Upper bound of x-axis
+							</DESCRIPTION>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+
+			<PARAM id="xlog" type="bool" default="no">
+				<DESCRIPTION>
+					Logarithmic x-axis?
+				</DESCRIPTION>
+				<CASE>
+					<ITEM value="no"/>
+					<ITEM value="yes"/>
+				</CASE>
+			</PARAM>
+
+			<PARAM id="withy" type="bool" default="no">
+				<DESCRIPTION>
+					Provide list of columns to plot explicitely?
+				</DESCRIPTION>
+				<CASE>
+					<ITEM value="no"/>
+					<ITEM value="yes">
+						<PARAM id="y" type="column" list="yes">
+							<DESCRIPTION>
+								List of column names for y
+							</DESCRIPTION>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+
+			<PARAM id="withymin" type="bool" default="no">
+				<DESCRIPTION>
+					Specify lower bound of y-axis?
+				</DESCRIPTION>
+				<CASE>
+					<ITEM value="no"/>
+					<ITEM value="yes">
+						<PARAM id="ymin" type="real" default="0">
+							<DESCRIPTION>
+								Lower bound of y-axis
+							</DESCRIPTION>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+
+			<PARAM id="withymax" type="bool" default="no">
+				<DESCRIPTION>
+					Specify upper bound of y-axis?
+				</DESCRIPTION>
+				<CASE>
+					<ITEM value="no"/>
+					<ITEM value="yes">
+						<PARAM id="ymax" type="real" default="0">
+							<DESCRIPTION>
+								Upper bound of y-axis
+							</DESCRIPTION>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+
+			<PARAM id="ylog" type="bool" default="no">
+				<DESCRIPTION>
+					Logarithmic y-axis?
+				</DESCRIPTION>
+				<CASE>
+					<ITEM value="no"/>
+					<ITEM value="yes"/>
+				</CASE>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="withoffsetx" type="bool" default="no">
+	<DESCRIPTION>
+		Offset all x-value by x[0]?
+	</DESCRIPTION>
+	<CASE>
+		<ITEM value="no"/>
+		<ITEM value="yes"/>
+	</CASE>
+</PARAM>
+
+<PARAM id="title" type="string">
+	<DESCRIPTION>
+		Title for the plot
+	</DESCRIPTION>
+</PARAM>
+
+<PARAM id="subtitle" type="string">
+	<DESCRIPTION>
+		Subtitle for the plot
+	</DESCRIPTION>
+</PARAM>
+
+<PARAM id="output" type="string" default="stdout">
+	<DESCRIPTION>
+		Output channel
+	</DESCRIPTION>
+	<CASE>
+		<ITEM value="file">
+			<PARAM id="outputfile" type="file" default="plot.dat">
+				<DESCRIPTION>
+					Output file name
+				</DESCRIPTION>
+			</PARAM>
+		</ITEM>
+		<ITEM value="stdout"/>
+	</CASE>
+</PARAM>
+
+<PARAM id="withxranges" type="bool" default="no">
+	<DESCRIPTION>
+		Overlay plot with horizontal range markers?
+	</DESCRIPTION>
+	<CASE>
+		<ITEM value="no"/>
+		<ITEM value="yes">
+			<PARAM id="xrangetables" type="table" list="yes">
+				<DESCRIPTION>
+					List of tables with abscissa ranges to plot
+				</DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="withalltablesafter" type="bool" default="no">
+				<DESCRIPTION>
+					Plot contents of all abscissa range tables following named first one?
+				</DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="xrangefromcol" type="column" default="START">
+				<DESCRIPTION>
+					Name of column containing lower abscissa range boundaries
+				</DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="xrangetocol" type="column" default="STOP">
+				<DESCRIPTION>
+					Name of column containing upper abscissa range boundaries
+				</DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="withybase" type="bool" default="no">
+				<DESCRIPTION>
+					Provide vertical position of abscissa range markers?
+				</DESCRIPTION>
+				<CASE>
+					<ITEM value="no"/>
+					<ITEM value="yes">
+						<PARAM id="ybase" type="real" default="0.">
+							<DESCRIPTION>
+								Vertical world coordinate position of abscissa range markers
+							</DESCRIPTION>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+
+			<PARAM id="withystride" type="bool" default="no">
+				<DESCRIPTION>
+					Provide vertical distance of subsequent abscissa range markers?
+				</DESCRIPTION>
+				<CASE>
+					<ITEM value="no"/>
+					<ITEM value="yes">
+						<PARAM id="ystride" type="real" default=".1">
+							<DESCRIPTION>
+								Vertical world coordinate distance of abscissa range markers
+							</DESCRIPTION>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="offsetx" type="real" default="0">
+	<DESCRIPTION>
+		x-axis offset value (output)
+	</DESCRIPTION>
+</PARAM>
+
+</CONFIG>
+</FILE>

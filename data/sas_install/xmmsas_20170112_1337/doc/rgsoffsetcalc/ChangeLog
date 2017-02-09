@@ -1,0 +1,156 @@
+ChangeLog for rgsoffsetcalc
+===========================
+
+Version 1.18.2 - 2016-12-20 (RDS)
+------------
+	+ src/rgsoffsetcalc_mod.f90. Pointer to time array nullified.
+
+Version 1.18.1 - 2004-06-10 (CG&AI)
+------------
+	+ test/testodfrgsoffsetcalc.cc. The way to create a 
+	  vector<string> changed to prevent problems on MAC. 
+
+Version 1.18 - 2003-05-16 (JBa)
+------------
+	+ Fixed SOC::SPR 2445
+
+Version 1.17 - 2002-09-16 (GV)
+------------
+	+ Works with gcc-3.1.
+	
+Version 1.16 - 2002-07-11 (GV)
+------------
+	+ DEPEND on sas.
+
+Version 1.15 - 2002-05-10 (GV)
+------------
+	+ Updated par file for param-2.0.
+
+Version 1.14 - 2001-10-15 (GV)
+------------
+	+ fixed -O2 compilation problem in test harness.
+	
+Version 1.13.1 - 2001-07-25 (UL)
+--------------
+	+ fixed problem of SPR 2130: Fails to compile with NAG F95 4.1
+	+ consistent use of namespace std in C++ sources
+	+ added layout file
+
+Version 1.13 - 2001-03-29 (GV)
+------------
+	+ (src/rgsoffsetcalc_mod.f90::storeFit) remove call to
+	OAL_releasememory, as the pointer TIME belongs to the DAL and
+	should not be released by the OAL. A bug in the OAL allowed this
+	to work until oal-3.63 (SOC-SPR-1970).
+	
+Version 1.12.3 - 2000-11-13 (GV)
+--------------
+	+ ({src,test}/Makefile) add cal to USEDLIBS.
+
+Version 1.12.2 - 2000-11-15 (GV)
+--------------
+	+ (src/rgsoffsetcalc_mod.f90) prefer FTFINE/FTCOARSE to DATE-OBS
+	to determine the time. This requires now te OAL and the time
+	correlation file.
+	+ ( " " ) sort the outpout table by time.
+	+ ( " " ) compare stddev to epsilon via abs, so that the warning
+	'residuals' is not issued inappropriately.
+	
+Version 1.12.1 - 2000-10-27 (GV)
+--------------
+	+ (doc/rgsoffsetcalc_description.tex) typo fixed (SOC-SPR-1638).
+	
+Version 1.12 - 2000-07-01 (GV)
+------------
+	+ (src/rgsoffsetcalc_mod.f90) initialize calscope to ""	(SOC-SPR-1654).
+	
+Version 1.11 - 2000-06-29 (GV)
+------------
+	+ (test/*) updated the test datasets as these must now have a
+	BLANK attribute. 
+	
+Version 1.10 - 2000-06-28 (GV)
+------------
+	+ (src/rgsoffsetcalc_mod.f90) now enforces the presence of BLANK.
+
+Version 1.9.3 - 2000-06-28 (GV)
+-------------
+	+ (src/rgsoffsetcalc_mod.f90) add boolean function validateImage
+	where a decision is made on whether the diagnostic array is likely
+	to give a good fit or not. At the moment the only check that is
+	done is that less than 10% of the pixels should be below the value
+	indicated in the attribute BLANK. Note that thgis attribute is
+	only present in recent ODFs, so in this version if BLANK is absent
+	a harcoded value of 6666 is used (SOC-SPR-1340). Datasets that
+	fail this test are not used to calculate the offsets.
+
+Version 1.9.2 - 2000-06-23 (GV)
+-------------
+	+ (doc/rgsoffset_calc.tex) fix documentation links (SOC-SPR-1555).
+	
+Version 1.9.1 - 2000-06-06 (GV)
+-------------
+	+ (src/rgsoffsetcalc_mod.f90) read DATE-OBS from the array, not
+	the parent set (SOC-SPR-1395).
+	+ ( idem ) does not try to read DATE from the parent set.
+	+ (config/rgsoffsetalc.info) added.
+	
+Version 1.9 - 2000-04-11 (GV)
+-----------
+	+ (src/rgsoffsetcalc_mod.f90) release(outset) is called always,
+	instead of being called only when there are files on the command
+	line.
+	+ ( "                    "  ) if no diagnostic files are specified
+	on the command line, the output is generated with the correct
+	structure but empty.
+	+ ( "                    "  ) outset initalization moved to a
+	subroutine. 
+	
+Version 1.8 2000-03-07
+-----------
+	+ (test/testrgsoffsetcalc.cc) another lowmemfix
+
+Version 1.7 2000-03-06
+-----------
+	+ (src/rgsoffsetcalc_mod.f90) fix order of destructors.
+
+Version 1.6 2000-02-22
+-----------
+	+ (src/rgsoffsetcalc_mod.f90) close SPR 1074
+	+ test also with datasets with 0/1/boths read out nodes.
+
+Version 1.5 1999-12-24
+-----------
+	+ added cal to USEDLIBS (spotted by static build).
+
+Version 1.4 1999-12-17
+-----------
+	+ update DEPEND
+
+Version 1.3 1999-11-25
+-----------
+	+ close SPRs 900, 899, 898 generated during testing at Saclay.
+	+ (src/rgsoffsetcalc_mod.f90): output format changed, see documentation.
+	+ (test/testrgsoffsetcalc.cc): test that can recover mean of gaussian distribution.
+	+ documentation update.
+
+Version 1.2 1999-08-25
+-----------
+        + update DEPEND
+
+Version 1.1 1999-06-09
+-----------
+	+ remove use eventattributes from f90 code (was not being used)
+	
+Version 1.0 1999-06-01
+-----------
+	+ all functionality implemented (except refined thresholds)
+	+ documentation updated
+	+ simple test harness (run to completion)
+	
+Version 0.1 1999-05-18
+-----------
+
+	+ first implementation. Output to the screen
+	+ Directory structure created by pkgmaker.
+

@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Comments</TITLE>
+<META NAME="description" CONTENT="Comments">
+<META NAME="keywords" CONTENT="emenergy">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emenergy.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="emenergy.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emenergy (emenergy-8.8) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithm"></A>
+<A HREF="emenergy.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Future developments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emenergy.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00090000000000000000"></A>
+<A NAME="emenergy:description:comments"></A>
+<BR>
+Comments
+</H1>
+
+<P>
+
+<UL>
+<LI>The flag map built by EVFLAG could be of interest to <A NAME="1004"></A><A NAME="tex2html14"
+  HREF="../eexpmap/index.html"><SPAN  CLASS="textbf">eexpmap</SPAN></A>
+and <A NAME="1008"></A><A NAME="tex2html15"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>.
+To that end it would need to be supplemented with small 5x5 maps
+(one per pattern) describing the effective extension of a bad pixel.
+Computing the area lost to bright pixels declared on-board is another matter.
+It depends on energy, through the bright pixel level.
+</LI>
+<LI>If the telescope's attitude were to vary significantly 
+(more than the PSF) with time, then it should be considered using X,Y 
+(attitude corrected) as coordinates for CCDBKG, since
+the optical background from stars would follow the attitude variations.
+Note that this would need accumulating the map over a larger area than
+the current window to accommodate pointing excursions.
+The large scale optical background (<I>e.g.</I> stray light from the earth)
+does not come through the telescope's optics and therefore has no reason
+to follow the attitude variations. On the other hand it would be expected 
+to vary along the orbit.
+The way to deal with that would be
+to model the large scales (e.g. by a quadratic shape) separately
+in several time bins and then model
+the parameters' variations with time (quadratic).
+</LI>
+<LI>The subroutines CTI_CORR and ENERGY only call
+the CAL routines CAL_mosCTIcorrection and CAL_gainCorrection.
+</LI>
+<LI>The scheme does not allow for the possibility of measuring the
+gain in one observation (with the calibration source) 
+and passing this on to <A NAME="1012"></A><A NAME="tex2html16"
+  HREF="../emenergy/index.html"><SPAN  CLASS="textbf">emenergy</SPAN></A>
+(to supplement or replace the CAL).
+</LI>
+<LI>The baseline is to perform the ENERGY
+subroutine at the end. It could also be considered
+performing ENERGY (converting all E<SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$_i$"></SPAN> into <A NAME="1016"></A><TT>PI</TT>)
+before CTI_CORR.
+This would be the best option if the ADU to <A NAME="1018"></A><TT>PI</TT> conversion 
+were significantly non linear. 
+On the other hand it is somewhat more difficult to calibrate
+and may induce some additional error.
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithm"></A>
+<A HREF="emenergy.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Future developments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

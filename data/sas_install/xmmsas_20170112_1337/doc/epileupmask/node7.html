@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Behaviours and command-line arguments.</TITLE>
+<META NAME="description" CONTENT="Behaviours and command-line arguments.">
+<META NAME="keywords" CONTENT="epileupmask">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epileupmask.css">
+
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epileupmask (ebkgmap-2.9) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="What is the limitation"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="What is the limitation"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epileupmask.html">Home Page</A> / <A  HREF="node3.html">Description</A> / <A  HREF="node6.html">What is the limitation</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00033100000000000000"></A>
+<A NAME="epileupmask:description:behaviour"></A>
+<BR>
+Behaviours and command-line arguments.
+</H3>
+
+<P>
+This task accepts either an event or image file as an input
+(controlled by <TT>inputstyle</TT>), and outputs either the sky coordinate
+image or 3-dimensional chipcube (controlled by <TT>outputstyle</TT>).
+
+<P>
+In short, we recommend to specify an event file as an input,
+and the sky coordinate image as an output, of which the reasons are
+described below.
+
+<P>
+
+<OL>
+<LI>if the input is an event file and the output is the chipcube, the process runs as follows:
+<BR>
+The task calculates the normalised count-per-frame-per-pixel (=rate) map
+  for each chip, taking account of the energy (PI) of each event.
+  Then the pixels, where the rate exceeds the given threshold, are masked
+  and it is output. <A NAME="epileupmask:description:item1"></A>
+<P>
+</LI>
+<LI>if the input is an event file and the output is the sky-coordinate image, the process runs as follows:
+<BR>
+The core of the routine is exactly the same as the above case.  However,
+  the coordinate conversion into sky-coordinates is not a trivial job,
+  as the pile-up phenomenon is basically processed on the chip(raw)
+  coordinates.  Hence a user is allowed to specify the binned-attitude file.
+  If this (<TT>binnedattset</TT>) is set, the task splits the event files into 
+  the given time bins (described in the file <TT>binnedattset</TT>),
+  performs the above-described calculation (of the normalised rate map)
+  for each of these time bins, converts each normalised rate map and mask map
+  into the sky coordinates<A NAME="tex2html2"
+  HREF="footnode.html#foot413"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A>.  Finally
+  the task calculates the logical sum of the mask file.  In other words,
+  all the pixels that experience the rate above the threshold in one of
+  the time bins are masked.  Note that frames with too short duration
+  are not used in this calculation of rate and mask images (Controlled by
+  <TT>avcnttoprocess</TT>) in this case.  If a user specifies so
+  (controlled by <TT>attstyle</TT>), the entire observation is used as
+  one set -- in that case, the spatial fluctuation of the spacecraft
+  is not taken into account (the median attitude value is simply used for
+  the coordinate conversion).
+
+<P>
+</LI>
+<LI>if the input is an image file and the output is the chipcube,
+<BR>
+the process is similar to the case&nbsp;<A HREF="#epileupmask:description:item1">1</A>.
+  However the energy of each event is unknown.  Therefore the image
+  is assumed to have a single energy, which is the mean
+  energy of those specified by the user (Controlled by
+  <TT>evlo</TT> and <TT>evhi</TT>).  As for the attitude of the spacecraft,
+  which is used in converting the sky coordinates to the chip ones,
+  the median attitude value is simply used.
+
+<P>
+A potential problem is when the image bin size is larger than 
+  the chip-coordinate one, the output mask on the chip-coordinates
+  will be sparse, because only the central value of the image coordinates
+  are taken into account in the current algorithm.
+  For example, suppose the former is twice as larger than
+  the latter, and all the image pixels exceed the piled-up threshold,
+  then only one in every 4 pixels in the chipcube is flagged as piled-up.
+
+<P>
+</LI>
+<LI>if the input is an image file and the output is the sky-coordinate image, too,
+<BR>
+the task does the same thing as the above case, although the output
+  file is in the same coordinates.  However, the spacecraft attitude
+  information is still needed to get the (number of) frame information
+  for each pixel.  The median attitude value is used for that purpose.
+</LI>
+</OL>
+
+<P>
+Note the algorithm is identical to that in <A NAME="466"></A><A NAME="tex2html3"
+  HREF="../eootepileupmask/index.html"><SPAN  CLASS="textbf">eootepileupmask</SPAN></A>.
+Consult its manual for detail.
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="What is the limitation"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="What is the limitation"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

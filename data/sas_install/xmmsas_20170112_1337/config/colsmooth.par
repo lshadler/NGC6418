@@ -1,0 +1,164 @@
+<!-- converted from XPI formatted "colsmooth.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="intable" type="table" default="inset.ds:SPECTRUM">
+   <DESCRIPTION>
+    Name of the input dataset+table.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="incolumn" type="string" default="RATE">
+   <DESCRIPTION>
+    Name of the column to be smoothed.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withouttable" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to overwrite the inset or to write smoothed output to another set.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="outtable" type="table" default="outset.ds:SPECTRUM">
+      <DESCRIPTION>
+       Name of the output dataset+table.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="outcolumn" type="string" default="RATE">
+      <DESCRIPTION>
+       Name of the column in outset to contain the smoothed values.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="witherrors" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to adjust uncertainties.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="inerrorscolumn" type="string" default="STAT_ERR">
+      <DESCRIPTION>
+       Name of inset uncertainties column.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="outerrorscolumn" type="string" default="STAT_ERR">
+      <DESCRIPTION>
+       Name of outset uncertainties column.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="convolverstyle" type="string" default="tophat">
+   <DESCRIPTION>
+    Method of specifying the convolving function.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="gaussian">
+     <PARAM id="sigma" type="real" default="1.0">
+      <DESCRIPTION>
+       Sigma value of gaussian convolver.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       sigma in [0.0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="set">
+     <PARAM id="convolvertable" type="table" default="convolver.ds:CONV">
+      <DESCRIPTION>
+       Name of dataset+table containing convolving function.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="convolvercolumn" type="string" default="CONV">
+      <DESCRIPTION>
+       Name of column containing convolving function.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="tophat">
+     <PARAM id="width" type="int" default="1">
+      <DESCRIPTION>
+       Width in channels of top hat convolver.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       width in [0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="user">
+     <PARAM id="convolver" type="real" list="yes" default="1">
+      <DESCRIPTION>
+       List of real values to use as convolving function (centred on middle pixel (odd) or lowest upper half pixel (even)).
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="normalize" type="bool" default="yes">
+   <DESCRIPTION>
+    Whether to normalize the convolving function.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="maskstyle" type="string" default="none">
+   <DESCRIPTION>
+    Method of specifying the mask.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="expression">
+     <PARAM id="maskexpression" type="string" default="">
+      <DESCRIPTION>
+       Selection expression to apply to inset to generate the mask.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="none">
+    </ITEM>
+
+    <ITEM value="set">
+     <PARAM id="masktable" type="table" default="mask.ds:MASK">
+      <DESCRIPTION>
+       Name of dataset+table containing the mask.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="maskcolumn" type="string" default="MASK">
+      <DESCRIPTION>
+       Name of the column containing the mask.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="fillholewidth" type="int" default="0">
+   <DESCRIPTION>
+    Maximum size (inclusive) of mask holes to be interpolated.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    fillholewidth in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

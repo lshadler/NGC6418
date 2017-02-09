@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="emevents">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emevents.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="emevents.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emevents (emevents-8.7) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="emevents.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emevents.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="emevents:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+MODULE em_events_module
+
+   Read the file names of event files (input and output) and frame file
+
+   Open files 
+   Get keyword values   
+ 
+   parameters read : choice of sub_tasks to execute
+   Loop over input task parameters
+      Read the task parameter / 1 to perform the procedure,
+                                0 not to perform it  /
+   End loop
+
+   Get the values of files columns in memory
+  
+SUBROUTINE CUT_BAD 
+   if cut_bad requested  then
+     read bad pixels in extension
+     Loop over frames
+       Creation of image using inverse pattern definition 
+       Connection with binodal task 
+          in the case of 2 files (prime and redundant) analysis
+       Set bad pixels to 0
+       Loop over events
+          Use of EDUSOFT code for new pattern reconstruction
+          creation of new rows and destruction of old ones
+       end loop
+     end loop
+   endif
+  
+SUBROUTINE DIAGO 
+   if diago requested then 
+     Loop over event rows for diagonal patterns
+       Check if both E1 and E2 energies are different from Si K energy
+       In this case :
+         first correct the existing pattern    
+         pattern is 0, e2 is 0, others the same   
+         second create another pattern   
+         pattern is 0, e1 is old e2, X &amp; Y to be calculated 
+         depending on pattern  
+         e2 is 0, others the same   
+         both patterns are flagged   
+         ( do not correct the NVALID in the file frame )   
+      end loop
+      new rows have been created at the end of file
+      now shift of lines in order to insert new events
+      Loop over number of new lines
+         Shift all rows following place of insertion
+      end loop
+    endif
+
+    Check events with energy value below EMDHLOW or above EMDHHIGH
+
+SUBROUTINE CUT_GTI 
+    if cut_gti requested  then 
+      Loop over frame rows
+         all events whose frames were flagged are flagged for rejection 
+      end loop
+    endif
+
+SUBROUTINE PUT_XY 
+    if put_xy requested then
+      Loop over events
+         center the events, substract the underscan, add 1.
+         flag the events outside the field of view
+      end loop
+      Modify window keywords
+      Compute camera coordinates
+    endif 
+
+SUBROUTINE PUT_TI  ( Imaging mode )
+    if put_ti requested then
+      Loop over frame rows
+         Loop over events rows
+           calculate the average time for the frame 
+           copy this time in the time column of events file
+         end loop
+       end loop
+     endif
+ 
+SUBROUTINE PUT_TT  ( Timing mode )
+     if put_tt requested then
+       Loop over frame rows
+         Loop over events rows
+           calculate the new time as reference frame time plus Y offset
+           copy this time in the time column of events file
+         end loop
+       end loop
+     endif
+
+SUBROUTINE REJECT_ROWS
+    if reject_rows requested then
+       Loop over frame rows
+         Loop over events rows
+            Build RAWY profile
+         end loop
+         Loop over events rows
+            Flag events with RAWY profile larger than maxeventsperrow
+            If 2 or more, flag events within +/- widthnexttorow
+               (in the same frame) as well
+         end loop
+       end loop
+    endif
+
+SUBROUTINE REJECT_E3
+    if reject_e3 requested then
+      if detectbadoffsets and not SW mode then
+         Build median E3 on each row and column
+         Look for successive rows/columns with median E3 &lt; -100
+         Solve E3(i) = - 3*offset(i-1) - 2*offset(i) - 3*offset(i+1)
+         to deduce which offset is wrong
+         Flag events on rows/columns with wrong offset
+      endif
+      Read e3threshold from CAL
+      Loop over events rows
+         Flag events with pattern &lt;= 4 and E3 &lt; e3threshold
+      end loop
+    endif
+
+For each triplet in tolfxy, call REJECT_FLICKERING
+SUBROUTINE REJECT_FLICKERING(ftol,xtol,ytol)
+    Ignore events OUT_OF_CCD_WINDOW, IN_BAD_FRAME, ON_BADROW, ON_BADPIX
+    volref = (2*ftol+1) * (2*xtol+1) * (2*ytol+1)
+    Get map of average event density, smoothed at xtol, ytol
+    Get number of events per frame, smoothed at ftol
+    Loop over events
+       Count number of other events within ftol, xtol, ytol
+       Estimate local average from larger of averages
+          over FRAME (for sources) and RAWX,RAWY (for flares)
+       If Poisson probability to get observed counts is &gt; 1E-6, count as peak
+    end loop
+    Keep only local maxima among peaks
+    Loop over peaks
+       Identify events closer than 2*ftol in FRAME, 10*(xtol,ytol) in RAWX,RAWY
+       If spatial distribution is compatible with a source
+          (not too peaked, not too elongated) don't flag
+       else flag events close to the peak, up to the point
+          where the density meets the average
+    end loop
+
+SUBROUTINE SP_GATTI 
+    if sp_gatti requested   then
+      Loop over events rows
+        calculate the E1 spectrum, the (E1+gatti) spectrum 
+        and the gatti spectrum
+      end loop
+      Convolution of E1 and gatti spectra
+    endif
+
+    sequence of instructions for outevent1 creation 
+ 
+    closing files
+        
+end module
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

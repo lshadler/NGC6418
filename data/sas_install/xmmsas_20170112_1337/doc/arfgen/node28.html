@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Timing and Burst modes</TITLE>
+<META NAME="description" CONTENT="Timing and Burst modes">
+<META NAME="keywords" CONTENT="arfgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="arfgen.css">
+
+<LINK REL="next" HREF="node29.html">
+<LINK REL="previous" HREF="node27.html">
+<LINK REL="up" HREF="node14.html">
+<LINK REL="next" HREF="node29.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+arfgen (arfgen-1.93.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node27.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Pattern support"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node29.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Flux loss due to"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node44.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="arfgen.html">Home Page</A> / <A  HREF="node14.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00068000000000000000">
+ Timing and Burst modes</A>
+</H2>
+These modes are treated as a special case within <A NAME="1400"></A><A NAME="tex2html44"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>. 
+For the EPIC-pn camera, regardless of
+the spatial region used to extract the spectra the source is assumed
+to be located at a DETY position calculated from the SRCPOS keyword
+in the spectrum header (or RAWY=190 if this keyword isn't present).
+The vignetting and encircled energy corrections are
+applied assuming a point source at this position.
+Bad pixels, columns and chip gaps are corrected for in the same way as
+for imaging mode observations.
+
+<P>
+In Timing mode it is recommended to take the full range of RAW-Y when
+extracting an EPIC-pn spectrum (in MOS the RAW-Y information is not
+present). It can be useful to take a restricted RAW-Y range in Burst
+mode to exclude contamination from the on-axis source. In this case 
+<A NAME="1404"></A><A NAME="tex2html45"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+scales the ARF proportionately to the range selected.
+Such a scaling is not applied for Timing mode data.
+
+<P>
+If pile-up is suspected in a Timing mode observation then it can be convenient
+to exclude the inner columns, containing the highest count rate. In this
+case a selection such as 
+
+<P>
+<TT>(RAWX in [30:34] || RAW in [37:41])
+</TT>
+
+<P>
+should be used. Here, the inner two columns, RAWX=35 and 36,
+have been excluded. The encircled energy calculation will correct for 
+the missing columns.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node27.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Pattern support"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node29.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Flux loss due to"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node44.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

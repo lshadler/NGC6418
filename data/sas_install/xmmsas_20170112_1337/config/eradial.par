@@ -1,0 +1,90 @@
+<!-- converted from XPI formatted "eregionanalyse.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="imageset" type="dataset" mandatory="yes" default="image">
+   <DESCRIPTION>
+    Name of input image dataset
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="srcexp" type="string" mandatory="yes">
+   <DESCRIPTION>
+    selection expression for source region
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="radprofset" type="dataset" mandatory="no" default="radprof.ds">
+   <DESCRIPTION>
+    Name of output radial profile dataset
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="binwidth" type="real" default="2.0">
+   <DESCRIPTION>
+    The width to use for the radial profile bins (arcseconds)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="psfenergy" type="real" default="2.0">
+   <DESCRIPTION>
+    The photon energy to use for the PSF profile (keV)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    psfenergy in [0:15]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="psftype" type="string" default="ELLBETA">
+   <DESCRIPTION>
+    
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="LOW">
+    </ITEM>
+    <ITEM value="MEDIUM">
+    </ITEM>
+    <ITEM value="HIGH">
+    </ITEM>
+    <ITEM value="EXTENDED">
+    </ITEM>
+    <ITEM value="ELLBETA">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="centroid" type="bool" default="yes">
+   <DESCRIPTION>
+    Whether to centroid the source before extracting the profile
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="maxradius" type="real" default="300.0">
+   <DESCRIPTION>
+    The maxium radius to produce and fit the radial profile (arcseconds)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    maxradius in [0:1800]
+   </CONSTRAINTS>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

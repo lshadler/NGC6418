@@ -1,0 +1,237 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Output Files</TITLE>
+<META NAME="description" CONTENT="Output Files">
+<META NAME="keywords" CONTENT="rgssources">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgssources.css">
+
+<LINK REL="next" HREF="node19.html">
+<LINK REL="previous" HREF="node15.html">
+<LINK REL="up" HREF="rgssources.html">
+<LINK REL="next" HREF="node17.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgssources (rgssources-6.2.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node15.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input Files"></A>
+<A HREF="rgssources.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Uniqueness of LABEL and"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgssources.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00050000000000000000"></A> <A NAME="outfiles"></A><A NAME="rgssources:description:outputfiles"></A>
+<BR>
+Output Files
+</H1>
+
+<P>
+
+<OL>
+<LI>RGS sources set with a binary extension table named <A NAME="1502"></A><TT>SRCLIST</TT>. The header has all the keywords mandatory for PPS products, in particular
+  
+<UL>
+<LI><A NAME="1504"></A><TT>RA_PNT</TT>: The right ascension of the attitude in decimal degrees.
+</LI>
+<LI><A NAME="1506"></A><TT>DEC_PNT</TT>: The declination of the attitude in decimal degrees.
+</LI>
+<LI><A NAME="1508"></A><TT>PA_PNT</TT>: The position angle of the attitude in decimal degrees.
+  
+</LI>
+</UL>
+
+<P>
+The <A NAME="1510"></A><TT>SRCLIST</TT> table has the following keywords:
+  
+<UL>
+<LI><A NAME="1512"></A><TT>PRIMESRC</TT>: The <A NAME="1514"></A><TT>INDEX</TT> value (see column description below) of the prime source.
+</LI>
+<LI><A NAME="1516"></A><TT>E_EXPRn</TT>: There are n (<SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\le 99$"></SPAN>) occurrences of this keyword, one for each EPIC source list added to the RGS list. The numbers <A NAME="1518"></A><TT>n</TT> are consecutive, starting at 1. The values of these keywords are taken from the <A NAME="1520"></A><TT>INSTRUME</TT> header keyword in the input EPIC source list (that is, probably EPN, in most of the cases, which does not carry a lot of practical meaning, in fact), although it used to be the exposure IDs of the respective EPIC source files (in the old-style source lists).
+</LI>
+<LI><A NAME="1522"></A><TT>E_CONTn</TT>: Similar to the <A NAME="1524"></A><TT>E_EXPRn</TT> keyword, but this records the value of the <A NAME="1526"></A><TT>CONTENT</TT> keyword in the EPIC file header.
+</LI>
+<LI><A NAME="1528"></A><TT>E_mBNDn</TT>: Similar to the <A NAME="1530"></A><TT>E_EXPRn</TT> keyword, but this records the value of either <A NAME="1532"></A><TT>ID_BAND</TT> (in the input RGS source file, when <TT>filemode</TT>=`modify') or <TT>bandids</TT>, which is used to select the EPIC sources and to calculate the RATE value, transmitted into the output RGS source list.  Note that this used to be <A NAME="1536"></A><TT>E_BANDn</TT>(=2) before Ver.6.0.  If <TT>filemode</TT>=`modify' and if the input RGS source list has <A NAME="1539"></A><TT>E_BANDn</TT> keywords, then they will be preserved in the output RGS source list (i.e., both <A NAME="1541"></A><TT>E_BANDn</TT> and <A NAME="1543"></A><TT>E_mBNDn</TT> keywords may appear).
+</LI>
+<LI><A NAME="1545"></A><TT>E_FILTn</TT>: Similar to the <A NAME="1547"></A><TT>E_EXPRn</TT> keyword, but this records the value of the <A NAME="1549"></A><TT>FILTER</TT> keyword in the EPIC file header.
+  
+</LI>
+</UL>
+
+<P>
+The <A NAME="1551"></A><TT>SRCLIST</TT> table has the following columns:
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">Column name:</TD>
+<TD ALIGN="CENTER">Data type:</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Description:</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1553"></A><TT>INDEX</TT></TD>
+<TD ALIGN="CENTER">int16</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Source index number. Each source has a unique value, which <A NAME="1555"></A><A NAME="tex2html30"
+  HREF="../rgssources/index.html"><SPAN  CLASS="textbf">rgssources</SPAN></A>
+never alters.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1559"></A><TT>LABEL</TT></TD>
+<TD ALIGN="CENTER">string</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Label for the source. These values are also unique to each source. Only upper case is used. At present, label values can only be 20 characters or less in length. Trailing spaces are not allowed.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1561"></A><TT>RA</TT></TD>
+<TD ALIGN="CENTER">real32</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>J2000 right ascension in decimal degrees.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1563"></A><TT>DEC</TT></TD>
+<TD ALIGN="CENTER">real32</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>J2000 declination in decimal degrees.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1565"></A><TT>RATE</TT></TD>
+<TD ALIGN="CENTER">real32</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Counts per second.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1567"></A><TT>DELTA_DISP</TT></TD>
+<TD ALIGN="CENTER">real32</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Offset on the sky, in the dispersion direction, of the source with respect to the pointing direction. Given in arcminutes.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1569"></A><TT>DELTA_XDSP</TT></TD>
+<TD ALIGN="CENTER">real32</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Offset on the sky, in the cross-dispersion direction, of the source with respect to the pointing direction. Given in arcminutes.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1571"></A><TT>FOV_PHI</TT></TD>
+<TD ALIGN="CENTER">real32</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>This and the next column give the polar coordinates of <A NAME="1573"></A><TT>DELTA_DISP</TT> and <A NAME="1575"></A><TT>FOV_PHI</TT>. Units for both are decimal degrees. <A NAME="1577"></A><TT>FOV_PHI</TT> is the angle of the source position from the -ve dispersion axis towards the +ve cross-dispersion axis.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1579"></A><TT>FOV_R</TT></TD>
+<TD ALIGN="CENTER">real32</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1581"></A><TT>CONFUSION</TT></TD>
+<TD ALIGN="CENTER">real32</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>This is a measure of how confused the source is with respect to the prime source. See subsection <A HREF="node18.html#confusion">5.2</A> for a description of how it is calculated. It is a dimensionless number.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1583"></A><TT>PROCESS</TT></TD>
+<TD ALIGN="CENTER">bool</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>This column is used by <A NAME="1585"></A><A NAME="tex2html31"
+  HREF="../rgsregions/index.html"><SPAN  CLASS="textbf">rgsregions</SPAN></A>
+to flag those sources for which spectrum extraction regions should be calculated. This column is no longer set by <A NAME="1589"></A><A NAME="tex2html32"
+  HREF="../rgssources/index.html"><SPAN  CLASS="textbf">rgssources</SPAN></A>, though, so all values are written as false in principle.  An exception is the case of <TT>filemode</TT>=`modify'; in that case the PROCESS column in the input RGS source list is in principle preserved.  Another exception is the sources added by the user (<TT>addusersource</TT>=true), where the value of the command-line option <TT>process</TT> is written as it is in principle.  In any case, if <TT>filemode</TT>=`modify' and <TT>changeattitude</TT>=true, all PROCESS values are forcibly written as false regardless of the value <TT>process</TT> or PROCESS in the input RGS source list.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1599"></A><TT>BKG_EXCLUDE</TT></TD>
+<TD ALIGN="CENTER">bool</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>This column is used by <A NAME="1601"></A><A NAME="tex2html33"
+  HREF="../rgsregions/index.html"><SPAN  CLASS="textbf">rgsregions</SPAN></A>
+to flag those sources which should be excluded from the background spectrum extraction region. This column is no longer set by <A NAME="1605"></A><A NAME="tex2html34"
+  HREF="../rgssources/index.html"><SPAN  CLASS="textbf">rgssources</SPAN></A>, so all values are written as false.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1609"></A><TT>FIXED_ON_SKY</TT></TD>
+<TD ALIGN="CENTER">bool</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>This column flags those sources for which the positional information was derived from right ascension and declination. The only sources for which <A NAME="1611"></A><TT>FIXED_ON_SKY</TT> is false are the attitude source and any user source supplied with <TT>userstyle</TT>=`wtatt'.</TD>
+</TR>
+</TABLE>
+</DIV>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">Column name:</TD>
+<TD ALIGN="CENTER">Data type:</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>Description:</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1614"></A><TT>EPIC_FILE</TT></TD>
+<TD ALIGN="CENTER">int16</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>This gives the number of the <A NAME="1616"></A><TT>E_EXPRn</TT>, <A NAME="1618"></A><TT>E_CONTn</TT>, <A NAME="1620"></A><TT>E_mBNDn</TT> (or <A NAME="1622"></A><TT>E_BANDn</TT> before Ver.6.0) and <A NAME="1624"></A><TT>E_FILTn</TT> keywords appropriate to the source if it has been derived from an EPIC source list. Eg, for <A NAME="1626"></A><TT>EPIC_FILE</TT>=3, the details of the original list from which this source came can be found from the keywords <A NAME="1628"></A><TT>E_EXPR3</TT>, <A NAME="1630"></A><TT>E_CONT3</TT>, <A NAME="1632"></A><TT>E_mBND3</TT> and <A NAME="1634"></A><TT>E_FILT3</TT>.</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="1636"></A><TT>FLAG</TT></TD>
+<TD ALIGN="CENTER">int32</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=227>If non-zero, something goes wrong in the source.  It is a binary (bit-type) form of representation for each cause - see the following table for detail (n.b., The representation of this FLAG column is entirely different from that in the input EPIC source list).  Note that some of the checks may be bypassed if requested (by command-line parameters); for example if <TT>enablefilter</TT>=false and <TT>flagepicsrcoutoffov</TT>=false, no check for OUTOFFOV is carried out.</TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+The following is the description for the <A NAME="1640"></A><TT>FLAG</TT> column:
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">Name</TD>
+<TD ALIGN="CENTER">Bit</TD>
+<TD ALIGN="LEFT">Description</TD>
+</TR>
+<TR><TD ALIGN="LEFT">OUTOFFOV</TD>
+<TD ALIGN="CENTER">0</TD>
+<TD ALIGN="LEFT">The source is out of field of view.</TD>
+</TR>
+<TR><TD ALIGN="LEFT">CONFUSED</TD>
+<TD ALIGN="CENTER">1</TD>
+<TD ALIGN="LEFT">The source may be confused with other source(s).</TD>
+</TR>
+<TR><TD ALIGN="LEFT">BADBAND<A NAME="tex2html35"
+  HREF="footnode.html#foot479"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A></TD>
+<TD ALIGN="CENTER">2</TD>
+<TD ALIGN="LEFT">The energy band used (hence RATE) may be wrong.</TD>
+</TR>
+<TR><TD ALIGN="LEFT">WIDESRC</TD>
+<TD ALIGN="CENTER">3</TD>
+<TD ALIGN="LEFT">The source is greater than 90 degrees away from the pointing.</TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+Note that the RGS source list set is also used to store the spectrum extraction regions created by <A NAME="1642"></A><A NAME="tex2html36"
+  HREF="../rgsregions/index.html"><SPAN  CLASS="textbf">rgsregions</SPAN></A>. These become invalidated if the attitude is altered; in this case <A NAME="1646"></A><A NAME="tex2html37"
+  HREF="../rgssources/index.html"><SPAN  CLASS="textbf">rgssources</SPAN></A>
+deletes them. See the algorithm (section <A HREF="node32.html#rgssources:description:algorithm">7</A>) for details of the circumstances under which this occurs.
+
+<P>
+The RGS source list table is required to have 1 source whose position is taken from the observation proposal, and 1 source whose position is equal to the RGS attitude (stored in the dataset header keywords <A NAME="1650"></A><TT>RA_PNT</TT>, <A NAME="1652"></A><TT>DEC_PNT</TT> and <A NAME="1654"></A><TT>PA_PNT</TT>). The <A NAME="1656"></A><TT>LABEL</TT> values of these two sources are PROPOSAL and ONAXIS respectively.
+
+<P>
+</LI>
+</OL><HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html311"
+  HREF="node17.html">Uniqueness of <TT>LABEL</TT> and <TT>INDEX</TT> values.</A>
+<LI><A NAME="tex2html312"
+  HREF="node18.html"><TT>CONFUSION</TT> values.</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node15.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input Files"></A>
+<A HREF="rgssources.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Uniqueness of LABEL and"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

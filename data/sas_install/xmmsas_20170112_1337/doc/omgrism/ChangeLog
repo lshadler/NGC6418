@@ -1,0 +1,213 @@
+ChangeLog for omgrism
+===============================
+Version 1.25.1 - 2012-03-28 (EO) 
+--------------
+	+ src/Makefile: Added EXTERNALS = pgplot to get rid of missing pgplot.
+Version 1.25 - 2011-03-24 (VNY) +(config/omgrism.info) Adding the
+	group OM to correct the location of the task web page.
+Version 1.24 - 2008-11-06 (VNY)	 +(src/omgrism_mod.f90) A bug 
+	is fixed, which was causing a crash when processing 
+	images with crowded fields (the parameter for the smoothing 
+	window size was reduced to zero for a field with more than 550 sources)
+Version 1.23 - 2008-10-01 (VNY) +(src/omgrism_mod.f90) Added some 
+	useful log messages
+Version 1.22 - 2007-11-07 (VNY) The same as 1.21, the version number 
+	was increased to align it with the SAS patch release
+Version 1.21 - 2007-11-07 (VNY) +(src/omgrism_mod.f90) Restoring the 
+	omgsource flag when extracting the target spectrum: in the 
+	case when omgrism is called from the interactive tool omgsource
+	the target spectrum shouldn't be extracted (fixing the SSC-SPR-3702)
+Version 1.20 - 2007-11-07 (VNY) +(src/omgrism_mod.f90, config/omgrism.par)
+	Added a parameter enabling the output of an additional region
+	file that contains newly detected point-like sources (zero-order
+	features)
+Version 1.19 - 2007-10-20 (VNY) +(src/omgextraction_mod.f90) Fixed a
+	bug that could result in a crash of the task when processing 
+	crowded fields (SSC-SPR-3700)
+Version 1.18.1 - 2007-07-08 (VNY) +(src/omgrism_mod.f90) Fixing a bug
+	that results in a wrongly calculated available spectrum length
+	of the target (SSC-SPR-3694)
+Version 1.18 - 2007-05-22 (VNY) +(src/omgrism_mod.f90) A small bug fixed	
+Version 1.17 - 2007-05-21 (VNY) +(src/omgrism_mod.f90, omgextraction_mod.f90)
+	Improving distinguishability of close spectra (fixing SSC-SPR-3660)
+Version 1.16 - 2007-04-15 (VNY) +(src/omgrism_mod.f90) More improvement 
+	in the field spectra extraction (SPR-3644)
+Version 1.15 - 2007-04-02 (VNY) +(src/omgrism_mod.f90) Improved the field
+	spectra extraction by allowing slightly fainter spectra 
+	to be extracted (SSC-SPR-3644)
+Version 1.14 - 2007-03-29 (VNY) +(src/omgextraction_mod.f90) The code is 
+	cleaned up, the possible division by zero operation is eliminated
+        (fixing SSC-SPR-3658)	
+Version 1.13 - 2007-03-27 (VNY) +(src/omgrism_mod.f90) A bug is fixed
+	which was causing a subscription error for the array sourceXcoord
+	(fixed SSC-SPR-3657)
+Version 1.12 - 2007-03-12 (VNY) +(src/omgrism_mod.f90) The quality flag
+	type in the input source list table is changed: now it can be 
+	either int*8 or int*16 (fixing SSC-SPR-3653). A warning message
+	is isssued when the number of input sources exceeds 1000. Such
+	a field cannot be processed yet (SSC-SPR-3643). Also the target
+	detection is improved: in the cases of a bright target overlapped 
+	with a first order-features such a target was sometimes not detected.
+	Now it is working better.
+Version 1.11 - 2006-11-09 (VNY) +(src/omgrism_mod.f90) Adjusted to the 
+	changes in other tasks related to more accurate computation
+	of grism source sky positions (SSC-SPR-3633)
+Version 1.10 - 2006-07-03 (VNY) +(scr/omgrism_mod.f90) A slightly more 
+	complicated analysis of the target position and brightness 
+	is introduces in order to prevent missclassification of obvious 
+	bright targets (they sometimes are classified as "default 
+	extraction" although being correctly extracted) - SSC-SPR-3617 	
+Version 1.9 - 2006-02-27 (VNY) +(scr/omgrism_mod.f90, omgextraction_mod.f90)
+	The slight inconsistency between the code for scaling the spectrum 
+	counts and the wavelength calibration file is removed 
+	(this problem was reported in SSC-SPR-3588).
+Version 1.8 - 2005-12-12 (VNY) +(src/omgrism_mod.f90, findsourceslist_mod.f90)
+	The algorithms for spectra identification and classification 
+	are improved (SSC-SPR-3552)
+Version 1.7 - 2005-10-30 (VNY) +(src/omgrism_mod.f90) Production of empty 
+	spectra fits-files in the case of too small windows is suppressed
+	(SSC_SPR-3534)
+Version 1.6.1 - 2005-10-27 (VNY) +(src/omgrism_mod.f90) The previous bug
+	is finally fixed (SSC-SPR-3535) - it was found still revealing itself
+Version 1.6 - 2005-10-25 (VNY) +{src/omgrism_mod.f90) A bug introduced
+	during the previous upload of the task was fixed (SSC-SPR-3533)
+Version 1.5 - 2005-10-18 (VNY) +(src/omgrism_mod.f90) A warning 
+	message is introduced in the case of impossibility of 
+	extraction the spectrum due to the smallness of the 
+	window (SSC-SPR-3526)
+Version 1.4 - 2005-09-26 (VNY) (+src/findsourcelist_mod.f90, 
+	omgexcratcion_mod.f90, omgrism_mod.f90) Fixing a small bug,
+	which could lead to a crash when working with some non-standard
+	data sets (SSC-SPR-3522)
+Version 1.3 - 2005-09-12 (VNY) (+src/findsourcelist_mod.f90) reducing the 
+	used stack memory, since in some systems this resource is limited>
+	This change is additional to fixing SSC-SPR-3515.
+Version 1.2 - 2005-09-07 (VNY) (+src/omgrism_mod.f90, omgextraction_mod.f90)
+	The computation of the coordinates of the zero-order spectrum
+	is made the same for all the possible cases (SPR-3515)
+Version 1.1.30 - 2005-07-14 (VNY) (+src/omgextraction_mod.f90) 
+	A bug in the Marquardt optimisation code is fixed. This was 
+	affecting the optimal extraction mode (SSC-SPR-3434). The main
+	(default) extraction mode remaines unchanged.
+Version 1.1.29 - 2005-06-10 (VNY) (+src/findsourceslist_mod.f90,
+	omgrism_mod.f90) Additional check is introduced in order to ensure 
+	that the bright zero-order features have right coordinates 
+	(they could be erroneous because of numerous bright spots
+	due to coincidence losses and modulo-8 noise). Fixed SSC-SPR-3479
+Version 1.1.28 - 2005-06-10 (VNY) (+src/findsourceslist_mod.f90)
+	A bug introduced in the previous version is fixed
+Version 1.1.27 - 2005-06-09 (VNY) (+src/findsourceslist_mod.f90,
+	omgrism_mod.f90, omgextraction_mod.f90) Cleaned out of the unused
+	variables (to reduce the number of warnings durung the compilation)
+Version 1.1.26 - 2005-06-08 (VNY) (+src/findsourceslist_mod.f90) 
+	Protected against excessive nesting of stack memory, which 
+	was causing a crash on some mashins (SSC-SPR-3468)
+Version 1.1.25 - 2005-06-06 (VNY) +(src/omgrism_mod.f90, 
+	omgextraction_mod.f90, marq_mod.f90)
+ 	Additional checks are introduced to ensure the correct extraction
+	of the target spectra in the cases when its zero-order image is 
+	badly affected by the modulo-8 noise (SSC-SPR-3465). The common
+	block is deleted from marq_mod.f90 (this was not used but caused
+	a build failure on the Mac).
+Version 1.1.24 - 2005-05-23 (CB1) +(src/omgextraction_mod.f90
+	Ammended routine to fix build problem.	
+Version 1.1.23 - 2005-02-22 (VNY) +(src/omgextraction_mod.f90): 
+	the negative counts that could appear when subtracting the 
+	background from a faint spectrum are taken into account. 
+	Omitting the negative counts might result in a slight overestimation
+	of the spectrum (SSC-SPR-3444)
+Version 1.1.22 - 2005-01-27 (VNY) +(src/omgextraction_mod.f90): 
+	correction of an additional small (logical) bug related
+	to the background interpolation limits across the spectrum
+	(SSC-SPR-3433)
+Version 1.1.21 - 2005-01-25 (VNY) +(src/omgextraction_mod.f90): 
+	a small bug related to wrong background interpolation 
+	limits across the spectrum is fixed (SSC-SPR-3433).
+Version 1.1.20 - 2004-10-18 (VNY) +(src/omgrism_mod.f90) The bug 
+	related to the missed target on the full-frame low-resolution
+	images is fixed (SSC-SPR-3408)
+Version 1.1.19 - 2004-10-14 (VNY) )+src/omgrism_mod.f90) An additional
+	patch improving the solution of SSC-SPR-3407 is added
+Version 1.1.18 - 2004-10-14 (VNY) (+src/omgrism_mod.f90, 
+	+src/omgextraction_mod.f90) Logical sequence in determination
+	of the target is improved - to eliminate the possibility of
+	labelling the default extraction region as target
+	(SSC-SPR-3407)
+Version 1.1.17 - 2004-10-07 (VNY) +(src/omgrism_mod.f90) One more small
+	bug is fixed related to SSC-SPR-3398
+Version 1.1.16 - 2004-10-05 (VNY) (+src/omgrism_mod.f90) A small bug
+	is fixed, which was causing imroper labelling of the target
+	spectrum (SSC-SPR-3398)
+Version 1.1.15 - 2004-10-01 (VNY) (+src/omgrism_mod.f90, 
+	+src/omgextraction_mod.f90) The procedure of decontamination
+	of the output spectrum, in the case when it is overlapped with
+	zero-order features, is removed (SSC-SPR-3396).
+	It is supposed that this procedure is more appropriate
+	in the task omgrismplot.
+Version 1.1.14 - 2004-09-08 (VNY) (+src/omgrism_mod.f90, 
+	+src/omgextraction_mod.f90) Interpolation of the 
+	wavelengths and fluxes at the end of the flux 
+	calibration array is improved in order to avoid 
+	missing points at the end of the output flux table
+	(SSC-SPR-3381)
+Version 1.1.13 - 2004-07-27 (VNY) (+src/omgrism_mod.f90,
+	+config/omgrism.par) A new spectra region file
+	is introduced (ASCII) that contains extracted spectra
+	regions, SSC-SPR-3365
+Version 1.1.12 - 2004-07-22 (VNY) (+src/omgrism_mod.f90)
+	Restored the compatibility with the interactive task
+	omgsource (SSC-SPR-3360)
+Version 1.1.11 - 2004-07-21 (VNY) (+src/omgrism_mod.f90,
+	omgextraction_mod.f90) The spectra identification 
+	numbers in the file SPECLI are made consistent with those
+	from the file SWSRLI (SSC-SPR-3358)
+Version 1.1.10 - 2004-07-15 (VNY) (+src/omgrism_mod.f90,
+	omgextraction_mod.f90) The target spectrum is placed
+	into the first position in the output file
+	(SSC-SPR-3356)
+Version 1.1.9 - 2004-05-13 (VNY) (+src/omgrism_mod,f90,
+        omgextraction_mod.f90) The spectrum extraction mode
+	keyword is passed to the omgrismplot task through the
+	header keyword EXTRMODE. The keyword TIMEDEL replaced
+	with DLAMBDA (SSC-SPR-3319). Some other small changes 
+	are made in order to imrove task's performance.	
+Version 1.1.8 - 2004-03-03 (VNY) (+src/omgrism_mod.f90) Rejecttion
+	criterium for spurious sources is improved
+Version 1.1.7 - 2004-02-23 (VNY)  (+src/omgrism_mod.f90) A small bug
+	introduced in the previous upload was fixed. The task was
+	working always in the regime designed for omgsource
+	(SSC-SPR-3257)
+Version 1.1.6 - 2004-02-19 (VNY) (+src/omgrism_mod.f90) Protected from 
+	crushing when called by omgsource
+Version 1.1.5 - 2004-02-12 (VNY) (+src/omgrism_mod.f90) Selection 
+	criteria for specra are improved (spurious sources excluded)
+Version 1.1.4 - 2004-02-02 (VNY) (+src/omgrism_mod.f90) The output
+	fuxes are set into the wavelength range define by the CCF
+	(SSC-SPR-3244)
+Version 1.1.3 - 2004-02-01 (VNY) (+src/omgrism_mod.f90) fixed SSC-SPR-3241
+Version 1.1.2 - 2004-01-19 (VNY) (+src/omgrism_mod.f90) Wrong coordinates 
+	of the zero- and first-order images in the headers of the 
+	spectra tables are corrected (SSC-SPR-3220)
+Version 1.1.1 - 2004-01-16 (VNY) (+src/omgrism_mod.f90, 
+	+src/omgextraction_mod.f90) Criteria for selecttion of zero-order
+	images at the edge of OSW are adjusted (SSC-SPR-3214);
+	default real variables are replaced with the explicitely
+	declared real(kind=double) ones.
+Version 1.1 - 2003-12-10 (VNY) +(src/omgrism_mod.f90) spectra labelling
+	is made compatible with the omgsource task
+Version 1.0 - 2003-12-04 (VNY) +(src/omgrism_mod.f90) extraction of
+	undetected spectra is included
+Version 0.5 - 2003-12-02 (VNY) +(src/omgrism_mod.f90, config/omgrism.par)
+	parameters spectrumlength and src2spectrum removed as 
+	misleading
+Version 0.4 - 2003-11-11 (VNY) +(src/omgrism_mod.f90) a keyword (COMMENT) 
+	 with the spectrum filename is added to the source-list table 
+	 (of the input source list file); DEPEND file updeted to 
+	 match the new version of ssclib (3.0)
+Version 0.3 - 2003-11-10 (VNY) +(src/omgrism_mod.f90) two lines
+              exceeding 132 characters are shortened	  
+Version 0.2 - 2003-10-31 (VNY) - Parameters for determination of the
+	      spectra area are introduced
+Version 0.1 - 2003-10-24 (VNY) - Created as a new task, SSC-SCR-116.
+
+

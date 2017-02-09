@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="elcplot">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="elcplot.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="elcplot.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+elcplot (elcplot-2.5.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="elcplot.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="elcplot.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="elcplot:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+<A NAME="430"></A><A NAME="tex2html4"
+  HREF="../elcplot/index.html"><SPAN  CLASS="textbf">elcplot</SPAN></A>
+takes the output of <A NAME="434"></A><A NAME="tex2html5"
+  HREF="../epiclccorr/index.html"><SPAN  CLASS="textbf">epiclccorr</SPAN></A>
+as input.  
+<A NAME="438"></A><A NAME="tex2html6"
+  HREF="../elcplot/index.html"><SPAN  CLASS="textbf">elcplot</SPAN></A>
+produces plots of the EPIC time series.  These 
+plots show both net and background light curves as well as either the
+Good Time Intervals (GTIs) or the background flare time series and
+the Fractional Exposure of each bin on a single page.  Good Time
+Intervals are shown by a value 1.0.  Bad time intervals are indicated
+by a 0.0.  These values are shown as a histogram.  If there are more
+than 200 GTIs, the GTIs are binned up to show a maximum of 200
+intervals, for clarity.  If such a binning takes place, it is
+indicated in the bottom right hand corner of the plot.  The background
+flare time series is binned up in the same way as the net and
+background light curves.  On the same plot the fractional exposure
+times of each bin are shown as points, plotted using a similar binning
+scheme to the net and background lightcurves.  A portrait output is
+the most suitable.
+
+<P>
+The input <A NAME="tex2html7"
+  HREF="http://heasarc.gsfc.nasa.gov/docs/heasarc/fits.html">FITS</A> files must contain net count rates, background count
+rates and the associated errors, as produced by <A NAME="444"></A><A NAME="tex2html8"
+  HREF="../epiclccorr/index.html"><SPAN  CLASS="textbf">epiclccorr</SPAN></A>. The
+time series must follow a regular binning scheme (i.e. equispaced time
+bins) [<A
+ HREF="node11.html#ct:SSCPROICD">1</A>]. The bin width is given by the keyword
+<A NAME="448"></A><TT>TIMEDEL</TT>.  The GTI file should be that produced by
+<A NAME="450"></A><A NAME="tex2html9"
+  HREF="../tabgtigen/index.html"><SPAN  CLASS="textbf">tabgtigen</SPAN></A>.
+
+<P>
+Plots give count rates on the Y-axis against time on the X-axis after
+either <A NAME="454"></A><TT>TSTART</TT> (keyword in the <A NAME="tex2html10"
+  HREF="http://heasarc.gsfc.nasa.gov/docs/heasarc/fits.html">FITS</A> file), the default, or the
+user can choose to use either the start time (UTC) of the exposure
+(DATE-OBS keyword) by selecting tscaleoffset=0.0 or a value specified
+by the user in either MJD days or seconds.  The user can also choose
+to flag the `forcestart' parameter, so that the first recorded time
+value of the time series is always used and the last recorded time
+value is the last value used.  This may be useful to the user who
+chooses that all of his lightcurves (MOS or PN) start and finish
+(using <A NAME="458"></A><A NAME="tex2html11"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>) at the same time for comparison, even if the
+DATE-OBS keyword is different for the two cameras.  The time on the
+X-axis can also be displayed in either seconds or days as specified by
+the user.
+
+<P>
+<A NAME="462"></A><A NAME="tex2html12"
+  HREF="../elcplot/index.html"><SPAN  CLASS="textbf">elcplot</SPAN></A>
+allows the user to input the device type (e.g. Xwindow, 
+Postscript, ...) for the output.  The y-scale of the background counts
+can be forced to be the same as the source counts by setting the
+parameter `bkgdyscale' to `yes'.  Otherwise the y-axis is scaled to
+the most appropriate value for the background counts.
+
+<P>
+As described in [<A
+ HREF="node11.html#ct:SSCPROICD">1</A>], light curves should be rebinned
+if necessary in order to limit the number of plotted data points to
+512.  If such a rebinning takes place, a warning is raised and the new
+bin size is indicated on the top right of the plot.
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html77"
+  HREF="node4.html">Examples</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="elcplot.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

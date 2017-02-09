@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>For each of the input source-list columns X and Y: a histogram of position against flux</TITLE>
+<META NAME="description" CONTENT="For each of the input source-list columns X and Y: a histogram of position against flux">
+<META NAME="keywords" CONTENT="eimsimreduce">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eimsimreduce.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node4.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eimsimreduce (eimsim-2.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="For each of the"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Look for biases"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Same for column FLUX"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eimsimreduce.html">Home Page</A> / <A  HREF="node2.html">Description</A> / <A  HREF="node4.html">Look for biases</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00022200000000000000"></A><A NAME="662"></A><A NAME="664"></A>
+<BR>
+For each of the input source-list columns <TT>X</TT> and <TT>Y</TT>: a histogram of position against flux
+</H3>
+
+<P>
+These are not so much histograms as binned averages of various position-related quantities at a series of values of detected flux. This pair of histograms is written to tables <A NAME="666"></A><TT>X_VS_S</TT> and <A NAME="668"></A><TT>Y_VS_S</TT> in the output data set.
+
+<P>
+Log10 of the flux values are taken before the binning process is begun.
+
+<P>
+A description of the columns written (taking again the <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.png"
+ ALT="$Y$"></SPAN> spatial coordinate as the example) is as follows:
+
+<P>
+
+<UL>
+<LI><A NAME="670"></A><TT>FLUX_MID</TT>: <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img13.png"
+ ALT="$i$"></SPAN>th value given by <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$10$"></SPAN> to the power of <!-- MATH
+ $(\log_{10}[S_{i+1}]+\log_{10}[S_i])/2$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="184" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$(\log_{10}[S_{i+1}]+\log_{10}[S_i])/2$"></SPAN> where <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img16.png"
+ ALT="$S$"></SPAN> is taken from column <A NAME="672"></A><TT>FLUX</TT>.
+
+<P>
+</LI>
+<LI><A NAME="674"></A><TT>Y_DIFF</TT>: the bin-averaged value of <A NAME="676"></A><TT>Y</TT> - <A NAME="678"></A><TT>SIM_Y</TT>.
+
+<P>
+</LI>
+<LI><A NAME="680"></A><TT>Y_DIFF_STDDEV</TT>: for each bin, the standard deviation <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.png"
+ ALT="$\sigma$"></SPAN> of the values of <A NAME="682"></A><TT>Y</TT> - <A NAME="684"></A><TT>SIM_Y</TT> which fall within that bin, according to the formula
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+\sigma^2 = \frac{1}{N-1} \sum_{i=1}^N (\Delta p_i - <\Delta p>)^2
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="225" HEIGHT="56" BORDER="0"
+ SRC="img18.png"
+ ALT="\begin{displaymath}
+\sigma^2 = \frac{1}{N-1} \sum_{i=1}^N (\Delta p_i - &lt;\Delta p&gt;)^2
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+where <!-- MATH
+ $\Delta p = p_\mathrm{det}-p_\mathrm{sim}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="120" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$\Delta p = p_\mathrm{det}-p_\mathrm{sim}$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$N$"></SPAN> is the number of values within the bin. <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img17.png"
+ ALT="$\sigma$"></SPAN> is of course undefined for <SPAN CLASS="MATH"><IMG
+ WIDTH="48" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$N&lt;2$"></SPAN>.
+
+<P>
+</LI>
+<LI><A NAME="686"></A><TT>Y_DS_ERR</TT>: a rough estimate of the uncertainty of <A NAME="688"></A><TT>Y_DIFF_STDDEV</TT>, derived by dividing <A NAME="690"></A><TT>Y_DIFF_STDDEV</TT> by the square root of the number of values in the bin.
+
+<P>
+</LI>
+<LI><A NAME="692"></A><TT>Y_AVE_ERR</TT>: this is the simple mean of values of the input source list column <A NAME="694"></A><TT>Y_ERR</TT> which fall within the histogram bin.
+<P>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="For each of the"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Look for biases"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Same for column FLUX"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

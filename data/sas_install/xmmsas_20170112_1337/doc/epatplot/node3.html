@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="epatplot">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epatplot.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="epatplot.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epatplot (epatplot-1.20) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="epatplot.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epatplot.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="epatplot:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+The task reads the event pattern information of an input EPIC pn or EPIC MOS
+event set<A NAME="tex2html1"
+  HREF="footnode.html#foot454"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A>.
+
+<P>
+It creates a plot with these distributions and fractions as function of
+PI channel.
+The fraction plot also contains model curves for single and double
+fraction for all modes (FF, eFF, SW, LW, TI, BU) as far as they are
+included in the QUANTUMEF CCF files.
+
+<P>
+The models for the single and double event fractions were derived to correct for 
+corresponding event selections which were applied in accumulating an EPIC pn
+spectrum. 
+The event fractions are included in the detector response matrices. 
+To use the standard response matrix one needs to make sure that the
+pattern fractions 
+of the events in the area selected for the spectrum follow the model. 
+The EPIC MOS model curves were provided by the hardware group at LUX.
+
+<P>
+The single and double pattern fractions are highly sensitive to
+pile-up effects<A NAME="tex2html3"
+  HREF="footnode.html#foot166"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A>in <EM>bright sources</EM> and in case of deviations from the
+model curves (at energies of about double the peak energy)
+wrong spectral fit results are expected.
+To produce pile-up free spectra the central part of the PSF
+for bright point sources should be excluded, e.g. select a ring instead
+of a circle via <A NAME="508"></A><A NAME="tex2html10"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>.
+<A NAME="512"></A><A NAME="tex2html11"
+  HREF="../epatplot/index.html"><SPAN  CLASS="textbf">epatplot</SPAN></A>
+can then be used to
+verify the event pattern 
+fractions in the remaining area used for the spectrum.
+In addition to the patten fraction plot, task <A NAME="516"></A><A NAME="tex2html12"
+  HREF="../epatplot/index.html"><SPAN  CLASS="textbf">epatplot</SPAN></A>
+also calculates two diagnostic numbers which may be used to
+assess the presence of pile-up: In the absence of pile-up, the 
+0.5 - 2.0 keV observed-to-model singles and doubles pattern 
+fractions ratios should both be consistent with 1.0 within
+statistical errors (1 <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\sigma$"></SPAN> errors are given). If pile-up is
+present, the singles ratio will be smaller than 1.0 and the doubles
+ratio will be larger than 1.0. The two numbers are printed both to the
+console and on the plot and are appended to the input event set 
+as attributes SNGL_OTM and DBLE_OTM (1 <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$\sigma$"></SPAN> errors: ESGL_OTM and
+EDBL_OTM).
+Note, that low energy background noise may also result in deviations
+from the pattern fraction model curves in the <A NAME="520"></A><A NAME="tex2html13"
+  HREF="../epatplot/index.html"><SPAN  CLASS="textbf">epatplot</SPAN></A>
+plots 
+at energies below several hundered
+eV. This effect can be avoided if background subtracted pattern
+fractions are determined (parameter <TT>withbackgroundset</TT>=Y).
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="456"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 1:</STRONG>
+Example of <A NAME="525"></A><A NAME="tex2html4"
+  HREF="../epatplot/index.html"><SPAN  CLASS="textbf">epatplot</SPAN></A>
+output
+using a weak source from the Lockman Hole (Rev.70) observation</CAPTION>
+<TR><TD><IMG
+ WIDTH="640" HEIGHT="903" BORDER="0"
+ SRC="img3.png"
+ ALT="\begin{figure}\vspace*{-10mm}
+\centerline{\psfig{file=example.ps,height=20cm,clip=}}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="458"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 2:</STRONG>
+Example of <A NAME="529"></A><A NAME="tex2html6"
+  HREF="../epatplot/index.html"><SPAN  CLASS="textbf">epatplot</SPAN></A>
+output
+using a bright source (PKS2155). Pile-up is obvious in the 
+<SPAN CLASS="MATH"><IMG
+ WIDTH="52" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$0.7-4$"></SPAN>keV range (note that the observed-to-model fractions significantly 
+deviate from 1.0).</CAPTION>
+<TR><TD><IMG
+ WIDTH="640" HEIGHT="903" BORDER="0"
+ SRC="img5.png"
+ ALT="\begin{figure}\vspace*{-10mm}
+\centerline{\psfig{file=pks2155_pat.ps,height=20cm,clip=}}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="460"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 3:</STRONG>
+Example of <A NAME="533"></A><A NAME="tex2html8"
+  HREF="../epatplot/index.html"><SPAN  CLASS="textbf">epatplot</SPAN></A>
+output
+using the same data as in the previous plot but excluding the central 20 arcsec radius of the source, the pile-up is gone (the observed-to-model fractions are now consistent with 1.0).</CAPTION>
+<TR><TD><IMG
+ WIDTH="640" HEIGHT="903" BORDER="0"
+ SRC="img6.png"
+ ALT="\begin{figure}\vspace*{-10mm}
+\centerline{\psfig{file=pks2155r_pat.ps,height=20cm,clip=}}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+There is a slight indication that at very large offaxis-angles (well,
+close to the readout-nodes = CAMEX) singles are reduced and doubles
+increased as the noise is much higher there. If the target source is
+at the nominal position - close to the center of the FOV - this does not
+matter, for serendipitous (weak) off-axis sources the intensity may be
+too low anyway for significant effects on the pattern distribution.
+Differences may be visible if you have a bright source close to the CAMEX.
+For EPIC pn the task takes into account the spatial dependence of the
+pattern fractions.
+
+<P>
+The default behaviour is to select only events with <A NAME="537"></A><TT>FLAG</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.png"
+ ALT="$=0$"></SPAN>, 
+this can be changed via setting <TT>withflag</TT>=N (default: Y).
+Invalid EPIC pn patterns are also shown to indicate how much energy is lost
+by pattern pile-up.
+
+<P>
+If one is interested in the spatial distribution of
+events with intrinsic <A NAME="540"></A><TT>FLAG</TT>=0 then set <TT>withoutputmask</TT>=Y:
+This reads the bad pixel extension(s) and the offset column extension(s)
+and creates a CCD map where all regions are set to 0 that have an
+intrinsic value of <A NAME="543"></A><TT>FLAG</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$&gt;0$"></SPAN>, i.e. events on bad (hot, dead, etc.)
+pixels, next to bad pixels, out of the FOV, close to the read-out window,
+on and next to offset columns. If the task finds an extension <TT>BADPIX</TT>
+then it assumes that this is an intermediate single chip event file
+as created during the pn chain processing, it tries to determine the
+relevant CCD number from the FITS header to set the FOV accordingly.
+If it finds extensions of the form <TT>BADPIXnn</TT> it takes <TT>nn</TT> 
+as the CCD number. If no bad pixel extension is found at all the
+setting <TT>withoutputmask</TT>=Y is completely ignored as then the task
+cannot reliably determine the bad pixel contents of the file.
+Similarly for intermediate single chip files <TT>OFFSETCO</TT> and <TT>OFFSETS</TT>
+are accepted, for final event lists and products derived from those
+<TT>OFFSETnn</TT> and <TT>OFFSETS</TT> are read (the latter is then searched for
+the CCD number column). If no offset extension is found these flags are not
+used for the output map as this information cannot be reliably retrieved
+from the events file in general. An event file (final or intermediate)
+produced with <A NAME="546"></A><A NAME="tex2html14"
+  HREF="../epchain/index.html"><SPAN  CLASS="textbf">epchain</SPAN></A>
+should have all the relevant information
+incluced (if not explicitly switched off, of course).
+The parameter <TT>outmaskname</TT> is parsed for a CCD number placeholder
+(##), if not found then the corresponding CCD number is appended to
+this parameter value (it cannot be predicted a priori how many output
+maps have to be created).
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="epatplot.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="emeventsproj">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emeventsproj.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="emeventsproj.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emeventsproj (emeventsproj-1.5.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="emeventsproj.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emeventsproj.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="emeventsproj:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+<A NAME="318"></A><A NAME="tex2html1"
+  HREF="../emeventsproj/index.html"><SPAN  CLASS="textbf">emeventsproj</SPAN></A>
+projects a list of events onto an image, projecting
+multiple events onto several pixels 
+(using the geometry contained in <A NAME="322"></A><TT>PATTERN</TT>). 
+The output image is always 600x600 (even in Window mode) 
+and covers the CCD only (not the under and overscans).
+The main use of <A NAME="324"></A><A NAME="tex2html2"
+  HREF="../emeventsproj/index.html"><SPAN  CLASS="textbf">emeventsproj</SPAN></A>
+is to prepare an image
+for <A NAME="328"></A><A NAME="tex2html3"
+  HREF="../embadpixfind/index.html"><SPAN  CLASS="textbf">embadpixfind</SPAN></A>.
+
+<P>
+<A NAME="332"></A><A NAME="tex2html4"
+  HREF="../emeventsproj/index.html"><SPAN  CLASS="textbf">emeventsproj</SPAN></A>
+works both on raw events files
+straight from the ODF, on merged PPS event lists, and 
+on single CCD events file processed by <A NAME="336"></A><A NAME="tex2html5"
+  HREF="../emevents/index.html"><SPAN  CLASS="textbf">emevents</SPAN></A>.
+The latter solution is the only one allowing full functionality.
+If the input file is a merged PPS event list, the <TT>mergedeventlist</TT>
+and <TT>ccdnr</TT> parameters must be set.
+
+<P>
+When <TT>rejectbadevents</TT>=Y, events flagged for rejection
+are not included in the projection. The flags <A NAME="343"></A><TT>OUT_OF_FOV</TT>
+and <A NAME="345"></A><TT>REJECTED_BY_GATTI</TT> are ignored, because it is useful
+to find bad pixels outside the field of view, and masking the truncated
+events would prevent from detecting single bright pixels with charge
+larger than the upper threshold.
+The <TT>rejectbadevents</TT> option is not supported if the input events file
+is straight from the ODF, because there is no <A NAME="348"></A><TT>FLAG</TT> there.
+If another selection on events is required, then it should be done
+via <A NAME="350"></A><A NAME="tex2html6"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+prior to calling <A NAME="354"></A><A NAME="tex2html7"
+  HREF="../emeventsproj/index.html"><SPAN  CLASS="textbf">emeventsproj</SPAN></A>.
+
+<P>
+When <TT>projectenergy</TT>=Y, energy is projected instead of counts.
+For each event, <A NAME="359"></A><TT>ENERGYE1</TT> is added to the map at the events position
+(instead of 1), and <A NAME="361"></A><TT>ENERGYE2</TT> is shared among all secondary pixels
+of the events (exact reconstruction of the original charge pattern
+is impossible for events larger than 2 pixels).
+<A NAME="363"></A><TT>ENERGYE3</TT> and <A NAME="365"></A><TT>ENERGYE4</TT> are not projected.
+<BR>
+If a single frame were selected in the events file, the output image
+would look like the original CCD map read-out on-board after thresholding,
+minus all charge patterns which did not pass the EDU (and flagged events
+if <TT>rejectbadevents</TT>=Y).
+The same algorithm is used in <A NAME="368"></A><A NAME="tex2html8"
+  HREF="../emevents/index.html"><SPAN  CLASS="textbf">emevents</SPAN></A>
+when <TT>analysepatterns</TT>=Y.
+The <TT>projectenergy</TT> option is not supported if the input events file
+is a merged PPS event list, because there is no <A NAME="374"></A><TT>ENERGYE1</TT> and
+<A NAME="376"></A><TT>ENERGYE2</TT> there.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="emeventsproj.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

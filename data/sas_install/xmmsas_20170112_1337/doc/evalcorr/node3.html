@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="evalcorr">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="evalcorr.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="evalcorr.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+evalcorr (evalcorr-0.7.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="evalcorr.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="evalcorr.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="evalcorr:description:description"></A>
+<BR>
+Description
+</H1>
+The task performs one or more of several tests to evaluate the position correction as performed by eposcorr.  These tests lead to a boolean value POSCOROK.
+These are two test, 1XMM and 2XMM.  Both rely on values written to the header of the source list by eposcorr.  New attributes POSCOROK and SYSERRCC are written to the output as keywords.  Options also exist to write additional attributes indicating the result of each test and intermediate values.
+
+<P>
+evalcorr performs a simple evaluation of eposcorr amended source lists. If the correlation is determined to be bad then the RA, DEC , LII and BII columns are used to overwrite the RA_CORR , DEC_CORR , LII_CORR and BII_CORR columns respectively.
+
+<P>
+The 1XMM evaluation is:
+
+<P>
+<!-- MATH
+ $POSCOROK = ( (\sqrt{{RAOFFSET}^2 + {DEOFFSET}^2}) <=  radiusthreshold AND LIK\_HOOD > likhoodthreshold )$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="813" HEIGHT="43" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$POSCOROK = ( (\sqrt{{RAOFFSET}^2 + {DEOFFSET}^2}) &lt;= radiusthreshold AND LIK\_HOOD &gt; likhoodthreshold )$"></SPAN>
+
+<P>
+The 2XMM evaluation is:
+
+<P>
+<!-- MATH
+ $POSCOROK = ( LIK_HOOD > intercept + gradient * LIK_NULL )$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="480" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$POSCOROK = ( LIK_HOOD &gt; intercept + gradient * LIK_NULL )$"></SPAN>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

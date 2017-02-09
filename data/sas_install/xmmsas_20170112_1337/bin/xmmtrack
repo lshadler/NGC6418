@@ -1,0 +1,18 @@
+#!/bin/sh
+#
+#	run IDL batch script xmmtrackbatch
+#
+#	UL, Mon Jan  8 17:32:05 MET 2001
+#
+#set -x
+IDL=idl
+set `which $IDL`
+if [ $# -ne 1 ]; then
+	echo "Cannot locate IDL - please make sure it is in your PATH and re-run `basename $0`"
+	exit 1
+fi
+
+XMMTRACK_DIR=`saslocate packages/tools/src/xmmtrack/`; export XMMTRACK_DIR
+$IDL $XMMTRACK_DIR/xmmtrackbatch
+
+exit 0

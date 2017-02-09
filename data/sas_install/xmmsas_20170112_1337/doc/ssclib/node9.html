@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>AryEdgesInfoT structure definition</TITLE>
+<META NAME="description" CONTENT="AryEdgesInfoT structure definition">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="aryStatInfo???T structure definition"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="General-purpose array-processing utilities"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Integer (index) scalar integers"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node6.html">General-purpose array-processing utilities</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00023000000000000000"></A> <A NAME="ssclib:description:AryEdgesInfoT"></A>
+<BR>
+AryEdgesInfoT structure definition
+</H2>
+
+<P>
+Fortran arrays are by default have integer indices, starting from 1.
+The starting index can be specified by users, however
+once it is passed to a subroutine, the information is in principle lost.
+And anyway they still have to be integer each spaced by 1,
+which is a strong constraint.
+
+<P>
+In practice a pair of indices in an array <SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$(i,j,...)$"></SPAN> are
+given a practice meaning.  That information should ideally be held
+as an entity of the array - objected-oriented languages may
+provide some convenient way, but Fortran does not.
+
+<P>
+This Type variable is designed to hold those information,
+<I>e.g.</I>, lower and upper (integer) bounds of the array,
+and the physical values corresponding to those `edges' of the array
+as follows.
+
+<P>
+<PRE>
+  type, public :: AryEdgesInfoT
+    integer :: aryDimension = -1
+    integer,      allocatable :: arySize(:), lboundIndex(:)
+    real(double), allocatable :: lEdge(:), uEdge(:)
+  end type AryEdgesInfoT
+</PRE>
+
+<P>
+Note the <TT>aryDimension</TT> gives the rank of the array.
+It is <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$-1$"></SPAN> when uninitialised.
+
+<P>
+If you want to get the upper bound of the array,
+use the function <TT>getUbound()</TT> (see Section&nbsp;<A HREF="node21.html#ssclib:description:getUbound">2.5.7</A>).
+
+<P>
+To set an AryEdgesInfoT variable,
+the function <TT>getAryEdgesInfo()</TT> (see Section&nbsp;<A HREF="node36.html#ssclib:description:getAryEdgesInfo">2.8.2</A>)
+offers a convenient way.
+You can of course set it by yourself, but if you do it,
+make sure all the component values in the variable are consistent
+with one another.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="aryStatInfo???T structure definition"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="General-purpose array-processing utilities"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Integer (index) scalar integers"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

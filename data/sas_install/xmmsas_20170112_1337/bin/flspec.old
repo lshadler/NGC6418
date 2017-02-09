@@ -1,0 +1,971 @@
+#! /usr/bin/perl -w
+#
+#
+# main for SAS perl tasks.
+#
+require 5;
+use strict;
+use Getopt::Long;
+Getopt::Long::Configure ("pass_through");
+use SAS::error;
+## At build time the following strings (enclosed in --, that is
+## -string-) are replaced:
+##  sasperl  -> This is taken from the PERL variable defined by configure
+##  taskname
+##  version
+##  release
+##  aka
+## Make sure they do not occur anywhere else in main.pl unless you
+## want them to be replaced.
+##  taskname also occurs at the end of main.pl
+##
+my $name = "flspec";
+SAS::error::client($name);
+my $VERSION = "3.4.1";
+my $RELEASE = "xmmsas_20170112_1337-16.0.0";
+my $AKA = "16.0.0";
+
+## 
+## Standard options: these follow taskmain.
+##
+## -a|--ccfpath <dir1>[:<dir2>...] --> SAS_CCFPATH
+## -f|--ccffiles <f1> [<f2>...] --> cannot be implemented
+## -c|--noclobber --> SAS_CLOBBER
+## -d|--dialog --> tool(sasdialog)
+## -h|--help --> tool(listparams)
+## -i|--ccf <cif> --> SAS_CCF
+## -m|--manpage --> sashelp
+## -o|--odf <sumfile> --> SAS_ODF
+## -V|--verbosity <level> -- SAS_VERBOSITY
+## -v|--version --> local implementation
+##
+## Getopt::Long provides support for short versions with single "-" except for -v.
+## Therefore all short versions were automatically included either with first letter
+## or via an alias as for -a, -i, -o and -V.
+##
+## -v deserves special care due to the existence of support for $version within the
+## Getopt module. Therefore -v is treated specially. 
+
+my ($ccfpath, $noclobber, $dialog, $help, $ccf, $manpage, $odf, $verbosity, $version);
+
+exit(1) unless
+    GetOptions("ccfpath|a=s"    => \$ccfpath,
+	       "noclobber"      => \$noclobber,
+	       "dialog"         => \$dialog,
+	       "help"           => \$help,
+	       "ccf|i=s"        => \$ccf,
+	       "manpage"        => \$manpage,
+	       "odf|o=s"        => \$odf,
+	       "verbosity|V=i"  => \$verbosity,
+	       "version"        => \$version,
+	      );
+
+my $arg;
+foreach $arg (@ARGV) {
+  $version=1 if ( $arg =~ "-v" );
+}
+
+$ENV{SAS_CCFPATH}   = $ccfpath if($ccfpath);
+$ENV{SAS_CLOBBER}   = 0 if($noclobber);
+$ENV{SAS_CCF}       = $ccf if($ccf);
+$ENV{SAS_ODF}       = $odf if($odf);
+$ENV{SAS_VERBOSITY} = $verbosity if($verbosity);
+
+use SAS::param;
+
+
+if($version){
+    print "$name-$VERSION [$RELEASE-$AKA]\n";
+    exit(0);
+}
+if($manpage){
+    system("sashelp --doc=$name");
+    my $x = $? >> 8; # perldoc -f system
+    exit($x);
+}
+if($help){
+    system("listparams $name");
+    my $x = $? >> 8;
+    exit($x);
+}
+if($dialog){
+    system("sasdialog $name");
+    my $x = $? >> 8;
+    exit($x);
+}
+
+&flspec();
+
+#!/usr/local/bin/perl
+# 
+# Usage :
+#
+# flspec sourcelistset="Name of the fits file containing the list of 
+#                     observed sources" 
+#        set="EVENT LIST filename of the EPIC imaging observation"
+#        imageset="EPIC Raw Image in band " 
+#        exposureset="EPIC Exposure Map corresponding to image"
+#        tmpflatset="Name of the file containing the temporary 
+#                     flatfielded image"
+#        tmpbkgregionset="Name of the temporary file containing the regions 
+#                     for the sources background"
+#        tmpposmaskset="Name of the file containing the temporary positive 
+#                      image mask"
+#        tmpnegmaskset="Name of the file containing the temporary negative 
+#                      image mask"
+#        tmpposspecset="Name of the file containing a temporary positive 
+#                      spectrum"
+#        tmpnegspecset="Name of the file containing a temporary negative 
+#                      spectrum"
+#        tmpsrclistset="Name of the temporary file used by region during
+#               filtering of source list" 
+#        binsize="Size of the rebinned pixels in degrees to define 
+#                 positive and negative fluctuations"
+#        spectrumsets="Output fits filenames containing the spectrum of the 
+#               background fluctuations at different offaxis angles"
+#
+#
+#
+# ------------------------------------------------------
+# Define variables   
+# ------------------------------------------------------ 
+
+use SAS;
+use strict;
+
+sub flspec{
+  
+  my $binsize;                # deg for binned image pixel size
+  my $rmax=12.0;              # arcm : maximum radius for annuli
+  my $XcolMask="X";           # columns to extract spectra
+  my $YcolMask="Y";           # 
+  my $specBinMOS=15;
+  my $specBinPN=5;
+  my $specChanMaxMOS=11999;
+  my $specChanMaxPN=20479;
+  my($att,$attCol);
+  my($coX,$coXPseudo,$coY,$coYPseudo,$coPI);
+  my($evPseudo,$evselBinSizePar,$evtlist,$exist,$existExposDs,$existExposTb);
+  my($expm,$expmContent,$exposds,$expostb,$expr,$extname);
+  my($factor,$factorFormat1,$factorFormat2,$filter,$filterexp);
+  my($hdu,$i,$ids,$img,$imgCkeys,$imgContent,$imgPrimary,$inPixSize,$inst);
+  my($jj,$jj1,$key,$label,$msg,$nhdus,$nspec,$nSpecSets,$nsources); 
+  my($off_arcs,$pattern,$radius_int,$rowidStr);
+  my($SolidAngle,$SolidAngleFormat,$SolidAngle_neg,$SolidAngle_pos,$SolidAngle_tot,$specBin);
+  my($specChanMax,$srclist);
+  my($tmpbkg,$tmpflat,$tmpsrc,$tmpMaskP,$tmpMaskN,$tmpSpecP,$tmpSpecN,$tcdltX);
+  my($tmpmask); # RDS
+  my($verb,$xColPixSize);
+  my @dset=();
+  my @inimgdim=();
+  my @flspecfile=();
+  my @radius_ext;
+  my @off_arcm;
+  my @pseudoStrAtt=("FILTER","INSTRUME","TELESCOP","AVRG_PNT","RADECSYS","REFYCUNI","REFXCUNI","REFYCTYP");
+  my @pseudoR32Att=("PA_PNT","RA_PNT","DEC_PNT");
+  push(@pseudoR32Att,"EQUINOX","RA_NOM","DEC_NOM","RA_OBJ","DEC_OBJ");
+  push(@pseudoR32Att,"REFYCUNI","REFYDMAX","REFYDMIN","REFYLMAX","REFYLMIN");
+  push(@pseudoR32Att,"REFYCDLT","REFYCRVL","REFYCRPX","REFYCTYP","REFXCUNI");
+  push(@pseudoR32Att,"REFXDMAX","REFXDMIN","REFXLMAX","REFXLMIN");
+  my @pseudoStrAttCol=("TCUNI","TCTYP");
+  my @pseudoR32AttCol=("TCDLT","TCRVL","TCRPX","TDMAX","TDMIN","TLMAX","TLMIN");
+
+# ------------------------------------------------------ 
+# Read input parameters
+# ------------------------------------------------------ 
+
+  $srclist=stringParameter("sourcelistset");
+  $evtlist=stringParameter("set");
+  $img=stringParameter("imageset");
+  $expm=stringParameter("exposureset");
+  $tmpflat=stringParameter("tmpflatset");
+  $tmpbkg=stringParameter("tmpbkgregionset");
+  $tmpsrc=stringParameter("tmpsrclistset");
+  $tmpMaskP=stringParameter("tmpposmaskset");
+  $tmpMaskN=stringParameter("tmpnegmaskset");
+  $tmpSpecP=stringParameter("tmpposspecset");
+  $tmpSpecN=stringParameter("tmpnegspecset");
+  $binsize=realParameter("binsize");
+  $nSpecSets=parameterCount("spectrumsets");
+  for($i=0;$i<$nSpecSets;$i++){
+    $flspecfile[$i]=stringParameter("spectrumsets",$i);
+  }
+
+  my @tempfiles=($tmpbkg,$tmpflat,$tmpsrc,$tmpMaskP,$tmpMaskN,$tmpSpecP,$tmpSpecN);
+
+#
+# Note: input temp files are used several times to keep different
+#       temporal files generated during the task (a bit confusing, I know...)
+#
+
+#--------------------------------------------------------
+# Find out TCRPX, TCDLT column (X,Y) attributes
+#--------------------------------------------------------
+ 
+
+  # first get column numbers (others required later on)
+  if(system("fcolpar infile=$evtlist\[EVENTS\] colname='X'")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrFcolpar","Cannot establish column number for X in eventlist\n");
+  }
+  $coX=`pget fcolpar colnum`;
+  chomp($coX);
+  if(system("fcolpar infile=$evtlist\[EVENTS\] colname='Y'")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrFcolpar","Cannot establish column number for Y in eventlist\n");
+  }
+  $coY=`pget fcolpar colnum`;
+  chomp($coY);
+
+  if(system("fcolpar infile=$evtlist\[EVENTS\] colname='PI'")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrFcolpar","Cannot establish column number for PI in eventlist\n");
+  }
+  $coPI=`pget fcolpar colnum`;
+  chomp($coPI);
+
+  # ---------------------------------
+
+  $att="TCDLT".$coX;
+  if(system("fkeypar fits=$evtlist\[EVENTS\] key=$att")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrFkeypar","Cannot run fkeypar to read $att from eventlist");
+  }
+  $tcdltX=`pget fkeypar value`;
+  chomp($tcdltX);
+  $xColPixSize=abs($tcdltX);
+
+
+
+# ------------------------------------------------------
+#     Check : input FITS files are IMAGE/EXPOSURE MAP
+# ------------------------------------------------------
+
+  $key=" ";
+  if(system("fstruct $expm >/dev/null")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrFstruct","Cannot run fstruct for \"$expm\"\n");
+  }
+  ($nhdus=`pget fstruct totalhdu`) || ($nhdus = 1);
+
+  for ($hdu=0;$hdu<$nhdus;$hdu++){
+    $expmContent=$expm."+".$hdu;
+    if(system("fkeypar fits=$expmContent key='CONTENT'")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFkeypar","Cannot run fkeypar to read CONTENT from \"$expmContent\n");
+    }
+    $key=`pget fkeypar value`;
+    chomp($key);
+    ($key =~ /EPIC\s*EXPOSURE\s*MAP\s*/) && last;
+  }
+  unless ($key =~ /EPIC\s*EXPOSURE\s*MAP\s*/){
+    SAS::error("NotExpMap","Input image:\"$expm\", is not an EPIC EXPOSURE MAP file\n");
+  }
+
+
+  $key=" ";
+  if(system("fstruct $img >/dev/null")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrFstruct","Cannot run fstruct for \"$img\"\n");
+  }
+  ($nhdus=`pget fstruct totalhdu`) || ($nhdus = 1);
+  for ($hdu=0;$hdu<$nhdus;$hdu++){
+    $imgContent=$img."+".$hdu;
+    if(system("fkeypar fits=$imgContent key='CONTENT'")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFkeypar","Cannot run fkeypar to read CONTENT from image\n");
+    }
+    $key=`pget fkeypar value`;
+    chomp($key);
+    ($key =~ /EPIC\s*IMAGE/) && last;
+  }
+  unless($key =~ /EPIC\s*IMAGE/){
+    SAS::error("NotImg","Input image:\"$img\", is not an EPIC IMAGE file\n");
+  }
+
+
+# ------------------------------------------------------
+# Obtain some pixel size/position WCS attributes from imageset
+# ------------------------------------------------------
+
+  $imgCkeys=$img."+0";
+  if(system("fkeypar fits=$imgCkeys key='CDELT1'")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrFkeypar","Cannot run fkeypar to read CDELT1 from image\n");
+  }
+  $exist=`pget fkeypar exist`;
+  unless($exist =~ /yes/){
+    $imgCkeys=$img."+1";
+    if(system("fkeypar fits=$imgCkeys key='CDELT1'")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFkeypar","Cannot run fkeypar to read CDELT1 from image\n");
+    }
+  }
+  $inPixSize=`pget fkeypar value`;
+  chomp($inPixSize);
+  $inPixSize=abs($inPixSize);
+
+
+# ------------------------------------------------------
+#     Calculate INPUT IMAGE dimensions
+# ------------------------------------------------------
+
+  $imgPrimary=$img."\[PRIMARY\]";
+  if(system("fkeypar fits=$imgPrimary key='NAXIS1'")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrFkeypar","Cannot run fkeypar to read NAXIS1 from image\n");
+  }
+  $inimgdim[0]=`pget fkeypar value`;
+  chomp($inimgdim[0]);
+  if(system("fkeypar fits=$imgPrimary key='NAXIS2'")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrFkeypar","Cannot run fkeypar to read NAXIS2 from image\n");
+  }
+  $inimgdim[1]=`pget fkeypar value`;
+  chomp($inimgdim[1]);
+  $inimgdim[0] =~ s/\s+//g;
+  $inimgdim[1] =~ s/\s+//g;
+
+# ------------------------------------------------------
+# FLUCTUATIONS CALCULUS...
+# ------------------------------------------------------
+  # binSize parameter for evselect when making images
+  $evselBinSizePar=($inPixSize/$xColPixSize);
+  $evselBinSizePar=sprintf("%.0f",$evselBinSizePar);
+
+#
+# ------------------------------------------------------
+# 1) Write background global region removing ALL sources in SRCLIST
+#    through task: REGION
+#    Input:  SRC_LIST_file
+#
+#    Output: BKG_REGION_file --> tmpbkg
+#            temp_file       --> tmpsrc (not kept)
+# ------------------------------------------------------
+#
+#  $srclist=$srclist.":SRCLIST";
+
+  if(system("fkeypar fits=$srclist\[SRCLIST\] key='NAXIS2'")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrFkeypar","Cannot run fkeypar to read NAXIS2 (number of rows) from $srclist\n");
+  }
+  $nsources=`pget fkeypar value`;
+  chomp($nsources);
+  $msg="Sources in source list:$nsources\n";
+  SAS::message($SAS::AppMsg,$SAS::VerboseMsg,$msg);
+
+  if($nsources){
+    $msg="Writing regions for all sources in source list...\n";
+    SAS::message($SAS::AppMsg,$SAS::VerboseMsg,$msg);
+
+    if(system("region eventset=$evtlist srclisttab=$srclist:SRCLIST operationstyle='global' bkgregionset=$tmpbkg radiusstyle='enfrac' energyfraction=0.95 outunit='xy' tempset=$tmpsrc expression='ID_BAND==2'")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrRegion","Cannot run REGION on \"$srclist\"\n");
+    }
+    (-e $tmpsrc) && unlink($tmpsrc); # rm REGION temp file
+
+  }else{
+    $msg="No sources in source list...No sources masked\n";
+    SAS::message($SAS::AppMsg,$SAS::VerboseMsg,$msg);
+
+  }
+  # ------------------------------------------------------ 
+  #  2) Create a mask to "hide" source regions in input image
+  #---------------------------------------------------------
+  #
+  #     2.1) Create pseudo evt list with X/Y/DETX/DETY/THETA columns
+  #          (run createpseudoevt F90 module) --> tmpsrc
+  #
+  
+  if(system("createpseudoevt set=$tmpsrc imageset=$img inset=$evtlist")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrPseudo","Cannot create Pseudo EVT");
+  }
+  $evPseudo=$tmpsrc; # easier to remember
+  
+  #
+  #     2.2) Write WCS keywords (from input EVT list) to PSEUDO event list
+  #
+  #
+  #          a) locate columns X/Y numbers in Pseudo EVT
+  #
+  
+  if(system("fcolpar infile=$evPseudo\[EVENTS\] colname='X'")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrFcolpar","Cannot establish column number for X in Pseudo eventlist\n");
+  }
+  $coXPseudo=`pget fcolpar colnum`;
+  chomp($coXPseudo);
+  if(system("fcolpar infile=$evPseudo\[EVENTS\] colname='Y'")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrFcolpar","Cannot establish column number for Y in Pseudo eventlist\n");
+  }
+  $coYPseudo=`pget fcolpar colnum`;
+  chomp($coYPseudo);
+  
+  #          b) Add String Type Attributes to Pseudo EVT list
+  
+  foreach $att (@pseudoStrAtt){
+    if(system("fkeypar fits=$evtlist\[EVENTS\] key=$att")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFkeypar","Cannot run fkeypar to read $att from eventlist\n");
+    }
+    $key=`pget fkeypar value`;
+    chomp($key);
+    if(system("fparkey fits=$evPseudo\[EVENTS\] add=yes value=$key key=$att")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFparkey","Cannot run fparkey to add $att to Pseudo event list\n");
+    }
+    
+    #          c) define 'standard' binning of spectra for MOS/PN
+    
+    if($att =~ /INSTRUME/){
+      if($key =~ /EMOS/){
+	$specBin=$specBinMOS;
+	$specChanMax=$specChanMaxMOS;
+      }elsif($key =~ /EPN/){
+	$specBin=$specBinPN;
+	$specChanMax=$specChanMaxPN;
+      }
+      $inst=$key;
+    }
+  }
+  
+  #          d) Add Real32 attributes
+  
+  foreach $att (@pseudoR32Att){
+    if(system("fkeypar fits=$evtlist\[EVENTS\] key=$att")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFkeypar","Cannot run fkeypar to read $att from eventlist\n");
+    }
+    $key=`pget fkeypar value`;
+    chomp($key);
+    if(system("fparkey add=yes fits=$evPseudo\[EVENTS\] value=$key key=$att")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFparkey","Cannot run fparkey to add $att to Pseudo event list\n");
+    }
+  }
+  
+  #          e) Add String Column attributes
+  
+  foreach $att (@pseudoStrAttCol){
+    $attCol=$att."$coX";
+    if(system("fkeypar fits=$evtlist\[EVENTS\] key=$attCol")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFkeypar","Cannot run fkeypar to read $attCol from eventlist\n");
+    }
+    $key=`pget fkeypar value`;
+    chomp($key);
+    $attCol=$att."$coXPseudo";
+    if(system("fparkey add=yes fits=$evPseudo\[EVENTS\] value=$key key=$attCol")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFparkey","Cannot run fparkey to add $attCol to Pseudo event list\n");
+    }
+    
+    $attCol=$att."$coY";
+    if(system("fkeypar fits=$evtlist\[EVENTS\] key=$attCol")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFkeypar","Cannot run fkeypar to read $attCol from eventlist\n");
+    }
+    $key=`pget fkeypar value`;
+    chomp($key);
+    $attCol=$att."$coYPseudo";
+    if(system("fparkey add=yes fits=$evPseudo\[EVENTS\] value=$key key=$attCol")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFparkey","Cannot run fparkey to add $attCol to Pseudo event list\n");
+    }
+  }
+  
+  #          f) Add Real32 Column Attributes
+  
+  foreach $att (@pseudoR32AttCol){
+    $attCol=$att."$coX";
+    if(system("fkeypar fits=$evtlist\[EVENTS\] key=$attCol")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFkeypar","Cannot run fkeypar to read $attCol from eventlist\n");
+    }
+    $key=`pget fkeypar value`;
+    chomp($key);
+    
+    $attCol=$att."$coXPseudo";
+    if(system("fparkey add=yes fits=$evPseudo\[EVENTS\] value=$key key=$attCol")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFparkey","Cannot run fparkey to add $attCol to Pseudo event list\n");
+    }
+    
+    
+    $attCol=$att."$coY";
+    if(system("fkeypar fits=$evtlist\[EVENTS\] key=$attCol")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFkeypar","Cannot run fkeypar to read $attCol from eventlist\n");
+    }
+    $key=`pget fkeypar value`;
+    chomp($key);
+    
+    $attCol=$att."$coYPseudo";
+    if(system("fparkey add=yes fits=$evPseudo\[EVENTS\] value=$key key=$attCol")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFparkey","Cannot run fparkey to add $attCol to Pseudo event list\n");
+    }
+  }
+  
+  
+  #
+  #          g) XMM attributes so that evselect does not complain
+  #
+  
+  if(system("fparkey add=yes value='XMM' fits=$evPseudo+0 key=TELESCOP")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrFparkey","Cannot run fparkey to add TELESCOP to Pseudo event list\n");
+  }
+  if(system("fparkey add=yes value='XMM' fits=$evPseudo+1 key=TELESCOP")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrFparkey","Cannot run fparkey to add TELESCOP to Pseudo event list\n");
+  }
+  if(system("fparkey add=yes value=$inst fits=$evPseudo+0 key=INSTRUME")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrFparkey","Cannot run fparkey to add INSTRUME to Pseudo event list\n");
+  }
+  if(system("fparkey add=yes value=$inst fits=$evPseudo+1 key=INSTRUME")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrFparkey","Cannot run fparkey to add INSTRUME to Pseudo event list\n");
+  }
+  
+  if($nsources){
+    #
+    #     2.3) Filter pseudo evt list with region output (tmpbkg) and save
+    #         image (=mask) ---> tmpSpecP (same size/dimensions as input image)
+    #         Mask: "0" in source position and "1" otherwise
+    
+    if(system("evselect table=$evPseudo:EVENTS  expression='region($tmpbkg,X,Y)' withfilteredset=false keepfilteroutput=false destruct=false writedss=false updateexposure=false withimageset=true imageset=$tmpSpecP xcolumn='X' ycolumn='Y' imagebinning=binSize ximagebinsize=$evselBinSizePar yimagebinsize=$evselBinSizePar")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrEvselect","Cannot run EVSELECT to filter input evt list with REGION output\n");
+    }
+    (-e $tmpbkg) && unlink($tmpbkg);
+  }
+#
+# ------------------------------------------------------ 
+#  3) Flatfield input IMAGE with its EXPOSMAP and mask out the sources
+#       Input:  IMG_file
+#               EXPOSMAP_file
+#
+#       Output: FLAT_IMG_file
+# ------------------------------------------------------ 
+#
+  #
+  #   3.0) create mask to "clean" borders of expmap
+  #        flatimg is a temp file here
+  #        final expmap in tmpbkg
+  if(system("emask expimageset=$expm detmaskset=$tmpflat threshold1=0.1")){
+#    clearTemporary(@tempfiles);
+    SAS::error("ErrEmask","Cannot create mask for \"$expm\"\n");
+  }
+  ## RDS - change to use MASK extension from the emask output file
+  ##if(system("farith infil1=$expm infil2=$tmpflat outfil=$tmpbkg ops=MUL datatype='-' blank=-1 null=no copyprime=yes clobber=yes")){
+  $tmpmask=$tmpflat . "[MASK]"; # RDS
+  if(system("farith infil1=$expm infil2='$tmpmask' outfil=$tmpbkg ops=MUL datatype='-' blank=-1 null=no copyprime=yes clobber=yes")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrFarith","Cannot multiply: exposure_mask and exposure_map\n");
+  }
+  (-e $tmpflat) &&  unlink($tmpflat);
+
+  #
+  #   3.1) Calculate imageset/exposuremap_masked= tmpflat
+  #
+
+  $msg="Flatfielding input image with its corresponding exposure map...\n";
+  SAS::message($SAS::AppMsg,$SAS::VerboseMsg,$msg);
+
+  if(system("farith infil1=$img infil2=$tmpbkg outfil=$tmpflat ops=DIV datatype='-' blank=-1 null=no copyprime=yes clobber=yes")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrFarith","Cannot divide:\"$img\" and \"$expm\"\n");
+  }
+  (-e $tmpbkg) && unlink($tmpbkg);
+
+  if($nsources){
+    #
+    #   3.2) tmpflat/region mask (to hide sources) --> save in tmpbkg
+    #                  (tmpSpecP)
+    #      Resulting image: "-1" in source positions and tmpflat vals otherwise
+    #
+
+    if(system("farith infil1=$tmpflat infil2=$tmpSpecP outfil=$tmpbkg ops=DIV datatype='-' blank=-1 null=no copyprime=yes clobber=yes")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFarith","Cannot calculate flatfield/regionmask\n");
+    }
+    unlink($tmpSpecP);
+  }else{
+    system("cp $tmpflat $tmpbkg");  #no sources to be removed
+  }
+
+
+#  Once input image has been flatfielded and sources hidden (tmpbkg):
+# ------------------------------------------------------------------
+#  4) Create "median" mask file to select pixels above/below
+#     the "median": FLMASK (F90 module program)
+#
+#      Input:  FLAT_IMG_file
+#
+#      Output: MASK_POS_file
+#              MASK_NEG_file
+# -------------------------------------------------------------------
+#
+
+  $msg="Creating mask files...\n";
+  SAS::message($SAS::AppMsg,$SAS::VerboseMsg,$msg);
+
+  if(system("flmask set=$evtlist imageset=$tmpbkg binsize=$binsize positivemaskset=$tmpMaskP negativemaskset=$tmpMaskN")){
+    clearTemporary(@tempfiles);
+    SAS::error("ErrFlmask","Mask files cannot be created\n");
+  }
+  (-e $tmpflat) && unlink($tmpflat);
+#
+# ------------------------------------------------------
+#  6) Define annular regions for background spectra.
+# ------------------------------------------------------
+#
+  for($jj=0;$jj<$nSpecSets;$jj++){
+    $jj1=$jj+1;
+    $msg="Spatial region number: $jj1\n";
+    SAS::message($SAS::AppMsg,$SAS::VerboseMsg,$msg);
+
+    $radius_ext[$jj]=sqrt(($jj+1)/$nSpecSets)*$rmax * 60.0; # arcs
+
+    if($jj==0){
+      $filter="'"."THETA <= $radius_ext[$jj]"."'";
+      $off_arcs=$radius_ext[$jj]/2.0;
+      $radius_int=0.0;
+    }else{
+      $radius_int=$radius_ext[$jj-1];
+      $filter="'"."THETA > $radius_int && THETA <= $radius_ext[$jj]"."'";
+      $off_arcs=($radius_ext[$jj]+$radius_ext[$jj-1])/2.0;
+    }
+    $off_arcm[$jj]=$off_arcs/60.0;
+
+
+#-------------------------------------------------------------
+#    7) Filter pseudo evt list to obtain annulus_mask:$tmpbkg
+#-------------------------------------------------------------
+
+
+    if(system("evselect table=$evPseudo:EVENTS  expression=$filter withfilteredset=false keepfilteroutput=false destruct=false writedss=false updateexposure=false withimageset=true imageset=$tmpbkg xcolumn='X' ycolumn='Y' imagebinning=binSize ximagebinsize=$evselBinSizePar yimagebinsize=$evselBinSizePar")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrEvselect","Cannot filter Pseudo EVT to obtain annulusmask\n");
+    }
+
+#
+# ------------------------------------------------------
+#  8) Filter EVT_LIST with POS/NEG MASKs * annular mask
+#     and extract "positive/negative" spectra : EVSELECT
+#     Input:  EVT_LIST_file
+#             MASK_POS(NEG)_mask*ANNULAR_mask
+#
+#     Output: SPEC_POS(NEG)_file_in_annulus
+# ------------------------------------------------------
+#
+	
+#
+#     8.1) Do annulus_mask(tmpbkg)*posit_mask(+1)=final posit_mask
+#         -->tmpflat
+#         annulus_mask has CREATOR & DATE attributes
+
+    if(system("farith infil1=$tmpbkg infil2=$tmpMaskP+1 outfil=$tmpflat ops=MUL datatype='-' blank=-1 null=no copyprime=yes clobber=yes")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFarith","Cannot calculate posmask*annulusmask\n");
+    }
+
+    $msg="Filtering events and extracting \"positive\" spectrum...\n";
+    SAS::message($SAS::AppMsg,$SAS::VerboseMsg,$msg);
+
+    $filterexp="'mask("."$tmpflat".",0,0,X,Y)'";
+
+#
+#    8.2) Extract positive spectrum -->spec_pos
+#
+    if(system("evselect table=$evtlist:EVENTS  expression=$filterexp withfilteredset=false keepfilteroutput=false destruct=false writedss=true updateexposure=true withspectrumset=true spectrumset=$tmpSpecP energycolumn=PI spectralbinsize=$specBin withspecranges=true specchannelmin=0 specchannelmax=$specChanMax")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrEvselect","Cannot create Positive spectrum\n");
+    }
+#
+#     8.3) Obtain Solid Angle for positive spectra: count "1" pixels
+#          in filter mask
+#
+
+    if(system("fimgstat infile=$tmpflat threshlo=1 threshup=1 >/dev/null")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFimgstat","Cannot run fimgstat to obtain num.of pixels>0\n");
+    }
+
+    $SolidAngle_pos=`pget fimgstat num`;
+    $SolidAngle_pos=$SolidAngle_pos*($inPixSize/$xColPixSize)**2;
+    unlink($tmpflat);
+
+#
+#    8.4) Do annulus_mask*neg_mask=final neg_mask -->tmpflat
+#
+
+    if(system("farith infil1=$tmpbkg infil2=$tmpMaskN+1 outfil=$tmpflat ops=MUL datatype='-' blank=-1 null=no copyprime=yes clobber=yes")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFarith","Cannot calculate negmask*annulusmask\n");
+    }
+
+    $msg="Filtering events and extracting \"negative\" spectrum...\n";
+    SAS::message($SAS::AppMsg,$SAS::VerboseMsg,$msg);
+
+    $filterexp="'mask("."$tmpflat".",0,0,X,Y)'";
+
+#
+#    8.5) Extract negative spectrum -->spec_neg
+#
+    if(system("evselect table=$evtlist:EVENTS  expression=$filterexp withfilteredset=false keepfilteroutput=false destruct=false writedss=true updateexposure=true withspectrumset=true spectrumset=$tmpSpecN energycolumn=PI spectralbinsize=$specBin withspecranges=true specchannelmin=0 specchannelmax=$specChanMax")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrEvselect","Cannot create Negative spectrum\n");
+
+    }
+#
+#    8.6) Obtain Solid Angle for negative spectra:
+#         count "1" pixels in filter mask
+#
+    if(system("fimgstat infile=$tmpflat threshlo=1 threshup=1 >/dev/null")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFimgstat","Cannot run fimgstat to obtain num.of pixels>0");
+    }
+    unlink($tmpflat);#
+    $SolidAngle_neg=`pget fimgstat num`;
+    $SolidAngle_neg=$SolidAngle_neg*($inPixSize/$xColPixSize)**2;
+
+#    8.7) Obtain Total Solid Angle in annulus to renormalize:
+#         count "1" pixels in annular filter mask
+#
+    if(system("fimgstat infile=$tmpbkg threshlo=1 threshup=1 >/dev/null")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFimgstat","Cannot run fimgstat to obtain num.of pixels>0");
+    }
+    $SolidAngle_tot=`pget fimgstat num`;
+    $SolidAngle_tot=$SolidAngle_tot*($inPixSize/$xColPixSize)**2;
+
+
+#
+# ------------------------------------------------------ 
+#   9) Subtract SPEC_NEG spectrum from SPEC_POS spectrum: MATHPHA
+#       Input:  SPEC_NEG_file_in_annulus
+#               SPEC_POS_file_in_annulus
+#
+#       Output: DIFF_SPEC_file_in annulus
+# ------------------------------------------------------ 
+
+    $nspec=$jj+1;
+
+#
+#     9.1)Normalise both spectra to Total solid angle
+#
+
+
+    $msg="Normalising both spectra to Positive spectrum solid angle...\n";
+    SAS::message($SAS::AppMsg,$SAS::VerboseMsg,$msg);
+
+    if($SolidAngle_pos == 0. && $SolidAngle_neg > 0.){
+      $factor=$SolidAngle_tot/$SolidAngle_neg;
+      $factorFormat2=sprintf "%.3f",$factor;
+      $expr="'-".$factorFormat2."*".$tmpSpecN."'";
+      $SolidAngle=$SolidAngle_tot;
+      SAS::warning("NullSpecPos","Positive spectrum has null extraction area for offaxis=$off_arcm[$jj] (spectrum number $nspec) \n");	  
+
+    }elsif($SolidAngle_pos > 0. && $SolidAngle_neg == 0.){
+      $factor=$SolidAngle_tot/$SolidAngle_pos;
+      $factorFormat1=sprintf "%.3f",$factor;
+      $expr="'".$factorFormat1."*".$tmpSpecP."'";
+      $SolidAngle=$SolidAngle_tot;
+      SAS::warning("NullSpecNeg","Negative spectrum has null extraction area for offaxis=$off_arcm[$jj] (spectrum number $nspec) \n");	  
+
+    }elsif($SolidAngle_pos <= 0. || $SolidAngle_neg <= 0.){
+      $SolidAngle=0.0;
+      $expr="'0.0*".$tmpSpecP."-".$tmpSpecN."*0.0'";
+      SAS::warning("NullSpec","Positive and Negative spectrum have null extraction area for offaxis=$off_arcm[$jj] (spectrum number $nspec) \n");
+    }else{	
+      $factor=$SolidAngle_tot/$SolidAngle_pos;
+      $factorFormat1=sprintf "%.3f",$factor;
+      $factor=$SolidAngle_tot/$SolidAngle_neg;
+      $factorFormat2=sprintf "%.3f",$factor;
+      $expr="'".$factorFormat1."*".$tmpSpecP."-(".$tmpSpecN."*".$factorFormat2.")'";
+      $SolidAngle=$SolidAngle_tot;
+    }
+
+    $SolidAngleFormat=sprintf "%.5e",$SolidAngle;
+
+#
+#      9.2) EXPOSURE update just in case evselect cannot do it
+#           (MATHPHA cannot operate without this keyword in datasets)
+#
+
+    $dset[0]=$tmpSpecP;
+    $dset[1]=$tmpSpecN;
+
+    for($ids=0;$ids<2;$ids++){
+      $exposds=0.000;
+      $expostb=0.000;
+
+      if(system("fkeypar fits=$dset[$ids]+0 key='EXPOSURE'")){
+	clearTemporary(@tempfiles);
+	SAS::error("ErrFkeypar","Cannot run fkeypar to read EXPOSURE from \"$dset[$ids]\"\n");
+      }
+      $existExposDs=`pget fkeypar exist`;
+      chomp($existExposDs);
+      if ($existExposDs =~ /yes/){
+	$exposds=`pget fkeypar value`;
+	chomp($exposds);
+      }
+      if(system("fkeypar fits=$dset[$ids]\[SPECTRUM\] key='EXPOSURE'")){
+	clearTemporary(@tempfiles);
+	SAS::error("ErrFkeypar","Cannot run fkeypar to read EXPOSURE from \"$dset[$ids]\"\n");
+      }
+      $existExposTb=`pget fkeypar exist`;
+      chomp($existExposTb);
+      if($existExposTb =~ /yes/){
+	$expostb=`pget fkeypar value`;
+	chomp($expostb);
+      }
+
+      if($existExposTb =~ /no/){
+	if($existExposDs =~ /no/){
+	  $expostb=1.000;
+	  SAS::warning("NullExpos1","Exposure value for spectrum $dset[$ids] cannot be properly updated by evselect in fluctuations spectrum number $nspec: Exposure updated to 1.000 \n");	  
+	} 
+	if(system("fparkey add=yes value=$expostb fits=$dset[$ids]\[SPECTRUM\] key='EXPOSURE'")){
+	  clearTemporary(@tempfiles);
+	  SAS::error("ErrFparkey","Cannot run fparkey to add EXPOSURE to \"$dset[$ids]\"\n");
+	}
+      }
+
+      if($expostb==0.0){
+	if($exposds != 0.0){
+	  $expostb=$exposds;
+	  SAS::warning("NullExposDs","Exposure value for spectrum $dset[$ids] cannot be properly updated by evselect in fluctuations spectrum number $nspec: Exposure updated to EXPOSURE value in event list dataset \n");	  
+	}else{
+	  SAS::warning("NullExpos1","Exposure value for spectrum $dset[$ids] cannot be properly updated by evselect in fluctuations spectrum number $nspec: Exposure updated to 1.000 \n");	  
+	  $expostb=1.0000;
+	}
+	if(system("fparkey value=$expostb fits=$dset[$ids]\[SPECTRUM\] key='EXPOSURE'")){
+	  clearTemporary(@tempfiles);
+	  SAS::error("ErrFparkey","Cannot run fparkey to add EXPOSURE to \"$dset[$ids]\"\n");
+	}
+      }
+    }
+
+#
+#       9.3) Use MATHPHA to calculate the difference spectrum
+#
+
+    if($ENV{"SAS_VERBOSITY"}){
+      $verb=$ENV{"SAS_VERBOSITY"}-1;
+    }else{
+      $verb=-1;
+    }
+
+    $msg="Calculating difference spectrum...\n";
+    SAS::message($SAS::AppMsg,$SAS::VerboseMsg,$msg);
+
+    $msg="Executing (routine):mathpha expr=$expr units='C' outfil=$flspecfile[$jj] exposure=$tmpSpecP Areascal='%' properr='yes' errmeth='POISS-1' ncomments=0 auxfiles='NONE' backfile='NONE' backscal=$SolidAngleFormat corrfile='NONE' corrscal='NONE' arfile='NONE' rmfile='NONE' phaversn='1.1.0' divzero=-99 chatter=$verb  clobber=yes\n";
+
+    SAS::message($SAS::AppMsg,$SAS::VerboseMsg,$msg);
+
+
+    if(system("mathpha expr=$expr units='C' outfil=$flspecfile[$jj] exposure=$tmpSpecP Areascal='%' properr='yes' errmeth='POISS-1' ncomments=0 auxfiles='NONE' backfile='NONE' backscal=$SolidAngleFormat corrfile='NONE' corrscal='NONE' arfile='NONE' rmfile='NONE' phaversn='1.1.0' divzero=-99 chatter=$verb  clobber=yes")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrMathpha","MATHPHA: Subtracted spectrum cannot be created\n");
+    }
+ 
+    #------------------------------------------------------
+    #   10) Attributes:
+    #       -- Add header of POS spectrum and some more attributes
+    #       -- remove CREATOR, QUALITY and POISERR attributes
+    #------------------------------------------------------
+    #
+
+    if(system("cphead infile=$tmpSpecP+0 outfile=$flspecfile[$jj]+0")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrCphead","Cannot run cphead to populate diff spectrum");
+    }
+    if(system("cphead infile=$tmpSpecP+1 outfile=$flspecfile[$jj]+1")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrCphead","Cannot run cphead to populate diff spectrum");
+    }
+
+    $label="Epic Fluctuations Spectra at the off-axis positions given by OFFAXIS attribute";
+    if(system("fparkey add=yes value=\"EPIC FLUCTUATIONS SPECTRUM\"  fits=$flspecfile[$jj]+0  keyw='CONTENT' comm='$label'")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFparkey","Cannot run fparkey to add CONTENT to \"$flspecfile[$jj]\"\n");
+    }
+
+    $label="Single PHA file contained";
+    if(system("fparkey add=yes value=\"COUNT\"  fits=$flspecfile[$jj]+1  keyw='HDUCLAS3' comm='$label'")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFparkey","Cannot run fparkey to add HDUCLAS3 to \"$flspecfile[$jj]\"\n");
+    }
+    
+    if(system("fparkey fits=$flspecfile[$jj]+1 add=yes value=$off_arcm[$jj] key='OFFAXIS' comm='Offaxis at which spectra was taken (arcm)'")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFparkey","Cannot run fparkey to add OFFAXIS to \"$flspecfile[$jj]\"\n");
+    }
+
+
+    if(system("fparkey value=0 fitsfile=$flspecfile[$jj]+1 keyword=-CREATOR")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFparkey","Cannot run fparkey to remove CREATOR attribute");
+    }
+    if(system("fparkey value=0 fitsfile=$flspecfile[$jj]+1 keyword=-QUALITY")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFparkey","Cannot run fparkey to remove QUALITY attribute");
+    }
+    if(system("fparkey value=F fitsfile=$flspecfile[$jj]+1 keyword=POISSERR")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFparkey","Cannot run fparkey to modify POISSERR attribute");
+    }
+
+    # ------------------------------------------------------------
+    #   11) Copy STDGTI & IMAGE(annular mask filter) HDUs to diff spectra
+    # ------------------------------------------------------------
+    if(system("fstruct infile=$tmpSpecP >/dev/null")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFstruct","Cannot run fstruct to calculate the number of HDUs in  \"$tmpSpecP\"\n");
+    }
+    $nhdus=`pget fstruct totalhdu`;
+    for($i=2;$i<$nhdus;$i++){
+      if(system("fkeypar '$tmpSpecP+$i' keyword='EXTNAME'")){
+	clearTemporary(@tempfiles);
+	SAS::error("ErrFkeypar","Cannot run fkeypar to get the value of EXTNAME in  \"$tmpSpecP+$i\"\n");
+      }
+      $extname="";
+      $extname=`pget fkeypar value`;
+      if($extname=~/STDGTI/){
+	if(system("fappend '$tmpSpecP+$i' outfile=$flspecfile[$jj]")){
+	  clearTemporary(@tempfiles);
+	  SAS::error("ErrFappend","Cannot run fappend to append HDU $extname ($i) to\"$flspecfile[$jj]\"\n");
+	}
+      }
+    }
+    system("fparkey add=yes value=PRIMARY fitsfile=$tmpbkg+0 keyword=EXTNAME");
+    if(system("fappend infile=$tmpbkg+0 outfile=$flspecfile[$jj]")){
+      clearTemporary(@tempfiles);
+      SAS::error("ErrFappend","Cannot run fappend to append $tmpbkg to\"$flspecfile[$jj]\"\n");
+    }
+    
+    unlink($tmpbkg);
+    (-e $tmpSpecN) && unlink($tmpSpecN);
+    (-e $tmpSpecP) && unlink($tmpSpecP);
+
+
+  } #end offaxis values
+
+# ------------------------------------------------------
+#   12) Remove intermediate files
+# ------------------------------------------------------
+#
+  clearTemporary(@tempfiles);
+}
+
+sub clearTemporary{
+  foreach (@_){
+    (-e $_) && unlink($_);
+  }
+}

@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Different types of detector map</TITLE>
+<META NAME="description" CONTENT="Different types of detector map">
+<META NAME="keywords" CONTENT="arfgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="arfgen.css">
+
+<LINK REL="next" HREF="node21.html">
+<LINK REL="previous" HREF="node19.html">
+<LINK REL="up" HREF="node18.html">
+<LINK REL="next" HREF="node21.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+arfgen (arfgen-1.93.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node19.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="A detector map"></A>
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Spatial variation of source"></A>
+<A HREF="node21.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Detector map filtering"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node44.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="arfgen.html">Home Page</A> / <A  HREF="node14.html">Description</A> / <A  HREF="node18.html">Spatial variation of source</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00063200000000000000"></A>
+<A NAME="arfgen:description:description:detmap:types"></A>
+<BR>
+Different types of detector map
+</H3>
+
+<P>
+A detector map is used to provide a grid of positions over which to 
+calculate and flux weight the ARF. The default detector map is
+'flat' which has a weighting of 1.0 for each detector map pixel and 
+is rectangular having sides which just encompass the region specified
+in the DSS. Only detector map pixels falling within the source region
+are included in the ARF calculation, e.g. for a circular source box,
+the pixels in the corners of the detector map will be ignored.
+The number of detector map pixels is set automatically unless explicitely set
+with the parameters <TT>detxbins</TT> and <TT>detybins</TT>. 
+The calculated number of pixels in each dimension is constrained to 
+be between 5 and 80, and is set proportionately to the <EM>total</EM> 
+extent of the extraction region.
+The total extent is taken from the included <EM>and</EM> excluded regions
+and for example can be surprisingly large if detected sources have been 
+removed by excluding regions.
+
+<P>
+Some fine regions, e.g. a narrow annulus at a large off-axis
+angle, may not be well represented by the default map. In these cases
+more map pixels can be introduced by specifying e.g. detxbins=100, 
+detybins=100, but beware that the task execution time increases
+with the number of bins.
+
+<P>
+<A NAME="1280"></A><A NAME="tex2html28"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+supports 3 types of detector map,
+selectable through the <TT>detmaptype</TT>
+parameter:
+
+<P>
+</B>
+<UL>
+<LI><TT>flat</TT>:
+<BR>
+<P>
+This is the default internal representation where 
+all pixel values
+are set to 1.
+
+<P>
+Given that all the pixels
+are of the same value, 
+the function of the flat detector map is essentially
+to describe the spatial grid points which the task
+should consider during the computation of the ARF.
+
+<P>
+The map bounds
+are by default matched to the extent of the
+selected regions, but can be set explicitly by
+setting <TT>withdetbounds</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$=$"></SPAN> <TT>true</TT> and then
+choosing values for the parameters
+<TT>detxoffset</TT>, <TT>detyoffset</TT>.
+The map is centred on the source position.
+The automatically calculated number of pixels can be overridden using
+the parameters <TT>detxbins</TT> and <TT>detybins</TT>. 
+This map should be used for extended sources unless a detector map 
+image is supplied.
+
+<P>
+</LI>
+<LI><TT>psf</TT>:
+<BR>
+<P>
+This is an internal map
+based on a model of the PSF taken from the CAL.
+This is the most accurate for point sources where
+the majority of the flux falls at the centre of the source
+region. In practice it is unlikely to produce a very
+different ARF to the 'flat' map, except at large
+off-axis angles where the calibration parameters can change
+rapidly.
+
+<P>
+The extent and coarseness of the detector map may be specified
+on the command line similarly to that of the 'flat' map.
+
+<P>
+Given that the PSF is energy dependent, the energy at which
+the PSF model is taken may also be specified by the user,
+through the parameter <TT>psfenergy</TT>.
+
+<P>
+</LI>
+<LI><TT>dataset</TT>:
+<BR>
+<P>
+This is a user-defined 
+detector map. This allows the user to have control
+over the spatial distribution of the source which is particularly 
+useful for extended sources.
+
+<P>
+This must be in the format of an image array of a dataset,
+and that image array must contain WCS information that
+describes the mapping onto DET coordinates. Such maps can
+be generated in <A NAME="1295"></A><A NAME="tex2html29"
+  HREF="../xmmselect/index.html"><SPAN  CLASS="textbf">xmmselect</SPAN></A>
+given an event list that contains
+a column <A NAME="1299"></A><TT>DETX</TT>, <A NAME="1301"></A><TT>DETY</TT>, by selecting those
+columns in the main GUI dialog of that task, clicking
+the 'Image' button and then specifying the preferred
+image binning in the subsequent <A NAME="1303"></A><A NAME="tex2html30"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+dialog.
+Alternatively, it could be generated directly from <A NAME="1307"></A><A NAME="tex2html31"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+- section&nbsp;<A HREF="node8.html#arfgen:description:examples:detmap">3.4</A> provides
+an example of doing this.
+
+<P>
+A detector map of this form can be passed to the task
+through the <TT>detmaparray</TT> parameter.
+
+<P>
+Note that in order for <A NAME="1312"></A><A NAME="tex2html32"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+to generate an output consistent with the data, 
+ the detector map must enclose the regions over 
+ which the spectrum is accumulated; 
+ one or more warnings are raised if
+ the extent of the selected regions exceeds 
+ the bounds of the detector map along either the X and/or Y axes.
+
+<P>
+<B>NB: The detector map may not be specified in X/Y coordinates
+ in the current release.
+</B>
+<P>
+<B>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node19.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="A detector map"></A>
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Spatial variation of source"></A>
+<A HREF="node21.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Detector map filtering"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node44.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

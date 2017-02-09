@@ -1,0 +1,68 @@
+<!-- converted from XPI formatted "emeventsproj.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="eventset" type="dataset" mandatory="yes" default="">
+   <DESCRIPTION>
+    Input events file from ODF, emevents or PPS products
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="evimageset" type="dataset" default="events.map">
+   <DESCRIPTION>
+    Output image file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="rejectbadevents" type="bool" default="no">
+   <DESCRIPTION>
+    Reject events flagged as bad
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="projectenergy" type="bool" default="no">
+   <DESCRIPTION>
+    Project energy rather than counts
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="mergedeventlist" type="bool" default="no">
+   <DESCRIPTION>
+    Is the event list merged (PPS products)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="ccdnr" type="int" default="1">
+      <DESCRIPTION>
+       CCD number (for merged event list)
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       ccdnr in [1:17]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

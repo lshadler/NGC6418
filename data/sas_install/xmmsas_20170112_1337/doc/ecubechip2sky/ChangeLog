@@ -1,0 +1,160 @@
+ChangeLog for eimchip2sky
+===============================
+
+Open SPRs:
+----------
+Nil.
+
+Version 2.5 - 2014-06-04 (AI)
+-----------
+
+	+ (test/cube2im_test, test/eimchip2skyaux_test, test/im2cube_test)
+	foreach syntax corrected.
+	
+Version 2.4 - 2011-06-15 (MAS/LUX)
+----------------------
+- Some minor or cosmetic updates.
+
+Version 2.3 - 2011-06-14 (MAS/LUX)
+----------------------
+- DEPENDency on ssclib upgraded to 4.25.
+- cube2im:
+  + Fixed a bug, where it used to fail when the last chip is blank, by fixing cubeToDet() in eimchip2sky_aux .
+- eimchip2skyaux_test:
+  + Fixed an environment-dependent bug in the test harness.
+	
+Version 2.2 - 2011-04-11 (MAS/LUX)
+----------------------
+- DEPENDency on dsslib, ssclib and testprods upgraded to 5.6, 4.22, 1.23, respectively.  It now DEPENDs on fitsutils Ver.1.5.
+- cube_aux:
+  + Introduced new global and public parameters of EXTNAMEKEYINFO, COLNAMECCDNR, COLNAMENODENR and COLNAMEGTINAME, and modified the own code accordingly.
+- eimchip2sky_aux:
+  + It now uses ssclib/epic_aux .
+  + Added new subroutines of rawImageToDet() and cubeToDet().
+  + Created its test harness.
+- cube2im:
+  + Now requires cube_aux.f90 and eimchip2sky_aux.f90 to compile and uses the modules in ssclib of array_utils, dal_aux, epic_aux and save_image.
+  + Introduced new command-line parameters of outputraw, outputdet and outdetset.
+  + Now can output DETX/DETY image instead of or in addition to the RAW chip images, if specified so.
+  + Now reads and outputs the TELESCOP and INSTRUME header attributes.
+  + Now reads the KEY2IMGS table extention in the input file and outputs accordingly the header attributes of CCDNR and NODE_NR.
+  + Created its test harness.
+- im2cube:
+  + Introduced new command-line parameters of withccdnr, ccdnr, withnodenr, nodenr.
+  + Created its test harness.
+
+Version 2.1.1 - 2009-03-04 (MAS/LUX)
+----------------------
+- Fixed a serious bug in writeCubeDataLogical_temp() in cube_aux.f90 (for the library chipcube).
+	
+Version 2.1 - 2009-02-02 (IMS/JBO)
+----------------------
+- Originally developed by IMS/JBO on 2006-10-19.
+- Changed ssclib version in DEPEND to 4.0.
+- Removed modules for which functionality is now found within ssclib.
+- Deleted src/old_code.
+- Added task im2cube.
+- Overloaded cube_aux:writeCubeData to double and ints 32, 16 and 8.
+
+Version 2.0.1 - 2006-05-07 (IMS/JBO)
+----------------------
+- Filled in a few error messages and slightly updated the documentation.
+- Added an inadvertently omitted parameter --withindices to eimchip2sky.
+- Renamed --withcubeindices and --cubeindices of ecubechip2sky to --withindices and --indices respectively.
+
+Version 2.0 - 2005-11-07 (IMS/LUX)
+----------------------
+- Upgraded to comply with interface changes in attcalc-1.2.
+- DEPENDency on attcalc2 changed to 1.2.
+- DEPENDency on ssclib changed to 3.27.
+- Parameter --withbinnedattset replaced by --attstyle to come into line with interfaces for ebkgmap and lccorr tasks.
+- Many more options for weighting the attitude samples are now provided.
+- Task eimchip2sky split into two: eimchip2sky and ecubechip2sky. These are the same, except the 1st accepts a list of chip images as input, whereas the second accepts a (list of) cube(s) as input. The previous eimchip2sky accepted either, but with the additional capability, the parameter interface was getting a bit snarled up. The split simplifies things.
+
+Version 1.10 - 2005-11-02 (IMS/LUX)
+----------------------
+- Former logical(bool) overloading of subroutine cube_aux.f90:writeCubeData now requires a plain logical cube argument; it also now writes the key table.
+- Changed some prints to 'call message' in chip2im and eimchip2sky_aux.
+- Added some error codes.
+- Now it's possible to have --withbinnedattset=no and --withgtisets=no. Task wouldn't allow this before.
+
+Version 1.9 - 2005-04-05 (IMS/LUX)
+----------------------
+- Changed DEPEND on attcalc2 to 1.0 to fix build problem.
+
+Version 1.8 - 2004-11-08 (IMS/LUX)
+----------------------
+- Package seems to need 'selector' in the USEDLIBS line to compile under linux.
+
+Version 1.7 - 2004-09-06 (IMS/LUX)
+----------------------
+- An allocatable array was allocated within a loop but not deallocated. This is now fixed.
+
+Version 1.6 - 2004-09-06 (IMS/LUX)
+----------------------
+- Rearranged the parameters a little so as to allow the task to write to several output images (of identical wcs and dimensions). This has entailed: changing --chipcubeset to --chipcubesets and --outset to --outsets; deleting --outstyle (the task now is restricted to creating new images rather than adding to existing ones); and adding --withcubeindices, --cubeindices and --indices.
+- Introduced new parameters --withnodes and --nodes.
+- --multiplybytime deleted and --withnormalize and --normstyle substituted.
+- --withccds replaced by --ccdstyle.
+- --withgtis changed to --ignorecubegtis.
+- Moved gtiVecType (was intervalVecType) from cube_aux to ssclib/intervals_aux.
+- attcalc2 dependency increased to 0.3; ssclib dependency increased to 3.16.
+- String parameter --regridstyle replaced by boolean --conserveflux.
+
+Version 1.5 - 2004-08-17 (IMS/LUX)
+----------------------
+- Added approximate rebinning algorithm (which hopefully will be faster). A new parameter --usefast has been added to access this algorithm.
+- writeCubeData now takes a vector, of new type keyInfoType, which it writes to a binary table extension of the output. The rows of this link each image plane with a ccd/node number and also the name of the GTI extension.
+- New routine readCubeData added to cube_aux.
+
+Version 1.4 - 2004-08-10 (IMS/LUX)
+----------------------
+- Added taskmain to DEPEND.
+
+Version 1.3 - 2004-06-28 (IMS/LUX)
+----------------------
+- Added patch to deal with non-zero roll angle until SOC SPR 2523 is implemented.
+- In module cube_aux.f90, routine writeCubeData now overloaded to accept both real(single) and logical(bool) cube arguments.
+- Now uses library binnedatt in (probably temporary) package attcalc2. attcalc2 added to DEPEND.
+- Test harness now fails if test data not found.
+
+Version 1.2 - 2004-05-03 (IMS/LUX)
+----------------------
+- Attitude and timestamp info is now sought in the template image rather than the cube dataset.
+- Added parameter --withgtis, active when --instyle='cube'.
+
+Version 1.1 - 2004-05-03 (IMS/LUX)
+----------------------
+- 'use polygon' changed to 'use regridders' and thus now depends on ssclib-3.10.
+- Tasks eimpolar2sky and eimdet2polar added.
+
+Version 1.0 - 2004-04-30 (IMS/LUX)
+----------------------
+- Probably about time to go to version 1.0. The name has been changed from echip2sky (SCR 2517).
+- Updated the ssclib interfaces to 3.9 standard.
+- Rearranged code so as to provide access to the central algorithm by other tasks.
+
+Version 0.4 - 2004-04-05 (IMS/LUX)
+----------------------
+- Now uses test data in package testprods.
+
+Version 0.3 - 2004-03-25 (IMS/LUX)
+----------------------
+- Copy of patches to devtrack.
+
+Version 0.2.2 - 2003-12-17 (IMS SSC/LUX)
+----------------------------
+- Added 'selector' to the src/Makefile:USEDLIBS line. Without this the task wouldn't compile statically. Fixes SPR 3177.
+
+Version 0.2.1 - 2003-12-12 (IMS SSC/LUX)
+----------------------------
+- Added some documentation.
+
+Version 0.2 - 2003-12-11 (IMS SSC/LUX)
+----------------------------
+- Changed to reflect the movement of andIntervals from ssclib/dss_aux to ssclib/intervals_aux.
+
+Version 0.1 - 2003-12-10 (IMS SSC/LUX)
+----------------------------
+- First draft.
+

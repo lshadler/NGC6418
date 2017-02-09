@@ -1,0 +1,260 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>User-level errors and warnings</TITLE>
+<META NAME="description" CONTENT="User-level errors and warnings">
+<META NAME="keywords" CONTENT="odfingest">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="odfingest.css">
+
+<LINK REL="next" HREF="node17.html">
+<LINK REL="previous" HREF="node15.html">
+<LINK REL="up" HREF="node15.html">
+<LINK REL="next" HREF="node17.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+odfingest (odfingest-3.30) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node15.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Errors"></A>
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Errors"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Internal errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node35.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="odfingest.html">Home Page</A> / <A  HREF="node15.html">Errors</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00051000000000000000">
+User-level errors and warnings</A>
+</H2>
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>MissingData</b><A NAME="1518"></A></td><td align=right><b><font color="#CC6600">warning</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2><A NAME="1520"></A><A NAME="tex2html18"
+  HREF="../odfingest/index.html"><SPAN  CLASS="textbf">odfingest</SPAN></A>
+cannot find some piece of
+  information. This is not a problem for the users, but it may be a
+  problem for the pipeline. For instance, if the PROPOSAL information
+  record is missing the user can add a fake one to the SOSF without
+  this having any effect on the data reduction.
+<br><b>corrective action:</b> Continue.<br>&nbsp;</td></tr>
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>HousekeepingParameterMissing</b><A NAME="1528"></A></td><td align=right><b><font color="#CC6600">warning</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2>For a certain
+    exposure in the ODF one of the parameters was not found in the
+    housekeeping data. This can be caused by:
+    
+<UL>
+<LI>The time interval corresponding to the given exposure is not
+      fully contained in the time span covered by the housekeeping
+      data.      
+</LI>
+<LI>The constraint above is met, but the further filtering of
+      the housekeeping data with the filtering expression (see
+      <A HREF="node7.html#odfingest:description:housekeepingparameters">3.4</A>) yields an
+      empty dataset. 
+    
+</LI>
+</UL>
+<br><b>corrective action:</b> The parameter is ignored. A
+    warning is written to the SOSF. For example:
+    WARNING: FILTER_WHEEL not found
+    __FILTER_WHEEL__ = 0
+    <br>&nbsp;</td></tr>
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>InconsistentDataMode</b><A NAME="1536"></A></td><td align=right><b><font color="#CC6600">warning</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2>The task has encountered a situation
+    where the same CCD appears to be in more than one
+    data mode. This can point to one of the following:
+
+<P>
+
+<UL>
+<LI>The central CCD of the EMOS camera is being readout of two
+      nodes. This generates two separate files in the ODF, and these
+      two files appear to have been taken with different
+      configurations.
+</LI>
+<LI>Data from two different modes is found to be in the same
+      exposure. For instance: <TT>PNU00201IME.FIT</TT> and
+      <TT>PNU00201ODI.FIT</TT> are found in the same ODF.
+    
+</LI>
+</UL>
+
+<P>
+The latter condition has actually been observed, although it is
+    understood that it should not happen. If it does please report
+    this to the XMM-Newton Science Operations Centre.
+    
+<br><b>corrective action:</b> All operations related to the
+    determination of the CCD data mode, calibration mode, and
+    instrument configuration will be disabled for the current
+    exposure. In the summary file: <TT>MODE =
+      UNDEFINED</TT>, and <TT>CALIBRATION_MODE</TT> and <TT>DATA_MODE</TT>
+    entries are not present.<br>&nbsp;</td></tr>
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>InconsistentCalibrationMode</b><A NAME="1548"></A></td><td align=right><b><font color="#CC6600">warning</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2>The task has encountered a situation where the same
+    CCD appears to be in more than one configuration. This is the
+    configuration as expected by the <A NAME="1553"></A><A NAME="tex2html19"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>.
+<br><b>corrective action:</b> All operations related to the
+    determination of the CCD data mode, calibration mode, and
+    instrument configuration will be disabled for the current
+    exposure. In the summary file: <TT>MODE = UNDEFINED</TT>, and
+    <TT>CALIBRATION_MODE</TT> and <TT>DATA_MODE</TT> entries are not
+    present.<br>&nbsp;</td></tr>
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>NewHousekeepingValue</b><A NAME="1561"></A></td><td align=right><b><font color="#CC6600">warning</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2>One housekeeping parameter that was
+    supposed to remain constant during the current exposure was
+    instead found to have changed value. This may mean that the
+    exposure start/stop times determined by <A NAME="1564"></A><A NAME="tex2html20"
+  HREF="../odfingest/index.html"><SPAN  CLASS="textbf">odfingest</SPAN></A>
+are
+    incorrect.
+<br><b>corrective action:</b> The parameter is ignored. A warning
+    is written in the SOSF. See the warning
+    <TT>HousekeepingParameterMissing</TT>. <br>&nbsp;</td></tr>
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>TranslationNotAvailable</b><A NAME="1572"></A></td><td align=right><b><font color="#CC6600">warning</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2>It is not possible to translate a
+    housekeeping parameter value. <SPAN  CLASS="textbf">For the developer</SPAN>. If the translator is a map
+    {key,value}, this warning means that the translator does not
+    contain a key corresponding to the parameter value. If the
+    translator is a map {{min,max},value}, the warning indicates
+    that the housekeeping parameter value is not contained in any of
+    the available {min,max} ranges.
+<br><b>corrective action:</b> Do not translate. A warning is
+    written in the SOSF. See the warning
+    <TT>HousekeepingParameterMissing</TT>.<br>&nbsp;</td></tr>
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>UnknownInstrumentMode</b><A NAME="1579"></A></td><td align=right><b><font color="#CC6600">warning</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2>It is not possible to determine the instrument mode from the list of
+    available CCD calibration modes. This indicates one of the following:
+    
+<UL>
+<LI><SPAN  CLASS="textbf">EMOS</SPAN>: the current exposure is found to
+      contain more than two distinct calibration modes.
+</LI>
+<LI><SPAN  CLASS="textbf">EMOS</SPAN>: the current exposure does not contain a
+      calibration mode entry for CCD 1.
+</LI>
+<LI><SPAN  CLASS="textbf">RGS, EPN, OM</SPAN>: the current exposure is found to
+      contain more than one distinct calibration mode.
+    
+</LI>
+</UL>
+<br><b>corrective action:</b> In the summary file: <TT>MODE = UNDEFINED</TT>.<br>&nbsp;</td></tr>
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>UnknownCalibrationMode</b><A NAME="1590"></A></td><td align=right><b><font color="#CC6600">warning</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2>For the
+    current exposure the Calibration Access Layer is unable to uniquely
+    determine the calibration mode. In the summary file: <TT>MODE =
+      UNDEFINED</TT>, and <TT>CALIBRATION_MODE</TT> and <TT>DATA_MODE</TT>
+    entries are not present. This points to a problem in the data
+    itself or in the CCF in use.
+<br><b>corrective action:</b> All operations related to the
+    determination of the CCD data mode, calibration mode, and instrument
+    configuration will be disabled for the current exposure.<br>&nbsp;</td></tr>
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>MissingOdfComponent</b><A NAME="1598"></A></td><td align=right><b><font color="#CC6600">warning</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2>The ODF component mentioned in
+    the warning does not exist. This may
+    prevent the SAS from processing the observation successfully.
+<br><b>corrective action:</b> Ignore the problem. If the missing
+    component is an housekeeping file the corresponding parameters
+    will not be written to the SOSF.<br>&nbsp;</td></tr>
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>InconsistentTimeRange</b><A NAME="1603"></A></td><td align=right><b><font color="#CC6600">warning</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2>The time range covered by the
+  ODF constituent mentioned in the warning does not fully contain the
+  observation span. Processing some of the exposures may fail because
+  data are not available.
+<br><b>corrective action:</b> None.<br>&nbsp;</td></tr>
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>noOMExposurePair</b><A NAME="1608"></A></td><td align=right><b><font color="#CC6600">warning</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2>OM Exposure does not have correct
+  EXP_START EXP_END pairs, using exposure time end for Actual End Time.
+<br><b>corrective action:</b> None.<br>&nbsp;</td></tr>
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>ZeroExposureLength</b><A NAME="1613"></A></td><td align=right><b><font color="#CC6600">warning</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2>Detected a dataset with zero
+  duration. This indicates that this exposure is unlikely to
+  processable by the SAS.
+<br><b>corrective action:</b> None.<br>&nbsp;</td></tr>
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>NoOdfFound</b><A NAME="1618"></A></td><td align=right><b><font color="#FF0000">error</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2>The summary file is not
+    written.<br>&nbsp;</td></tr><A NAME="1619"></A><A NAME="tex2html21"
+  HREF="../odfingest/index.html"><SPAN  CLASS="textbf">odfingest</SPAN></A>
+did not find any ODF constituent in the
+    directory pointed to by <TT>odfdir</TT>.
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>IncorrectNumberOfDatasets</b><A NAME="1628"></A></td><td align=right><b><font color="#FF0000">error</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2>The task expected to find one and
+    only one ODF component matching a certain instrument/data mode
+    pair. Both the file name pattern and the number of components
+    found is reported.<br>&nbsp;</td></tr>
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>InvalidRevolutionIdentifier</b><A NAME="1633"></A></td><td align=right><b><font color="#FF0000">error</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2>The revolution identifier of one
+    of the ODF constituents found in the ODF directory is not an
+    integer.<br>&nbsp;</td></tr>
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>MultipleObservations</b><A NAME="1638"></A></td><td align=right><b><font color="#FF0000">error</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2>The ODF directory appears to contain
+    ODF constituents belonging to more than one observation.<br>&nbsp;</td></tr>
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>OdfSummaryFileNotFound</b><A NAME="1643"></A></td><td align=right><b><font color="#FF0000">error</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2>The ODF summary file matching the
+  pattern <TT>*_SCX00000SUM.ASC</TT> was not found. This is part of
+  every well-formed ODF.<br>&nbsp;</td></tr>
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>MultipleObservations</b><A NAME="1649"></A></td><td align=right><b><font color="#FF0000">error</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2>ODF constituents from more that one ODF
+    were identified in the ODF directory.<br>&nbsp;</td></tr>
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>NotATimeSortedTable</b><A NAME="1654"></A></td><td align=right><b><font color="#FF0000">error</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2>The <A NAME="1656"></A><TT>TIME</TT> of one of the
+    housekeeping datasets is not sorted in ascending order.<br>&nbsp;</td></tr>
+
+<P>
+<tr valign=top bgcolor='silver'><td colspan=2><b>FileIo</b><A NAME="1662"></A></td><td align=right><b><font color="#FF0000">error</font></b>&nbsp;</td></tr><tr valign=top><td>&nbsp;</td><td colspan=2><A NAME="1664"></A><A NAME="tex2html22"
+  HREF="../odfingest/index.html"><SPAN  CLASS="textbf">odfingest</SPAN></A>
+was unable to successfully write the summary file. Possible reasons: disk full, wrong permissions.<br>&nbsp;</td></tr>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node15.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Errors"></A>
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Errors"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Internal errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node35.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

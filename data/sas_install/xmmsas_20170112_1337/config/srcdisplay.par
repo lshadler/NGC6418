@@ -1,0 +1,95 @@
+<!-- srcdisplay parameter file -->
+<FILE>
+<CONFIG>
+
+<PARAM id="boxlistset" type="dataset" mandatory="yes">
+	<DESCRIPTION>Name of set containing source list</DESCRIPTION>
+</PARAM>
+
+<PARAM id="withimageset" type="bool" default="yes">
+	<DESCRIPTION>Image set given?</DESCRIPTION>
+	<CASE>
+		<ITEM value="no"/>
+		<ITEM value="yes">
+			<PARAM id="imageset" type="dataset" default="">
+				<DESCRIPTION>Name of image data set</DESCRIPTION>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="sourceradius" type="real" default="0.01">
+	<DESCRIPTION>size of circle around source [degrees]</DESCRIPTION>
+	<CONSTRAINTS>
+		sourceradius in [0.0001:2.0]
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="useposerr" type="bool" default="no">
+	<DESCRIPTION>use position error from source list for circle size ?
+        </DESCRIPTION>
+        <CASE>
+           <ITEM value="no">
+           </ITEM>
+           <ITEM value="yes">
+               <PARAM id="syserr" type="real" default="0.0">
+	       <DESCRIPTION>systematic error to add in quadrature to position 
+                            error (arcsecs)
+               </DESCRIPTION>
+               </PARAM>
+           </ITEM>
+        </CASE>
+</PARAM>
+
+<PARAM id="includesources" type="bool" default="yes">
+	<DESCRIPTION>Show found sources as included?</DESCRIPTION>
+	<CASE>
+		<ITEM value="no"/>
+		<ITEM value="yes"/>
+	</CASE>
+</PARAM>
+
+<PARAM id="overlay" type="bool" default="no">
+	<DESCRIPTION>Overlay new source markers on top of existing ones?</DESCRIPTION>
+</PARAM>
+
+<PARAM id="withregionfile" type="bool" default="no">
+	<DESCRIPTION>Region file specified</DESCRIPTION>
+	<CASE>
+		<ITEM value="no"/>
+		<ITEM value="yes"/>
+	</CASE>
+</PARAM>
+
+<PARAM id="regionfile" type="file" default="regionfile.txt">
+	<DESCRIPTION>Name of region file</DESCRIPTION>
+</PARAM>
+
+<PARAM id="uselabel" type="bool" default="no">
+	<DESCRIPTION>Display an ID alongside source</DESCRIPTION>
+	<CASE>
+		<ITEM value="no"/>
+		<ITEM value="yes"/>
+	</CASE>
+</PARAM>
+
+<PARAM id="poserrcol" type="string" default="RADEC_ERR">
+	<DESCRIPTION>Name of column containing position errors</DESCRIPTION>
+</PARAM>
+
+<PARAM id="srccolor" type="string" default="white">
+	<DESCRIPTION>Color of source marker circle</DESCRIPTION>
+	<CASE>
+		<ITEM value="black"/>
+		<ITEM value="white"/>
+		<ITEM value="red"/>
+		<ITEM value="green"/>
+		<ITEM value="blue"/>
+		<ITEM value="cyan"/>
+		<ITEM value="magenta"/>
+		<ITEM value="yellow"/>
+	</CASE>
+</PARAM>
+
+</CONFIG>
+</FILE>

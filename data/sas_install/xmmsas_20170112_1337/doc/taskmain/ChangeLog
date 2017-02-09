@@ -1,0 +1,586 @@
+ChangeLog for taskmain
+======================
+
+Version 1.95 - 2016-04-30 (AI)
+------------
+	+ (src/main.cc task_c.cc) gfortan compatibility changes 
+	
+Version 1.94 - 2016-03-18 (EO)
+------------
+	+ DEPEND: Added dependency on sasperl to fix a failure to find
+	  SAS::Error perl module while running the test runperltask.
+	  This dependency appeared when building a reduced set of packages
+	  where sasperl package is not included. 
+
+Version 1.93 - 2015-12-04 (EO)
+------------
+	+ src/main.pl: The sha-bang for perl (/usr/local/bin/perl) is now the variable
+	  -sasperl-, which, like other variables in this file which are
+	  eclosed by "-", it is replaced at build time by the proper value. 
+	   -sasperl- is replaced by the PERL determined by the SAS configure.
+	   PERL can be either equal to a SAS_PERL value defined by the user or 
+	   determined among several possible perl installations:
+	   /usr/bin/perl, /usr/local/bin/perl, /sw/bin/perl and /opt/local/bin/perl, 
+	   the last two only valid for Darwin.
+
+Version 1.92 - 2014-09-30 (EO)
+------------
+	+ src/main.pl: Added support for short common options (-h, -m, -d, etc). 
+	  Special treatment required for -v.
+
+Version 1.91 - 2010-03-14 (AI)
+------------
+	+ lib/metatask.cc: Replacement of the "sprintf" call by a better treatment of
+	  character string memory allocation.
+	
+Version 1.90 - 2003-07-29 (JBa)
+------------
+	+ Fixed test harness, such that they work on Mac OS X too:
+	  * -test/tasks/testTaskPrivate.h
+	  * +test/tasks/testtasklib.h
+	  * +test/tasks/testtasklib.cc
+	
+Version 1.89 - 2003-07-03 (GV)
+------------
+	+ QtRegister.cc: Fix double definition of isEnabled, which does
+	compile on Mac!
+	
+Version 1.88 - 2003-07-01 (JBa)
+------------
+	+ (lib/DialogDll.cc) uses dylib extension for MacOsX
+	+ (lib/QtRegister.*) GUI enabling for MacOsX incorporated
+
+Version 1.87 - 2003-06-26 (EO)
+-----------
+	+ (test/tasks/runperltask) Added grep for correct output catching.
+	
+Version 1.86 - 2003-06-13 (GV)
+------------	
+	+ (Dll.cc) On Mac OS X dlsym and company are available through a
+	wrapper around the native interface. This wrapper is provided by
+	the finch project. The problem is that it is not always guaranteed
+	that the dlsym puts an underscore in front of the symbol
+	names. This can be configure at build time (of the wrapper in
+	question). To make life easier, and avoid surprises in case the
+	SAS is built on a system with the _ and run on a system without it
+	(or vice versa), here we try to load a symbol twice, once without
+	the underscore, and once with it. Only if both attempts fail is an
+	error issued.
+
+Version 1.85 - 2003-03-17 (GV)
+------------
+	+ (lib/HelpViewer.cc) uses env{SAS_BROWSER} if available.
+
+Version 1.84 - 2003-02-11 (GV)
+------------
+	+ (main.pl) the --verbosity setting was not being propagated
+	correctly.
+	+ (test/task/runperltask) modify to be sensitive to the verbosity
+	setting. 
+	
+Version 1.83 - 2003-02-07 (GV)
+------------
+	+ (main.pl) load SAS::param, remove debug print.
+	
+Version 1.82 - 2003-02-03 (GV)
+------------
+	+ (Makefile) remove src from SUBDIRS, or make depend will
+	fail. src in task main is not a src dir like all the others, but
+	it is used to store templates.
+
+Version 1.81 - 2003-01-31 (GV)
+------------
+	+ Add main.pl to implement perl tasks. These are no longer
+	implemented via taskmain+perl interpreter, but as a plain perl
+	script.
+	
+Version 1.80 - 2003-01-29 (UL)
+------------
+	+ main.cc change enforced by moving CCF access methods from CAL to
+	  caloalutils: restart atom server if CCF constituents are inserted
+	  from command line; now DEPENDs on caloalutils
+
+Version 1.79 - 2003-01-28 (JBa)
+------------
+	+ help is now dumped on stdout
+
+Version 1.78 - 2003-01-21 (JBa)
+------------
+	(lib/QtRegister.cc)
+	+ fixed SOC-SPR-2398
+
+Version 1.77 - 2002-12-09 (JBa)
+------------
+	(lib/QtRegister.h, lib/QtRegister.cc)
+	+ fixed SOC-SPR-2383
+	+ moved implementation of QtRegister in own translation unit
+
+
+Version 1.76 - 2002-11-21 (JBa)
+------------
+	+ fixed SOC-SPR-2371
+
+Version 1.75 - 2002-11-19 (JBa)
+------------
+	+ gParameters was not converted back properly in meta-tasks.
+
+Version 1.74 - 2002-11-04 (UL)
+------------
+	+ added description of new environment variable SAS_RAND_SEED (as of
+	  utils-1.98) to documentation
+
+Version 1.73 - 2002-07-08 (GV)
+------------
+	+ (test/*/Makefile) remove qt requirement, as it does not belong
+	there. Also, it makes the test harnesses require an active X
+	server.
+	
+Version 1.72 - 2002-07-02 (JBa)
+------------
+	+ fixed (src/perltask.cc) to eat "const char*"  via string.c_str()
+	+ moved dummy tasks to area for development binaries
+
+Version 1.71 - 2002-06-27 (JBa)
+------------
+	+ uses sstream
+
+Version 1.70 - 2002-06-17 (JBa)
+------------
+	STATIC build:
+	+ test will statically link
+	+ note: test will not succeed, as shared libraries are needed (at 
+	  least for perl tasks).
+	  
+
+Version 1.69 - 2002-05-21 (JBa)
+------------
+	+ depends on layout to ensure proper build order
+
+Version 1.68 - 2002-05-07 (GV)
+------------
+	+ Update par files for param-2.0.
+	
+Version 1.67.2 - 2002-02-01 (JBa)
+------------
+	+ (test/tasks/config/perltask.par) fixed bug in syntax
+
+Version 1.67.1 - 2002-01-28 (JBa)
+------------
+	+ Upgraded verbosity of Executing information to lowest level
+	  (i.e. the user will see TASK:- Executing (HOW): TASK [paremeters])
+	
+Version 1.67 - 2001-12-20 (GV)
+------------
+	+ DEPEND updated.
+	
+Version 1.66 - 2001-11-19 (JBa)
+--------------
+	+ (lib/Task.cc) At call/invocation of child, be verbose on all 
+	  errHandler flags needed by children too.
+
+Version 1.65.4 - 2001-06-14 (JBa)
+--------------
+	+ Do not check for mandatory parameters, if using the dialog!
+
+Version 1.65.3 - 2001-06-06 (JBa)
+--------------
+	+ Fixed occurence of META::TASK::TASK (task name appearing twice) in
+	  messages/warnings and the lot, when TASK was called by invokation
+	  instead of routine.
+
+Version 1.65.2 - 2001-06-01 (UL)
+--------------
+	+ better explanation of relationship between --odf/SAS_ODF and
+	  --ccf/SAS_CCF in doc
+
+Version 1.65.1 - 2000-05-14 (JBa)
+------------
+	+ (lib/Task.cc)
+	  * catch exceptions (only if error handler uses exceptions), and
+	    do appropriate cleanup
+	+ (test/tasks/cctaskerror, test/meta/ccmetaerror)
+	  * added tests for the above
+
+Version 1.65 - 2000-03-29 (JBa)
+------------
+	+ (lib/metatask.cc, lib/metatask_mod.f90, lib/taskinfo_.f90)
+	  * expanded the f90 interface to query a TaskInfo object
+	+ (test/tasks/f90task_mod.f90,test/meta/f90meta_mod.f90)
+	  * usage examples of the above
+
+Version 1.64 - 2000-03-28 (JBa)
+------------
+	+ * replaced old-style headers
+
+Version 1.63.2 - 2000-11-28 (JBa)
+--------------
+	+ (doc/taskmain_description.tex, src/main.cc)
+	  * fixed SPRs 1274, 1653, 1658, 1865
+	  * added global parameters to index of parameters
+	  * updated documentation
+	  * improved HTML links.
+
+Version 1.63.1 - 2000-11-15 (UL)
+--------------
+	+ fixed SPR-1846: if cal used, SAS_CCF alwasy required
+	  [tweak in main.cc such that a CIF is only needed if a CAL-related
+	   command line option has been specified]
+ 
+Version 1.63 - 2000-10-27 (JBa)
+------------
+	+ (src/task_c.cc) Allow f90-tasks to be trapped by exceptions
+
+Version 1.62 - 2000-10-05 (UL)
+------------
+	+ added '--ccfpath|-a' switch to command line (needs cal-3.85)
+	+ CCF access log is now printed at the end of main() on Msg::Verbose
+	  level
+	+ updated documentation
+
+Version 1.61 - 2000-09-28 (JBa)
+------------
+	+ updated VERSION as patches are not allowed in this stage; ref mail:
+	  Subject: [sas-devel] new uploads required
+	  Date:    Fri, 29 Sep 2000 12:38:40 +0200 (MET DST)
+	+ added dummy layout files for test tasks
+
+Version 1.60.1 - 2000-09-28 (JBa)
+------------
+	+ (test/tasks/perltask.pl) using SAS::param again
+
+Version 1.60 - 2000-08-17 (GV)
+------------
+	+ the runperltask test harness was rendered harmless. It is no
+	fix, as it does not work. To be done when I'm back :-)
+	
+Version 1.59 - 2000-08-11 (GV)
+------------
+	+ (DEPEND) had not added layout ...
+
+Version 1.58 - 2000-08-10 (GV)
+------------
+	+ (DEPEND) add layout. This is a trick, so that all packages that
+	contain a task can have their layout file checked with the
+	parselayout command.
+	+ (test/*/config/*info) added task info files
+	+ (cctask.par f90task.par) had the wrong number of fields.
+	
+Version 1.57.7 - 2000-06-22 (JBa)
+------------
+	+ (lib/Task.cc) bug-fixed the private method paramToTask(). Implementa-
+	  -tion of closeParameters() in param-1.54.1 triggerd a bad pointer.
+
+Version 1.57.6 - 2000-06-21 (JBa)
+------------
+	+ (lib/Makefile) Fixed SPR 1298
+
+Version 1.57.5 - 2000-06-20 (JBa)
+------------
+	+ (src/main.cc) Fixed SPR 1463::fails static build
+
+Version 1.57.4 - 2000-06-20 (JBa)
+------------
+	+ (lib/Task.cc) Fixed SPR 1442::core dump on Linux
+
+Version 1.57.3 - 2000-06-20 (JBa)
+------------
+	+ (meta/runccmetatwice, meta/runccmetawarnin, tasks/runcctaskwarning)
+	  Fixed SPR 1214
+
+Version 1.57.2 - 2000-06-20 (JBa)
+------------
+	+ (doc/taskmain_description.tex) Fixed SPR 1487
+
+Version 1.57.1 - 2000-06-20 (JBa)
+------------
+	+ (lib/DalRegister.h) Added version,package,release info to both
+	  client() and process() settings (SPR 940,1378,1194)
+	
+Version 1.57 - 2000-05-23 (GV)
+------------
+	+ (src/main.cc) change the out-of-memory message so that the task
+	name is written out instead of being shown as '1'.
+	
+Version 1.56 - 2000-05-22 (JBa)
+------------
+	+ (lib/Dll.*) introduction of loading library at runtime
+	+ (lib/DialogDll.*) run-time pop-up of parameter dialog
+	+ (src/main.cc) implemented popup with -d|--dialog setting
+
+Version 1.55 - 2000-05-08 (GV)
+------------
+	+ (doc/taskmain_description.tex) fix abuse of latex macros.
+	
+Version 1.54 - 2000-04-17 (JBa)
+------------
+	+ (lib/Task.cc) commented out clean-up in destructor:contains bug.
+	+ (lib/DalRegister.h) activated 'client()' method that became
+	  available with dal-1.115
+
+Version 1.53 - 2000-04-14 (JBa)
+------------
+	+ (lib/Makefile) removed "INTERFACES",as it does not work with f90
+	  modules
+	
+Version 1.52 - 2000-04-14 (JBa)
+------------
+	+ (src/main.cc) removed ifdef MACRO for Qt task, as Qt task now behave 
+	  the same as any task
+	+ (lib/Task.h):
+	  * added method "ParameterInfo* parameters()"
+	  * added static method "Task* current()", so a task can query itself
+	  * added protected method "void append(Register*)", allowing derived
+	    classes to register themselves as tasks needing particular
+	    (e.g. Qt, Dal) services.
+	+ (lib/*Register.h) Family of services
+	+ (lib/HelpViewer.*) HTML Browser interface.
+
+Version 1.51 - 2000-04-07 (JBa)
+------------
+	+ (Task.cc) fixed name mangling if called from main().
+	
+Version 1.50 - 2000-04-06 (GV)
+------------
+	+ (Task.*) add _package member.
+	+ (main.cc) now makes use of PACKAGE.
+	+ (main.cc) now make use of metatask mechanism.
+	
+Version 1.49 - 2000-03-31 (JBa)
+------------
+	+ created Info::Task class, keeping records of all tasks included
+	  A task can now be queried and executed by:
+	  Info::Task* t=task("taskname")
+	  t->setParameter("name",value);
+	  t->exec()
+	+ re-implemented task(subtask) to do the equivalent of 
+	  Info::Task->exec()
+	  the old approach is still available
+	+ included version messaging system
+	+ implemented StopWatch when Verbosity is Noisy: calculates CPU seconds
+
+Version 1.48 - 2000-02-10 (JBa)
+------------
+	+ bugfixed closing of stdin,stdout and stderr by f90/f95
+	+ added global option to avoid massive warning dump
+	+ added testprograms to test for new functionality
+	+ updated documentation for new option
+
+Version 1.47 - 2000-01-04 (GV)
+------------
+	+ (main.cc) fix typo (-M should have been -m). SPR 1054.
+
+Version 1.46 - 1999-12-20 (UL)
+------------
+	+ dropped support for obsolete switches --ccfdir/--odfdir
+
+Version 1.45 - 1999-11-16 (GV)
+------------
+	+ (main.cc) html help through -m|--manpage
+
+Version 1.44 - 1999-11-12 (GV)
+------------
+	+ (metatask.cc) add some debug statements to task().
+	+ (main.cc) improve html doc display through netscape.
+
+Version 1.43 - 1999-11-09 (UL)
+------------
+	+ --odfdir => --odf
+	  --ccfdir => --ccf
+	  old names are still recognized and supported; a message is issued
+	  saying that usage of the old names is deprecated; doc updated
+
+Version 1.42 - 1999-10-19 (GV)
+------------
+	+ (metatask.cc) change errHandler.name() to contain the name of
+	the task being called. 
+
+Version 1.41 - 1999-10-08 (GV)
+------------
+	+ add -H/--html to start netscape help.
+
+Version 1.40 - 1999-09-24 (GV)
+------------
+	+ -v displays release info if available.
+
+Version 1.39 - 1999-09-10 (MB)
+------------
+	+ register full set of parameters as process.
+
+Version 1.38 - 1999-08-30 (UL)
+------------
+	+ added out-of-memory handler (just prints a message and dies gracefully)
+
+Version 1.37 - 1999-08-26 (UL)
+------------
+	+ bug fix causing argument of --ccfdir not to be taken properly
+
+Version 1.36 - 1999-08-25 (UL)
+------------
+	+ bug fix in parsing of command line options (closes
+	  SPR 746: --odfdir is incompatible with -V
+
+Version 1.35 - 1999-08-17 (UL)
+------------
+	+ overhauled parsing of common command line options; this closes
+	  SPR 630: argument '--odfdir=' not handled correctly
+
+Version 1.34 - 1999-08-13 (JBr)
+------------
+	+ Closed part of SPR-626: -h, -p & -v command-line options could
+	  not be used unless all mandatory parameters were specified.
+
+Version 1.33 - 1999-06-15 (GV)
+------------
+	+ updated DEPEND, after fixes to i/s required to clsoe SPR674.
+	
+Version 1.32 - 1999-06-04 (MB)
+------------
+	+ updated DEPEND
+ 
+Version 1.31 - 1999-06-01 (MB)
+------------
+	+ reintroduced metatask test harness, excluding perl metatask.
+
+Version 1.30 - 1999-05-11 (UL)
+------------
+	+ brought in line with error-1.18
+
+Version 1.29 1999-04-28 (GV)
+------------
+        + roll back.
+
+Version 1.28 1999-04-27 (GV)
+------------
+	+ main.cc now #include <qtcute.h> when Qt is used. This to solve
+	SAS/Qt clashes. 
+	
+Version 1.27 1999-04-23
+------------
+        + update DEPEND
+Version 1.26 1999-04-20 (GV)
+------------
+	+ bring in line with error 1.17
+
+Version 1.25 - 1999-04-15 (UL)
+------------
+	- support for Qt applications works now; global function taskname()
+	  needs to return pointer to top-level QWidget of GUI
+
+Version 1.24 - 1999-04-02 (GV)
+------------
+	+ bring main.cc in line with new cal (2.12)
+	+ add libraries oal cal dal slatec to test harnesses to detect
+	changes in the interfaces of those packages.
+
+Version 1.23 - 1999-03-30
+------------ 
+	+ modified perl test task so that it does not depend on the
+	pedal.
+	+ now depends on pkg sasperl.
+	+ Code to generate F and C wrappers for Perl tasks.
+	+ support for perl tasks (not metatasks).
+	+ fix perl tasks to use infrastructure in latest utils.
+	
+Version 1.21 - 1999-02-23 (JB)
+------------
+- Added support for mandatory parameters
+
+Version 1.20 - 1999-02-17 (MB)
+------------
+- Added metatask library.
+
+Version 1.19 - 1999-02-17 (MB)
+------------
+- New test harness, split into task and metatask.
+
+Version 1.18 - 1999-02-14 (MB)
+------------
+- updated DEPEND file.
+
+Version 1.17 - 1999-02-08 (MB)
+------------
+ - interface files to access Fortran and C++ tasks uniformly.
+
+Version 1.16 - 1999-02-08 (UL)
+------------
+ - 1.15 depended erroneously on Cal 2.21
+ - SPR 291 is closed
+ - SPR 480 is closed
+
+Version 1.15 - 1999-02-04 (UL)
+------------
+ - main.cc: added recognition of CAL/OAL specific options (conditionally
+   compiled if symbols USE_CAL/USE_OAL are defined)
+
+Version 1.14
+------------
+ - fix an error in the logic of perltask.cc
+	
+Version 1.13
+------------
+ - finally check in changes to perltask.cc
+	
+Version 1.12
+------------
+ - register process description string again, problem with CVS.
+
+Version 1.11
+------------
+ - add perltask.cc to support Perl tasks.
+ - move *.cc into src, so that they don't get compiled.
+
+Version 1.10
+------------
+ - register process description string (right now the command line).
+
+Version 1.9
+-----------
+ - ".par" files for test harnesses do not appear in SAS config directory
+	
+Version 1.8
+-----------
+ - added clobber option (MB)
+ - upgraded to error-1.8
+
+Version 1.7
+-----------
+ - "-h" option prints full details of parameters
+ - Fixed SOC-SPR-20  : Crashes if SAS_DIR is undefined
+ - Fixed SOC-SPR-426 : Does not complain about extraneous arguments
+
+Version 1.6
+-----------
+ - Updated to work with new parameter library
+
+Version 1.5
+-----------
+ - Re-added tests.
+
+Version 1.4
+-----------
+ - added documentation about the public interface of a task.
+
+Version 1.3
+-----------
+ - command line options for verbosity level
+
+Version 1.2
+-----------
+ - Now registers task name with error handler so that the task name is
+   part of the error messages.
+
+ - Added space between task name and version number in client specification.
+
+Version 1.1
+-----------
+Closed SPRs:
+   189 : Creator appended command with full command line options
+
+ - Tasks now report their version number when run with -v option.
+
+ - Support for C++ tasks.
+
+Version 1.0  -  14-05-98
+-----------
+Initial version for SAS v1 integration.
+

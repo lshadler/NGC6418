@@ -1,0 +1,585 @@
+<!-- converted from XPI formatted "epframes.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="set" type="dataset" mandatory="yes" default="odfset">
+   <DESCRIPTION>
+    Name of input EPIC PN ODF/SDF file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="eventset" type="dataset" mandatory="yes" default="rawevents.dat">
+   <DESCRIPTION>
+    Name of output EPIC PN raw events file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="gtiset" type="dataset" mandatory="yes" default="gti.dat">
+   <DESCRIPTION>
+    Name of output GTI file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="wrongpixlimit" type="int" default="10">
+   <DESCRIPTION>
+    Allowed percentage of wrong pixels without producing a warning
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    wrongpixlimit in [0:100]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withsrccoords" type="bool" default="no">
+   <DESCRIPTION>
+    Use user-supplied RA,DEC coordinates for TIMING and BURST mode ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="srcra" type="angle" default="0">
+      <DESCRIPTION>
+       User-supplied source position RA [deg]
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       srcra in [0.0:360.0]
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="srcdec" type="angle" default="0">
+      <DESCRIPTION>
+       User-supplied source position DEC [deg]
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       srcdec in [-90.0:90.0]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withsrcrawy" type="bool" default="no">
+   <DESCRIPTION>
+    Use user-supplied RAWY coordinates for TIMING and BURST mode ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="srcposition" type="int" default="190">
+      <DESCRIPTION>
+       Source position for TIMING and BURST mode (in RAWY pixel coordinates)
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       srcposition in [1:200]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withfinetime" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply fine time corrections for TIMING and BURST mode ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="lowerthreshold" type="int" default="0">
+   <DESCRIPTION>
+    minimum PHA to include in further processing [adu]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    lowerthreshold in [0:4095]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withfifogti" type="bool" default="no">
+   <DESCRIPTION>
+    search for short-duration FIFO overflow data gaps ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+      <PARAM id="fifogtithresh" type="real" default="76.0">
+       <DESCRIPTION>
+        threshold for FIFO GTI search
+       </DESCRIPTION>
+       <CONSTRAINTS>
+        fifogtithresh in [0.0:4095.0]
+       </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="mipthreshold" type="int" default="3000">
+   <DESCRIPTION>
+    maximum PHA for non-MIPs
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    mipthreshold in [0:4095]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="mipmethod" type="string" default="onboard">
+   <DESCRIPTION>
+    method to reject MIPs
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="com">
+    </ITEM>
+    <ITEM value="none">
+    </ITEM>
+    <ITEM value="onboard">
+    </ITEM>
+    <ITEM value="sas">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="qualmax" type="int" default="0">
+   <DESCRIPTION>
+    maximum quality flag value to keep event in list
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    qualmax in [0:2000000000]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="witheventmap" type="bool" default="no">
+   <DESCRIPTION>
+    Create several event CCD maps ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="eventmapset" type="file" default="eventmap.dat">
+      <DESCRIPTION>
+       Name of output event CCD map file
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="nomipthresholdlow" type="int" default="40">
+      <DESCRIPTION>
+       minimum PHA for hard non-crmap
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       nomipthresholdlow in [16:4095]
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="nomipthresholdhigh" type="int" default="1600">
+      <DESCRIPTION>
+       maximum PHA for hard non-crmap
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       nomipthresholdhigh in [16:4095]
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="softthresholdlow" type="int" default="20">
+      <DESCRIPTION>
+       minimum PHA for soft non-crmap
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       softthresholdlow in [16:3000]
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="softthresholdhigh" type="int" default="30">
+      <DESCRIPTION>
+       maximum PHA for soft non-crmap
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       softthresholdhigh in [16:3000]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="mipdist" type="bool" default="no">
+   <DESCRIPTION>
+    Create MIPDIST columns and MIPHIST extension in output (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="mipdiscard" type="bool" default="yes">
+   <DESCRIPTION>
+    discard MIPs from event list (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="f1294" type="int" default="0">
+   <DESCRIPTION>
+    CMS TIMINTREAQUA frame time parameter []
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    f1294 in [0:15]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="f1052" type="int" default="32400">
+   <DESCRIPTION>
+    DTIMAUTRSTPREVAL coarse time reset [s]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    f1052 in [0:32767]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="f1118" type="string" default="UNKNOWN">
+   <DESCRIPTION>
+    F1118            HFWPOTPOSSENSORST
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="CalClosed">
+    </ITEM>
+    <ITEM value="CalMedium">
+    </ITEM>
+    <ITEM value="CalOpen">
+    </ITEM>
+    <ITEM value="CalThick">
+    </ITEM>
+    <ITEM value="CalThin1">
+    </ITEM>
+    <ITEM value="CalThin2">
+    </ITEM>
+    <ITEM value="Closed">
+    </ITEM>
+    <ITEM value="Medium">
+    </ITEM>
+    <ITEM value="Open">
+    </ITEM>
+    <ITEM value="Thick">
+    </ITEM>
+    <ITEM value="Thin1">
+    </ITEM>
+    <ITEM value="Thin2">
+    </ITEM>
+    <ITEM value="UNDEFINED">
+    </ITEM>
+    <ITEM value="UNKNOWN">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="anchop" type="int" default="0">
+   <DESCRIPTION>
+    An_CHOP          F1534 F1634 F1734 F1834
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    anchop in [0:31]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="ancmloth" type="int" default="532">
+   <DESCRIPTION>
+    An_CMLOTH  F1515 F1516 F1517 F1615 F1616 F1617 F1715 F1716 F1717 F1815 F1816 F1817
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    ancmloth in [0:4095]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="ancmcorr" type="int" default="512">
+   <DESCRIPTION>
+    An_CMCORR  F1525 F1625 F1725 F1825
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    ancmcorr in [0:4095]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="aneamipsel" type="int" default="1">
+   <DESCRIPTION>
+    An_EAMIPSEL  F1536 F1636 F1736 F1836
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    aneamipsel in [0:63]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="anmaxmip" type="int" default="63">
+   <DESCRIPTION>
+    An_MAXMIP   F1527 F1627 F1727 F1827
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    anmaxmip in [0:4095]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="anmip" type="int" default="3512">
+   <DESCRIPTION>
+    An_MIP       F1526 F1626 F1726 F1826
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    anmip in [0:4095]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="anmaxfrc" type="int" default="20">
+   <DESCRIPTION>
+    An_MAXFRC    F1538 F1638 F1738 F1838
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    anmaxfrc in [0:255]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="ansendmode" type="string" default="MIP CORREC.2">
+   <DESCRIPTION>
+    An_SENDMODE      F1535 F1635 F1735 F1835
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="MIP CORREC.1">
+    </ITEM>
+    <ITEM value="MIP CORREC.2">
+    </ITEM>
+    <ITEM value="NO MIP CORREC.">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="ecntempqb1" type="real" default="-9999.9">
+   <DESCRIPTION>
+    E_Cn_TEMPQB1    F1576 F1676 F1776 F1876   [deg C]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="hcettmpfpf" type="real" default="-89.965">
+   <DESCRIPTION>
+    H_CE_TTMPFPF    F1128   [deg C]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="automode" type="bool" default="no">
+   <DESCRIPTION>
+    Try to determine F1294 and An_CHOP (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="autofilter" type="bool" default="no">
+   <DESCRIPTION>
+    Try to determine FILTER (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="odfok" type="bool" default="yes">
+   <DESCRIPTION>
+    Is this correct/nominal ODF/SDF (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="hkok" type="bool" default="yes">
+   <DESCRIPTION>
+    Is this correct/nominal PMH/PAH (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="ccfok" type="bool" default="yes">
+   <DESCRIPTION>
+    Is this correct/nominal CCF/CAL (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="setupbpx" type="string" default="nom6">
+      <DESCRIPTION>
+       setup for badpix/offset correction vector (used only if ccfok=N)
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="cal4">
+       </ITEM>
+       <ITEM value="nom0">
+       </ITEM>
+       <ITEM value="nom1">
+       </ITEM>
+       <ITEM value="nom2">
+       </ITEM>
+       <ITEM value="nom3">
+       </ITEM>
+       <ITEM value="nom4">
+       </ITEM>
+       <ITEM value="nom5">
+       </ITEM>
+       <ITEM value="nom6">
+       </ITEM>
+       <ITEM value="none">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+<!--
+  <PARAM id="withcmcorr" type="bool" default="no">
+   <DESCRIPTION>
+    Try to correct for wrong CMCORR used in ODF creation (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+-->
+
+  <PARAM id="withinvalidobt" type="bool" default="Y">
+   <DESCRIPTION>
+     Use also frames that may lead to (invalidObtValue) warning (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withallobtgti" type="bool" default="Y">
+   <DESCRIPTION>
+     Use also frames after an (invalidObtValue) warning (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="guessdeltap" type="bool" default="no">
+   <DESCRIPTION>
+    Estimate oscillator frequency shift from HK data (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="showccx" type="bool" default="no">
+   <DESCRIPTION>
+    Display CCX intervals (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="showaux" type="bool" default="no">
+   <DESCRIPTION>
+    Display AUX intervals (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="showpmh" type="bool" default="no">
+   <DESCRIPTION>
+    Display PMH intervals (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="showpah" type="bool" default="no">
+   <DESCRIPTION>
+    Display PAH intervals (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="showve" type="bool" default="no">
+   <DESCRIPTION>
+    Display valid event intervals (yes/no) ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

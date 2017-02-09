@@ -1,0 +1,109 @@
+<!-- converted from XPI formatted "rgsframes.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="set" type="dataset" default="inset.ds">
+   <DESCRIPTION>
+    input set containing spectroscopy or high-resolution timing data for each CCD
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="ccdset" type="dataset" default="outset.ds">
+   <DESCRIPTION>
+    this output set contains all collected data necessary for future analysis
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="minexposuretime" type="real" default="0.001">
+   <DESCRIPTION>
+    frame exposuretimes below this value are flagged as bad (sec)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    minexposuretime in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withratecolumn" type="bool" default="no">
+   <DESCRIPTION>
+    Add column with number of raw pixels per frame to FRAME table
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withmaxrawpixels" type="bool" default="no">
+   <DESCRIPTION>
+    mark frames with more pixels above given level as bad
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="maxrawpixels" type="int" default="9999">
+      <DESCRIPTION>
+       frames with more pixels than this level are flagged bad 
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       maxrawpixels in [0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withmaxrawpixelrate" type="bool" default="no">
+   <DESCRIPTION>
+    mark frames with pixelrate above given level bad 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="maxrawpixelrate" type="real" default="9999">
+      <DESCRIPTION>
+       frames with a raw pixelrate above this level are flagged bad (pixels/sec) 
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       maxrawpixelrate in [0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="processall" type="bool" default="no">
+   <DESCRIPTION>
+    Process all event lists for given instrument?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="instrument" type="string" default="rgs1">
+   <DESCRIPTION>
+    Instrument
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="rgs1">
+    </ITEM>
+    <ITEM value="rgs2">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

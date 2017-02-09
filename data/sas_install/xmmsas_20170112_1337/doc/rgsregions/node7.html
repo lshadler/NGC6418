@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Output Files</TITLE>
+<META NAME="description" CONTENT="Output Files">
+<META NAME="keywords" CONTENT="rgsregions">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsregions.css">
+
+<LINK REL="next" HREF="node8.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="rgsregions.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsregions (rgsregions-1.22) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input Files"></A>
+<A HREF="rgsregions.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsregions.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00070000000000000000"></A>
+<A NAME="rgsregions:description:outputfiles"></A>
+<BR>
+Output Files
+</H1>
+
+<P>
+
+<UL>
+<LI><TT>srclist</TT>
+
+<P>
+The region extensions added to the source list comply with the ``ASC
+ FITS File Designers' Guide'' specifications.  Some non-standard attributes
+ are also provided with every region:
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><A NAME="899"></A><TT>PROTECT</TT></TD>
+<TD ALIGN="LEFT">protected from routine replacement</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="901"></A><TT>SPACING</TT></TD>
+<TD ALIGN="LEFT">number of vertices across each node</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="903"></A><TT>PIX_ENCL</TT></TD>
+<TD ALIGN="LEFT">number of pixels enclosed</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><A NAME="905"></A><TT>PIX_AREA</TT></TD>
+<TD ALIGN="LEFT">area of a pixel (units vary)</TD>
+</TR>
+</TABLE>
+
+<P>
+Additionally, the non-standard <A NAME="907"></A><TT>COVERAGE</TT> attribute is provided
+ for order regions and the spatial background region, and the
+ non-standard pair, <A NAME="909"></A><TT>COVBELOW</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^{\dag }$"></SPAN> and <A NAME="912"></A><TT>COVABOVE</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^{\dag }$"></SPAN>, is
+ provided for image regions.  These document the percentages used in
+ constructing the regions.  Unless protected, existing versions of the
+ regions may be overwritten if they are not compatible with the given
+ parameters.  The regions are of four kinds:
+
+<P>
+
+<UL>
+<LI>spatial background region<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^{\dag }$"></SPAN>
+
+<P>
+<TT>RGS<!-- MATH
+ $<\!\!instrument\ number\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="168" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&lt;\!\!instrument\ number\!\!&gt;$"></SPAN>_BACKGROUND</TT>
+
+<P>
+There is only one extension of this kind.  In addition to the
+  attributes described above, the list of source identifiers for the
+  image regions excluded from the background is also provided as
+  <A NAME="916"></A><TT>EXCLSRCS</TT>.
+
+<P>
+</LI>
+<LI>image regions
+
+<P>
+<TT>RGS<!-- MATH
+ $<\!\!instrument\ number\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="168" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&lt;\!\!instrument\ number\!\!&gt;$"></SPAN>_SRC<!-- MATH
+ $<\!\!source\ identifier\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="150" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$&lt;\!\!source\ identifier\!\!&gt;$"></SPAN>_SPATIAL</TT>
+
+<P>
+There is one extension of this kind for each selected source.  In
+  HTR mode the inapplicable attributes <A NAME="918"></A><TT>SPACING</TT>, <A NAME="920"></A><TT>COVBELOW</TT> and
+  <A NAME="922"></A><TT>COVABOVE</TT> are omitted.
+
+<P>
+</LI>
+<LI>order regions
+
+<P>
+<TT>RGS<!-- MATH
+ $<\!\!instrument\ number\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="168" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&lt;\!\!instrument\ number\!\!&gt;$"></SPAN>_SRC<!-- MATH
+ $<\!\!source\ identifier\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="150" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$&lt;\!\!source\ identifier\!\!&gt;$"></SPAN>_ORDER_<!-- MATH
+ $<\!\!reflection\ order\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="143" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$&lt;\!\!reflection\ order\!\!&gt;$"></SPAN></TT>
+
+<P>
+There is one extension of this kind for each requested order, for
+  each selected source.
+
+<P>
+</LI>
+<LI>order background regions<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.png"
+ ALT="$^{\ddag }$"></SPAN>
+
+<P>
+<TT>RGS<!-- MATH
+ $<\!\!instrument\ number\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="168" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&lt;\!\!instrument\ number\!\!&gt;$"></SPAN>_SRC<!-- MATH
+ $<\!\!source\ identifier\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="150" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$&lt;\!\!source\ identifier\!\!&gt;$"></SPAN>_ORD<!-- MATH
+ $<\!\!reflection\ order\!\!>$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="143" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$&lt;\!\!reflection\ order\!\!&gt;$"></SPAN></TT>_BKG
+
+<P>
+There is one extension of this kind for each requested order, for
+  each selected source.
+
+<P>
+</LI>
+</UL>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input Files"></A>
+<A HREF="rgsregions.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Algorithm"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Stacking of sky-images after internal image alignment</TITLE>
+<META NAME="description" CONTENT="Stacking of sky-images after internal image alignment">
+<META NAME="keywords" CONTENT="ommosaic">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ommosaic.css">
+
+<LINK REL="previous" HREF="node22.html">
+<LINK REL="up" HREF="node21.html">
+<LINK REL="next" HREF="node24.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ommosaic (ommosaic-2.8.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node22.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Stacking of sky-images from"></A>
+<A HREF="node21.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Stacking examples"></A>
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Testing"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ommosaic.html">Home Page</A> / <A  HREF="node21.html">Stacking examples</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000102000000000000000">
+Stacking of sky-images after internal image alignment</A>
+</H2>
+
+<P>
+Before stacking images it is desirable to make sure that they are properly
+aligned first- by this it is meant that the absolute coordinate values (RA/DEC for sky-images) at the reference pixels 
+are accurate. Any such errors will degrade the mosaiced image and possibly lead to source-detection
+and source-parameterization problems. To illustrate this, In Figures 4 and 5 we compare two mosaiced images from the 
+stacking of the same two sky-image files, testimage1.fits 
+and testimage2.fits. The latter file is a copy of testimage1.fits, but the reference pixels <SPAN  CLASS="textbf">CRPIX1</SPAN> and
+<SPAN  CLASS="textbf">CRPIX2</SPAN> have both had two pixels added. The image in Figure 4 has been created simply by stacking them, without
+alignment, using the command -
+<SPAN  CLASS="textbf">ommosaic imagesets=''testimage1.fits testimage2.fits"  mosaicedset=mosaicedimage1.fits  mincorr=0''</SPAN>. 
+and the image in Figure 5 created using the command
+<SPAN  CLASS="textbf">ommosaic imagesets=''testimage1.fits testimage2.fits"  mosaicedset=mosaicedimage2.fits  mincorr=0.5 correlset=correl.fits''</SPAN>. 
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="589"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 4:</STRONG>
+Mosaiced sky-image resulting from the stacking of two identical images with small reference pixel offsets <SPAN  CLASS="textbf">without image alignment</SPAN>. The detected source regions are shown.</CAPTION>
+<TR><TD><IMG
+ WIDTH="632" HEIGHT="679" BORDER="0"
+ SRC="img11.png"
+ ALT="\begin{figure}\centering
+\epsfysize =15cm
+\epsfig{file=mosaicedimage1.ps=, height=15cm}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="590"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 5:</STRONG>
+Mosaiced sky-image resulting from the stacking of two identical images with small reference pixel offsets <SPAN  CLASS="textbf">with image alignment</SPAN>. The detected source regions are again shown.</CAPTION>
+<TR><TD><IMG
+ WIDTH="624" HEIGHT="679" BORDER="0"
+ SRC="img12.png"
+ ALT="\begin{figure}\centering
+\epsfysize =15cm
+\epsfig{file=mosaicedimage2.ps=, height=15cm}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+For the latter mosaiced image, <SPAN  CLASS="textbf">ommosaic</SPAN> correctly computed the reference pixel offsets (2 pixels) and corrected them internally before stacking the two images.
+
+<P>
+A comparison of the two figures shows that
+
+<OL>
+<LI>The first image is obviously blurred compared to the second one.
+</LI>
+<LI>Many of the sources classified as <SPAN  CLASS="textbf">extended (cyan region)</SPAN> in the first image are classified 
+as <SPAN  CLASS="textbf">point-like (green regions)</SPAN> in the second one.
+
+<P>
+</LI>
+</OL>
+
+<P>
+Figure 6 shows the correlation image produced by <SPAN  CLASS="textbf">ommosaic</SPAN> and stored in the file <SPAN  CLASS="textbf">correl.fits</SPAN>. The image is 21x21 pixels and each
+pixel is ten times smaller than a pixel in <SPAN  CLASS="textbf">testimage1.fits</SPAN>. As can be seen from the image, there is a well defined
+maximum correlation near the centre of the image, and this is a good indication that the image-alignment algorithim worked well.
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="501"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 6:</STRONG>
+Correlation image produced by ommosaic</CAPTION>
+<TR><TD><IMG
+ WIDTH="681" HEIGHT="679" BORDER="0"
+ SRC="img13.png"
+ ALT="\begin{figure}\centering
+\epsfysize =15cm
+\epsfig{file=correl.ps=, height=15cm}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node22.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Stacking of sky-images from"></A>
+<A HREF="node21.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Stacking examples"></A>
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Testing"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node28.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

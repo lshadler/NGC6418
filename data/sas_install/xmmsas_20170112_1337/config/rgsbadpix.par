@@ -1,0 +1,130 @@
+<!-- converted from XPI formatted "rgsbadpix.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="ccdset" type="dataset" mandatory="yes" default="events.ds">
+   <DESCRIPTION>
+    dataset containing RGS spectroscopy pixels
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="badpixset" type="dataset" default="badpix.ds">
+   <DESCRIPTION>
+    dataset for output BADPIX table
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withbadpixset" type="bool" default="no">
+   <DESCRIPTION>
+    output to badpixset instead of set
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withadvisory" type="bool" default="yes">
+   <DESCRIPTION>
+    include non-uplinked CCF bad pixels
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+<PARAM id="badpixalgo" type="string" default="badpixalgo"> 
+  <DESCRIPTION> Type of badpix algorithm to use </DESCRIPTION>
+  <CASE>
+    <ITEM value="embadpixalgo">
+	  <PARAM id="embadpixalgo" type="bool" default="no">
+     		<DESCRIPTION>
+	       	Use embadpixfind algorithm to find hot pixels and columns
+     		</DESCRIPTION>
+      		<CASE>
+		       <ITEM value="no">
+		       </ITEM>
+		       <ITEM value="yes">
+		       </ITEM>
+	        </CASE>
+   	  </PARAM>
+    </ITEM>
+
+    <ITEM value="badpixalgo">
+	  <PARAM id="withfoundhot" type="bool" default="yes">
+		   <DESCRIPTION>
+		    include found hot pixels
+		   </DESCRIPTION>
+		   <CASE>
+		      <ITEM value="no">
+		      </ITEM>
+		      <ITEM value="yes">
+		      </ITEM>
+		   </CASE>
+	  </PARAM>
+    </ITEM>
+  </CASE>
+</PARAM>
+
+  <PARAM id="keepcool" type="bool" default="yes">
+   <DESCRIPTION>
+    include found hot pixels
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+    </ITEM>
+    <ITEM value="no">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="pixnoiselimit" type="int" default="0">
+   <DESCRIPTION>
+    hot pixel threshold pulse height
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    pixnoiselimit in [0:4095]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="colnoiselimit" type="int" default="250">
+   <DESCRIPTION>
+    hot column threshold pulse height
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    colnoiselimit in [0:4095]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="pixsharpness" type="real" default="5">
+   <DESCRIPTION>
+    hot pixel sharpness criterion
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    pixsharpness in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="colsharpness" type="real" default="8">
+   <DESCRIPTION>
+    hot column sharpness criterion
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    colsharpness in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

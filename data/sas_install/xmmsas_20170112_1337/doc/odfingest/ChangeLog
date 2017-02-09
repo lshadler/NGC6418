@@ -1,0 +1,607 @@
+ChangeLog for odfingest
+=======================
+
+Version 3.30 - 2014-04-15 (AI)
+------------
+	+ gcc4.8.2 portability changes.
+	
+Version 3.29 - 2012-12-18 (AI)
+------------
+	+ Implemented new functionality to deal with splitting 
+	mosaicing observations
+	
+Version 3.28.3 - 2012-04-20 (AI)
+------------
+	+ Debug lines removed.
+	
+Version 3.28.2 - 2012-04-16 (AI)
+------------
+	+ SOC-SPR-6703 fixed.
+	
+Version 3.28.1 - 2011-02-02 (RDS)
+------------
+	+ (src/TimeOrderedTable.cc)  - Fixed a spelling mistake in an error
+				       message.
+
+Version 3.28 - 2006-11-28 (AI)
+------------
+	+ Documentation updated.
+	
+Version 3.27.1 - 2006-05-31 (AI)
+------------
+	+ (src/odfingest.cc) Check the two possible values of 
+	"SCATS" ATS keyword (SOC-SCR-214).	
+	
+Version 3.27 - 2005-09-12 (JSH)
+------------
+	+ Put metadata keywords in right place
+
+Version 3.26 - 2005-09-12 (JSH)
+------------
+	+ Add Date and odfversion information as Keywords (SCR 192)
+
+Version 3.25 - 2005-07-12 (JSH)
+------------
+	+ Fixed HDI calibration mode and time handling
+
+Version 3.24 - 2005-07-01 (JSH)
+------------
+	+ Recognition of Non-Scientific modes (SCR 117) via CAL
+	+ Recognition of 'odd' modes e.g. PN FF Low Gain, PN FF Masked (SCR 191)
+	+ Recognition of PN eFF in odfingest
+	+ Robust FW recognition for PN - Use FW Hardware position
+	+ Fix OM Mode detection with missing EXP_START/EXP_END pairs (SPR 2550)
+	+ Add new IPPVs to Summary File (e.g. OM Flood LED Bias, PN BP Info)
+	+ Do not consider HDI files when calculating Exposure time
+	+ For exposures wholly outside the HK window, bring them within the HK window
+	(mainly ODI files) (SPR 2592)
+
+Version 3.23.6 - 2005-03-02 (JSH)
+------------
+        + SPR2571 (Makefile) Don't need slatec or selector
+
+Version 3.23.5 - 2004-07-15 (JSH)
+------------
+        + Fix stupid bug introduced in 3.23.3.
+
+Version 3.23.4 - 2004-07-15 (JSH)
+------------
+	+ SPR 2484 - Fix EPIC PN potentiometer to FW mapping
+
+Version 3.23.3 - 2004-07-15 (JSH)
+------------
+        + odfingest needs to handle HDI files, in order to stop SUM.SAS file corruption
+
+Version 3.23.2 - 2004-05-20 (JSH)
+------------
+	+ Move nodfingest to new package for MacOS SAS 6.0 builds. 
+	TBD later if it needs to stay separate
+
+Version 3.23.1 - 2003-12-12 (JSH)
+------------
+	+ Fix Makefiles in New odfingest to fix bizarre run-time error caused
+	by order of libraries in link phase of dynamic build. No, don't ask.
+
+Version 3.23 - 2003-11-12 (JSH)
+------------
+	+ (TestTimeRows.cc) Catch end() used in first test, don't print 
+	end() results in second test.
+	+ (HkparameterTest.cc) Modify duration to process to match reality
+
+Version 3.22 - 2003-08-29 (GV)
+------------
+	+ (TimeRows.cc) Get rid of a message that was being printed 100's
+	of times without being informative.
+	+ (new) test harnesses: adjust a couple of constructors that had
+	the wrong signature after Hkparameter had been changed.
+	
+Version 3.21 - 2003-08-26 (GV)
+------------
+	+ Several fixes to nodfingest, test harnesses extended to cover
+	the problems that showed up in testing.
+	
+Version 3.20 - 2003-06-10 (GV)
+------------
+	+ ( Hkparameter_Descriptor.h) Parameter K1211 was incorrectly
+	assigned to MOS1 instead of MOS2.
+
+Version 3.19 - 2003-05-13 (GV)
+------------
+	+ Add CMCORR parameters for PN (F1525/1625/1725/1825).
+	
+Version 3.18 - 2003-05-07 (GV)
+------------
+	+ Add parameter MEAN_TEMPERATURE (E/K 1311) for MOS.
+	
+Version 3.17 - 2003-05-06 (GV)
+------------
+	+ Add next-generation odfingest, temporarily called nodfingest.
+	
+Version 3.16 - 2003-02-21 (GV)
+------------
+	+ (odfingest.cc) Make the name of the summary file available to
+	calling meta-tasks.
+	
+Version 3.15 - 2002-10-14 (GV)
+------------
+	+ (src/*.cc) remove a few remaining dts::ends that were apparently
+	confusing selectlib (SOC-SPR-2350).
+
+Version 3.14 - 2002-09-17 (GV)
+------------
+	+ (testtot.cc) include <cmath> so that it compiles on gcc-2.96.
+
+Version 3.13 - 2002-09-16 (GV)
+------------
+	+ Misc. source/header adjustments for gcc-3.1
+	
+Version 3.12 - 2002-07-09 (GV)
+------------
+	+ Restore DEPEND.
+	
+Version 3.11 - 2002-07-08 (GV)
+------------
+	+ DEPEND updated.
+	
+Version 3.10 - 2002-05-17 (GV)
+------------
+	+ updated for param 2.0
+
+Version 3.9 - 2002-05-17 (GV)
+-----------
+	+ (OdfObject.cc) make the messages about missing CONFIGURATIOn or
+	PROPOSAL record more explicit.
+	
+Version 3.8 - 2002-04-10 (GV)
+-----------
+	+ (OdfObject.cc::proposal_summary_rec) Change how the PROPOSAL
+	record is read from the original SUM.ASC file. This should make it
+	more robust against those cases when the line of text containing
+	the word PROPOSAL contains characters other than blank. SOC-SPR-2286.
+	+ A missing CONFIGURATION record in the SUM.ASC is no longer a
+	warning, only a message.
+
+Version 3.7.5 - 2002-03-18 (GV)
+-------------
+	+ Test harness against DCP 141 updated (odfconf). Relevant section
+	  was actually commented out.
+
+Version 3.7.4 - 2002-03-05 (GV)
+-------------
+ 	+ (IppvImplementation.cc) When no translation from a value to
+ 	string is found, IppvCommon::print writes UNDEFINED instead of
+ 	NoTranslation in the summary file.
+ 	+ (OdfObject.cc:proposal_summary_rec()) copy the SUM.ASC into the
+ 	SUM.SAS from the PROPOSAL section or, if present, the new
+ 	CONFIGURATION section (SOC RCR 638, ODF ICD DCP	141).
+
+Version 3.7.3 - 2002-02-27 (UL)
+-------------
+	+ fixed problem with incorrect Dal usage in test/testtot.cc
+	  (caused test failure under Linux)
+
+Version 3.7.2 - 2002-02-14 (GV)
+-------------
+	+ (IppvImplementation.cc) setValue() tolerates one HK record with
+	a different value than expected. In a few cases in fact (for
+	instance 0102/0099020301, PNS012) the value for F1118 (FILTER)
+	changes just for 8s to CLOSE (it was MEDIUM). Consider this a
+	glitch in tm, and carry on.
+	+ (OdfObject.cc) DLI and DII files are now given an arbitrary
+	duration of 1s instead of 4m as before. Giving them 4m may
+	make exposures with both science and DLI/DII file too long -> HK
+	extraction fails (see: 0101/0124710301, PNU002).
+	
+Version 3.7.1 - 2002-01-28 (GV)
+-------------
+	+ (OdfObject.cc) change tpad to 240s (was 90). There are two 
+	consequences:
+	   . the default arbitrary exposure duration for some type of
+	   exposures becomes 480s (it is coded as 2*tpad).
+	   . read the HK values from Tstart(exposure) + 240s  to
+	   Tstop(exposure) - 240s
+	
+Version 3.7 - 2002-01-24 (GV)
+-----------
+	+ (IppvExtractionImplementation.cc) Add GAIN_CCD for MOS. This
+	required also the addition of EmosGainTranslator.
+	
+Version 3.6 - 2002-01-17 (GV)
+-----------
+	+ ((OdfObject.cc) handle the case when DLI + science mode data are
+	present in the same exposure, by giving priority to the science
+	data. 
+
+Version 3.5 - 2002-01-14 (GV)
+-----------
+	+ (IppvExtractionImplementation.c) PN CAMEX_GAIN for CCD4 should
+	have used F1234 instead of F1243.
+
+Version 3.4 - 2002-01-07 (GV)
+-----------
+	+ (OdfObject.cc::scan) Modify slightly the algorithm used when
+	DATE-END is not a valid time string. A dataset with an invalid
+	DATE-END used to be assigned an arbitrary duration of 180s. But
+	there are cases (mostly ODFs from the real time chain) that can
+	have an invalid DATE-END and contain good data. Now the algorithm
+	will, if possible, set DATE-END to be the time of the last record
+	in the main HK dataset.
+	+ (IppvExtractionImplementation.cc) Add CAMEX_GAIN_CCDx for PN
+	(SOC-SPR-2154). Doc updated.
+	
+Version 3.3 - 2001-11-15 (GV)
+-----------
+	+ re-upload of 3.2.8 with new version number for reltrack.
+	
+Version 3.2.9 - 2001-11-15 (GV)
+-------------
+	+ (src/OdfObject.cc) undo the i/f changes on OdfSet (3.2.4) so
+	that it can work with oal as in SAS 5.2.0. NOTE: DEPEND cannot be
+	updated meaningfully because we have oal-3.68.6 in SAS 5.2.0 and
+	the interface change happened at oal-3.68.8 (as of today in
+	release track).
+	
+Version 3.2.8 - 2001-11-06 (GV)
+------------
+	+ (src/OdfObject.cc) Now also cope correctly with the case of TIE
+	+ NOI/ODI, neglected during the previous updates.
+	
+Version 3.2.7 - 2001-11-02 (GV)
+-------------
+	+ (src/OdfObject.cc) cope 'correctly' with the case of both NOI and
+	IME data files in the same PN exposure.
+	+ SLEW identification: 9RRRR#####, but not 99999#####, as these
+	are unscheduled observations.
+	
+Version 3.2.6 - 2001-10-30 (GV)
+-------------
+	+ (src/OdfObject.cc:scan) impose fixed duration for RGS DII
+	exposures, as DATE-END is not reliable.
+	+ (src/OdfObject.cc::scan) determine latest possible DATE-END from
+	instrument HK. If DATE-END from any dataset appears to be later
+	than what reported in HK, use the value from the HK instead.
+	+ (src/OdfObject.cc:scan) catch STime errors when evaluating
+	DATE-END. If an error occurs, set DATE-END to be start + 180s.
+	+ (OdfObject::observation_rec) write SLEW instead of OBSERVATION
+	in the summary file if the observation identifier starts with a 9.
+	+ (OdfObject::configuration_sub_record) do not use any of the OM
+	auxiliary datasets in the determination of the instrument mode.
+	+ (OdfObject.cc) cope 'correctly' with the case of both ODI and
+	IME data files in the same PN exposure.
+	
+Version 3.2.5 - 2001-10-30 (GV)
+-------------
+	+ (calmode.cc) here too I should have adjusted the i/f to OdfSet.
+	+ (OdfObject.cc)  remove condition whereby the cal was asked to
+	identify the mode only if the dataset was science-related. This to
+	increase the amount of information in the summary file (and hence
+	in the ODF d/b and odfbrowser).
+	+ (src/OdfObject.cc:observation_rec) if there are no science files
+	in the ODF, then try to determine the observation duration from
+        the HK files. SOC-SPR-2094. This also required a change in scan(),
+        where the ODFcan now also be identified from the names of the HK
+        files. 
+	+ (src/IppvTranslator.cc:EpnFilterWheelTranslator) All CAL
+        positions are identified as Xmm::FILTER_NONE instead of the
+        arbitrary "CalibrationPosition" that was breaking the
+        OAL. SOC-SPR-2114.     
+
+Version 3.2.4 - 2001-10-26 (GV)
+-------------
+	+ OdfObject.cc: adjust how OdfSet is created, as the OAL in the
+	reltrack decided to change this interface (!).
+	+ DEPEND updated accordingly.
+	
+Version 3.2.3 - 2001-10-09 (GV)
+-------------
+	+ Fix doco: parameter oalcheck defaults to no (SOC-SPR-2193).
+	
+Version 3.2.2 - 2001-10-05 (GV)
+-------------
+	+ (OdfObject.cc) when determining the OM instrument mode, ask to
+	window 0 instead of window 1, otherwise the mode determination
+	fails when there is only one OM window (SOC-SPR-2195).
+	
+Version 3.2.1 - 2001-07-18 (UL)
+-------------
+	+ fixed problem with too fragile test test/testtot.cc (see comments)
+
+Version 3.2 - 2001-07-12 (GV)
+-----------
+	+(src/TimeOrderedTble.cc) When the table is constructed time
+	strings that cannot be translated to a valid time are
+	ignored. That means that a TOT could have less rows than the table
+	it was constructed from. A new method (validTimes) introduced to
+	report on the number of good time entries. When a time is accessed
+	through time_of_row(k), the k is mean to refer to the orginal
+	table instead of the TOT. This fixes SOC-SPR-2095, in relation
+	to ODF 0061_0122700201. 
+	+ (src/OdfObject.cc) during the calculation of the OM exposure
+	start/stop make sure to check that the TIME column in the NPHK
+	file is valid (SOC-SPR-2095).
+	+ (src/IppvImplementation.cc::setValue) if the value of a
+	parameter changes during the exposure and that parameter is
+	supposed to be constant, write the record number and the table
+	name in the warning message, to make visual checking easier.
+	
+Version 3.1.1 - 2001-06-08 (GV)
+-------------
+	+ (src/odfingest.cc) Change the manner of setting the target ODF
+	directory. If the directory is given on the command line, use that
+	value, else ask the OAL (that'll read it through SAS_ODF or
+	--odf). This prevents the OAL from being activated when it is not
+	the user intention (SOC-SPR-2088). Also check that writing to the
+	output file completes correctly (SOC-SPR-2089).
+	+ (doc/odingest_description.tex) updated with the new error
+	condition.
+	+ (src/OdfObject.cc) use 'window' and not CCD when referring to OM
+	(SOC-SPR-1969). 
+	
+	
+Version 3.1 - 2001-05-18 (GV)
+-----------
+	+ (src/IppvTranslator.cc) EpnFilterWheelTranslator<string> maps HK
+	names to CAL filter names.
+	+ (src/IppvExtractorImplementation.cc) F1118 is now used to
+	determine the filter. Introduce FILTER_POTENTIOMETER to monitor
+	what the old algorithm does.
+	+ (src/odfingest_description.tex) updated.
+
+Version 3.0 - 2001-05-08 (GV)
+-----------
+	+ (src/IppvExtractorImplementation.cc) FILTER_WHEEL_POSITION is
+	now constrained with "F1120 == ACTIVE && F1119 == STOPPED".
+	+ (src/IppvExtractorImplementation.cc) MOS CLOCK_RESET_TIME_*
+	should have been treated as periodic parameters instead of
+	non-periodic (SOC-SPR-2035).
+	+ (doc/odfingest_description.tex) regenerate the documentation of
+	the parameters to take into account PN filter changes. 
+	
+Version 2.2.1 - 2001-05-07 (GV)
+-------------
+	+ (doc/odfingest_description.tex) use appropriate macros to refer
+	to the cal and the oal.
+	+ (tools/calmode.cc) change the output format.
+	
+Version 2.2 - 2001-04-04 (UL)
+-----------
+	+ brought in line with caloalutils-1.47
+	  (Xmm::ATTITUDE -> Xmm::ATTITUDE_HISTORY)
+	+ updated old-style include statements
+
+Version 2.1 - 2001-04-02 (GV)
+-----------
+	+ (src/IppvTranslator.cc) EpnFilterWheelTranslator now recognizes
+	also the string 'NO STOP POS.' (final `.') after somebody decided
+	to fix the puntuation of the ODF HK (SOC-SPR-1974).
+	+ (src/IppvExtractorImplementation.cc) fix typo in error message.
+	
+Version 2.0 - 2001-03-19 (GV)
+-----------
+	+ (src/odfingest.cc) by default use the ODF pointed to by
+	SAS_ODF. This is in SAS-SCR-0038.
+	+ (config/odfingest.par) introduce --withodfdir (default = no).
+	+ (config/odfingest.lyt) use it.
+	+ (src/OdfObject.cc) allow OM to have IMI + FAE combinations
+	(SOC-SPR-1940). 
+	
+Version 1.0.9 - 2001-02-05 (GV)
+-------------
+	+ SOC-SPR-1907:
+	  - (src/IppvExtractorImplementation.cc) in function hkname change
+	  the check d.size !=1 to d.size > 1. That is, it is ok to have 0
+	  or 1 HK files, but it is not ok to have more than 1.
+
+Version 1.0.8 - 2001-01-29 (GV)
+-------------
+	+ SOC-SPR-1907:
+	  - (src/IppvExtractorImplementation.cc) check if required HK file
+	  exists. If not issue a warning, set all HK parameters to
+	  unknown, and continue.
+	+ SOC-SPR-1908:
+	  - (src/IppvExtractor*): add _label data member. In OdfObject.cc
+	  the label is set to instrument/exposure, so that warning
+	  messages from the HK extraction process can be made clearer.
+	  - (src/IppvImplementation.cc) HK file and table name,
+	  sought time entry, and available time range are given in the
+	  warning messages.
+	+ SOC-SPR-1909:
+	  - (src/IppvImplementation.*) warning about new parameter value
+	  changed into an exception throw.
+	  - (src/Ippv.h) add exception ParameterChange.
+	+ SOC-SPR-1910:
+	  - (src/OdfObject.*) introduce _tpad;
+	  - (src/OdfObject.*) introduce _no_ippv_modes, a list of data
+	  modes that are not considered when extracting IPPVs. For
+	  instance: Discarded Lines Images.
+	+ (doc/odfingest_description.tex) updates required by the changes
+	above. 
+	+ SOC-SPR-1915:
+	  - (src/OdfObject.cc) use cmodes.clear() and not cmodes.empty()
+	  (same for dmodes. Former erases all elements, latter checks if
+	  there are any elements. This prevented odfingest from correctly
+	  writing MODE = UNDEFINED when data files of more than one type
+	  where found in one exposure.
+	
+Version 1.0.7 - 2000-12-15 (GV)
+-------------
+	+ (src/OdfObject.cc) remove assertions (that are triggered by bad
+	ODFs more often then they should) and replace them with
+	errors. Same result, but one gets an error message now. SOC-SPR-1864.
+	+ (src/OdfObject.cc) introduce member _valid, to indicate whether
+	a directory scan returned a non empty list of ODF constituents.
+	+ (src/odfingest.cc) use _valid to prevent segfault and unfriendly
+	message (SOC-SPR-1855).
+	+ (doc/odfingest_description.tex) update list of warnings.
+	
+
+Version 1.0.6 - 2000-11-16 (GV)
+-------------
+	+ (src/IppvTranslator.cc) change position of calthin1 filter for PN
+	 fromm 113.85 to 110.65, where it should have always been!
+
+Version 1.0.5 - 2000-11-13 (GV)
+-------------
+	+ (src/OdfObject.cc) make DLI duration 60s.
+	+ (src/OdfObject.cc) add/subtract 90s (instead of 60) to
+	DAT-OBS/END when considering  the exposure time range over which
+	HK parameters are to be extracted (SOC-SPR-1833).
+	+ (src/OdfObject.cc) calculate observation duration more
+	accurately (SOC-SPR-1831).
+	
+Version 1.0.4 - 2000-11-09 (GV)
+-------------
+	+ (odfingest.lyt) filled in.
+
+Version 1.0.3 - 2000-11-08 (GV)
+-------------
+	+ (src/OdfObject.cc): when determining the observation duration,
+	treat the PN discarded lines data sets in a different manner,
+	assigning and arbitray duration of 120s to each of them. This to
+	prevent making the observation unrealistically long (the discarded
+	lines data sets have the wrong DATE-END, often several hours later
+	than the actual observation end time).
+
+Version 1.0.2 - 2000-10-16 (GV)
+-------------
+	+ (IppvImplementation.cc) add explicit instantiations to satisfy
+	linker on DEC/OSF (SOC-SPR-1765).
+	
+Version 1.0.1 - 2000-10-13 (GV)
+-------------
+	+ add parameter oalcheck (true by default). The newly created
+	summary file is passed on to the OAL. This guarantees that the
+	summary file can be parsed by the OAL. Also, a number of rough
+	sanity checks are performed: existence of attitude, time
+	correlation, and orbit file.
+	+ change name to the LOWER_THRESHOLD_Qy_CCDx parameters, as
+	requested by MPE. x=0,1,2 now.
+	
+Version 1.0 - 2000-10-06 (GV)
+-----------
+	+ approved.
+	+ exposure start/end for OM now relies on SID=148/149 instead of
+	dates in DATE-OBS DATE-END.
+	
+Version 0.18 - 2000-09-29 (GV)
+------------
+	+ (src/IppvTranslator.cc) in line with new Xmm::* names for the
+	PN-related filters.
+
+Version 0.17 - 2000-09-29 (GV)
+------------
+	+ (src/OdfObject.cc) also ask the cal server to be silent about
+	being unable to match the FILTER. This is required because the OM
+	data files have since ODS 10.2.3 a FILTER attribute, but this
+	attribute is the hardware value (a number) and not a cal-friendly
+	string. 
+
+Version 0.16 - 2000-09-26 (GV)
+------------
+	+ (src/odfingest.cc) now remove ODF (SUM.ASC) file from the file
+	list to remove an ambiguity for the OAL.
+	+ (src/OdfObject.*) add removeFile(string) to implement the
+	above. Method icdosf() was private is now public.
+
+Version 0.15 - 2000-09-25 (GV)
+------------
+	+ review the instrument mode determination code.
+	+ doc updated and extended.
+
+Version 0.14 - 2000-09-22 (GV)
+------------
+	+ make instrument determination optional
+	(findinstrumentmodes=no). When mode determination is switched off
+	odfingest does not need a CIF.
+	+ make ippv extraction optional (usehousekeeping=no). When ippv
+	extraction is switched off odfingest does not need any HK files.
+	+ make use of new cal interface to set state without issuing a
+	warning, then intercept the condition mode->isUncertain(). Issue a
+	warning and set the mode to unknown.
+
+Version 0.13 - 2000-09-19 (GV)
+------------
+	+ implement PN filter translation from potentiometer readout to
+	string.
+	+ fix translation of PN fileter wheel name, as ODF ICD contained a
+	typo (FILTRA-THIN should have been FILTRA-THIN1). Expect more of
+	these.
+	+ when translation cannot be made, issue warning instead of
+	aborting.
+	+ Ippv class can now be told _not_ to check that a parameter value
+	remains constant throughout the exposure. This is used for the
+	EPIC clock RESET times: here we're interested in the value when
+	the exposure start and we don't care if the value changes during
+	the exposure, as this change is normal for exposures lasting more
+	than 2^15s.
+	+ Ippv: real32 version calculates the mean of the parameter over
+	the exposure instead of taking the first value. This is used to
+	calculate the mean position of the PN filter wheel. This value is
+	then translated to a string.
+	
+Version 0.12 - 2000-09-18 (GV)
+------------
+	+ (src/IppvExtractorImplementation.cc) start looking for IPPVs
+	from tstart + 60s to tstop - 60s. This is to make sure that when
+	we look the relevant telemetry packets have been received.
+
+Version 0.11 - 2000-09-18 (GV)
+------------
+	+ (src/OdfObject.cc) improve camera mode, ccd mode determination
+	algorithm. 
+
+Version 0.10 - 2000-09-18 (GV)
+------------
+	+ add CCD/camera mode string to the IPPV list
+	(via CAL, hence it now requires SAS_CCF to be set). Look for MODE
+	= in the summary file. 
+	+ (config/odfingest.par) usecanonicalname=yes by default.
+	
+Version 0.9 - 2000-09-15 (GV)
+-----------
+	+ add IppvTranslators, so that the MOS/OM filter (hw) positions
+	are translated to CAL-friendly strings. PN filter (string) is also
+	edited for typos.
+
+Version 0.8 - 2000-09-14 (GV)
+-----------
+	+ (src/IppvImplementation.cc) string Ippv were being extracted
+	incorrectly because the DAL does not report the correct number of
+	elements when a column segment is extracted. See comments in th
+	source for the details (look for FIXME).
+
+Version 0.7 - 2000-09-07 (GV)
+-----------
+	+ (doc/odfingest_description.tex) complete re-write with parameter
+	names, errors and warnings, housekeeping parameter names, output
+	file structure.
+	
+Version 0.6 - 2000-09-06 (GV)
+-----------
+	+ add IPPV handling: all instruments are covered.
+	
+Version 0.5 - 2000-07-08 (GV)
+-----------
+	+ disable test harness, as at present there are no compliant
+	ODFs to run on.
+
+Version 0.4 - 2000-06-22 (GV)
+-----------
+	+ sort file list (through copy, as it fails directly)
+	+ Remove extra line when copying PROPOSAL record.
+	+ Have both exposure-level and observation-level identifiers for
+     	the exposures. 	
+	
+Version 0.3 - 2000-06-21 (GV)
+-----------
+	+ absolute exposure identifier redefined to be [SU]nnn.
+	
+Version 0.2 - 2000-06-21 (GV)
+-----------
+	+ first functional version.
+	+ implement IPPV support, however not activated because of shortcoming in the ODF HK datasets.
+	
+Version 0.1 - 2000-06-08 (GV)
+-----------
+	
+	+ Created. First version.

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE INSTRUMENT>
+<INSTRUMENT>
+     <PRODUCT value="EventList" process="yes">
+     	<TASK name="epproc" purpose="EPN_processing">
+     	  <PARAM id="withinstexpids" default="yes" />
+     	  <PARAM id="instexpids" default="" />     
+     	  <PARAM id="burst" default="no" />
+     	</TASK>
+     </PRODUCT>
+     <PRODUCT value="GTIFiltering" process="yes">
+        <TASK name="xmmextractor" purpose="GTIFiltering_interactivity">
+          <PARAM id="interactivity" default="no">
+          </PARAM>
+        </TASK>
+        <TASK name="evselect" purpose="lc_creation">
+           <PARAM id="expression" default="#XMMEA_EP &amp;&amp; (PI in [10000:12000])  &amp;&amp; (PATTERN==0)">
+          </PARAM>
+           <PARAM id="timebinsize" default="10">
+           </PARAM>
+        </TASK>
+        <TASK name="tabgtigen" purpose="gti_creation">
+           <PARAM id="expression" default="RATE&lt;=0.4">
+          </PARAM>
+        </TASK>
+        <TASK name="evselect" purpose="clean_evtfile">
+          <PARAM id="expression" uservalue="#XMMEA_EP &amp;&amp; (PI&gt;150) &amp;&amp; (FLAG==0) &amp;&amp; (PATTERN &lt;= 4) &amp;&amp; gti(gti.fits,TIME)">
+          </PARAM>
+          <PARAM id="keepfilteroutput" default="yes">
+          </PARAM>
+          <PARAM id="withfilteredset"  default="yes">
+          </PARAM>          
+        </TASK>
+        <TASK name="xmmextractor" purpose="SN_optimization">
+          <PARAM id="PG_optimize_SN" default="no">
+          </PARAM>
+          <PARAM id="srcexpr" default="">
+          </PARAM>
+          <PARAM id="bkgexpr" default="">
+          </PARAM>    
+          <PARAM id="areafactor" default="2">
+          </PARAM>    
+          <PARAM id="binning" default="100">
+          </PARAM>    
+          <PARAM id="tstart" default="0">
+          </PARAM>    
+          <PARAM id="tend" default="0">
+          </PARAM>    
+          <PARAM id="minpi" default="200">
+          </PARAM>    
+          <PARAM id="maxpi" default="10000">
+          </PARAM>              
+        </TASK>
+     </PRODUCT>
+     <PRODUCT value="pileup" process="yes">
+        <TASK name="epatplot" purpose="pileup_checking">
+        </TASK>
+     </PRODUCT>
+     <PRODUCT value="edetectchain" process="yes">
+        <TASK name="xmmextractor" purpose="image_creation">
+          <PARAM id="energylow" default="300,500,2000,4500,7500">
+          </PARAM> 
+          <PARAM id="energyhigh" default="500,2000,4500,7500,12000">
+          </PARAM>
+          <PARAM id="ecf" default="">
+          </PARAM>
+          <PARAM id="sourcematch" default="0.001689656258">
+          </PARAM>
+          <PARAM id="cameramatch" default="0.000555555">
+          </PARAM>    
+        </TASK>
+        <TASK name="edetect_chain" purpose="src_detection">
+          <PARAM id="esen_mlmin" default="10">
+          </PARAM>
+        </TASK>
+     </PRODUCT>
+     <PRODUCT value="spectra" process="yes">
+        <TASK name="xmmextractor" purpose="sp_interactivity">
+          <PARAM id="interactivity" default="no">
+          </PARAM>
+        </TASK>
+        <TASK name="xmmextractor" purpose="details">
+          <PARAM id="areafactor" default="2">
+          </PARAM>
+        </TASK>
+        <TASK name="evselect" purpose="clean_evtfile">
+          <PARAM id="expression" default="#XMMEA_EP  &amp;&amp; (FLAG==0) &amp;&amp; (PATTERN &lt;= 4)  &amp;&amp; gti(gti.fits,TIME) &amp;&amp; (PI in [200:10000])">
+          </PARAM>
+          <PARAM id="keepfilteroutput" default="yes">
+          </PARAM>
+          <PARAM id="withfilteredset"  default="yes">
+          </PARAM>
+        </TASK>                
+        <TASK name="especget" purpose="sp_creation">
+        	<PARAM id="srcexp" default="">
+        	</PARAM>
+        	 <PARAM id="backexp" default="">
+        	 </PARAM>
+        </TASK>
+     </PRODUCT>
+     <PRODUCT value="lightcurve" process="yes">
+        <TASK name="xmmextractor" purpose="lc_interactivity">
+          <PARAM id="interactivity" default="no">
+          </PARAM>
+        </TASK>
+        <TASK name="xmmextractor" purpose="details">
+          <PARAM id="areafactor" default="2">
+          </PARAM>
+        </TASK>        
+        <TASK name="evselect" purpose="clean_evtfile">
+          <PARAM id="expression" default="#XMMEA_EP  &amp;&amp; (FLAG==0) &amp;&amp; (PATTERN &lt;= 4) &amp;&amp; (PI in [200:10000])">
+          </PARAM>
+          <PARAM id="keepfilteroutput" default="yes">
+          </PARAM>
+          <PARAM id="withfilteredset"  default="yes">
+          </PARAM>          
+        </TASK>          
+        <TASK name="evselect" purpose="src_filtering">
+          <PARAM id="expression" default="">
+          </PARAM>        
+          <PARAM id="timebinsize" default="100">
+          </PARAM>                    
+        </TASK>
+        <TASK name="evselect" purpose="bkg_filtering">
+          <PARAM id="expression" default="">
+          </PARAM>        
+          <PARAM id="timebinsize" default="100">
+          </PARAM>                              
+        </TASK>
+        <TASK name="epiclccorr" purpose="lc_corrector">
+          <PARAM id="applyabsolutecorrections" default="yes">
+          </PARAM>
+        </TASK>
+     </PRODUCT>
+</INSTRUMENT>

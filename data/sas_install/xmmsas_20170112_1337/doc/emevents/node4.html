@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Patterns</TITLE>
+<META NAME="description" CONTENT="Patterns">
+<META NAME="keywords" CONTENT="emevents">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emevents.css">
+
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emevents (emevents-8.7) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emevents.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+Patterns</A>
+</H2>
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="imgpat"></A><A NAME="275"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 1:</STRONG>
+List of EPIC-MOS patterns (IMAGING mode)</CAPTION>
+<TR><TD><IMG
+ WIDTH="237" HEIGHT="721" BORDER="0"
+ SRC="img7.png"
+ ALT="\begin{figure}\centerline{\psfig{figure=patterns.eps,width=0.35\textwidth}}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+Figure <A HREF="#imgpat">1</A> for Imaging mode should be interpreted as follows:
+
+<UL>
+<LI>each pattern is included in a 5x5 matrix used for proximity analysis.
+</LI>
+<LI>a pattern is centered by definition on the pixel with highest charge.
+</LI>
+<LI>this central pixel is colored in red (its charge is E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$_1$"></SPAN>).
+</LI>
+<LI>the other pixels above threshold in the pattern are colored in green
+      (the sum of their charges is E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$_2$"></SPAN>).
+</LI>
+<LI>all pixels colored in white must be below threshold.
+</LI>
+<LI>the crossed pixels are indifferent (they can be above threshold).
+</LI>
+<LI>the patterns are recognized in increasing order (this is important only
+      for pattern 30, which comprises patterns 0 and 26-29).
+</LI>
+</UL>
+
+<P>
+The philosophy for patterns 0-25 is that a good X-ray pattern must be compact,
+with the highest charge at the center, and isolated (all pixels around are
+below threshold).
+
+<P>
+Patterns 26-29 are the so-called diagonal patterns, not expected from
+a genuine X-ray, but which can arise in case of Si fluorescence or of pileup
+of two monopixel events.
+
+<P>
+The E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$_3$"></SPAN> and E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$_4$"></SPAN> data in the ODF event lists have nothing to do with the
+"white" and "crossed" pixels.
+
+<UL>
+<LI>E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$_3$"></SPAN> is the sum of charges of pixels below threshold in the 8 pixels of
+      the 3x3 corona (their number is known from the pattern number).
+</LI>
+<LI>E<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$_4$"></SPAN> is the sum of charges of pixels below threshold in the 16 pixels of
+      the 5x5 corona. Their number N4 is known from the <A NAME="1040"></A><TT>PERIPIX</TT> column
+      in the event list, which stores the number of pixels above threshold
+      in the 5x5 corona. Thus N4 = 16 - <A NAME="1042"></A><TT>PERIPIX</TT>.
+</LI>
+</UL>
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="timpat"></A><A NAME="287"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 2:</STRONG>
+List of EPIC-MOS patterns (TIMING mode)</CAPTION>
+<TR><TD><IMG
+ WIDTH="232" HEIGHT="55" BORDER="0"
+ SRC="img8.png"
+ ALT="\begin{figure}\centerline{\psfig{figure=pattern_timing.eps,width=0.35\textwidth}}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+Figure <A HREF="#timpat">2</A> for Timing mode should be interpreted in the same way
+as in Imaging mode,
+with the difference that the place where maximum charge occurs is ignored.
+There are only crosses in the rows above and below that of the event.
+This means that the Timing pattern analysis is purely 1-D
+(it is insensitive to other rows), because each Timing 'row' is actually
+the sum of 100 true rows, so the rows are not physically related.
+Because there is no test for maximum charge, all doubles appear
+as <A NAME="1044"></A><TT>PATTERN</TT>=1, whether leading or trailing.
+
+<P>
+Patterns 2 and 3 are not bounded. They are mostly not due to true X-rays,
+but to cosmic-ray tracks. After binning by 100 rows, cosmic-ray tracks
+appear as an horizontal string of pixels above threshold.
+Their beginning will be recorded by an event with <A NAME="1046"></A><TT>PATTERN</TT>=2
+and their end by an event with <A NAME="1048"></A><TT>PATTERN</TT>=3.
+In other words, patterns 2 and 3 normally occur in pairs and define
+a horizontal string of pixels above threshold.
+
+<P>
+
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

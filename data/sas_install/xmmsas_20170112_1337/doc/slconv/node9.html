@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Source labels.</TITLE>
+<META NAME="description" CONTENT="Source labels.">
+<META NAME="keywords" CONTENT="slconv">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="slconv.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+slconv (slconv-2.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Source region shapes."></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Extra columns for GAIA"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="slconv.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00036000000000000000"></A>
+<A NAME="slconv:description:labels"></A>
+<BR>
+Source labels.
+</H2>
+
+<P>
+Labels can be added to the sources by setting <TT>withlabels</TT>=`yes'. The source of the label information depends on the value of the parameter <TT>labelstyle</TT>. This has two possible values:
+
+<P>
+
+<OL>
+<LI><TT>labelstyle</TT>=`sortedint': The labels comprise a sequence of positive-valued integers. These are obtained by sorting the sources according to some criterion and then numbering them in this order. The sorting criterion is specified by the parameter <TT>labelsortstyle</TT>, described as follows:
+  
+<UL>
+<LI><TT>labelsortstyle</TT>=`radius': The sorting is according to the same value that was used to scale the radii. Hence the sequence of integer labels starts at the largest circle and increases in order of their decreasing size.
+
+<P>
+</LI>
+<LI><TT>labelsortstyle</TT>=`expr': In this case the sorting is done by evaluating the expression contained in parameter <TT>sortexpression</TT>. The label numbering is in decreasing order of the resulting value.
+
+<P>
+</LI>
+<LI><TT>labelsortstyle</TT>=`rownumber': This is equivalent to no sorting - the labels are just taken from row numbers in the source list (note this is the <TT>expression</TT>-FILTERED source list not the ORIGINAL one).
+  
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI><TT>labelstyle</TT>=`expr': This specifies that the labels are alphanumeric strings, obtained by evaluating the expression contained in parameter <TT>labelexpression</TT>. Eventually the task will be able to accept in this parameter an expression involving several numeric-valued columns. The task would then evaluate the expression, and set source labels from the result. However at present it cannot do this: you can only supply names of single columns from the source list. String-valued columns are also allowed in this case.
+
+<P>
+</LI>
+</OL>
+
+<P>
+NOTE that, whereas ds9 allows one to offset the labels from the source circles, no such facility appears to be available in gaia.
+
+<P>
+The colour of the source circles and labels may be specified via the parameter <TT>colour</TT>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Source region shapes."></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Extra columns for GAIA"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Comments</TITLE>
+<META NAME="description" CONTENT="Comments">
+<META NAME="keywords" CONTENT="badpixfind">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="badpixfind.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="badpixfind.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+badpixfind (badpixfind-1.40) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithm"></A>
+<A HREF="badpixfind.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Future developments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="badpixfind.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00090000000000000000"></A>
+<A NAME="badpixfind:description:comments"></A>
+<BR>
+Comments
+</H1>
+
+<P>
+
+<UL>
+<LI>To quote fhelp cleansis (the ASCA equivalent routine) - <EM>Warning:
+This is an analysis tool, not a program to run blindly: Clean, check, repeat.</EM>
+
+<P>
+</LI>
+<LI>As regards how much of the <A NAME="1029"></A><A NAME="tex2html17"
+  HREF="../badpixfind/index.html"><SPAN  CLASS="textbf">badpixfind</SPAN></A>
+routine can safely be
+incorporated into the PPS, we believe that the number of bad pixels found by
+<A NAME="1033"></A><A NAME="tex2html18"
+  HREF="../badpixfind/index.html"><SPAN  CLASS="textbf">badpixfind</SPAN></A>
+may depend sensitively on the input parameters (thresholds
+etc.). The task has been and is being developed so that an automatic running
+(and importantly, usage in <A NAME="1037"></A><A NAME="tex2html19"
+  HREF="../badpix/index.html"><SPAN  CLASS="textbf">badpix</SPAN></A>) can be performed. Tests on many
+datasets have been performed to find the most favourable parameter settings
+(which will be different for MOS and pn). The default settings have been set
+to reasonable values for MOS analysis. They are very conservative for pn
+analysis however, a more favourable pn parameter setting being:
+<TT>hithresh</TT>=0.0045 <TT>withsearchbadcolumn</TT>=Y
+<TT>hicolthresh</TT>=0.00105 <TT>backgroundrate</TT>=0.0001
+<TT>loenergythresh</TT>=0.14 <TT>hienergythresh</TT>=10.0
+<TT>narrowerthanpsf</TT>=1.5
+
+<P>
+</LI>
+<LI>The searching algorithms within badpixfind can be performed within 
+user-defined energy ranges. This will make any automatic usage of badpixfind 
+a little safer, the noiser, very low energy photons being ignorable. For PN, 
+the events are selected via their <A NAME="1048"></A><TT>PHA</TT> values, for MOS, via their 
+<A NAME="1050"></A><TT>ENERGYE1</TT> values. 
+
+<P>
+</LI>
+<LI>It is possible for a bad pixel map to be produced (with optionally, areas 
+outside the FOV masked out also). This is described
+throughout the task description (see especially the user's description and the
+parameters and examples section). This map can be fed into <A NAME="1052"></A><A NAME="tex2html20"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+to
+create `masked' images, lightcurves etc.
+
+<P>
+</LI>
+<LI>Searching for `flickering' pixels is possible, as described 
+in the user's description. This, as with all of the mode&nbsp;1 routines, must
+not be used blindly - any number of effects could lead to a `flickering' 
+pixel (a bright source/feature passing briefly into the pixel, a genuinely variable 
+source, CCD edge effects etc). It is recommended that 
+a smallish number of <TT>flickertimesteps</TT> is used (<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$\sim$"></SPAN>5). Larger numbers 
+lead to lots more small number statistics and sometimes 
+(especially for MOS) very large arrays. 
+
+<P>
+</LI>
+<LI>It is believed that this task is inapplicable to timing and burst modes, and
+will not be accessed.
+
+<P>
+</LI>
+<LI>In obtaining the exposure information, for the pn, the <A NAME="1057"></A><TT>LIVETIME</TT> 
+attribute is read. For MOS, the <A NAME="1059"></A><TT>EXPOSURE</TT> attribute is read. In the case
+of merged, calibrated event lists the <A NAME="1061"></A><TT>LIVETInn</TT> attribute corresponding to the
+appropriate chip is read for both PN and MOS. 
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithm"></A>
+<A HREF="badpixfind.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Future developments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

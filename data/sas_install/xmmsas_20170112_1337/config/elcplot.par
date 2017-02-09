@@ -1,0 +1,151 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="set" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    Name of the FITS file : 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+ <PARAM id="usegtiset" type="bool" default="no">
+   <DESCRIPTION>
+    Do you require the GTIs to be plotted :
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="gtiset" type="dataset" mandatory="yes">
+      <DESCRIPTION>
+       Name of the GTI FITS file :
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+    <ITEM value="no">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ <PARAM id="useflareset" type="bool" default="no">
+   <DESCRIPTION>
+    Do you require the flare timeseries to be plotted :
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="flareset" type="dataset" mandatory="yes">
+      <DESCRIPTION>
+       Name of the flare FITS file :
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+    <ITEM value="no">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="binsize" type="int" default="5">
+   <DESCRIPTION>
+    Binning factor : 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    binsize in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="plotdevice" type="string" default="/VPS">
+   <DESCRIPTION>
+    Device type : 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="plotfile" type="file" default="plot.ps">
+   <DESCRIPTION>
+    Name of the output plot file : 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="bkgdyscale" type="bool" default="no">
+   <DESCRIPTION>
+    Same y-scale for background plot : 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="units" type="string" default="secs">
+   <DESCRIPTION>
+     Units for x-axis (secs or days)  
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="forcestart" type="bool" default="no">
+   <DESCRIPTION>
+    Do you want to force the start and end time to be the first and last time values in the data?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="offset" type="bool" default="yes">
+   <DESCRIPTION>
+    Do you want to give an offset value for the x-axis
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="offsetstyle" type="string" default="auto">
+      <DESCRIPTION>
+       Entry style of offset 
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="auto">
+       </ITEM>
+
+       <ITEM value="user">
+        <PARAM id="tscaleoffset" type="real" mandatory="yes" default="0">
+         <DESCRIPTION>
+          Start MJD for x-axis
+         </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="ounits" type="string" default="days">
+         <DESCRIPTION>
+          Units for tscaleoffset (secs or days) 
+         </DESCRIPTION>
+         <CASE>
+          <ITEM value="secs">
+          </ITEM>
+          <ITEM value="days">
+          </ITEM>
+         </CASE>
+        </PARAM>
+       </ITEM>
+
+       <ITEM value="dateobs">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>
+

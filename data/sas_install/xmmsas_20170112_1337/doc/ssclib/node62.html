@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>raDecToInst</TITLE>
+<META NAME="description" CONTENT="raDecToInst">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node63.html">
+<LINK REL="previous" HREF="node61.html">
+<LINK REL="up" HREF="node60.html">
+<LINK REL="next" HREF="node63.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node61.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="getPsfImagePixelCorners"></A>
+<A HREF="node60.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Routines for performing coordinate"></A>
+<A HREF="node63.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="instToRaDec"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node60.html">Routines for performing coordinate</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00062000000000000000">
+raDecToInst</A>
+</H2>
+
+<P>
+<PRE>
+  interface raDecToInst
+    subroutine raDecToInstScalar(raDeg, decDeg, scAttitude&amp;
+      , timeStamp, detX, detY, thetaArcsec, phi)
+
+      real(double),                 intent(in) :: raDeg,&amp;
+                                                  decDeg
+      type(SpacecraftAttitudeType), intent(in) :: scAttitude
+      real(double),                 intent(in) :: timeStamp
+      real(single)     , optional, intent(out) :: detX,&amp;
+                                                  detY
+      real(double)     , optional, intent(out) :: thetaArcsec,&amp;
+                                                  phi
+    end subroutine raDecToInstScalar
+
+    subroutine raDecToInstVector(raDeg, decDeg, scAttitude&amp;
+      , timeStamp, detX, detY, thetaArcsec, phi)
+
+      real(double),                 intent(in) :: raDeg(:),&amp;
+                                                  decDeg(size(raDeg))
+      type(SpacecraftAttitudeType), intent(in) :: scAttitude
+      real(double),                 intent(in) :: timeStamp
+      real(single)     , optional, intent(out) :: detX(size(raDeg)),&amp;
+                                                  detY(size(raDeg))
+      real(double)     , optional, intent(out) :: thetaArcsec(size(raDeg)),&amp;
+                                                  phi(size(raDeg))
+    end subroutine raDecToInstVector
+
+  end interface
+</PRE>
+
+<P>
+This subroutine converts from celestial coordinates to instrument-centric coordinates, in either the DETX/Y (the same, up to a scalar multiple, as the CAMCOORD2 system) or TELCOORD systems, depending on which of the optional variables <SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img69.png"
+ ALT="$detX$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="38" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img70.png"
+ ALT="$detY$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="89" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img71.png"
+ ALT="$thetaArcsec$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img72.png"
+ ALT="$phi$"></SPAN> the caller has supplied.
+
+<P>
+NOTE this subroutine requires the <A NAME="1579"></A><A NAME="tex2html15"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>
+to have been set to the correct instrument before the call.
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

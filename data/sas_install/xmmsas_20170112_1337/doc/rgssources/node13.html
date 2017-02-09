@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Attitude parameters.</TITLE>
+<META NAME="description" CONTENT="Attitude parameters.">
+<META NAME="keywords" CONTENT="rgssources">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgssources.css">
+
+<LINK REL="next" HREF="node14.html">
+<LINK REL="previous" HREF="node12.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node14.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgssources (rgssources-6.2.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node12.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Auto selection of Prime"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Upgrading the format."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgssources.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00036000000000000000"></A> <A NAME="att"></A>
+<BR>
+Attitude parameters.
+</H2>
+
+<P>
+The attitude is defined as the pointing direction plus the position- or roll-angle of the spacecraft. It is necessary to define the attitude for <A NAME="1292"></A><A NAME="tex2html17"
+  HREF="../rgssources/index.html"><SPAN  CLASS="textbf">rgssources</SPAN></A>
+because the task must calculate values for the columns <A NAME="1296"></A><TT>DELTA_DISP</TT>, <A NAME="1298"></A><TT>DELTA_XDSP</TT>, <A NAME="1300"></A><TT>FOV_PHI</TT> and <A NAME="1302"></A><TT>FOV_R</TT>, which record the source positions with respect to the attitude.
+
+<P>
+In the case that <TT>filemode</TT>=`modify', the attitude is left by default at the value in the previous file. To alter the attitude stored in the file while in this <TT>filemode</TT>, the parameter <TT>changeattitude</TT> must be specifically set by the user to `yes'. Assuming that this is done, the attitude can then either be calculated (<TT>attstyle</TT>=`start', `mean', `median' or `expmedian') or input directly by the user (<TT>attstyle</TT>=`user', then supply <TT>attra</TT>, <TT>attdec</TT> and <TT>attapos</TT>). The four types of calculation are briefly described as follows:
+
+<P>
+
+<UL>
+<LI><TT>attstyle</TT>=`start': the attitude at the start of the exposure is used.
+
+<P>
+</LI>
+<LI><TT>attstyle</TT>=`mean': the mean value of the attitude (as sampled in the attitude history file) is used. This value is read from the output file from <A NAME="1314"></A><A NAME="tex2html18"
+  HREF="../atthkgen/index.html"><SPAN  CLASS="textbf">atthkgen</SPAN></A>.
+
+<P>
+</LI>
+<LI><TT>attstyle</TT>=`median': the median value of the attitude (as sampled in the attitude history file) is used.This value is read from the output file from <A NAME="1319"></A><A NAME="tex2html19"
+  HREF="../atthkgen/index.html"><SPAN  CLASS="textbf">atthkgen</SPAN></A>.
+
+<P>
+</LI>
+<LI><TT>attstyle</TT>=`expmedian': the task <A NAME="1324"></A><A NAME="tex2html20"
+  HREF="../attfilter/index.html"><SPAN  CLASS="textbf">attfilter</SPAN></A>
+filters the attitude data such that only time values within the exposure duration remain. This task also calculates the usual set of means, medians etc for thsi restricted set of attitude data. With <TT>attstyle</TT>=`expmedian', <A NAME="1329"></A><A NAME="tex2html21"
+  HREF="../rgssources/index.html"><SPAN  CLASS="textbf">rgssources</SPAN></A>
+reads the median value of the attitude during the exposure from the output file from <A NAME="1333"></A><A NAME="tex2html22"
+  HREF="../attfilter/index.html"><SPAN  CLASS="textbf">attfilter</SPAN></A>.
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node12.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Auto selection of Prime"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Upgrading the format."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

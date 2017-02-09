@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>rangesAreWellFormed</TITLE>
+<META NAME="description" CONTENT="rangesAreWellFormed">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node123.html">
+<LINK REL="previous" HREF="node121.html">
+<LINK REL="up" HREF="node121.html">
+<LINK REL="next" HREF="node123.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node121.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Routines which act on"></A>
+<A HREF="node121.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Routines which act on"></A>
+<A HREF="node123.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="copyRanges"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node100.html">DSS utilities</A> / <A  HREF="node121.html">Routines which act on</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00095100000000000000"></A>
+      <A NAME="ssclib:description:rangesAreWellFormed"></A>
+<BR>
+rangesAreWellFormed
+</H3>
+
+<P>
+A RangeT vector (of size N) is defined as well-formed if and only if it obeys the following conditions:
+
+<P>
+
+<UL>
+<LI>Only the lowest and highest bounds of the sequence of ranges are permitted to be of type UNDEFINED.
+
+<P>
+</LI>
+<LI>For each range for which neither the lower or upper bound is of type UNDEFINED (ie, for each internal range in the sequence), the upper bound value must exceed the lower bound value unless both both bound types are INCLUSIVE, in which case the upper bound value may equal the lower bound value. In other words, each range must encompass some non-empty set of real numbers.
+
+<P>
+</LI>
+<LI>For all i from 1 to N-1, the upper bound of range i must be less than the lower bound of range i+1, unless both bounds are of type EXCLUSIVE, in which case the upper bound of range i may equal the lower bound of range i+1. In other words, the gap between two adjacent ranges must encompass some non-empty set of real numbers.
+</LI>
+</UL>
+
+<P>
+Note that any ranges pointer can be brought into valid condition by passing it through the subroutine correctRanges() (section <A HREF="node125.html#ssclib:description:correctRanges">9.5.4</A>).
+
+<P>
+<PRE>
+  logical(bool) function rangesAreWellFormed(ranges)
+    type(RangeT), intent(in) :: ranges(:)
+  end function rangesAreWellFormed
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node121.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Routines which act on"></A>
+<A HREF="node121.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Routines which act on"></A>
+<A HREF="node123.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="copyRanges"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

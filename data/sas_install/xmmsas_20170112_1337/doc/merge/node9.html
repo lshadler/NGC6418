@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Comments</TITLE>
+<META NAME="description" CONTENT="Comments">
+<META NAME="keywords" CONTENT="merge">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="merge.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="merge.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+merge (merge-0.14) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithm"></A>
+<A HREF="merge.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Future developments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="merge.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00090000000000000000"></A>
+<A NAME="merge:description:comments"></A>
+<BR>
+Comments
+</H1>
+
+<P>
+
+<UL>
+<LI>Care should be taken in using any
+output. Cases have been found whereby new output file attributes need to be
+calculated on the basis of input file attributes, and no doubt, these cases
+will continue to crop up. In many cases, care will be needed as regards
+any subsequent use of a particular merged file.
+
+<P>
+</LI>
+<LI>The task is now able to correct both individual input event files for 
+small errors in attitude, prior to merging. Very thorough testing of this feature 
+has not yet been performed. Position angle is measured clockwise on the sky. 
+
+<P>
+</LI>
+<LI>Problems can occur when one of the input files contains GTI
+extensions (not STDGTI) and the other one doesn't. Everything seems ok
+but evselect can't handle this case and will calculate the wrong exposure
+time for files extracted from the merged event file.
+
+<P>
+</LI>
+<LI>The GTI merge assumes that only one set of GTIs exist in each input
+file. If more than one set exist then the final result will probably be 
+wrong.
+
+<P>
+</LI>
+<LI>In the event file merging, the <A NAME="836"></A><TT>BADPIX</TT> extensions are not merged. 
+
+<P>
+</LI>
+<LI>It may be that the default <TT>imagesize</TT> may change, as merged
+images are likely to cover a large area of the sky than single event file
+images.
+
+<P>
+</LI>
+<LI>Out-of-time events modeling in task <A NAME="839"></A><A NAME="tex2html6"
+  HREF="../esplinemap/index.html"><SPAN  CLASS="textbf">esplinemap</SPAN></A>
+does not work
+with merged eventsets.
+
+<P>
+</LI>
+<LI>When merging two files (C, A say) from different exposures, the two
+files will be automatically ordered so that they are merged in time order
+(AC). If one then wants to merge a third file (B) to the first two, this third
+file data being from a time in-between the first two, then problems <EM>may</EM> 
+exist
+with subsequent tasks performed on the resultant merged file (ACB) as the data
+will not be time sorted. It is advised therefore to merge all data in time
+order (i.e. first A with B, then AB with C).
+
+<P>
+</LI>
+<LI>It is advisable also, because of the large file sizes involved, the 
+time-consuming nature of the reprojections and the fact, in merging e.g. 
+four event files together, that three <A NAME="843"></A><A NAME="tex2html7"
+  HREF="../merge/index.html"><SPAN  CLASS="textbf">merge</SPAN></A>
+runs are 
+necessary (A+B, AB+C, ABC+D, done preferably, remember, in time order, and 
+not for instance in file size order), that the event files are first 
+filtered to only the good events one is interested in. 
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithm"></A>
+<A HREF="merge.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Future developments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

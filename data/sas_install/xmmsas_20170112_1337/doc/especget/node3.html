@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="especget">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="especget.css">
+
+<LINK REL="next" HREF="node14.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="especget.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+especget (especget-1.44.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="especget.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="RMF options"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node22.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="especget.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="especget:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+<A NAME="540"></A><A NAME="tex2html3"
+  HREF="../especget/index.html"><SPAN  CLASS="textbf">especget</SPAN></A>
+is a one-stop task which produces all the files necessary 
+for the spectral fitting of an XMM source. 
+The task allows the user to produce a source spectrum, background
+spectrum and the OGIP-compliant (
+spectral fitting within a single procedure.
+
+<P>
+The essential input parameters are the name of the XMM events table and
+a selection expression for the source and background areas, 
+e.g. <TT>srcexp</TT>="((DETX,DETY) IN circle(572,-635,1340))" 
+<BR><TT>backexp</TT>="((DETX,DETY) IN circle(2572,-1635,1340))". 
+The minimum selection required in the source and background expressions
+is the spatial region, which may be specified in sky (X/Y) or
+detector coordinates. Other selections are defaulted as shown in Table 1. These defaults may be further restricted by 
+including additional selections for these quantities in the input
+expressions, e.g.  <TT>srcexp="((DETX,DETY) IN circle(572,-635,1340))&amp;&amp;
+PATTERN==0"</TT>. <B>NB:</B> The source and background expressions should
+use the same pattern and flag selections. The expressions must be 
+compliant with the <A NAME="547"></A><A NAME="tex2html4"
+  HREF="../selectlib/index.html"><SPAN  CLASS="textbf">selectlib</SPAN></A>
+standard.
+
+<P>
+The metatask <A NAME="551"></A><A NAME="tex2html5"
+  HREF="../especget/index.html"><SPAN  CLASS="textbf">especget</SPAN></A>
+runs the tasks <A NAME="555"></A><A NAME="tex2html6"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>,
+<A NAME="559"></A><A NAME="tex2html7"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+and <A NAME="563"></A><A NAME="tex2html8"
+  HREF="../rmfgen/index.html"><SPAN  CLASS="textbf">rmfgen</SPAN></A>. It also calculates the size of the
+source and background areas, a job normally performed by the task
+<A NAME="567"></A><A NAME="tex2html9"
+  HREF="../backscale/index.html"><SPAN  CLASS="textbf">backscale</SPAN></A>
+but here achieved by calling <A NAME="571"></A><A NAME="tex2html10"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+directly.
+For more details of the processing performed by these tasks please 
+see their respective user documentation.
+
+<P>
+The end result is a set of files which can be used directly in a
+spectral fitting program (see section <A HREF="node6.html#especget:Description:HdrKeys">3.3</A>).
+
+<P>
+<BR>
+<DIV ALIGN="CENTER">
+<A NAME="especget:table:defsel"></A>
+<BR>
+<A NAME="494"></A>
+<TABLE CELLPADDING=3 BORDER="1" ALIGN="CENTER">
+<CAPTION><STRONG>Table 1:</STRONG>
+<B>Default event selections</B></CAPTION>
+<TR><TD ALIGN="LEFT">Parameter</TD>
+<TD ALIGN="CENTER" COLSPAN=2><SPAN>Camera</SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">MOS</TD>
+<TD ALIGN="CENTER">PN</TD>
+</TR>
+<TR><TD ALIGN="LEFT">PATTERN</TD>
+<TD ALIGN="CENTER">0-12</TD>
+<TD ALIGN="CENTER">0-4</TD>
+</TR>
+<TR><TD ALIGN="LEFT">FLAG</TD>
+<TD ALIGN="CENTER">XMMEA_EM<SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$^{a}$"></SPAN></TD>
+<TD ALIGN="CENTER">0</TD>
+</TR>
+</TABLE>
+</DIV>
+<SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$^{a}$"></SPAN> The selection #XMMEA_EM represents a conglomerate of flags;
+see <A NAME="575"></A><A NAME="tex2html2"
+  HREF="../evatt/index.html"><SPAN  CLASS="textbf">evatt</SPAN></A>. 
+<BR>
+<P>
+
+<BR>
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html85"
+  HREF="node4.html">RMF options</A>
+<LI><A NAME="tex2html86"
+  HREF="node5.html">ARF options</A>
+<LI><A NAME="tex2html87"
+  HREF="node6.html">Header keywords</A>
+<LI><A NAME="tex2html88"
+  HREF="node7.html">Examples</A>
+<UL>
+<LI><A NAME="tex2html89"
+  HREF="node8.html">A point source</A>
+<LI><A NAME="tex2html90"
+  HREF="node9.html">Setting the names of output files individually</A>
+<LI><A NAME="tex2html91"
+  HREF="node10.html">Using a pre-prepared matrix</A>
+<LI><A NAME="tex2html92"
+  HREF="node11.html">Defining the patterns and flags to use</A>
+<LI><A NAME="tex2html93"
+  HREF="node12.html">Specifying a complex region</A>
+<LI><A NAME="tex2html94"
+  HREF="node13.html">Analysing an extended source</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="especget.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="RMF options"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node22.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="epauxcomb">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epauxcomb.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="epauxcomb.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epauxcomb (epauxcomb-1.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="epauxcomb.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epauxcomb.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000">
+Description</A>
+</H1>
+
+<P>
+<A NAME="epauxcomb:description:description"></A>This task creates a copy of an input PN ODF Auxiliary File,
+with the first table containing additional columns corresponding
+to the Second Binary Table of the Auxiliary File.
+This allows tools such as <A NAME="378"></A><A NAME="tex2html1"
+  HREF="../tabgtigen/index.html"><SPAN  CLASS="textbf">tabgtigen</SPAN></A>, which can only
+handle single tables, to process
+<I>all</I> the data specified in such files.
+
+<P>
+The combination is performed as follows:
+
+<P>
+A copy of the original dataset is made to the dataset specified
+by the parameter <TT>outset</TT>. The first table in the new dataset
+will form the new combined table, and implicitly
+contains a copy of the First Binary Table.
+
+<P>
+Combining the data in the Second Binary Table
+is relatively complex.
+The combination is based
+on the two common columns across the tables, 
+the <A NAME="383"></A><TT>CYCLE</TT> column
+and the <A NAME="385"></A><TT>QUADRANT</TT> column.
+Each row in the Second Binary Table of the Auxilary File
+is uniquely identified by the
+<A NAME="387"></A><TT>CYCLE</TT> and <A NAME="389"></A><TT>QUADRANT</TT> pair.
+This pair occurs in one or more
+rows in the First Binary Table (as there is one or more active CCDs
+listed with in the combined table with
+that <A NAME="391"></A><TT>CYCLE</TT>/<A NAME="393"></A><TT>QUADRANT</TT> combination).
+
+<P>
+<A NAME="395"></A><A NAME="tex2html2"
+  HREF="../epauxcomb/index.html"><SPAN  CLASS="textbf">epauxcomb</SPAN></A>
+firstly creates 5 new columns in the combined
+table corresponding to the remaining columns
+of the Second Binary Table (ie 
+the <A NAME="399"></A><TT>NABOVE</TT>, <A NAME="401"></A><TT>NDEFA</TT>, <A NAME="403"></A><TT>NEPDH</TT> ,<A NAME="405"></A><TT>NDISCLIN</TT> and <A NAME="407"></A><TT>MCOMMODE</TT> columns).
+It then loops through each row of the Second Binary Table,
+noting the values in the columns 
+<A NAME="409"></A><TT>NABOVE</TT>, <A NAME="411"></A><TT>NDEFA</TT>, <A NAME="413"></A><TT>NEPDH</TT>, <A NAME="415"></A><TT>NDISCLIN</TT> and <A NAME="417"></A><TT>MCOMMODE</TT>. 
+For <I>each</I> row in the combined table that the same 
+<A NAME="419"></A><TT>CYCLE</TT>/<A NAME="421"></A><TT>QUADRANT</TT> pair appears,
+<A NAME="423"></A><A NAME="tex2html3"
+  HREF="../epauxcomb/index.html"><SPAN  CLASS="textbf">epauxcomb</SPAN></A>
+writes out the noted values to the corresponding
+columns in the combined table.
+
+<P>
+These noted values may be copied to more than one row in the combined table.
+There may also be one or more rows remaining in the combined table that
+contain <A NAME="427"></A><TT>CYCLE</TT>/<A NAME="429"></A><TT>QUADRANT</TT> pairs which are
+not listed in the Second Binary Table;  for these rows, 
+the entries for <A NAME="431"></A><TT>NABOVE</TT>, <A NAME="433"></A><TT>NDEFA</TT>, <A NAME="435"></A><TT>NEPDH</TT>, <A NAME="437"></A><TT>NDISCLIN</TT> and <A NAME="439"></A><TT>MCOMMODE</TT>
+are set to zero.
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html59"
+  HREF="node4.html">Examples</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="epauxcomb.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

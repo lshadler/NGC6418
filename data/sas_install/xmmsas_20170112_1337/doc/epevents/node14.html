@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Files and columns</TITLE>
+<META NAME="description" CONTENT="Files and columns">
+<META NAME="keywords" CONTENT="epevents">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epevents.css">
+
+<LINK REL="next" HREF="node15.html">
+<LINK REL="previous" HREF="node13.html">
+<LINK REL="up" HREF="node13.html">
+<LINK REL="next" HREF="node15.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epevents (epevents-6.50.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node13.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Output Files"></A>
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Pattern related information"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epevents.html">Home Page</A> / <A  HREF="node13.html">Output Files</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00071000000000000000"></A>
+<A NAME="epevents:description:outputfiles:filescolumns"></A>
+<BR>
+Files and columns
+</H2>
+
+<P>
+
+<OL>
+<LI>EPIC PN event file with recombined events corrected for gain and CTI 
+  effects. The event file consists of:
+  
+<UL>
+<LI>an <A NAME="1359"></A><TT>EVENTS</TT> extension with columns <A NAME="1361"></A><TT>TIME</TT>, 
+    <A NAME="1363"></A><TT>FRAME</TT>, <A NAME="1365"></A><TT>RAWX</TT>, <A NAME="1367"></A><TT>RAWY</TT>, 
+      <A NAME="1369"></A><TT>DETX</TT>, <A NAME="1371"></A><TT>DETY</TT>, <A NAME="1373"></A><TT>PHA</TT>, <A NAME="1375"></A><TT>PI</TT>, <A NAME="1377"></A><TT>CCDNR</TT>, 
+      <A NAME="1379"></A><TT>FLAG</TT>, <A NAME="1381"></A><TT>PAT_ID</TT>, <A NAME="1383"></A><TT>PAT_SEQ</TT> and <A NAME="1385"></A><TT>PATTERN</TT> 
+      (temporarily we also store detailed pattern informations as additional 
+      columns <A NAME="1387"></A><TT>PAT_TYP</TT>, <A NAME="1389"></A><TT>PAT_IND</TT> and <A NAME="1391"></A><TT>PAT_ORI</TT>; columns <A NAME="1393"></A><TT>PHA_CTI</TT> 
+list the CTI and 
+      gain corrected PHA values of each event prior to the split event 
+      recombination (to check corresponding CAL functionality))
+
+<P>
+</LI>
+<LI>Conversion of detector coordinates to physical camera detector 
+  coordinates: For TIMING and BURST mode data the position of the source
+  (given as keyword <A NAME="1395"></A><TT>SRCPOS</TT> in <A NAME="1397"></A><TT>RAWY</TT> pixel coordinates
+  as written by <A NAME="1399"></A><A NAME="tex2html25"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>) is used to
+
+calculate the <A NAME="1403"></A><TT>DETY</TT> value at the source position. 
+
+<P>
+</LI>
+<LI>a <A NAME="1405"></A><TT>BADPIX</TT> extension (copied if available from input file)
+
+<P>
+</LI>
+<LI>an <A NAME="1407"></A><TT>EXPOSURE</TT> extension (copied from input file) with new 
+    attributes summarizing the pattern analysis: <A NAME="1409"></A><TT>ANALYSED</TT> (number 
+    of analysed events), <A NAME="1411"></A><TT>SINGLES</TT> (number of single events), 
+    <A NAME="1413"></A><TT>DOUBLES</TT> (number of double events),
+    <A NAME="1415"></A><TT>TRIPLES</TT> (number of triple events),
+    <A NAME="1417"></A><TT>QUADRUPL</TT> (number of quadruple events),
+    <A NAME="1419"></A><TT>NOTRECEV</TT> (number of not recognized events),
+    <A NAME="1421"></A><TT>NOTRECPA</TT> (number of not recognized patterns),
+    <A NAME="1423"></A><TT>MAXPAT</TT> (maximum pattern size),
+<BR>[3]    <A NAME="1425"></A><TT>TRAILING</TT> (number of trailing events),
+    <A NAME="1427"></A><TT>MIPS</TT> (number of MIPs found) and
+    <A NAME="1429"></A><TT>RECPHOTO</TT> (number of recognized photons)
+
+<P>
+</LI>
+</UL>
+</LI>
+<LI>If <TT>withoutoftime</TT>=Y then <EM>instead</EM> a file is created with the
+    same structure as above but consisting of only out-of-time events
+    (<EM>instead</EM> of the normal events file).
+</LI>
+<LI>If <TT>withphotonmap</TT>=Y then additionally a file 
+    <TT>photonmapset</TT> is created containing 4 image extensions according
+    to pattern types and energy ranges specified in
+    <TT>mappatterntype</TT>, <TT>lothresh</TT> and <TT>hithresh</TT>.
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node13.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Output Files"></A>
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Pattern related information"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

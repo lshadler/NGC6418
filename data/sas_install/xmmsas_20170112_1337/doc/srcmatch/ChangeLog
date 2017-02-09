@@ -1,0 +1,568 @@
+ChangeLog for srcmatch
+===============================
+
+Version 3.20 - 2016-09-30 (IT)
+------------
+	+ srcmatch_io.f90: handle eboxdetect source lists
+	+ srcmatch_mod.f90: no html file will be written if parameter
+	  htmloutput is empty (used by edetect_stack)
+	+ srcmatch_mod.f90: negative values of maxerr are interpreted as
+	  absolute offsets in arcsec. This feature is meant to stay
+	  experimental and therefore not fully included in the documentation.
+	+ srcmatch_def.f90, srcmatch_io.f90: increased internal parameter
+	  max_nsets from 9 to 60 for use within edetect_stack and adjusted
+	  column names (intended for usage within edetect_stack only)
+	+ srcmatch_io.f90: informational output of the number of sources
+	  in the final list at higher verbosity levels.
+	+ cf. SCR 7399: source detection on stacked observations
+
+
+Version 3.19 - 2016-07-14 (AI)
+------------
+	+ (src/srcmatch_mod.f90) gfortran compatibility changes.
+	+ (src/Makefile) Preprocessor statement added
+	
+Version 3.18.1 - 2015-08-19 (IT)
+------------
+	+ srcmatch_mod.f90, subroutine srcmatch: increased maximum length
+	  of output file names to 1024 (consistent with other
+	  source-detection tasks).
+
+
+Version 3.18 - 2015-07-24 (IT)
+------------
+	+ srcmatch_io.f90, srcmatch_mod.f90, srcmatch_def.f90: copy
+	  columns X_IMA, X_IMA_ERR, Y_IMA, Y_IMA_ERR from an X-ray input
+	  to the srcmatch output source list (SCR-7301).  Coordinates are
+	  copied from one X-ray source list and set to NULL in case of
+	  several X-ray input lists.
+	+ Documentation updated.
+
+
+Version 3.17.1 - 2014-09-08 (IT)
+-------------
+	+ srcmatch_io.f90: internal variable "single_inst" should be used
+	  for old-style emldetect source lists without summary rows only,
+	  but was also set for source lists containing exactly one
+	  source. Fixed the if-expression for summary lines.
+
+
+Version 3.17 - 2014-08-27 (IT)
+-------------
+	+ srcmatch_mod.f90: If only one input list is given and
+	  allepicmode=yes, call subroutine combine_srcs to create the EP_*
+	  columns in the output source lists (which were NULL otherwise).
+
+
+Version 3.16.2 - 2013-08-05 (IT)
+-------------
+	+ Bug fix in srcmatch_io.f90: correct keywords ii_b_ELO and
+	  ii_b_EHI. Task was writing upper boundaries to keywords
+	  ii_b_ELO, overwriting the energies of the lower boundaries.
+	+ srcmatch_io.f90: Removed erroneous units "seconds" of PN
+	  vignetting factors.
+	+ Documentation updated.
+
+
+Version 3.16.1 - 2013-03-17 (IT)
+-------------
+	+ Documentation updated. Minor latex syntax changes to build the
+	  package index properly on Ubuntu.
+
+
+Version 3.16  - 2012-07-26 (IT)
+--------------
+	+ Handle empty OM input source lists: print a warning instead of
+	  an error message ("emptyInputSet") and proceed as if
+	  useomlistset=false.
+	+ Introduced warning "singleInputSet" for the case that only one
+	  valid input source list is found at all.
+	+ Updated documentation.
+
+
+Version 3.15.20  - 2006-11-10 (GL)
+--------------------------------- 
+
+Correct error in the calculation of the EP_4_FLUX 
+column.
+	
+Version 3.15.19  - 2006-07-07 (GL)
+--------------------------------- 
+
+Initialize columns EP_HR3_ERR, EP_HR4_ERR with NULL
+
+	
+Version 3.15.18  - 2006-06-12 (GL)
+--------------------------------- 
+
+Correct error causing zero det_ml values
+to be written as NULL values.
+Close SSC-SPR-3612
+	
+	
+Version 3.15.17  - 2006-03-22 (GL)
+--------------------------------- 
+
+New columns PN_OFFAX, M1_OFFAX, M2_OFFAX
+(copied from emldetect OFFAX columns)
+	
+Version 3.15.16  - 2006-03-06 (GL)
+--------------------------------- 	
+
+Fix wrong values in EP_HR_2, EP_HR2_ERR, EP_HR4,  EP_HR4_ERR
+	
+	
+Version 3.15.15  - 2006-01-03 (GL)
+--------------------------------- 
+
+Calculate EPIC hardness ratios averaged
+over all 3 cameras in "allepic" mode.
+Calculate EPIC fluxes averaged 
+over all 3 cameras in "allepic" mode.
+New output table columns:
+   EP_<band>_FLUX  (band=1..5)
+   ERR_EP_<band>_FLUX
+   EP_TOT_FLUX
+   ERR_EP_TOT_FLUX
+   EP_XID_FLUX
+   ERR_EP_XID_FLUX
+
+	
+	
+Version 3.15.14  - 2005-12-05 (GL)
+--------------------------------- 
+
+Ignore XID band list for  EP_TOT values.  
+	
+	
+	
+Version 3.15.13  - 2005-11-11 (GL)
+--------------------------------- 
+
+Change RA, DEC output in HTML list to h:m:s d:m:s format. 
+In "allepic" mode, write only only flag column "EP_FLG" to html file.
+In "allepic" mode, write 4 flag columns <INST>_FLAG, EP_FLAG to
+fits output file.
+	
+Version 3.15.12  - 2005-10-19 (GL)
+--------------------------------- 
+
+Put keywords EP_SET<N> into 
+header of extension #0
+	
+Version 3.15.11  - 2005-10-18 (GL)
+--------------------------------- 	
+
+Correct error in copying values for M1_4_ML, M1_5_ML
+Close SSC-SPR-3528
+	
+	
+	
+Version 3.15.10  - 2005-10-11 (GL)
+--------------------------------- 
+
+Handle new emldetect lists with  ID_INST=0  for single instrument.
+Add 15 columns for individual energy band  likelihoods 
+  (only if one input list is an XID band list, i.e. 2XMM type source lists :)
+  PN_<band>_ML
+  M1_<band>_ML	
+  M2_<band>_ML
+	
+
+	
+Version 3.15.9 - 2005-04-12 (GL)
+--------------------------------- 
+
+Corrected *_CTS_ERR values for all-epic mode
+Copy all-epic filter, submode, and exposure keywords
+from emldetect list to srcmatch output list.
+
+	
+Version 3.15.8 - 2005-04-08 (GL)
+--------------------------------- 
+
+Fixed problem with compilation of test harness.
+	
+Version 3.15.7 - 2005-04-07 (GL)
+--------------------------------- 
+
+Fixed problem with compilation of test harness.
+	
+
+	
+Version 3.15.6 - 2005-04-04 (GL)
+--------------------------------- 
+
+Avoid abort of program, when XID list 
+input is combined with allepicmode=no 
+Close SSC-SPR-3447
+Set source indices EP_2_ML_ID, EP_2_BOXID to "NULL",
+if no matching source is present.
+Correct error that caused "Internal file overflow"
+in some cases in writing HTML output list.
+
+
+
+	
+Version 3.15.5 - 2005-02-10 (GL)
+--------------------------------- 
+
+Introduce new boolean parameter "allepicmode" to 
+indicate multi-camera input lists.
+No vector columns created, if multi-camera list is merged with XID band list.
+New columns HR_4, HR_4_ERR, EP_XID_ML
+Changed HTML output for 2XMM style source lists.
+	
+
+
+	
+Version 3.15.4 - 2005-02-10 (GL)
+--------------------------------- 
+
+Add columns pn_maskfrac, m1_maskfrac, m2_maskfrac
+	    pn_cts,pn_cts_err, m1_cts,m1_cts_err,  m2_cts, m2_cts_err
+Add column pn_flag, m1_flag, m2_flag (replacing old string columns)
+
+	
+Version 3.15.3 - 2005-02-03 (GL)
+--------------------------------- 
+
+Add 15  colums <INST>_<BAND>_VIG 
+Add 5   columns <INST>_ONTIME
+Add 3   columns <INST>_XID_ML
+	
+Version 3.15.2 - 2005-01-21 (GL)
+--------------------------------- 	
+
+Replace NaN positional errors from input list by 0.0 
+	
+	
+Version 3.15.1 - 2004-03-16 (GL)
+--------------------------------- 	
+
+Correction to documentation
+
+	
+Version 3.15 - 2003-07-01 (GL)
+--------------------------------- 
+
+Closed SPR: SSC-SPR-3107 (Incorrect flux units in merged source list)
+	
+	
+Version 3.14 - 2003-02-24 (GL)
+--------------------------------- 
+
+Close SSC-SPR-3033:
+  Copy ID colums and "TOT" columns also for
+  single band input lists.
+Close SSC-SPR3060:
+  No changes to code, included comment in documentation.
+Close SSC-SPR-3084:
+  Included flag columns in copylist routine.
+
+	
+Version 3.13 - 2002-09-19 (GL)
+--------------------------------- 
+
+Fixed bug that crashed test harness.
+
+	
+Version 3.12 - 2002-09-18 (GL)
+--------------------------------- 
+
+Closed SPRs:
+ SSC-SPR-2892 More info wanted in srcmatch output
+ SSC-SPR-2902 Exposure values wanted
+ SSC-SPR-2882 ATT_SRC keyword missing
+
+New keywords:
+ DATAMODE
+ FILT_PN
+ FILT_M1
+ FILT_M2
+ EXPOS_PN
+ EXPOS_M1
+ EXPOS_M2
+ ATT_SRC
+ SUBM_PN
+ SUBM_M1
+ SUBM_M2
+
+New columns:
+ nn_b_FLUX
+ ERR_nn_b_FLUX
+ ( nn=[PN,M1,M2]; b=[1,2,3,4,5,TOT,XID] )
+	
+
+	
+Version 3.11 - 2002-05-27 (GL)
+--------------------------------- 
+
+Converted .par file to XML
+	
+	
+Version 3.10.6 - 2002-05-17 (GL)
+--------------------------------- 
+	
+Fixed bug in writing flag columns
+Fixed test harness
+
+	
+Version 3.10.5 - 2002-05-15 (GL)
+--------------------------------- 
+New columns:
+     pn_val_flag
+     pn_ver_flag
+     pn_ver_comm
+     m1_val_flag
+     m1_ver_flag
+     m1_ver_comm
+     m2_val_flag
+     m2_ver_flag
+     m2_ver_comm
+	
+Closed SPR:
++ SSC-SPR-2823: Misleading instrument specific keywords
+  ( set INSTRUME = EPIC, removed DATAMODE, FILTER, and EXPOSURE )
+	
+	
+Version 3.10.4 - 2002-03-13 (GL)
+--------------------------------- 
+
+Closed SPR:
++ SSC-SPR-2812: Band 5 exposure column name typo
+
+Removed columns for energy band 6 from output table.
+
+	
+Version 3.10.3 - 2002-03-13 (GL)
+--------------------------------- 
+
+Fixed documentation.
+	
+	
+Version 3.10.2 - 2002-03-12 (GL)
+--------------------------------- 
+
+The output table now contains 54 new columns:
+xx_n, xx_n_ERR, xx_n_EXP 
+with xx=(M1,M2,PN), n=0..6	
+These columns contain countrates, countrate errors, and exposure values
+for individual instruments (xx) and energy bands (n).
+	
+	
+	
+Version 3.10.1 - 2002-02-14 (HB)
+--------------------------------- 
+	
++ SSC-SPR-2749 column name incompatible with omsrclistcomb	
+
+Version 3.10 - 2001-09-07 (GL)
+-------------------------------
+
+ + increased maximum length of HTML output lines to 1000
+ + set undefined values in vector columns to NULL
+ + added layout file
+
+Version 3.9 - 2001-09-03 (HB)
+-------------------------------
+
+three offending statements corrected to make code NAG F95 v4.1 compliant
+	
+Version 3.8 - 2001-07-27 (HB)
+-------------------------------	
+
+Closed SPR:
++ SSC-SPR-2488 Fails to compile with NAG F95 4.1	
+	
+Version 3.7.3 - 2001-07-05 (HB)
+-------------------------------
+
+Closed SPR:	
++ SSC-SPR-2457 Error when 1 of 3 input source lists is empty
+		
+Version 3.7.2 - 2001-06-01 (HB)
+-------------------------------
+
+Closed SPR:
++ SSC-SPR-2406 wrong permissions in src/edetect_chain	
+	
+Version 3.7.1 - 2001-05-04 (HB)
+-------------------------------
+
+Closed SPR:
++ SSC-SPR-2349	test harness fails on linux
+	
+	
+Version 3.7 - 2001-04-24 (HB)
+-----------------------------
+
+Closed SPRs:
++ SSC-SPR-2300 Need html targets for each source	
++ SSC-SPR-2277 Energy band wanted	
++ SSC-SPR-2274 vector columns in output
++ SSC-SPR-2272 EP_TOT count rates are not the simple sum of the *_TOT rates	
+
+Version 3.6.1 - 2000-11-09 (HB)
+-------------------------------
+
+Closed SPR:
+
++ SSC-SPR-2008 CONTENT content corrected
+	
+
+Version 3.6 - 2000-09-25 (D.M.)
+-------------------------------
+	+ reduced HTML source list by 80% for just an overview
+
+Version 3.5- 2000-07-26 (JV)
+----------------------------
+	+ repaired the bug noted in SSC-SPR-1936
+
+Version 3.4.3 - 2000-06-30 (JV)
+-------------------------------
+	+ bug fixed in the memory reallocation lines (see SSC-SPR-1891)
+
+Version 3.4.2 - 2000-06-21 (JV)
+-------------------------------
+	+ some errors in the keyword values were corrected (TELESCOP/DATE-OBS)
+	+ some improvemenst were made to the documentation.
+	
+Version 3.4.1 - 2000-06-21 (JV)
+-------------------------------
+	+ routine for reading the input set is changed, so that also
+	  also single instrument input list can be read (SPR-1550 & 1809)
+	+ in connection: also single band source lists can now be processed,
+ 	  although this should be tested more extensively
+	+ RA/DEC_CORR columns are now only written in the summary list, if
+	  those columns were present in the input set, but only if there  is
+	  only 1 input list. The eposcorr keywords are progagated.
+	+ v3.4 did not correctly process the HR columns, this is now fixed.
+	+ manual was brought to SAS standards
+	+ one test in test harness uses a real OM srclist en emldetect srclist
+	
+Version 3.4 - 2000-03-09 (GV/SOC)
+-----------
+       + uploaded version sent by Jacco via email.
+
+Version 3.3 (March 8, 2000)
+--------------------------
+	- patched version: no column src_num expected anymore, instead 
+	  ep_ml_id_src is used as primary source number info
+        - summary band information has now changed from 7 to 0
+	- columns VAR_STAT, N_BINS, P_VAR, VAR_EXP_NO are now initiliazed
+CLosed SPR: 1566, 1558
+Still open: 1550 (a source is only read if summary band/instr lines exist)
+	
+	
+------------------------
+Version 3.2 (Februari 11, 2000)
+	- error in documentation file and in DEPEND fixed.
+------------------------
+Version 3.1 (January 17, 2000)
+	- patched small errors in the test harness
+	- uses now slalib to calculate gal. coordinates
+------------------------
+Version 3.0 (January 17, 2000)
+
+	Substantial revision of this task:
+	-commandline parameters changed
+	-possibility to combine several input source lists added 
+	-cross identification with early detect stage data sets added
+------------------------
+Version 2.4 (September 20, 1999) <== NOT YET SUBMITTED - HB 
+	
+Closed SPR:
+
+  - 1159: Reading of omlist filename parameter corrected
+ 	
+	
+Version 2.3 (July 12, 1999)
+---------------------------
+
+- parameter names changed to agree with conventions	
+
+Open SPRs: 0778
+
+
+Version 2.2
+----------------------
+
+Closed SPRs:
+
+ - 0776: typos in description corrected 
+ - 0832: obsolete file deleted
+	
+
+Version 2.1
+----------------------	
+
+- minor corrections in the documentation
+	
+Closed SPR: 	
+
+ - 0592: value assigned to flags column
+	
+Version 2.0
+----------------------
+
+- error in config/srcmatch.par corrected
+- "To do list" added to ChangeLog	
+	
+Closed SPR:
+
+ - 0277: routine cp_head moved to module edetect_io to be used by all	
+         AIP SAS tasks
+	
+Version 1.4
+----------------------	
+
+Default values for file name parameters removed from config/srcmatch.par
+	
+ Closed SPRs:
+
+ - 0484: "draft" removed from task description	
+ - 0455: config/srcmatch.par: type label corrected	
+ - 0499: test harness upgraded (doesn't use 'diff' anymore)	
+	
+Version 1.3
+----------------------
+
+Test harness modified 
+	
+Version 1.2
+----------------------	
+
+Functionality added: task now performs cross-correlation of 
+	             EPIC and OM source lists  
+
+Closed SPRs:	
+	
+ - 0456: test/Makefile edited
+	
+Version 1.1
+----------------------
+
+ChangeLog added
+
+Closed SPRs:
+ 
+ - 0276: .par file provided instead of .prm
+ - 0278: test harness is more robust now
+ - 0279: "
+
+Open SPRs: (will be treated in next task version)
+
+ - 0275: test_plan
+ - 0277: cp_head to be replaced by generic mechanism 	
+
+Version 1.0
+----------------------------
+
+- Original version submitted to the SOC
+
+To do list:
+------------
+
+- the task will be upgraded substantially after further discussions of the 
+  desired layout and content of the final source lists have taken place.

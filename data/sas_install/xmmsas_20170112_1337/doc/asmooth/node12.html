@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Smoothing from an adaptive template</TITLE>
+<META NAME="description" CONTENT="Smoothing from an adaptive template">
+<META NAME="keywords" CONTENT="asmooth">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="asmooth.css">
+
+<LINK REL="previous" HREF="node11.html">
+<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node13.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+asmooth (asmooth-2.30) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node11.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Adaptive smoothing"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Ways of specifying the"></A>
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Weighting and masking"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="asmooth.html">Home Page</A> / <A  HREF="node3.html">Description</A> / <A  HREF="node6.html">Ways of specifying the</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00033600000000000000"></A>
+    <A NAME="asmooth:description:template"></A>
+<BR>
+Smoothing from an adaptive template
+</H3>
+
+<P>
+<TT>smoothstyle</TT>=`template'.
+
+<P>
+Suppose you wish to make a false-colour image from several images of the same piece of sky taken in different energy bands (or at different values of any other quantity). If the input images are event-based images of low exposure it may be rewarding to adaptively smooth them before combining them into a colour image. However, if each image is smoothed separately, in general convolvers of different widths will be allocated to the same place in the sky in the different images. This can cause a sort of chromatic aberration. To avoid this it is necessary to smooth each image according to the same template. This template might for example be established by adaptively smoothing the sum of all input images, then writing the result to file via the parameters <TT>writetemplateset</TT> and <TT>outtemplateset</TT>. This template image just stores the characteristic width of the gaussian used to smooth each pixel of the input image. If you select <TT>smoothstyle</TT>=`template' and supply the template set to parameter <TT>smoothstyle</TT>=`intemplateset', you will get the same smoothing pattern for any <TT>inset</TT>.
+
+<P>
+The same result can be achieved through <TT>outconvolversset</TT> and <TT>outindeximageset</TT>, which is a more robust method. I'll probably abandon the template facility eventually.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node11.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Adaptive smoothing"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Ways of specifying the"></A>
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Weighting and masking"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

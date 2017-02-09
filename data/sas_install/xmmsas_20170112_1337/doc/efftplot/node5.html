@@ -1,0 +1,238 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="efftplot">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="efftplot.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="efftplot.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+efftplot (efftplot-2.20) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Examples"></A>
+<A HREF="efftplot.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="efftplot.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="efftplot:description:parameters"></A>
+<A NAME="519"></A>
+<tr valign=top bgcolor='silver'><td><b>infile</b></td><td>yes</td><td><A HREF=../param/node3.html>Dataset</A></td><td>``''</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5> Name of the <A NAME="tex2html23"
+  HREF="http://heasarc.gsfc.nasa.gov/docs/heasarc/fits.html">FITS</A> file containing
+
+the EPIC source time series. Case sensitive.  <br>&nbsp;</td></tr>
+
+<A NAME="529"></A>
+<tr valign=top bgcolor='silver'><td><b>nbins</b></td><td>no</td><td><A HREF=../param/node3.html>Integer</A></td><td>1</td><td>Constraint : must be a power of 2,
+  <TT>Nbins</TT> <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\leq$"></SPAN> NBINLC</td></tr>
+
+<tr valign=top><td colspan=5> Number of bins per interval. An
+  interval is a segment of the light curve for which a PDS is
+  calculated. Each PDS is averaged at the end of the run. The
+  number of frequency bins of the output PDS plot is <TT>Nbins</TT>/2.
+  In case <TT>Nbins</TT>=1 (the default value), <TT>Nbins</TT> is set to
+  the maximum legal value (full resolution spectrum).  <br>&nbsp;</td></tr>
+
+<A NAME="544"></A>
+<tr valign=top bgcolor='silver'><td><b>bkgsub</b></td><td>no</td><td><A HREF=../param/node3.html>Boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>If the background should be subtracted (no =&gt; total counts used or yes =&gt; net counts used) to create the power density spectrum <br>&nbsp;</td></tr>
+
+<A NAME="551"></A>
+<tr valign=top bgcolor='silver'><td><b>nerrorpoints</b></td><td>no</td><td><A HREF=../param/node3.html>Integer</A></td><td>5</td><td>Constraint : <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\geq$"></SPAN> 5</td></tr>
+
+<tr valign=top><td colspan=5> This
+  parameter defines the way in which the error bars on the plotted PDS
+  are calculated. If the number of PDS averaged is higher than the
+  <TT>nerrorpoints</TT> value (default=5), the error bars are evaluated
+  by using the standard deviation of the average (based on the
+  measured scatter).  Otherwise the error bars are evaluated by
+  propagating the theoretical error bars through an averaging process.
+  The theoretical error bars are obtained from the relevant chi-square
+  distribution.  For example, with normalization = 1, the theoretical
+  error value is 2 (Leahy normalization) for  (white) noise.
+  The theoretical error bar on the averaged and rebinned final
+  spectrum is the theoretical error bar on a single interval divided
+  by <SPAN CLASS="MATH"><IMG
+ WIDTH="52" HEIGHT="39" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$\sqrt{MW}$"></SPAN>, where M is the number of intervals averaged and W is
+  the number of frequency bins combined.  <br>&nbsp;</td></tr>
+
+<A NAME="561"></A>
+<tr valign=top bgcolor='silver'><td><b>normalization</b></td><td>no</td><td><A HREF=../param/node3.html>Integer</A></td><td>1</td><td>Constraint : 0, <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$\pm$"></SPAN>1 or <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$\pm$"></SPAN>2</td></tr>
+
+<tr valign=top><td colspan=5>
+  Flag to specify the type of normalization to apply to the PDS. <br>&nbsp;</td></tr>
+
+<A NAME="568"></A>
+<tr valign=top bgcolor='silver'><td><b>fillgaps</b></td><td>no</td><td><A HREF=../param/node3.html>Boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>If the gaps have to be filled, value
+  must be yes.  <br>&nbsp;</td></tr>
+
+<A NAME="575"></A>
+<tr valign=top bgcolor='silver'><td><b>npoints</b></td><td>no</td><td><A HREF=../param/node3.html>Integer</A></td><td>2</td><td>Constraint : 1, 2, 3 or 4</td></tr>
+
+<tr valign=top><td colspan=5> Replace the gaps
+  in the input series with the running mean (available only if
+  fillgaps is ``yes''). If <TT>g</TT>apfill = <TT>n</TT>, data gaps in
+  the input series are filled with the running mean values calculated
+  over <TT>n</TT> bins.<br>&nbsp;</td></tr>
+
+<A NAME="586"></A>
+<tr valign=top bgcolor='silver'><td><b>removetrend</b></td><td>no</td><td><A HREF=../param/node3.html>Boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>Indicate if a polynomial trend
+  has to be removed from the time series.  <br>&nbsp;</td></tr>
+
+<A NAME="593"></A>
+<tr valign=top bgcolor='silver'><td><b>polyorder</b></td><td>no</td><td><A HREF=../param/node3.html>Integer</A></td><td>1</td><td>Constraint : 1, 2, 3 or 4</td></tr>
+
+<tr valign=top><td colspan=5> A
+  polynomial trend, up to 4th-order, can be removed from input time
+  series.  Setting the parameter <TT>polyorder</TT> equal to 1, 2, 3 or
+  4 removes a 1st, 2nd, 3rd or 4th-order polynomial trend,
+  respectively (available only if removetrend is ``yes'').  <br>&nbsp;</td></tr>
+
+<A NAME="602"></A>
+<tr valign=top bgcolor='silver'><td><b>operation</b></td><td>no</td><td><A HREF=../param/node3.html>Integer</A></td><td>1</td><td>Constraint : <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\geq$"></SPAN> 2</td></tr>
+
+<tr valign=top><td colspan=5> Specify how
+  the removal trend is applied to the data (available only if
+  removetrend is ``yes'').  The trend can be subtracted from the time
+  series (operation = 1), or the time series can be divided by the
+  trend (operation = 2), or the time series can be replaced with the
+  trend (operation = 3). By default the trend is subtracted (value set
+  to 1).  <br>&nbsp;</td></tr>
+
+<A NAME="609"></A>
+<tr valign=top bgcolor='silver'><td><b>rebin</b></td><td>no</td><td><A HREF=../param/node3.html>Boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>Indicate if the final PDS has to be
+  rebinned or not.  <br>&nbsp;</td></tr>
+
+<A NAME="616"></A>
+<tr valign=top bgcolor='silver'><td><b>rebintype</b></td><td>no</td><td><A HREF=../param/node3.html>String</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5> The final PDS can be rebinned either
+  with a constant rebinning factor or as a geometric series (to
+  produce nearly equispaced bins in a logX representation).  Values
+  greater than 1 indicate a constant rebinning factor.  Geometric
+  series rebinning is obtained by entering a value less than -1, whose
+  modulus represents the step of the geometric series. The range of
+  allowed values for a negative rebinning parameter is limited (-1<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\geq$"></SPAN>
+  rebintype <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$&gt;$"></SPAN>-3).  <br>&nbsp;</td></tr>
+
+<A NAME="623"></A>
+<tr valign=top bgcolor='silver'><td><b>plotdevice</b></td><td>no</td><td><A HREF=../param/node3.html>String</A></td><td>``/PS''</td><td>Constraint : valid device type</td></tr>
+
+<tr valign=top><td colspan=5>
+  Name of a valid output device. Not case sensitive.  <br>&nbsp;</td></tr>
+
+<A NAME="630"></A>
+<tr valign=top bgcolor='silver'><td><b>outfile</b></td><td>no</td><td><A HREF=../param/node3.html>String</A></td><td>``default.ps''</td><td>less than 1024 char</td></tr>
+
+<tr valign=top><td colspan=5> Name
+  of the output file containing the plot. Case sensitive.  <br>&nbsp;</td></tr>
+
+<A NAME="637"></A>
+<tr valign=top bgcolor='silver'><td><b>xscale</b></td><td>no</td><td><A HREF=../param/node3.html>String</A></td><td>``lin''</td><td>Constraint : ``log'' or ``lin''</td></tr>
+
+<tr valign=top><td colspan=5>
+  Use a logarithmic or a linear scale on the X-axis.  <br>&nbsp;</td></tr>
+
+<A NAME="644"></A>
+<tr valign=top bgcolor='silver'><td><b>yscale</b></td><td>no</td><td><A HREF=../param/node3.html>String</A></td><td>``lin''</td><td>Constraint : ``log'' or ``lin''</td></tr>
+
+<tr valign=top><td colspan=5>
+  Use a logarithmic or a linear scale on Y-axis. Where
+  yscale=``log'' negative values are omitted.  <br>&nbsp;</td></tr>
+
+<A NAME="651"></A>
+<tr valign=top bgcolor='silver'><td><b>gtis</b></td><td>no</td><td><A HREF=../param/node3.html>Boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>Indicate whether to provide a GTI file.<br>&nbsp;</td></tr>
+
+<A NAME="658"></A>
+<tr valign=top bgcolor='silver'><td><b>gtiset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>No default</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>Name of the <A NAME="tex2html24"
+  HREF="http://heasarc.gsfc.nasa.gov/docs/heasarc/fits.html">FITS</A> file
+
+containing the GTIs. Case sensitive. <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Examples"></A>
+<A HREF="efftplot.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

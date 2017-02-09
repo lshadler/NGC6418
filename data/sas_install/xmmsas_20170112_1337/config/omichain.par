@@ -1,0 +1,307 @@
+<!-- converted from XPI formatted "omichain.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="inpdirectory" type="string" default=" ">
+   <DESCRIPTION>
+    Name of input file directory: 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="outdirectory" type="string" default=" ">
+   <DESCRIPTION>
+    Name of output file directory: 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="comment" type="string" default=" ">
+   <DESCRIPTION>
+    Comment for the output
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="filters" type="string" list="yes" default=" ">
+   <DESCRIPTION>
+    List of OM filters to be processed
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="exposures" type="string" list="yes" default=" ">
+   <DESCRIPTION>
+    List of OM exposures to be processed
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="ommodmapnsig" type="int" default="3">
+   <DESCRIPTION>
+    Significance level for sigma clipping
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    ommodmapnsig in [1:10]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="ommodmapnbox" type="int" default="16">
+   <DESCRIPTION>
+    Size of sliding box (in units of 8 pixels)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    ommodmapnbox in [1:2048]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="omdetectnsigma" type="real" default="2.0">
+   <DESCRIPTION>
+    Number of sigma for a detection
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    omdetectnsigma in [1.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+
+  <PARAM id="omdetectminsignificance" type="real" default="3.0">
+   <DESCRIPTION>
+    Minimum allowed source significance
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    omdetectminsignificance in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+ <PARAM id="omdetectdetectextended" type="bool" default="yes">
+   <DESCRIPTION>
+    Detect extended sources
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ <PARAM id="omattrotateimage" type="bool" default="yes">
+   <DESCRIPTION>
+    Create the rotated image
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+
+  <PARAM id="omsrclistcombnsigma" type="real" default="3">
+   <DESCRIPTION>
+    Sigma threshold
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    omsrclistcombnsigma in [1.0:10.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+
+
+ <PARAM id="omsrclistcombalignaxes" type="bool" default="yes">
+   <DESCRIPTION>
+    Parameter alignaxes of omsrclistcomb
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+
+  <PARAM id="omsrclistcombusecat" type="bool" default="yes">
+   <DESCRIPTION>
+    Use the USNO-SA 1 catalog
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+
+  <PARAM id="usecat" type="bool" default="yes">
+   <DESCRIPTION>
+    Use the USNO-SA 1 catalog
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+
+  <PARAM id="catfile" type="string" default="usnocat.fit">
+   <DESCRIPTION>
+    Name of usno catalogue file: 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+
+    <PARAM id="maxradecerr" type="real" default="1.0">
+      <DESCRIPTION>
+      Minimum allowed source significance
+      </DESCRIPTION>
+      <CONSTRAINTS>
+      maxradecerr in [0.5:3.0]
+      </CONSTRAINTS>
+    </PARAM>
+
+
+
+      <PARAM id="maxrmsres" type="real" default="1.5">
+      <DESCRIPTION>
+      Minimum allowed source significance
+      </DESCRIPTION>
+      <CONSTRAINTS>
+      maxrmsres in [1.0:3.0]
+      </CONSTRAINTS>
+      </PARAM>
+
+
+<PARAM id="processmosaicedimages" type="bool" default="yes">
+   <DESCRIPTION>
+    Source-detection on stacked images
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+ <PARAM id="ommergeliststolerance" type="real" mandatory="no" default="2.0">
+   <DESCRIPTION>
+    Tolerance (arcsecs) for source matching
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    ommergeliststolerance in [1:10]
+
+   </CONSTRAINTS>
+  </PARAM>
+
+
+ <PARAM id="ommergelistsmaxrawrate" type="real" mandatory="no" default="5.0">
+   <DESCRIPTION>
+    Maximim raw count-rate for keeping
+   </DESCRIPTION>
+   <CONSTRAINTS>
+      ommergelistsmaxrawrate in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+ 
+  <PARAM id="ommergelistsplotfile" type="string" default="">
+   <DESCRIPTION>
+    Name of hardcopy plot filename-optional
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="ommergelistsregionfile" type="string" default="">
+   <DESCRIPTION>
+    Name of hardcopy plot filename-optional
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="psfphotometryenabled" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    Allows psf-photometry in the omdetect task.
+    If true then sources with close neighbours will have their
+    photometry recomputed using point-spread-function fitting.
+    Please note that this method is under development and the use 
+    of this parameter is currently disabled in the task omdetect.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+<PARAM id="backgroundmethod" type="int" default="1">
+   <DESCRIPTION>
+    Point-source background method
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    backgroundmethod in [1:7]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="maxrawcountrate" type="real" default="50.0">
+   <DESCRIPTION>
+    Count rate threshold above which the psf-photometry 
+    method specified by the parameter psfphotometry enabled 
+    will not be applied.	
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    maxrawcountrate in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="rawattitude" type="int" default="1">
+   <DESCRIPTION>
+    Flag for using either RAF or AHF attitude data 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    rawattitude in [0:2]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="omvariabilityminstd" type="real" default="2.0">
+   <DESCRIPTION>
+    Minimal standard deviation for the task omvariability 	
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    omvariabilityminstd in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

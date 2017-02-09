@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="rgsevconvert">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsevconvert.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="rgsevconvert.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsevconvert (rgsevconvert-1.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="rgsevconvert.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsevconvert.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="rgsevconvert:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+========== convert the EVENTS table ==========
+
+IF ( exists attribute PI_REF )
+  add WCS attributes to the PI column:
+    TCRPX = 0
+    TCRVL = PI_REF
+    TCDLT = PI_WID
+  delete attributes PI_REF and PI_WID
+
+IF ( exists attribute BETA_REF )
+  add WCS attributes to the BETA_CHANNEL column:
+    TCRPX = 0
+    TCRVL = BETA_REF
+    TCDLT = BETA_WID
+  delete attributes BETA_REF and BETA_WID
+
+IF ( exists attribute XDSP_REF )
+  add WCS attributes to the XDSP_CHANNEL column:
+    TCRPX = 0
+    TCRVL = XDSP_REF
+    TCDLT = XDSP_WID
+  delete attributes XDSP_REF and XDSP_WID
+
+========== convert the EXPMn_0c images ==========
+
+FOR EACH ccd
+  FOR EACH node
+    IF ( exists block EXPM&lt;node&gt;_0&lt;ccd&gt; )
+      rename block to EXPMAP&lt;node&gt;&lt;ccd&gt;
+      add WCS attributes:
+        CRPIX1 = 1
+        CRVAL1 = BETA_REF
+        CDELT1 = BETA_WID
+        CRPIX2 = 1
+        CRVAL2 = XDSP_REF
+        CDELT2 = XDSP_WID
+      delete attributes BETA_REF, BETA_WID, XDSP_REF, XDSP_WID
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

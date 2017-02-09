@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Event List Output</TITLE>
+<META NAME="description" CONTENT="Event List Output">
+<META NAME="keywords" CONTENT="evselect">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="evselect.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+evselect (evselect-3.62) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Products creation"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Extraction Stage (extractor)"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Spectrum Extraction"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node25.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="evselect.html">Home Page</A> / <A  HREF="node3.html">Description</A> / <A  HREF="node6.html">Extraction Stage (extractor)</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00032200000000000000"></A>
+<A NAME="evselect:user:filteringmodes"></A>
+<BR>
+Event List Output
+</H3>
+In addition to the above product files, the result of the filtering
+stage can be propagated into the output as well.  This can be done in
+four different ways depending on the setting of the two task parameters
+<TT>flagcolumn</TT> and <TT>filteredset</TT>.  The first parameter specifies the
+name of a column in the table which can be used to flag an event.  In
+this non-destructive mode, non-selected events are merely flagged by
+setting a corresponding bit in the specified column, which must be
+integer-valued.  The bit posistion to be manipulated must be set using
+the parameter <TT>flagbit</TT>.  If the <TT>flagcolumn</TT> parameter is not set,
+non-selected events are physically removed, and thus will not be
+present in the final filtered event list.  If non-destructive
+filtering is selected and the named flag-column does not exist, it
+will be created.
+
+<P>
+Thus setting of the <TT>filteredset</TT> parameter determines whether
+the input event list is modified according to the above two schemes or
+a new event list file is created accordingly.  The following table
+provides a quick overview over the four possible cases:
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=142>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=142><TT>flag column set</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=142><TT>flag column not set</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=142><TT>output file name set</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=142>the input file is modified; non-selected
+events will be removed</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=142>the input file is modified by adding an
+integer flag column indicating each event's selection status</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=142><TT>output file name not set</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=142>input file is not modified; selected events
+will be copied to new output file</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=142>input file is not modified; all events (selected and non-selected) get
+copied to new event list file with an integer flag column</TD>
+</TR>
+</TABLE>
+</DIV>
+If the <TT>filteredset</TT> parameter is not set, then the parameter
+<TT>keepfilteroutput</TT>, which is set to false by default, will
+prevent one from modifying the input table.  If one wishes to modify
+the input file (either destructively or by flagging) one needs to set
+<TT>keepfilteroutput</TT> to true.  Note that when <A NAME="1061"></A><A NAME="tex2html9"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+produces an output table file, it does so by first creating an exact
+copy of the input table file, and then preforming all filtering
+operations on the copy.  Thus any extensions in the input file will
+also appear in the output file.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Products creation"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Extraction Stage (extractor)"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Spectrum Extraction"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node25.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>getDetImageEdgesInfo(): Get a default frame information for a DET image</TITLE>
+<META NAME="description" CONTENT="getDetImageEdgesInfo(): Get a default frame information for a DET image">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="previous" HREF="node176.html">
+<LINK REL="up" HREF="node175.html">
+<LINK REL="next" HREF="node179.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node177.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Examples"></A>
+<A HREF="node175.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Short cuts to saving"></A>
+<A HREF="node179.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Quick Sorting"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node175.html">Short cuts to saving</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000292000000000000000"></A>
+<A NAME="ssclib:description:save_image:getDetImageEdgesInfo"></A>
+<BR>
+getDetImageEdgesInfo(): Get a default frame information for a DET image
+</H2>
+
+<P>
+<PRE>
+  interface getDetImageEdgesInfo
+    subroutine getDetImageEdgesInfoDouble(detImage, outBinSizeXY, outOffsetXY)
+      real(double),  intent(in) :: detImage(:,:)
+      real(single),  intent(in), dimension(2), optional :: outBinSizeXY, outOffsetXY
+
+      type(aryEdgesInfoT) :: getDetImageEdgesInfo
+    end subroutine getDetImageEdgesInfoDouble
+
+    subroutine getDetImageEdgesInfoSingle()
+    end subroutine getDetImageEdgesInfoSingle
+    subroutine getDetImageEdgesInfoInt32()
+    end subroutine getDetImageEdgesInfoInt32
+    subroutine getDetImageEdgesInfoInt16()
+    end subroutine getDetImageEdgesInfoInt16
+    subroutine getDetImageEdgesInfoInt8()
+    end subroutine getDetImageEdgesInfoInt8
+  end interface
+</PRE>
+
+<P>
+As for the input array (<TT>detImage</TT>), all the Real and Integer types
+are allowed, and that is the only difference in the interface.
+
+<P>
+<TT>outBinSizeXY</TT> (optional) is a 1-dimensional array with the size of 2.
+The default is (/ 80.0, 80.0 /).
+
+<P>
+<TT>outOffsetXY</TT> (optional) is a 1-dimensional array with the size of 2;
+if <TT>outOffsetXY=(/a, b/)</TT> is given, the (a,b) in PHYSICAL coordinates
+is located at the centre of the array.  In default, (a, b)==(0.0, 0.0).
+
+<P>
+This function returns <TT>type(aryEdgesInfoT)</TT> (defined
+in <TT>array_utils</TT>).
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>FITS file positions</TITLE>
+<META NAME="description" CONTENT="FITS file positions">
+<META NAME="keywords" CONTENT="edet2sky">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="edet2sky.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+edet2sky (esky2det-1.18) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Command-line position entry."></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Task requirements."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="edet2sky.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000">
+FITS file positions</A>
+</H2>
+
+<P>
+A list of input positions may be supplied in a FITS table by setting
+<TT>intab</TT>=file:table. In this case the task attempts to read 
+positions from columns <A NAME="529"></A><TT>DETX</TT> and <A NAME="531"></A><TT>DETY</TT>, if 
+<TT>inputunit</TT>=`det' or columns <A NAME="534"></A><TT>RAWX</TT>, <A NAME="536"></A><TT>RAWX</TT>
+and <A NAME="538"></A><TT>CCDNR</TT> if <TT>inputunit</TT>=`raw', from a file and table specified
+by the parameter <TT>intab</TT>.
+
+<P>
+There are two options for the output: either the output positions can be written to columns in the same file, or a new file can be created to contain them. 
+If the former is desired, set <TT>withouttab</TT>=`no'; if the latter, 
+set <TT>withouttab</TT>=`yes' and provide the name of the new dataset and 
+table in <TT>outtab</TT>. The transformed position values are written to the 
+columns <A NAME="545"></A><TT>RAWX</TT>, <A NAME="547"></A><TT>RAWY</TT>, <A NAME="549"></A><TT>CCDNR</TT>, <A NAME="551"></A><TT>FLAG</TT>, 
+<A NAME="553"></A><TT>DETX</TT>, <A NAME="555"></A><TT>DETY</TT>, <A NAME="557"></A><TT>RA</TT>, <A NAME="559"></A><TT>DEC</TT>, <A NAME="561"></A><TT>IMAGEX</TT>,
+<A NAME="563"></A><TT>IMAGEY</TT>, <A NAME="565"></A><TT>X</TT> and <A NAME="567"></A><TT>Y</TT> (see section 
+<A HREF="node10.html#edet2sky:description:outputfiles">7</A> for a detailed description of the 
+output format).
+
+<P>
+The value of <A NAME="569"></A><TT>FLAG</TT> is set to 0 unless a source does not fall on 
+any CCD, in which case <A NAME="571"></A><TT>FLAG</TT> is set to 1. In these cases the values 
+of <A NAME="573"></A><TT>RAWX</TT>, <A NAME="575"></A><TT>RAWY</TT> and <A NAME="577"></A><TT>CCDNR</TT> represent positions 
+relative to the nearest CCD.
+
+<P>
+An example of input from a file <I>mos_raw.fits</I>, containing a set of 
+raw coordinate positions in an extension called POSITIONS and writing the
+output coordinates into a table <I>output</I> in a file <I>fullpos.ds</I>, 
+would be:
+
+<P>
+<PRE>
+edet2sky intab=mos_raw.fits:POSITIONS calinfostyle=set calinfoset=mos_rev2730_im.ds 
+         inputunit=raw outtab=fullpos.ds:output
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Command-line position entry."></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Task requirements."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

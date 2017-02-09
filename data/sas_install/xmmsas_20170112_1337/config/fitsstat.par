@@ -1,0 +1,149 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="set" type="dataset" default="" mandatory="yes">
+   <DESCRIPTION>
+    Name of the FITS data set, followed by `:TABLENAME' if necessary.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="ext" type="int" default="-1">
+   <DESCRIPTION>
+    Number of the FITS extention to look at.  `:TABLENAME' in the argument `set', if specified, has a priority over this.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="datatype" type="string" default="image">
+   <DESCRIPTION>
+    Type of the data.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="image">
+    </ITEM>
+
+    <ITEM value="column">
+     <PARAM id="column" type="string" mandatory="yes">
+      <DESCRIPTION>
+       The column name.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="coordsunit" type="string" default="image">
+   <DESCRIPTION>
+    The unit of the coordinates.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withregion" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to give the region or not (Default: no)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no" />
+    <ITEM value="yes">
+     <PARAM id="regionstyle" type="string" default="circle">
+      <DESCRIPTION>
+       Style of the region: circle or annulus.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+      <CASE>
+       <ITEM value="circle" />
+       <ITEM value="annulus" />
+      </CASE>
+     </PARAM>
+
+     <PARAM id="centrecoords" type="real" list="yes" mandatory="yes">
+      <DESCRIPTION>
+       Centre coordinates of the region (x,y).
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="radii" type="real" list="yes" mandatory="yes">
+      <DESCRIPTION>
+       (Outer) Radius for the circular/annular region.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       radii in (0.0:]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="radiiinner" type="real" list="yes" mandatory="no">
+      <DESCRIPTION>
+       Inner-radius for the annular region.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       radiiinner in [0.0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withmincoords" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to specify the minimum area coordinates.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="minareacoords" type="real" list="yes" mandatory="yes">
+      <DESCRIPTION>
+       Minimum coordinates (x,y).
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withmaxcoords" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to specify the maximum area coordinates.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="maxareacoords" type="real" list="yes" mandatory="yes">
+      <DESCRIPTION>
+       Maximum coordinates (x,y).
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withvallower" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to specify the lower thershold for the image value to count.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="vallower" type="real" mandatory="yes">
+      <DESCRIPTION>
+       Lower threshold of the image.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withvalupper" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to specify the upper thershold for the image value to count.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="valupper" type="real" mandatory="yes">
+      <DESCRIPTION>
+       Upper threshold of the image.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>
+

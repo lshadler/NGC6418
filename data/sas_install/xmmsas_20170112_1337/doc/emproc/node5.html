@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Bad Pixels</TITLE>
+<META NAME="description" CONTENT="Bad Pixels">
+<META NAME="keywords" CONTENT="emproc">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emproc.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emproc (epicproc-2.21) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Flow Chart"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Details"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emproc.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000">
+Bad Pixels</A>
+</H2>
+
+<P>
+<A NAME="684"></A><A NAME="tex2html8"
+  HREF="../emproc/index.html"><SPAN  CLASS="textbf">emproc</SPAN></A>
+has a more sensitive algorithm for bad pixels detection
+which is <A NAME="688"></A><A NAME="tex2html9"
+  HREF="../embadpixfind/index.html"><SPAN  CLASS="textbf">embadpixfind</SPAN></A>
+(refer to this tash for further
+information). This task has been developed for finding bad pixels in
+an EPIC-MOS image in a completely automatic way.  
+
+<P>
+If part of the exposure is affected by flares, this can seriously
+reduce the power of the bad pixels search (flares act as noise for the
+bad pixels and make detecting them more difficult).  Therefore an
+intermediate flare screening is necessary (Fig <A HREF="#emproc"><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/crossref.png"></A>).  The bright
+pixels (which can perturb the flare screening) are flagged using
+<A NAME="692"></A><A NAME="tex2html10"
+  HREF="../ebadpixupdate/index.html"><SPAN  CLASS="textbf">ebadpixupdate</SPAN></A>.  The resulting files are used to generate Good
+Time Intervals outside flares.  Then the bad pixel search is run a
+second time on the data outside flares, in incremental mode.
+
+<P>
+Before applying this flare screening, we check the data quality
+inspecting the field of view value of each CCD (GATTI flare screening
+in Fig <A HREF="node4.html#emproc:emproc:figure">3.1</A>). If we obtain a value greater than 3 arcmin, we
+consider that the flare screening can be applied.
+
+<P>
+For <TT>embadpixfind</TT> the algorithm is called a third time
+(incrementally) on energies below 500 eV (and after flare screening),
+unless <TT>findlowener</TT>=N.  This sometimes detects bad pixels more
+easily, because most appear at low energy.
+
+<P>
+Parts of the observation can be excluded from the search for bad
+pixels by giving <A NAME="698"></A><A NAME="tex2html11"
+  HREF="../emproc/index.html"><SPAN  CLASS="textbf">emproc</SPAN></A>
+an additional GTI file via the
+parameters <TT>withbadpixgti</TT> and <TT>badpixgti</TT>.
+
+<P>
+For instance:
+
+<P>
+<DIV ALIGN="CENTER">
+<TT>emproc withbadpixgti=yes badpixgti=mygti.ds</TT>
+
+</DIV>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Flow Chart"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Details"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,104 @@
+<!-- converted from XPI formatted "adapt_2000.par.xpi"-->
+<FILE>
+ <CONFIG>
+ 	<PARAM id="smoothingcounts" type="real" mandatory="yes" default="50">
+ 	<DESCRIPTION>
+   	 	 Number of counts to accumulate for smoothing 
+   	</DESCRIPTION>
+   		<CONSTRAINTS>
+    		true
+   		</CONSTRAINTS>
+  	</PARAM>
+
+ 	<PARAM id="thresholdmasking" type="real" mandatory="yes" default="0.02">
+ 	<DESCRIPTION>
+   	 	Scale factor for excluding regions based on a mask image
+   	</DESCRIPTION>
+   		<CONSTRAINTS>
+    		true
+   		</CONSTRAINTS>
+  	</PARAM>
+
+ 	<PARAM id="detector" type="int" mandatory="yes" default="0">
+ 	<DESCRIPTION>
+   	 	 Detector selection
+   	</DESCRIPTION>
+   		<CONSTRAINTS>
+    		detector in [0:1]
+   		</CONSTRAINTS>
+  	</PARAM>
+  	<PARAM id="elow" type="int" mandatory="yes" default="400">
+ 	<DESCRIPTION>
+   	 	 Lower energy limit for the energy band in eV
+   	</DESCRIPTION>
+   		<CONSTRAINTS>
+    		true
+   		</CONSTRAINTS>
+  	</PARAM>
+  	
+  	<PARAM id="ehigh" type="int" mandatory="yes" default="1250">
+ 	<DESCRIPTION>
+   	 	 Upper energy limit for the energy band in eV
+   	</DESCRIPTION>
+   		<CONSTRAINTS>
+    		true
+   		</CONSTRAINTS>
+  	</PARAM>
+
+    <PARAM id="binning" type="int" mandatory="yes" default="1">
+ 	<DESCRIPTION>
+   	 	 Binning factor (1, 2, or 4)
+   	</DESCRIPTION>
+   		<CONSTRAINTS>
+    		binning .eq. 1 .or. binning .eq. 2 .or. binning .eq. 4
+   		</CONSTRAINTS>
+  	</PARAM>
+  	
+    <PARAM id="withpartcontrol" type="bool" mandatory="yes" default="yes">
+ 	<DESCRIPTION>
+   	 Subtract model particle background image? 
+   	</DESCRIPTION>
+  	</PARAM>
+  	
+        <PARAM id="withsoftcontrol" type="bool" mandatory="no" default="no">
+ 	 <DESCRIPTION>
+   	  Subtract soft proton background image?
+   	 </DESCRIPTION>
+  	</PARAM>
+  	
+        <PARAM id="withswcxcontrol" type="bool" mandatory="no" default="no">
+ 	 <DESCRIPTION>
+   	  Subtract SWCX background image?
+   	 </DESCRIPTION>
+  	</PARAM>
+                                                                               
+        <PARAM id="withmaskcontrol" type="bool" mandatory="no" default="no"> 
+         <DESCRIPTION>
+          Additional masking using input image?
+         </DESCRIPTION> 
+        </PARAM>                                                               
+
+        <PARAM id="maskfile" type="string" mandatory="no" default="">
+ 	 <DESCRIPTION>
+	  Input file for additional masking 
+   	 </DESCRIPTION>
+  	</PARAM>  		  	
+
+        <PARAM id="prefix" type="string" mandatory="no" default="S003">
+ 	 <DESCRIPTION>
+   	  	FITS file prefix (S/U+EXPID)
+   	 </DESCRIPTION>
+  	</PARAM>  
+
+	<PARAM id="clobber" type="bool" mandatory="no" default="yes">
+ 	<DESCRIPTION>
+   	 	 Clobber parameter, 1: clobber, 0 not
+   	</DESCRIPTION>
+        <CONSTRAINTS>
+                clobber in [0:1]
+        </CONSTRAINTS>
+  	</PARAM>
+
+ </CONFIG>
+</FILE>
+

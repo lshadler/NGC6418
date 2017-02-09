@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Behaviour</TITLE>
+<META NAME="description" CONTENT="Behaviour">
+<META NAME="keywords" CONTENT="eoptloadmask">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eoptloadmask.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eoptloadmask (ebkgmap-2.9) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Optical loading"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eoptloadmask.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000"></A>
+<A NAME="eoptloadmask:description:behaviour"></A>
+<BR>
+Behaviour
+</H2>
+
+<P>
+This task reads one or more external catalogues in the FITS table
+format, where both the FITS filename and Table name can be
+specified by users.  If the latter is omitted, it is
+assumed the first extention of the FITS file is
+the source list table.
+
+<P>
+The source-list tables can contain an arbitrary number of columns.
+The two of them must be Right Ascention and Declination in J2000
+in unit of degree with Real type.  In default the column names
+for those are <TT>RA</TT> and <TT>DEC</TT>, however users can
+explicitly specify them by <TT>colnamestyle</TT>=user with
+<TT>colra</TT> and <TT>coldec</TT>, respectively.
+Note that these two parameters accept a list, the order of which
+must be the same as that of the source list.  If only one
+element is specified for either or both of those two parameters,
+that value is used for all the input source-lists.
+
+<P>
+The source-list tables can contain an arbitrary number of rows.
+Users can filter out some sources in them by stating the filtering
+conditions with <TT>expressions</TT>, where the columns in the table
+are used as a parameter.  Note that the columns used in <TT>expressions</TT>
+must exist in the FITS file. <TT>expressions</TT> accepts a list,
+the order of which is the same as that of the source list;
+in other words users can apply different filtering conditions
+for different input source-lists.
+
+<P>
+After filtering out uninteresting, perhaps weak, sources,
+this task outputs a mask file, in which the positions of
+the sources are masked out as a filled circle.
+The radius of the circle can be a fixed value <TT>radius</TT> (when
+<TT>radiusstyle</TT>=fixed (default); in unit of arcsec), or
+alternatively the input source-list files can offer a column that
+lists the radius in arcsec for each source.  In the latter case,
+<TT>radiusstyle</TT>=column and the list of the column names of it
+for each input source-list <TT>colradius</TT> (Default: <TT>RADIUS</TT>)
+can be specified.
+
+<P>
+In default, those areas regarded to be affected with optical-loading
+have the value of zero, and the rest, one.
+This behaviour can be inverted with <TT>isinverted</TT>=no.
+The default behaviour is convenient to use of the output mask file
+with <A NAME="389"></A><A NAME="tex2html2"
+  HREF="../dpssflag/index.html"><SPAN  CLASS="textbf">dpssflag</SPAN></A>.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Optical loading"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

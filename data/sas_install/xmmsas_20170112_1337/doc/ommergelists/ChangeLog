@@ -1,0 +1,119 @@
+ChangeLog for ommergelists
+=========================
+
+Version 1.0.5 - 2016-04-21 (AI)
+------------------------
+	+ Error when there is not any repeated SRCID in final output file fixed.
+	
+Version 1.0.4 - 2016-03-30 (AI)
+------------------------
+	+ Added to SRCMOS column all SRCID OBSMOS sources megered into output file. 
+
+Version 1.0.3 - 2016-03-21 (AI)
+------------------------
+	+ Added to the new SRCMOS column the SRCID value of the OBSMOS
+	sources detected also in OBSMLI but in a different filter.
+
+Version 1.0.2 - 2016-03-11 (AI)
+------------------------
+	+ Fix error in new mosaiced renumenbering in case merged mosaiced 
+	ID were greater that the MLI input sources.
+	
+Version 1.0.1 - 2016-03-10 (AI)
+------------------------
+	+ Removed duplicated SRCID entries coming from mosacied sources.
+	Added new column SRCMOS. This column contains the original SRCID 
+	values from the merged mosaiced sources, the rest of the entries are 
+	filled with NULLs. SPR-7260 fixed.
+
+Version 1.0 - 2012-12-06 (VNY)
+------------------------
+	+(src/ommergelists.cc): The header attributes containing
+	the detection limits for different OM filters are passed to 
+	the output file from the second input file (the 
+	source list corresponding to the stacked OM image) while
+	keeping those from the first input file intact if they 
+	are not superceeded by the second one.
+Version 0.6.8 - 2012-03-28 (EO)
+-------------
+	+ Uncomment EXTERNALS = pgpkot in src/Makefile to get rid of
+	  missing pgplot symbols.
+
+Version 0.6.7 - 2009-07-27 (CB)
+-------------------
+	Further amendments to fix gcc 4 compilation failures
+        +src ommergelists.cc Fixed all warnings "comparison is
+	always true to limited range of data" (changed unsigned
+	k = a.find("x")==string::npos to size_type k =....)
+
+Version 0.6.6 - 2009-07-24 (CB)
+-------------------
+	Further amendments to fix gcc 4 compilation failures
+        +src ommergelists_defs.h  Fixed all"multiple definition
+	of name" errors, by renaming.
+	+src ommergelists.cc- Fixed all warnings about "deprecated
+	conversion from string constant to char *"
+
+Version 0.6.5 - 2009-07-23 (CB)
+-------------------
+	Further amendments to fix gcc 4 compilation failures
+        +src sourcelist.cc - Added cstring header file for error
+	"strncpy was not declared in this scope"
+
+Version 0.6.4 - 2009-07-22 (CB)
+-------------------
+	Further amendments to fix gcc 4 compilation failures
+        +src graph.h - Modified calls to Minval and Maxval
+	to fix "no matching function..", error.
+	
+
+Version 0.6.3 - 2009-07-21 (CB)
+-------------------
+	Amendments to fix gcc 4 compilation failures
+        +src graph.cc - changed string literals to
+	(char *)string literal.
+	+src sourcelist.cc - line 312 deleted function typeid
+	(was for test purposes only)
+	+src sorttable.cc added header file "algorithm",
+	added using namespace std and deleted std: from
+	std:sort (line 92)
+
+	
+Version 0.6.2 - 2009-07-20 (CB)
+-----------
+        +src Deleted pgplot from Makefile
+	to fix gcc4 build problem
+
+Version 0.6.1 - 2009-05-11 (CB)
+-----------
+        +src Deleted QT from Makefile
+	to fix build problem
+
+Version 0.6 - 2009-05-08 (CB)
+-----------
+        +src Deleted QT from Makefile
+	to fix build problem
+
+Version 0.5 - 2009-04-23 (CB)
+-----------
+        Deleted some test write statements
+
+	
+Version 0.4 - 2009-04-23 (CB)
+-----------	
+        Ammended call to pgopen to prevent
+	empty string argument
+
+Version 0.3 - 2009-04-06 (CB)
+-----------	
+        Removed some redundant code
+
+
+Version 0.2 - 2009-04-05 (CB)
+-----------
+        Removed reference to cpgplot.h which
+	caused some build failures
+
+Version 0.1 - 2009-04-02 (CB)
+-----------	
+        First uploaded version of the program

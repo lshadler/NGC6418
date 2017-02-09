@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>ODF data set name completion</TITLE>
+<META NAME="description" CONTENT="ODF data set name completion">
+<META NAME="keywords" CONTENT="oal">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="oal.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+oal (oal-3.133.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="User-visible functionality"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="User-visible functionality"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Environment variables"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="oal.html">Home Page</A> / <A  HREF="node3.html">User-visible functionality</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+ODF data set name completion</A>
+</H2>
+The OAL provides functionality to expand a pair of two or a tuple of four
+identifiers
+into a valid ODF data set name which can then be used to physically open
+the set, e.g. with the <A NAME="614"></A><A NAME="tex2html2"
+  HREF="../dal/index.html"><SPAN  CLASS="textbf">dal</SPAN></A>
+<TT>open</TT> method.
+The corresponding OAL routine receives a string which is either a
+valid data set name or of the form
+<DIV><TT>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;odf(&lt;instr&gt;, &lt;mode&gt;[, &lt;expnr&gt;, &lt;ccdnr&gt;[, scheduledFlag]])
+<BR></TT></DIV>
+or
+<DIV><TT>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;oal(&lt;instr&gt;, &lt;mode&gt;[, &lt;expnr&gt;, &lt;ccdnr&gt;[, scheduledFlag]])
+<BR></TT></DIV>
+The four fields have the following meaning:
+<DL COMPACT>
+<DT><TT>&lt;instr&gt;</TT>:</DT>
+<DD>a string which must uniquely identify an
+instrument. The following table lists the possible values:
+<BR><TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">identifier</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=300>meaning</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>XMM</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=300>selects satellite specific data sets or sets for which
+the instrument field is not applicable</TD>
+</TR>
+<TR><TD ALIGN="LEFT">XRT1/XRT2/XRT3</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=300>the mirror systems 1, 2, (in front
+of EMOS1/RGS1 and EMOS2/RGS2), and 3
+(in front of EPN)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">EMOS1/EMOS2</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=300>EPIC MOS camera units 1 and 2</TD>
+</TR>
+<TR><TD ALIGN="LEFT">EPN</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=300>EPIC PN camera unit</TD>
+</TR>
+<TR><TD ALIGN="LEFT">ERM</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=300>EPIC Radiation Monitor</TD>
+</TR>
+<TR><TD ALIGN="LEFT">RGS1/RGS2</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=300>units 1 and 2 of the RGS</TD>
+</TR>
+<TR><TD ALIGN="LEFT">OM</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=300>the optical monitor</TD>
+</TR>
+</TABLE>
+</DD>
+<DT><TT>&lt;mode&gt;</TT>:</DT>
+<DD>a string which must uniquely identify a data mode; see
+<A HREF="node14.html#oal:modeids">Appendix&nbsp;A</A> for a list of allowed
+values
+</DD>
+<DT><TT>&lt;expnr&gt;</TT>:</DT>
+<DD>a numeric value identifying an exposure number
+within the current observation period; must be set to 0 if not applicable
+</DD>
+<DT><TT>&lt;ccdnr&gt;</TT>:</DT>
+<DD>a numeric value specifying a CCD chip of
+the selected instrument. CCD numbers are in the range
+1-7 for EMOS1/EMOS2, 1-12 for EPN, and
+1-9 for RGS1/RGS2; the numbering follows that
+used in the <A NAME="624"></A><A NAME="tex2html3"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>. For OM this is the
+science window identifier.
+Example: 1 for EMOS1 specifies the central chip on EMOS camera 1
+and 12 for EPN the bottom right chip of the EPN camera as viewed
+from the mirror platform through the telescope tube onto the focal plane.
+For data sets for which the field is not applicable a value of 0 must be given.
+If neither <TT>expnr</TT> nor <TT>ccdnr</TT> are applicable as this is the
+case for some files in the satellite scope, the form 
+<DIV><TT>
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;odf(&lt;instr&gt;, &lt;mode&gt;)
+<BR></TT></DIV>
+can be used in lieu of the above full form.
+Example: <TT>odf(XMM, Attitude)</TT> refers to the Attitude History
+File a single instance of which applies to the the entire observation period
+the current ODF covers.
+</DD>
+<DT><TT>&lt;scheduledFlag&gt;</TT>:</DT>
+<DD>the letter '<TT>S</TT>' or '<TT>U</TT>' for
+Scheduled/Unscheduled; the field is optional, if omitted no check for
+the scheduled status of the exposure will be done.
+</DD>
+</DL>
+
+<P>
+For the two non-numeric fields <TT>&lt;instr&gt;</TT> and <TT>&lt;mode&gt;</TT>
+abbreviations can be used to designate a wanted value,
+e.g. <TT>Im</TT>, or <TT>Ima</TT>, <TT>Image</TT> are all
+valid reference to `Imaging Mode'. If an abbreviated string value
+cannot be unambiguously expanded into its full form a fatal error condition
+is raised. Case is insignificant for both fields.
+
+<P>
+The ODF file name completion needs access to the Summary File
+of the ODF in question. Therefore, the name of the directory
+containing an ODF must be specified by the user, either in the
+form of a proper task parameter or in an environment variable.
+See <A HREF="node5.html#oal:user:env">below</A> for details.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="User-visible functionality"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="User-visible functionality"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Environment variables"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

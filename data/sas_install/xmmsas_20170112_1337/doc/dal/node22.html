@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>API Overview</TITLE>
+<META NAME="description" CONTENT="API Overview">
+<META NAME="keywords" CONTENT="dal">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="dal.css">
+
+<LINK REL="next" HREF="node30.html">
+<LINK REL="previous" HREF="node21.html">
+<LINK REL="up" HREF="node18.html">
+<LINK REL="next" HREF="node23.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+dal (dal-1.191.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node21.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Class Relationships"></A>
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="F90 DAL API"></A>
+<A HREF="node23.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Data types"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="dal.html">Home Page</A> / <A  HREF="node18.html">F90 DAL API</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000184000000000000000">
+API Overview</A>
+</H2>
+
+<P>
+F90 applications must use the module dal, to gain access to the DAL API.
+
+<P>
+The DAL is concerned with dataset access. A dataset is accessed with the
+function:
+
+<UL>
+<LI><TT>dataSet( dataSetName, mode, memoryModel )</TT>
+</LI>
+</UL>
+where,
+
+<UL>
+<LI>character(len=*), intent(in) :: dataSetName 
+<BR>
+The name of the dataset.
+</LI>
+<LI>integer, intent(in) :: mode 
+<BR>
+The access mode which the dataset should be used with. It must be one of the following values:
+        
+<UL>
+<LI>READ Read an existing dataset with the given name. An error is
+        raised if the dataset is not found, or cannot be opened.
+</LI>
+<LI>CREATE Create a new dataset with the given name. If an dataset
+        already exisits with the given name, the behaviour is dependent on the
+        setting of the environment variable SAS_FORMAT. Any changes made to
+        the dataset will be discarded upon closure,
+</LI>
+<LI>MODIFY Open an existing dataset with the given name. All changes
+        made to the dataset will be written saved upon closure.
+</LI>
+<LI>TEMP Open a new dataset. The dataset is discarded upon closure.
+        
+</LI>
+</UL>
+</LI>
+<LI>integer, intent(in), optional :: memoryModel 
+<BR>
+This specifies a hint to which the memory model should be used. The following values are possible:
+        
+<UL>
+<LI>HIGH_MEMORY 
+</LI>
+<LI>HIGH_LOW_MEMORY
+</LI>
+<LI>LOW_MEMORY
+</LI>
+<LI>USE_ENVIRONMENT
+        
+</LI>
+</UL>
+</LI>
+</UL>
+
+<P>
+The code extract, shown below, is a typical example of how to use the <TT>dataSet()</TT>
+function:
+<PRE>
+program test
+  use dal
+
+  type(DataSetT) set                    ! Declare a dataset handle.
+
+  set = dataSet( "myset", CREATE )      ! Create a dataset called "myset", with
+                                        ! the High Memory Mode. A handle of
+                                        ! the newly created dataset is returned
+                                        ! and assigned to the variable set.
+
+  ! ........................................
+  !
+  ! Do some operations on the dataset, using
+  ! the handle set.
+  !
+  ! ........................................
+
+  call release( set )                  ! Close the dataset.
+
+end program
+</PRE>
+
+<P>
+The dataset() function returns a handle to a dataset. This handle is used to
+specify the dataset in subsequent operations.
+The handle itself is opaque, in that its contents may not be accessed to
+perform dataset operations. The idea is to think of the handle as being an abstract object called a dataset.
+
+<P>
+The <TT>release</TT> function is used to close the dataset (the handle of the
+dataset is passed as a parameter). The behaviour of the release is dependent on the <A HREF="#dal:dev:access">access mode</A> which was used to access the dataset.
+
+<P>
+Most DAL procedures(functions and subroutines) require a handle as one of the
+arguments and/or returns a handle value.
+In many cases a procedure has been overloaded to operate on objects of
+different types. These have been provided in the form on interfaces.
+For example, the release interface operates
+on datasets, blocks, arrays, tables and columns.
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html319"
+  HREF="node23.html">Data types</A>
+<LI><A NAME="tex2html320"
+  HREF="node24.html">Data set</A>
+<LI><A NAME="tex2html321"
+  HREF="node25.html">Attributes</A>
+<LI><A NAME="tex2html322"
+  HREF="node26.html">Block</A>
+<LI><A NAME="tex2html323"
+  HREF="node27.html">Array</A>
+<LI><A NAME="tex2html324"
+  HREF="node28.html">Table</A>
+<LI><A NAME="tex2html325"
+  HREF="node29.html">Column</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node21.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Class Relationships"></A>
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="F90 DAL API"></A>
+<A HREF="node23.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Data types"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Introduction</TITLE>
+<META NAME="description" CONTENT="Introduction">
+<META NAME="keywords" CONTENT="earthbarycen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="earthbarycen.css">
+
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+earthbarycen (barycen-1.20.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="earthbarycen.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+Introduction</A>
+</H2>
+The <A NAME="386"></A><A NAME="tex2html1"
+  HREF="../earthbarycen/index.html"><SPAN  CLASS="textbf">earthbarycen</SPAN></A> task converts times expressed in the local satellite frame
+to Barycentric Dynamical Time (TDB) at a given point on the Earth.
+In more detail, the task requires as
+main input a table in a data set which contains a column with
+times in XMM MET (Mission Elapsed Time) frame[<A
+ HREF="node11.html#xmmtimes">1</A>]. On this
+table, the following operations are carried out:
+
+<OL>
+<LI>Check whether the earthbarycentric conversion has been performed already
+(based on value of attribute <A NAME="390"></A><TT>TIMEREF</TT>) and, if found true, exit
+
+<P>
+</LI>
+<LI>Correct all time tags stored in a specified column of the table
+
+<P>
+</LI>
+<LI>If a Good Time Interval extension exists, convert all interval start
+and stop times to TDB as well
+
+<P>
+</LI>
+<LI>Correct all time tags stored in the EXPOSU tables, if the parameter
+<TT>processexposutables</TT> is enabled.
+
+<P>
+</LI>
+<LI>Update the values of the attributes <A NAME="393"></A><TT>TIMEREF</TT>, <A NAME="395"></A><TT>TSTART</TT>,
+<A NAME="397"></A><TT>TSTOP</TT>, and <A NAME="399"></A><TT>TELAPSE</TT> where necessary
+</LI>
+</OL>
+
+<P>
+In accordance with NASA/OGIP recommendations, the value of the <A NAME="401"></A><TT>TIMEREF</TT>
+keyword is either <A NAME="403"></A><TT>LOCAL</TT> or <A NAME="405"></A><TT>SOLARSYSTEM</TT> depending
+on whether the times are expressed in local satellite time or TDB. Note that
+the conversion to TDB does not affect the actual <EM>time system</EM>
+in use, i.e., all times keep being referred to the fixed mission reference
+time 1998-01-01T00:00:00 TT [<A
+ HREF="node11.html#xmmtimes">1</A>].
+
+<P>
+The conversion of a satellite time tag to TDB requires the knowledge of the
+satellite's position at that time. Therefore, the task needs access to
+the orbit file in the ODF which covers the time period in question.
+This access is done transparently via the ODF access layer which, however,
+needs to be pointed to the directory containing the ODF<A HREF="#oal:user">
+<IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/crossref.png"></A>.
+
+<P>
+In addition to the satellite position data, the time conversion algorithm
+in use by <A NAME="407"></A><A NAME="tex2html2"
+  HREF="../earthbarycen/index.html"><SPAN  CLASS="textbf">earthbarycen</SPAN></A>
+requires the barycentric vectors for the time
+period in question to be known a priori. This information is comprised in
+the JPL ephemeris data set in FITS format which is part of the <A NAME="411"></A><A NAME="tex2html3"
+  HREF="../barycen/index.html"><SPAN  CLASS="textbf">barycen</SPAN></A>
+package.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

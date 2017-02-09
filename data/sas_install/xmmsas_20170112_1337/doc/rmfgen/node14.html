@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Correction of spectral distortion due to pile-up</TITLE>
+<META NAME="description" CONTENT="Correction of spectral distortion due to pile-up">
+<META NAME="keywords" CONTENT="rmfgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rmfgen.css">
+
+<LINK REL="next" HREF="node16.html">
+<LINK REL="previous" HREF="node13.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node15.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rmfgen (rmfgen-2.5.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node13.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="User-defined energy grid"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Method"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rmfgen.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00039000000000000000"></A>
+<A NAME="rmfgen:pileup"></A>
+<BR>
+Correction of spectral distortion due to pile-up
+</H2>
+
+<P>
+If two source photons reach the CCD within the same readout frame then there
+is a chance that they will  be interpreted as a single event with artificially
+high energy or that they will form an illegal pattern and both be ignored.
+The probability that this will occur is directly proportional to the 
+count rate of the source. A table giving the count rate limit where this
+becomes important, for each EPIC instrument and observing mode, is given 
+in the user handbook.
+
+<P>
+<A NAME="755"></A><A NAME="tex2html20"
+  HREF="../rmfgen/index.html"><SPAN  CLASS="textbf">rmfgen</SPAN></A>
+includes an option to correct for the flux loss and spectral 
+distortion caused by the pile-up of photons, within a single frame, <B>for
+observations made with the EPIC-pn camera in imaging mode</B>, i.e. 
+FullFrame, ExtendedFullFrame, SmallWindow and LargeWindow modes.
+The correction is made with the following call:
+
+<P>
+<TT>        rmfgen spectrumset=spectrum.ds rmfset=myresp.rmf 
+<BR>
+correctforpileup=yes raweventfile=events04.dat
+</TT>
+
+<P>
+The task needs to read a raw event file to make the correction.
+This should contain all the charges which 
+landed on the CCD where the source is centred. This is not created by 
+default by the SAS processing but may be produced by either:
+
+<P>
+
+<OL>
+<LI><TT> epchain keepintermediate=all
+</TT>
+
+<P>
+which produces a raw event file for each CCD with the name "events<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$&lt;$"></SPAN>ccd<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&gt;$"></SPAN>.dat".
+
+<P>
+</LI>
+<LI><TT> epproc pileuptempfile=yes
+</TT>
+
+<P>
+which produces a raw event file for each CCD with the name 
+"*_<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$&lt;$"></SPAN>ccd<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$&gt;$"></SPAN>_PileupEvts.ds", e.g. 
+<BR>
+0537_0136540701_EPN_S008_04_PileupEvts.ds .
+
+<P>
+</LI>
+</OL>
+
+<P>
+The correction technique used is very compute-intensive. The execution time
+is of the order of hours for typical observations.
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html255"
+  HREF="node15.html">Method</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node13.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="User-defined energy grid"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Method"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

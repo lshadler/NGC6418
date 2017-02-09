@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Adaptive smoothing</TITLE>
+<META NAME="description" CONTENT="Adaptive smoothing">
+<META NAME="keywords" CONTENT="asmooth">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="asmooth.css">
+
+<LINK REL="next" HREF="node12.html">
+<LINK REL="previous" HREF="node10.html">
+<LINK REL="up" HREF="node6.html">
+<LINK REL="next" HREF="node12.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+asmooth (asmooth-2.30) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node10.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Multi-convolver smoothing"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Ways of specifying the"></A>
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Smoothing from an adaptive"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="asmooth.html">Home Page</A> / <A  HREF="node3.html">Description</A> / <A  HREF="node6.html">Ways of specifying the</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00033500000000000000"></A>
+    <A NAME="asmooth:description:adaptive"></A>
+<BR>
+Adaptive smoothing
+</H3>
+
+<P>
+<TT>smoothstyle</TT>=`adaptive'.
+
+<P>
+This is exactly the same as the patchwork convolution described in section <A HREF="node10.html#asmooth:description:multi">3.3.4</A>, except here the task calculates the library of convolvers and the associated index image itself.
+
+<P>
+Adaptive smoothing is designed for Poissonian images made by counting photons or events. (Note that all images made by XMM instruments have this character.) For such non-negative images it is convenient to define the signal-to-noise ratio (SNR) at each pixel as the value at that pixel divided by its standard deviation. The intent of adaptive smoothing is to produce an output image in which the SNR at each pixel is as close as possible to the constant value given in parameter <TT>desiredsnr</TT>. Through this process, fainter areas become more thoroughly smoothed than brighter areas. This implies that the detail which one wishes to preserve from smoothing should be bright rather than dark - it would not be advisable, for example, to adaptively smooth an image of absorbing dust filaments on a bright background.
+
+<P>
+The convolvers are normalized gaussians of the form described in section <A HREF="node7.html#asmooth:description:gaussian">3.3.1</A>. The exact distribution of their widths is not of primary importance so long as there are enough of them within a wide enough range to cater for the variations in SNR of the input image. There are several ways in which the widths of the gaussians can be established. Firstly, the user can provide a list of widths directly via the <TT>userwidths</TT> parameter; alternatively, the user can provide minimum and maximum values (parameters <TT>minwidth</TT> and <TT>maxwidth</TT>), specify the number of convolvers (<TT>nconvolvers</TT>) and the scaling rule to be used (<TT>widthliststyle</TT>), and allow the task to calculate the widths.
+
+<P>
+The relation between input and output standard deviation is given by equation <A HREF="node5.html#variance">2</A>. For the square, symmetric gaussian convolvers of section <A HREF="node7.html#asmooth:description:gaussian">3.3.1</A> this becomes
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+\sigma(O)_{x,y} = C \, \frac{\sqrt{\sum_{i=-N}^{N} \sum_{j=-N}^{N} c_{i,j}^2 \ w_{x-i,y-j}^2 \ \sigma^2(I)_{x-i,y-j}}} {\sum_{i=-N}^{N} \sum_{j=-N}^{N} c_{i,j} \ w_{x-i,y-j}},
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="404" HEIGHT="63" BORDER="0"
+ SRC="img39.png"
+ ALT="\begin{displaymath}
+\sigma(O)_{x,y} = C \, \frac{\sqrt{\sum_{i=-N}^{N} \sum_{j=-...
+...-j}}} {\sum_{i=-N}^{N} \sum_{j=-N}^{N} c_{i,j} \ w_{x-i,y-j}},
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+giving the following equation for the signal-to-noise ratio of the smoothed image:
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+SNR(O)_{x,y} = \frac{\sum_{i=-N}^{N} \sum_{j=-N}^{N} c_{i,j} \ w_{x-i,y-j} \ I_{x-i,y-j}}   {\sqrt{\sum_{i=-N}^{N} \sum_{j=-N}^{N} c_{i,j}^2 \ w_{x-i,y-j}^2 \ \sigma^2(I)_{x-i,y-j}}}.
+\end{equation}
+ -->
+<A NAME="snr0"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="snr0"></A><IMG
+ WIDTH="417" HEIGHT="63" BORDER="0"
+ SRC="img40.png"
+ ALT="\begin{displaymath}
+SNR(O)_{x,y} = \frac{\sum_{i=-N}^{N} \sum_{j=-N}^{N} c_{i,j}...
+...j=-N}^{N} c_{i,j}^2 \ w_{x-i,y-j}^2 \ \sigma^2(I)_{x-i,y-j}}}.
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">3</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+As described in section <A HREF="node5.html#asmooth:description:variance">3.2</A>, the user can either supply an explicit image of the variance <!-- MATH
+ $\sigma^2(I)_{x,y}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="60" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img41.png"
+ ALT="$\sigma^2(I)_{x,y}$"></SPAN> of the input image, or this can be left implicit by leaving <TT>readvarianceset</TT> at its default value of `no'. In the latter case, the task works under the assumption that the input image is Poissonian and thus may be used as an estimate of its own variance.
+
+<P>
+It is not possible to invert equation <A HREF="#snr0">3</A> so as to arrive at the required width of the gaussian convolver needed to give <SPAN CLASS="MATH"><IMG
+ WIDTH="102" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img42.png"
+ ALT="$SNR(O)_{x,y}=$"></SPAN><TT>desiredsnr</TT> at each <SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img43.png"
+ ALT="$(x,y)$"></SPAN>. Instead the solution must be found iteratively. The procedure used by <A NAME="1108"></A><A NAME="tex2html6"
+  HREF="../asmooth/index.html"><SPAN  CLASS="textbf">asmooth</SPAN></A>
+is simple and therefore robust: for each image pixel, the task starts at the broadest gaussian in its library and works through the library until <!-- MATH
+ $|SNR(O)_{x,y}-$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="102" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img44.png"
+ ALT="$\vert SNR(O)_{x,y}-$"></SPAN><TT>desiredsnr</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img45.png"
+ ALT="$\vert$"></SPAN> reaches a minimum.
+
+<P>
+The task actually makes two passes through the library of gaussians: the first as described above, to calculate the index image; the second refers to the index image while performing the convolution, exactly as described in section <A HREF="node10.html#asmooth:description:multi">3.3.4</A>.
+
+<P>
+Note that variance values <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img46.png"
+ ALT="$=0$"></SPAN> are permitted. This leaves open the possibility that the denominator of equation <A HREF="#snr0">3</A> may be zero-valued at some <SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img43.png"
+ ALT="$(x,y)$"></SPAN>. Equation <A HREF="#snr0">3</A> is not calculated for such pixels: they are instead simply allocated in the index image to the first, ie broadest, gaussian.
+
+<P>
+Occasionally it is useful to be able to apply the adaptive smoothing calculated for one image to another. The smoothing information can be stored to file in two ways: either directly as a set of convolver images plus an index image (via parameters <TT>writeconvolvers</TT>, <TT>outconvolversset</TT> and <TT>outindeximageset</TT>), or via a template image (<TT>writetemplateset</TT> and <TT>outtemplateset</TT>). To find out how to make use of these files, look in sections <A HREF="node10.html#asmooth:description:multi">3.3.4</A> and <A HREF="node12.html#asmooth:description:template">3.3.6</A> respectively.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node10.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Multi-convolver smoothing"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Ways of specifying the"></A>
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Smoothing from an adaptive"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

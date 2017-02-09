@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="rgsbadpix">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsbadpix.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="rgsbadpix.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsbadpix (rgsbadpix-2.19.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="rgsbadpix.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsbadpix.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="rgsbadpix:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+<A NAME="447"></A><A NAME="tex2html1"
+  HREF="../rgsbadpix/index.html"><SPAN  CLASS="textbf">rgsbadpix</SPAN></A>
+combines the calibration bad pixel data from the CCF
+ with any hot pixels found by analyzing the raw telemetry for one CCD
+ from an RGS exposure.  The result is stored in the <A NAME="451"></A><TT>BADPIXn</TT>
+ extension tables of the input dataset, or in a separate dataset if
+ requested (<TT>withbadpixset</TT>=yes).  When the same bad pixel is
+ identified by both the CCF and the telemetry analysis, the output bad
+ pixel table mentions only the CCF version.  CCF bad pixels that lie
+ outside the telemetry window of the exposure are not included.  The
+ columns of the <A NAME="454"></A><TT>BADPIXn</TT> tables describe these properties:
+ location, type and source.  Location is specified in chip-oriented
+ coordinates, and describes a column segment of similar bad pixels in
+ terms of its minimum y-axis coordinate and upward extent.  The type
+ codes are described in the CAL documentation.  The source codes are
+ as follows:
+
+<P>
+
+<OL>
+<LI><P>
+A bad pixel obtained from the CCF, and listed there as having been
+  uplinked to the on-board data preprocessor (DPP).  Such pixels
+  should never appear in the telemetry, and should therefore never be
+  identified by the telemetry analysis.  There is no option to exclude
+  these from the output bad pixel tables; to do so would corrupt the
+  exposure map.
+
+<P>
+</LI>
+<LI><P>
+A bad pixel obtained from the CCF, but not listed as having been
+  uplinked to the DPP. If marked as hot ("H") in the CCF, these are regarded 
+  as advisory, and may be
+  excluded from the output bad pixel tables (<TT>withadvisory</TT>=no). The
+  default is to include them.One would hope that any of these listed as hot would also be
+  identified by the telemetry analysis.
+<BR>
+In addition defective columns, showing often a larger CTI and therefore 
+  appearing as "cooler" than they should be, can be included in the list of bad
+  pixels (<TT>keepcool</TT>=yes) as well. They are listed in the corresponding 
+  CCF (RGS[1][2]_COOLPIX_xxxx) as "D". 
+  The default (so far) is not to treat them as bad columns. 
+
+<P>
+</LI>
+<LI><P>
+A bad pixel identified by analysis of the telemetry.  The current
+  algorithm only attempts to find isolated hot pixels and columns.
+  This process is optional and may be disabled
+  (<TT>withfoundhot</TT>=no).
+
+<P>
+</LI>
+</OL>
+
+<P>
+Four parameters control the hot pixel finding algorithm, which is an
+ implementation of John Peterson's memo, RGS-COL-CAL-00015.  First the
+ pixels are analyzed individually for excessive activity and then the
+ same is done for whole columns.  <TT>pixnoiselimit</TT> and
+ <TT>colnoiselimit</TT> respectively are the minimum uncalibrated
+ energies for considering single-pixel events in the first and second
+ phases.  <TT>pixsharpness</TT> and <TT>colsharpness</TT> respectively
+ control the degree of excessive activity required to flag a pixel or
+ column as hot.  Refer to section
+ <A HREF="node8.html#rgsbadpix:description:algorithm">8</A> for the precise meaning of the
+ sharpness parameters.  Frames marked with <A NAME="463"></A><TT>IN_BAD_FRAME</TT> in
+ the <A NAME="465"></A><TT>FLAG</TT> column of the <A NAME="467"></A><TT>EXPOSURE</TT> table are considered
+ bad and their pixels are discarded.
+
+<P>
+In High Time Resolution (HTR) mode the entire cross-dispersion
+ dimension is collapsed into one row; hence it is not possible to
+ consider individual bad pixels.  If hot pixel finding is enabled the
+ hot column finder works just the same way as in Spectroscopy mode but
+ the initial search for individual hot pixels is skipped.  Throughout
+ this document a <IMG
+ WIDTH="8" HEIGHT="27" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="\dag"> marks items that do not apply to HTR mode data
+ and a <IMG
+ WIDTH="8" HEIGHT="27" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="\ddag"> marks items that apply only to HTR mode data.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="rgsbadpix.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

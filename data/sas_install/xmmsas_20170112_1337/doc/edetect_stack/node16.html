@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="edetect_stack">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="edetect_stack.css">
+
+<LINK REL="next" HREF="node17.html">
+<LINK REL="previous" HREF="node15.html">
+<LINK REL="up" HREF="edetect_stack.html">
+<LINK REL="next" HREF="node17.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+edetect_stack (edetect_stack-0.1.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node15.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="edetect_stack.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="edetect_stack.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00090000000000000000"></A>
+<A NAME="edetect_stack:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+sub edetect_stack {
+
+    # prepare
+    read parameters and files
+    choose energy conversion factors
+    define pointing ids, using header keywords
+    check whether pointings are overlapping
+    derive reference coordinate system and actual image size
+
+    # SOURCE-DETECTION FILES PER OBSERVATION
+    loop over observations
+
+        # set reference coordinate system,  if "runattcalc" is set
+        set summary file
+        copy event files to working directory
+        call attcalc per instrument
+
+        # produce images,  if "runevselectimages" is set
+        define filtering expression
+        call evselect per instrument per energy band
+
+        # produce exposure maps,  if "runeexpmap" is set
+        call eexpmap without vignetting correction per instrument per energy band
+        if esplinemap fitmethod is "model"
+            call eexpmap with vignetting correction per instrument per energy band
+        end if
+
+        # produce detection masks,  if "runemask" is set
+        choose energy band of exposure image
+        call emask per instrument
+
+        # produce local-mode eboxdetect source list,  if "runeboxdetectlocal" is set
+        determine minimum imagebuffersize from header keywords
+        call eboxdetect in local mode
+
+        # produce background maps,  if "runesplinemap" is set
+        choose fitmethod
+        call esplinemap per instrument per energy band
+
+        # produce map-mode eboxdetect source list,  if "runeboxdetectstack" is set
+        determine minimum imagebuffersize from header keywords if not yet known
+        call eboxdetect in map mode
+
+        # produce sensitivity maps,  if "runesensmap" is set
+        call esensmap per instrument per energy band
+
+        # produce informational mosaic images,  if "runemosaic" is set
+        call emosaic in different constellations
+
+    end loop over pointing ids
+
+    # STACKED SOURCE DETECTION
+
+    # produce map-mode eboxdetect source list,  if "runeboxdetectstack" is set
+    create mosaic images per instrument and energy band
+    call eboxdetect in map mode on mosaicked input files
+    srcmatch the results with the map-mode eboxdetect lists per pointing
+
+    # produce intermediate emldetect source list,  if "runemldetect" is set
+    determine minimum imagebuffersize from header keywords
+    call emldetect
+
+    # create final source list,  if "finalize" is set
+    sub stack_sourcelist {
+        calculate summary lines per pointing and in total
+        keep only detections whose detection likelihood is above mlmin
+            (in total or in at least one pointing)
+        write final fits table
+    }
+
+}
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,460 @@
+Change log for emevents
+=======================
+
+Open SPRs:
+----------
+	None.
+	
+Version 8.7 - 2016-09-07 (AI)
+-----------
+- (src/emevents_mod.f90) More pointers initialized to null...
+	
+Version 8.6 - 2016-09-06 (AI)
+-----------
+- (src/emevents_mod.f90) Initialization to null of all pointers that are passed 
+  to C++ (Dope vectors). If we do not initizialize the pointers, 
+  we get seg fault at run-time with gcc-6.2.	
+
+Version 8.5 - 2016-07-18 (AI)
+-----------
+- gfortran compatibility change
+	
+Version 8.4 - 2006-01-27 (JB)
+-----------
+- Set y_size_window to 1025 in compressed timing mode.
+
+Version 8.3 - 2006-01-26 (JB)
+-----------
+- Fix SPR 3575 (Subscript 1 of OFFSETY (value 602) is out of range (0:601))
+  This occurred in TIMING or COMPRESSED TIMING mode whenever no associated
+  offset/variance file was present.
+
+Version 8.2.5 - 2005-04-20 (JB)
+-------------
+- Bug in the rejectE3 routine when the number of events is very small.
+
+Version 8.2.4 - 2004-10-11 (JB)
+-------------
+- Fix SPR 3402 (emevents failure by solveOffsets) by deactivating
+  the bad offsets detection in Small Window mode (too much noise).
+- Add new detectbadoffsets parameter to allow manual deactivation.
+
+Version 8.2.3 - 2004-05-26 (JB)
+-------------
+- Bug in the solveOffsets routine when the number of noise events is larger
+  than the number of good ones.
+
+Version 8.2.2 - 2004-03-25 (JB)
+-------------
+- Bug in the writegattispecset functionality for very large event files.
+
+Version 8.2.1 - 2004-03-12 (JB)
+-------------
+- Parameter rejectbade3 was incorrectly called rejecte3 in doc.
+
+Version 8.2 - 2003-11-14 (JB)
+-----------
+- Sets new ON_BADOFFSET flag.
+
+Version 8.1 - 2003-10-22 (JB)
+-----------
+- Fix bug occurring when analysepatterns=N and oncutbad=Y.
+
+Version 8.0 - 2003-10-09 (JB)
+-----------
+- Add check on possible rogue offset values.
+- old OFFSETS extension renamed OFFSETS0.
+- New OFFSETS extension introduced with the same meaning as in PN.
+
+Version 7.10 - 2003-09-02 (JB)
+------------
+- Increase security to avoid rejecting source events in flickering algorithm.
+- Improve flickering rejection by introducing elliptical distance.
+- Change tolerances to 5 2 2 only (remove 0 5 5).
+
+Version 7.9 - 2003-07-11 (JB)
+-----------
+- Fixed bug in flickering algorithm.
+- Adapted to modified quantilePoisson in emsaplib 2.19.
+
+Version 7.8 - 2003-07-01 (JB)
+-----------
+- Added figure for Timing patterns.
+
+Version 7.7 - 2003-05-20 (JB)
+-----------
+- Replaced implicit by explicit loop on frameev pointer.
+
+Version 7.6 - 2003-05-14 (JB)
+-----------
+- Flag events on pixels declared DEAD.
+
+Version 7.5 - 2003-04-18 (JB)
+-----------
+- Correct bug introduced in 7.4 (in bad row rejection).
+
+Version 7.4 - 2003-04-10 (JB)
+-----------
+- Mark flickering pixels and event clusters in same frame.
+  New parameters : rejectflickering, tolfxy
+- Reject events next to bad rows in the same frame.
+  New parameters : widthnexttorow
+
+Version 7.3 - 2002-12-19 (JB)
+-----------
+- Use supertabular for ChangeLog section in doc.
+- Add TCTYP/TCRVL/TUNIT keywords for DETX and DETY columns.
+
+Version 7.2 - 2002-10-08 (JB)
+-----------
+- Fix bug occurring only in 2-node mode.
+
+Version 7.1 - 2002-08-26 (JB)
+-----------
+- Fix SPR 2972 (Attribute TCDLT not double precision).
+
+Version 7.0 - 2002-08-02 (JB)
+-----------
+- Remove e3thresholds parameters (read from CAL).
+- Remove withframeset, withoffvarsets and withothernode parameters from doc.
+
+Version 6.9 - 2002-07-24 (JB)
+-----------
+- Accept CAL offsets (100x602) in Timing mode.
+- Accept EDUMODE=3 in Timing mode.
+- Double events are moved half a pixel to the right in Timing mode.
+
+Version 6.8 - 2002-06-25 (JB)
+-----------
+- Replace reference to event attributes description.
+
+Version 6.7 - 2002-05-28 (JB)
+-----------
+- Clarify warnings in code and doc.
+
+Version 6.6 - 2002-05-14 (JB)
+-----------
+- Upgrade parameter file to param 2.0.
+- Read FLAG in events list in all cases (needed by checkRejected).
+- Correct window size in 2-node mode and suppress checkValid14 warnings.
+
+Version 6.5.3 - 2002-04-02 (JB)
+-------------
+- Split the parameter dialog into two pages (config/emevents.lyt).
+
+Version 6.5.2 - 2002-03-12 (JB)
+-------------
+- Correct bugs in doc's errors section.
+
+Version 6.5.1  -  2002-02-11 (JB)
+-------------
+- Accept bad pixels at RAWX=0.
+
+Version 6.5  -  2002-01-23 (JB)
+-----------
+- Adapted to cal-3.135.
+
+Version 6.4  -  2002-01-03 (JB)
+-----------
+- Fix SPR 2683 (COSMIC out of range) for Compressed Timing mode.
+
+Version 6.3.1  -  2001-10-22 (JB)
+-------------
+- Adapted to cal-3.121.
+
+Version 6.3  -  2001-10-05 (JB)
+-----------
+- Use Z coordinate when converting CCD coords into detector coords.
+
+Version 6.2.1  -  2001-07-25 (JB)
+-------------
+- Bug correction for Timing mode (src/emevents_mod.f90).
+
+Version 6.2  -  2001-07-24 (JB)
+-----------
+- Add security against spurious values of FRAME and PATTERN in events list.
+	
+Version 6.1.2  -  2001-06-18 (JB)
+-------------
+- Add security against too high values of EMDHUPP (src/emevents_mod.f90).
+
+Version 6.1.1  -  2001-06-12 (JB)
+-------------
+- nvalid changed to int32 (src/emevents_mod.f90).
+- Slightly improved doc.
+
+Version 6.1  -  2001-03-25 (JB)
+-----------
+- Use SRC_RAWY keyword from emframes to compute detector coords in Timing mode.
+
+Version 6.0  -  2001-03-12 (JB)
+-----------
+- Split rejecte3 from rejecte3e4 (parameters rejectbade3 and e3thresholds).
+- Move rejecte3e4 to emenergy (parameters rejectbade3e4 and e3e4ellipse).
+- Move OUT_OF_FOV flagging to emenergy.
+- Add TDMIN/TDMAX keywords.
+
+Version 5.8  -  2001-02-22 (JB)
+-----------
+- Implement bad row rejection in Timing mode.
+- Adapt bad row rejection for bright sources.
+
+Version 5.7.1  -  2001-02-19 (JB)
+-------------
+- Correct a few bugs (src/emevents_mod.f90).
+
+Version 5.7  -  2001-02-16 (ML)
+-----------
+- Implements cosmic-ray rejection in Timing mode via 2-D event recognition.
+
+Version 5.6  -  2001-02-02 (JB)
+-----------
+- Fix SPR 2202 (events buffer overrun).
+
+Version 5.5  -  2001-01-10 (ML)
+-----------
+- Implements event reconstruction across nodes.
+
+Version 5.4  -  2000-11-09 (JB)
+-----------
+- Set energy units to CHAN (src/emevents_mod.f90).
+- Treat WINDOWDY as optional for offsets association (src/emevents_mod.f90).
+
+Version 5.3  -  2000-10-27 (JB)
+-----------
+- Run spGatti when GATTI is off for truncated events (src/emevents_mod.f90).
+- Favor date over FRMTIME when selecting offsets (src/emevents_mod.f90).
+
+Version 5.2  -  2000-10-11 (JB)
+-----------
+- Set FILTER before calling the CAL (src/emevents_mod.f90).
+
+Version 5.1  -  2000-10-02 (JB)
+-----------
+- Do not test truncated E1 in bad frames (src/emevents_mod.f90).
+
+Version 5.0  -  2000-09-29 (JB)
+-----------
+- Changed parameter offvarset to offvarsets (and withoffvarset).
+- Changed \ge to > in doc/emevents_description.tex.
+
+Version 4.8  -  2000-08-10 (JB)
+-----------
+- Made Si fluorescence action on diagonal events optional and added
+  keepsifluor parameter (src/emevents_mod.f90, config/emevents.par).
+- Changed suffix of graphics file from ps to eps (doc/patterns.ps).
+
+Version 4.7.1  -  2000-08-09 (JB)
+-------------
+- Look for emodf directory where it is now (test/emevents_test).
+
+Version 4.7  -  2000-07-28 (JB)
+-----------
+- Correctly compute the interval for Si fluorescence (src/emevents_mod.f90).
+- Patch the offsets to 4095 on the sides (src/emevents_mod.f90).
+- Get the offsets from the CAL if need be (src/emevents_mod.f90).
+
+Version 4.6.3  -  2000-06-30 (JB)
+-------------
+- Bug in times in RFS mode (src/emevents_mod.f90).
+
+Version 4.6.2  -  2000-06-19 (JB)
+-------------
+- Removed blanks from error codes (doc/emevents_description.tex
+  and src/emevents_mod.f90).
+
+Version 4.6.1  -  2000-06-03 (JB)
+-------------
+- Set FRACEXP to 0 (not 1) for bad frames (src/emevents_mod.f90).
+
+Version 4.6  -  2000-05-26 (JB)
+-----------
+- Upgrade test harness to testccf 1.83 (bad pixels)
+
+Version 4.5  -  2000-05-25 (JB)
+-----------
+- Upgrade test harness to saslib 1.63.
+
+Version 4.4  -  2000-05-17 (JB)
+-----------
+- Accommodate cal-3.71 and upgrade to saslib 1.62.
+- Updated documentation.
+
+Version 4.3  -  2000-04-28 (JB)
+-----------
+- Correct bug for Timing mode with no bad pixels.
+- Adapt test harness to new event attribute codes.
+
+Version 4.2  -  2000-04-27 (JB)
+-----------
+- Added subsection on patterns in the documentation.
+
+Version 4.1  -  2000-04-22 (JB)
+-----------
+- Implemented instrumental noise rejection, using ON_BADROW and _BAD_E3E4.
+- Fixed SPR 1626 (Test harness fails under FTOOLS v5.0).
+
+Version 4.0  -  2000-04-07 (JB)
+-----------
+- Added security in SP_GATTI to avoid bad array indices in offsets.
+- Added randomizeposition and randomizetime parameters.
+- Do not change ENERGYE3 for diagonal events any longer.
+- ENERGYEi columns are integer in output (rather than real).
+- Frame transfer time now subtracted from TIMEDEL in EXPOSURE.
+- Fixed SPR 1651 (Nonstandard unit name for TIME column).
+
+Version 3.14  -  2000-03-10 (JB)
+------------
+- Corrected bug on RAWX in Compressed Timing mode.
+- Simplified flagging for OUT_OF_CCD_WINDOW.
+
+Version 3.13  -  2000-02-09 (JB)
+------------
+- Better choice of offset/variance file.
+- Improved use of blocksize parameter.
+
+Version 3.12  -  09-12-1999
+------------
+- Removed calls to attributeComment.
+
+Version 3.11  -  25-11-1999
+------------
+- Sets PATTERN to bipixel for diagonal Si fluorescence and flag as diagonal.
+- Propagates main keywords to primary in the absence of a frame file.
+- Generates EXPOSURE extension even if withframeset=no (for keywords).
+
+Version 3.10  -  10-11-1999
+------------
+- Uses new emsaplib library.
+
+Version 3.9  -  29-10-1999
+-----------
+- Add analysepatterns parameter.
+- Flag 'cosmic-ray' events for bad pixels or out of CCD.
+
+Version 3.8  -  22-10-1999
+-----------
+- Correct a bug in getCcd for RGS.
+
+Version 3.7  -  04-10-1999
+-----------
+- Looks for compatible offsets within a list.
+
+Version 3.6  -  23-09-1999
+-----------
+- Sets EMOS rejection keyword for evselect.
+
+Version 3.5  -  08-09-1999
+-----------
+- Put utilities to project events into emutils, for badpixfind.
+- Doc updated to sas 1.155.
+
+Version 3.4  -  01-09-1999
+-----------
+- Regenerated emodf test directory with odffix 1.19.
+- Incorporated errors in the auxiliary file to test emframes.
+
+Version 3.3  -  16-08-1999
+-----------
+- Generates DETX/DETY in Timing mode also.
+
+Version 3.2  -  09-06-1999
+-----------
+- Optimised for IMAGING mode.
+- Supports REDUCED IMAGING (threshold) mode.
+- Writes the XMMEA_nn keywords.
+- Upgraded to CAL 3.0, randomises DETX and DETY (not ENERGYE1).
+- Upgraded to saslib 1.34.
+
+Version 3.1  -  31-05-1999
+-----------
+- Supports TIMING and COMPRESSED TIMING modes.
+- Simplified variable management by using parent function.
+- Includes an emodf directory used by emframes and emchain for testing.
+- Takes primary keyword values from frame file.
+- Includes a parameter layout file.
+
+Version 3.0  -  17-05-1999
+-----------
+- All parameter names changed to follow new guidelines
+- emutils_mod uses the AttributableT type.
+- Uses the eventAttributes module.
+- Interface between edu_simu.c and the F90 calls changed to C++.
+- Uses the new CAL_setState(block) facility.
+- FRMTIME now written in ms.
+- Uses the new presentation for columns, keywords, ... in the doc.
+
+Version 2.8  -  22-03-1999
+-----------
+- Bad pixels flagged rather than removed.
+- Propagates BADPIX extension even when no event in table.
+- ROWOFFST and COLOFFST exchanged in offset file after ODF ICD clarification.
+- DATATYPE propagated to EXPOSURE extension and GATTI files.
+- Upgraded to be compatible with CAL 2.x.
+- Uses the CAMCOORD2 system for DETX/DETY.
+- Uses copyBlock.
+- emutils_mod, the edusoft suite and compare_columns were put in a separate
+  emutils library.
+
+Version 2.7  -  11-12-1998
+-----------
+- Avoids duplication of error handling with DAL.
+- emutils_mod moved to emevents from emframes.
+
+Version 2.6  -  09-12-1998
+-----------
+- Fixed SPR 891 (Test harness fails Bus error).
+
+Version 2.5  -  25-11-1998
+-----------
+- Fixed SPR 645 (Behaviour with no 2nd event or frame files).
+- Fixed SPR 646 (Inconsistencies in o/p column names and values).
+- Fixed SPR 647 (Comparison of spectra from the i/p and o/p event files).
+- Fixed SPR 648 (Can't view a DETX,DETY image).
+- Fixed SPR 649 (Can't create a Gatti spectral file).
+- Fixed SPR 713 (Remaining .lt. and .gt.).
+- BADPIXTYPE changed to TYPE in bad pixels extension to follow badpix 1.10.
+- Test harness changed to follow testccf 1.13.
+- Uses the new "layer" message interface.
+- Changed logic to allow recomputing DETX and DETY.
+- Uses CAL_setStateFromScienceFile.
+- copyAttributes removed.
+- Generic routines taken from the specific module in emframes.
+- Now supports new output file when run on its own output.
+	
+Version 2.4  -  05-10-1998
+-----------
+- Modified camera coordinates DETX/DETY to be coherent with attcalc 1.6.
+
+Version 2.3  -  18-09-1998
+-----------
+- Modified to adjust to param 1.10.
+- Modified to propagate keyword GATTI_ON.
+- Added numerous checks against erroneous data.
+- Version number jumped to 2.3 to meet that of description.
+
+Version 2.1  -  30-07-1998
+-----------
+- Fixed SPR 512 (Test harness fails under DEC OSF).
+  The reference output is now produced within the test harness.
+- Fixed SPR 519 (empty DEPEND file).
+- Uses the message facility instead of the prlev parameter.
+
+Version 2.0  -  20-07-1998
+-----------
+- Fixed SPR 334 (Change on/off parameters from integer to boolean).
+  This interface change is the reason for the new major version.
+- Fixed SPR 100 (task is an FTOOL).
+  This is the first version using the SAS DHS.
+- The TIME column in the EXPOSURE extension is now the center of the frame.
+- Generates the camera coordinates DETX/DETY.
+- Fills in the primary header with standard keywords.
+
+Version 1.2  -  26-05-1998
+-----------
+- Tests event and frame file existence.
+- Removes "cosmic" events outside the CCD window.
+	
+Version 1.1  -  22-04-1998
+-----------
+- Initial version for SAS v1 integration.

@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Dark features</TITLE>
+<META NAME="description" CONTENT="Dark features">
+<META NAME="keywords" CONTENT="embadpixfind">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="embadpixfind.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+embadpixfind (embadpixfind-2.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Intrinsic dispersion"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Iteration"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="embadpixfind.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00035000000000000000">
+Dark features</A>
+</H2>
+
+<P>
+If <TT>finddead</TT>=Y, <A NAME="503"></A><A NAME="tex2html9"
+  HREF="../embadpixfind/index.html"><SPAN  CLASS="textbf">embadpixfind</SPAN></A>
+looks for too dark pixels, rows and
+columns too.
+The Li and Ma formula (Eq.<A HREF="node5.html#lima">1</A>) is not used for dark pixels.
+The Gaussian significance is computed in the same way (but on the
+negative side) and the cumulative binomial probability is computed from:
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+P(k \le N_{\rm on}) \; = \; \sum_{k=0}^{N_{\rm on}}
+                            p_B(k,N_{\rm tot},q)
+                    \; = \; I_{1-q}(N_{\rm off},N_{\rm on}+1)
+\end{equation}
+ -->
+<A NAME="binom"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="binom"></A><IMG
+ WIDTH="390" HEIGHT="57" BORDER="0"
+ SRC="img12.png"
+ ALT="\begin{displaymath}
+P(k \le N_{\rm on}) \; = \; \sum_{k=0}^{N_{\rm on}}
+p_B(k,N_{\rm tot},q)
+\; = \; I_{1-q}(N_{\rm off},N_{\rm on}+1)
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">3</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+The statistics in a single observation is usually not enough to find
+any dark pixel, but dark rows or columns may be found.
+The <TT>maxratio</TT> parameter avoids detecting 'grey' pixels, rows or columns
+on observations with high statistics.
+
+<P>
+Whatever <TT>findbright</TT> and <TT>finddead</TT>, 
+dark and bright columns and rows are always searched for together
+in order of decreasing significance (either positive or negative).
+This avoids finding spurious bright columns/rows next to very dark ones,
+and vice-versa.
+
+<P>
+If one of <TT>findbright</TT> or <TT>finddead</TT> is set to False,
+the corresponding bad pixels/columns/rows are not written to the
+output file.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Intrinsic dispersion"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Iteration"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,71 @@
+<!-- converted from XPI formatted "heliocentriccorr.par"-->
+<FILE>
+ <CONFIG>
+
+
+<PARAM id="tocorr" type="string" default="tospectrumset">
+	<DESCRIPTION> Correction output format </DESCRIPTION>
+	<CASE>
+		<ITEM value="tospectrumset">
+			  <PARAM id="srclist" type="table">
+				   <DESCRIPTION>
+				    Source list containing source coordinates
+				   </DESCRIPTION>
+				   <CONSTRAINTS>
+				    true
+				   </CONSTRAINTS>
+			  </PARAM>
+			  
+			   
+			  <PARAM id="spectrumset" type="table">
+				   <DESCRIPTION>
+				    Name of the spectrum file
+				   </DESCRIPTION>
+				   <CONSTRAINTS>
+				    true
+				   </CONSTRAINTS>
+			  </PARAM>
+		</ITEM>
+		<ITEM value="toscreen">
+			<PARAM id="srcra" type="angle" default="0">
+			   <DESCRIPTION>
+			    Right Ascension J2000.0 of source
+			   </DESCRIPTION>
+			   <CONSTRAINTS>
+			    true
+			   </CONSTRAINTS>
+		  </PARAM>
+		
+		  <PARAM id="srcdec" type="angle" default="0">
+			   <DESCRIPTION>
+			    Declination J2000.0 of source
+			   </DESCRIPTION>
+			   <CONSTRAINTS>	
+			    true
+			   </CONSTRAINTS>
+		  </PARAM>
+		
+		  <PARAM id="time" type="time" default="1000" mandatory="yes">
+				<DESCRIPTION>  Time tag  </DESCRIPTION>
+		  </PARAM>	
+		</ITEM>
+	</CASE>
+</PARAM>
+
+
+
+<PARAM id="ephemeris" type="string" mandatory="no" default="DE200">
+    <DESCRIPTION>
+		JPL Planetary and Lunar ephemerides
+    </DESCRIPTION>
+    <CASE>
+            <ITEM value="DE200"></ITEM>
+            <ITEM value="DE405"></ITEM>
+    </CASE>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+</PARAM>
+
+ </CONFIG>
+</FILE>

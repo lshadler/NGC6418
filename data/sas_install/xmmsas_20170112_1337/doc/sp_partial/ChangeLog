@@ -1,0 +1,305 @@
+ChangeLog for esas
+===============================
+Version 0.9.39 - 2016-10-18 (BP)
+	+ Removed tasks cheese-bands and conv-region (both redundant).
+	+ Re-added task cheese (removed by mistake, SPR:7402).
+	+ Cleaned up config files. 
+	+ Adjusted hardcoded array to accommodate new QPB files (subsn).
+	
+Version 0.9.38 - 2016-10-18 (BP)
+	+ Selection expression changes in perl task cheese.
+	+ QDP output cleanup in adapt.
+	+ Removal of esas-mosaic, esprep\_mosaic, esprep\_mosaic\_time perl.
+
+Version 0.9.37 - 2016-10-17 (BP)
+	+ Removed parameter chisqfl from mos\_back, pn\_back.
+	+ Removed sls code from perl subdir to avoid paralled devel confusion.
+
+Version 0.9.36 - 2016-09-08 (AI)
+	+ Tag added to conv_reg_mod.f90 source code to enable (NAGWare) or 
+	disable (gfortran) to use of the f90_unix_proc module needed in NAGWare
+	for system call.
+
+Version 0.9.35 - 2016-07-21 (BP)
+	+ Proof of concept "old esas" still compiles in gfortran.
+	+ Cleaned up failing laTex.
+	+ removed f90_unix_proc from several tasks.
+	+ Cleaned up antique F77 code.
+
+Version 0.9.34 - 2016-02-18 (BP)
+	+ Corrected inclusion of task merge\_comp\_xmm.
+
+Version 0.9.33 - 2016-01-10 (BP)
+	+ Removed CCD4 post-CCD3-loss if statements (selection expressions) from mos-spectra.
+	+ Fixed bug in conv\_reg (erroneous single quote found in select expr).
+	+ Deprecated tasks esprep\_mosaic and esprep\_mosaic_time. The functionality of these are now done in the PPS with the subpointings in mosaic mode.
+	+ Fixed bug in merge\_comp\_xmm for rectangular matrices. 
+
+Version 0.9.32 - 2014-10-27 (BP)
+        + Added parameter checkfov=no to esky2det call within conv\_reg.
+	+ Changed "mv" to "cp" in perl tasks for HERA and TREND usage.
+	+ Added lines to perl task clean to remove originals cp'ed.
+
+Version 0.9.31 - 2014-09-29 (BP)
+	+ Bug fix for conv_reg other seg fault (SPR-7220).
+	+ Removed param DETECTOR from conv\_reg; gets from FITS header now.
+	+ Changed structure (added CASE hierarchy) of conv_reg param file to add mandatory params in certain modes and prevent incompatible params.
+	+ Bug fixes for conv\_reg modes 1 and 2 (failed on FITS output write).
+	+ Bug fixes (non-initialized variables) for subsn and merge\_comp\_xmm.
+
+Version 0.9.30 - 2014-09-20 (BP)
+        + Removed espfilt from ESAS (standalone task) (SPR-7223).
+	+ Removed declaration of errstr in several tasks (SPR-7220).
+
+Version 0.9.29 - 2013-04-29 (SS/BP)
+        + Bug in proton\_description.tex (SPR 7202)
+	+ Espfilt cannot be used in Timing mode, rejects timing data (SPR 7050).
+	+ Espfilt sigma threshold is now a parameter (SPR 6884).
+
+Version 0.9.28 - 2013-10-31 (SS)
+	+ Docs updated for all subtasks.
+
+Version 0.9.27 - 2013-08-01 (SS)
+	+ config changes to proton, mos-spectra, rot-im-det-sky, rot\_det\_sky
+	+ updates to esas_GVariables, esas\_parameters\_init
+
+Version 0.9.26 - 2013-08-30 (SS)
+------------------------
+	+ mos-spectra - Tweaks and bug fixes
+	+ mos_back - Bug fixes and implimentation of MOS1 CCD#4 treatment
+		after the loss of CCD#3
+	+ espfilt - Fix for processing MOS1 CCD#4 data after loss of CCD#3
+	+ proton - Correct calculation of broken power law fluxes and fixing
+		of EXPOSURE keyword definitions - requires a new parameters
+	+ make_mask_merge - Code improvement
+	+ rot-im-det-sky - Bug fix and addition of modes to allow merging
+		of masks
+	+ rot_det_sky - Addition of modes to allow merging of masks
+
+Version 0.9.25 - 2013-06-10 (SS)
+------------------------
+	+ mos-spectra - Add selection criteria for MOS1 CCD#4 and exclude
+	        CCD#3 from processing data after the loss of CCD#3.
+
+Version 0.9.24 - 2012-12-12 (SS)
+------------------------
+	+ espfilt - Rationalize nomenclature, work with pn window mode data,
+		and add scaling of fit range for the histogram method.
+
+Version 0.9.23 - 2012-05-01 (SS)
+------------------------
+	+ mos-spectra - Improve CCD region selection
+	+ sp_partial - Additional label on critical output value
+
+Version 0.9.22 - 2012-05-01 (SS)
+------------------------
+	+ esmosaic_prep - Include PA
+
+Version 0.9.21 - 2012-04-25 (SS)
+------------------------
+	+ merge_comp_xmm - Bug fix for Galactic coord. projections
+
+Version 0.9.20 - 2012-04-05 (SS)
+------------------------
+	+ bin_image - Bug fix in file name formatting
+	+ bin_image_merge - Bug fix in file name formatting
+
+Version 0.9.19 - 2012-03-26 (SS)
+------------------------
+	+ esmosaic_prep - Modified to have user input for the subpointing RA,Dec
+
+Version 0.9.18 - 2012-03-23 (SS)
+------------------------
+	+ mos-filter - Slight modification to avoid failures from missing CCDs
+	+ esmosaic_prep - New task to make emosaic_prep output usable
+
+Version 0.9.17 - 2012-03-20 (SS)
+------------------------
+	+ mos-filter - More diagnostic output and changes to anomolous
+		CCD code and tweaking of MOS1 CCD#5 threshold
+	+ mos-spectra - More diagnostic output and changes to anomolous
+		CCD code and tweaking of MOS1 CCD#5 threshold
+
+Version 0.9.16 - 2012-03-19 (SS)
+------------------------
+	+ comb - bug fixes and proper treatment of multiband exposure
+	+ bin_imag - Bug fixed
+	+ merge_comp_xmm - Added units and comment line to output images
+	+ mos_back & mos-spectra - Convert MOS processing to use 5 eV channels
+	+ adapt_900 - Add smoothing scale image and qdp plot output
+	+ adapt_2000 - Add smoothing scale image and qdp plot output
+	+ swcx - Add pulse-height smearing
+	+ read_rmf in subs.f - actually return the response matrix
+	+ mos_back - Mod call to read_rmf
+	+ pn_back - Mod call to read_rmf
+	+ mos-filter - Added CCD quality diagnostic output to commands.csh
+	+ conv-region - Cleaned up the code a bit
+
+Version 0.9.15 - 2011-03-11 (SS)
+------------------------
+	+ Missed an apostrophy in cheese
+	+ Added the Fortran task fill_list
+
+
+Version 0.9.14 - 2011-03-10 (SS)
+------------------------
+	+ More minor tweaks to make_mask_sub.f consistent with emask
+	+ Minor tweaks of subs.f, mos-spectra and mos-filter for correct 
+		handling of anomolous states
+	+ Minor tweaks of cheese and for consistent source selection
+		between instruments
+
+
+Version 0.9.13 - 2011-03-06 (SS)
+------------------------
+	+ Minor tweaks to a few tasks to make ESAS consisitent with
+		the output of emask
+	+ Minor tweaks for compatability with new QPB files
+	+ Requires download of CalDB files
+	+ Minor tweaks to increase utility of &-filter
+	+ Minor tweaks to make_mask_merge so it will work with
+		emask and will work with just the output from cheese
+	+ Minor tweaks of cheese
+
+
+Version 0.9.12 - 2011-02-10 (SS)
+------------------------
+	+ Minor tweaks to a few tasks - cleaning code
+	+ Extended implementation of SWCX modeling and subtraction
+	+ Changed flag parameters for withpartcontrol, withpartcontrol,
+		and withswcxcontrol to Boolean
+	+ mos-spectra, mos-back, proton, and swcx all test for the
+		revolution and will exclude MOS1 CCD#6 from processing
+		if the time observation occurred after the micrometeorite
+		hit.
+
+
+Version 0.9.11 - 2010-11-26 (SS)
+------------------------
+	+ Minor tweaks to a few tasks (by SS)
+	+ Additional diagnostic output from comb
+	+ Withdrew swcx_partial from ESAS as it is unnecessary
+	+ Tweaks of espfilt to improve the output plotting
+	+ Added pn_back to the release version
+	+ Modified the CalDB files to combine and reduce the
+		total number which required mods to subs.f,
+		mos-spectra, pn-spectra, and some others
+
+
+Version 0.9.10 - 2010-07-09 (SS)
+------------------------
+	+ Minor tweaks to a few tasks (by SS)
+
+
+Version 0.9.9 - 2010-06-25 (SS)
+------------------------
+	+ Added the tasks swcx and swcx_partial (by SS)
+	+ Added read_arf and swcxscale to subs.f (by SS)
+	+ Minor tweaks to a few other tasks (by SS)
+	+ Mods to comb, adapt_900 for SWCX modeling (by SS)
+	+ Mods to rot_det_sky and rot-im-det-sky SWCX modeling (by SS)
+
+
+Version 0.9.8 - 2010-06-22 (SS)
+------------------------
+	+ Changed comb, merge_comp_xmm, and subs to allow hardness (by SS)
+	+ Changed CalDB string so it no longer needs a closing / (by SS)
+	+ A few small tweaks in print statements (SS)
+
+
+Version 0.9.7 - 2010-06-01 (BP)
+------------------------
+	+ Changed parameter and inputs for mode=2 in proton_scale (by SS)
+	+ Fixed Mac OSX bug in mos_back (by SS)
+	+ Combined CCF flare files for task proton (SS)
+
+
+Version 0.9.6 - 2010-03-22 (CG)
+------------------------
+	+ Added new task bin_image_merge (by SS)
+	+ Added new task make_mask_merge (by SS)
+	+ Added new task merge_source_list (by SS)
+	+ Updated point_source (by SS)
+	+ Updated make_mask_sub f77 code (by SS)
+	+ Updated cheese, added cheese-bands
+	+ Updated pn_back
+
+
+Version 0.9.5 - 2010-02-24 (CG)
+------------------------
+	+ Updated make_mask_sub f77 code (by SS)
+
+Version 0.9.4 - 2009-06-11 (BP)
+------------------------
+	+ Updated main LaTeX doc.
+	+ bug fixes to comp, merge_comp_xmm, make_mask f77 code.
+
+Version 0.9.3 - 2009-06-09 (CG)
+------------------------
+	+ All single routines' docs added.
+
+Version 0.9.2 - 2009-05-26 (AI)
+------------------------
+	+ (src/Makefile) pn-back and point_source binaries removed.
+
+Version 0.9.1 - 2009-05-18 (SS&BP)
+------------------------
+	+ Added to docs. Fixed Solaris build problem.
+
+Version 0.9 - 2009-05-07 (SS&BP)
+------------------------
+	+ updates to calibration files (7 added, 4 removed).
+	+ update to comb to include PN processing.
+	+ comb allows scaling of image data for consistent surface brightness.
+	+ similar scaling added to merge_xmm_comp.
+	+ mods to adapt_900 in individual instrument mode.
+	+ mods to proton to work with PN data.
+	+ memory mods to subs and mos_back_sub.
+
+Version 0.8 - 2009-04-29 (BP)
+------------------------
+	+ addition to perl script cheese.
+	+ delete caldb directory (move to CCF).
+	+ updated parameters in sp_partial.
+	+ doc update.
+
+Version 0.7 - 2009-04-23 (SN&AI)
+------------------------
+	+ merge_comp_xmm_sub updated
+	+ New parameter "caldb" added in mos-spectra
+
+Version 0.6 - 2009-04-15 (BP&AI)
+------------------------
+	+ Updates to Adapt_900, Comb, and Proton.
+	+ Corrected param/code mismatch.
+	+ Calculation change in adapt_2000.
+	+ Calculation changes in perl script cheese.
+	+ Updated parameter files for merge_comp_xmm, sp_partial.
+	+ docs updated.
+
+Version 0.5 - 2009-03-11 (AI)
+------------------------
+	+ DEPEND file updated
+
+Version 0.4 - 2009-02-26 (AI)
+------------------------
+	+ caldb files included in the task.
+	+ par parameter files updated.
+	+ perl scripts updated with the new parameter
+	interface.
+
+Version 0.3 - 2009-02-20 (AI)
+------------------------
+	+ perl scripts updated.
+	+ new par files (perl scripts).
+	+ new perl parameter interface.
+	+ upgrade fortran 77 subroutines.
+
+Version 0.2 - 2009-02-06 (AI)
+------------------------
+	+ New subroutines added.
+	+ parameter interfaces updated.
+
+Version 0.1 - 2009-02-03 (AI)
+------------------------
+	+ First version.

@@ -1,0 +1,107 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="inset" type="dataset" mandatory="yes" default="dummy_default">
+   <DESCRIPTION>
+    Name of the image to work on.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="outset" type="dataset" default="cropped_image.ds">
+   <DESCRIPTION>
+    Name of the output (cropped) image.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="cropstyle" type="string" default="fraction">
+   <DESCRIPTION>
+    Style of input of the cropping dimensions.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="fraction">
+     <PARAM id="trimborder" type="bool" default="yes">
+      <DESCRIPTION>
+       Whether to cut off the collar of zero-valued pixels before cropping.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="xfraclo" type="real" default="0.0">
+      <DESCRIPTION>
+       Lower x-axis cropping fraction.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       xfraclo in [0.0:1.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="xfrachi" type="real" default="1.0">
+      <DESCRIPTION>
+       Upper x-axis cropping fraction.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       xfrachi in [0.0:1.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="yfraclo" type="real" default="0.0">
+      <DESCRIPTION>
+       Lower y-axis cropping fraction.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       yfraclo in [0.0:1.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="yfrachi" type="real" default="1.0">
+      <DESCRIPTION>
+       Upper y-axis cropping fraction.
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       yfrachi in [0.0:1.0]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="pixel">
+     <PARAM id="xlo" type="int" default="1">
+      <DESCRIPTION>
+       Pixel column at which to begin the crop (inclusive).
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       xlo in [1:)
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="xhi" type="int" default="1">
+      <DESCRIPTION>
+       Pixel column at which to end the crop (inclusive).
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       xhi in [1:)
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="ylo" type="int" default="1">
+      <DESCRIPTION>
+       Pixel row at which to begin the crop (inclusive).
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       ylo in [1:)
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="yhi" type="int" default="1">
+      <DESCRIPTION>
+       Pixel row at which to end the crop (inclusive).
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       yhi in [1:)
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ </CONFIG>
+</FILE>
+

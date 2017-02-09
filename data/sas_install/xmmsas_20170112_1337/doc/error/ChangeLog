@@ -1,0 +1,312 @@
+ChangeLog for error
+===================
+
+Version 1.46 - 2014-04-15 (AI)
+------------
+	+ Few changes to make gcc4.8.2 compiler happy.
+	
+Version 1.45 - 2009-02-03 (EO)
+------------
+	+ ExceptionErrorHandler.cc: Removed the extra qualification on
+	  public class Protect to avoid error on this.
+	+ test/testExceptionErrorhandler.cc : 
+	  error: 'atoi' was not declared in this scope
+	  Fixed adding:
+	        #include <iostream>
+	        #include <cstdlib>
+	+ test/testCahnnelFormatter.cc : 
+	  error: 'exit' was not declared in this scope
+	  Fixed adding:
+	        #include <cstdlib>
+
+Version 1.44 - 2003-05-25 (GV)
+------------
+	+ (errorhandling_implementation.cc) Add extern to definition of
+	f9x symbol errstr to avoid error on Mac OS X (duplicat symbol
+	definition).
+	
+Version 1.43 - 2003-02-14 (GV)
+------------
+	+ (SetExceptionErrorHandler.cc) preserve the name of the client
+	and verbosity level when the handler is switched.
+	
+Version 1.42 - 2003-01-28 (JBa)
+------------
+	(src/MessageHandler.h, src/MessageFormatter.h)
+	(src/AsciiFormatter.*, src/BinaryFormatter.*)
+	(src/SimpleHandler.*)
+	
+	+ A Task is now "SAS aware"!
+	  Refactored to use a separate message channel with children that
+	  belong to the SAS family.
+	  In effect stdout, and stderr are now directly dumped to the log,
+	  regardless a SAS-task or not;	messages, warnings and errors from
+	  sas tasks are recognized and treated as such.
+	+ Fixed (SOC::SPR-1187, SOC::SPR-2174)
+	+ Messages are dumped on the stdout channel if a task is executed
+	  as stand-alone.
+	
+Version 1.41 - 2003-01-27 (GV)
+------------
+	+ (ExceptionErrorHandler.h) Add class SetExceptionErrorHandler to
+	conveniently set/unset the exception handler. Test harness updated
+	to make use of the new class.
+	
+Version 1.40 - 2002-06-27 (JBa)
+------------
+	+ Preparation for GCC 3.1
+	+ Msg::Layer && Msg::Verbosity are now real (inlined) classes
+
+
+Version 1.39 - 2002-04-12
+------------
+	+ (src/ExceptionErrorHandler.cc)
+	  Fixed bug in protected exceptions of non-C++ code.
+
+
+Version 1.38 - 2002-01-14 (GV)
+------------
+	+ (SimpleHandler.h) if SAS_RAISE_SIGNAL is defined, then do not
+	exit(1) but raise(SIGUSR1).
+
+Version 1.37 - 2001-11-19 (JBa)
+------------
+	+ (src/ErrorDispatcher.*) Fixed SOC SPR::2227
+	  verbosity settings are passed on command-line...
+
+Version 1.36 - 2000-03-28 (JBa)
+------------
+	+ * replaced old-style headers
+
+Version 1.35.2 - 2000-11-29 (GV)
+--------------
+	+ (config/*) add error.info.
+
+Version 1.35.1 - 2000-11-06 (JBa)
+------------
+	+ (src/SuppressHandler.h) Fixed SPR 1160: improved suppression
+
+Version 1.35 - 2000-10-27 (JBa)
+------------
+	+ (src/ErrorHandler.h) Added pure virtual method "tryExternal"
+	  this method should be used whenever calling f90-task
+	+ (...) Changes and tests accordingly
+
+Version 1.34.1 - 2000-10-23 (JBa)
+------------
+	+ (src/errorhandling_implementation.cc) commented out faulty and
+	  unused interface functions (status(), try())
+	+ (src/errorhandling.f90) added "Always", as Message Verbosity
+
+Version 1.34 - 2000-10-05 (JBa)
+------------
+	+ simplified interface of Error:
+	   ErrorHandler* oldHandler = errHandler.handler(newHandler);
+	   // do something that should be caught by the new error handler
+	   errHandler.handler(oldHandler);
+	  READ EXAMPLE IN (src/ExceptionErrorHandler.h)
+
+Version 1.33 - 2000-10-05 (JBa)
+------------
+	+ (src/Error.h, src/ErrorDispatcher.h) added a method to retrieve
+	  the current ErrorHandler
+
+Version 1.32 - 2000-09-19 (JBa)
+------------
+	TODO: handling floating point exceptions etc...?
+	+ (src/SimpleHandler.h) made a few methods virtual, so we can use this
+	  as base class...
+	+ (src/ExceptionErrorHandler.h) Error handler that generates exceptions
+	  instead of hard exit.
+	+ (src/SasException.h) Namespace for SAS-code generated exceptions
+	  READ IT!
+	+ (test/testExceptionErrorHandler.cc,test/runtestExceptionErrorHandler)
+	  test programs for exceptions
+	
+
+Version 1.31 - 2000-09-18 (JBa)
+------------
+        + (src/Msg.h) Added "Msg::Always". This allows the DEVELOPER to spit
+          out messages, no matter what the verbosity level is.
+
+Version 1.30.2 - 2000-06-19 (JBa)
+------------
+	+ (src/SuppressHandler.h) fixed spr 1217
+
+
+Version 1.30.1 - 2000-06-19 (JBa)
+------------
+	+ (doc/error_description.tex doc/sources doc/Makefile) fixed
+	  spr 873,1083
+
+Version 1.30 - 2000-05-09 (JBa)
+------------
+	+ (src/errorhandling_implementation.cc) bugfix in "msg()",
+	  avoiding strange segfault
+
+Version 1.29 - 2000-04-18 (GV)
+------------
+	+ (src/SuppressHandler.h) modify logic for SAS_SUPPRESS_WARNING as
+ 	  it was causing seg faults when not defined. Modify
+	  runtestSuppressHandler, so that it tests with and without the
+	  environment variable.
+	
+Version 1.28 - 2000-04-17 (JBa)
+------------
+	+ (src/SuppressHandler.h) allow env var "SAS_SUPPRESS_WARNING"
+
+Version 1.27 - 2000-04-14 (JBa)
+------------
+	+ (src/ErrorDispatcher.cc) method 'setHandler(ErrorHandler*)' allows
+	  a null pointer as argument which sets the error handler to the 
+	  default handler
+	
+Version 1.26 - 2000-02-10 (JBa)
+------------
+	+ (Error.h) added virtual void ignoreWarning(Code code) = 0;
+	+ (Error.h) added virtual void allowWarning(Code code) = 0;
+	+ (Error.h) added virtual string asCommandLine()=0;
+	+ (ErrorDispatcher.h) added implementation of the above, using
+	  a SuppressHandler
+	+ (SuppressHandler.h) added taking care of warning messages
+	+ (errorhandling.f90) increased errstr buffer size to match the C++
+	  equivalent
+	+ with TRACE on, error/fatal raise 'signal user 1'. This should help debugging.
+
+Version 1.25 1999-10-19 (JBr)
+------------
+        + fixed uninitialised variable
+
+Version 1.24 1999-10-19 (GV)
+------------
+	+ (Error.h) add virtual const string & name() const = 0;
+	+ (ErrorDispatcher.h) add implementation of the above
+	
+Version 1.23 1999-09-08 (JBr)
+------------
+
+ - Now uses INTERFACES mechanism
+ - Added DISTRIBUTION file
+
+Version 1.22 1999-08-25 (MB)
+------------
+	+ larger buffer for messages.
+
+Version 1.21 1999-07-15 (GV)
+------------
+	+ changed the fix in 1.20, as it was not working all the time. Now
+	use a static bool in the destructor of ErrorDispatcher.
+
+Version 1.20 1999-06-15 (GV)
+------------
+	+ reference count ErrorDispatcher. Fix related to SPR674.
+	
+Version 1.19 1999-05-18 (JB)
+------------
+
+ - MessageFormatter left out newlines in multi-line message
+
+Version 1.18 1999-05-11 (GV)
+------------ 
+	+ INCOMPATIBLE CHANGE: put a class definition (Sas)
+	around all of the functions in errstr.h in order to avoid a
+	conflict with Qt.
+	
+Version 1.17 1999-04-20 (GV)
+------------
+	+ rename err errHanler tp eliminate name conflict on Linux.
+	
+Version 1.16 1999-04-09 (MB)
+------------
+ - removed obsolete interfaces
+
+Version 1.15
+------------
+ - Changed SASVERBOSITY into SAS_VERBOSITY
+ - added C interface.
+
+Version 1.14
+------------
+
+ - Changed syntax of messages/errors to assist parsing and improve clarity
+ - Added MessageFormatter class to encapsulate mesasge encoding & decoding
+
+Version 1.13
+------------
+
+ - Removed pragmas for Sun C++ since egcs complains about it.
+
+Version 1.12
+------------
+
+ - Replaced dummy library by make rule and f90 I/F that works better with
+   shared libs (MB)
+
+Version 1.11
+------------
+
+ - fixed conflict with symbol _message on DEC (SPR450)
+ - removed spurious debug output (fixes SPR 447)
+
+Version 1.10
+------------
+
+ - fixes for bugs enlightened by egcs-1.0.2
+
+Version 1.9
+-----------
+
+ - removed obsolete initError endError
+ - removed obsolete message(code)
+ - added layer specification in messages
+
+Version 1.8 (MB)
+-----------
+
+ - removed obsolete interface ErrorHandling.h
+ - verbosity is set with SASVERBOSITY
+
+Version 1.7
+-----------
+
+ - larger buffer for messages
+ - egcs compatibility.
+
+Version 1.6
+-----------
+
+ - environment variable VERBOSITY is used to initialise verbosity.
+
+Version 1.5
+-----------
+
+ - Added registration of error handlers.
+
+Version 1.4
+-----------
+
+ - Provided backwards compatibility for the message call.
+
+Version 1.3
+-----------
+
+- Removed error.tex.
+- Added messaging controlled by a verbosity level (closed SPR 32)
+
+Version 1.2
+-----------
+
+- Reports name of program in error messages (solves SOC-SAS-SPR-355) 
+- Removed config subdirectory
+- Removed obsolete TODO
+
+Version 1.1 - 29-5-98
+-----------
+
+- Upgraded documentation to new format.
+
+Version 1.0  -  14-05-98
+-----------
+
+Initial version for SAS v1 integration
+

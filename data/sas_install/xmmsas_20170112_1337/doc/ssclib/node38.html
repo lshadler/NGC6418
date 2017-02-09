@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>calcAryStatInfoMask</TITLE>
+<META NAME="description" CONTENT="calcAryStatInfoMask">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node39.html">
+<LINK REL="previous" HREF="node37.html">
+<LINK REL="up" HREF="node34.html">
+<LINK REL="next" HREF="node39.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node37.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="getAryStatInfo"></A>
+<A HREF="node34.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Array or vector other"></A>
+<A HREF="node39.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="printAryStatInfo"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node6.html">General-purpose array-processing utilities</A> / <A  HREF="node34.html">Array or vector other</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00028400000000000000"></A> <A NAME="sec:calcAryStatInfoMask"></A>
+<BR>
+calcAryStatInfoMask
+</H3>
+
+<P>
+This subroutine is the core routine for the function <TT>getAryStatInfo</TT>
+(Section&nbsp;<A HREF="node37.html#sec:getAryStatInfo">2.8.3</A>).  The difference is that
+this function returns, as well as (<TT>aryStatInfo???T</TT>),
+the final mask file, which is used to determine the valid entry
+to calculate the statistical information of the array.
+If that is what you want, you can call this subroutine directly.
+
+<P>
+The following is an example interface for the Double-type one.
+Again, in other types, only the difference is the type of the input Array, <TT>arin</TT>
+(and the returned type, accordingly - see Section&nbsp;<A HREF="node8.html#sec:aryStatInfoT">2.2</A>
+for detail).
+
+<P>
+<PRE>
+  interface calcAryStatInfoMask
+    subroutine calcAryStatInfoMaskDouble1d(arin, retInfo, arMaskOut, arMaskIn &amp;
+       , minAreaIndices, maxAreaIndices, valLower, valUpper, flagInfo)
+
+      integer, parameter :: rankArin = 1
+      real(double), intent(in)  :: arin(:)      ! Input data Array
+      type(aryStatInfoDoubleT), intent(out) :: retInfo
+      logical, intent(out) :: arMaskOut(:)	! Must be predefined.
+      logical, intent(in), optional :: arMaskIn(:)
+      integer(int32), intent(in), optional :: minAreaIndices(rankArin), maxAreaIndices(rankArin)
+      real(double), intent(in), optional :: valLower, valUpper
+      type(aryStatInfoFlagT), intent(in), optional :: flagInfo
+    end subroutine calcAryStatInfoMaskDouble1d
+
+    subroutine calcAryStatInfoMaskDouble2d(arin, retInfo, arMaskOut, arMaskIn &amp;
+       , minAreaIndices, maxAreaIndices, valLower, valUpper, flagInfo)
+
+      integer, parameter :: rankArin = 2
+      real(double), intent(in)  :: arin(:,:)    ! Input data Array
+      type(aryStatInfoDoubleT), intent(out) :: retInfo
+      logical, intent(out) :: arMaskOut(:,:)	! Must be predefined.
+      logical, intent(in), optional :: arMaskIn(:,:)
+      integer(int32), intent(in), optional :: minAreaIndices(rankArin), maxAreaIndices(rankArin)
+      real(double), intent(in), optional :: valLower, valUpper
+      type(aryStatInfoFlagT), intent(in), optional :: flagInfo
+    end subroutine calcAryStatInfoMaskDouble2d
+  end interface
+</PRE>
+
+<P>
+Note that the ranks of arin and arMaskIn (if specified) and arMaskOut
+have to be identical.  And (the rank of) arMaskOut has to be defined
+in the caller side before the call.
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

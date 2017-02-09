@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Genesis of evproject</TITLE>
+<META NAME="description" CONTENT="Genesis of evproject">
+<META NAME="keywords" CONTENT="evproject">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="evproject.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+evproject (attcalc2-1.3.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Introduction"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="evproject.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000"></A><A NAME="615"></A>
+<BR>
+Genesis of <A NAME="tex2html3"
+  HREF="../evproject/index.html"><SPAN  CLASS="textbf">evproject</SPAN></A>
+</H2>
+
+<P>
+This task has been developed from, and is intended to replace, the sas task <A NAME="619"></A><A NAME="tex2html4"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>. Why write a whole new package, rather than modifying the existing <A NAME="623"></A><A NAME="tex2html5"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>? This breaks into two separate queries:
+
+<P>
+
+<OL>
+<LI><SPAN  CLASS="textit">Q: what in</SPAN> <A NAME="627"></A><A NAME="tex2html6"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>
+<SPAN  CLASS="textit">needed improving?</SPAN> A: it seems now to be generally accepted among the SAS development team that the coordinate transform routine employed by <A NAME="631"></A><A NAME="tex2html7"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>
+contains an error (it results in an inversion of the sign of the boresight roll angle).
+
+<P>
+</LI>
+<LI><SPAN  CLASS="textit">Q: why retain the old</SPAN> <A NAME="635"></A><A NAME="tex2html8"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A><SPAN  CLASS="textit">?</SPAN> A: it is mostly a question of inertia. This error has now been thoroughly built into the system and quite a lot of tasks would need to be re-written if <A NAME="639"></A><A NAME="tex2html9"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>
+were to be simply replaced by <A NAME="643"></A><A NAME="tex2html10"
+  HREF="../evproject/index.html"><SPAN  CLASS="textbf">evproject</SPAN></A>. In fact no ill effects are felt in the present sas, firstly because <A NAME="647"></A><A NAME="tex2html11"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>
+has itself been used to deduce the boresight angles, which are therefore themselves incorrect in this matter of roll-angle sign; secondly because other tasks which need to perform the same transform have `cut-and-pasted' the same (incorrect!) code from <A NAME="651"></A><A NAME="tex2html12"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>. The errors thus cancel in the existing sas. Problems begin only for a developer who wishes to create a new task which is to calculate the same transform, and who wishes not to go on copying the same error in perpetuity.
+</LI>
+</OL>
+
+<P>
+The differences between <A NAME="655"></A><A NAME="tex2html13"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>
+and <A NAME="659"></A><A NAME="tex2html14"
+  HREF="../evproject/index.html"><SPAN  CLASS="textbf">evproject</SPAN></A>, which are mostly structural rather than functional, are as follows:
+
+<P>
+
+<OL>
+<LI>The error in the coordinate transform has been corrected;
+</LI>
+<LI>The transform routine is now available as a library function;
+</LI>
+<LI>The construction of the attitude time series has been separated off into the library <A NAME="663"></A><A NAME="tex2html15"
+  HREF="../binned_att/index.html"><SPAN  CLASS="textbf">binned_att</SPAN></A>.
+</LI>
+</OL>
+
+<P>
+Finally, why the change of name? Because I felt that `<A NAME="667"></A><A NAME="tex2html16"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>' is not very descriptive of the main function of the task, which is to calculate the position of each event on a sky projection plane. When it was decided to create a new package, I thus seized the opportunity to change the name of the main task to something more suggestive of its function.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Introduction"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,76 @@
+Cards
+     Page main
+  	  Parameter arfset
+  	  Parameter spectrumset
+     end
+
+     Page effects
+  	  Parameter modeleffarea
+  	  Parameter modelquantumeff
+  	  Parameter modelfiltertrans
+  	  Parameter modelootcorr
+  	  Parameter ignoreoutoffov
+  	  Enable modelee
+	         Parameter eegridfactor
+	  end
+          Enable withbadpixcorr
+                 Parameter badpixlocation
+                 Parameter badpixelresolution
+          end
+          Parameter useodfatt
+          Enable crossregionarf
+                 Parameter crossreg_spectrumset
+          end
+    end
+ 
+    Page "source"
+	 Enable withsourcepos
+	 	Parameter sourcecoords
+ 		Parameter sourcex
+		Parameter sourcey
+         end
+	 Parameter extendedsource
+    end   
+
+    Page "detector map"
+       Choice detmaptype
+         Page dataset
+           Parameter detmaparray
+         end
+         Page psf
+	   Enable withdetbounds
+	           Parameter detxoffset
+        	   Parameter detyoffset
+	   end
+	   Enable withdetbins
+                   Parameter detxbins
+                   Parameter detybins
+           end
+	   Parameter psfenergy
+         end
+         Page flat
+	   Enable withdetbounds
+	           Parameter detxoffset
+        	   Parameter detyoffset
+	   end
+           Parameter detxbins
+           Parameter detybins
+         end
+       end
+       Enable withfilteredset
+	  Parameter filteredset
+       end
+       Parameter filterdss
+     end
+
+    Page calibration
+	  Enable withrmfset
+		  Parameter rmfset
+	  end
+    end
+
+    Page backscale
+         Parameter setbackscale
+         Parameter keeparfset
+    end
+end

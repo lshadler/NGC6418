@@ -1,0 +1,299 @@
+ChangeLog for asmooth
+===============================
+
+Open SPRs:
+----------
+Nil.
+
+Version 2.30 - 2016-09-05 (RDS)
+----------------------
+	src/asmooth_mod.f90	- changed to dfftw from sfftw in convolveByFft
+				  to resolve problems with GCC 6
+
+Version 2.29 - 2009-05-01 (MAS/LUX)
+----------------------
+- The new DEPENDency on fitsutils is added (1.0) and that on ssclib is upgraded to 4.8, to follow the change of the place of FITS-related libraries.
+	
+Version 2.28 - 2009-02-26 (MAS/LUX)
+----------------------
+- Upgraded the external FFT-library to depend on from FFTW-2 to FFTW-3.  Accordingly the DEPENDency on ssclib is upgraded to 4.1.  Wrote the code in the test harness to check the consistentency in behaviour.
+- The test harness is now up to date with the use of Test::Simple, SSCLib and Fitsplutils (the latter two in ssclib).
+- src/asmooth_common.f90 is not used any more.
+- Removed ./testdata/ and modified Makefile accordingly.
+- Upgraded testprods DEPENDency to 1.14.
+	
+Version 2.27.1 - 2009-02-11 (MAS/LUX)
+----------------------
+- Fixed a bug (SPR-3619), which reappeared in Ver.2.27.
+- Moved ./testdata/*.FTZ to /packages/testprods/asmooth_data/ .  Accordingly the DEPENDency to testprods is updated to 1.13 now.
+	
+Version 2.27 - 2009-02-02 (MAS/LUX)
+----------------------
+- Originally developed by IMS/JBO on 2006-10-19.
+- Upgraded ssclib dependency to 4.0.
+- 'use fftw_aux' changed to 'use fftw2_aux' to reflect the ssclib change.
+- Fortran intrinsic 'cshift' used instead of old fftw_aux:recenter.
+- All logical(bool) types changed to logical.
+
+Version 2.26.1 - 2007-02-13 (IMS/JBO)
+----------------------
+- Fixed SPR 3619, which was caused by carelessness in the code rearrangement done in version 2.26.
+- Created testdata/ to contain some test data (MAS/LUX).
+	
+Version 2.26 - 2005-11-15 (IMS/LUX)
+----------------------
+- Changed datatype of 2nd argument of calls to median to reflect changes in ssclib-3.24. DEPENDency of ssclib upgraded to 3.24.
+- Filled in some error messages;
+- Brought documentation up to date;
+- Deleted some commented-out code.
+- Removed dsslib and selectlib from DEPEND.
+- Rearranged code in main routine which calls the dynamic range calculation, to prevent this being called twice for adaptive smoothing.
+
+Version 2.25 - 2005-11-02 (IMS/LUX)
+----------------------
+- Parameters --inconvolversset, --withindeximageset and --inindeximageset changed to --inconvolversarray, --withindeximagearray and --inindeximagearray (to allow the arrays to have any name).
+- Replaced code which was inadvertently left commented out (effect was to disallow normalization of convolvers). Fixes SPR 3842.
+
+Version 2.24 - 2004-11-16 (IMS/LUX)
+----------------------
+- Added dss and selector to the Makefile:USEDLIBS line (task wouldn't compile in linux without these) plus the corresponding DEPENDencies.
+
+Version 2.23 - 2004-11-03 (IMS/LUX)
+----------------------
+- Mask argument in calls to ssclib/array_utils:median altered from logical(bool) to logical (changed in ssclib-3.17).
+- DEPEND on ssclib increased to 3.17.
+
+Version 2.22 - 2004-08-04 (IMS/LUX)
+----------------------
+- Test harness now fails if test data not found.
+
+Version 2.21 - 2004-06-07 (IMS/LUX)
+----------------------
+- Removed the requirement that the extension be names CONV_000 when --smoothstyle=withset but --withindeximageset=no. Now the task attempts to read the convolver image from the 0th array of --inconvolversset.
+- Fixed some messages in which the space for numerals in the format was too short.
+
+Version 2.20 - 2004-06-07 (IMS/LUX)
+----------------------
+- Added parameter --withindeximageset (default yes) to cater for situations in which there is only one convolver for the whole field.
+
+Version 2.19 - 2004-04-05 (IMS/LUX)
+----------------------
+- Fixed SPR 3291 by splitting the offending error message into 2.
+- Fixed SPR 3293.
+- SPR 3296 fixed by changing the task such that convolvers are now normalized before being written to --outconvolverset.
+- Made the code somewhat simpler (although the changes mean it uses more memory and may be slower) in the process of fixing SPR 3294.
+- SPR 3295: not really an error, but a result of misuse. Warning messages have been inserted to deal with this situation.
+- Fixes for the above two SPRs, plus normalizing the convolvers in template mode, fixed SPR 3292.
+- The task now depends on ssclib-3.8, since additions to ssclib were needed to cope with the SPRs.
+
+Version 2.18 - 2004-04-05 (IMS/LUX)
+----------------------
+- Now uses test data from package testprods.
+- Removed evselect and testodf from DEPEND and added testprods.
+
+Version 2.17 - 2004-03-25 (IMS/LUX)
+----------------------
+- Copy of patches to devtrack.
+
+Version 2.16.3 - 2004-03-16 (IMS/LUX)
+----------------------
+- Minor documentation fix (changed par --templateset to --outtemplateset).
+
+Version 2.16.2 - 2004-01-20 (IMS/LUX)
+----------------------
+- Fixed the bugs mentioned in SPR 3233.
+- Rewrote the documentation.
+
+Version 2.16.1 - 2004-01-20 (IMS/LUX)
+----------------------
+- Fixed SPR 3222.
+
+Version 2.16 - 2003-11-24 (IMS/LUX)
+----------------------
+- Removed old code and surplus files.
+
+Version 2.15 - 2003-11-05 (IMS/LUX)
+----------------------
+- Split the source-mask stuff away from the basic module. This is to render the basic module non-xmm-specific.
+- Added facility to load indexImage + convolvers from a file.
+- Fixed SPR 3072.
+- Moved the logic around and simplified it. This also fixes SPR 3073.
+- All read images are now checked to make sure they are the same size as the input image. Fixes SPR 3074.
+- Param changes: removed copydss, sigma, ngauss, minsigma, maxsigma, readtemplateset, withvarianceset, varianceset; added tempset, width, nconvolvers, minwidth, maxwidth, readvarianceset, invarianceset, writevarianceset, outvarianceset, convolverset.
+- Option to output variance image disposes of suggestion in SPR 2829.
+- Added log/sqrt/user options for inputting convolver widths.
+- Changed logical-valued inmaskset to real-valued weightset.
+- Temp_ssclib modules now merged into ssclib-3.0.
+
+Version 2.14 - 2003-06-19 (GV)
+------------
+	+ DEPEND dsslib 5.0
+
+Version 2.13 - 2003-06-18 (GV)
+------------
+	+ DEPEND dsslib 5.0
+	
+Version 2.12 - 2002-10-18 (IMS/LUX)
+----------------------
+- Oops, forgot to move back to param-2.n (and devtrack DEPEND).
+
+Version 2.11 - 2002-10-17 (IMS/LUX)
+----------------------
+- No changes, just copied 2.10.2 into devtrack as 2.11.
+
+Version 2.10 - 2002-10-17 (IMS/LUX)
+----------------------
+- Reinstated --minsigma parameter (requested by JBB).
+- Upgraded dsslib dependency to 4.0 (but changed others back to latest releasetrack versions).
+
+Version 2.9 - 2002-08-23 (IMS/LUX)
+----------------------
+- Removed sla from DEPEND - not sure why it was there.
+- Shortened the gui by dividing the parameters between 2 pages.
+
+Version 2.8 - 2002-08-23 (IMS/LUX)
+----------------------
+- `Detmask' split into two masks, one `in' mask which specifies which pixels can be included in convolution sums, the other `out' mask which specifies for which pixels convolution sums should be calculated.
+- If weight is too small for an accurate convolution, width of convolver is broadened at that pixel. If this doesn't help, the output is set to 0 here. Ought to fix SPRs 2961, 2130.
+- SPR 2176 fixed. 
+- Parameters --writebadmaskset and --badmaskset allow output of remaining too-low-weight pixels.
+- Parameters --writecheeseset and --cheeseset allow output of mask with holes near source positions.
+- Parameter --minsigma deleted.
+- Some other code rearrangement.
+
+Version 2.7 - 2002-07-25 (IMS/LUX)
+----------------------
+- Some changes to the way the template is calculated: the template image now records the sigma of the gaussian used to smooth each pixel of the input image.
+- calculateConvolver() now works in double precision. Single gave values of convolverNorm which were only accurate to 3 sig figs or so.
+
+Version 2.6 - 2002-05-17 (IMS/LUX)
+----------------------
+- Fixed a bug that prevented images with negative values from being properly smoothed.
+- Fixed SPRs 2870, 2829.
+
+Version 2.5 - 2002-05-17 (IMS/LUX)
+----------------------
+- Uses param-2.0.
+
+Version 2.4.4 - 14 Mar 2002 (IMS/LUX)
+----------------------
+- Upgraded documentation, small cosmetic changes in code and lyt.
+
+Version 2.4.3 - 10 Mar 2002 (IMS/LUX)
+----------------------
+- Fixed some bugs in the source-map routine.
+
+Version 2.4.2 - 08 Mar 2002 (IMS/LUX)
+----------------------
+- Updated DEPEND.
+- Fixed two array-bound errors (SPR 2727).
+
+Version 2.4.1 - 21 Feb 2002 (IMS/LUX)
+----------------------
+- Fixed SPR 2778. This was due to changes in an argument type in an ssclib routine that asmooth calls.
+- Fixed SPR 2729 (by adding sfftw to the EXTERNALS line in src/Makefile).
+
+Version 2.4 - 23 Jan 2002 (IMS/LUX)
+----------------------
+- No longer uses wcs stuff but slalib instead. Also now needs the cal to get instrum boresight.
+- Fixed some bugs so that the test harness now runs.
+- Moved some sourcelist-handling routines to ssclib.
+
+Version 2.3 - 19 Dec 2001 (IMS/LUX)
+----------------------
+- Fixed .par and .lyt files.
+- Fixed some bugs.
+
+Version 2.2 - 19 Dec 2001 (IMS/LUX)
+----------------------
+- Added some fftw test routines (maybe temporary).
+- Some but not all of the 'array' header keywords (eg wcs kwds) are now copied over to the output. Can't copy them all over because many are DSS kwds and copying these over disturbs DSS matters.
+- Defaults for --desiredsnr and --ngauss now 10 and 20 respectively.
+- Changed CGP's getdp() and getstring() for getRealKwd(), getIntKwd() and getStringKwd() in ssclib-2.0/fitsutils_mod.
+- Fixed bug (showed up on DEC) in which multiplyByGaussian() was creating lines of underflows.
+- The array 'mask' is now initialised whether --withdetmask is set or not. This was done ok in <2.0 but was neglected in 2.0, 2.1. Closes SPR 2671.
+- Now accesses fftw global variables and some subroutines from ssclib-2.0/fftw_aux_mod. (The type of the fftw plan variable was changed to a pointer structure to enable asmooth to run on all platforms).
+- The exposure map is now used correctly (with added parameters --expmapuse and --remultiply).
+- Added facility for the user to submit their own variance map (with added parameters --withvarianceset and --varianceset).
+- Internal arrays now only store that rectangular part of the image into which the nonmasked pixel area just fits. This makes processing of images with large surrounding 'black' areas much quicker.
+
+Version 2.1 - 30 Oct 2001 (IMS/LUX)
+----------------------
+- Fixed lyt file so GUI is correct (fixes SPR 2613).
+- --copydss parameter introduced, so that asmooth can handle files (such as produced by farith) from which the dss blocks have been lopped off.
+- Template file now saved before outset is.
+- Bug fixed in which the task attempted to read a defunct parameter when --withboxlist=yes.
+
+Version 2.0 - 11 Sep 2001 (IMS/LUX)
+----------------------
+- Iterative algorithm replaced by a simpler, faster, more elegant 2-step process.
+- Added dependency on evselect (for test set).
+
+Version 1.7 - 30 Aug 2001 (IMS/LUX)
+----------------------
+- Fixed dependency bug.
+
+Version 1.6 - 23 Aug 2001 (IMS/LUX)
+----------------------
+- Algorithm extended to include iteration.
+- Parameters --scaletype, --fluxformaxsigma and --minsigmafluxfraction suppressed: only 'constsnr' adaptive smoothing is available for the present. (This closes SPR 2292.)
+- Iteration parameters --ncycles and --optimize added.
+- Parameter --withtemplateset removed and replaced by --readtemplateset and --writetemplateset.
+- Test set modified to fail if task not built.
+- DSS now copied from inset if present.
+
+Version 1.5.1 - 25 Jun 2001 (IMS/LUX)
+----------------------
+- Included missing --bkgrate parameter in .par file.
+
+Version 1.5 - 28 Feb 2001 (IMS/LUX)
+----------------------
+- Removed unnecessary upper limits on some parameters.
+- Fixed mismatch between code and .par
+- Fixed SPR 2322
+
+Version 1.4.1 - 2 Feb 2001 (IMS/LUX)
+----------------------
+- Updated DEPEND.
+- Added .lyt, .info to config/Makefile.
+- Fixed subroutine name mismatch.
+
+Version 1.4 - 28 Nov 2000 (IMS/LUX)
+----------------------
+- Now uses wcs.f for sources coordinate transformation.
+- Background map facility now works.
+- Fixed bug in calc. of numDirectOps.
+- New parameters bkgrate and deletebadsources.
+- Parameters scut, mlmin not used.
+
+Version 1.3.2 - 21 Nov 2000 (IMS/LUX)
+----------------------
+- Documentation update.
+
+Version 1.3.1 - 16 Nov 2000 (IMS/LUX)
+----------------------
+- Changed order of USEDLIBS so as to static build ok.
+
+Version 1.3 - 20 Oct 2000 (IMS/LUX)
+----------------------
+- Fixed bugs preventing correct smoothing.
+- Changed forcecalctype, calcbyfft and nopslimit from hardwired to parameters.
+- Widened the options for scaling the user-supplied template image (this introduced cal and dss calls).
+
+Version 1.2 - 10 Oct 2000 (IMS/LUX)
+----------------------
+- sfftw returned to EXTERNALS and fftw deleted from USEDLIBS (on advice from GV). Asmooth doesn't build here in this state but this is probably the fault of our installation of fftw.
+
+Version 1.1 - 9 Oct 2000 (IMS/LUX)
+----------------------
+- Changed parameter interface
+- In makefile, fftw moved from EXTERNALS to USEDLIBS
+
+Version 1.0 - 25 Sep 2000
+----------------------
+- First version delivered.
+
+Version 0.1 - 29 Aug 2000
+----------------------
+- Draft documentation circulated.
+

@@ -1,0 +1,183 @@
+<!-- converted from XPI formatted "efftplot.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="infile" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    Input filename
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="nbins" type="int" default="1">
+   <DESCRIPTION>
+    Number of Newbins/Interval
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    nbins in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="bkgsub" type="bool" default="yes">
+   <DESCRIPTION>
+    Use the background subtracted lightcurve?
+   </DESCRIPTION> 
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="rebin" type="bool" default="no">
+   <DESCRIPTION>
+    Rebin the final PDS ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="rebintype" type="string" default="1">
+   <DESCRIPTION>
+    Rebin value (&#62;1 const rebin, &#60;-1 geom. rebin)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="gtis" type="bool" default="no">
+   <DESCRIPTION>
+    Do you want to provide a GTI file?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="gtiset" type="dataset" mandatory="no">
+   <DESCRIPTION>
+    Name of the GTI FITS file :
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="removetrend" type="bool" default="no">
+   <DESCRIPTION>
+    Indicate if polynomial trend has to be substracted from time series
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="polyorder" type="int" default="1">
+   <DESCRIPTION>
+    Order of polynomial trend removal (1-4)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    polyorder in [1:4]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="operation" type="int" default="1">
+   <DESCRIPTION>
+    (1-Subtract,2-Divide,3-Replace) data with trend
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    operation in [1:3]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="plotdevice" type="string" default="/PS">
+   <DESCRIPTION>
+    Enter PGPLOT device
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="outfile" type="file" default="default.ps">
+   <DESCRIPTION>
+    Name of output file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="fillgaps" type="bool" default="no">
+   <DESCRIPTION>
+    If gaps have to be filled, value must be yes
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="npoints" type="int" default="2">
+   <DESCRIPTION>
+    Filling Gap with running mean : number of points
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    npoints in [1:4]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="nerrorpoints" type="int" default="5">
+   <DESCRIPTION>
+    Number of points to determine error bar on results
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    nerrorpoints in [5:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="normalization" type="int" default="1">
+   <DESCRIPTION>
+    Flag to specify the normalization for the results
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    normalization in [-2:2]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="xscale" type="string" default="lin">
+   <DESCRIPTION>
+    Use linear (lin) or logarithmic (log) scale on X-axis.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="yscale" type="string" default="lin">
+   <DESCRIPTION>
+    Use linear (lin) or logarithmic (log) scale on y-axis.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="orbit">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="orbit.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="orbit.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+orbit (orbit-2.11) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="orbit.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Detailed Description"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="orbit.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="orbit:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+This task makes position information from the XMM ODF available as a
+FITS format product file. It has been determined that this product
+would have value for constructing Good Time Intervals (using
+<A NAME="306"></A><A NAME="tex2html1"
+  HREF="../tabgtigen/index.html"><SPAN  CLASS="textbf">tabgtigen</SPAN></A>) based on orbit information, for providing XMM
+positions in the same coordinate system (GSE) as the ACE and WIND
+satellites for Trend Data construction (and SWCX analysis), and for
+possibly creating barycentric correction tables. A FITS format file
+conforming to both established Orbit file conventions and NASA OGIP
+FITS standards are more useful than the ASCII Orbit file provided in
+the XMM ODFs.
+
+<P>
+This task will utilise the OAL_getPosition routine to return the
+x-y-z components of the position vector in km as well as the x-y-z
+components of the corresponding velocity vector in km/s, both with
+respect to the reference Kepler orbit. Both sets of values will be
+written into a standard OGIP-compliant FITS binary extension table
+with a TIME column value, derived from a start, stop and sampling
+interval time, each specified by the user. This task will default to
+sampling the entire input file with a timestep interval of 60.0
+seconds. The OAL interpolates the positions for times outside of 
+an observation, and the user is warned that if such times are outside
+an ORBIT of a given ODF, the interpolation my fail or take very long
+periods of time to calculate. 
+
+<P>
+The GEI to GSE coordinate conversion utilizes IDL routines converted
+to Fortran90 that originated in the Hapgood1992 paper. 
+
+<P>
+Expanding the use of orbit, and taking advantage or the extrapolation
+routines in the OAL, one can select times that are far outside the
+range of a given OBSID. However, because of time and memory constraints,
+the selection is limited to 172800 seconds before the first time in the
+current OBSID and 172800 seconds after the last time in that OBSID. 
+This solves the issue of taking a very long time or crashing with a 
+seg fault if the user selects times too far away from the current
+obsid. 
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html58"
+  HREF="node4.html">Detailed Description</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="orbit.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Detailed Description"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

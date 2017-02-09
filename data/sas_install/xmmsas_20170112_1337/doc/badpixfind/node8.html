@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="badpixfind">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="badpixfind.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="badpixfind.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+badpixfind (badpixfind-1.40) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="badpixfind.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="badpixfind.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="badpixfind:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+   subroutine badpixfind
+
+    * Get input file, parameters, instrument, mode, ccdid, exposure, obsid 
+    * set state of CAL
+    * exit if no modes chosen (searchbadpix=N, userflagbadpix=N)
+    * check userflagbadpix lists are of equal size
+    * open output file
+    * get uplinked bad pixels from CCF
+    * get `image' sizes and origin values, start times and end times
+    * form images in memory from input events file, selecting energy band if 
+        required (in case of MOS, call pattern backprojecting and selecting 
+        subroutines to get true image)
+    * if MOS and flicker, get timestep indices - form `flicker' array    
+    * calculate and output (to screen) initial pixel statistics 
+    * if required, calculate and output (to screen) initial column statistics 
+
+    * call mode_1 (searchbadpix), and mode_1 column analysis 
+        (withbadcolumnsearch) (+ PSF comparison), if required.
+        set of procedures (max/min threshold) techniques performed on image
+        * if hot pixel found - check edge effects - compare with PSF, using 
+          only good pixels (no uplinked or found bad pixels)  
+          - return measure of comparison with PSF 
+      * if requested, perform flickering analysis (low and high count cases)
+    * Obtain badpix set (for mode1) (RAWX, RAWY, Y-extent, fault type) 
+
+    * calculate and output (to screen) new pixel statistics 
+
+    * call mode_2, if required  
+        explicitly flag pixels as bad, the user having given RAWX, RAWY, 
+        Y-extent and type of fault as input lists
+    * Obtain badpix set (for mode2) (RAWX, RAWY, Y-extent, fault type) 
+
+    * Check badpix sets (mode1 and mode2) for redundancy/duplication
+    * calculate and output (to screen) final pixel statistics 
+    * Combine individual badpix sets into output file 
+    * Create, if required, bad pixel map (with optional FOV masking) 
+    * Add attributes and history
+ 
+   end subroutine  badpixfind
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

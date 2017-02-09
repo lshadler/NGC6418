@@ -1,0 +1,360 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Attempt to match detected and simulated sources</TITLE>
+<META NAME="description" CONTENT="Attempt to match detected and simulated sources">
+<META NAME="keywords" CONTENT="eimsim">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="eimsim.css">
+
+<LINK REL="previous" HREF="node22.html">
+<LINK REL="up" HREF="node14.html">
+<LINK REL="next" HREF="node24.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+eimsim (eimsim-2.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node22.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Add various bits and"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="The task eimsim"></A>
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node29.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="eimsim.html">Home Page</A> / <A  HREF="node4.html">Description</A> / <A  HREF="node14.html">The task eimsim</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00043900000000000000"></A>
+<A NAME="eimsim:description:compare"></A>
+<BR>
+Attempt to match detected and simulated sources
+</H3>
+
+<P>
+This function may be performed alone by calling the script with <TT>entrystage</TT> and <TT>finalstage</TT>=`compare'. The actual processing is done by a task called <A NAME="1592"></A><A NAME="tex2html108"
+  HREF="../srccompare/index.html"><SPAN  CLASS="textbf">srccompare</SPAN></A>.
+
+<P>
+In order to asses how well the source detection machinery performs, we need some way to (i) match every detection with a unique member of the list of simulated sources which is the most likely identification, and (ii) measure the probablity that the match arose by chance. The obvious answer to the first requirement seems to be to find that simulated source which is `nearest' in both position and flux to the detected source. This intuition can be quantified by imagining that both simulated and detected sources are represented by points in an abstract 3-dimensional space in which the first two axes record the source position,<A NAME="tex2html107"
+  HREF="footnode.html#foot946"><SUP><IMG  ALIGN="BOTTOM" BORDER="1" ALT="[*]"
+ SRC="../icons/footnote.png"></SUP></A> and the third records the source flux. Let us define a quantity <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img20.png"
+ ALT="$R$"></SPAN> in this space by the equation
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+R^2 = \left( \frac{x_\mathrm{sim}-x_\mathrm{det}}{\sigma_x} \right)^2 + \left( \frac{y_\mathrm{sim}-y_\mathrm{det}}{\sigma_y} \right)^2 + \left( \frac{S_\mathrm{sim}-S_\mathrm{det}}{\sigma_S} \right)^2,
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="415" HEIGHT="48" BORDER="0"
+ SRC="img47.png"
+ ALT="\begin{displaymath}
+R^2 = \left( \frac{x_\mathrm{sim}-x_\mathrm{det}}{\sigma_x} ...
+...eft( \frac{S_\mathrm{sim}-S_\mathrm{det}}{\sigma_S} \right)^2,
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+where <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img22.png"
+ ALT="$x$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$y$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$S$"></SPAN> represent position and flux respectively. The <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img48.png"
+ ALT="$\sigma$"></SPAN> quantities represent the uncertainties which were determined by the source-detection procedure. For each detected source, we define its `matching simulated source' as the one which minimizes <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img20.png"
+ ALT="$R$"></SPAN> for that detection. Let us denote this minimum value of <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img20.png"
+ ALT="$R$"></SPAN> by <!-- MATH
+ $R_\mathrm{match}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="51" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img49.png"
+ ALT="$R_\mathrm{match}$"></SPAN>. The probability can then be obtained as follows. First, consider the ellipsoidal surface defined by
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+R^2_\mathrm{match} = \left( \frac{x-x_\mathrm{det}}{\sigma_x} \right)^2 + \left( \frac{y-y_\mathrm{det}}{\sigma_y} \right)^2 + \left( \frac{S-S_\mathrm{det}}{\sigma_S} \right)^2.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="384" HEIGHT="48" BORDER="0"
+ SRC="img50.png"
+ ALT="\begin{displaymath}
+R^2_\mathrm{match} = \left( \frac{x-x_\mathrm{det}}{\sigma_x...
+...right)^2 + \left( \frac{S-S_\mathrm{det}}{\sigma_S} \right)^2.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+From the definition of <!-- MATH
+ $R_\mathrm{match}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="51" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img49.png"
+ ALT="$R_\mathrm{match}$"></SPAN>, this ellipsoid has the following properties:
+
+<P>
+
+<UL>
+<LI>It is centred on the `position' in this abstract 3-dimensional space of the detected source.
+</LI>
+<LI>The principle axes of the ellipse preserve the ratios between the uncertainties. Indeed one can visualize the process of searching for a match as `inflating' the ellipsoid as one inflates a balloon, until its edge intersects a simulated source.
+</LI>
+<LI>The ellipsoid just touches the matching simulated source.
+</LI>
+<LI>No other simulated source is found inside it.
+</LI>
+</UL>
+
+<P>
+Intuition suggests that the larger the ellipse, or the larger the value of <!-- MATH
+ $R_\mathrm{match}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="51" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img49.png"
+ ALT="$R_\mathrm{match}$"></SPAN>, the less likely it is that the detection is `genuine'. Again we quantify this intuition by integrating the probability density distribution of simulated sources in position and flux over the ellipsoidal volume to give <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.png"
+ ALT="$\eta$"></SPAN>, the expectation value for the number of simulated sources which would fall inside the ellipsoid by chance. Ok, we said above that there are zero sim sources within the ellipsoid - but that was in a single, particular case. What we want to test now is the null hypothesis, ie to ask how many simulated sources, on average, we would expect to land inside our ellipsoid if we threw the chips at random.
+
+<P>
+Having calculated <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.png"
+ ALT="$\eta$"></SPAN>, it is fairly easy to see that the probability <!-- MATH
+ $P_\mathrm{null}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="36" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img44.png"
+ ALT="$P_\mathrm{null}$"></SPAN> of the null hypothesis is given by
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+P_\mathrm{null} = 1 - exp(-\eta).
+\end{equation}
+ -->
+<A NAME="equ4"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="equ4"></A><IMG
+ WIDTH="141" HEIGHT="28" BORDER="0"
+ SRC="img52.png"
+ ALT="\begin{displaymath}
+P_\mathrm{null} = 1 - exp(-\eta).
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">3</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+There is a slight issue here, in that the simulated sources are not evenly distributed in <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$S$"></SPAN>: the number of sources per flux interval increases greatly at low flux. This leads to a bias towards matching with fainter sources. In previous versions of <A NAME="1598"></A><A NAME="tex2html109"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+I assumed that this was a bad thing, and took steps to transform the flux coordinate to correct for this. This is the point of the <A NAME="1602"></A><TT>FLUXRAND</TT> business described in section <A HREF="node15.html#eimsim:description:makeimsimlist">4.3.1</A>. Now I am no longer sure that this is the case. In real life, we expect the gradient of number density with flux to bias the detected flux - this is called Eddington bias. Maintaining this bias during the matching stage ought to help correct for this. What concerns me more now is that the + and - flux uncertainties ought not to be the same in a simple flux scale: one would expect that the + one ought to be larger. Perhaps then the correct way to transform the flux scale before matching is to take its square root, which should even up the uncertainties. What I have done is provide the facility in <A NAME="1604"></A><A NAME="tex2html110"
+  HREF="../eimsim/index.html"><SPAN  CLASS="textbf">eimsim</SPAN></A>
+to do any one of three things, namely (i) leave the flux alone; (ii) transform it to the <A NAME="1608"></A><TT>FLUXRAND</TT> scale, in which the simulated sources are evenly distributed; (iii) transform the flux scale by taking square roots of flux. Comparison of empirical results ought to show which is the best procedure.
+
+<P>
+The following additional columns are written to the list of detected sources:
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>
+<DIV ALIGN="CENTER">
+
+</DIV>
+Name</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>Data type</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>Units</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>Comment</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1610"></A><TT>X</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>arcsec</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184><SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img53.png"
+ ALT="$X$"></SPAN>-coordinate of det source.</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1612"></A><TT>Y</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>arcsec</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184><SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img54.png"
+ ALT="$Y$"></SPAN>-coordinate of det source.</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1614"></A><TT>X_ERR</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>arcsec</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184><SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img53.png"
+ ALT="$X$"></SPAN>-coordinate error of det source.</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1616"></A><TT>Y_ERR</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>arcsec</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184><SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img54.png"
+ ALT="$Y$"></SPAN>-coordinate error of det source.</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1618"></A><TT>SIM_X</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>arcsec</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184><SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img53.png"
+ ALT="$X$"></SPAN>-coordinate of matching sim source.</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1620"></A><TT>SIM_Y</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>arcsec</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184><SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img54.png"
+ ALT="$Y$"></SPAN>-coordinate of matching sim source.</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1622"></A><TT>SIM_FLUX</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>erg cm<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$^{-2}$"></SPAN> s<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img19.png"
+ ALT="$^{-1}$"></SPAN></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>Flux of matching sim source.</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1624"></A><TT>SIM_INDX</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>4-byte int</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>From simlist column <A NAME="1626"></A><TT>INDEX</TT>.</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1628"></A><TT>SIM_INV_SENSY</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>From simlist column <A NAME="1630"></A><TT>INV_SENSY</TT>.</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1632"></A><TT>R_SIGMAS</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184><!-- MATH
+ $R_\mathrm{match}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="51" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img49.png"
+ ALT="$R_\mathrm{match}$"></SPAN>.</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1634"></A><TT>MATCH_PNULL</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184><!-- MATH
+ $P_{\rm {null}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="36" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img55.png"
+ ALT="$P_{\rm {null}}$"></SPAN> from equation <A HREF="#equ4">3</A>.</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1636"></A><TT>SIM_LINF</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>From simlist column <A NAME="1638"></A><TT>FLUXRAND</TT>.</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62><A NAME="1640"></A><TT>FLAG</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>4-byte int</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=184>&nbsp;</TD>
+</TR>
+</TABLE>
+
+<P>
+If the user chooses to take the square root of the flux coordinate then the following additional columns are written:
+
+<P>
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=51>
+<DIV ALIGN="CENTER">
+
+</DIV><A NAME="1642"></A><TT>ROOTF</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>Square root of det source <A NAME="1644"></A><TT>FLUX</TT>.</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=51><A NAME="1646"></A><TT>ROOTF_ERR</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>The appropriate error in <A NAME="1648"></A><TT>L</TT>.</TD>
+</TR>
+<TR><TD ALIGN="LEFT" VALIGN="TOP" WIDTH=51><A NAME="1650"></A><TT>SIM_ROOTF</TT></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=62>4-byte real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=85>&nbsp;</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=198>Square root of sim source <A NAME="1652"></A><TT>FLUX</TT>.</TD>
+</TR>
+</TABLE>
+
+<P>
+The <A NAME="1654"></A><TT>FLAG</TT> column is hardly used at present, but may be found useful in further analysis. Only bit 0 is set by task <A NAME="1656"></A><TT>srccompare</TT>. If the same simulated source is `claimed' by more than one detected source, bit 0 of the flag column is set for all the claimants except that with the smallest value of <A NAME="1658"></A><TT>MATCH_PNULL</TT>.
+
+<P>
+This section also writes a keyword <A NAME="1660"></A><TT>COMPARED</TT>=`T' to the table header.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node22.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Add various bits and"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="The task eimsim"></A>
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node29.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

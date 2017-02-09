@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="epframes">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epframes.css">
+
+<LINK REL="next" HREF="node16.html">
+<LINK REL="previous" HREF="node12.html">
+<LINK REL="up" HREF="epframes.html">
+<LINK REL="next" HREF="node16.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epframes (epframes-8.109.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node14.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Housekeeping related keywords"></A>
+<A HREF="epframes.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epframes.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="epframes:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+   subroutine epframes
+
+   * Read input parameters:
+
+     *** Open the ODF in directory SAS_ODF
+     *** (can also be defined via --odfdir or -o; see taskmain)
+     call OAL_odfInfo
+
+     *** Print infos about the proposal
+     call OAL_proposalInfo
+
+     *** Specify which exposure and CCD one is interested in
+     call OAL_expandFileName(shortfileName,fileName)
+     OAL_selectScope(EPN, IMAGING) or TIMING or BURST
+     call OAL_setState(fileName)
+
+     *** Print Infos about the exposure 
+     call OAL_exposureInfo
+
+     *** Select Data from single CCD
+
+     call OAL_selectFile(ccdNr,fileName)
+
+   * Declarations for the DAL:
+
+     *** Create empty output set and copy attributes
+     outfile = dataSet(stringParameter("outfile"), CREATE)
+     call setAttributes(attributable(outfile),attributable(infile))
+     *** Write standard primary header keywords
+     call setAttribute(outfile,"TELESCOP","XMM",...)
+     call setAttribute(outfile,"INSTRUME","EPN",...)
+     call setAttribute(outfile,"DETNAM"," ",...)
+     call setAttribute(outfile,"FILTER",filterId(OAL_activeFilter()),...)
+     if (odfInfos%isSlew) then
+       call setAttribute(outfile,"OBS_MODE","SLEW",...)
+     else
+       call setAttribute(outfile,"OBS_MODE","POINTING",...)
+     endif
+     call setAttribute(outfile,"OBS_ID", &amp;
+          odfinfos%proposalId+odfinfos%observationId,...)
+     call setAttribute(outfile,"EXP_ID",expinfos%number,...)
+     select case (readoutMode)
+     case(0)
+      call setAttribute(outfile,"CONTENT","EPIC IMAGING MODE EVENT LIST",...)
+      call setAttribute(outfile,"DATAMODE","IMAGING",...)
+     case(1)
+      call setAttribute(outfile,"CONTENT","EPIC TIMING MODE EVENT LIST",...)
+      call setAttribute(outfile,"DATAMODE","TIMING",...)
+     case(8)
+      call setAttribute(outfile,"CONTENT","EPIC BURST MODE EVENT LIST",...)
+      call setAttribute(outfile,"DATAMODE","BURST",...)
+     end select
+     call setAttribute(outfile,"ORIGIN","Leicester/SSC",...)
+     call setAttribute(outfile,"OBJECT",proposalinfo%targetName,...)
+     call setAttribute(outfile,"DATE-OBS",odfinfos%observationStartTime,...)
+     call setAttribute(outfile,"DATE-END",odfinfos%observationEndTime,...)
+     call setAttribute(outfile,"OBSERVER",proposalinfo%GoName,...)
+     *** Write some additional keywords (to be used by attcalc)
+     call setAttribute(outfile,"RA_OBJ",proposalinfo%targetRa,...)
+     call setAttribute(outfile,"DEC_OBJ",proposalinfo%targetDec,...)
+     call setAttribute(outfile,"RA_NOM",proposalinfo%boresightRa,...)
+     call setAttribute(outfile,"DEC_NOM",proposalinfo%boresightDec,...)	
+
+     *** Create events table extension (one per CCD)
+     outccd = addTable(outfile,"EVENTS",ntrow)
+     call setAttributes(attributable(outccd),attributable(inccd))
+     call setAttribute(outccd,"TSTART" ,...) ! start time of first frame
+     call setAttribute(outccd,"TSTOP"  ,...) ! end time of last frame
+     call setAttribute(outccd,"TELAPSE",...) ! TSTOP - TSTART in [s]
+
+     call setEventAttribute(outccd,EVATT_IN_SPOILED_FRAME)
+     call setEventAttribute(outccd,EVATT_IN_BAD_FRAME)
+     call setEventAttribute(outccd,EVATT_OUT_OF_CCD_WINDOW)
+
+     *** Read table columns FRAME, RAWX, RAWY, ENERGY
+
+   * Convert frame counter to event time tags:  
+
+     col = column(inccd, "FRAME", READ)
+     frames =&gt; int32Data(col)
+
+     call OAL_frameCounterToObt
+     call OAL_obtToTimeTag
+
+     * fine time correction:
+
+     if IMAGING mode then
+      call CAL_correctTime(timeTags)
+     else  ! TIMING or BURST with source position
+      call CAL_correctTime(timeTags, rawY, srcposition)
+     endif
+
+   * Compute mode dependent livetime factor FC0:
+
+   * Create exposure extension
+
+         TIME     = real64Data(column(inccd,"TIME",READ))
+         TIMEDEL  = real64Attribute(inccd,"FRMTIME")/1000 * FC0
+         FRACEXP  = 1 (real32Data, other livetime factors to be handled 
+	               by higher SAS task)
+
+
+   * Correct for offset shifts 
+
+     call CAL_offsetCorrect
+
+   *** determine frame boundaries and prepare the loop
+   *** read table column RAWX, RAWY and FLAG frame by frame
+
+   do frame = firstFrame, lastFrame
+
+      ixx   = RAWX(frame)
+      iyy   = RAWY(frame)
+      iqual = FLAG(frame)
+      itime = TIME(frame)  
+
+      * Search for valid events
+
+        *** Check for wrong coordinates
+        read window size and position
+        if (ixx,iyy) outside this window, than 
+          call warning "Error in coordinates"
+          qual(i) = ior(qual(i), EVATT_OUT_OF_CCD_WINDOW)
+                                        ! SINGLE EVENT FLAGGING:
+                                        ! OUTSIDE THE READOUT WINDOW
+   
+        *** Check for correct order of events
+        pix_code_new = iyy * 100 + ixx
+        if (pix_code_new &lt;= pix_code_old) then
+          call warning "Events are in wrong order"
+          qual(i) = ior(qual(i), EVATT_IN_BAD_FRAME) 
+	                                ! WHOLE FRAME FLAGGING
+          qual(i) = ior(qual(i), EVATT_IN_SPOILED_FRAME)
+                                        ! WRONG ORDER OF EVENTS
+        endif
+        pix_code_old = pix_code_new  
+
+        *** Check for time order
+        if frame not sorted in time
+          call warning "Frame not sorted in time"
+          qual(i) = ior(qual(i), EVATT_IN_BAD_FRAME) 
+	                                ! WHOLE FRAME FLAGGING
+          qual(i) = ior(qual(i), EVATT_IN_SPOILED_FRAME)
+                                        ! NOT SORTED IN TIME
+
+   enddo    ! loop over frames
+
+   *** Display statistics about wrong events
+      
+       wronglimit = intParameter("wrongpixlimit")
+       if (number_of_wrong_events &gt; real(wronglimit)) &amp;
+         call warning "More wrong events than wrongpixlimit allows"
+
+   *** Add statistics to the history and keywords
+
+   *** Convert EPIC PN ODF file into format defined in ICD
+     write outfile with columns 
+         TIME, FRAME, RAWX, RAWY, PHA, CCDNR, FLAG
+     NOTE: RAWX/Y and attributes WINDOWX0/Y0 are increased by 1
+
+   * Write GTIs depending on start/stop time of observation
+     and wrong/missing frames
+
+     *** Create empty output set and copy primary standard attributes
+     outgti = dataSet(stringParameter("outgti"), CREATE)
+     call setAttributes(attributable(outgti),attributable(outfile))
+
+     *** Create GTI extension
+     outgticcd = addTable(outgti,"STDGTIxx",ngti) ! where xx is the overall
+                                                  ! CCD number (01-12)
+     call setAttribute(outgticcd,"HDUCLASS","OGIP",...)
+     call setAttribute(outgticcd,"HDUCLAS1","GTI",...)
+     call addAttributes(attributable(outgticcd),attributable(outccd))
+
+     for each GTI:  
+     start(i) = time(firstEvent) - (FRMTIME/1000)/2
+     stop(i)  = time(lastEvent)  + (FRMTIME/1000)/2  
+
+   end subroutine epframes
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

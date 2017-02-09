@@ -1,0 +1,188 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="srcmatch">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="srcmatch.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="srcmatch.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+srcmatch (srcmatch-3.20) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="srcmatch.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="srcmatch.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="srcmatch:description:description"></A>
+<BR>
+Description
+</H1>
+The task combines four different functions:
+
+<P>
+
+<UL>
+<LI>A one line summary for each source detected
+by the EPIC detection tasks is created. The summary information is a subset of
+the information given in the <A NAME="463"></A><A NAME="tex2html3"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+source list table.
+
+<P>
+</LI>
+<LI>Cross-identification of the summary source list with source lists from 
+earlier stages of the detection pipeline (i.e. to fill in
+the <A NAME="467"></A><TT>PN_ML_ID_SRC</TT>, <A NAME="469"></A><TT>M1_ML_ID_SRC</TT>,...,<A NAME="471"></A><TT>M2_BOX_ID_SRC</TT>
+columns).
+
+<P>
+</LI>
+<LI><A NAME="473"></A><A NAME="tex2html4"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+source lists from different detection runs
+can be merged into one summary source list. 
+
+<P>
+</LI>
+<LI>A cross-identification of the EPIC sources with the sources
+listed in the OM observation source list is performed. The cross-correlation
+radius can be specified by an input parameter.  Up to five OM source
+identification numbers can be listed in the output set.
+</LI>
+</UL>
+
+<P>
+Cross-correlating EPIC source lists for either merging or for correlating
+earlier pipeline source lists is done in two stages.  The first stage is
+similar for both the merging of source lists and cross-identifying sources
+with earlier pipeline source lists.  In this stage
+(subroutine <A HREF="#func:f90:compare_srcs"><TT>compare_srcs</TT></A>) correlations are
+investigated and pointers between matching sources are set. Always the closest
+companion (in terms of sigmas) is chosen. Only sources within 3 to 5
+sigmas will be correlated (the exact number can be set using input
+parameter <TT>maxerr</TT>).  In order to avoid problems due to boresight
+effects an input parameter <TT>systerr</TT> (for systematic error) has been
+introduced.
+
+<P>
+In the second stage, the cross identifications are either used to get the
+pointers to the source numbers from previous detection stages (e.g. the <A NAME="482"></A><TT>PN_ML_ID_SRC</TT> field), or the two lists are merged. The
+first option works for the data sets provided with the
+<TT>crossidsets</TT> command line parameter, 
+whereas merging is done if more than one set is provided using
+the <TT>inputlistsets</TT> parameter.  Both options can be used simultaneously.
+
+<P>
+Merging means that new sources will be added to the list and parameters of
+cross-identified sources will be averaged using weights based upon the
+statistical errors. The maximum likelihood parameters will be all listed
+separately using columns with dimension larger or equal to one, in the same
+manner as the cross-identification columns.  The reason is that maximum
+likelihood values cannot be simply averaged or added without losing its
+meaning as a probability related parameter.
+
+<P>
+Both for merging and for cross-identification, the source lists are read one by
+one and are correlated separately.  This ensures that not more than 2 source
+lists will be stored in memory.  Upon execution the number of sources that can
+be stored in the summary source list is three times the number of sources in
+the first input set.  If during the execution this turns out not to be enough,
+the source list will be copied to a new array with a three times larger
+capacity.
+
+<P>
+The output EPIC observation source lists are provided both in <A NAME="tex2html5"
+  HREF="http://heasarc.gsfc.nasa.gov/docs/heasarc/fits.html">FITS</A> and in
+HTML format, where the HTML list is intended to give a quick overview for each
+source detected, but does not provide instrument-specific data.
+
+<P>
+Combined values for all EPIC instrument and per individual EPIC instrument can
+be determined for several source parameters (described below). They are
+calculated if the parameter <TT>allepicmode</TT> is true and set to NULL
+otherwise.
+
+<P>
+Fluxes and flux errors from the input source lists are copied to the columns
+<A NAME="492"></A><TT><I>inst_b</I>_FLUX</TT> and <A NAME="499"></A><TT>ERR_<I>inst_b</I>_FLUX</TT>
+(<I>inst</I>=[PN,M1,M2], <I>b</I>=[1,2,3,4,5,TOT,XID]). Combined instrument
+fluxes and errors <A NAME="506"></A><TT><I>inst</I>_TOT_FLUX</TT>,
+<BR><A NAME="513"></A><TT>ERR_<I>inst</I>_TOT_FLUX</TT> are the sums of the fluxes and errors over all energy bands
+of the instrument. The columns <A NAME="520"></A><TT>EP_<I>b</I>_FLUX</TT>
+and <A NAME="527"></A><TT>ERR_EP_<I>b</I>_FLUX</TT> contain all-EPIC flux values and errors,
+calculated from the available single camera values using error-weighted
+averages.
+
+<P>
+As of version 3.10.2, the output <A NAME="tex2html6"
+  HREF="http://heasarc.gsfc.nasa.gov/docs/heasarc/fits.html">FITS</A> table contains the columns <I>inst_b</I>, <A NAME="536"></A><TT><I>inst_b</I>_ERR</TT>, <A NAME="543"></A><TT><I>inst</I>_EXP</TT>, with <I>inst</I>=[PN,M1,M2] and <I>b</I>=[1,2,3,4,5,TOT,XID]. These columns contain count
+rates, (<A NAME="550"></A><TT><I>inst_b</I></TT>), count rate errors (<A NAME="557"></A><TT><I>inst_b</I>_ERR</TT>), and exposure map values (<A NAME="564"></A><TT><I>inst_n</I>_EXP</TT>, <I>n</I>=[1..5]) from the individual instruments and up to 5 energy bands. Total
+count rates and errors per instrument <I>inst</I>_TOT, <I>inst</I>_TOT_ERR
+and total EPIC count rates and errors EP_TOT, EP_TOT_ERR are the sum of the
+count rates in the individual energy bands. In the case of several input
+source lists from one instrument, count rates are averaged and exposure map
+values are added.
+
+<P>
+The hardness ratios and errors from the input source lists are copied to
+output columns <A NAME="572"></A><TT><I>inst</I>_HR<I>n</I></TT> and <A NAME="582"></A><TT><I>inst</I>_HR<I>n</I>_ERR</TT> (<I>inst</I>=[PN,M1,M2], <I>n</I>=[1,2,3,4]). In addition, weighted
+averages of the single camera hardness ratios can be written to
+columns <A NAME="591"></A><TT>EP_HR<I>n</I></TT>, <A NAME="598"></A><TT>EP_HR<I>n</I>_ERR</TT>, again controlled
+by the parameter <TT>allepicmode</TT>.
+<BR><B>Note:</B> Since the EPIC cameras have different energy dependent effective
+areas, the averaged HR values depend on the relative exposures and/or presence
+of the (sources in the) individual cameras.
+
+<P>
+As of version 3.10.5, the strings from the input
+columns <A NAME="603"></A><TT>VAL_FLAG</TT>, <A NAME="605"></A><TT>VER_FLAG</TT>, <A NAME="607"></A><TT>VER_COMM</TT> (set by
+task <A NAME="609"></A><A NAME="tex2html7"
+  HREF="../dpssflag/index.html"><SPAN  CLASS="textbf">dpssflag</SPAN></A>) are copied into the columns of the output
+file <A NAME="616"></A><TT><I>inst</I>_VAL_FLAG</TT>, <A NAME="623"></A><TT><I>inst</I>_VER_FLAG</TT>, <A NAME="630"></A><TT><I>inst</I>_VER_COMM</TT> (<I>inst</I>=[PN,M1,M2]).
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="srcmatch.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

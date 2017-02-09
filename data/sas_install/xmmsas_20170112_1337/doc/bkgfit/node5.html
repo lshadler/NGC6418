@@ -1,0 +1,181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Fitting algorithm:</TITLE>
+<META NAME="description" CONTENT="Fitting algorithm:">
+<META NAME="keywords" CONTENT="bkgfit">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="bkgfit.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+bkgfit (ebkgmap-2.9) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Bottom-up explanation:"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Constraints on the model"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="bkgfit.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000">
+Fitting algorithm:</A>
+</H2>
+
+<P>
+The vector of amplitudes <!-- MATH
+ $\mathbf{a}_{\rm {opt}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\mathbf{a}_{\rm {opt}}$"></SPAN> which minimizes <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$L$"></SPAN> is approximated by a Newtonian method in <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$N$"></SPAN> dimensions. In this method, the formula
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+\nabla L = \mathbf{C} \, (\mathbf{a}_{i+1} - \mathbf{a}_{i})
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="136" HEIGHT="28" BORDER="0"
+ SRC="img17.png"
+ ALT="\begin{displaymath}
+\nabla L = \mathbf{C} \, (\mathbf{a}_{i+1} - \mathbf{a}_{i})
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+where <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$\mathbf{C}$"></SPAN> is an <SPAN CLASS="MATH"><IMG
+ WIDTH="52" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$N \times N$"></SPAN> matrix of curvature terms given by 
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+C_{i,j} = \frac{\partial^2 L}{\partial a_i \partial a_j},
+\end{equation}
+ -->
+<A NAME="curv_equ"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="curv_equ"></A><IMG
+ WIDTH="102" HEIGHT="46" BORDER="0"
+ SRC="img20.png"
+ ALT="\begin{displaymath}
+C_{i,j} = \frac{\partial^2 L}{\partial a_i \partial a_j},
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">3</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+is iteratively inverted until it is judged to have converged.
+
+<P>
+<SPAN CLASS="MATH"><IMG
+ WIDTH="28" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$\nabla L$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img18.png"
+ ALT="$\mathbf{C}$"></SPAN> can be expressed in closed form as
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+(\nabla L)_i = \frac{\partial L}{\partial a_i} = 2\sum_{x=1}^{X}\sum_{y=1}^{Y} \bigg(b_{x,y,i} \bigg[1 - \frac{I_{x,y}}{B_{x,y}(\mathbf{a})} \bigg]\bigg),
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="332" HEIGHT="58" BORDER="0"
+ SRC="img22.png"
+ ALT="\begin{displaymath}
+(\nabla L)_i = \frac{\partial L}{\partial a_i} = 2\sum_{x=1}...
+...i} \bigg[1 - \frac{I_{x,y}}{B_{x,y}(\mathbf{a})} \bigg]\bigg),
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+C_{i,j} = \frac{\partial^2 L}{\partial a_i \partial a_j} = 2\sum_{x=1}^{X}\sum_{y=1}^{Y} \bigg[ \frac{b_{x,y,i} \, b_{x,y,j} \, I_{x,y}}{B_{x,y}^2(\mathbf{a} )} \bigg].
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="306" HEIGHT="58" BORDER="0"
+ SRC="img23.png"
+ ALT="\begin{displaymath}
+C_{i,j} = \frac{\partial^2 L}{\partial a_i \partial a_j} = 2...
+...,y,i} \, b_{x,y,j} \, I_{x,y}}{B_{x,y}^2(\mathbf{a} )} \bigg].
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html92"
+  HREF="node6.html">Constraints on the model components:</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

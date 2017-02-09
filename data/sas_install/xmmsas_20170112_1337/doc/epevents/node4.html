@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>General</TITLE>
+<META NAME="description" CONTENT="General">
+<META NAME="keywords" CONTENT="epevents">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epevents.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epevents (epevents-6.50.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Out-of-time events"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epevents.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+General</A>
+</H2>
+The EPIC PN raw event list, processed by <A NAME="831"></A><A NAME="tex2html3"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>
+and <A NAME="835"></A><A NAME="tex2html4"
+  HREF="../badpix/index.html"><SPAN  CLASS="textbf">badpix</SPAN></A>
+is used as input. 
+
+<P>
+<A NAME="839"></A><A NAME="tex2html5"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>
+flags all events with a gain corrected amplitude smaller 
+than a parameterized value which follow in the same CCD column immediately 
+after an event with an amplitude above a certain (fixed) threshold as
+`trailing' events. Such artificial events are produced by re-emission 
+during the readout process ([<A
+ HREF="node31.html#dennerl99:_cti_pattern_xmm_epic_pn_ccd">1</A>]). 
+The flags are bit-masked according to [<A
+ HREF="node31.html#stn:event_attributes">3</A>]. 
+The flagging is suppressed for TIMING mode data. 
+In this mode the reemission effect is very 
+unlikely as events are binned into macro pixels. 
+
+<P>
+A pattern analysis is made which yields four distinctive parameters: the 
+number of pixels in the structure, the running pattern number within 
+a frame, the pattern orientation (zero for singles and unresolved patterns; 
+otherwise a three digit code, with the last digit specifying the orientation 
+of the pattern and the first two the position of the pixel on the pattern) and 
+the distance (in pixels) to neighbouring event in the same frame and 
+column along the readout direction towards the CAMEX (0 indicates 
+the first pixel read in a column). All four parameters are combined into 
+three output columns <A NAME="843"></A><TT>PAT_ID</TT>, <A NAME="845"></A><TT>PAT_SEQ</TT>, 
+and <A NAME="847"></A><TT>PATTERN</TT> which 
+will be part of the EPIC pn calibrated event list as a PPS product 
+([<A
+ HREF="node31.html#ct:SSCPROICD">2</A>]). Bad pixels from the <A NAME="849"></A><TT>BADPIX</TT> extension are not
+included in the pattern analysis.
+
+<P>
+Events are flagged as on a bad pixel if they coincide with a bad pixel 
+in the <A NAME="851"></A><TT>BADPIX</TT> extension. Single events (or patterns, based on their
+pixel with maximum amplitude) next to a hot or bad pixel are flagged 
+accordingly.
+
+<P>
+Detection of cosmic ray events (MIPs) is based on the high energy cutoff.
+Depending on the MIP rejection mode (on-board, in <A NAME="853"></A><A NAME="tex2html6"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>) 
+information from the discarded line information in the <A NAME="857"></A><TT>EXPOSURE</TT> 
+extension is used for event flagging. 
+
+<P>
+Making use of calibration products in the CCF and CAL routines, 
+<A NAME="859"></A><A NAME="tex2html7"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>
+corrects raw energies (<A NAME="863"></A><TT>PHA</TT>)
+for gain variations of 
+the preamplifier channels and CTI during readout to compute the <A NAME="865"></A><TT>PI</TT> 
+values. 
+The CTI correction is calculated as a function of column position, 
+(temperature, if requested), 
+PHA of the events as well as distance and PHA of the 
+preceding event along the readout direction. 
+Hence, the calibration procedure requires information on events read out 
+from the same node prior to the event in question (memory-effect).
+
+<P>
+<A NAME="867"></A><A NAME="tex2html8"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>
+recombines all the events split across several pixels
+with the same pattern index: the energy of the recombined event is the
+sum over the split energies, its position is that of the split
+event with maximum raw energy. There are <SPAN CLASS="MATH"><IMG
+ WIDTH="50" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$\sim70\%$"></SPAN> single 
+events and <SPAN CLASS="MATH"><IMG
+ WIDTH="50" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\simeq 30\%$"></SPAN> double patterns (other valid events are 
+triples and quadruples), the exact numbers vary with energy.
+<A NAME="871"></A><A NAME="tex2html9"
+  HREF="../epatplot/index.html"><SPAN  CLASS="textbf">epatplot</SPAN></A>
+is a tool to visualize the pattern type distributions
+as function of (recombined) photon energy.
+
+<P>
+Finally, <A NAME="875"></A><A NAME="tex2html10"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>
+computes physical camera detector coordinates 
+<A NAME="879"></A><TT>DETX</TT>, <A NAME="881"></A><TT>DETY</TT> 
+(in the CAMCOORD2 system)
+from raw detector coordinates 
+<A NAME="883"></A><TT>RAWX</TT>, <A NAME="885"></A><TT>RAWY</TT>
+which may be randomized over the pixel area depending on the parameter 
+<TT>randomizeposition</TT>.
+
+<P>
+For readout modes TIMING and BURST the source position attribute 
+<A NAME="888"></A><TT>SRCPOS</TT> written
+by <A NAME="890"></A><A NAME="tex2html11"
+  HREF="../epframes/index.html"><SPAN  CLASS="textbf">epframes</SPAN></A>
+is used to create a DETY coordinate corresponding to the
+source position on the CCD. <A NAME="894"></A><TT>SRCPOS</TT> is also used as position for
+the CTI correction.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Out-of-time events"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

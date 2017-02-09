@@ -1,0 +1,336 @@
+<FILE>
+ <CONFIG>
+
+<!-- Input files  -->
+  <PARAM id="evtfile" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    Name of input event file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="ootfile" type="dataset" mandatory="no">
+   <DESCRIPTION>
+    Name of input out-of-time event file (for EPIC-pn only)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="attfile" type="dataset" mandatory="no">
+   <DESCRIPTION>
+    Name of input attitude file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="gtifile" type="dataset" mandatory="no">
+   <DESCRIPTION>
+    Name of the good-time-interval file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+
+
+
+<!-- other parameter  -->
+
+   <PARAM id="withemtaglenoise" type="bool" default="yes">
+       <DESCRIPTION> Remove noisy MOS CCDs? (using emtaglenoise) </DESCRIPTION>
+   </PARAM>
+
+   <PARAM id="withbadpixupdate" type="bool" default="yes">
+       <DESCRIPTION> Update bad pixels to be the same in all eventfiles? </DESCRIPTION>
+   </PARAM>
+
+
+
+<PARAM id="flag" type="string" default="">
+	<DESCRIPTION> 
+           Flag selection for final images.
+           If left empty, default will be set according to the input files. 
+        </DESCRIPTION>
+</PARAM>
+
+<PARAM id="flagout" type="string" default="">
+	<DESCRIPTION> 
+           Flag selection, used for the count rate calculation in the detector corners. 
+           Ensure that the flag does not remove events outside the field of view.
+           If left empty, default will be set according to the input files. 
+        </DESCRIPTION>
+</PARAM>
+
+
+
+  <PARAM id="pimin" type="int" list="yes" mandatory="no" default="200 500 1000 2000 4500">
+   <DESCRIPTION>
+    Lower PI bin range
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    pimin in [0:20000]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="pimax" type="int" list="yes" mandatory="no" default="500 1000 2000 4500 12000">
+   <DESCRIPTION>
+    Higher PI bin range
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    pimax in [0:20000]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+
+  <PARAM id="patmin" type="int" list="yes" mandatory="no" default="">
+   <DESCRIPTION>
+    Lower pattern range
+    If left empty, default will be set according to the input files and energy band. 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    patmin in [0:12]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+
+  <PARAM id="patmax" type="int" list="yes" mandatory="no" default="">
+   <DESCRIPTION>
+    Higher pattern range
+    If left empty, default will be set according to the input files and energy band. 
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    patmax in [0:12]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+<PARAM id="withwindowmode" type="bool" default="no">
+	<DESCRIPTION> Create scaled filter-wheel closed images? </DESCRIPTION>
+	<DESCRIPTION> This parameter allows to include data of CCDs operated in large/small window mode. 
+Note that in this case no filter-wheel closed images are created for the CCDs that are in window mode! 
+        </DESCRIPTION>
+</PARAM>
+
+
+<PARAM id="withfwcimages" type="bool" default="yes">
+	<DESCRIPTION> Create scaled filter-wheel closed images? </DESCRIPTION>
+	<CASE>
+		<ITEM value="no"> </ITEM>
+		<ITEM value="yes">
+		   <PARAM id="fwcfile" type="dataset" mandatory="yes">
+		     <DESCRIPTION> Name of input filter-wheel-closed event file  </DESCRIPTION>
+		     <CONSTRAINTS> true  </CONSTRAINTS>
+		  </PARAM>
+	        </ITEM>
+	</CASE>
+</PARAM>
+
+
+
+<PARAM id="withexposure" type="bool" default="yes">
+	<DESCRIPTION> Calculate exposure maps (using eexpmap)? </DESCRIPTION>
+	<CASE>
+		<ITEM value="no"> </ITEM>
+		<ITEM value="yes">
+
+                     <PARAM id="withmask" type="bool" default="yes">
+                 	<DESCRIPTION> Create a mask (using emask) </DESCRIPTION>
+ 
+                 	<CASE>
+
+	        	<ITEM value="no"> </ITEM>
+	         	<ITEM value="yes">
+
+                  	 <PARAM id="threshold1" type="real" default="0.01">
+                  	  <DESCRIPTION>  Threshold parameter 1: fraction of maximum exposure  </DESCRIPTION>
+                  	  <CONSTRAINTS>
+                  	   threshold1 in [0.0:1.0]
+                  	  </CONSTRAINTS>
+                  	 </PARAM>
+
+                  	 <PARAM id="threshold2" type="real" default="0.5">
+                  	  <DESCRIPTION> Threshold parameter 2: threshold for gradient of exposure  </DESCRIPTION>
+                 	   <CONSTRAINTS>
+                 	    threshold2 in [0.0:10.0]
+                 	   </CONSTRAINTS>
+                 	  </PARAM>
+
+
+		       </ITEM>
+ 
+	</CASE>
+
+                     </PARAM>
+
+		</ITEM>
+	</CASE>
+</PARAM>
+
+
+
+
+<PARAM id="withattcalc" type="bool" default="no">
+	<DESCRIPTION> Calculate new image coordinates? </DESCRIPTION>
+	<CASE>
+		<ITEM value="no"> </ITEM>
+		<ITEM value="yes">
+
+ 		     <PARAM id="nominalra" type="angle" default="0">
+  		       <DESCRIPTION>
+ 		         RA of ref.point (deg) (refpointlabel=user) 
+  		       </DESCRIPTION>
+  		       <CONSTRAINTS>
+  		        nominalra in [0.0:360.0]
+  		       </CONSTRAINTS>
+  		    </PARAM>
+
+   		   <PARAM id="nominaldec" type="angle" default="0">
+   		      <DESCRIPTION>
+   		       Dec of ref.point (deg) (refpointlabel=user) 
+   		      </DESCRIPTION>
+  		       <CONSTRAINTS>
+  		        nominaldec in [-90.0:90.0]
+  		       </CONSTRAINTS>
+  		    </PARAM>
+
+		    <PARAM id="imagesize" type="angle" default="0.36">
+		       <DESCRIPTION>
+ 		       Image half-size (deg) 
+ 		      </DESCRIPTION>
+ 		      <CONSTRAINTS>
+  		      imagesize in [0.0:]
+ 		      </CONSTRAINTS>
+ 		    </PARAM>
+
+
+		</ITEM>
+	</CASE>
+</PARAM>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- EVSELECT  -->
+
+<PARAM id="withxranges" type="bool" default="no">
+	<DESCRIPTION> Use min/max values for x axis image extraction </DESCRIPTION>
+	<CASE>
+		<ITEM value="no"> </ITEM>
+		<ITEM value="yes">
+			<PARAM id="ximagemin" type="real" default="1" mandatory="yes">
+				<DESCRIPTION> Lower limit of x axis for image extraction </DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="ximagemax" type="real" default="640" mandatory="yes">
+				<DESCRIPTION> Upper limit of x axis for image extraction </DESCRIPTION>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="withyranges" type="bool" default="no">
+	<DESCRIPTION> Use min/max values for x axis image extraction </DESCRIPTION>
+	<CASE>
+		<ITEM value="no"> </ITEM>
+		<ITEM value="yes">
+			<PARAM id="yimagemin" type="real" default="1" mandatory="yes">
+				<DESCRIPTION> Lower limit of y axis for image extraction </DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="yimagemax" type="real" default="640" mandatory="yes">
+				<DESCRIPTION> Upper limit of y axis for image extraction </DESCRIPTION>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+
+<PARAM id="imagebinning" type="string" default="binSize">
+	<DESCRIPTION> Use bin sizes or image sizes to determine binning factor </DESCRIPTION>
+	<CASE>
+		<ITEM value="imageSize">
+			<PARAM id="squarepixels" type="bool" default="yes">
+				<DESCRIPTION> Force x and y bin size to be the same when imagebinning=imageSize </DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="ximagesize" type="int" default="600">
+				<DESCRIPTION> Image size in the x coordinate (used to determine binning factor) </DESCRIPTION>
+				<CONSTRAINTS>
+					ximagesize in [0:]
+				</CONSTRAINTS>
+			</PARAM>
+
+			<PARAM id="yimagesize" type="int" default="600">
+				<DESCRIPTION> Image size in the y coordinate (used to determine binning factor) </DESCRIPTION>
+				<CONSTRAINTS>
+					yimagesize in [0:]
+				</CONSTRAINTS>
+			</PARAM>
+		</ITEM>
+		<ITEM value="binSize">
+			<PARAM id="ximagebinsize" type="real" default="40" mandatory="yes">
+				<DESCRIPTION> Binning factor for x axis in image creation </DESCRIPTION>
+				<CONSTRAINTS>
+					ximagebinsize in [0:]
+				</CONSTRAINTS>
+			</PARAM>
+
+			<PARAM id="yimagebinsize" type="real" default="40" mandatory="yes">
+				<DESCRIPTION> Binning factor for y axis in image creation </DESCRIPTION>
+				<CONSTRAINTS>
+					yimagebinsize in [0:]
+				</CONSTRAINTS>
+			</PARAM>
+		</ITEM>
+
+	</CASE>
+</PARAM>
+
+
+
+
+<PARAM id="withcelestialcenter" type="bool" default="no">
+	<DESCRIPTION> Shift the center of the image to the specified ra and dec </DESCRIPTION>
+	<CASE>
+		<ITEM value="no"> </ITEM>
+		<ITEM value="yes">
+			<PARAM id="raimagecenter" type="real" default="0" mandatory="yes">
+				<DESCRIPTION> Right ascension of the center of the image, in decimal degrees </DESCRIPTION>
+			</PARAM>
+
+			<PARAM id="decimagecenter" type="real" default="0" mandatory="yes">
+				<DESCRIPTION> Declination of the center of the image, in decimal degrees </DESCRIPTION>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+
+
+
+
+ 
+ </CONFIG>
+</FILE>

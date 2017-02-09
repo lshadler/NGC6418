@@ -1,0 +1,267 @@
+ChangeLog for evlistcomb
+========================
+
+Open SPRs:
+----------
+	None.
+
+Version 4.19.2  -  2004-02-24 (JB)
+--------------
+- Remove blanks of HIGH TIME RESOLUTION in default for rgsdatamodes.
+
+Version 4.19.1  -  2004-01-13 (JB)
+--------------
+- Use supertabular for ChangeLog section in doc.
+- Don't reject files which do not contain all extensions to merge.
+
+Version 4.19  -  2002-05-28 (JB)
+------------
+- Clarify warnings in code and doc.
+
+Version 4.18  -  2002-05-14 (JB)
+------------
+- Upgrade parameter file to param 2.0.
+
+Version 4.17.2  -  2002-04-12 (JB)
+--------------
+- Correct test file test/event.ref.
+
+Version 4.17.1  -  2002-04-11 (JB)
+--------------
+- Correct bug showing when a column is missing in one input file.
+- Add test for overflow in test/mos21.fits on PHA and PI.
+
+Version 4.17  -  2001-11-15 (JB)
+------------
+- Allow merging several extensions.
+
+Version 4.16.1  -  2001-07-20 (JB)
+--------------
+- Bug correction for Optimization mode (src/evlistcomb_mod.f90)
+
+Version 4.16  -  2001-07-10 (JB)
+------------
+- Implement seek call to optimise in low-memory mode.
+
+Version 4.15.2  -  2001-05-21 (JB)
+--------------
+- Remove link to defunct task rgsexposure (doc/evlistcomb_description.tex)
+
+Version 4.15.1  -  2001-05-17 (JB)
+--------------
+- Fix SPR 2387 (Propagates wrong SUBMODE for pn SW TI BU modes).
+- Clarified meaning of xxxdatamodes parameter (doc/evlistcomb_description.tex)
+
+Version 4.15  -  2001-04-27 (JB)
+------------
+- Add primaryonly parameter to avoid propagating the ORIGIN keyword.
+
+Version 4.14.1  -  2001-02-08 (JB)
+--------------
+- Add TCUNI to the default for extensionchecks (config/evlistcomb.par)
+- Clarify the doc for column keywords (doc/evlistcomb_description.tex)
+
+Version 4.14  -  2000-11-02 (JB)
+------------
+- Do not write CONTENT keyword any longer.
+- Propagate SUBMODE keyword.
+
+Version 4.13.3  -  2000-10-30 (JB)
+--------------
+- Fixed bug on attribute units (src/evlistcomb_mod.f90)
+
+Version 4.13.2  -  2000-10-27 (JB)
+--------------
+- Fixed SPR 2009 (Wrong names for event list files) (src/evlistcomb_mod.f90)
+
+Version 4.13.1  -  2000-10-24 (JB)
+--------------
+- Added STDGTI to the default for othertables (config/evlistcomb.par)
+
+Version 4.13  -  2000-07-26 (JB)
+------------
+- Implemented isNull from selectlib to transtype nulls (src/evlistcomb_mod.f90)
+
+Version 4.12.3  -  2000-06-21 (JB)
+--------------
+- Fixed bug whereby the files were not explicitly closed.
+
+Version 4.12.2  -  2000-06-19 (JB)
+--------------
+- Fixed SPR 1658 (error and warning labels):
+	Removed blanks from error codes (doc/evlistcomb_description.tex
+	and src/evlistcomb_mod.f90).
+
+Version 4.12.1  -  2000-06-11 (JB)
+--------------
+- Fixed SSC-SPR 1706 (evlistcomb gives a wrong FILENAME keyword):
+	Remove FILENAME attribute (src/evlistcomb_mod.f90).
+- Fixed SSC-SPR 1733 (maxattributes and minattributes not present in .lyt):
+	Updated config/evlistcomb.lyt.
+- Propagates CLOCKAPP and TIMEZERO by default (config/evlistcomb.par).
+
+Version 4.12  -  2000-05-26 (JB)
+------------
+- Implement special LOW_MEMORY access in first loop on files.
+
+Version 4.11  -  2000-05-25 (JB)
+------------
+- Correct bug in 4.10.
+
+Version 4.10  -  2000-05-25 (JB)
+------------
+- Writes global keywords to all extensions.
+
+Version 4.9  -  2000-04-20 (JB)
+-----------
+- Fixed SPR 1624 (Test harness fails with FTOOLS v5.0).
+
+Version 4.8  -  2000-02-17 (JB)
+-----------
+- Fixed SPR 1462 (Behaviour when all input files are empty).
+
+Version 4.7  -  07-02-2000
+-----------
+- Add TIMEREF and TASSIGN to the list of keywords to propagate to
+  the main extension.
+- Add new parameters minattributes and maxattributes.
+- Recompute TELAPSE.
+- Add overflow check when transtyping.
+
+Version 4.6  -  21-12-1999
+-----------
+- Add MJDREF and TELAPSE to the list of keywords to propagate to
+  the main extension.
+
+Version 4.5  -  10-11-1999
+-----------
+- Uses new emsaplib library.
+
+Version 4.4  -  02-11-1999
+-----------
+- Added xxxdatamodes parameters to accommodate RGS needs.
+- Propagates TDMIN/TDMAX keywords.
+- Does not convert extension and column names to uppercase any longer.
+
+Version 4.3  -  15-10-1999
+-----------
+- Supports propagation of array extensions as well as tables.
+
+Version 4.2  -  15-10-1999
+-----------
+- Add tests so that hasNulls is called only if nullDefined is true.
+
+Version 4.1  -  14-10-1999
+-----------
+- Add tests so that nullDefined is called only for integer columns.
+
+Version 4.0  -  27-09-1999
+-----------
+- Many new parameters have been added. Previous behaviour may be recovered
+  by setting 'instrument' to the relevant value (emos, epn or rgs).
+- Accepts its own output as input.
+- Accepts merging files from the same CCD/node.
+- Accepts merging Boolean or String columns.
+
+Version 3.5  -  20-09-1999
+-----------
+- Propagates TNULL keywords to the EVENTS extension.
+- Doc updated to sas 1.155.
+
+Version 3.4  -  03-09-1999
+-----------
+- Propagates TIMEUNIT to the EVENTS extension.
+
+Version 3.3  -  31-08-1999
+-----------
+- Fixed SPR 1220 (HISTORY attributes).
+
+Version 3.2  -  11-06-1999
+-----------
+- Propagates the TSTART/TSTOP, TIMESYS, DET_SYST and XMMEA_ keywords
+  to the EVENTS extension.
+
+Version 3.1  -  31-05-1999
+-----------
+- Supports RGS.
+- Tests the coherence of the DET_SYST keyword.
+- Simplified variable management by using parent function.
+- Includes a parameter layout file.
+
+Version 3.0  -  30-04-1999
+-----------
+- All parameter names changed to follow new guidelines
+- Upgraded to be compatible with emutils in emevents 3.0.
+- Uses the new presentation for columns, keywords, ... in the doc.
+
+Version 2.4  -  19-03-1999
+-----------
+- column CCDID changed to CCDNR (DCP on DP ICD).
+- columns PAT_ID and PAT_SEQ propagated.
+- column FLAG changed to Integer32.
+- uses copyBlock
+- compatible with emutils in emevents 2.8.
+
+Version 2.3  -  11-12-1998
+-----------
+- emutils_mod moved to emevents.
+
+Version 2.2  -  27-11-1998
+-----------
+- Fixed SPR 606 (Behaviour when no o/p filename specified).
+- Fixed SPR 607 (Test harness merges only a single pn file).
+- Fixed SPR 609 (Strange values in the i/p pn event list file).
+- Fixed SPR 611 (Attempt to merge pn and mos files gives no warning).
+- Fixed SPR 612 (Merged event file claims to be an ODF file).
+- New numerotation of EPIC PN CCDs (coherent with SciSim and the CAL).
+- BADPIXTYPE changed to TYPE in bad pixels extension to follow badpix.
+- Uses the new "layer" message interface.
+- copyAttributes removed.
+- Generic routines taken from the specific module in emframes.
+
+Version 2.1  -  24-09-1998
+-----------
+- Modified to adjust to param 1.10.
+- Added numerous checks against erroneous data.
+
+Version 2.0  -  30-07-1998
+-----------
+- The task does not merge the GTI files any longer.
+  The ingti and outgti parameters have been removed.
+  This interface change is the reason for the new major version.
+- The task accepts both EPIC PN and MOS data (but assumes a 1-byte PATTERN).
+- Fixed SPR  93 (Should not check for existing file).
+  setExists used instead.
+- Fixed SPR  97 (Need generic mechanism for parsing list of parameters).
+  Calls the facilities provided with the param package.
+- Fixed SPR 331 (Merge README.emenergy into description).
+- Fixed SPR 332 (Remove ":" and "?" from parameter labels).
+- Fixed SPR 336 (Use unique error codes).
+- Fixed SPR 348 (Use type f for file parameters).
+- Fixed SPR 470 (Task description is submitted).
+- Fixed SPR 491 (Tests fail with DAL-1.10).
+- Uses the message facility instead of the prlev parameter.
+
+Version 1.2 of emevlistcomb -  26-05-1998
+-----------
+- Fixed SPR  88 (Task would not compile).
+  Calls to nint(x,kind=int16) replaced by int(x+sign(0.5,x),kind=int16).
+- Fixed SPR  90 (Writes diagnostic output to stdout).
+  No print * anymore.
+- Fixed SPR  96 (String buffer should not be used).
+  Use global variable errstr instead.
+- Fixed SPR 103 (Require .par instead of .prm).
+- parse_string accepts values separated by several blanks.
+- Adapt to DAL so that the files are read only once.
+- Test that the EVENTS extension exists.
+- Write column units when blank in input.
+- Propagate the column-related WCS keywords (TCTYP,TCRVL,TCRPX,TCDLT,TCROT).
+- Propagate the TLMIN/TLMAX keywords.
+- Add TLMIN/TLMAX keywords for CCDID.
+- Missing input columns (in some of the files) are detected and the
+  corresponding part of the output column is set to 0.
+- Propagate the BADPIX extensions.
+	
+Version 1.1 of emevlistcomb  -  22-04-1998
+-----------
+- Initial version for SAS v1 integration.

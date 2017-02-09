@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>CONFUSION values.</TITLE>
+<META NAME="description" CONTENT="CONFUSION values.">
+<META NAME="keywords" CONTENT="rgssources">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgssources.css">
+
+<LINK REL="previous" HREF="node17.html">
+<LINK REL="up" HREF="node16.html">
+<LINK REL="next" HREF="node19.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgssources (rgssources-6.2.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node17.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Uniqueness of LABEL and"></A>
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Output Files"></A>
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgssources.html">Home Page</A> / <A  HREF="node16.html">Output Files</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00052000000000000000"></A><A NAME="1678"></A> <A NAME="confusion"></A>
+<BR>
+<TT>CONFUSION</TT> values.
+</H2>
+
+<P>
+It is intended to flag in the RGS pipeline sources which are confused with the prime source, so as to allow the end user to assess whether these have a deleterious effect on the spectra of the prime source. For this purpose <A NAME="1680"></A><A NAME="tex2html40"
+  HREF="../rgssources/index.html"><SPAN  CLASS="textbf">rgssources</SPAN></A>
+calculates, for each source, a value which is stored in a column called <A NAME="1684"></A><TT>CONFUSION</TT>. This value is calculated from the following formula:
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+C = I^{-1}_{\rm prime}\Big\{p_1 + p_2 \: I \: \exp\Big[-\frac{(|\alpha - \alpha_{\rm prime}|+a)^2}{2b^2} - \frac{(|\chi - \chi_{\rm prime}|+c)^2}{2d^2}\Big]\Big\}.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="508" HEIGHT="41" BORDER="0"
+ SRC="img2.png"
+ ALT="\begin{displaymath}
+C = I^{-1}_{\rm prime}\Big\{p_1 + p_2 \: I \: \exp\Big[-\fra...
+...rac{(\vert\chi - \chi_{\rm prime}\vert+c)^2}{2d^2}\Big]\Big\}.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+Here <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$C$"></SPAN> is the confusion value, <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$I$"></SPAN> is the source brightness (ie value of the <A NAME="1686"></A><TT>RATE</TT> column) and <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img5.png"
+ ALT="$\alpha$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$\chi$"></SPAN> are respectively the dispersion and cross-dispersion angles in arcseconds. The constants <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$p_1$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="19" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$p_2$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$a$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$b$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$c$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img12.png"
+ ALT="$d$"></SPAN> will eventually be stored in CCF MiscData, but at present are `hard-wired' into the task code, with values as follows:
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+\begin{array}[h]{cl}
+p_1 & = -0.00653 \;\rm {cts/sec}\\
+p_2 & = 1.01 \\
+a & = 36.9 \;\rm {arcsec}\\
+b & = 593.4 \;\rm {arcsec}\\
+c & = 2.29 \;\rm {arcsec}\\
+d & = 23.3 \;\rm {arcsec}
+\end{array}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="165" HEIGHT="121" BORDER="0"
+ SRC="img13.png"
+ ALT="\begin{displaymath}\begin{array}[h]{cl}
+p_1 &amp; = -0.00653 \;\rm {cts/sec}\\
+p_2 ...
+...= 2.29 \;\rm {arcsec}\\
+d &amp; = 23.3 \;\rm {arcsec}
+\end{array} \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node17.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Uniqueness of LABEL and"></A>
+<A HREF="node16.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Output Files"></A>
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Examples."></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

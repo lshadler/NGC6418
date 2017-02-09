@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="emenergy">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emenergy.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="emenergy.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emenergy (emenergy-8.8) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="emenergy.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emenergy.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="emenergy:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+   subroutine emenergy
+
+   Read the file names among parameters
+
+   Opening of input file event 
+   Copy of input file event on output file event if need be
+ 
+   parameters read : choice of sub_tasks to execute
+   Loop over input task parameters
+      Read the task parameter / 1 to perform the procedure,
+                                0 not to perform it  /
+   End loop
+
+   Get the values of files columns in memory
+
+   call EVFLAG
+
+   call REJECT_E3E4 with no background
+   call CCDBKG
+   call CLIPE4
+   call CCDBKG
+   discard flags applied by intermediate calls to REJECT_E3E4 and CLIPE4
+
+   call REJECT_E3E4
+   call MAKE_E
+   call CTI_CORR
+   call ENERGY
+ 
+   Close files
+
+ SUBROUTINE EVFLAG 
+   if evflag requested  then
+      Loop over events
+         flag events using binary coding for different reasons  
+      end loop
+   endif
+ 
+SUBROUTINE CCDBKG 
+   if useccfdarkframe then read dark frame map
+   else if maskedccdset is set then read DIAGNOSTIC map
+   Subtract the offsets
+   Correct the Ei columns by the contents of the reference map
+      integrated over the area associated to each Ei
+   if  ccdbkg requested then
+      Loop over events
+        except for flagged events, events with peripix &gt; 0, pattern &gt; 4,
+                   E1 &lt; minenergy
+        calculation of sigmae4 = summation of energy E4
+        calculation of sigmaper = summation of (16-peripix)
+      end loop
+      divide sigmae4 by sigmaper to obtain BKG value
+      if fillccdbkg then
+        Loop over positions where less than fillminnumber events contribute
+           Average E4 over rows rowav and columns colav
+           Replace BKG by rowav + colav - full average
+        end loop
+      endif
+      if bkgfile NE ' ' then
+         save of the arrays sigmae4 and sigmaper in a new fits file
+      keywords are recopied
+   endif
+
+SUBROUTINE CLIPE4
+    Get variance on E4 - BKG(x,y) after applying same selection as in CCDBKG
+    Flag events where E4 is more than 3 sigma away from BKG(x,y)
+
+SUBROUTINE REJECT_E3E4
+    if reject_e3e4 requested then
+      Read e3cen,e4cen,e3rad,e4rad,e3ang from CAL
+      Loop over events rows
+         loce3 = E3
+         loce4 = E4
+         if bad offsets nearby then
+            loce3 = loce3 + projection of additional offsets onto pixels in E3
+            offe4 = sum of additional offsets in outer corona
+            if peripix==0 and offe4 &lt; 16000  loce4 = loce4 + offe4
+         endif
+         loce3 = (loce3 - BKG * (8- number of pixels in E2)) / (E1-BKG) - e3cen
+         loce4 = (loce4 - BKG * (16-PERIPIX)) / (E1-BKG) - e4cen
+         dist2 = (loce3*cos(e3ang)+loce4*sin(e3ang))/e3rad)**2 +
+                 (loce4*cos(e3ang)-loce3*sin(e3ang))/e4rad)**2
+         Flag events with dist2 &gt; 1
+      end loop
+    endif
+
+SUBROUTINE MAKE_E 
+   if make_e requested
+      call CAL_integerToReal(ener1,e1rand)
+      edum = E2
+      if bad offsets nearby then
+         e1rand = e1rand + additional offsets on central pixel
+         edum = edum + projection of additional offsets onto pixels in E2
+      endif
+      call CAL_mosPhaBuild(e1rand,edum,pattern,pha,BKG,E3,E4,peripix,flag)
+   endif
+
+SUBROUTINE CTI_CORR 
+   if cti_corr requested  call CAL_mosCTIcorrection
+
+SUBROUTINE ENERGY 
+   if  energy requested  call CAL_mosGainCorrect
+
+   end subroutine  emenergy
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

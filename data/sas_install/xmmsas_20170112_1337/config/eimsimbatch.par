@@ -1,0 +1,252 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="obsidroots" type="string" list="yes" default=".">
+   <DESCRIPTION>
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="entrystage" type="string" default="makesimlist">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="makesimlist">
+    </ITEM>
+
+    <ITEM value="imsample">
+    </ITEM>
+
+    <ITEM value="makerateimg">
+    </ITEM>
+
+    <ITEM value="makectsimg">
+    </ITEM>
+
+    <ITEM value="poissonize">
+    </ITEM>
+
+    <ITEM value="detect">
+    </ITEM>
+
+    <ITEM value="eddington">
+    </ITEM>
+
+    <ITEM value="correct">
+    </ITEM>
+
+    <ITEM value="fluxtorand">
+    </ITEM>
+
+    <ITEM value="addbits">
+    </ITEM>
+
+    <ITEM value="compare">
+    </ITEM>
+
+    <ITEM value="cleanup">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="finalstage" type="string" default="compare">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="makesimlist">
+    </ITEM>
+
+    <ITEM value="imsample">
+    </ITEM>
+
+    <ITEM value="makerateimg">
+    </ITEM>
+
+    <ITEM value="makectsimg">
+    </ITEM>
+
+    <ITEM value="poissonize">
+    </ITEM>
+
+    <ITEM value="detect">
+    </ITEM>
+
+    <ITEM value="eddington">
+    </ITEM>
+
+    <ITEM value="correct">
+    </ITEM>
+
+    <ITEM value="fluxtorand">
+    </ITEM>
+
+    <ITEM value="addbits">
+    </ITEM>
+
+    <ITEM value="compare">
+    </ITEM>
+
+    <ITEM value="cleanup">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="refband" type="string" default="1">
+   <DESCRIPTION>
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="prdssubdir" type="string" default="product">
+   <DESCRIPTION>
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="simopsubdir" type="string" default="sim_output">
+   <DESCRIPTION>
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="simgensubdir" type="string" default="sim_generic">
+   <DESCRIPTION>
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="streamnumber" type="int" default="1">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    streamnumber in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="nfields" type="int" default="1">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    nfields in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="startatn" type="int" default="1">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    startatn in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="nextonfail" type="bool" default="yes">
+   <DESCRIPTION>
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="srcspecset" type="dataset" default="srcspec.fits">
+   <DESCRIPTION>
+    Name of the dataset which contains specifications for both the simulated sources and the energy bands.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withsimsources" type="bool" default="yes">
+   <DESCRIPTION>
+    If 'yes', simulated sources are added to the image. If 'no', you just get smooth background.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="energyfraction" type="real" default="0.95">
+      <DESCRIPTION>
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       energyfraction in (0.0:1.0]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="fluxcutoff" type="real" default="1.0e-15">
+      <DESCRIPTION>
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       fluxcutoff in [0.0:]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="faintsourcewidth" type="real" default="1.0">
+      <DESCRIPTION>
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       faintsourcewidth in (0.0:]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="withfluxoffset" type="bool" default="no">
+      <DESCRIPTION>
+       If 'yes', the specified flux per square arcsec is added to the faint source image.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="yes">
+        <PARAM id="fluxoffset" type="real" default="0.0">
+         <DESCRIPTION>
+          Flux (in the same band as the sim sources), in cgs per square arcsec, to be added to the faint source image.
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="dettaskstyle" type="string" default="auto">
+   <DESCRIPTION>
+    How to tell the task which source-detection scheme to use.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="user">
+     <PARAM id="dettask" type="string" default="eimsimdetect1xmm">
+      <DESCRIPTION>
+       Name of the task which performs the source detection.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="auto">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withdetentrystage" type="bool" default="no">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="detentrystage" type="string" mandatory="yes">
+      <DESCRIPTION>
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withdetfinalstage" type="bool" default="no">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="detfinalstage" type="string" mandatory="yes">
+      <DESCRIPTION>
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="cleanup" type="bool" default="no">
+   <DESCRIPTION>
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="astest" type="bool" default="no">
+   <DESCRIPTION>
+   </DESCRIPTION>
+  </PARAM>
+
+ </CONFIG>
+</FILE>
+

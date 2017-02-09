@@ -1,0 +1,55 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="imagesets" list="yes" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    List of input images.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withweights" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to read weights for a weighted sum.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="weightstyle" type="string" default="user">
+      <DESCRIPTION>
+       Style for inputting the weights.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="user">
+        <PARAM id="weights" list="yes" type="real" mandatory="yes">
+         <DESCRIPTION>
+          List of weights.
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+
+       <ITEM value="table">
+        <PARAM id="weighttab" type="table" mandatory="yes">
+         <DESCRIPTION>
+          Name of the dataset+table in which to seek for weights.
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="outimageset" type="dataset" default="outimageset.ds">
+   <DESCRIPTION>
+    Name of the output summed image.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="tempset" type="dataset" default="tempset.ds">
+   <DESCRIPTION>
+    Name of a temporary image dataset.
+   </DESCRIPTION>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

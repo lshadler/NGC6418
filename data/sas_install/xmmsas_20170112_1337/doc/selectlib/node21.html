@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>In-operator</TITLE>
+<META NAME="description" CONTENT="In-operator">
+<META NAME="keywords" CONTENT="selectlib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="selectlib.css">
+
+<LINK REL="next" HREF="node22.html">
+<LINK REL="previous" HREF="node17.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node22.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+selectlib (selectlib-4.74.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node20.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="region-filter"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node22.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Selected-function"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node30.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="selectlib.html">Home Page</A> / <A  HREF="node2.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000213000000000000000"></A><A NAME="selectlib:user:in"></A>
+<A NAME="selectlib:user:inoper"></A>
+<BR>
+<TT>In</TT>-operator
+</H2>
+The <TT>in</TT>-operator is available in three distinct forms
+
+<OL>
+<LI><TT>arith IN intervals</TT>
+<BR>
+This tests whether the value to which the arithmetic expression
+<TT>arith</TT> evaluates lies within at least one among
+a list of intervals with numeric boundaries. The interval list is either
+a single interval or a comma separated list of interval specifications.
+The following table provides an overview of the available intervals
+types (<TT>x</TT> stands for the value of <TT>arith</TT> above):
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">interval specification</TD>
+<TD ALIGN="LEFT">alternative expression</TD>
+<TD ALIGN="LEFT">meaning</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>:</TT> or <TT>(:]</TT> or <TT>[:)</TT> or <TT>(:)</TT></TD>
+<TD ALIGN="LEFT"><TT>true</TT></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $-\infty<x<+\infty$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="112" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img56.png"
+ ALT="$-\infty&lt;x&lt;+\infty$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><EM>val</EM> or <TT>[</TT><EM>val</EM><TT>]</TT></TD>
+<TD ALIGN="LEFT"><EM>val</EM><TT> == </TT><EM>x</EM></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
+ WIDTH="56" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img57.png"
+ ALT="$x=val$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><EM>val</EM><TT>:</TT> or <TT>[</TT><EM>val</EM><TT>:]</TT> or <TT>[</TT><EM>val</EM><TT>:)</TT></TD>
+<TD ALIGN="LEFT"><EM>val</EM><TT> &lt;= </TT><EM>x</EM></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $val<=x<+\infty$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="118" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img58.png"
+ ALT="$val&lt;=x&lt;+\infty$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>(</TT><EM>val</EM><TT>:]</TT> or <TT>(</TT><EM>val</EM><TT>:)</TT></TD>
+<TD ALIGN="LEFT"><EM>val</EM><TT> &lt; </TT><EM>x</EM></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
+ WIDTH="105" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img59.png"
+ ALT="$val&lt;x&lt;+\infty$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>:</TT><EM>val</EM> or <TT>[:</TT><EM>val</EM><TT>]</TT> or <TT>(:</TT><EM>val</EM><TT>]</TT></TD>
+<TD ALIGN="LEFT"><EM>val</EM><TT> &gt;= </TT><EM>x</EM></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $-\infty<x<=val$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="118" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img60.png"
+ ALT="$-\infty&lt;x&lt;=val$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>[:</TT><EM>val</EM><TT>)</TT> or <TT>(:</TT><EM>val</EM><TT>)</TT></TD>
+<TD ALIGN="LEFT"><EM>val</EM><TT> &gt; </TT><EM>x</EM></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
+ WIDTH="105" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img61.png"
+ ALT="$-\infty&lt;x&lt;val$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><EM>lo</EM><TT>:</TT><EM>hi</EM> or <TT>[</TT><EM>lo</EM><TT>:</TT><EM>hi</EM><TT>]</TT></TD>
+<TD ALIGN="LEFT"><EM>lo</EM><TT> &lt;= </TT><EM>x</EM><TT> &amp;&amp; </TT><EM>hi</EM><TT> &gt;= </TT><EM>x</EM></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
+ WIDTH="108" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img62.png"
+ ALT="$lo&lt;=x&lt;=hi$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>(</TT><EM>lo</EM><TT>:</TT><EM>hi</EM><TT>]</TT></TD>
+<TD ALIGN="LEFT"><EM>lo</EM><TT> &lt; </TT><EM>x</EM><TT> &amp;&amp; </TT><EM>hi</EM><TT> &gt;= </TT><EM>x</EM></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
+ WIDTH="95" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img63.png"
+ ALT="$lo&lt;x&lt;=hi$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>[</TT><EM>lo</EM><TT>:</TT><EM>hi</EM><TT>)</TT></TD>
+<TD ALIGN="LEFT"><EM>lo</EM><TT> &lt;= </TT><EM>x</EM><TT> &amp;&amp; </TT><EM>hi</EM><TT> &gt; </TT><EM>x</EM></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
+ WIDTH="95" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img64.png"
+ ALT="$lo&lt;=x&lt;hi$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>(</TT><EM>lo</EM><TT>:</TT><EM>hi</EM><TT>)</TT></TD>
+<TD ALIGN="LEFT"><EM>lo</EM><TT> &lt; </TT><EM>x</EM><TT> &amp;&amp; </TT><EM>hi</EM><TT> &gt; </TT><EM>x</EM></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><IMG
+ WIDTH="83" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img65.png"
+ ALT="$lo&lt;x&lt;hi$"></SPAN></TD>
+</TR>
+</TABLE>
+</DIV>
+An example of a valid value-in-interval expression which yields true is:
+<DIV><TT>
+<BR>&nbsp;&nbsp;&nbsp;3.1415 in :-10,[1:3),3.1,[3.14:3.19),[4:]
+<BR></TT></DIV>
+
+<P>
+</LI>
+<LI><TT>arith in gti(<EM>gtitable</EM>)</TT>
+<BR>
+This is equivalent to the expression
+<DIV><TT>
+<BR>&nbsp;&nbsp;&nbsp;gti(<EM>gtitable</EM>, arith)
+<BR></TT></DIV>
+
+<P>
+</LI>
+<LI><TT>(arith1, arith2) in filter(...)</TT>
+<BR>
+where <TT>filter</TT> is either <A HREF="node17.html#selectlib:user:filebased"><TT>region</TT> or <TT>mask</TT></A> or
+any of the <A HREF="node15.html#selectlib:user:spatfunc">region selection functions</A>. The form is equivalent
+to
+<DIV><TT>
+<BR>&nbsp;&nbsp;&nbsp;filter(..., arith1, arith2)
+<BR></TT></DIV>
+for instance
+<DIV><TT>
+<BR>&nbsp;&nbsp;&nbsp;(RAWX, RAWY) in circle(100, 120, 10) == circle(100, 120, 10, RAWX, RAWY)
+<BR></TT></DIV>
+always evaluates to true.
+</LI>
+<LI><TT>vector in filter(...)</TT>
+<BR>
+where <TT>filter</TT> is a
+<A HREF="node16.html#selectlib:user:threedfunc">three dimensional region selection function</A> and <TT>vector</TT> is
+a vector for the inclusion test.
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node20.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="region-filter"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node22.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Selected-function"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node30.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

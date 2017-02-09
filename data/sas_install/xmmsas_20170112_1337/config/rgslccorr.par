@@ -1,0 +1,113 @@
+<!-- converted from XPI formatted "rgslccorr.par.xpi"-->
+<FILE>
+<CONFIG>
+
+<PARAM id="evlist" type="dataset" list="yes" mandatory="yes">
+	<DESCRIPTION> Name of the rgs event file 
+	</DESCRIPTION>
+</PARAM>
+
+<PARAM id="srclist" type="dataset" list="yes" mandatory="yes">
+	<DESCRIPTION> Name of the rgs source list file 
+	</DESCRIPTION>
+</PARAM>
+
+<PARAM id="timebinsize" type="real" default="1" mandatory="yes">
+	<DESCRIPTION> Size of time bins for time series files 
+	</DESCRIPTION>
+	<CONSTRAINTS>
+		timebinsize in [0:]
+	</CONSTRAINTS>
+</PARAM>
+ 
+<PARAM id="withtimeranges" type="bool" default="no">
+    <DESCRIPTION> Use min/max values for time series extraction </DESCRIPTION>
+    <CASE>
+            <ITEM value="no"> </ITEM>
+            <ITEM value="yes">
+                    <PARAM id="timemin" type="time" default="0" >
+                            <DESCRIPTION> Lower limit for time series </DESCRIPTION>
+                    </PARAM>
+
+                    <PARAM id="timemax" type="time" default="1000" >
+                            <DESCRIPTION> Upper limit for time series </DESCRIPTION>
+                    </PARAM>
+            </ITEM>
+    </CASE>
+ </PARAM>
+
+<PARAM id="orders" type="int" list="yes" default="1 2">
+   <DESCRIPTION>
+	orders to be used in the selection expression
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    orders in [1:2]
+   </CONSTRAINTS>
+ </PARAM>
+ 
+<PARAM id="sourceid" type="string"  default="1">
+   <DESCRIPTION>
+ 	Source identifier
+   </DESCRIPTION>
+ </PARAM>
+
+<PARAM id="outputsrcfilename" type="string"  default="src_rates.ds">
+   <DESCRIPTION>
+ 	Source output file name
+   </DESCRIPTION>
+ </PARAM>
+
+<PARAM id="outputbkgfilename" type="string"  default="bkg_rates.ds">
+   <DESCRIPTION>
+ 	Background output file name
+   </DESCRIPTION>
+ </PARAM>
+
+<PARAM id="withbkgsubtraction" type="bool" default="yes">
+    <DESCRIPTION> Substract background </DESCRIPTION>
+</PARAM> 
+
+<PARAM id="withfiltering" type="bool" default="false">
+    <DESCRIPTION> Wavelength filtering selection </DESCRIPTION>
+</PARAM>
+
+<PARAM id="filtering" type="string" default="wavelength">
+    <DESCRIPTION> Wavelength filtering selection </DESCRIPTION>
+	<CASE>
+		<ITEM value="wavelength">
+			<PARAM id="lambdamin" type="real" default="0">
+    			<DESCRIPTION> min lambda value for filtering (Angstrom) </DESCRIPTION>
+			</PARAM>
+			<PARAM id="lambdamax" type="real" default="0">
+    			<DESCRIPTION> max lambda value for filtering (Angstrom)</DESCRIPTION>
+			</PARAM>
+		</ITEM>
+		<ITEM value="energy">
+			<PARAM id="energymin" type="real" default="0">
+    			<DESCRIPTION> min energy value for filtering (eV) </DESCRIPTION>
+			</PARAM>
+			<PARAM id="energymax" type="real" default="0">
+    			<DESCRIPTION> max energy value for filtering (eV)</DESCRIPTION>
+			</PARAM>		
+		</ITEM>
+	</CASE>
+</PARAM>
+
+
+
+  
+<PARAM id="withccdselection" type="bool" default="false">
+    <DESCRIPTION> CCD filtering selection </DESCRIPTION>
+</PARAM>
+
+<PARAM id="ccds" type="int"  list="yes" default="1">
+    <DESCRIPTION> List of CCDs </DESCRIPTION>
+      <CONSTRAINTS>
+   		ccds in [1:9]
+   	  </CONSTRAINTS>
+</PARAM>
+
+
+</CONFIG>
+</FILE>
+

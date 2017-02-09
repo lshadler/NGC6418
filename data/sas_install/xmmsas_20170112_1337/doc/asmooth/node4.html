@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Convolution details</TITLE>
+<META NAME="description" CONTENT="Convolution details">
+<META NAME="keywords" CONTENT="asmooth">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="asmooth.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+asmooth (asmooth-2.30) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Variance images"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="asmooth.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000"></A>
+  <A NAME="asmooth:description:technical"></A>
+<BR>
+Convolution details
+</H2>
+
+<P>
+A cyclic convolution of an input image <SPAN CLASS="MATH"><IMG
+ WIDTH="30" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$I_{x,y}$"></SPAN> weighted by <SPAN CLASS="MATH"><IMG
+ WIDTH="34" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$w_{x,y}$"></SPAN> gives output <SPAN CLASS="MATH"><IMG
+ WIDTH="35" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$O_{x,y}$"></SPAN> according to the following prescription:
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+O_{x,y} = C \ \frac{\sum_{i=L}^{M} \sum_{j=P}^{Q} c_{i,j} \ w_{x-i,y-j} \ I_{x-i,y-j}} {\sum_{i=L}^{M} \sum_{j=P}^{Q} c_{i,j} \ w_{x-i,y-j}},
+\end{equation}
+ -->
+<A NAME="convolution"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="convolution"></A><IMG
+ WIDTH="314" HEIGHT="56" BORDER="0"
+ SRC="img4.png"
+ ALT="\begin{displaymath}
+O_{x,y} = C \ \frac{\sum_{i=L}^{M} \sum_{j=P}^{Q} c_{i,j} \ ...
+...i,y-j}} {\sum_{i=L}^{M} \sum_{j=P}^{Q} c_{i,j} \ w_{x-i,y-j}},
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">1</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+where <SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$c_{x,y}$"></SPAN> is the convolver and
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+C = \sum_{x=L}^{M} \sum_{y=P}^{Q} c_{x,y}.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="120" HEIGHT="59" BORDER="0"
+ SRC="img6.png"
+ ALT="\begin{displaymath}
+C = \sum_{x=L}^{M} \sum_{y=P}^{Q} c_{x,y}.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+The indices <SPAN CLASS="MATH"><IMG
+ WIDTH="38" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$x-i$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="39" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$y-j$"></SPAN> are calculated modulo the image sizes <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img9.png"
+ ALT="$X$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="17" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img10.png"
+ ALT="$Y$"></SPAN> respectively, that is, they wrap around the image limits. This cyclic property is unavoidable if it is desired to make efficient use of the Fourier transform in performing the convolution. Potentially this is a nuisance because it means, for example, that values at the left-hand edge of the image can become mixed with values on the right-hand edge, and so forth. The task avoids this by padding the image with zero-valued pixels in both <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img11.png"
+ ALT="$x$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$y$"></SPAN> directions. The pad size is equal to the width of the convolver in that direction. If there are multiple convolvers (see sections <A HREF="node10.html#asmooth:description:multi">3.3.4</A>, <A HREF="node11.html#asmooth:description:adaptive">3.3.5</A> and <A HREF="node12.html#asmooth:description:template">3.3.6</A>), the largest convolver sizes are used.
+
+<P>
+In fact the `blank space' areas around the edges of the image are handled in three steps, as below.
+
+<P>
+
+<OL>
+<LI>If a smaller rectangle can be excised from the input image such that all the pixels of the excess are zero-valued, this is done.
+
+<P>
+</LI>
+<LI>The pad described above is added.
+
+<P>
+</LI>
+<LI>The Fast Fourier Transform (FFT) algorithm used by the task works most efficiently if each dimension of the image is a multiple of 2, 3, 5 or 7. For each dimension of the working image, <A NAME="1055"></A><A NAME="tex2html2"
+  HREF="../asmooth/index.html"><SPAN  CLASS="textbf">asmooth</SPAN></A>
+calculates the next largest integer which obeys this condition and adds further blank space to increase the dimension to that value.
+</LI>
+</OL>
+
+<P>
+After the convolution is done, before the output is written to file, the process is reversed: the pad is first cut away, then the original amount of blank space is restored.
+
+<P>
+The convolution may be done either directly or via FFT. If left to itself, the task will try to use the method which is quickest. If the image is large and the number of convolvers small, this will generally be the FFT method; however direct convolution becomes more efficient if the image is divided into many small patches of different convolution. If the user desires the convolutions to be unilaterally performed using one method or another, they should make use of the <TT>forcecalctype</TT> and <TT>calcbyfft</TT> parameters.
+
+<P>
+The two methods produce identical outputs except for small differences caused by different propagation of rounding errors. However the FFT method will, because it always acts on the whole image, in general leave few if any pixels in the output which are exactly equal to zero. Use of a mask (section <A HREF="node13.html#asmooth:description:weights">3.4</A>) or an exposure map (section <A HREF="node14.html#asmooth:description:expmaps">3.5</A>) can be helpful in this instance.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Variance images"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node24.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

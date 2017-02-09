@@ -1,0 +1,309 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="spectrumset" type="dataset" mandatory="yes" default="myspec.ds">
+   <DESCRIPTION>
+    Name of input spectrum dataset
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="overwrite" type="bool" default="no">
+   <DESCRIPTION>
+     Overwrite the input file
+      </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+      <PARAM id="groupedset" type="dataset" mandatory="no" default="SpecGrp.ds">
+       <DESCRIPTION>
+         Name of output grouped spectrum
+       </DESCRIPTION>
+       <CONSTRAINTS>
+         true
+       </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withbgdset" type="bool" default="no">
+   <DESCRIPTION>
+     Has a background dataset been supplied ?
+      </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+      <PARAM id="backgndset" type="dataset" mandatory="no">
+       <DESCRIPTION>
+         Name of input background dataset
+       </DESCRIPTION>
+       <CONSTRAINTS>
+         true
+       </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+    <ITEM value="no">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withCounts" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    Bin using a minimum number of counts ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+      <PARAM id="mincounts" type="int" mandatory="no" default="25">
+       <DESCRIPTION>
+         Minimum number of counts in each bin, e.g. 25
+       </DESCRIPTION>
+       <CONSTRAINTS>
+         true
+       </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+    <ITEM value="no">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withminSN" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    Bin using a minimum signal to noise ratio ?"
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+      <PARAM id="minSN" type="real" mandatory="no" default="5">
+       <DESCRIPTION>
+         Minimum signal to noise ratio in each bin, e.g. 5 (sigma)
+       </DESCRIPTION>
+       <CONSTRAINTS>
+         true
+       </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+    <ITEM value="no">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withratioabovebgnd" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    Bin using a minimum ratio of source above background
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+      <PARAM id="ratioabovebgnd" type="real" mandatory="no">
+       <DESCRIPTION>
+         Minimum ratio of source above background
+       </DESCRIPTION>
+       <CONSTRAINTS>
+         true
+       </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+    <ITEM value="no">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withoversampling" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    Bin using a minimum energy resolution
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+      <PARAM id="oversample" type="real" mandatory="no" default="3">
+       <DESCRIPTION>
+         Minimum energy resolution for each bin,  e.g. FWHM / 3.
+       </DESCRIPTION>
+       <CONSTRAINTS>
+         true
+       </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+    <ITEM value="no">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withtemplate" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    Group with the same bins as used in a template input file
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+      <PARAM id="grouptemplate" type="dataset" default="grptemplate.ds">
+       <DESCRIPTION>
+         A grouped spectrum 
+       </DESCRIPTION>
+       <CONSTRAINTS>
+         true
+       </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+    <ITEM value="no">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withranges" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    Bin using given ranges ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+      <PARAM id="ranges" type="string" mandatory="no">
+       <DESCRIPTION>
+         Ranges to group over, e.g. 2-20,63-97
+       </DESCRIPTION>
+       <CONSTRAINTS>
+         true
+       </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+    <ITEM value="no">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withRegularBins" type="bool" mandatory="no" default="no">
+   <DESCRIPTION>
+    Bin using a regular grid ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+      <PARAM id="regbinstart" type="int" mandatory="no">
+       <DESCRIPTION>
+         First channel to use in regular bins
+       </DESCRIPTION>
+       <CONSTRAINTS>
+         true
+       </CONSTRAINTS>
+      </PARAM>
+      <PARAM id="regbinend" type="int" mandatory="no">
+       <DESCRIPTION>
+         Last channel to use in regular bins
+       </DESCRIPTION>
+       <CONSTRAINTS>
+         true
+       </CONSTRAINTS>
+      </PARAM>
+      <PARAM id="regbinwid" type="int" mandatory="no">
+       <DESCRIPTION>
+         Number of channels in each regular bin
+       </DESCRIPTION>
+       <CONSTRAINTS>
+         true
+       </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+    <ITEM value="no">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="units" type="string" mandatory="no" default="CHAN">
+   <DESCRIPTION>
+     Units for input parameters, KEV or CHAN
+   </DESCRIPTION>
+   <CASE>
+     <ITEM value="KEV">
+     </ITEM>
+     <ITEM value="CHAN">
+     </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withrmfset" type="bool" default="no">
+   <DESCRIPTION>
+    Get ebins from response set
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+      <PARAM id="rmfset" type="dataset" default="response.ds">
+       <DESCRIPTION>
+        Name of input response set
+       </DESCRIPTION>
+       <CONSTRAINTS>
+        true
+       </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="witharfset" type="bool" default="no">
+   <DESCRIPTION>
+     Has an ARF been specified ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+      <PARAM id="arfset" type="dataset" default="myarf.ds">
+       <DESCRIPTION>
+        Name of the associated ancillary response file (ARF)
+       </DESCRIPTION>
+       <CONSTRAINTS>
+        true
+       </CONSTRAINTS>
+      </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="addfilenames" type="bool" default="yes">
+   <DESCRIPTION>
+    Write/overwrite file keywords, ANCRFILE, RESPFILE, BACKFILE
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="hightolow" type="bool" default="no">
+   <DESCRIPTION>
+    Group starting from the high energy bins ?
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="lastbin" type="string" mandatory="no" default="addtogroup">
+   <DESCRIPTION>
+     What to do about ungrouped bins
+   </DESCRIPTION>
+   <CASE>
+     <ITEM value="addtogroup">
+     </ITEM>
+     <ITEM value="setbad">
+     </ITEM>
+     <ITEM value="owngroup">
+     </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="setbad" type="string" mandatory="no" default="CCF">
+   <DESCRIPTION>
+     Whether to exclude some channels before grouping
+   </DESCRIPTION>
+   <CONSTRAINTS>
+     true
+   </CONSTRAINTS>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

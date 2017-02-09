@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="odffix">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="odffix.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="odffix.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+odffix (odffix-2.7) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="odffix.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Compliance with the ODF"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="odffix.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="odffix:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+<A NAME="367"></A><A NAME="tex2html1"
+  HREF="../odffix/index.html"><SPAN  CLASS="textbf">odffix</SPAN></A>
+can be used with any set of correctly named ODF
+components to generate some of the ODF files usually unavailable when
+simulating data (because scisim does not have the required satellite
+data, for instance) but required to make use of the SAS calibration
+and ODF access layers. <A NAME="371"></A><A NAME="tex2html2"
+  HREF="../odffix/index.html"><SPAN  CLASS="textbf">odffix</SPAN></A>
+also generates the ODF summary file.
+
+<P>
+<A NAME="375"></A><A NAME="tex2html3"
+  HREF="../odffix/index.html"><SPAN  CLASS="textbf">odffix</SPAN></A>
+can only handle one ODF at a time. This means that all
+the ODF components must have names starting with the same revolution
+and proposal identifier (<TT>RRRR_PPPPPPOOLL</TT>, in the language of
+the ODF interface control document [<A
+ HREF="node12.html#ct:SOCODFICD">1</A>]). If components
+from several ODFs are found, only those from the first ODF found are
+used. A warning is issued, and the extraneous components are ignored.
+
+<P>
+In the current implementation <A NAME="379"></A><A NAME="tex2html4"
+  HREF="../odffix/index.html"><SPAN  CLASS="textbf">odffix</SPAN></A>
+creates the following
+auxiliary ODF components:
+
+<P>
+
+<UL>
+<LI>time correlation file
+
+<P>
+The time correlation file contains 2 entries, one second apart. No
+  delay is introduced between earth received time and on-board time.
+
+<P>
+</LI>
+<LI>attitude history file
+
+<P>
+The attitude history file. Fixed pointing. It is possible to set the
+  right ascension, declination, and position angle of the observation
+  via the parameters <SPAN  CLASS="textit">ra</SPAN>, <SPAN  CLASS="textit">dec</SPAN>, and <SPAN  CLASS="textit">posangle</SPAN>.
+
+<P>
+Note the attitude history file is generated only if it does not
+  exist already. If one such file exists, <A NAME="383"></A><A NAME="tex2html5"
+  HREF="../odffix/index.html"><SPAN  CLASS="textbf">odffix</SPAN></A>
+assumes that
+  it was created by scisim. A warning is issued, to indicate a
+  possible problem.
+
+<P>
+If the attitude history file exists, <A NAME="387"></A><A NAME="tex2html6"
+  HREF="../odffix/index.html"><SPAN  CLASS="textbf">odffix</SPAN></A>
+will extract the
+  pointing information from it if <TT>findnominalpointing</TT> is
+  true. This is now the default mode of operation. <A NAME="392"></A><A NAME="tex2html7"
+  HREF="../odffix/index.html"><SPAN  CLASS="textbf">odffix</SPAN></A>
+assumes that the nominal pointing coordinates are those contained in
+  the first record of the attitude history file.
+
+<P>
+</LI>
+<LI>EPIC MOS periodic house keeping file
+
+<P>
+</LI>
+<LI>EPIC PN main and additional periodic house keeping files
+
+<P>
+</LI>
+<LI>OM periodic housekeeping file
+
+<P>
+This file contains two columns, <TT>PARAM44</TT> and
+  <TT>PARAM48</TT>.
+
+<P>
+</LI>
+<LI>OM priority window data auxiliary file
+
+<P>
+If the file exists, it is not re-created. Rather, a warning is
+  issued. This is needed to cope with the export of ODF-like files
+  from the SOC PMS system.
+
+<P>
+</LI>
+<LI>OM tracking history data auxiliary file
+
+<P>
+If the file exists, it is not re-created. Rather, a warning is
+  issued. This is needed to cope with the export of ODF-like files
+  from the SOC PMS system.
+
+<P>
+</LI>
+<LI>reconstructued orbit file
+
+<P>
+This is an empty data file. When the OAL detects an empty orbit
+  file, it simulates orbit data.
+
+<P>
+</LI>
+<LI>ODF summary file
+
+<P>
+</LI>
+</UL>
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html80"
+  HREF="node4.html">Compliance with the ODF interface control document</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="odffix.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Compliance with the ODF"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

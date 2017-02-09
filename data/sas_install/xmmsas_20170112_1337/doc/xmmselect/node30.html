@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Preferences</TITLE>
+<META NAME="description" CONTENT="Preferences">
+<META NAME="keywords" CONTENT="xmmselect">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="xmmselect.css">
+
+<LINK REL="next" HREF="node31.html">
+<LINK REL="previous" HREF="node29.html">
+<LINK REL="up" HREF="xmmselect.html">
+<LINK REL="next" HREF="node31.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+xmmselect (xmmselect-2.65.12) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node29.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Parameters"></A>
+<A HREF="xmmselect.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node31.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node37.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="xmmselect.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00050000000000000000"></A><A NAME="xmmselect:preferences"></A>
+<BR>
+Preferences
+</H1>
+For general information about the preference formalism, please consult the
+documentation of package <A NAME="1164"></A><A NAME="tex2html95"
+  HREF="../preferences/index.html"><SPAN  CLASS="textbf">preferences</SPAN></A>. The following preferences
+are recognized by the task:
+<DL>
+<DT></DT>
+<DD><EM>quicklook</EM>
+<BR>
+default value = <TT>false</TT>
+<BR>
+type = <TT>bool</TT>
+<BR>
+This determines the default values of the <A NAME="1170"></A><A NAME="tex2html96"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+parameters
+
+<UL>
+<LI><TT>writedss</TT>,
+</LI>
+<LI><TT>updateexposure</TT>
+</LI>
+</UL>
+when the generation of a product is requested.
+For <EM>quicklook</EM>=<TT>true</TT> those will be set to <TT>false</TT>
+which, unless altered by the user in the parameter dialog, will result
+in <A NAME="1178"></A><A NAME="tex2html97"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+generating the requested product in the most run-time
+efficient way. Setting any of the above parameters to
+<TT>true</TT> triggers additional calculations
+which can represent a significant run-time overhead.
+With <EM>quicklook</EM>=<TT>true</TT> also by default the task <A NAME="1184"></A><A NAME="tex2html98"
+  HREF="../backscale/index.html"><SPAN  CLASS="textbf">backscale</SPAN></A>
+will not be invoked on any extracted spectrum. This is changeable after
+startup via the <B><EM>Products</EM></B> menu entry.
+
+<P>
+If the product is not to be used by downstream analysis packages
+it is acceptable to skip those calculations. Please consult the
+corresponding <A NAME="1189"></A><A NAME="tex2html99"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+parameter descriptions for more details on
+the nature and the necessity of the involved computations.
+
+<P>
+</DD>
+<DT></DT>
+<DD><EM>withbackscalediag</EM>
+<BR>
+default value = <TT>true</TT>
+<BR>
+type = <TT>bool</TT>
+<BR>
+When the task <A NAME="1195"></A><A NAME="tex2html100"
+  HREF="../backscale/index.html"><SPAN  CLASS="textbf">backscale</SPAN></A>
+is to be invoked automatically after
+each extraction of a spectrum (see <A HREF="node15.html#backscale">3.3.1</A> for details)
+<EM>withbackscalediag</EM>=<TT>true</TT> will bring up the parameter dialog
+of this task prior to running it. This gives the user the option to
+alter its parameter values.
+
+<P>
+</DD>
+<DT></DT>
+<DD><EM>PrefSelections</EM>
+<BR>
+default value = none
+<BR>
+type = group
+<BR>
+This preference groups a list of frequently used selection expressions
+that will be available in every <A NAME="1200"></A><A NAME="tex2html101"
+  HREF="../xmmselect/index.html"><SPAN  CLASS="textbf">xmmselect</SPAN></A>
+session. The set
+of expressions does not have to be flat but can be hierarchically structured,
+i.e., the <EM>PrefSelections</EM> group can contain other preference groups, etc.
+The following is an example of a possible contents of the <EM>PrefSelection</EM>
+group:
+<PRE>
+"PrefSelections" {
+    "MOS selection" {
+        "badpix"    "FLAG &amp; 0x111234 == 0"
+        "source"    "(RAWX, RAWY) in circle(300,300,30)"
+    }
+    "PN selection" {
+        "badpix"    "FLAG &amp; 0x111233 == 0"
+        "source"    "(X, Y) in circle(20000,20000,1000)"
+        "Crab" {
+            dum     "(CCDID==4&amp;&amp;(RAWX, RAWY) in circle(32,10,10)"
+        }
+    }
+    "energy"    "PHA in [100:200]"
+}
+</PRE>
+
+<P>
+</DD>
+</DL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node29.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Parameters"></A>
+<A HREF="xmmselect.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node31.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node37.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,250 @@
+<!-- converted from XPI formatted "epatplot.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="set" type="dataset" mandatory="yes" default="events.fits">
+   <DESCRIPTION>
+    Name of input events file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="modifyinset" type="bool" default="yes">
+   <DESCRIPTION>
+    Whether to have write access to the input event file
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="sigma" type="real" default="3">
+   <DESCRIPTION>
+    sigma to accumulate for 1 bin
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    sigma in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withflag" type="bool" default="yes">
+   <DESCRIPTION>
+    Whether to use FLAG==0 to select events for pattern plots
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="xaxisadu" type="bool" default="no">
+   <DESCRIPTION>
+    Use ADU instead of EV as x-axis unit
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="device" type="string" default="/VCPS">
+   <DESCRIPTION>
+    Device for PGPLOT output, e.g. /VCPS /VPS /XWD /VPPM /GIF
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="outdir" type="file" default="./">
+   <DESCRIPTION>
+    Name of the output directory
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="useplotfile" type="bool" default="no">
+   <DESCRIPTION>
+    Use plotfile name from parameter (otherwise create output filename from input data set)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="plotfile" type="file" default="events_pat.ps">
+      <DESCRIPTION>
+       Name of the output file
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withqdp" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to create also QDP output file
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withdetxy" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to plot also the average DETX DETY positions
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withsrcxy" type="bool" default="yes">
+   <DESCRIPTION>
+    Whether to plot also the real-valued SRCPOSX SRCPOSY positions
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withoutputmask" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to create masks with FLAG==0
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="outmaskname" type="file" default="flag0_map_##.dat">
+      <DESCRIPTION>
+       Name of the output FLAG==0 mask file
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withbackgroundset" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to determine background subtracted pattern fractions
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="backgroundset" type="file" default="bkg_events.fits">
+      <DESCRIPTION>
+       Name of background set
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="backscal" type="real" default="1.0">
+   <DESCRIPTION>
+     Background to source area ratio for background subtraction
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    backscal in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withusermode" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to plot a user-defined model instead of event file instrument mode
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="usermode" type="int" default="0">
+      <DESCRIPTION>
+       User-defined model; PN: 0=FF, 1=eFF, 2=LW, 3=SW, 4=TI, 5=BU; MOS: 0=FF, 1=RFS 2=W2 3=W3 4=W4 5=W5 6=W6 7=TI
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       usermode in [0:17]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withuserrawy" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to use a user-defined Y-position of event file average value
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="userrawy" type="real" default="190">
+      <DESCRIPTION>
+       User-defined Y-position
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       userrawy in [1:200]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="ccdlimits" type="int" list="yes" default="1 64 1 200 1 12">
+   <DESCRIPTION>
+    .. special EPIC pn selections for min/max of RAWX RAWY CCDNR
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="plotyrange" type="real" list="yes" default="0.0 0.0">
+   <DESCRIPTION>
+    ... fixed plot range on Y axis (min and max log10 value)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="pileupnumberenergyrange" type="real" list="yes" default="500 2000">
+   <DESCRIPTION>
+    energy range in eV for pile-up number calculation
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Background correction</TITLE>
+<META NAME="description" CONTENT="Background correction">
+<META NAME="keywords" CONTENT="evigweight">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="evigweight.css">
+
+<LINK REL="next" HREF="node12.html">
+<LINK REL="previous" HREF="node10.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node12.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+evigweight (evigweight-1.7) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node10.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Assumptions"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Correction for gaps and"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="evigweight.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00038000000000000000">
+Background correction</A>
+</H2>
+
+<P>
+One important issue for the spectral analysis with X-ray detectors
+is the treatment of background for extended sources.  In order to
+subtract the background properly, one needs the background spectrum
+with precisely the same detector characteristics as the extracted
+source spectrum. The <A NAME="488"></A><A NAME="tex2html10"
+  HREF="../backcorr/index.html"><SPAN  CLASS="textbf">backcorr</SPAN></A>
+task should not be used
+on spectra obtained with the weighting procedure (because it corrects
+for differential vignetting between the source and background areas).
+
+<P>
+To deal with the particle background (more or less constant outside proton
+flares), one should assign weights to
+the reference event list and extract images or spectra using the
+same spectral or spatial (in detector coordinates) selection
+as the source.
+The original spatial selection (on the source) is usually applied 
+to sky coordinates (not detector coordinates). 
+As XMM's pointing is very stable, the conversion from a region in
+sky coordinates (<A NAME="492"></A><TT>X</TT>,<A NAME="494"></A><TT>Y</TT>) to one in detector coordinates 
+(<A NAME="496"></A><TT>DETX</TT>,<A NAME="498"></A><TT>DETY</TT>) is just a rotation-translation.
+A scale factor obtained by comparing event rates outside
+the field of view or at very high energy should generally be 
+applied to the reference images or spectra.
+The difference should then be particle free.
+This operation subtracts some astrophysical background as well,
+but not necessarily the right one for the current field.
+
+<P>
+In addition to the particle background, 
+the residual astrophysical component (positive or negative) 
+may be subtracted if it can
+be assumed to be uniform over the field of view (can be checked on the image),
+and the source does not cover the entire field of view.
+Selecting an area outside the source for <SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$Reg$"></SPAN>, one may use
+Sect.<A HREF="node7.html#evigweight:description:description:spectral">3.4</A> 
+to build the `on-axis' background spectrum, which
+can be directly subtracted from the source spectrum (accounting for
+the different region sizes via <A NAME="500"></A><A NAME="tex2html11"
+  HREF="../backscale/index.html"><SPAN  CLASS="textbf">backscale</SPAN></A>).
+Integrating that spectrum within a band (and dividing by the region's area) 
+results in a constant which may be subtracted from images.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node10.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Assumptions"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Correction for gaps and"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

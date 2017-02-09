@@ -1,0 +1,612 @@
+ChangeLog for param
+===================
+
+List of TODO's as result of v2
+============
+* Remove classes: StringChoiceParameter, StringChoiceListParameter
+* Remove enum: StringChoice, StringChoiceList
+* virtual bool setNewValue() should return true only, and report error if not?
+
+Version 2.16.3 - 2016-09-09 (EO)
+--------------
+	+ src/TimeFormatter.h: GNUC >= 6 since g++ 5.3.1 does not use C++ 2011
+	  by default.
+
+Version 2.16.2 - 2016-08-28 (EO)
+	+ src/TimeFormatter.h: Added missing #if __GNUC__ >= 5 to use
+	  constexpr,  otherwise keep const. 
+
+Version 2.16.1 - 2016-08-27 (EO)
+--------------
+	+ src/TimeFormatter.h: const double JDMIN -> constexpr double JDMIN
+
+Version 2.16 - 2016-06-30 (AI)
+--------------
+	+ (src/param_impl.cc) gfortran array descriptor compatibility changes.
+	+ tools directory (empty) removed from Makefile.
+
+Version 2.15.3 - 2016-03-28 (EO)
+	+ tools: Missing Makefile made clobber target fail. Added dummy
+	  Makefile.
+
+Version 2.15.2 - 2009-12-16 (EO)
+--------------
+	+ (SPR-6573 by H. Chen) Included a missing </chapter> between lines 578
+	  and 579.
+
+Version 2.15.1 - 2009-07-02 (EO)
+--------------
+	+ No changes to basic code. Changes made only to adapt code to 
+	  gcc 4.X (more strict and more ANSI C compliant).
+	  Following changes were made:
+	  - src/StringLiistParameter.cc: Line 105 'strncpy'was not declared
+	  in this scope. Solve with #include <cstring>
+	  - src/ParameterInfo.cc: Line 193 'getenv'was not declared in this 
+	  scope. Solved with #include <cstdlib>.
+	  - src/param_impl.cc: 86 'strncpy'was not declared in this scope.
+	  - src/param_impl.cc: 87 'memset'was not declared in this scope.
+	  Both solved with #include <cstring>
+	  - test/testsetparam.cc: 68 deprecated conversion from string const
+	  to char*. Solved by adding const to char*.
+	  - test/testparamfileerror.cc: 29 ::exit has not been declared.
+	  Solved with #include <cstdlib>
+	  - test/testparam.cc: 37 'strcmp' was not declared in this scope.
+	  Solved adding #include <cstring>
+
+Version 2.15 - 2003-06-16 (GV)
+------------
+	+ Misc. fixes to make gcc-3.3 happy: include <cassert> and/or
+	proper initialization of base classes.
+
+Version 2.14 - 2003-06-13 (GV)
+------------
+	+ Add a few include <cassert> where needed to make gcc-3.3 happy.
+	
+Version 2.13 - 2003-03-14 (GV)
+------------
+	+ Remove occurrences of the header values.h that is obsolete and
+	  not present on Mac OS X.
+
+Version 2.12 - 2003-02-12 (JBa)
+------------
+	implemented ParamInfoSet::saveParamInfo(ParameterInfo* info); 
+	i.e.saving of parameter files in $HOME/.sas.d/config/
+
+Version 2.11 - 2003-02-10 (JBa)
+------------
+	Introduced a new interface for parsing: "ParamParser". The difference 
+	with the old (now deprecated) interface "ParamInfoReader" is that it
+	provide means to load/save a file. The old interface could only
+	load a 'task' (and with a hack it could load a 'file'), but saving
+	was out ofg the question...
+
+
+Version 2.10 - 2002-12-17 (JBa)
+------------
+	+ (./cxx/*) prefixed with std::
+
+Version 2.9 - 2002-12-09 (GV)
+-----------
+	+ (tools/listparams) new devel tool to be used in the creation of
+	  comman line completion files. Given a task name it lists all of its
+          parameters to stdout.
+
+Version 2.8 - 2002-10-09 (JBa)
+-----------
+	+ (src/Parameter.cc) small editorial change on HELP format of
+	  the constraint.
+	+ (tools/xml2xpi.cc) converter for backward compatibility.
+
+Version 2.7 - 2002-07-22 (JBa)
+-----------
+	+ (src/XmlInfoReader.cc) Fixed problems with arithmetic if in GCC-3.1
+	+ (src/*) removed usage of strstream
+
+	
+Version 2.6 - 2002-07-16 (JBa)
+-----------
+	+ Make chkdist happy
+
+
+Version 2.5 - 2002-06-17 (JBa)
+-----------
+	+ (src/TimeFormatter.*) 'implemented decimal year number'
+	+ (hopefully) fixed static build!
+
+
+Version 2.4 - 2002-06-07 (JBa)
+-----------
+	+ (src/ParameterInfo.cc) fixed bug in copy constructor: choices are 
+	  copied over, even if a choice does not have nested parameters.
+
+Version 2.3 - 2002-06-03 (JBa)
+-----------
+	+ (String*Parameter.cc) temporary workaround for problems in
+	  Evaluator::stringIdentifiers();
+
+Version 2.2 - 2002-05-30 (JBa)
+-----------
+	+ depends on selectlib
+
+Version 2.1 - 2002-05-21 (JBa)
+-----------
+	+ made class ChoiceChildParameters prettier
+	+ asString() and defaultAsString() produce prettier output. Lists do
+	  not have annoying begin/end quotes
+
+Version 2.0 - 2002-04-22 (JBa)
+-----------
+	+ updated user as well as developer documentation for XML usage
+	+ streamlined error messages
+	New interface
+	+ param is using XML as file format: created tool 'xpi2xml' to do the
+	  job transparently
+	+ nested parameters allowed
+	+ implicit setting of parameters
+	+ expanded constraint checker (introduction of selectlib)
+
+
+Version 1.70 - 2002-01-28 (JBa)
+--------------
+	+ version 1.69 found a incorrect parameter file in the test area
+
+Version 1.69 - 2002-01-28 (JBa)
+--------------
+	+ resubmitted 1.68.1. Though the patch is correct, it finds so many
+	  ill-defined modes in parameter files, that we may want to
+	  post-pone the implementation.
+
+Version 1.68.1 - 2002-01-28 (JBa)
+--------------
+	+ (src/XpiInfoReader.cc) Check for appropriate value of parameter mode
+
+Version 1.68 - 2001-12-19 (JBa)
+--------------
+	+ Added type DirOrFile, type 'x'. This type can be used by e.g.
+	  SAS ODF: can be a file or a directory.
+
+Version 1.67 - 2001-11-19 (JBa)
+--------------
+	+ ParameterInfo::asCommandLine() presents the parameters in 
+	  the order as they are read.
+	+ Adopted valid test-parameter files (no uppercase parameters).
+	  This involved changing the interface for PCS mode of reading cmd-line
+	  parameters (though I do not think *anybody* is using that mode):
+	   ODF   -> odf
+	   SP    -> sp
+	   COEFF -> coeff
+	   CCF   -> ccf
+	+ Removed obsolete tests in the 'src'-tree
+
+Version 1.66 - 2001-11-06 (JBa)
+--------------
+	+ Method 'writeHelpToStream(ostream& os)' presents the parameters in 
+	  the order as they are read.
+	  
+	  Note that a task may read multiple configurations. The presentation
+	  order is therefore determined by the 'first' occurence of a parameter
+	  name.
+
+Version 1.65 - 2001-09-11 (UL)
+------------
+	+ fixed minor problem with implementation of C-API function
+	  'set_boolean_parameter'
+
+Version 1.64 - 2001-09-06 (JBa)
+------------
+	+ change behavior of 'int parameterCount(name)'
+	  This function now always returns (was: error call), but it returns
+	  '-1' in case of scalar variables
+	+ changed C-interface of 'boolean_parameter' and 
+	  'set_boolean_parameter' to work with 'int' instead of non-C 'bool'
+
+Version 1.63 - 2000-07-26 (JBa)
+------------
+	+ Added info file for meta index (SOC SPR::1981)
+
+Version 1.62 - 2000-06-14 (JBa)
+------------
+	+ Added new type DirOrDataSet for usage in e.g. SAS_CCF variable
+
+Version 1.61.1 - 2000-06-14 (JBa)
+------------
+	+ * Cosmetics on error output of 'ParamMandatory'
+
+Version 1.61 - 2000-03-28 (JBa)
+------------
+	+ * replaced old-style headers
+
+Version 1.60 - 2001-03-14 (JBa)
+------------
+	+ (src/ParameterInfo.cc) Make error-messages more noisy about 
+	   missing parameters (missing from what parameter space)
+	+ (src/AngleFormatter.cc) fixes SOC-SPR 1894
+	   * Allow '+' sign
+	   * Proper handli9ng of neagtive agles in DMS/HMS format
+	+ (src/RealListParameter.cc,src/RealParameter.cc) fixes SOC-SPR 1931
+	   Improved precision. Allow upto 12 digits after decimal point only
+	   if necessary.
+	   
+
+Version 1.59 - 2001-02-28 (JBa)
+------------
+	+ (src/Parameter.*) fixed bug: added copy constructor!
+
+Version 1.58 - 2001-02-22 (JBa)
+------------
+	+ (src/Parameter.h) added methods to the interface to allow for
+	  multiple views
+	+ (src/Parameter.cc) implementation of the methods mentioned
+
+Version 1.57 - 2000-10-26 (JBa)
+------------
+	+ (src/Parameter.h) added public method:
+	   bool setValue(const Parameter*)
+	+ added implementation and test for the above
+
+Version 1.56 - 2000-08-14 (JBa)
+------------
+	+ (src/XpiInfoReader.cc) no silly limit on linelength
+
+Version 1.55 - 2000-08-14 (GV)
+------------
+	+ (*.par) make sure there are 6 ',' in all fields.
+	+ (*.info) add info files for each par file.
+	
+Version 1.54.2 - 2000-06-23
+------------
+	+ (src/*.cc) Fixed SPR 1610:: memory leaks in (o)strstream. Added a
+	             workaround (src/freezestream.h)
+	+ (src/*.cc) Fixed SPR 444:: more descriptive
+	+ (src/*.cc) Fixed SPR 1133:: better error msg
+	+ (src/*.cc) Fixed SPR 1134:: verbose output
+	+ (src/StringListParameter.cc) Fixed SPR 1302
+	+ (doc/param_description.tex) Fixed SPR 1446
+
+
+Version 1.54.1 - 2000-06-22
+------------
+	+ (src/paramcc.cc) "closeParameters()" deletes current parameters
+	  from memory
+
+Version 1.54 - 2000-05-17
+------------
+	+ (src/XpiInfoReader.cc) Sparse-Lib verbosity on which parameter file
+	  used.
+
+Version 1.53 - 2000-05-12
+------------
+	+ documentation using function MACROs
+	
+Version 1.51 2000-01-21 (JBr)
+------------
+
+ - Fixed SOC-SPR-471 : Parameter ranges
+ - Fixed SOC-SPR-740 : -h option should also give explanatory string
+
+Version 1.50 2000-01-19 (JBr)
+------------
+
+ - Fixed SOC-SPR-637 : no empty string allowed among choices for string parameter
+
+Version 1.49 1999-12-16 (JBr)
+------------
+
+ - Fixed SOC-SPR-1022 : Developer's information should move to developer's notes
+ - Fixed SOC-SPR-1039 : F90 API Example Incorrect
+ - Fixed SOC-SPR-1041 : tests fail when linked statically
+
+Version 1.48 1999-12-06 (JBr)
+------------
+
+ - Improved GUI support for Time parameters
+	
+Version 1.47 1999-12-03 (JBr)
+------------
+
+ - Fixed ParameterInfoSet::resetParamInfo(const string&)
+
+Version 1.46 1999-12-02 (JBr)
+------------
+
+ - Improved GUI support for Angle parameters
+
+Version 1.45 1999-11-29 (JBr)
+------------
+
+ - Fixed SOC-SPR 978 : AngleFormatter: snprintf not available on Tru64 Unix
+	
+Version 1.44 1999-11-29 (JBr)
+------------
+
+ - Added angle & time parameter support for GUI
+ - Fixed SOC-SPR 976 : Package fails test harness in static build
+
+Version 1.43 1999-11-25 (JBr)
+------------
+
+ - Added missing dependency on caloalutils
+
+Version 1.42 1999-11-24 (JBr)
+------------
+
+ - Fixed SOC-SPR 861 : no support for date parameters
+ - Fixed SOC-SPR 862 : no support for angle parameters
+ - Moved utility classes to utils package
+
+Version 1.41 1999-10-13 (JBr)
+------------
+
+ - Parameters are now persistent within a single run (for use
+   within meta-tasks).
+
+Version 1.40 1999-09-08 (JBr)
+------------
+
+ - Added DISTRIBUTION file
+ - Uses INTERFACES mechanism (exported files not yet optimised)
+ - Developer's documentation uses latex environment
+
+Version 1.39 1999-06-29 (JBr)
+------------
+
+ - Fixed StringChoiceListParameter::clone()
+
+Version 1.38 1999-06-24 (JBr)
+------------
+
+ - Added classes for time and angle parameters (u,w,U & W).
+   These were previously just aliases for Real parameters.
+
+Version 1.37 1999-05-20 (JBr)
+------------
+
+ - Added copy constructor & assignment operator for ParameterInfo
+ - Improved some error messages
+
+Version 1.36 1999-05-12 (JBr)
+------------
+
+ - Added new types for directory (y) and directory-list (Y)
+ - Updated documentation
+
+Version 1.35 1999-05-11 (JBr)
+------------
+
+ - Converted to use new symbol names for error-1.18 & utils-1.30
+
+Version 1.34 1999-04-21 (GV)
+------------
+
+ -fix typo in test harness.
+	
+Version 1.33 1999-04-20 (GV)
+------------
+
+ - update for error 1.17
+
+Version 1.32 1999-04-17 (GV)
+------------
+
+ - remove C++ style comments from paramc.h
+
+Version 1.31 1999-03-31 (GV)
+------------
+
+ - remove extern C from paramc.cc
+	
+Version 1.30 1999-03-31 (GV)
+------------
+
+ - rename C files to paramc.*
+ - add ifdef __cplusplus to paramc.h
+	
+Version 1.29 1999-03-30 (GV)
+------------
+
+ - add C bindings to support Perl interface
+	
+Version 1.28 1999-03-19 (JBr)
+------------
+
+ - Updated documentation
+	
+Version 1.27 1999-03-12 (JBr)
+------------
+
+ - Added new parameter types e & E for datasets; u & U for angles;
+   w & W for time
+ - ParameterInfo::asCommandLine no longer adds "--" prefix,
+     to help use of FTOOLS with GUI
+
+Version 1.26 1999-02-24 (JBr)
+------------
+
+ - TableList parameter reported wrong type
+
+Version 1.25 1999-02-23 (JBr)
+------------
+
+ - Fixed SOC-SPR-479: Add support for mandatory parameters
+ - Removed debug statement from param_impl.cc
+ - Changed real parameters from float to double
+ - Added prototype implementation of experimental parameter types
+     k,t,a,c,p,K,T,A,C,P for tables, columns, etc
+ - Added further test cases to setParameter test harnesses
+
+Version 1.24 1999-02-17 (JBr)
+------------
+
+ - Added setParameter for F90 metatasks including test harness. (MB)
+ - Reintroduced work-around for F90/egcs problem with vector<bool>:
+     - boolListParameter returns vector<int>
+     - setParameter() requires vector<int> argument for bool-list
+
+Version 1.23 1999-02-16 (JBr)
+------------
+
+ - Fixed SOC-SPR-587: No support for list of boolean
+ - Reintroduced template implementation of setParameter (removed in
+   param-1.18 because of an incompatibility between gcc-2.7.2.3 and egcs)
+ - Removed function object lt_str (introduced in param-1.18 to work
+   around problem with long mangled symbol names)
+
+Version 1.22 1999-02-08 (JBr)
+------------
+
+- Added ParameterInfo::asArgumentList() for GUI
+	
+Version 1.21 1999-01-29 (JBr)
+------------
+
+ - Added model-view mechanism to support GUI
+ - Removed pragmas from param_impl.h
+
+Version 1.20 1998-11-25 (JBr)
+------------
+
+ - Removed temporary GUI support (now in "gui" package)
+ - Updated documentation of conditional parameters
+
+Version 1.19 1998-11-11 (JBr)
+------------
+
+ - Removed warning coming from F90 interface
+ - Support for shared libs
+	
+Version 1.18 1998-11-02 (JBr)
+------------
+
+ - Work-around for gcc-2.7.2.3 bug (would not compile without "-g")
+
+Version 1.17 1998-10-14 (JBr)
+------------
+
+ - Parameter file may now contain tab characters
+ - Fix for SPR-461 now works for egcs
+	
+Version 1.16 1998-10-14 (JBr)
+------------
+
+ - Corrected example in documentation
+ - Added section to documentation on parameter grouping
+ - Fixed SOC-SPR-461 : 	Cannot handle char*
+ - Fixed SOC-SPR-462 : Cannot handle double
+	
+Version 1.15 1998-10-07 (JBr)
+------------
+
+ - Improved test harnesses
+ - Fixed SOC-SPR-429: Missing checks for lists of parameters
+ - Added temporary interface to support GUI layout
+ - C++ API supports accessing parameter lists as STL vectors
+
+Version 1.14 1998-10-05 (JBr)
+------------
+
+ - Added more comments
+ - Added revertToDefault() for GUI
+ - Defaults for lists reported correctly by "-h" option
+
+Version 1.13 1998-10-01 (JBr)
+------------
+
+ - Fixed problems detected by egcs compiler.
+ - setParameter(vector<bool>) disabled to work-around egcs problem
+   (BoolListParameter uses vector<int> instead of vector<bool>).
+	
+Version 1.12 1998-09-25 (JBr)
+------------
+
+ - Returns correct type for StringChoiceList to GUI
+
+Version 1.11 1998-09-23 (JBr)
+------------
+
+ - File-name parameters strip quotes from .par default
+ - Added "planned enhancements" to documentation
+ - Closed SOC-SPR-330: Merge TODO into description
+ - setParameter now takes typed value instead of string
+	
+Version 1.10 1998-09-15 (MB)
+------------
+
+ - Fixed runtestgencmdline to not assume '.' is in path
+
+Version 1.9 1998-09-15 (JBr)
+-----------
+
+ - Removed 'mode' parameter from example in documentation.
+ - string constraint did not work properly
+
+Version 1.8 1998-09-15 (JBr)
+-----------
+
+ - added missing ./ in test script.
+
+Version 1.7 1998-09-14 (JBr)
+-----------
+
+ - Major rewrite, supporting XPI-style ".par" parameter files, 
+   instead of ".prm" files.
+
+   The following features are supported:
+	- XPI types b, i, r and s
+        - file-name type "f"
+        - additional types for parameter lists: B, I, R, S and F
+        - min/max values of integer & real parameters
+        - choice list for string parameters (using "min" field)
+	- comments in parameter file (starting with '#')
+	- manipulation of parameters by GUI
+
+    The following XPI/FTOOLS featues are not supported:
+        - learn mode
+	- 'mode' parameter and 'auto' mode
+	- prompt and hidden mode
+
+ - Fixed SOC-SPR-133: Wrong parameter name
+ - Fixed SOC-SPR-168: Wrong format input
+ - Fixed SOC-SPR-397: Problem with delimiters in excess in lists
+
+	
+Version 1.6 1998-09-15 (JBr)
+-----------
+
+ - implemented setting parameters (worked only for strings).
+ - removed param.tex
+
+Version 1.5 1998-07-02 (MB)
+-----------
+
+ - added workaround for a bug in the string class on DEC.
+
+Version 1.4 1998-06-29
+-----------
+
+ - stringParameter returned more than one element with parameter list
+ - implemented F90 interface for parameterCount
+
+Version 1.3 1998-06-26
+-----------
+
+ - Added missing include.
+
+Version 1.2 1998-06-25
+-----------
+
+ - added interfaces and implementation of parameter lists
+
+ - added PCS parameter style interface, in library pcsparam
+
+Version 1.1 1998-06-02
+-----------
+
+ - Upgraded documentation to new format.
+
+ - Changed .prm to .par files in test harness.
+
+Version 1.0 14-05-98
+-----------
+
+ - Initial version for SAS v1 integration.
+   This is shortly to be replaced by a new parameter package.

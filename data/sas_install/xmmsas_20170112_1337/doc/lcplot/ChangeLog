@@ -1,0 +1,303 @@
+ChangeLog for lcplot
+===============================
+
+Version 1.21 - 2016-07-15 (AI)
+-------------------------------
+	+ (src/lcplot_mod.f90) "label" variable renamed (this word is 
+	not allowed in gfortran).
+
+Version 1.20.1 - 2013-03-05 (NW)
+        -------------------------------
+
+	A check for NaN values is now included and a warning is called if  
+	all of the data points have values=NaN. The PSF FRAC. INCLUDED 
+	length has also been reduced to make the output plot clearer. The 
+	documentation has been updated to include the new warning.
+	
+
+Version 1.20 - 2012-03-07 (NW)
+        -------------------------------
+
+	The lengths of certain characters have been reduced to avoid
+	overwriting observation information on the output plot, in
+	response to SPR 6636.
+ 
+
+Version 1.19.1 - 2007-06-07 (NW)
+        -------------------------------
+
+	Previously when the non background subtracted curve was supplied 
+	the title of the plot was 'background subtracted'.  It has now 
+	been changed to 'Non background subtracted'.
+
+
+
+Version 1.19 - 2005-09-06 (NW)
+        -------------------------------
+
+	Added a new parameter 'tests' which allows the user to decide if 
+	they want to carry out both probability of constancy tests or 
+	just the chi-squared test or the Kolmogorov-Smirnov test.  The 
+	documentation has also been updated.
+
+
+Version 1.18.1 - 2005-01-28 (NW)
+        -------------------------------
+ 
+        Changes made to identifying NULLS and some arithmetic changes
+	made to stop lcplot crashing with NULL and negative values.
+
+	
+Version 1.18 - 2004-19-14 (NW)
+        -------------------------------
+ 
+        Small changes introduced to allow lcplot to read the source RA and
+	DEC from the headers correctly and thus plot the correct
+	information on the the output plot (SPR-3282).
+
+	
+Version 1.17.1 - 2004-05-14 (NW)
+        -------------------------------
+ 
+        Small change introduced to stop lcplot crashing with some lccorr
+	files (SPR-3312) and changes to the presentation of the header
+	information of the output plot (SPR-3289).
+
+	
+Version 1.17 - 2002-07-25 (NW)
+        -------------------------------
+ 
+        Updated the DEPEND file. It now includes a dependence on sas.
+                                    
+                                            
+Version 1.16.1 - 2002-06-04 (NW)
+----------------------
+
+        Made changes to the plot, by increasing the size and colour of the
+ 	text to make it more readable and changing the plot layout in
+ 	general.
+
+	
+Version 1.16 - 2002-06-03 (NW)
+----------------------
+
+        Made the updates necessary for the new version of param
+	
+
+Version 1.15 - 17-04-02
+----------------------- 
+
+	A loop included that removes bins with a low exposure and
+	therefore large errors, from the plot as requested by JO.
+	Documentation also updated.
+
+Version 1.14.1 - 09-01-02
+----------------------- 
+	
+        Data now referenced to TSTART and not to TIMEZERO, according to
+	the OGIP recommendation.  Documentation also changed to
+	incorporate this change.
+
+	
+Version 1.14 - 7-12-01
+	-----------------------
+	
+        Version number increment as requested for the new public release
+	cycle.
+
+	
+Version 1.13.9 - 4-12-01
+----------------------- 
+	
+        Even more information has been added to the output plot in
+	response to SPR 2659: which OSW a light curve has come from, the
+	filename of the plotted file and the plotted bin size.
+
+
+Version 1.13.8 - 20-11-01
+----------------------- 
+	
+        New information has been added to the output plot: exposure ID,
+	source number, source position, source and background
+	re-extraction region areas, background light curve subtraction,
+	fraction of the PSF included in the source lightcurve, and is a
+	correction applied for this.  The version of lcplot is also
+	included in the bottom left hand corner.  The documentation has
+	consequently been updated.
+
+	
+Version 1.13.7 - 07-11-01
+----------------------- 
+	
+        A new parameter has been introduced (bkgdyscale) which by default
+	is set to `no', but can be set to `yes' so that the y-scale of the
+	background counts is the same as the source counts, in response to
+	SPR-2616.
+	
+	
+Version 1.13.6 - 22-10-01
+----------------------- 
+	
+	The test has been radically changed so that it doesn't test the
+	.ps file, as these are never standard.	
+	
+
+Version 1.13.5 - 19-10-01
+----------------------- 
+	
+        The test has been changed so that if it does fail, the output 
+	is not long and a small revision has been made to the errors, as they         were not accurate.
+
+	
+Version 1.13.4 - 7-09-01
+----------------------- 
+
+	The times, aswell as the dates, are now printed in the title of
+	the output of lcplot and the format of TIMEZERO has been changed
+	so that more decimal places are shown, in response to SPR 2509.
+
+        
+Version 1.13.3 - 22-05-01
+----------------------- 
+
+        The documentation has been updated to include examples of how to
+	use lcplot.  The program only calls a warning, rather than an
+	error for if the values of the count rates and their associated
+	errors are <0.0, so that it can be used after background
+	subtraction of images with few counts.
+        
+	
+Version 1.13.2 - 27-04-01
+----------------------- 
+	The dimensions of the array Label were not consistent throughout
+ 	the task.  This has been rectified.  The test harness has been
+ 	changed to be variable for Linux or Unix, because the environment
+ 	variables are different.  In this way, the test can be passed on
+ 	Linux or Unix.
+
+	
+
+Version 1.13.1 - 08-02-01
+-----------------------  
+        The environment variables for `pgplot' were different to those 
+	at the `static build' and hence the test was not passed, as the 
+	output files were different to the comparison files.  The 
+	environment variables for `pgplot' are now changed, so the 
+	output files of the `static build' should pass the test.
+
+	
+Version 1.13 - 19-12-00
+-----------------------  
+        The lcplot test no longer uses gs, as requested by the SPR 2153. 
+
+
+Version 1.12.1 - 9-11-00
+-----------------------  
+        lcplot now accepts single time series FITS files or several
+        time series FITS files produced by `elcbuild' for EPIC
+        and `omlcbuild' for the OM.  Documentation also updated.
+
+	
+Version 1.12 - 31-10-00
+-----------------------  
+        Updated lcplot GROUPS description and the lcplot documentation
+
+Version 1.11 - 03-10-00
+-----------------------  
+        Updrade the version number as required for the SAS V5
+
+Version 1.10.1 26-09-00
+-----------------------
+	Update the .info file (remove the non existing interactive GROUP) 
+
+Version 1.10 22-05-00
+--------------------
+	Add lcplot.info in the config directory
+
+Version 1.9 18-04-00
+--------------------
+
+	The following SPR has been corrected:
+
+	 SSC-SPR-1642 lcplot (version 1.8): documentation macros
+
+	
+Version 1.8 07-03-00
+--------------------
+
+	The following SPRs have been corrected:
+
+ 	SSC-SPR-1529 lcplot (version 1.7): The precise description of chi2
+ 	and KS tests should be given into description.
+        
+   	SSC-SPR-1530 lcplot (version 1.7): When testing the input file
+ 	format check, the error message is not well adapted
+
+   	SSC-SPR-1531 lcplot (version 1.7): when output file already
+ 	exists, lcplot always overwrite it
+
+   	SSC-SPR-1532 lcplot (version 1.7): the variance is computed by
+ 	dividing by n : the number of elements as it should be n-1
+
+	
+Version 1.7 09-02-00
+--------------------
+
+- Version in the documentation compatible with the version of the task
+
+Version 1.6 26-11-99
+--------------------
+
+- Distribution file added, and newlines to Makefile too
+
+Version 1.5 24-08-99
+--------------------
+
+One SPR fixed:
+
+- SSC-SPR-1152: Looks for TIMEZERO/TIMEDEL in primary header
+
+Version 1.4 29-07-99
+--------------------
+
+- Fixes SSC-SPR-1124: lcplot : Task parameters do not conform to convention
+- SSC-SPR-1125 was in fact out of the scope; the bug was elsewhere. 
+- SSC-SPR-1126 fixes the bug raised in the previous SPR.
+
+
+Version 1.3 04-06-99
+--------------------
+
+- Change read/write access to the directory
+
+
+Version 1.2 11-05-99
+--------------------
+
+- DEPEND now includes taskmain (SPR 930)
+- Test hardness checks on the existence of the output file
+- EXTERNALS=pgplot included in src/Makefile.
+
+	
+Version 1.1 -01-12-98
+----------------------------
+
+- fixed SSC-SPR-0667 Inconsistent error message with wrongly named input file
+
+- fixed SSC-SPR-0668 The contents of the lightcurve supplied are inconsistent 
+
+- fixed SSC-SPR-0669 The value of TIMEDEL should be an MJD
+
+- fixed SSC-SPR-0670 The plot produced by LCPLOT does not agree with that from FPLOT
+
+Version 1.0 -07-10-98
+----------------------------
+	
+- fixed SSC-SPR-0568, version number should be .ge. 1.0
+
+	
+Version 0.1 -10-08-98
+----------------------------
+
+Version 0.1 Delivered on 02/10/98   
+

@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Environment variables</TITLE>
+<META NAME="description" CONTENT="Environment variables">
+<META NAME="keywords" CONTENT="taskmain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="taskmain.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="node1.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+taskmain (taskmain-1.95) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Command line options"></A>
+<A HREF="node1.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="User information"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Output"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="taskmain.html">Home Page</A> / <A  HREF="node1.html">User information</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00012000000000000000"></A>
+<A NAME="taskmain:user:env"></A>
+<BR>
+Environment variables
+</H2>
+The behavior of the tasks is modified by the following environment variables:
+<DL COMPACT>
+<DT><A NAME="588"></A><TT>SAS_CCF</TT><A NAME="taskmain:sasccf"></A></DT>
+<DD>This has the same meaning as the command line
+  option <TT>--ccf<A NAME="591"></A></TT> (see above). A command line override supersedes
+  any assignment made to <A NAME="592"></A><TT>SAS_CCF</TT>, i.e., the CIF pointed at via
+  <A NAME="594"></A><TT>SAS_CCF</TT> is ignored in this case.
+  Only of relevance for tasks making use of the <A HREF=../cal/node4.html>Calibration
+  Access Layer</A>.
+
+<P>
+</DD>
+<DT><A NAME="596"></A><TT>SAS_CCFFILES</TT></DT>
+<DD>This has the same meaning as the command line
+  option <TT>--ccffiles<A NAME="599"></A></TT> (see above). A command line override supersedes
+  any assignment made to <A NAME="600"></A><TT>SAS_CCFFILES</TT>, i.e., the list of CCF
+  replacement constituents is ignored in this case.
+  Only of relevance for tasks making use of the <A HREF=../cal/node4.html>Calibration
+  Access Layer</A>.
+
+<P>
+</DD>
+<DT><A NAME="602"></A><TT>SAS_CCFPATH</TT></DT>
+<DD>This has the same meaning as the command line
+  option <TT>--ccfpath<A NAME="605"></A></TT> (see above). A command line override supersedes
+  any assignment made to
+  <A NAME="606"></A><TT>SAS_CCFPATH</TT>, i.e., the search path specified via <A NAME="608"></A><TT>SAS_CCFPATH</TT> is
+  ignored in this case.
+  Only of relevance for tasks making use of the <A HREF=../cal/node4.html>Calibration
+  Access Layer</A>.
+
+<P>
+</DD>
+<DT><A NAME="610"></A><TT>SAS_DIR</TT></DT>
+<DD>The toplevel directory where the SAS is installed.
+
+<P>
+</DD>
+<DT><A NAME="612"></A><TT>SAS_ODF</TT><A NAME="taskmain:sasodf"></A></DT>
+<DD>This has the same meaning as the command line
+  option <TT>--odf<A NAME="615"></A></TT> (see above). A command line override supersedes
+  any assignment made to <A NAME="616"></A><TT>SAS_ODF</TT>, i.e., the ODF summary file
+  specified in <A NAME="618"></A><TT>SAS_ODF</TT> is ignored in this case.
+  Only of relevance for tasks making use of the <A HREF=../oal/node5.html>ODF
+  Access Layer</A>.
+
+<P>
+</DD>
+<DT><A NAME="620"></A><TT>SAS_PATH</TT></DT>
+<DD>A list of colon-separated directories that contain SAS
+  packages. Should at minimum contain <A NAME="622"></A><TT>SAS_DIR</TT>.
+
+<P>
+</DD>
+<DT><A NAME="624"></A><TT>SAS_RAND_SEED</TT></DT>
+<DD>If defined this environment variable has to be set to an integer value 
+which will be used to initialize the single global random number generator
+that is being used throughout the SAS. Not setting <A NAME="626"></A><TT>SAS_RAND_SEED</TT>
+will cause the seed to be initialized by a pseudo-random number that
+is based on the local time. Hence, processing the same dataset twice with
+identical command line arguments will not necessarily yield identical
+results unless <A NAME="628"></A><TT>SAS_RAND_SEED</TT> is defined. If the value
+cannot be converted to an integer number a warning message is issued
+and execution continues as if <A NAME="630"></A><TT>SAS_RAND_SEED</TT> had not not been
+defined at all.
+
+<P>
+</DD>
+<DT><A NAME="632"></A><TT>SAS_TRACER</TT></DT>
+<DD>Determines the debug level of the libraries.
+<BR> 
+<BR>
+
+<P>
+</DD>
+<DT><A NAME="634"></A><TT>SAS_VERBOSITY</TT></DT>
+<DD>Determines the debug level of the task.
+</DD>
+</DL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Command line options"></A>
+<A HREF="node1.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="User information"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Output"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

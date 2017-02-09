@@ -1,0 +1,101 @@
+# Layout file "asmooth.lyt"
+Cards
+  Page Main
+    Parameter inset
+    Parameter outset
+    Parameter tempset
+    Frame smoothstyle
+      Choice smoothstyle
+        Page simple
+          Frame convolverstyle
+            Choice convolverstyle
+              Page gaussian
+              end
+              Page tophat
+              end
+              Page squarebox
+              end
+            end
+          end
+          Parameter width
+          Parameter normalize
+        end
+        Page adaptive
+          Frame withuserwidths
+            Choice withuserwidths
+              Page yes
+                Parameter userwidths
+              end
+              Page no
+                Parameter nconvolvers
+                Parameter minwidth
+                Parameter maxwidth
+                Frame widthliststyle
+                  Choice widthliststyle
+                    Page linear
+                    end
+                    Page log
+                    end
+                    Page sqrt
+                    end
+                  end
+                end
+              end
+            end
+          end
+          Parameter desiredsnr
+          Enable writetemplateset
+            Parameter outtemplateset
+          end
+          Enable writeconvolvers
+            Parameter outconvolversset
+            Parameter outindeximageset
+          end
+        end
+        Page withset
+          Parameter inconvolversarray
+          Enable withindeximagearray
+            Parameter inindeximagearray
+          end
+          Parameter normalizeset
+        end
+        Page template
+          Parameter intemplateset
+        end
+      end
+    end
+    Parameter nopslimit
+    Enable forcecalctype
+      Parameter calcbyfft
+    end
+  end
+  Page Additional
+    Enable readvarianceset
+      Parameter invarianceset
+    end
+    Enable writevarianceset
+      Parameter outvarianceset
+    end
+    Enable withweightset
+      Parameter weightset
+    end
+    Enable withoutmaskset
+      Parameter outmaskset
+    end
+    Enable writebadmaskset
+      Parameter badmaskset
+    end
+    Enable withexpimageset
+      Parameter expimageset
+      Frame expmapuse
+        Choice expmapuse
+          Page samesize
+          end
+          Page samesnr
+          end
+        end
+      end
+      Parameter remultiply
+    end
+  end
+end

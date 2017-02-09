@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>getFitsImgStatInfo???</TITLE>
+<META NAME="description" CONTENT="getFitsImgStatInfo???">
+<META NAME="keywords" CONTENT="fitsutils">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="fitsutils.css">
+
+<LINK REL="next" HREF="node8.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node5.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+fitsutils (fitsutils-1.9.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="getFitsVecStatInfo???"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Statistical information"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="getAnnularMask"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="fitsutils.html">Home Page</A> / <A  HREF="node4.html">General-purpose FITS-processing utilities</A> / <A  HREF="node5.html">Statistical information</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00021200000000000000"></A> <A NAME="sec:getFitsImgStatInfo"></A>
+<BR>
+getFitsImgStatInfo???
+</H3>
+
+<P>
+This function is a wrapper for the function
+<TT>ssclib/array_utils/getAryStatInfo</TT> 
+for a 2-dimensional array,
+and so returns the structure <TT>aryStatInfo???T</TT>
+(See the documentation of <TT>ssclib</TT>),which contains the statistical information of the array.
+
+<P>
+The part `???' in the function names is either Double, Single, Int32/16/8.
+<P>
+The following is an example interface for the Double-type one.
+In other types, only the difference is the type of the returned variable
+(<TT>aryStatInfo???T</TT>).
+<P>
+<PRE>
+  interface getFitsImgStatInfoDouble
+    function getFitsImgStatDoubleName(imageSetName, arMaskIn &amp;
+       , minAreaIndices, maxAreaIndices, valLower, valUpper &amp;
+       , flagInfo) result(aryStatInfo)
+
+      ! integer, parameter :: rankArin = 2
+      type(aryStatInfoDoubleT) :: aryStatInfo	! defined in array_utils
+      character(*), intent(in) :: imageSetName
+      logical, intent(in), optional :: arMaskIn(:,:)
+      integer(int32), intent(in), optional :: minAreaIndices(rankArin), maxAreaIndices(rankArin)
+      real(double), intent(in), optional :: valLower, valUpper
+      type(aryStatInfoFlagT), intent(in), optional :: flagInfo
+    end function getFitsImgStatDoubleName
+
+    function getFitsImgStatDoubleSet(imageSet, arMaskIn &amp;
+       , minAreaIndices, maxAreaIndices, valLower, valUpper &amp;
+       , flagInfo) result(aryStatInfo)
+
+      ! integer, parameter :: rankArin = 2	! = size(lbound(arin))
+      type(aryStatInfoDoubleT) :: aryStatInfo	! defined in array_utils
+      type(DataSetT), intent(in) :: imageSet
+      logical, intent(in), optional :: arMaskIn(:,:)
+      integer(int32), intent(in), optional :: minAreaIndices(rankArin), maxAreaIndices(rankArin)
+      real(double), intent(in), optional :: valLower, valUpper
+      type(aryStatInfoFlagT), intent(in), optional :: flagInfo
+    end function getFitsImgStatDoubleSet
+  end interface
+</PRE>
+
+<P>
+Note that the ranks of arMaskIn (if specified) and that of the input
+FITS image have to be identical.
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

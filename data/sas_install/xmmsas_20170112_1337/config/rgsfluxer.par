@@ -1,0 +1,164 @@
+<!-- converted from XPI formatted "rgsfluxer.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="file" type="file" default="">
+   <DESCRIPTION>
+    output fluxed spectrum
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="nan" type="real" default="0">
+   <DESCRIPTION>
+    alternate NaN value
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withaltnan" type="bool" default="no">
+   <DESCRIPTION>
+    enable alternate NaN value
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="format" type="string" default="dal">
+   <DESCRIPTION>
+    output file format
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="ascii">
+    </ITEM>
+    <ITEM value="dal">
+    </ITEM>
+    <ITEM value="qdp">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="mode" type="string" default="wavelength">
+   <DESCRIPTION>
+    computational mode
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="energy">
+    </ITEM>
+    <ITEM value="wavelength">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="min" type="real" default="4">
+   <DESCRIPTION>
+    minimum output wavelength or energy
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    min in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="max" type="real" default="40">
+   <DESCRIPTION>
+    maximum output wavelength or energy
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    max in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="bins" type="int" default="3600">
+   <DESCRIPTION>
+    number of output bins
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    bins in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="pha" type="file" list="yes" mandatory="yes" default="">
+   <DESCRIPTION>
+    spectrum files
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="bkg" type="file" list="yes" default="">
+   <DESCRIPTION>
+    background spectrum files, if dealing with TOTAL spectra and either 
+	as produced from rgsproc or rgsbkgmodel
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="rmf" type="string" list="yes" default="&#34;@&#34;">
+   <DESCRIPTION>
+    corresponding response files, '@'=infer, '.'=ditto
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="witharf" type="bool" default="no">
+   <DESCRIPTION>
+    enable ARF file
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+ <PARAM id="arf" type="string" list="yes" default="&#34;@&#34;">
+   <DESCRIPTION>
+    corresponding arf files, '@'=infer, '.'=ditto
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="quality" type="int" list="yes" default="0">
+   <DESCRIPTION>
+    usable quality in promotion order
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    quality in [0:5]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+ <PARAM id="tryspectrumgrid" type="bool" default="yes">
+   <DESCRIPTION>
+    Check if all spectra grid are consistent. If there are, use order 1 grid 
+	(degrade order 2 grid)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+ </CONFIG>
+</FILE>

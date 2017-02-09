@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="earthbarycen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="earthbarycen.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="earthbarycen.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+earthbarycen (barycen-1.20.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Introduction"></A>
+<A HREF="earthbarycen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="earthbarycen.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="earthbarycen:description:parameters"></A>
+<A NAME="415"></A>
+<tr valign=top bgcolor='silver'><td><b>withtable</b></td><td>yes</td><td><A HREF=../param/node3.html>boolean</A></td><td>true</td><td>Whether to convert table in a dataset</td></tr>
+
+<tr valign=top><td colspan=5>
+    <A NAME="earthbarycen:description:parameters:withtable"></A>should be set to <I>true</I> if a table containing events to correct
+has been specified and to <I>false</I> otherwise.<br>&nbsp;</td></tr>
+
+<A NAME="425"></A>
+<tr valign=top bgcolor='silver'><td><b>table</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>name of existing table</td></tr>
+
+<tr valign=top><td colspan=5>
+    <A NAME="earthbarycen:description:parameters:table"></A>a specifier which must point to a table in
+a data set.
+It must be in either of the two forms <TT>setname:</TT>, or <TT>setname:tableid</TT>
+where <TT>setname</TT> must be the name of an existing
+data set and
+<TT>tableid</TT> an identifier of a table in that data set.
+If the first form, <TT>setname:</TT>, is used, the table data are sought in the
+<EM>first</EM> block of the named data set.<br>&nbsp;</td></tr>
+
+<A NAME="444"></A>
+<tr valign=top bgcolor='silver'><td><b>timecolumn</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>TIME</td><td>name of existing column</td></tr>
+
+<tr valign=top><td colspan=5>
+    <A NAME="earthbarycen:description:parameters:timecol"></A>the name of an existing column of type real64 in the table given via
+the parameter <A HREF="#earthbarycen:description:parameters:table"><EM>table</EM></A>. The values in the column
+are interpreted as XMM MET tags and corrected for earthbarycentric
+propagation delays. Please note: This process is <EM>irreversible</EM> -
+if the original time column is to be kept a copy of the data set
+should be made a priori.<br>&nbsp;</td></tr>
+
+<A NAME="461"></A>
+<tr valign=top bgcolor='silver'><td><b>withsrccoordinates</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>true|false</td></tr>
+
+<tr valign=top><td colspan=5>
+The earthbarycentric correction algorithms needs the coordinates of the
+celestial source. This boolean parameter determines from where these
+are obtained. If set to false, the coordinates are attempted to
+be read from the attributes <A NAME="475"></A><TT>RA_OBJ</TT>/<A NAME="477"></A><TT>DEC_OBJ</TT> in the table or the
+associates set. If this fails, the attributes <A NAME="479"></A><TT>RA_NOM</TT>/<A NAME="481"></A><TT>DEC_NOM</TT>
+are read instead. If this fails as well a fatal error condition is
+raised. If <EM>withsrccoordinates</EM> is set to true, the user has to
+provide the coordinates through the parameters <EM>srcra</EM>/<EM>srcdec</EM>.
+<br>&nbsp;</td></tr>
+
+<A NAME="486"></A>
+<tr valign=top bgcolor='silver'><td><b>srcra/srcdec</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>source coordinates</td></tr>
+
+<tr valign=top><td colspan=5>
+If <EM>withsrccoordinates</EM> is set to true the coordinates of the celestial
+source have to be specified through these parameters in the
+equatorial, earth-centered J2000 reference frame. Recognized formats
+are for <EM>srcra</EM> (Right Ascension)
+
+<OL>
+<LI>123.45678 (decimal degrees)
+</LI>
+<LI>23 59 59.1223
+</LI>
+<LI>23h59m59.1234s
+</LI>
+</OL>
+and for <EM>srcdec</EM> (Declination)
+
+<OL>
+<LI>123.45678 (decimal degrees)
+</LI>
+<LI>20 18 59.1223
+</LI>
+<LI>20o18'59.1234''
+</LI>
+</OL><br>&nbsp;</td></tr>
+
+<A NAME="503"></A>
+<tr valign=top bgcolor='silver'><td><b>processgtis</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>true</td><td>true|false</td></tr>
+
+<tr valign=top><td colspan=5>
+Boolean switch determining whether any present GTI tables should be
+corrected as well or not. The parameter has no effect if the set does not
+contain any GTI tables.<br>&nbsp;</td></tr>
+
+<A NAME="510"></A>
+<tr valign=top bgcolor='silver'><td><b>processexposutables</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>true</td><td>true|false</td></tr>
+
+<tr valign=top><td colspan=5>
+Boolean switch determining whether any present EXPOSU tables should be
+corrected as well or not. The parameter has no effect if the set does not
+contain any GTI tables.<br>&nbsp;</td></tr>
+
+<A NAME="517"></A>
+<tr valign=top bgcolor='silver'><td><b>basetime</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+Base time for MET frame<br>&nbsp;</td></tr>
+
+<A NAME="524"></A>
+<tr valign=top bgcolor='silver'><td><b>time</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+A single time tag in MET frame 
+on which to perform the earthbarycentric correction.
+Only used if <EM>withtable</EM> is false.<br>&nbsp;</td></tr>
+
+<A NAME="533"></A>
+<tr valign=top bgcolor='silver'><td><b>obslong</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+The longitude (East positive) of earth-bound observer<br>&nbsp;</td></tr>
+
+<A NAME="540"></A>
+<tr valign=top bgcolor='silver'><td><b>obslat</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+Geodetic latitude of earth-bound observer<br>&nbsp;</td></tr>
+
+<A NAME="547"></A>
+<tr valign=top bgcolor='silver'><td><b>obsalt</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+Altitude above NN of earth-bound observer [m]<br>&nbsp;</td></tr>
+
+<A NAME="554"></A>
+<tr valign=top bgcolor='silver'><td><b>ephemeris</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>DE200</td><td>DE200|DE405</td></tr>
+
+<tr valign=top><td colspan=5>
+Name of an ASCII earth ephemeris file extension in the JPL format to be used
+in lieu of a standard one. This file contains earthbarycentric vectors
+needed by the TDB conversion algorithm.
+<br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Introduction"></A>
+<A HREF="earthbarycen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

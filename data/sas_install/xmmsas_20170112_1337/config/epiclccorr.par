@@ -1,0 +1,120 @@
+<!-- converted from XPI formatted "my_task.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+ <PARAM id="srctslist" type="dataset" list="no" mandatory="yes">
+        <DESCRIPTION> Name of the time serie </DESCRIPTION>
+ </PARAM>
+
+ <PARAM id="eventlist" type="dataset" list="no" mandatory="yes">
+	<DESCRIPTION> Name of the original event list </DESCRIPTION>
+ </PARAM>
+
+ <PARAM id="outset" type="string" mandatory="no" default="lccorr.fit">
+	<DESCRIPTION> Name of the output file </DESCRIPTION>
+ </PARAM>
+
+ <PARAM id="withbkgset" type="bool" default="no" mandatory="no">
+	<DESCRIPTION> Enable/Disable background time serie</DESCRIPTION>
+	<CASE>
+		<ITEM value="yes">
+			 <PARAM id="bkgtslist" type="dataset" list="no" mandatory="no">
+				<DESCRIPTION> Name of the background time serie</DESCRIPTION>
+			 </PARAM>  		
+		</ITEM>
+		<ITEM value="no">
+		</ITEM>
+	</CASE>
+ </PARAM>
+
+ <PARAM id="applyabsolutecorrections" type="bool" default="yes"
+ 	mandatory="no">
+ 	<DESCRIPTION>Enable/Disable absolute corrections.</DESCRIPTION>
+ 	<CASE>
+ 		<ITEM value="yes">
+
+			
+			 <PARAM id="withdetbins" type="bool" default="no">
+			  <DESCRIPTION>
+			      Specify the number of bins for psf/flat detector maps explicitly
+			  </DESCRIPTION>
+			  <CASE>
+			   <ITEM value="no">
+			   </ITEM>
+			   <ITEM value="yes">
+			      <PARAM id="detxbins" type="int" default="5">
+			       <DESCRIPTION>
+			          Number of bins along x-dirn in psf or flat detector map
+			       </DESCRIPTION>
+			       <CONSTRAINTS>
+			          detxbins in [1:]
+			       </CONSTRAINTS>
+			      </PARAM>
+			
+			      <PARAM id="detybins" type="int" default="5">
+			       <DESCRIPTION>
+			          Number of bins along y-dirn in psf or flat detector map
+			       </DESCRIPTION>
+			       <CONSTRAINTS>
+			          detybins in [1:]
+			       </CONSTRAINTS>
+			      </PARAM>
+			   </ITEM>
+			  </CASE>
+			 </PARAM>
+
+
+ 			<PARAM id="withsourcepos" type="bool" default="no">
+ 				<DESCRIPTION>Source position specified</DESCRIPTION>
+ 				<CASE>
+ 					<ITEM value="no"></ITEM>
+ 					<ITEM value="yes">
+
+ 						<PARAM id="sourcecoords" type="string"
+ 							mandatory="yes" default="eqpos">
+ 							<DESCRIPTION>
+ 								Coordinate system for which source
+ 								position is specified
+ 							</DESCRIPTION>
+ 							<CASE>
+ 								<ITEM value="det"></ITEM>
+ 								<ITEM value="eqpos"></ITEM>
+ 								<ITEM value="pos"></ITEM>
+ 								<ITEM value="tel"></ITEM>
+ 							</CASE>
+ 						</PARAM>
+
+ 						<PARAM id="sourcex" type="real" mandatory="yes"
+ 							default="0">
+ 							<DESCRIPTION>
+ 								X position of source
+ 							</DESCRIPTION>
+ 							<CONSTRAINTS>true</CONSTRAINTS>
+ 						</PARAM>
+
+ 						<PARAM id="sourcey" type="real" mandatory="yes"
+ 							default="0">
+ 							<DESCRIPTION>
+ 								Y position of source
+ 							</DESCRIPTION>
+ 							<CONSTRAINTS>true</CONSTRAINTS>
+ 						</PARAM>
+
+ 					</ITEM>
+ 				</CASE>
+ 			</PARAM>
+
+
+
+ 		</ITEM>
+ 		<ITEM value="no"></ITEM>
+ 	</CASE>
+ </PARAM>
+
+ <PARAM id="allcamera" type="bool" default="no" mandatory="no">
+	<DESCRIPTION>all camera relative correction switch </DESCRIPTION>
+</PARAM>
+
+ </CONFIG>
+</FILE>
+

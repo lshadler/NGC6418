@@ -1,0 +1,114 @@
+<!-- etruecolor parameter file -->
+<FILE>
+<CONFIG>
+
+
+<PARAM id="colortable" type="string" default="RGB_Scheme">
+		<DESCRIPTION>Name of color table</DESCRIPTION>
+</PARAM>
+
+<PARAM id="tablelist" type="table" list="yes" mandatory="yes">
+	<DESCRIPTION>Name of event list table</DESCRIPTION>
+</PARAM>
+
+<PARAM id="attfile" type="table" list="no" mandatory="yes">
+	<DESCRIPTION>Name of Attitude File</DESCRIPTION>
+</PARAM>
+
+<PARAM id="minexptime" type="real" default="1000." mandatory="no">
+		<DESCRIPTION>Minimum exposuremap time value (s.)</DESCRIPTION>
+</PARAM>
+
+<PARAM id="min" type="real" default="300.">
+		<DESCRIPTION>Minimum ecolumn data value</DESCRIPTION>
+</PARAM>
+<PARAM id="max" type="real" default="7000.">
+		<DESCRIPTION>Maximum ecolumn data value</DESCRIPTION>
+</PARAM>
+
+
+<PARAM id="ximagebinsize" type="real" default="80">
+	<DESCRIPTION>Binning factor for x axis in image creation</DESCRIPTION>
+	<CONSTRAINTS>
+		ximagebinsize in [0:]
+	</CONSTRAINTS>
+</PARAM>
+
+
+<PARAM id="withxranges" type="bool" default="no">
+	<DESCRIPTION>Use min/max values for x axis image extraction</DESCRIPTION>
+	<CASE>
+		<ITEM value="no"/>
+		<ITEM value="yes"/>
+	</CASE>
+</PARAM>
+
+<PARAM id="ximagemin" type="real" default="1">
+	<DESCRIPTION>Lower limit of x axis for image extraction</DESCRIPTION>
+</PARAM>
+
+<PARAM id="ximagemax" type="real" default="600">
+	<DESCRIPTION>Upper limit of x axis for image extraction</DESCRIPTION>
+</PARAM>
+
+<PARAM id="yimagebinsize" type="real" default="80">
+	<DESCRIPTION>Binning factor for y axis in image creation</DESCRIPTION>
+	<CONSTRAINTS>
+		yimagebinsize in [0:]
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="withyranges" type="bool" default="no">
+	<DESCRIPTION>Use min/max values for x axis image extraction</DESCRIPTION>
+	<CASE>
+		<ITEM value="no"/>
+		<ITEM value="yes"/>
+	</CASE>
+</PARAM>
+
+<PARAM id="yimagemin" type="real" default="1">
+	<DESCRIPTION>Lower limit of y axis for image extraction</DESCRIPTION>
+</PARAM>
+
+<PARAM id="yimagemax" type="real" default="600">
+	<DESCRIPTION>Upper limit of y axis for image extraction</DESCRIPTION>
+</PARAM>
+
+<PARAM id="scalmax" type="real" default="675">
+	<DESCRIPTION>Max value for log scaling (counts/ks/arcmin2)</DESCRIPTION>
+</PARAM>
+
+<PARAM id="scalmin" type="real" default="2.25">
+	<DESCRIPTION>Min value for log scaling (counts/ks/arcmin2)</DESCRIPTION>
+</PARAM>
+
+<PARAM id="fileset" type="dataset" default="default">
+		<DESCRIPTION>Name of RGB color image (in rates). Default name PppppppooeeEPX000RGBIMA0000.FIT</DESCRIPTION>
+</PARAM>
+
+
+<PARAM id="outputchoice" type="string" default="ppmfile">
+	<DESCRIPTION>Where to write color image to</DESCRIPTION>
+	<CASE>
+		<ITEM value="ppmfile">
+			<PARAM id="ppmfile" type="string" default="default">
+				<DESCRIPTION>Name of RGB color ppm file. Default name PppppppooeeEPX000RGBIMA0000.PPM</DESCRIPTION>
+			</PARAM>
+		</ITEM>
+		<ITEM value="dataset">
+			<PARAM id="colorset" type="dataset" default="default">
+				<DESCRIPTION>Name of RGB color image. Default name PppppppooeeEPX000RGBCOL0000.FIT</DESCRIPTION>
+			</PARAM>
+			<PARAM id="ascube" type="bool" default="no">
+				<DESCRIPTION>Write RGB image as data cube?</DESCRIPTION>
+				<CASE>
+					<ITEM value="no"/>
+					<ITEM value="yes"/>
+				</CASE>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+</CONFIG>
+</FILE>

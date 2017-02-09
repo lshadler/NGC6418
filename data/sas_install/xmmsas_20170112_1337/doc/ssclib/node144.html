@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>EllipseT structure definition</TITLE>
+<META NAME="description" CONTENT="EllipseT structure definition">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="previous" HREF="node143.html">
+<LINK REL="up" HREF="node140.html">
+<LINK REL="next" HREF="node145.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node143.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Generating a set of"></A>
+<A HREF="node140.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Routines which deal with"></A>
+<A HREF="node145.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="A module containing routines"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node140.html">Routines which deal with</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000114000000000000000">
+EllipseT structure definition</A>
+</H2>
+
+<P>
+A structure definition is provided:
+
+<P>
+<PRE>
+  type, public :: EllipseT
+    real(single) ::&amp;
+      xAmp,&amp;
+      yAmp,&amp;
+      phase,&amp;		! radians
+      shortSemiAxis,&amp;
+      longSemiAxis,&amp;
+      rotatedAngle	! radians
+    character(10) :: unit	! eg 'pixels', 'detxy', 'tanxy'
+    logical(bool) :: isCircle
+  end type EllipseT
+</PRE>
+
+<P>
+An overloaded subroutine is also provided to initialize a variable of this type:
+
+<P>
+<PRE>
+  interface initializeEllipseT
+    subroutine initializeEllipseTScalar(ellipse)
+      type(EllipseT), intent(out) :: ellipse
+    end subroutine initializeEllipseTScalar
+
+    subroutine initializeEllipseTVector(ellipse)
+      type(EllipseT), intent(out) :: ellipse(:)
+    end subroutine initializeEllipseTVector
+  end interface
+</PRE>
+
+<P>
+For scalar or vector ellipse the values set are:
+
+<P>
+<PRE>
+  ellipse%xAmp          = 0.0
+  ellipse%yAmp          = 0.0
+  ellipse%phase         = 0.0
+  ellipse%shortSemiAxis = 0.0
+  ellipse%longSemiAxis  = 0.0
+  ellipse%rotatedAngle  = 0.0
+  ellipse%unit          = 'none'
+  ellipse%isCircle      = .false.
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

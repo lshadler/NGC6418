@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Point-Spread Function Fitting</TITLE>
+<META NAME="description" CONTENT="Point-Spread Function Fitting">
+<META NAME="keywords" CONTENT="omphotom">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omphotom.css">
+
+<LINK REL="next" HREF="node20.html">
+<LINK REL="previous" HREF="node15.html">
+<LINK REL="up" HREF="node14.html">
+<LINK REL="next" HREF="node18.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omphotom (omphotom-1.2.6) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node16.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Recommendations"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Photometry"></A>
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Interpolation method"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node23.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omphotom.html">Home Page</A> / <A  HREF="node14.html">Photometry</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000102000000000000000">
+Point-Spread Function Fitting</A>
+</H2>
+
+<P>
+As mentioned in the previous section, <SPAN  CLASS="textbf">omphotom</SPAN> can compute the photometry of a source by fitting the PSF to it, 
+and other close sources may also be included in the fit. This method was included primarily for <SPAN  CLASS="textbf">FAST</SPAN> mode data
+and <SPAN  CLASS="textbf">High-resolution Imaging</SPAN> mode data, but can also be used for <SPAN  CLASS="textbf">Low-resolution Imaging</SPAN> mode data.
+for the latter it is recommended that this method is only used for sources with one or more close neighbours, sources
+near an image edge, or sources affected by scattered-light features, etc.
+
+<P>
+The counts for a source are obtained by solving the following set of equations for each pixel included in the fit 
+by least-squares-
+
+<P>
+<!-- MATH
+ \begin{math}
+c(i, j) = background + \sum_{k=1}^n a_k  PSF( \Delta x_k, \Delta y_k)
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="339" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$c(i, j) = background + \sum_{k=1}^n a_k PSF( \Delta x_k, \Delta y_k)$"></SPAN> , where,
+the background is either the constant term in the least-squares fit or a fixed value, n the number
+of sources are included in the fit, <!-- MATH
+ \begin{math}
+a_k
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$a_k$"></SPAN> is the central height of the fitted PSF source k
+and <!-- MATH
+ \begin{math}
+\Delta x_k, \Delta y_k
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="70" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$\Delta x_k, \Delta y_k$"></SPAN> are the distances from
+the centre of source k to the image point (i, j) in the x and y directions, respectively. 
+All pixels within a radius of 7 unbinned pixels from the centre of a source are included in the fit.
+
+<P>
+A discrete PSF function is used based on the PSF image obtained through the <SPAN  CLASS="textbf">CAL</SPAN> subroutine
+<SPAN  CLASS="textbf">CAL_omGetPSFmap</SPAN>. Interpolation is used to compute the value of the PSF at any 
+<!-- MATH
+ \begin{math}
+\Delta x, \Delta y
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="55" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$\Delta x, \Delta y$"></SPAN>, distance from the centre.  
+
+<P>
+The total raw counts of a source k is then equal to the value of <!-- MATH
+ \begin{math}
+a_k
+\end{math}
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$a_k$"></SPAN>
+multiplied by the total counts in the PSF image within a radius of 12 unbinned pixel from it centre, 
+which has been normalized to a central height of 1. 
+
+<P>
+For the case where also the positions of each source are also to be ``fitted'',
+a function minimization scheme, using a modified simplex method, is used to determine the best fit
+coordinates of each source. The function that is minimized carries out the least-squares fit
+just discussed, using the current coordinates of each source, and the function value is the standard
+deviation of this fit.  Obviously, the CPU time increases rapidly with the number of 
+sources included in the fit. If you think that the coordinates of the sources you wish to include
+in the fit, it may be better to change them by editing the input source-list file, rather than
+by trying to include them in the fit.
+
+<P>
+<HR> <BR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html239"
+  HREF="node18.html">Interpolation method</A>
+<LI><A NAME="tex2html240"
+  HREF="node19.html">Weighting of the equations</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node16.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Recommendations"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Photometry"></A>
+<A HREF="node18.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Interpolation method"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node23.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

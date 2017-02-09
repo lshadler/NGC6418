@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="rgsspectrum">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsspectrum.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="rgsspectrum.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsspectrum (rgsspectrum-2.8.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="rgsspectrum.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsspectrum.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="rgsspectrum:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+<A NAME="524"></A><A NAME="tex2html1"
+  HREF="../rgsspectrum/index.html"><SPAN  CLASS="textbf">rgsspectrum</SPAN></A>
+creates an OGIP-compliant spectrum of counts for a
+ single RGS exposure.  The histogramming of events in this task is the
+ same as in the instrument non-specific tasks, <A NAME="528"></A><A NAME="tex2html2"
+  HREF="../xmmselect/index.html"><SPAN  CLASS="textbf">xmmselect</SPAN></A>
+and
+ <A NAME="532"></A><A NAME="tex2html3"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>, but <A NAME="536"></A><A NAME="tex2html4"
+  HREF="../rgsspectrum/index.html"><SPAN  CLASS="textbf">rgsspectrum</SPAN></A>
+utilizes the RGS exposure
+
+maps found in the input event list file to produce a more
+ sophisticated spectrum than is possible for those tasks.  However,
+ due to its alternative approach, this task is unable to benefit from
+ a number of low-level SAS facilities.  For instance, the user is
+ limited to a single, hard-coded expression for selecting the events
+ to be included in the spectrum: the ``canonical'' spectrum for a
+ given source and reflection order.  Further, no attempt is made to
+ document the selections as a data sub-space within the output file.
+ In these respects <A NAME="540"></A><A NAME="tex2html5"
+  HREF="../rgsspectrum/index.html"><SPAN  CLASS="textbf">rgsspectrum</SPAN></A>
+is inferior to <A NAME="544"></A><A NAME="tex2html6"
+  HREF="../xmmselect/index.html"><SPAN  CLASS="textbf">xmmselect</SPAN></A>
+and <A NAME="548"></A><A NAME="tex2html7"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>.  There is some possibility that these
+
+deficiencies will be addressed as the SAS continues to evolve.
+ Nevertheless, <A NAME="552"></A><A NAME="tex2html8"
+  HREF="../rgsspectrum/index.html"><SPAN  CLASS="textbf">rgsspectrum</SPAN></A>
+is the preferred spectrum-generator
+ for RGS, and must be used for compatibility with <A NAME="556"></A><A NAME="tex2html9"
+  HREF="../rgsrmfgen/index.html"><SPAN  CLASS="textbf">rgsrmfgen</SPAN></A>
+and
+ <A NAME="560"></A><A NAME="tex2html10"
+  HREF="../rgsfluxer/index.html"><SPAN  CLASS="textbf">rgsfluxer</SPAN></A>.
+
+<P>
+Three types of spectrum are available, indicated by the value of the
+ header attribute, <A NAME="564"></A><TT>HDUCLAS2</TT>:
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="RIGHT">NET</TD>
+<TD ALIGN="LEFT">background-corrected source spectrum</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">TOTAL</TD>
+<TD ALIGN="LEFT">the source spectrum without background-correction</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">BKG</TD>
+<TD ALIGN="LEFT">the background spectrum</TD>
+</TR>
+</TABLE>
+
+<P>
+Note that although the spatial selection region for the background
+ spectrum is not source-specific, the energy selection region is
+ source-specific, and for this reason the background spectrum is
+ technically source-specific.  By default the TOTAL and BKG spectra
+ are produced together as a pair.  These two have the same format,
+ which includes the new <A NAME="566"></A><TT>AREASCAL</TT> and <A NAME="568"></A><TT>BACKSCAL</TT>
+ columns as specified under HDU Version 1.2.0 of the OGIP Spectral
+ File Format (OGIP Memo OGIP/92-007).  This format is supported as of
+ LHEASOFT Version 5.1 (XSPEC Version 11.1).  The background-corrected
+ spectrum omits the <A NAME="570"></A><TT>BACKSCAL</TT> column, which is not needed (nor
+ well-defined in that case), and instead provides the
+ <A NAME="572"></A><TT>STAT_ERR</TT> column.  In High Time Resolution (HTR) mode the
+ entire cross-dispersion dimension is collapsed into one row,
+ inextricably mixing source and background events together.  In this
+ mode the background region is not spatial; rather it is source and
+ order specific in the plane of energy versus dispersion.  The
+ consequences of this detail are noted throughout this document.
+
+<P>
+In addition to the standard columns, <A NAME="574"></A><TT>AREASCAL</TT> and
+ <A NAME="576"></A><TT>BACKSCAL</TT>, <A NAME="578"></A><A NAME="tex2html11"
+  HREF="../rgsspectrum/index.html"><SPAN  CLASS="textbf">rgsspectrum</SPAN></A>
+will optionally include a
+ non-standard column, <A NAME="582"></A><TT>FRAC_EXP</TT>.  The differences between
+ these three columns bears some explaining.  <A NAME="584"></A><TT>AREASCAL</TT> is a
+ channel-specific correction factor to the global <A NAME="586"></A><TT>EXPOSURE</TT> value
+ recorded in the spectrum header.  The product of <A NAME="588"></A><TT>EXPOSURE</TT> times
+ <A NAME="590"></A><TT>AREASCAL</TT> is the exposure duration for any fully exposed
+ pixels in each channel.  Bad CCD elements and bad events reduce the
+ realized exposure duration in the affected pixels from this full
+ exposure value.  Because of this the average realized exposure
+ duration within the selection region at each channel may be less than
+ the full exposure.  <A NAME="592"></A><TT>FRAC_EXP</TT> records this average exposure
+ duration as a correction factor to the full exposure at each channel;
+ it represents the source selection region in NET and TOTAL spectra
+ and the background selection region in BKG spectra.  Note that in HTR
+ mode the background selection region is not spatial, and so this
+ column always refers to the source selection region.  Finally,
+ <A NAME="594"></A><TT>BACKSCAL</TT> records the effective number of fully exposed
+ pixels in the selection region (source for TOTAL spectra and
+ background for BKG spectra).
+
+<P>
+The above description of the <A NAME="596"></A><TT>BACKSCAL</TT> column applies only to
+ Spectroscopy mode data; in HTR mode this column has nothing to do
+ with exposure.  The true meaning of the <A NAME="598"></A><TT>BACKSCAL</TT> column
+ derives from its role in the formula for background correction:
+ <BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+{\rm COUNTS}_{\rm NET} = {\rm COUNTS}_{\rm TOTAL}
+	- {{\rm BACKSCAL}_{\rm TOTAL} \over {\rm BACKSCAL}_{\rm BKG}}
+	  {\rm COUNTS}_{\rm BKG}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="482" HEIGHT="41" BORDER="0"
+ SRC="img1.png"
+ ALT="\begin{displaymath}
+{\rm COUNTS}_{\rm NET} = {\rm COUNTS}_{\rm TOTAL}
+- {{\rm ...
+...OTAL} \over {\rm BACKSCAL}_{\rm BKG}}
+{\rm COUNTS}_{\rm BKG}
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+The <A NAME="600"></A><TT>BACKSCAL</TT> column exists so that a scaling ratio can be
+ constructed to normalize the background count histogram to the
+ effective width of the source selection region.  In HTR mode
+ <A NAME="602"></A><TT>BACKSCAL</TT> records the model background distribution, obtained
+ from the CCF, integrated over the energy selection region (source or
+ background) at each channel.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="rgsspectrum.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

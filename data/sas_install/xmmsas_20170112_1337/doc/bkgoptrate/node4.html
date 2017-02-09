@@ -1,0 +1,267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Theory</TITLE>
+<META NAME="description" CONTENT="Theory">
+<META NAME="keywords" CONTENT="bkgoptrate">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="bkgoptrate.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+bkgoptrate (bkgfilter-1.7) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Practical behaviour and command-line"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="bkgoptrate.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000"></A>
+<A NAME="bkgoptrate:description:theory"></A>
+<BR>
+Theory
+</H2>
+
+<P>
+A possible and good algorithm to achieve the objective, which this task follows,
+is to search for the point, at which the maximum signal-to-noise (S/N) ratio
+is achieved for the given background time-series after the bins
+above a threshold are excluded.
+
+<P>
+The S/N ratio is described as
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+{\rm S/N} = \frac{{\rm SourceCount}}{\sqrt{ {\rm BackgroundCount}}},
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="195" HEIGHT="43" BORDER="0"
+ SRC="img1.png"
+ ALT="\begin{displaymath}
+{\rm S/N} = \frac{{\rm SourceCount}}{\sqrt{ {\rm BackgroundCount}}},
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">1</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+providing the standard Poisson statistics are applicable.
+
+<P>
+Let us define <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$Z^*$"></SPAN> as the reference threshold count per time bin,
+and Exp<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="16" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^*$"></SPAN> as the exposure time for the bin.
+When we use <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$i$"></SPAN> subscripts to represent each time bin,
+the above formula is rewritten as
+<BR>
+<DIV ALIGN="CENTER"><A NAME="bkgoptrate:eq:snratio"></A><A NAME="bkgoptrate:eq:Z_definition"></A>
+<!-- MATH
+ \begin{eqnarray}
+{\rm S/N} & = & \frac{\Sigma_{i ({\rm Cnt}>Z_i)} {\rm Exp}_i \times {\rm SourceRate}}{\sqrt{ \Sigma_{i ({\rm Cnt}>Z_i)} {\rm Cnt}_i }}\\
+ Z_i & \equiv & Z^* \times \frac{{\rm Exp}_i}{{\rm Exp}^*},\\
+\end{eqnarray}
+ -->
+<TABLE CELLPADDING="0" ALIGN="CENTER" WIDTH="100%">
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT"><IMG
+ WIDTH="33" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$\displaystyle {\rm S/N}$"></TD>
+<TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$\textstyle =$"></TD>
+<TD ALIGN="LEFT" WIDTH="50%" NOWRAP><IMG
+ WIDTH="211" HEIGHT="55" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$\displaystyle \frac{\Sigma_{i ({\rm Cnt}&gt;Z_i)} {\rm Exp}_i \times {\rm SourceRate}}{\sqrt{ \Sigma_{i ({\rm Cnt}&gt;Z_i)} {\rm Cnt}_i }}$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">2</SPAN>)</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT"><IMG
+ WIDTH="20" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$\displaystyle Z_i$"></TD>
+<TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$\textstyle \equiv$"></TD>
+<TD ALIGN="LEFT" WIDTH="50%" NOWRAP><IMG
+ WIDTH="86" HEIGHT="53" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$\displaystyle Z^* \times \frac{{\rm Exp}_i}{{\rm Exp}^*},$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">3</SPAN>)</TD></TR>
+</TABLE></DIV>
+<BR CLEAR="ALL"><P></P>
+where SourceRate, Exp<SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$_i$"></SPAN>, Cnt<SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$_i$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$Z_i$"></SPAN> are the count rate
+of the source, exposure, count of the given time-series and threshold count
+in each bin <SPAN CLASS="MATH"><IMG
+ WIDTH="9" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img4.png"
+ ALT="$i$"></SPAN>, respectively.
+
+<P>
+What we here search for is the optimum <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$Z^*$"></SPAN>, which is the background level,
+with which S/N becomes the maximum.  In principle it requires a minimization
+(or maximization) method for search.
+We assume SourceRate is constant, then we can ignore
+SourceRate in comparing S/N ratios for different thresholds (<SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img2.png"
+ ALT="$Z^*$"></SPAN>):
+<BR>
+<DIV ALIGN="CENTER">
+
+<!-- MATH
+ \begin{eqnarray}
+{\rm S/N} & \propto & \frac{\Sigma_{i ({\rm Cnt}>Z_i)} {\rm Exp}_i}{\sqrt{ \Sigma_{i ({\rm Cnt}>Z_i)} {\rm Cnt}_i }} \\
+ {\rm S/N} & \propto & \frac{\Sigma_{i ({\rm Cnt}>Z_i)} {\rm Exp}_i}{\sqrt{ \Sigma_{i ({\rm Cnt}>Z_i)} {\rm Rate}_i \times {\rm Exp}_i}},
+\end{eqnarray}
+ -->
+<TABLE CELLPADDING="0" ALIGN="CENTER" WIDTH="100%">
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT"><IMG
+ WIDTH="33" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$\displaystyle {\rm S/N}$"></TD>
+<TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\textstyle \propto$"></TD>
+<TD ALIGN="LEFT" WIDTH="50%" NOWRAP><IMG
+ WIDTH="126" HEIGHT="55" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.png"
+ ALT="$\displaystyle \frac{\Sigma_{i ({\rm Cnt}&gt;Z_i)} {\rm Exp}_i}{\sqrt{ \Sigma_{i ({\rm Cnt}&gt;Z_i)} {\rm Cnt}_i }}$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">4</SPAN>)</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT"><IMG
+ WIDTH="33" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$\displaystyle {\rm S/N}$"></TD>
+<TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\textstyle \propto$"></TD>
+<TD ALIGN="LEFT" WIDTH="50%" NOWRAP><IMG
+ WIDTH="190" HEIGHT="55" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$\displaystyle \frac{\Sigma_{i ({\rm Cnt}&gt;Z_i)} {\rm Exp}_i}{\sqrt{ \Sigma_{i ({\rm Cnt}&gt;Z_i)} {\rm Rate}_i \times {\rm Exp}_i}},$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">5</SPAN>)</TD></TR>
+</TABLE></DIV>
+<BR CLEAR="ALL"><P></P>
+where the second form represents the one with the rate instead of count
+of the input time-series,
+and <SPAN CLASS="MATH"><IMG
+ WIDTH="20" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$Z_i$"></SPAN> is defined in Eq.&nbsp;<A HREF="#bkgoptrate:eq:Z_definition">3</A>.
+
+<P>
+If all the time bins have the same exposure, then this formula is further
+simplified:
+<BR>
+<DIV ALIGN="CENTER">
+
+<!-- MATH
+ \begin{eqnarray}
+{\rm S/N} & \propto & \frac{\Sigma_{i ({\rm Cnt}>Z^*)} i}{\sqrt{ \Sigma_{i ({\rm Cnt}>Z^*)} {\rm Cnt}_i }} \\
+ {\rm S/N} & \propto & \frac{\Sigma_{i ({\rm Rate}>Z^*)} i}{\sqrt{ \Sigma_{i ({\rm Rate}>Z^*)} {\rm Rate}_i }}.
+\end{eqnarray}
+ -->
+<TABLE CELLPADDING="0" ALIGN="CENTER" WIDTH="100%">
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT"><IMG
+ WIDTH="33" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$\displaystyle {\rm S/N}$"></TD>
+<TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\textstyle \propto$"></TD>
+<TD ALIGN="LEFT" WIDTH="50%" NOWRAP><IMG
+ WIDTH="129" HEIGHT="55" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$\displaystyle \frac{\Sigma_{i ({\rm Cnt}&gt;Z^*)} i}{\sqrt{ \Sigma_{i ({\rm Cnt}&gt;Z^*)} {\rm Cnt}_i }}$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">6</SPAN>)</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT"><IMG
+ WIDTH="33" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$\displaystyle {\rm S/N}$"></TD>
+<TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\textstyle \propto$"></TD>
+<TD ALIGN="LEFT" WIDTH="50%" NOWRAP><IMG
+ WIDTH="145" HEIGHT="55" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$\displaystyle \frac{\Sigma_{i ({\rm Rate}&gt;Z^*)} i}{\sqrt{ \Sigma_{i ({\rm Rate}&gt;Z^*)} {\rm Rate}_i }}.$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">7</SPAN>)</TD></TR>
+</TABLE></DIV>
+<BR CLEAR="ALL"><P></P>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Practical behaviour and command-line"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

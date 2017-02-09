@@ -1,0 +1,364 @@
+#! /usr/bin/perl -w
+## NAME: eimagecombine
+# VERSION: 0.4
+#
+# Developer: Richard Sturm, Michael Freyberg               MPE Garching
+#
+################################################################################
+use 5.005;   # required by SAS (binary) installation
+use English;
+use Getopt::Long;
+use File::Path;
+use Cwd;
+use strict;
+#use DAL;
+use SAS;
+my $line_plusplus=" ";
+
+
+#
+# Set the verbosity (verbose: only 1/0 setting)
+#
+my $verbose = (not exists $ENV{'SAS_VERBOSITY'} or $ENV{'SAS_VERBOSITY'} > 0) ;
+my $tverbose = 1 ;
+my $verbosity = 4 ;
+if (exists $ENV{'SAS_VERBOSITY'} ) {$verbosity = $ENV{'SAS_VERBOSITY'} };
+
+SAS::message($SAS::AppMsg, $SAS::NoisyMsg, "Verbosity = $verbosity");
+
+#
+# Define default ODF/data directory
+#
+my $indir=""; my $sumpath=""; my $ep=0;
+if ( exists $ENV{'SAS_ODF'}) {$indir = $ENV{'SAS_ODF'}};
+
+
+
+my $TASK_NAME="eimagecombine";     
+my $TASK_VERSION="0.4";         
+
+
+
+
+
+# set default values for all parameter variables
+my $maskindividual=0;
+my $withcheckinput=1;
+my $withaddimages=1;
+my $withcombineimages=1;
+my $withasmooth=1;
+my $n_parallel=1; 
+my $keepinterstage=1; 
+
+my $prefix='MERGED_'; 
+my $epn_weight='';                         
+my $em1_weight='';                         
+my $em2_weight='';                          
+my $templatebands='';                       
+my $exposureband=''; 
+my $ecut=1000.;       
+
+#asmooth parameters
+my $smoothstyle='simple';                   #simple/adaptive
+my $convolverstyle='gaussian';               
+my $width=5.0;                   
+my $minwidth=0.0; 
+my $maxwidth=10.0; 
+my $desiredsnr=10.0;   
+my $nconvolvers=20; 
+my $userwidths='';  
+my $withuserwidths=0; 
+my $normalize=1; 
+my $widthliststyle='linear'; 
+
+&getParams("width", "maskindividual", "withcheckinput", "withaddimages", "withcombineimages", "withasmooth", "ecut", "prefix", "smoothstyle", "convolverstyle", "widthliststyle", "n_parallel", "keepinterstage", "epn_weight", "em1_weight", "em2_weight", "templatebands", "exposureband", "userwidths", "minwidth", "maxwidth", "desiredsnr", "nconvolvers", "normalize", 
+           $width, $maskindividual, $withcheckinput, $withaddimages, $withcombineimages, $withasmooth, $ecut, $prefix, $smoothstyle, $convolverstyle, $widthliststyle, $n_parallel, $keepinterstage, $epn_weight, $em1_weight, $em2_weight, $templatebands, $exposureband, $userwidths, $minwidth, $maxwidth, $desiredsnr, $nconvolvers, $normalize);
+
+
+# check boolean variables: convert to unique values 0/1
+&getBoolean($maskindividual,$maskindividual);
+&getBoolean($keepinterstage,$keepinterstage);
+&getBoolean($withuserwidths,$withuserwidths);
+&getBoolean($normalize,$normalize);
+&getBoolean($withcheckinput,$withcheckinput);
+&getBoolean($withaddimages,$withaddimages);
+&getBoolean($withcombineimages,$withcombineimages);
+&getBoolean($withasmooth,$withasmooth);
+
+
+
+
+
+my $ccom = "/bin/bash eimagecombine.sh '$prefix' '$smoothstyle' '$convolverstyle' $width $ecut $maskindividual $withcheckinput $withaddimages $withcombineimages $withasmooth $keepinterstage $n_parallel '$epn_weight' '$em1_weight' '$em2_weight' '$templatebands' '$exposureband' $minwidth $maxwidth $desiredsnr $nconvolvers $withuserwidths '$userwidths' $normalize '$widthliststyle' ";
+
+
+
+
+###&sendCommand($ccom);
+system $ccom; 
+
+
+
+
+
+#
+#==============================================================================
+# getParams : command line parameter parser
+#
+
+sub getParams {
+
+
+    my $nparams = ($#_ + 1) / 2 ;
+#            SAS::message($SAS::AppMsg, $SAS::SparseMsg, "NPARAMS = $nparams \n");              
+    my $quotedparam;
+# Add blank to treat first and last parameters like all others (and like in emchain ;-)
+###    @ARGV=" " . "@ARGV" . " " ;    
+    my $line=" " . "@ARGV" . " " ;    
+
+###            SAS::message($SAS::AppMsg, $SAS::SparseMsg, "ARGV = !@ARGV! \n");              
+    ## $line =~ s/\"//g;
+    my $linepart1=""; my $linepart2=""; my $linesum="";
+    my $param=""; my $strcur=""; my $shortline=""; my @save; 
+    my $ll=0; my $pp=0; my $ppp=0; my $ii=0; my $kk=0; my $ap=0; my $ep=0; 
+
+#
+# Look for '--v' or '-v': print version information
+# Look for '--p' or '-p': print parameter information
+# Look for '--h' or '-h': print parameter information
+#          else: determine parameters
+#
+
+    if ( grep /^--?v/, @ARGV) { getVersion() ; exit; } ;
+    if ( grep /^--?p/, @ARGV) { showSyntax() ; exit; } ;
+    if ( grep /^--?h/, @ARGV) { showSyntax() ; exit; } ;
+    if ( grep /^--?m/, @ARGV) { showSupported() ; exit; } ;
+    #if ( grep /^--?d/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?d\b/, @ARGV) { system ("sasdialog eimagecombine @ARGV") ; exit; } ;
+    if ( grep /^--?a/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?c/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?f/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?i/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?t/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?V/, @ARGV) { showSupported() ; exit; } ;
+    if ( grep /^--?w/, @ARGV) { showSupported() ; exit; } ;
+
+    for ($kk=0; $kk<$nparams; $kk++){
+	       $param = $_[$kk] . "=";
+	       $ii = index($line,$param);
+#       if ( ($param eq " exposure=") && ($ep eq 11) ) {$ii = -1};
+        $ap = 0 ;
+        if ($param eq "epn_weight=") {$ap = 1};
+        if ($param eq "em1_weight=") {$ap = 1};
+        if ($param eq "em2_weight=") {$ap = 1};
+        if ($param eq "templatebands=") {$ap = 1};
+        #if ($param eq "exposureband=") {$ap = 1};
+        if ($param eq "userwidths=") {$ap = 1};
+        if ($param eq "flagout=") {$ap = 2};
+        # print "PARAM: $param, LINE = $line, II = $ii, AP = $ap \n";
+#       SAS::message($SAS::AppMsg, $SAS::SparseMsg, "\n  II = $ii , PARAM = $param , EP = $ep , AP = $ap ");              
+	       if ( $ii != -1) {
+          if ($ap == 0) {
+	           $pp = length("$param") + $ii;
+	           $ppp = length("$line");
+##          print "PP = $pp, LEN(LINE) = $ppp \n";
+	           $shortline = substr($line,$pp,length($line)-$pp);
+	           $ll = index($shortline," ");
+	           if ( $ll == -1 )  { $ll = length($shortline) };
+            $quotedparam =  substr($shortline,0,$ll);
+            $quotedparam =~ s/\"//g; 
+            $_[$kk+$nparams] = $quotedparam;
+            # print "$param: $_[$kk+$nparams]\n";
+          };
+          if ($ap == 1) {
+
+	           $pp = length("$param") + $ii;
+	           $ppp = length("$line");
+	           $shortline = substr($line,$pp,length($line)-$pp);
+
+	           $ll = index($shortline,"=");
+	           if ( $ll == -1 )  { $ll = length($shortline) };
+	           $shortline = substr($shortline,0,$ll);
+
+	           $ll = index($shortline,"-");
+	           if ( $ll == -1 )  { $ll = length($shortline) };
+	           $shortline = substr($shortline,0,$ll);
+
+	           $ll = rindex($shortline," ");
+	           if ( $ll == -1 )  { $ll = length($shortline) };
+	           $shortline = substr($shortline,0,$ll);
+
+		   $quotedparam =  substr($shortline,0,$ll);
+		   $quotedparam =~ s/\"//g; 
+		   $quotedparam =~ s/\'//g; 
+		   $_[$kk+$nparams] = $quotedparam;
+          };
+
+          if ($ap == 2) {
+	      foreach(@ARGV){
+		  $ii = index($_,$param);
+		  if ( $ii == 0 )  {
+		      $quotedparam =  substr($_,length($param),length($_)-length($param));
+		      $quotedparam =~ s/\"//g; 
+		      $quotedparam =~ s/\'//g; 
+		      $_[$kk+$nparams] = $quotedparam;
+		  };
+
+	      }
+
+          };
+
+
+###          if ($verbose) {
+###            if ($verbosity > 4) {
+###              $linepart1 = "Command line parameter: ";
+###              if ($ap==0) {$linepart2 = " $_[$kk] = $_[$kk+$nparams]"} 
+###              else {$linepart2 = " $_[$kk] = '$_[$kk+$nparams]'"}; 
+###              $linesum = $linepart1 . $linepart2;
+###              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $linesum);              
+###            }
+###          }
+	       }
+###       else {
+###           if ($verbosity > 4) {
+###              $linesum = "Default parameter values: $_[$kk] = $_[$kk+$nparams]";
+###              SAS::message($SAS::AppMsg, $SAS::SparseMsg, $linesum);              
+###           };
+###        };
+    };
+#  exit ;
+}
+
+
+
+
+#
+#==============================================================================
+# getBoolean : convert input variable to unique values 0(false) or 1(true)
+#
+
+sub getBoolean {
+
+   my $tmpvar = substr($_[0], 0, 1);
+   if ( $tmpvar =~ /[1YyTt]/ ) { $_[1] = 1 }
+   else { $_[1] = 0};
+}
+
+
+
+
+#
+#==============================================================================
+# getVersion : get the version number of eimagecombine, and of the constituents
+#
+
+sub getVersion {
+   my $epchain_msg = -$SAS::AppMsg;
+   my $ccom = "" ; my $version = "" ; my $release = "";
+   my $vfile = $ENV{'SAS_DIR'} . "/packages/eimagecombine/VERSION" ;   
+   if ( ! -e $vfile ) {
+     SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Not found: $vfile");
+     SAS::message($SAS::AppMsg, $SAS::SparseMsg, "Take version from task.");
+     $version = $TASK_VERSION }
+   else {
+#    $ccom = "cat `saslocate packages/epchain/VERSION` /dev/null" ;
+#    chomp($version = `$ccom`) ;  
+     chomp($version = `cat $vfile`);
+   };
+   $vfile = $ENV{'SAS_DIR'} . "/RELEASE" ;   
+   if ( ! -e $vfile ) {
+     $release = "" }
+   else {
+#    $ccom = "cat `saslocate RELEASE`" ;
+#    $ccom = "cat $vfile";    
+     chomp($release = `cat $vfile`) ;
+   };
+   SAS::message($SAS::AppMsg, $epchain_msg, "");
+   SAS::message($SAS::AppMsg, $epchain_msg, "eimagecombine (eimagecombine-$version) [$release]");
+
+#
+# Write the version of the constituent tasks
+#
+   SAS::message($SAS::AppMsg, $epchain_msg, "");
+   SAS::message($SAS::AppMsg, $epchain_msg, "You are using the following constituent task versions :");
+   SAS::message($SAS::AppMsg, $epchain_msg, "");
+   foreach my $task ("asmooth") {
+#     $ccom = $task . " -v \n" ;
+      $ccom = $task . " -v " ;
+      chomp(my $message = `$ccom`) ;
+#     $message = `$ccom` ;
+      SAS::message($SAS::AppMsg, $epchain_msg, $message);
+   }
+   SAS::message($SAS::AppMsg, $epchain_msg, "");
+}
+#
+#==============================================================================
+# show supported and unsupported options
+
+sub showSupported {
+  my $epchain_msg = -$SAS::AppMsg;
+  SAS::message($SAS::AppMsg, $epchain_msg, $line_plusplus);
+  SAS::message($SAS::AppMsg, $epchain_msg, "Supported options:");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --v   : show version of eimagecombine and constituent tasks");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --p   : show supported parameters and default values");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --h   : show supported parameters and default values");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --d   : dialog GUI");
+  SAS::message($SAS::AppMsg, $epchain_msg, "Unsupported options (use e.g. environment variables instead):");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --a   : ccfpath");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --c   : noclobber");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --f   : ccffiles");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --i   : cifname");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --m   : manual");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --t   : trace");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --V   : verbosity level");
+  SAS::message($SAS::AppMsg, $epchain_msg, " --w   : warning");
+  SAS::message($SAS::AppMsg, $epchain_msg, "");
+  $ENV{'SAS_VERBOSITY'}=$verbosity;
+}
+#
+#==============================================================================
+# in case of early error show the full syntax, 
+#   also for options "--p" and "-p" and "--h" and "-h"
+#
+sub showSyntax {
+  if ( $indir eq ""){
+    if ( not exists $ENV{'SAS_ODF'}) {}
+    else { $indir = $ENV{'SAS_ODF'} }
+  };
+  my $epchain_msg = -$SAS::AppMsg;
+
+  SAS::message($SAS::AppMsg, $epchain_msg, $line_plusplus);
+
+  SAS::message($SAS::AppMsg, $epchain_msg, "withcheckinput=<yes|no>;                         [$withcheckinput]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "maskindividual=<yes|no>;                         [$maskindividual]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withaddimages=<yes|no>;                          [$withaddimages]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withcombineimages=<yes|no>;                      [$withcombineimages]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withasmooth=<yes|no>;                            [$withasmooth]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "prefix;                                          [$prefix]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "epn_weight;                                      [$epn_weight]");                 
+  SAS::message($SAS::AppMsg, $epchain_msg, "em1_weight;                                      [$em1_weight]");                 
+  SAS::message($SAS::AppMsg, $epchain_msg, "em2_weight;                                      [$em2_weight]");                   
+  SAS::message($SAS::AppMsg, $epchain_msg, "templatebands;                                   [$templatebands]");                   
+  SAS::message($SAS::AppMsg, $epchain_msg, "exposureband;                                    [$exposureband]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "ecut;                                            [$ecut]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "n_parallel;                                      [$n_parallel]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "keepinterstage=<yes|no>;                         [$keepinterstage]");
+
+  SAS::message($SAS::AppMsg, $epchain_msg, "---- parameters passed to asmooth ----");
+  SAS::message($SAS::AppMsg, $epchain_msg, "smoothstyle=<simple|adaptive>                    [$smoothstyle]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "convolverstyle=<gaussian|tophat|squarebox>       [$convolverstyle]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "width;                                           [$width]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "normalize;                                       [$normalize]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "minwidth;                                        [$minwidth]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "maxwidth;                                        [$maxwidth]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "desiredsnr;                                      [$desiredsnr]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "nconvolvers;                                     [$nconvolvers]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "withuserwidths=<yes|no>;                         [$withuserwidths]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "userwidths;                                      [$userwidths]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "widthliststyle=<linear|log|sqrt>;                [$widthliststyle]");
+  SAS::message($SAS::AppMsg, $epchain_msg, "");
+}
+
+
+
+

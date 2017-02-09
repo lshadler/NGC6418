@@ -1,0 +1,328 @@
+ChangeLog for dsplot
+====================
+
+Version 1.26.3 - 2009-04-08 (AI)
+------------
+	+ Debug line removed 
+	
+Version 1.26.2 - 2009-04-02 (AI)
+------------
+	+ Support to multixmmselect added
+	
+Version 1.26.1 - 2009-08-31 (AI)
+------------
+	+ Modifications is several source files to make dsplot gcc 4.3 compliant
+	
+Version 1.26 - 2008-09-29 (CG)
+------------
+	+ (config/dsplot.par)+(src/dstoplot.cc) 
+	Adding parameters tofile / file for directly dump of output contents
+
+Version 1.25.2 - 2007-07-03 (CG)
+--------------
+	+ (src/dstoplot.cc) Ignoring NaN values for plotting. 
+	Subsequent work around for MacOSX (Panther) due to use of "isnan".
+	(Same) SOC-SPR-2530 fixed
+
+Version 1.25.1 - 2007-07-02 (CG)
+--------------
+	+ (src/dstoplot.cc) Ignoring NaN values for plotting.
+	SOC-SPR-2530 fixed
+
+
+Version 1.25 - 2006-11-24 (AI)
+------------
+	+ (src/dstoplot.cc) New keywords added to the xmgrace output file.
+	SOC-SPR-2536 fixed
+
+Version 1.24.1 - 2004-03-15 (AI)
+------------
+        + Fixed error related to the VERSION number.
+
+Version 1.24 - 2004-03-15 (AI)
+------------
+        + Documentation updated: parameters overhauled.
+
+Version 1.23 - 2003-10-30 (AI)
+------------
+	+ changed USEDLIBS in lib/grace/Makefile for static builds.
+	
+Open SPRs/SCRs:
+    *none*
+
+Version 1.22 - 2003-08-06 (UL)
+------------
+	+ launch Grace subprocess now always explicitely with -nosafe opttion
+	  to enable local file modification in batch mode (needed by
+	  1-D region import from xmmselect); this closes SPR 2466: "xmmselect"
+      should start Grace with the `-nosafe' option
+
+Version 1.21 - 2003-07-02 (UL)
+------------
+	+ fixed problem of SPR 2456: Test harnbess fails on Mac OS X
+	  [test harnesses run with Verbosity>0 cause diagnostic messages to
+	   get intermixed with Grace commands when dstoplot writes to stdout]
+
+Version 1.20 - 2003-06-16 (GV)
+------------
+	+ Misc. fixes to make gcc-3.3 happy: include <cassert> and/or
+	  proper initialization of base classes.
+
+Version 1.19 - 2003-03-14 (UL)
+------------
+	+ added boolean parameter "withalltablesafter" + "subtitle" in view of
+	  supporting visualization of hkgtigen diagnostic mode output
+	+ documentation updated; parameter and layout files overhauled
+
+Version 1.18 - 2003-01-21 (UL)
+------------
+	+ several stdc++ compliance fixes enforced by gcc-3.2
+
+Version 1.17 - 2003-01-17 (UL)
+------------
+	+ extended functionality to plot abscissa data ranges separately or
+	  overlaid onto normal plot (e.g. GTIs onto time-series plot); needed
+	  for implementing SCR 102 but also otherwise useful
+
+Version 1.16 - 2002-07-12 (UL)
+------------
+	+ now depends on package sas
+	+ strstream -> stringstream
+
+Version 1.15 - 2002-05-27 (UL)
+------------
+	+ made param-2.0 compliant
+
+Version 1.14.6 - 2002-03-13 (UL)
+--------------
+	+ fixed couple of minor doc problems
+
+Version 1.14.5 - 2002-02-20 (UL)
+--------------
+	+ small adjustmens to test harness to account for gracebat/grbatch
+	  differences
+
+Version 1.14.4 - 2002-03-15 (UL)
+--------------
+	+ small fix to make optmized compilation succeed
+
+Version 1.14.3 - 2002-02-14 (UL)
+--------------
+	+ meliorated robustness against invalid row-ranges in vector column
+	  specifiers
+	+ closed SPR 2271: Does not build statically
+
+Version 1.14.2 - 2002-02-07 (UL)
+--------------
+	+ grbatch -> gracebat in several tests
+
+Version 1.14.1 - 2002-01-30 (UL)
+--------------
+	+ closed SPR 1921: documentation for dstoplot not visible
+	  (combined task description for dsplot/dstoplot has been split into
+	  two separate ones)
+
+Version 1.14 - 2002-01-24 (UL)
+------------
+	+ implemented SCR 41: add support for error bars
+	+ minor mods to enhance standard conformance (std:: in .h etc.)
+
+Version 1.13 - 2000-12-21 (UL)
+------------
+	+ implemented SCR 20: Specification of boundaries (it still does
+	  not work due to an unresolved Grace problem)
+	+ new parameters 'xlog'/'ylog' to get logarithmic axes
+	+ trivial change to make optimizer happy
+	
+
+Version 1.12.2 - 2000-11-16 (UL)
+--------------
+	+ fixed SPR 1853: Cannot plot RGS net spectral files
+
+Version 1.12.1 - 2000-10-27 (UL)
+--------------
+	+ modified GROUPS entry in task info file
+
+Version 1.12 - 2000-09-25 (UL)
+------------
+	+ fixed "make dist" error in parameter files
+
+Version 1.11 - 2000-07-21 (UL)
+------------
+	+ fixed bug introduced in 1.10 (causes seg-faults under certain
+	  circumstances)
+	+ reimplement pre-1.10-behavior: if table contains only one numerical
+	  column this is plotted as Y against index as X
+	
+Version 1.10 - 2000-07-14 (UL)
+------------
+	+ closed SPR 950: Dsplot should support vector columns
+	+ added support for boolean columns
+
+Version 1.9.4 - 2000-07-10 (UL)
+-------------
+	+ tested with grace-5.1.1
+	+ fixed problem with occasional SIGPIPE exceptions in xmmselect
+	  (caused by user closing Grace window explicitely)
+
+Version 1.9.3 - 2000-06-30 (UL)
+-------------
+	+ fixed SPR 1647: missing link to ds9
+
+Version 1.9.2 - 2000-06-22 (UL)
+-------------
+	+ fixed another small documentation problem
+
+Version 1.9.1 - 2000-06-20 (UL)
+-------------
+	+ fixed SPR SPR 1547: DOC::broken links
+
+Version 1.9 - 2000-05-09 (UL)
+-----------
+	+ added task info file
+	+ write value of x-axis offset to parameter
+
+Version 1.8 - 2000-04-25 (GV)
+-----------
+	+ ({src,test}/Makefile) put dstoplot in USEDLIBS instead of
+	putting dstoplot.o in the dsplot_OBJS. This change is dictated by
+	the new taskmain objects. To be decided whether this is a bug or a
+	feature.
+		
+Version 1.7 - 2000-02-24 (UL)
+-----------
+	+ changes enforced by dal-1.104
+
+Version 1.6 - 2000-02-08 (UL)
+-----------
+	+ Grace::toRegion() does now recognize all Grace region types
+	  (fixes xmmselect SPR 1086 : task crashes when trying to read in 1D reg.)
+
+Version 1.5 - 2000-01-07 (UL)
+-----------
+	+ fixed SPR 1064: static build fails
+	+ fixed SPR 1030: xmgrace incompatible
+
+Version 1.4 - 1999-12-17 (UL)
+-----------
+	+ brought in line with selectlib-4.23 (Region->GeoRegion)
+
+Version 1.3.1 - 1999-11-09 (UL)
+-------------
+	+ fixed SPR 936: grbatch does not exist any longer ?
+
+Version 1.3 - 1999-11-03 (UL)
+-----------
+	+ fixed SPR 841 : test harness fails on linux
+	  (was due to faulty test harness `pipedstoplot' which called
+	   dstoplot with non-existing argument `set=test.dat' and
+	   relied on piped-command chain to fail of any of the commands
+	   within in the pipe failed)
+
+Version 1.2 - 1999-10-29 (UL)
+-----------
+	+ updated documentation (in line with 1.0 changes - see below)
+
+Version 1.1 - 1999-10-26 (UL)
+-----------
+	+ generate coordinate grid lines in scatter plots by default
+
+Version 1.0 - 1999-10-25 (UL)
+-----------
+	+ first official version after task approval
+	+ fixed SPR 641 : dsplot does not handle vector columns
+	  (now a warning is printed and task bails out on vector columns)
+	+ added support for scatter plots
+	+ added "withoffsetx" parameter (for rate curves with large time tags)
+	+ various upgrades to Grace class
+	
+Version 0.19 - 1999-10-24 (UL)
+------------
+	+ write data points as doubles (this _really_ fixes SPR 760 (see below))
+
+Version 0.18 - 1999-10-11 (UL)
+------------
+	+ brought in line with dal-1.74
+	+ fixed SPR 760 : insufficient precsision in dstoplot output
+
+Version 0.17 1999-09-24 (MB)
+------------
+	+ added layout file
+
+Version 0.16 1999-08-31 (UL)
+------------
+	+ lib/grace/Grace.cc: commented out check for existence of parameter
+	  file containing made region definitions; this is a temporary
+          workaround for an apparent synchronisation problem in the
+          grace library.
+
+Version 0.15 1999-08-31 (HS)
+------------
+	+ modified dsplot/dstoplot such that if no table is specified 
+	  by the parameter --table (which is in set:table notation)
+	  the first table in set is used.
+
+Version 0.14 1999-08-26 (MB)
+------------
+	+ proper metatask
+	+ fixed index problem
+	+ updated to more modern parameter interface
+
+Version 0.13 1999-08-20 (MB)
+------------
+	+ fixed problems with x axis
+	+ added test harness for running twice
+	+ no longer assigns to cout
+
+Version 0.12 1999-05-13 (GV)
+-----------
+	+ bring in line with new error
+	
+Version 0.11 1999-03-02 (MB)
+------------
+	+ fixed mandatory parameters
+
+Version 0.10 - 1999-02-19 (UL)
+------------
+- lib/grace/Grace.cc: added ACEgrFlush() after ACEgrPrintf() in
+  Grace::regionSelection() + removal of temp file
+
+Version 0.9 (MB)
+-----------
+- added missing package utils in grace test harness.
+
+Version 0.8 (MB)
+-----------
+- fixed egcs problems.
+- added EXTERNALS
+
+Version 0.7 (MB)
+-----------
+- added writeSet to CurvePlotter interface.
+
+Version 0.6 (MB)
+-----------
+- disabled part of test harness that requires an X server.
+
+Version 0.5 (MB)
+-----------
+- added Grace object that encapsulates talking to a running xmgr.
+- added output file specification to ds(to)plot.
+
+Version 0.4 (MB)
+-----------
+- fixed problem in parameter files.
+
+Version 0.3 (MB)
+-----------
+- Can now also read data file with 1 column.
+- Upgraded the parameter file.
+- Fixed the examples in the documentation.
+
+Version 0.2 (MB)
+-----------
+- Changed task name to dstoplot, added task dsplot that kicks off xmgr.
+
+Version 0.1 (MB)
+-----------
+- Initial delivery.

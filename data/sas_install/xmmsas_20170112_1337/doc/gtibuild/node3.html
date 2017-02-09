@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="gtibuild">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="gtibuild.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="gtibuild.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+gtibuild (gtibuild-1.4.4) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="gtibuild.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="gtibuild.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="gtibuild:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+<A NAME="291"></A><A NAME="tex2html1"
+  HREF="../gtibuild/index.html"><SPAN  CLASS="textbf">gtibuild</SPAN></A>
+constructs an OGIP-compliant table of Good
+Time-Intervals (GTI) from a plain text description file.  A complex
+fragmentation of the time-line may be described in terms of good and
+bad intervals, which may be simple or periodic.  The description
+elements are combined as the union of all the good intervals
+intersected with the complement of the union of all the bad intervals.
+In other words, a given point in time is good if it is covered by any
+good intervals and not also covered by any bad intervals.  If no good
+intervals are specified, a single good interval covering all time is
+assumed; hence all times not covered by any bad intervals are
+considered good.  The relative order of elements in the description
+file is always irrelevant. (See
+Section&nbsp;<A HREF="node6.html#gtibuild:description:inputfiles">6</A> for a description of the
+syntax of the description file.)
+
+<P>
+A periodic interval is a good or bad simple interval repeated through
+a whole number of periods.  Because a periodic interval must be
+translated into a sequence of explicit simple intervals, an open-ended
+periodic interval would take infinite space to represent in the output
+GTI table.  Therefore the number of periods must be finite.  The
+syntax for describing a periodic interval is intended to be convenient
+for the purpose of analyzing two-phase phenomena in the data.  The
+starting and ending times are given, as with simple intervals, but the
+ending time serves only to specify the final period, which may extend
+beyond that point.  Each period is broken into two segments, one good
+and the other bad.  This may be confusing because it sounds like a
+periodic interval describes both good and bad intervals at the same
+time; it does not.  A periodic good interval contains none of the bad
+segments that are implicit in its definition.  Similarly a periodic
+bad interval contains none of the good segments that are implicit in
+its definition.  The periodic interval description syntax is simply a
+convenient shorthand for a long list of simple intervals, regularly
+spaced and all having the same length and type.
+
+<P>
+The periodic interval description designates whether the first segment
+of each period is good or bad, and the second segment is then
+implicitly the opposite.  Any periodic interval becomes its own
+complement simply by switching this designation.  Regardless of which
+segment is the good segment, the description also specifies whether it
+is the set of good segments or the set of bad segments that comprise
+the periodic interval; that is, whether it is a periodic good interval
+or a periodic bad interval.  This choice must be made carefully based
+on an understanding of how all the description elements are combined,
+as explained above.  To avoid unexpected results, it is best not to
+have simple good intervals along with a periodic good interval in the
+same description file.  Having simple bad intervals together with a
+periodic bad interval in the same description file does not create the
+possibility of unexpected good time.  This is a foible of human
+cognition, not an asymmetry in the description semantics.  If these
+last two paragraphs have not made much sense yet, try again after
+reading Section&nbsp;<A HREF="node6.html#gtibuild:description:inputfiles">6</A>, below.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="gtibuild.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

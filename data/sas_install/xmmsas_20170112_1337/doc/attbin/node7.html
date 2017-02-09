@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Construction of the binned-attitude time series</TITLE>
+<META NAME="description" CONTENT="Construction of the binned-attitude time series">
+<META NAME="keywords" CONTENT="attbin">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="attbin.css">
+
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+attbin (attcalc2-1.3.3) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Average attitude"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="attbin.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00034000000000000000"></A>
+  <A NAME="attbin:description:ts"></A>
+<BR>
+Construction of the binned-attitude time series
+</H2>
+
+<P>
+Each bin is associated with a start time (which is equal to the end time of the previous bin, if there is one), and end time (which is equal to the start time of the following bin, if there is one) and an attitude. The binning is done as follows. For each time value, <A NAME="565"></A><A NAME="tex2html10"
+  HREF="../evproject/index.html"><SPAN  CLASS="textbf">evproject</SPAN></A>
+attempts to obtain the spacecraft attitude (via an <A NAME="569"></A><A NAME="tex2html11"
+  HREF="../oal/index.html"><SPAN  CLASS="textbf">oal</SPAN></A>
+call if <TT>attsource</TT>=`odf', or from the <TT>atthkset</TT> file if <TT>attsource</TT>=`atthk'). This attempt is either successful or unsuccessful (logical returned value of the <A NAME="576"></A><A NAME="tex2html12"
+  HREF="../oal/index.html"><SPAN  CLASS="textbf">oal</SPAN></A>
+call, or null value in the <TT>atthkset</TT> column). <A NAME="581"></A><A NAME="tex2html13"
+  HREF="../evproject/index.html"><SPAN  CLASS="textbf">evproject</SPAN></A>
+begins a new attitude bin if any of the following occur:
+
+<P>
+
+<UL>
+<LI>if the attitude is being obtained for the first time;
+
+<P>
+</LI>
+<LI>if the present attitude call was successful but the preceding call was unsuccessful;
+
+<P>
+</LI>
+<LI>if the present call was unsuccessful but the preceding call was successful;
+
+<P>
+</LI>
+<LI>if the call was successful, but the returned attitude varies by more than a set amount (section <A HREF="node5.html#attbin:description:limits">3.2</A>) from the `baseline attitude'.
+
+<P>
+</LI>
+</UL>
+
+<P>
+It can thus be seen that each bin duration spans attitude calls which were either all successful or all unsuccessful. The whole bin can therefore be labelled as either `good' or `bad'.
+
+<P>
+The attitude of each new `successful' bin is set to the baseline attitude. The baseline attitude is initially set to the attitude returned by the first succesful attitude call. If the attitude returned by any subsequent successful call diverges from the baseline by more than set limits (item 4 in the list above), the baseline attitude is altered. However usually only one of the components of the baseline attitude is altered at a time. This comes about as follows. There are separate limits on each of the three attitude components (RA, dec and position angle). If any component of the momentary attitude diverges from the same component of the baseline attitude by more than the respective limit, that component of the baseline attitude is set to the momentary value; components which have not wandered out of bounds are left unaltered. Note also that a change of bin due to change of success of attitude call does not in itself alter the baseline. If a new bin starts because the calls have returned to the successful state, the attitude assigned to the new bin is the baseline value, which is also the attitude of the last `successful' bin.
+
+<P>
+This binning scheme is perhaps a little complicated, but has been chosen so as to adhere as closely as possible to the original <A NAME="585"></A><A NAME="tex2html14"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>
+scheme. However note that the component limits are calculated in a different way to <A NAME="589"></A><A NAME="tex2html15"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>
+(see section <A HREF="node5.html#attbin:description:limits">3.2</A>).
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Average attitude"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

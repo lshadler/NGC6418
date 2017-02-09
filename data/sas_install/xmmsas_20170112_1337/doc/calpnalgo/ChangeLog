@@ -1,0 +1,328 @@
+ChangeLog for calpnalgo
+=======================
+open SSC-SPRs:
+	*none*
+
+Version 2.44.5 - 2006-06-19 (AI)
+------------
++ (src/ctigain/cte_model_noprec.f and src/cti/cte_model_prec.f)
+   Common block "index1" removed due to a run time error in 
+   Mac OS X 10.4.x. The variables used in "index1" are now passed as 
+   arguments
+	
+Version 2.44.4 - 2005-10-24 (RDS)
+------------
+ + (src/rmf/getpnresp.f)   - stopped the code from recalculating the
+                             channel energies. It now uses the energies
+                             as obtained, indirectly, from the spectrum.
+                             (part of SCR-129)
+
+Version 2.44.3 - 2004-10-28 (RDS)
+------------
+ + (src/rmf/getpnresp.f    - read fixed parameters from CCF
+    src/rmf/pem_model.f)   - SCR-183
+
+Version 2.44.2 - 2004-01-23 (RDS)
+------------
+ + (src/rmf/getpnresp.f)   - remove extraneous debug line
+
+Version 2.44.1 - 2004-01-21 (RDS)
+------------
+ + (src/rmf/pem_par.f,
+    src/rmf/getpnresp.f): new redistribution code - MPE V6.6
+
+Version 2.44 - 2003-07-10 (RDS)
+------------
+ + (src/rmf/pem_par.f,
+    src/rmf/getpnresp.f): new redistribution code - MPE V6.5
+
+Version 2.43.1 - 2002-12-05 (RDS)
+------------
+ + (src/rmf/pem_par.f): new redistribution code, direct from FH
+
+Version 2.43 - 2002-10-30 (MJF)
+------------
+ + (src/ctigain/evcr03.f): added switch to decide which SW/LW CTI correction
+    function should be taken depending on CCF contents (backward compatibility)
+
+Version 2.42 - 2002-10-29 (MJF)
+------------
+ + (src/ctigain/evcr03.f): new SW/LW low-energy correction function (unchanged
+    in case of EPN_CTI_0009.CCF, extra term used with EPN_CTI_0010.CCF)
+
+Version 2.41 - 2002-09-11 (MJF)
+------------
+ + (src/ctigain/evcr03.f): changed type from SINGLE to DOUBLE precision
+   for time related variables (DT, TF, TY)
+ + (src/ctigain/ccd_par_descr.f): changed type from SINGLE to DOUBLE precision
+   for time related variables (RFP, RPRF)
+
+Version 2.40 - 2002-08-23 (UL)
+------------
+	+ evcr03InitCteParam() receives now additional parameter from CAL
+	  (parameter name is 't_par'; only applicable in timing mode; read from
+	   TIMECORR CCF)
+
+Version 2.39 - 2002-07-18 (UL)
+------------
+	+ changes in src/ctigain/evcr03.f: evcr03InitCteParam() receives now
+	  additional parameters from the CAL (read from the CCF) and places
+	  those in common blocks (ccd_par_decr.f)
+	+ CAL/calpnalgo interface in interface/CalPnAlgo.h updated accordingly
+	+ routines in sas_epn_gaincticorrect_mod.f90 have been rewritten in C++
+	  and moved to the CAL proper
+
+Version 2.38 - 2002-07-10 (MJF)
+------------
+    + (DEPEND): added "sas" as required by new infrastructure (sas-1.302)
+
+Version 2.37 - 2002-05-08 (MJF)
+------------
+    + (doc/calpnalgo_description.tex): removed parameter part as there is
+       no parameter interface and dependency on "param" can be removed
+    + (DEPEND): removed "param" as not needed anymore due to change in doc,
+       therefore this version can be used in the RT as well as in the DT
+
+Version 2.36 - 2002-04-18 (MJF)
+------------
+    + (src/ctigain/sas_epn_gaincticorrect_mod.f90): adapted messages to
+       new long-term CTI correction, cleared redundant variables
+
+Version 2.35 - 2002-04-11 (MJF)
+------------
+    + (src/ctigain/sas_epn_gaincticorrect_mod.f90): omitted ADUREF, i.e.
+       prepare for EPN_CTI_0009.CCF
+
+Version 2.34 - 2002-04-09 (MJF)
+------------
+    + (src/ctigain/evcr03.f): editorial changes to prepare for CCF interface
+    + (src/ctigain/sas_epn_gaincticorrect_mod.f90): as above
+
+Version 2.33 - 2002-03-28 (MJF)
+------------
+    + (src/ctigain/evcr03.f): new low-energy SW/LW-CTI correction function
+    + (src/ctigain/sas_epn_gaincticorrect_mod.f90): added comments to code
+
+Version 2.32.4 - 2002-03-15 (MJF)
+--------------
+    + (DEPEND): added "param" as required by change of package "sas"
+
+Version 2.32.3 - 2002-02-25 (RDS)
+--------------
+    + (src/rmf/getpnrsp.f)   Just calculate sings+dubs even if P0-12
+                                 is requested.
+
+Version 2.32.2 - 2002-02-20 (RDS)
+--------------
+    + (src/rmf/getpnrsp.f)   Calculate channel energy bounds on the fly
+
+Version 2.32.1 - 2002-02-18 (MJF)
+--------------
+    + (src/ctigain/*): restore original file times (as of version 2.30)
+    + (src/ctigain/evcr03.f): use unshifted RAWY values for bad pixel checks
+closed SPR:
+- SSC-SPR-2766: Incorrect warnings related to bad pixels for SW and LW modes
+
+Version 2.32 - 2002-01-22 (RDS&UL)
+------------
+    + (src/rmf/getpnrsp.f, pem_par.f)   (SCR-72 - patterns)
+
+Version 2.31 - 2002-01-22 (UL)
+------------
+    + interim update to rmf code - just CAL I/F updated; to be superseded
+      by RDS/FH versions
+
+Version 2.30 - 2002-01-16 (MJF)
+------------
+    + (src/ctigain/sas_epn_gaincticorrect_mod.f90): extended parameter
+      interface from task `epevents'
+
+Version 2.29 - 2001-12-13 (MJF)
+------------
+    + (src/ctigain/evcr03.f): updated SW/LW-CTI correction function, label
+      quantities that should be moved to a CCF (requires further iteration)
+
+Version 2.28 - 2001-11-22 (JBa)
+------------
+    + (doc/calpnalgo_description.tex): fixed documentation
+
+Version 2.27 - 2001-11-19 (MJF)
+------------
+    + (src/ctigain/sas_epn_gaincticorrect_mod.f90): remove CAL dependency
+
+Version 2.26 - 2001-11-16 (MJF)
+------------
+    + (src/ctigain/sas_epn_gaincticorrect_mod.f90): new module containing
+      the former calibration routines of task `epevents'
+
+Version 2.25 - 2001-11-06 (MJF)
+------------
+    + (src/ctigain/evcr03.f): improved medium-energy correction (SW LW)
+
+Version 2.24 - 2001-10-11 (MJF)
+------------
+    + (src/ctigain/evcr03.f): improved low-energy correction (SW LW)
+
+Version 2.23 - 2001-09-01 (MJF)
+------------
+    + (src/ctigain/evcr03.f): adapt internal error codes to CAL-routine
+      "CtiCorrector" (exchange "bright pixel" and "no calibration data")
+
+Version 2.22 - 2001-08-31 (MJF)
+------------
+    + (src/ctigain/evcr03.f): eFF mode variable C changed: 0.60 -> 0.56
+
+Version 2.21 - 2001-07-17 (MJF)
+------------
+    + (src/ctigain/evcr03.f): new energy correction function (LW)
+
+Version 2.20 - 2001-06-06 (MJF)
+------------
+    + (src/ctigain/evcr03.f): new high-energy correction function (SW LW)
+
+Version 2.19 - 2001-05-28 (MJF)
+------------
+    + (src/ctigain/evcr03.f): TI mode variable SCALE changed: 0.59 -> 0.43
+
+Version 2.18.2 - 2001-05-04 (MJF)
+--------------
+    + (src/ctigain/evcr03.f): write several quantities that occur more than
+      once in the code as parameter statement
+    + (src/ctigain/cte_model_*pref.f): appended two missing variables to
+      common block "model_par" to make size the same [SSC-SPR-2368]
+    + (ChangeLog): distinguish between SOC and SSC SPRs
+closed SPR:
+- SSC-SPR-2368: linker warning
+
+Version 2.18.1 - 2001-04-27 (RDS)
+------------
+    + (src/rmf/getpnresp.f) - extra normalisation (SOC-SPR-2001) 
+
+Version 2.18 - 2001-04-23 (UL)
+------------
+	+ implemented SOC-SPR-1989: New PN redistribution code to implement
+	  (getpnrsp() [src/rmf/getpnresp.f] receives new parameter 'cmode'
+	  to indicate the CCD mode)
+	+ (src/ctigain): added parameter YTIMING to CALPNALGO_initCteParam()
+
+Version 2.17 - 2001-04-19 (RDS)
+--------------
+    + (src/rmf): routines updated for new FH redistribution code
+      pem_par.f, pem_model.f, getpnresp.f (SOC-SPR-1989)
+
+Version 2.16 - 2001-04-09 (MJF)
+------------
+    + (src/ctigain/): updated several routines: 
+      evcr03.f, cte_model_noprec.f, cte_model_prec.f, ccd_par_descr.f:
+      - improved correction for SW, LW, TI modes
+      - declare all variables explicitly (IMPLICIT NONE)
+
+Version 2.15.2 - 2001-03-16 (MJF)
+--------------
+    + (src/ctigain): updated several routines: 
+      evcr03.f, cte_model_noprec.f, cte_model_prec.f, ccd_par_descr.f
+      made code faster, improved corrections for eFF, SW, TI modes
+
+Version 2.15.1 - 2000-10-27 (MJF)
+--------------
+    + (doc/calpnalgo_description.tex): added task description
+closed SPR:
+- SSC-SPR-1986: no description
+
+Version 2.15 - 2000-09-29 (MJF)
+------------
+    + (src/gaincti/evcr03.f): initialize t_frame and y_shift for TI and BU
+
+Version 2.14 - 2000-09-25 (MJF)
+------------
+    + (src/ctigain/): updated routines evcr03.f, cte_model_*.f
+      which contain improved corrections for SW and LW modes
+
+Version 2.13 - 2000-09-21 (HS)
+------------
+	+ (src/rmf): Fixed runtime array indexing errors
+	
+Version 2.12 - 2000-09-08 (MJF)
+------------
+	+ (test/Makefile): added `slatec' to USEDLIBS
+
+Version 2.11 - 2000-08-30 (UL)
+------------
+	+ CTI/gain correction and RMF code now in separate directories
+	+ added combilibs/interface directories
+
+Version 2.10 - 2000-07-31 (MJF/UL)
+------------
+	+ (src/evgn01.f): change type: IAMP -> AMPR
+
+Version 2.9 - 2000-07-24 (HS)
+-----------
+	+ (DEPEND) added packages error and slatec (SSC-SPR-1931)
+
+Version 2.8 - 2000-07-07 (HS)
+-----------
+	+ (src/getpnresp.f): Removed unused variables, and fixed bug 
+	   connected to CCD line number. 
+	   Commented out write statements
+	+ (src/pem_model.f): Removed unused variables introduced 
+	   while integrating code into calpnalgo.
+	   Commented out all write statements, 
+	   apart from one that leads to a stop statements 
+	+ (src/lininterp.f): Commented out write statements.
+	
+Version 2.7 - 2000-07-07 (HS)
+-----------
+	+ Added F Haberl's PN RMF code:
+	
+	+ (src directory) 4 New files added:
+	  getpnresp.f, pem_model.f findindex.f lininterp.f
+	  The first two are modified versions of F Haberl's epic_pn_rsp.f
+	  and pem_e.f.
+	  CalPnAlgo.h modified to support new calling function: CALPNALGO_resp.
+	+ (test directory) testresp.cc added to test CALPNALGO_resp. 
+	   Not added yet to Makefile:TESTS variable.
+	 
+Version 2.6 - 2000-04-12 (MJF)
+-----------
+	+ new evgn01.f (if CCF entries are 0: return error=3, ampcc = ampc)
+
+Version 2.5 - 2000-03-20 (UL)
+-----------
+	+ adapted C++/f77 I/F to new evgn01
+	+ in src/cte_model.f: added <mode> + <nnp> to make it consistent with
+      declaration of common block <model_par> in src/ccd_par_descr.f
+
+Version 2.4 - 2000-03-17 (MJF)
+-----------
+	+ new evgn01.f (gain + raw cti correction), evcr03.f, cte_model.f
+
+Version 2.3 - 2000-02-16 (MJF)
+-----------
+	+ new evgn01.f, evcr03.f, cte_model.f
+
+Version 2.2 - 1999-12-07 (ME)
+-----------
+	+ fixed a bug in evgn01.f: 
+          ampc = ampc * (1.0 + gn(1) * e**gn(2)) - gn(3) * e
+
+Version 2.1 - 1999-12-03 (ME)
+-----------
+	+ removed write(*,*) statement in cte_model.f
+
+Version 2.0 - 1999-11-24 (UL)
+-----------
+	+ updated CTI/gain correction algorithm from MPE
+	+ CAL I/F changed
+
+Version 1.1 - 1999-10-27 (UL)
+-----------
+	+ uses INTERFACE mechanism
+	+ added DISTRIBUTION file
+
+Version 1.0 - 1999-06-23 (UL)
+-----------
+	+ minor change in C++/Fortran interface
+
+Version 0.1 - 1999-06-15 (UL)
+-----------
+	+ converted code from PN H/W group

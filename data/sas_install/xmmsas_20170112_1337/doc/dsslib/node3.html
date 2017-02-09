@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Tips and Grouping of Region Functions</TITLE>
+<META NAME="description" CONTENT="Tips and Grouping of Region Functions">
+<META NAME="keywords" CONTENT="dsslib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="dsslib.css">
+
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+dsslib (dsslib-5.10) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Data Subspace Expression Parser"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Data Subspace Expression Parser"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="dsslib.html">Home Page</A> / <A  HREF="node1.html">Description</A> / <A  HREF="node2.html">Data Subspace Expression Parser</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00011100000000000000">
+Tips and Grouping of Region Functions</A>
+</H3>
+
+<P>
+The data subspace in some cases will produce more compact
+subspace specifications than in others.  For range filters,
+it is always better to use the ``in'' operator than to
+specify ranges using <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$&gt;$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$&lt;$"></SPAN>, etc.  Though the two
+examples below are mathematically equivalent, the second
+example results in a more compact subspace specification
+than the first.
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+RAWX < 50\ \&\&\ RAWX >25 \qquad \textrm{allowed, but discouraged}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="425" HEIGHT="27" BORDER="0"
+ SRC="img8.png"
+ ALT="\begin{displaymath}RAWX &lt; 50\ \&amp;\&amp;\ RAWX &gt;25 \qquad \textrm{allowed, but discouraged} \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+RAWX\ in\ (25:50) \qquad \textrm{allowed}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="221" HEIGHT="28" BORDER="0"
+ SRC="img9.png"
+ ALT="\begin{displaymath}RAWX\ in\ (25:50) \qquad \textrm{allowed} \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+There is also a special subtlety with regards to the grouping
+of region function filters.  When the parser sees the expression
+below,
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+(A,B)\ IN\ ellipse(100, 200, 30, 40, 0)\ \&\&\ (A, B)\ in\ polygon(100,200,1,1) \qquad \textrm{allowed}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="590" HEIGHT="28" BORDER="0"
+ SRC="img10.png"
+ ALT="\begin{displaymath}(A,B)\ IN\ ellipse(100, 200, 30, 40, 0)\ \&amp;\&amp;\ (A, B)\ in\ polygon(100,200,1,1) \qquad \textrm{allowed} \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+it tries to combine these into one filter with two regions.  If the
+cooridate specifications do not match, then it returns an error.
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+(A,B)\ IN\ ellipse(100, 200, 30, 40, 0)\ \&\&\ (A, BX)\ in\ polygon(100,200,1,1) \qquad \textrm{NOT allowed}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="646" HEIGHT="28" BORDER="0"
+ SRC="img11.png"
+ ALT="\begin{displaymath}(A,B)\ IN\ ellipse(100, 200, 30, 40, 0)\ \&amp;\&amp;\ (A, BX)\ in\ polygon(100,200,1,1) \qquad \textrm{NOT allowed} \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+If, however, the region functions are isolated in parentheses, then the parser will
+put them in seperate filters.  Thus the following expression is allowed.
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+( (A,B)\ IN\ ellipse(100, 200, 30, 40, 0) )\ \&\&\ ( (A, BX)\ in\ polygon(100,200,1,1) ) \qquad \textrm{allowed}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="630" HEIGHT="28" BORDER="0"
+ SRC="img12.png"
+ ALT="\begin{displaymath}( (A,B)\ IN\ ellipse(100, 200, 30, 40, 0) )\ \&amp;\&amp;\ ( (A, BX)\ in\ polygon(100,200,1,1) ) \qquad \textrm{allowed} \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+Note that putting in the parentheses unnecessarily will result in a much
+less compact data subspace.  The following expression is equivalent to the
+first one in this section, but will result in the creation of two subspace
+filters, instead of one.
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+( (A,B)\ IN\ ellipse(100, 200, 30, 40, 0) )\ \&\&\ ( (A, B)\ in\ polygon(100,200,1,1) ) \qquad \textrm{allowed, but discouraged}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="725" HEIGHT="28" BORDER="0"
+ SRC="img13.png"
+ ALT="\begin{displaymath}( (A,B)\ IN\ ellipse(100, 200, 30, 40, 0) )\ \&amp;\&amp;\ ( (A, B)\ ...
+...olygon(100,200,1,1) ) \qquad \textrm{allowed, but discouraged} \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Data Subspace Expression Parser"></A>
+<A HREF="node2.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Data Subspace Expression Parser"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

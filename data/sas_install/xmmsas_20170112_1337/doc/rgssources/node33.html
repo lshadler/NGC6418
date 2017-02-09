@@ -1,0 +1,410 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="rgssources">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgssources.css">
+
+<LINK REL="next" HREF="node34.html">
+<LINK REL="previous" HREF="node32.html">
+<LINK REL="up" HREF="rgssources.html">
+<LINK REL="next" HREF="node34.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgssources (rgssources-6.2.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node32.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithm"></A>
+<A HREF="rgssources.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node34.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgssources.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="rgssources:description:parameters"></A>
+<A NAME="1824"></A>
+<tr valign=top bgcolor='silver'><td><b>filemode</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>modify</td><td>modify|create</td></tr>
+
+<tr valign=top><td colspan=5>
+    Controls whether the task opens a previous source list for editing or creates a new one.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1831"></A>
+<tr valign=top bgcolor='silver'><td><b>changeprime</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    Only active in <TT>filemode</TT>=`modify'. Unless this parameter is set, the previous prime source index number is retained.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1840"></A>
+<tr valign=top bgcolor='silver'><td><b>changeattitude</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    Only active in <TT>filemode</TT>=`modify'. Unless this parameter is set, the previous attitude (stored in the header) is retained.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1849"></A>
+<tr valign=top bgcolor='silver'><td><b>srclist</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>rgsset.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the rgs source list. If <TT>filemode</TT>=`create', the output is written to this file. If there is an existing file of this name, it will be overwritten unless SAS_CLOBBER is unset. If <TT>filemode</TT>=`modify', the task looks for an existing source list of this name and modifies it.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="1860"></A>
+<tr valign=top bgcolor='silver'><td><b>instexpid</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter contains information about both the instrument (that is, RGS1 or 2) and the exposure identifier (a letter S or U, indicating scheduled or unscheduled, followed by a three-digit numeric identifier. The <TT>instexpid</TT> string can be supplied in a number of different forms, but the two most useful are (i) as a six-character string comprising either R1 or R2 followed by the exposure identifier (an example: `R2S003'); (ii) the name of any of RGS-specific files in the ODF can also be used. This parameter is mandatory if <TT>filemode</TT>=`create', or in cases where the instrument and/or exposure can neither be read from the file header or deduced from its name.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1871"></A>
+<tr valign=top bgcolor='silver'><td><b>writeobskwds</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    If this is set, the task attempts to write observation-specific keywords to the file header. The user must point the environment variable SAS_ODF to the ODF directory for this to succeed.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1878"></A>
+<tr valign=top bgcolor='silver'><td><b>writeexpkwds</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    If this is set, the task attempts to write exposure-specific keywords to the file header. For this to succeed, the user must point the environment variable SAS_ODF to the ODF directory, and the task must also be able to determine the exposure number, either via the <TT>instexpid</TT> parameter, or from the <A NAME="1888"></A><TT>EXPIDSTR</TT> keyword in the file header, or (if neither are present) from the file name.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1890"></A>
+<tr valign=top bgcolor='silver'><td><b>clobberonlabel</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    Labels in RGS source lists are required to be unique. Where a clash is detected between a source already in the list and a new candidate source, the task takes one of two actions, depending on the value of this parameter: if `yes', the candidate is discarded; if `no', the task halts with an error.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1897"></A>
+<tr valign=top bgcolor='silver'><td><b>primestyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>label</td><td>label|index|expr|brightest|auto</td></tr>
+
+<tr valign=top><td colspan=5>
+    Only active if <TT>changeprime</TT>=yes and either <TT>addusersource</TT> or <TT>userasprime</TT>=no. It controls the way in which the prime source is specified. See the parameters <TT>primelabel</TT> and <TT>primeindex</TT>. (An additional possible value of `expression' is planned.)
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1914"></A>
+<tr valign=top bgcolor='silver'><td><b>primelabel</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>PROPOSAL</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>primestyle</TT> is active and set to `label', this parameter gives the value of the <A NAME="1925"></A><TT>LABEL</TT> column of the source that it is desired the <A NAME="1927"></A><TT>PRIMESRC</TT> keyword should point to.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1929"></A>
+<tr valign=top bgcolor='silver'><td><b>primeindex</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>1</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.png"
+ ALT="$0&lt;$"></SPAN>primeindex</td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>primestyle</TT> is active and set to `index', the <A NAME="1939"></A><TT>PRIMESRC</TT> keyword is set to this value.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1941"></A>
+<tr valign=top bgcolor='silver'><td><b>primeexpression</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This mode is not yet supported.
+    <br>&nbsp;</td></tr>
+
+<A NAME="1948"></A>
+<tr valign=top bgcolor='silver'><td><b>attstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>expmedian</td><td>mean|median|start|user|expmedian</td></tr>
+
+<tr valign=top><td colspan=5>
+    Controls the way the attitude is calculated. If `mean', the attitude is calculated from the mean of the values in the attitude history file. If `median', the median of these values is used. If the value is `start', the task uses the attitude at the start of the exposure as the reference attitude. A value of `expmedian' tells the task to use the median of the attitude during the exposure only, as calculated by <A NAME="1956"></A><A NAME="tex2html60"
+  HREF="../attfilter/index.html"><SPAN  CLASS="textbf">attfilter</SPAN></A>. The final value, `user', allows the user to input the numbers him/herself via the next three parameters.
+
+<br>&nbsp;</td></tr>
+
+  <A NAME="1960"></A>
+<tr valign=top bgcolor='silver'><td><b>meanset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>atthk.dat</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the attitude history file. This file is a necessary input in the case that <TT>attstyle</TT> is `mean'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1969"></A>
+<tr valign=top bgcolor='silver'><td><b>medianset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>atthk.dat</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the attitude history file. This file is a necessary input in the case that <TT>attstyle</TT> is `median'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1978"></A>
+<tr valign=top bgcolor='silver'><td><b>attra</b></td><td>yes</td><td><A HREF=../param/node3.html>angle</A></td><td>&nbsp;</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$0\le$"></SPAN><TT>attra</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$\le 360$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    Only active if <TT>attstyle</TT>=`user'. The right ascension of the attitude, in decimal degrees.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="1989"></A>
+<tr valign=top bgcolor='silver'><td><b>attdec</b></td><td>yes</td><td><A HREF=../param/node3.html>angle</A></td><td>&nbsp;</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="49" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$-90\le$"></SPAN><TT>attdec</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$\le 90$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    Only active if <TT>attstyle</TT>=`user'. The declination of the attitude, in decimal degrees.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2000"></A>
+<tr valign=top bgcolor='silver'><td><b>attapos</b></td><td>yes</td><td><A HREF=../param/node3.html>angle</A></td><td>&nbsp;</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$0\le$"></SPAN><TT>attapos</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$\le 360$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    Only active if <TT>attstyle</TT>=`user'. The position angle of the attitude, in decimal degrees.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2011"></A>
+<tr valign=top bgcolor='silver'><td><b>expmediantable</b></td><td>no</td><td><A HREF=../param/node3.html>table</A></td><td>attgti.ds:STDGTI</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the table in the filtered attitude history file in which the exposure-median keywords can be found. This file is a necessary input in the case that <TT>attstyle</TT> is `expmedian'.
+    <br>&nbsp;</td></tr>
+
+<A NAME="2020"></A>
+<tr valign=top bgcolor='silver'><td><b>addusersource</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    This should be set if the user wishes to add a source to the list with a position specified on the command line.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2027"></A>
+<tr valign=top bgcolor='silver'><td><b>label</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>USER</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Only active if <TT>addusersource</TT>=yes. This is written directly to the <A NAME="2037"></A><TT>LABEL</TT> column of the output source list. The empty string is not permitted.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2039"></A>
+<tr valign=top bgcolor='silver'><td><b>rate</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>0.0</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="41" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$0.0&lt;$"></SPAN>rate</td></tr>
+
+<tr valign=top><td colspan=5>
+    Only active if <TT>addusersource</TT>=yes. The brightness of the source in counts per second. It is anticipated that this parameter won't be used much, since this is not a quantity that is likely to be known in most circumstances. The default value of 0.0 is harmless.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2048"></A>
+<tr valign=top bgcolor='silver'><td><b>userasprime</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    Only active if <TT>addusersource</TT>=yes. If <TT>changeprime</TT>=yes and <TT>userasprime</TT>=yes, then the attribute <A NAME="2062"></A><TT>PRIMESRC</TT> is set to the index number of the user source.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2064"></A>
+<tr valign=top bgcolor='silver'><td><b>process</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    Only active if <TT>addusersource</TT>=yes. This causes the value in the <A NAME="2074"></A><TT>PROCESS</TT> column to be set to true for the user-added source.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2076"></A>
+<tr valign=top bgcolor='silver'><td><b>bkgexclude</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    Only active if <TT>addusersource</TT>=yes. This causes the value in the <A NAME="2086"></A><TT>BKG_EXCLUDE</TT> column to be set to true for the user-added source.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2088"></A>
+<tr valign=top bgcolor='silver'><td><b>positionstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>radec</td><td>radec|wrtatt</td></tr>
+
+<tr valign=top><td colspan=5>
+    Only active if <TT>addusersource</TT>=yes. If <TT>positionstyle</TT>=`radec', then the position of the user-added source is expected via the parameters <TT>ra</TT> and <TT>dec</TT>. If on the other hand <TT>positionstyle</TT>=`wrtatt' (With Respect To ATTitude), then the position of the user-added source is expected via the parameters <TT>deltadisp</TT> and <TT>deltaxdsp</TT>.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2109"></A>
+<tr valign=top bgcolor='silver'><td><b>ra</b></td><td>yes</td><td><A HREF=../param/node3.html>angle</A></td><td>&nbsp;</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$0\le$"></SPAN><TT>ra</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$\le 360$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    Only active if <TT>addusersource</TT>=yes and <TT>positionstyle</TT>=`radec'. The right ascension of the user-added source, in decimal degrees.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2122"></A>
+<tr valign=top bgcolor='silver'><td><b>dec</b></td><td>yes</td><td><A HREF=../param/node3.html>angle</A></td><td>&nbsp;</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="49" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$-90\le$"></SPAN><TT>dec</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$\le 90$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    Only active if <TT>addusersource</TT>=yes and <TT>positionstyle</TT>=`radec'. The declination of the user-added source, in decimal degrees.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2135"></A>
+<tr valign=top bgcolor='silver'><td><b>deltaxdsp</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>0.0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Only active if <TT>addusersource</TT>=yes and <TT>positionstyle</TT>=`wrtatt'. The displacement in arcminutes of the user-added source from the pointing direction, in the dispersion direction.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2146"></A>
+<tr valign=top bgcolor='silver'><td><b>deltadisp</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>0.0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Only active if <TT>addusersource</TT>=yes and <TT>positionstyle</TT>=`wrtatt'. The displacement in arcminutes of the user-added source from the pointing direction, in the cross-dispersion direction.
+    <br>&nbsp;</td></tr>
+
+<A NAME="2157"></A>
+<tr valign=top bgcolor='silver'><td><b>withepicset</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    If this is set, the task looks for the parameter <TT>epicset</TT>, giving the name of an EPIC source list.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2166"></A>
+<tr valign=top bgcolor='silver'><td><b>epicset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of a set containing a list of sources. Formats output by the tasks <A NAME="2175"></A><A NAME="tex2html61"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>
+and <A NAME="2179"></A><A NAME="tex2html62"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+are accepted.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2183"></A>
+<tr valign=top bgcolor='silver'><td><b>epiclabelprefix</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>EPIC</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter gives the string which is used by the task as a prefix when constructing <A NAME="2194"></A><TT>LABEL</TT> values for EPIC-derived sources. The other part of the <A NAME="2196"></A><TT>LABEL</TT> is the number <A NAME="2198"></A><TT>ML_ID_SRC</TT> or <A NAME="2200"></A><TT>BOX_ID_SRC</TT>. The main purpose of this parameter is to allow several EPIC-derived source lists to be included in the one RGS list if desired, while retaining unique labels.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2202"></A>
+<tr valign=top bgcolor='silver'><td><b>doconfusion</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    Active only if <TT>withepicset</TT>=true. This parameter causes the task to check the epic sources + proposal position for confusion in the EPIC field of view. It is mainly designed for use in the PCMS, to prevent automatic extraction of too many spectra for what is essentially the same object.  The degree of confusion depends on the size of the PSF, which is a function of energy.  Therefore, strictly speaking, it depends on the selection of the energy band of interest (<TT>bandids</TT>).  At the moment, however, the a-priori energy of <!-- MATH
+ $(0.5+2)/2 = 1.25$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="129" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$(0.5+2)/2 = 1.25$"></SPAN>&nbsp;keV is unconditionally used for it, whatever <TT>bandids</TT> is.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2215"></A>
+<tr valign=top bgcolor='silver'><td><b>instweights</b></td><td>no</td><td><A HREF=../param/node3.html>real list</A></td><td>3.5,1.0,1.0</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Active only if <TT>withepicset</TT>=true.  This parameter gives the list of weighting factors for EPIC instruments for the use of calculation of RATE, where  the order is the normal ID_INST number (i.e., pn, MOS1 and 2).  The resultant RATE in the output RGS source list is normalised to 1.0 in the list, namely in default, it is normalised to the RATE of MOS1 (or 2).
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2224"></A>
+<tr valign=top bgcolor='silver'><td><b>flagepicsrcoutoffov</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    Active only if <TT>withepicset</TT>.  If this is set, the input EPIC sources falling outside the FOV (see the description of <TT>enablefilter</TT> for definition) are flagged and are not dropped from the output source list due to that reason.  If not (default), either they are dropped from the source list (if <TT>enablefilter</TT>=true) or nothing is done.  See the description of <TT>enablefilter</TT> for the summary of the behaviour.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2239"></A>
+<tr valign=top bgcolor='silver'><td><b>enablefilter</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    If this is set, the task carries out filtering, where only those sources, the position of which corresponds to cross-dispersion angles on the RGS camera between <SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$-$"></SPAN>2.9 and +2.9 arcminutes from camera centre, are regarded as a good source.  If <TT>withepicset</TT>=true, the filtering is made also for the input EPIC sources, and the those EPIC sources regarded as no-good are either dropped out of the output list (<TT>flagepicsrcoutoffov</TT>=false) or just flagged as OUTOFFOV (if <TT>flagepicsrcoutoffov</TT>=false) (see section&nbsp;<A HREF="node16.html#rgssources:description:outputfiles">5</A> for the OUTOFFOV flag).  Regardless of whether epic sources are added or not (<TT>withepicset</TT>), the task checks the positions of all sources if <TT>enablefilter</TT> is set and flags them as it is and warns about any that fall outside the FOV.
+ <DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="CENTER" COLSPAN=3><SPAN>When <TT>enablefilter</TT>=true</SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">EPIC sources</TD>
+<TD ALIGN="CENTER">Anything else</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>flagepicsrcoutoffov</TT> = true</TD>
+<TD ALIGN="CENTER">Flagged</TD>
+<TD ALIGN="CENTER">Flagged</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>flagepicsrcoutoffov</TT> = false</TD>
+<TD ALIGN="CENTER">Dropped</TD>
+<TD ALIGN="CENTER">Flagged</TD>
+</TR>
+</TABLE>
+</DIV><br>&nbsp;</td></tr>
+
+  <A NAME="2271"></A>
+<tr valign=top bgcolor='silver'><td><b>bandids</b></td><td>no</td><td><A HREF=../param/node3.html>integer list</A></td><td>2,3</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter gives the list of energy bands accepted for the input EPIC source list.  The RATE value of each source in the output RGS source list is the sum of the RATEs of the corresponding source for the energy bands specified with this parameter.  For 1XMM-source-catalogue type ones, this list should be 2, whereas for 2XMM-source-catalogue type ones, this list should be 2, 3 (default).  Although an arbitrary number of elements in the list is allowed, if it is more than 9, only the first 9 energy bands are stated in the <A NAME="2280"></A><TT>E_mBNDnn</TT> header keyword and the rest is unstated (see section&nbsp;<A HREF="node16.html#rgssources:description:outputfiles">5</A>) in the output list.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="2282"></A>
+<tr valign=top bgcolor='silver'><td><b>withboresightfudge</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>yes|no</td></tr>
+
+<tr valign=top><td colspan=5>
+    Flip the sign of the boresight euler%psi.  <B>This parameter will be removed</B> after the boresight is fixed. 
+    <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node32.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Algorithm"></A>
+<A HREF="rgssources.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node34.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

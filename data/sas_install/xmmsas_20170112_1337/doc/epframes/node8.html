@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Examples</TITLE>
+<META NAME="description" CONTENT="Examples">
+<META NAME="keywords" CONTENT="epframes">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epframes.css">
+
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epframes (epframes-8.109.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Time jumps"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epframes.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00035000000000000000"></A>
+<A NAME="epframes:description:description:examples"></A>
+<BR>
+Examples
+</H2>Let us assume we have an observation 0084_0099280101 with three exposures,
+one TIMING mode exposure PNS008, and two imaging exposures PNS010 (in
+Small Window Mode) and PNS018 (in Full Frame Mode). Here follow three
+equivalent calls to epframes:
+<PRE>
+  epframes set=0084_0099280101_PNS01804IME.FIT eventset=r04.dat gtiset=g04.dat
+  epframes set='OAL(EPN,IMAGING,2,4)'          eventset=r04.dat gtiset=g04.dat
+  epframes set='ODF(EPN,IMAGING,18,4,S)'       eventset=r04.dat gtiset=g04.dat
+</PRE>
+This processes CCD 4 of the second IMAGING mode exposure (i.e. PNS018).
+Diagnostic output images can be created with the additional setting
+<PRE>
+  epframes ... witheventmap=Y eventmapset=m04.dat
+</PRE>
+and you can adjust the energy bands with parameters
+<PRE>
+  epframes ... witheventmap=Y eventmapset=m04.dat \
+    nomipthresholdhigh=... nomipthresholdlow=...  \
+    softthresholdhigh=...  softthresholdlow=...
+</PRE>
+If you suspect that your source is not at the nominal position but offset
+then you may enter for TIMING and BURST modes to get the event times (and
+later CTI correction in task <A NAME="1093"></A><A NAME="tex2html19"
+  HREF="../epevents/index.html"><SPAN  CLASS="textbf">epevents</SPAN></A>) correctly:
+<PRE>
+  epframes ... withsrccoords=Y srcra=... srcdec=...
+</PRE>
+If you are interested in the setup of the instrument it is suggested
+to enable the output of additional messages 
+(if <A NAME="1097"></A><TT>SAS_VERBOSITY</TT> = 4 or higher), see also 
+Sect.<A HREF="node14.html#epframes:description:outputfiles:housekeeping">7.2</A>:
+<PRE>
+  epframes ... showpah=Y showpmh=Y
+</PRE>
+If you have old PMS (odffixed) data you may wish to set
+<PRE>
+  epframes ... odfok=N hkok=N
+</PRE>
+which eliminates a couple of warnings related to missing information in the
+files that are included and expected in correct (ODS) ODF datasets
+(this setting should <EM>not</EM> be used in the GO phase).
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Time jumps"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

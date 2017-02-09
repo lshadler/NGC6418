@@ -1,0 +1,239 @@
+ChangeLog for ccftools
+======================
+
+Open SOC-SPR/SCRs:
+   none
+   
+Version 1.35.1 - 2009-09-09 (EO)
+--------------
+	+ rgs/rgslincoordgrcal.cc: GNUC >= 6 since g++ 5.3.1 does not use C++
+	  2011 by default.
+
+Version 1.35 - 2009-09-06 (AI)
+------------
+	+ (rgs/rgslincoordgrcal.cc) GCC 6 portability change from const -> constexpr
+
+Version 1.34.1 - 2009-09-03 (AI)
+------------
+	+ Fixes to make ccftools gcc-4.3 compliant.
+
+Version 1.34 - 2003-05-23 (UL)
+------------
+	+ enhancements to epicbscalgen
+		- fixed bug in SourceCorrelator::angularSeparation()
+		  which caused wrong identification in case of source confusion
+		- new BS misalignment angles are now passed to CAL with CCF
+		  replacement data set and SAS_CCFFILES enviroment variable
+		- more diagnostic output to facilitate monitoring of minimization
+		  progress
+		- new reference source input mode in which true celestial coordinates
+		  are read from existing eboxdetect source list (this finally closes
+		  SCR 63); controlled by new parameters 'withrefsrclist'/'refsrclist'
+		- updated doc
+
+Version 1.33 - 2003-02-12 (UL)
+------------
+	+ new simple tool 'camtochip' for CAMCOORD[1|2]->CHIPCOORD conversion
+
+Version 1.32 - 2003-02-06 (UL)
+------------
+	+ changed type of some task parameters from 'string' to 'angle'/'time'
+	  where applicable (closes SPR 2407: Celestial coordinate input parameter
+	  should be of type 'angle')
+
+Version 1.31 - 2003-01-21 (UL)
+------------
+	+ now DEPENDs on dsslib-5.0
+	+ couple of minor stdc++ compliance changes enforced by gcc-3.2
+
+Version 1.30 - 2002-12-12 (UL)
+------------
+	+ fixed minor problem with broken link in bstools doc
+
+Version 1.29 - 2002-11-21 (UL)
+------------
+	+ now DEPENDs on dsslib-4.0
+
+Version 1.28 - 2002-08-19 (UL)
+------------
+	+ transparent changes to improve C++ standard compliance
+
+Version 1.27 - 2002-05-13 (GV)
+------------
+	+ Updated for param 2.0
+
+Version 1.26.1 - 2002-02-20 (UL)
+--------------
+	+ now DEPENDs on srcdisplay-1.0
+
+Version 1.26 - 2002-02-19 (UL)
+------------
+	+ added new task 'opticsxy'
+
+Version 1.25 - 2002-01-18 (GV)
+------------
+	+ (ccfextseq) CCF EVALDATE must be strictly > VALDATE.
+	
+Version 1.24 - 2001-12-14 (GV)
+------------
+	+ Update extseqid to know about the CCF constituents's end of
+	validity date. 
+	
+Version 1.23 - 2001-10-12 (GV)
+------------
+	+ DISTRIBUTION -> world
+	+ DEPEND -> srcdisplay > 1.0
+	
+Version 1.22 - 2001-07-06 (UL)
+------------
+	+ brought in line with selectlib-4.41
+
+Version 1.21 - 2001-04-04 (UL)
+------------
+	+ updated DEPEND (eboxdetect 4.0)
+	+ changed old-style include statements
+
+Version 1.20 - 2001-03-02 (UL)
+------------
+	+ brought in line with caloalutils-1.43
+	+ srcinfov uses extended Boresight class capabilities; it also
+	  now computes the CHIPCOORD pixel corresponding to given direction
+
+Version 1.19.3 - 2000-11-08 (GV)
+--------------
+	+ ccfextseq did not need the cal.
+	
+Version 1.19.2 - 2000-11-08 (UL)
+--------------
+	+ fixed SPR 1822: inconsistent apos calculated by INSBS in different
+	  output formats
+	+ fixed problem in epicbscalgen caused by change of type of
+	  sourceradius parameter in srcdisplay-0.2
+
+Version 1.19.1 - 2000-10-27 (UL)
+--------------
+	+ rationalized GROUPS entries in task info files
+
+Version 1.19 - 2000-09-13 (UL)
+------------
+	+ added new task 'insbs' to compute boresight of instrument from
+	  star tracker boresight
+
+Version 1.18.2 - 2000-07-03 (UL)
+--------------
+	+ strbs gives now Ra/Dec with 8 significant digits in case of
+	  odffixoutput=true
+
+Version 1.18.1 - 2000-06-20 (UL)
+--------------
+	+ fixed SPR 1542: DOC::broken links
+	+ fixed SPR 1543: DOC::name mismatch between task and doc
+	+ fixed SPR 1545: DOC::broken links
+	+ fixed SPR 1557: DOC::broken links
+
+Version 1.18 - 2000-05-26 (GV)
+------------
+	+ update DEPEND.
+
+Version 1.17 - 2000-05-25 (UL)
+------------
+	+ now depends on srcdisplay package (enforced by move of showdetect
+	  stuff into new package srcdisplay)
+
+Version 1.16 - 2000-05-23 (GV)
+------------
+	+ (ccfrelease/src/ccfextseq.cc) do not set DATE and CREATOR as
+	these are now reserved keywords. 
+	
+Version 1.15 - 2000-05-12 (UL)
+------------
+	+ fixed typo in diagnostic message of strbs
+	+ added task info files
+
+Version 1.14 - 2000-05-04 (UL)
+------------
+	+ fixed problem in strbs
+
+Version 1.13 - 2000-05-03 (UL)
+------------
+	+ now depends on tools-1.30
+	+ improved sum-square criterion in bscalgen
+
+Version 1.12 - 2000-04-27 (UL)
+------------
+	+ new directory 'rgs' comes from cal
+
+Version 1.11 - 2000-04-04 (UL)
+------------
+	+ bug fix in strbs
+
+Version 1.10 - 2000-03-22 (UL)
+------------
+	+ added new task parameter 'odffixout' to 'strbs'
+
+Version 1.9 - 2000-03-20 (UL)
+-----------
+	+ added 'apos' parameter to bstool: strbs
+
+Version 1.8 - 2000-03-20 (UL)
+-----------
+	+ added bstools subdir
+
+Version 1.7 - 2000-03-08 (UL)
+-----------
+	+ fixed problem with static build (dsslib with not in USEDLIBS of
+	  bscalgen)
+
+Version 1.6 - 2000-01-31 (GV)
+-----------
+	+ ccfextseq: do not tamper with VALDATE
+	+ set SUBDATE to now
+	
+Version 1.5 - 2000-01-11 (UL)
+-----------
+	+ updated documentation of epicbscalgen
+
+Version 1.4 - 2000-01-10 (UL)
+-----------
+	+ extended documentation of task epicbscalgen
+
+Version 1.3 - 2000-01-06 (UL)
+-----------
+	+ fixed SPR 1049 : Task fails to build (static link)
+	+ completed documentation of epicbscalgen
+
+Version 1.2 - 1999-12-17 (UL)
+-----------
+	+ optimized balance of two tolerance values in epicbscalgen parameter file
+
+Version 1.1 - 1999-12-16 (UL)
+-----------
+	+ better angle optimization strategy in epicbscalgen
+
+Version 1.0.1 - 1999-12-15 (UL)
+-------------
+	+ bug fix
+
+Version 1.0 - 1999-12-15 (UL)
+-----------
+	+ siamgen task reconciled with SIAM ICD issue 1.2
+	+ first prototype of epicbscalgen task
+
+Version 0.3 - 1999-11-30 (UL)
+-----------
+	+ brought siamgen in line with SIAM ICD issue 1.2 (all three BS angles
+	  are now independent of each other)
+	+ added prototype of bscalgen task
+
+Version 0.2.1 - 1999-11-11 (UL)
+-------------
+	+ brought in line with cal-3.32
+
+Version 0.2 - 1999-11-05 (GV)
+-----------
+	+ add ccfextseq.
+
+Version 0.1 - 1999-09-24 (UL)
+-----------
+	- first version; contains siamgen
+

@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Example output from the omichain</TITLE>
+<META NAME="description" CONTENT="Example output from the omichain">
+<META NAME="keywords" CONTENT="omichain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omichain.css">
+
+<LINK REL="next" HREF="node26.html">
+<LINK REL="previous" HREF="node16.html">
+<LINK REL="up" HREF="omichain.html">
+<LINK REL="next" HREF="node26.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omichain (omichain-1.71.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node24.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Region files"></A>
+<A HREF="omichain.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node26.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Intermediate Output Files"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omichain.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000110000000000000000">
+Example output from the omichain</A>
+</H1>
+The following is an example of a listing of the product files produced by the omichain. The column <SPAN  CLASS="textbf">Astrometry correction</SPAN>
+indicates if a successful astrometry correction was performed (<SPAN  CLASS="textbf">YES</SPAN> or <SPAN  CLASS="textbf">NO</SPAN>). The observation product files are first
+listed (apart from the flatfield image file, since all the image pixels are unity), 
+followed by the product files for each filter and then finally tracking-history product files. <SPAN  CLASS="textbf">If no tracking-history 
+information was available, there will be none of the latter files</SPAN>. 
+
+<P>
+There can be up to three product observation source-list files:
+
+<UL>
+<LI>If source-detection was only performed on the exposure images (default- <SPAN  CLASS="textbf">processmosaicedimages=false</SPAN>), there will only be one 
+observation source-list file (<SPAN  CLASS="textbf">TYPE EXPOSURES</SPAN> in the output below). 
+
+<P>
+</LI>
+<LI>If, however,  source-detection was also performed on the 
+mosaiced sky-images (<SPAN  CLASS="textbf">processmosaicedimages=true</SPAN>) then there will be two more observation source-list files:
+
+<UL>
+<LI>One obtained from the processing of the mosaiced sky-images   (<SPAN  CLASS="textbf">TYPE MOSAICED</SPAN> in the output below), and
+</LI>
+<LI>One obtained from the merging of the two previous observation source-list files into one by <SPAN  CLASS="textbf">ommergelists</SPAN>
+ (<SPAN  CLASS="textbf">TYPE MERGED</SPAN> in the output below).
+</LI>
+</UL>
+</LI>
+</UL>
+
+<P>
+<PRE>
+omichain:- ********************************************************
+omichain:- Product Files produced by the omichain
+omichain:- ********************************************************
+omichain:-                 TYPE        Observation source-list file       Astrometry correction
+omichain:-   1)               MERGED   P0123920101OMCOMBOBSMLI_MER.FIT               YES
+omichain:-   2)             MOSAICED   P0123920101OMCOMBOBSMOS0000.FIT               YES
+omichain:-   3)            EXPOSURES   P0123920101OMCOMBOBSMER0000.FIT               YES
+omichain:- Filter UVM2
+omichain:- Mosaiced sky-image=P0123920101OMS000RSIMAGM.FIT, source-list=P0123920101OMS000RSISWSM.FIT
+omichain:-                        Image file                   Sky-image file                 Source-list file      Astrometry correction
+omichain:-   1)   P0123920101OMS011IMAGE_0000.FIT  P0123920101OMS011SIMAGE0000.FIT  P0123920101OMS011SWSRLI0000.FIT               NO
+omichain:-   2)   P0123920101OMS011IMAGE_1000.FIT  P0123920101OMS011SIMAGE1000.FIT  P0123920101OMS011SWSRLI1000.FIT               NO
+omichain:-   3)   P0123920101OMS505IMAGE_0000.FIT  P0123920101OMS505SIMAGE0000.FIT  P0123920101OMS505SWSRLI0000.FIT               NO
+omichain:-   4)   P0123920101OMS505IMAGE_1000.FIT  P0123920101OMS505SIMAGE1000.FIT  P0123920101OMS505SWSRLI1000.FIT               NO
+omichain:-   5)   P0123920101OMS506IMAGE_0000.FIT  P0123920101OMS506SIMAGE0000.FIT  P0123920101OMS506SWSRLI0000.FIT               NO
+omichain:-   6)   P0123920101OMS506IMAGE_1000.FIT  P0123920101OMS506SIMAGE1000.FIT  P0123920101OMS506SWSRLI1000.FIT               NO
+omichain:-   7)   P0123920101OMS507IMAGE_0000.FIT  P0123920101OMS507SIMAGE0000.FIT  P0123920101OMS507SWSRLI0000.FIT               NO
+omichain:-   8)   P0123920101OMS507IMAGE_1000.FIT  P0123920101OMS507SIMAGE1000.FIT  P0123920101OMS507SWSRLI1000.FIT               NO
+omichain:-   9)   P0123920101OMS508IMAGE_0000.FIT  P0123920101OMS508SIMAGE0000.FIT  P0123920101OMS508SWSRLI0000.FIT               NO
+omichain:-  10)   P0123920101OMS508IMAGE_1000.FIT  P0123920101OMS508SIMAGE1000.FIT  P0123920101OMS508SWSRLI1000.FIT               NO
+omichain:- Filter UVW1
+omichain:- Mosaiced sky-image=P0123920101OMS000RSIMAGL.FIT, source-list=P0123920101OMS000RSISWSL.FIT
+omichain:-                        Image file                   Sky-image file                 Source-list file      Astrometry correction
+omichain:-   1)   P0123920101OMS010IMAGE_0000.FIT  P0123920101OMS010SIMAGE0000.FIT  P0123920101OMS010SWSRLI0000.FIT               NO
+omichain:-   2)   P0123920101OMS010IMAGE_1000.FIT  P0123920101OMS010SIMAGE1000.FIT  P0123920101OMS010SWSRLI1000.FIT              YES
+omichain:-   3)   P0123920101OMS501IMAGE_0000.FIT  P0123920101OMS501SIMAGE0000.FIT  P0123920101OMS501SWSRLI0000.FIT               NO
+omichain:-   4)   P0123920101OMS501IMAGE_1000.FIT  P0123920101OMS501SIMAGE1000.FIT  P0123920101OMS501SWSRLI1000.FIT              YES
+omichain:-   5)   P0123920101OMS502IMAGE_0000.FIT  P0123920101OMS502SIMAGE0000.FIT  P0123920101OMS502SWSRLI0000.FIT               NO
+omichain:-   6)   P0123920101OMS502IMAGE_1000.FIT  P0123920101OMS502SIMAGE1000.FIT  P0123920101OMS502SWSRLI1000.FIT              YES
+omichain:-   7)   P0123920101OMS503IMAGE_0000.FIT  P0123920101OMS503SIMAGE0000.FIT  P0123920101OMS503SWSRLI0000.FIT               NO
+omichain:-   8)   P0123920101OMS503IMAGE_1000.FIT  P0123920101OMS503SIMAGE1000.FIT  P0123920101OMS503SWSRLI1000.FIT              YES
+omichain:-   9)   P0123920101OMS504IMAGE_0000.FIT  P0123920101OMS504SIMAGE0000.FIT  P0123920101OMS504SWSRLI0000.FIT               NO
+omichain:-  10)   P0123920101OMS504IMAGE_1000.FIT  P0123920101OMS504SIMAGE1000.FIT  P0123920101OMS504SWSRLI1000.FIT              YES
+omichain:- Filter UVW2
+omichain:- Mosaiced sky-image=P0123920101OMS000RSIMAGS.FIT, source-list=P0123920101OMS000RSISWSS.FIT
+omichain:-                        Image file                   Sky-image file                 Source-list file      Astrometry correction
+omichain:-   1)   P0123920101OMS012IMAGE_0000.FIT  P0123920101OMS012SIMAGE0000.FIT  P0123920101OMS012SWSRLI0000.FIT               NO
+omichain:-   2)   P0123920101OMS012IMAGE_1000.FIT  P0123920101OMS012SIMAGE1000.FIT  P0123920101OMS012SWSRLI1000.FIT               NO
+omichain:-   3)   P0123920101OMS509IMAGE_0000.FIT  P0123920101OMS509SIMAGE0000.FIT  P0123920101OMS509SWSRLI0000.FIT               NO
+omichain:-   4)   P0123920101OMS509IMAGE_1000.FIT  P0123920101OMS509SIMAGE1000.FIT  P0123920101OMS509SWSRLI1000.FIT               NO
+omichain:-   5)   P0123920101OMS510IMAGE_0000.FIT  P0123920101OMS510SIMAGE0000.FIT  P0123920101OMS510SWSRLI0000.FIT               NO
+omichain:-   6)   P0123920101OMS510IMAGE_1000.FIT  P0123920101OMS510SIMAGE1000.FIT  P0123920101OMS510SWSRLI1000.FIT               NO
+omichain:-   7)   P0123920101OMS511IMAGE_0000.FIT  P0123920101OMS511SIMAGE0000.FIT  P0123920101OMS511SWSRLI0000.FIT               NO
+omichain:-   8)   P0123920101OMS511IMAGE_1000.FIT  P0123920101OMS511SIMAGE1000.FIT  P0123920101OMS511SWSRLI1000.FIT               NO
+omichain:-   9)   P0123920101OMS512IMAGE_0000.FIT  P0123920101OMS512SIMAGE0000.FIT  P0123920101OMS512SWSRLI0000.FIT               NO
+omichain:-  10)   P0123920101OMS512IMAGE_1000.FIT  P0123920101OMS512SIMAGE1000.FIT  P0123920101OMS512SWSRLI1000.FIT               NO
+omichain:-        Tracking-history time-series file           Tracking-history ps file          Tracking-history pdf file
+omichain:-   1)      P0123920101OMS012TSTRTS000.FIT      P0123920101OMS010TSHPLT000.ps     P0123920101OMS010TSHPLT000.PDF
+omichain:-   2)      P0123920101OMS509TSTRTS000.FIT      P0123920101OMS501TSHPLT000.ps     P0123920101OMS501TSHPLT000.PDF
+omichain:-   3)      P0123920101OMS510TSTRTS000.FIT      P0123920101OMS502TSHPLT000.ps     P0123920101OMS502TSHPLT000.PDF
+omichain:-   4)      P0123920101OMS511TSTRTS000.FIT      P0123920101OMS503TSHPLT000.ps     P0123920101OMS503TSHPLT000.PDF
+omichain:-   5)      P0123920101OMS512TSTRTS000.FIT      P0123920101OMS504TSHPLT000.ps     P0123920101OMS504TSHPLT000.PDF
+omichain:- *********************************************************************
+omichain:- Finished running SAS task OMICHAIN V1.48 Tue Mar 31 11:16:56 UTC 2009
+omichain:- **************************************************
+</PRE>
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node24.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Region files"></A>
+<A HREF="omichain.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node26.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Intermediate Output Files"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

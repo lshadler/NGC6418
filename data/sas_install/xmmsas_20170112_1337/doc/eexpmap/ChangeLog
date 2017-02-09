@@ -1,0 +1,822 @@
+ChangeLog for eexpmap
+===============================
+
+Version 4.11.1 - 2016-11-14 (AI)
+------------	
+	+ (src/eexpmap_mod.f90) Initialization to null (at declaration statement) 
+	of those pointer that will be used by the CAL to avoid seg fault in gfortran.
+
+Version 4.11 - 2016-07-20 (AI)
+------------
+	+ (src/eexpmap_mod.f90) compatibility changes with gfortran applied.
+	The Bmatrix is passed to C++ with a wrong array descriptor elements (dtype and triplet).
+	Only if we create the local variable matrix, we can pass the right values to C++. Not clear 
+	why this is happening, we have to keep an eye on it.
+	The OAL_toEulerAngles subrotutine has to be called with the matrix transpose. 
+	Otherwise, the C++ function handle the matrix elements in the wrong order. We 
+	have a similar effect in  rgslib(euler321_mod.f90) module.
+	+ (src/Makefile) gfrotran preprocessor macros added.
+	
+Version 4.10.1 - 2015-12-16 (RDS)
+------------
+	+ test/expo_refima.fits.gz:
+
+	Changed the template test exposure map back to give the same result as
+	the calculation with the old boresight file (XMM_BORESIGHT_0015)
+
+Version 4.10 - 2015-11-30 (RDS)
+------------
+	+ test/expo_refima.fits.gz:
+
+	Upgraded the template test exposure map to give the same result as 
+	the calculation with the new boresight file (XMM_BORESIGHT_0026)
+
+Version 4.9 - 2015-08-25 (RDS)
+------------
+	+ src/eexpmap_mod.f90: 
+
+	Modified the use of the boresight PSI angle to subtract rather than 
+	add. This is only valid if the value in the CCF has a changed sign.
+	(SCR-7265)
+
+Version 4.8 - 2014-06-10 (IT)
+------------
+	+ edetect_io_exp.f90: copy full dataset and array headers of the
+	  input image to the exposure map (instead of a list of selected
+	  keywords) -> Fixes SPR-7129 and makes physical coordinates
+	  available to ds9.
+	(copy of version 4.6.6)
+
+
+Version 4.7 - 2014-04-10 (AI)
+-------------------------------
+	+ Memory released for EARR and FEXPEXT variables.
+
+	
+Version 4.6.5 - 2012-06-11 (IT)
+-------------------------------
+
+	+ Documentation: Typographical and grammatical corrections. Fixed
+	  formal bug which broke the latex run.
+
+
+Version 4.6.4 - 2012-03-23 (IT)
+-------------------------------
+
+	+ Finally removed description of obsolete parameter pattern from
+	  the documentation (SPR-6518)
+	
+
+Version 4.6.3 - 2011-02-14 (RS)
+-------------------------------
+
+	+ src/edetect_io_box.f90
+
+	Support for MASK extension in mask dataset
+	(SCR-314)
+
+Version 4.6.2 - 2010-09-17 (RS)
+-------------------------------
+
+Implemented solution of the problem causing the delay found in version 4.6.1
+by moving the CAL_MISCDATA calls outside of the x,y pixel loop.
+
+
+Version 4.6.1 - 2009-09-22 (HC)
+-------------------------------
+Extensive bug fixes in the calculation of DETX/Y and X/Y (sky) coordinates
+ to closes SOC-SPR-6515.  Exposure maps now match events.
++CAMCOORD2 |-> DETX/Y conversion formulae now match e[mp]events and attcalc.
++Added comments in code + doc re: max attrebin for matching events + expmap.
++No longer ignores very short time bins in attitude data, to match attcalc.
++Now makes the same error rounding negative numbers as does attcalc.
++Now calculates boresight in integer DETX/Y as does attcalc, as opposed
+ to the more precise floating-point CAMCOORD2.
++Reverted from CAL_toDirectionCosineMatrix to to old CAL_getBoresightMatrix
+ to match attcalc.
++ pixmap_mod.f90: Fixed array index range for user-defined cropped images.
++eexpmap: Resolved confusion over whether integer CAMCOORD2 coordinates
+ refer to the centre or the bottom-left corner of CCD pixels.
++eexpmap_mod.f90: Resolved confusion of whether array indices count from 0 or 1.
++eexpmap_mod.f90: Added required CAL_setState call before getting focal length.
++eexpmap_mod.f90: Resolved mix up between CDELT1 and CDELT2.
++eexpmap_mod.f90: Removed unnecessary scaling factor 80 ([xy]sky4, skypixsize).
++{eexpmap,pixmap}_mod.f90: Extensive code commenting.
++config/eexpmap.info: Added epic to GROUPS.
++Doc update on parameter attrebin and blurb on coordinate transformations.
+
+
+Version 4.6 - 2009-04-06 (JR)
+--------------------------------
+
+Fixed crashes in cases of missing DLIMAP extension.
+Introduction of new parameter: usedlimap;
+to apply or not the correction (DLIEXPCO) factor. 
+Default value = "no"
+
+
+Version 4.5 - 2009-03-03 (JR)
+--------------------------------
+
+Reads the new column (DLIEXPCO) in the DLIMAP extension
+from epexposure, and apply the correction factor.
+
+
+Version 4.4.1 -  2008-06-26 (AI)
+--------------------------------
+
+frange pointer variable has been changed an allocatable var.
+dssf and dssc arrays have been changed to scalars.
+Interface to dssRanges function (dsslib package) has been changed.
+Close SOC-SPR-6480 
+
+Version 4.4 -  2008-01-14 (GL)
+--------------------------------	
+
+Fixed problem of bus errors under Mac OSX,
+when using the withvignetting=no option.
+Apparently this was caused by 
+assigning a scalar to an (allocated) array,
+which is allowed in Fortran90.
+Close SSC-SPR-3709. 
+ 
+	
+Version 4.3 -  2007-10-15 (GL)
+--------------------------------
+
+
+Fix error that left the timestamp for the call of 
+CAL_getCamCoord2ToSacCoord undefined.
+The error had no influence on the result, since 
+the output of CAL_getCamCoord2ToSacCoord is not time dependent.
+Close SSC-SPR-3699.
+	
+Version 4.2 -  2007-07-23 (GL)
+--------------------------------
+
+Fix crashes in cases of missing CCDs.
+Close SPR SSC-SPR-3695
+Remove obsolete entries "withpatterns", "pattern"
+in parameter file.
+Remove obsolete code using unitialized variables ngrade, grade
+(caused segmentation faults under Solaris).
+
+	
+	
+Version 4.1 -  2007-05-11 (GL)
+--------------------------------
+
+New test harness.
+Correct position of exposure map in detector coordinates
+by -0.5,-0.5 raw pixels (change in the CAL?)
+Close SSC-SPR-3530
+
+	
+	
+Version 4.0 -  2007-01-23 (GL)
+--------------------------------
+
+Remove parameters
+  usedss
+  useoffset
+  hducut
+  badclean
+Relevant settings are now determined by DSS header of input image.
+Remove pattern selection via parameters "withpatterns","pattern".
+Close SSC-SPR-3556
+Close SSC-SPR-3147
+
+	
+Version 3.42 -  2006-08-08 (GL)
+--------------------------------
+
+For MOS, blank out pixels next to dead pixels, 
+if (FLAG & 0x100) != 0.
+
+	
+Version 3.37.4 -  2006-08-07 (GL)
+--------------------------------
+
+Increase maximum number of GTIs from 5000 to 10000.
+Close SSC-SPR-3625
+	
+	
+Version 3.41 -  2005-08-24 (GL)
+--------------------------------
+
+Copy WCS header keywords into array section of header.
+Close SSC-SPR-3135 
+
+	
+Version 3.37.3 -  2005-02-17 (GL)
+--------------------------------
+
+Same as 3.40, for development track
+	
+Version 3.40 -  2004-02-17 (GL)
+------------------------------	
+
+Increase maximum number of attitude bins: nattmax=10000
+	
+Version 3.39 -  2004-11-25 (GL)
+------------------------------	
+
+Change default of parameter "useoffset" to "yes"
+	
+	
+Version 3.38 -  2004-08-20 (GL)
+------------------------------	
+
+Correct reading of WCS header in case 
+primary coordinate system is "DETX_ANG,DETY_ANG".
+Close SSC-SPR-3335
+Close SSC-SPR-3379
+	
+
+	
+
+Version 3.37.2 -  2004-03-02 (GL)
+------------------------------
+
+- Accept "DETX_ANG,DETY_ANG" as CTYPE values
+- Correct value in output header keyword OOTCORR by factor 1.E3	
+	
+
+Version 3.37.1 -  2004-02-01 (GL)
+------------------------------
+
+Adapt "slow pixelization" mode to changes in CAL
+Close SSC-SPR-3228
+Change default to withfastpixelization=no
+	
+Version 3.37 -  2003-12-09 (GL)
+------------------------------
+
+Removed test output
+	
+	
+Version 3.36 -  2003-12-08 (GL)
+------------------------------
+
+Interpret OFFSET extension in MOS event lists.
+
+	
+Version 3.35 -  2003-10-24 (GL)
+------------------------------
+
+Included code provided by RDS 
+to read optical axis position from CAL.
+Adapted .par file to make use of param v2 features.
+	
+Version 3.34 -  2003-09-11 (GL)
+------------------------------
+	
+- Avoid undefined values of pntimedel
+- Initialize function xxcti with  xxcti = tend - tbeg
+
+
+	
+Version 3.33 - 2003-08-22 (GL)
+------------------------------
+
+-Removed test output
+-Minor change to documentation
+
+	
+Version 3.32 - 2003-06-18 (GV)
+------------
+	+ DEPEND uses dsslib 5.0
+	
+Version 3.31 - 2003-04-22 GL
+------------------------------
+
+- Use column TIMEDEL in exposure extensions to
+  calculate exposures.
+- For EPN, write keywords "OOTCORR" and "OOTFRAC".
+- Changed parameter types of "attitudeset", "eventset", and "expimageset"
+  to "dataset".
+- Adapted to dsslib v5.x
+- Fixed error in flag mask interpretation.
+
+Closed SPRs:
+SSC-SPR-3105, SSC-SPR-3102, SSC-SPR-3066, SSC-SPR-3065, SSC-SPR-3032
+
+	
+Version 3.30 - 2002-11-19 GL
+------------------------------
+
+Fixed bug in interpreting FLAG selections, when no FLAG range is present
+in DSS header.
+	
+	
+Version 3.29 - 2002-11-15 GL
+------------------------------
+
+Included proper treatment of flag selections
+of the input image.
+Default value for parameter badclean=0  
+
+	
+Version 3.28 - 2002-10-28 GL
+------------------------------
+
+Same as 3.26
+
+	
+Version 3.26 - 2002-09-10 GL
+------------------------------
+
+Adapted to dsslib v4.0
+
+	
+Version 3.25 - 2002-07-31 GL
+------------------------------
+
+Enable reading of OFFSETS extension of event list.
+Avoid crashes when OFFSETnn extensions are empty.
+Closed SPRs:
++ SSC-SPR-2877 EXPIDSTR keyword missing
++ SSC-SPR-2880 ATT_SRC keyword missing
++ SSC-SPR-2955 Parameter not documented
+
+	
+Version 3.24 - 2002-05-24 GL
+------------------------------
+
+Converted .par file to XML
+
+	
+Version 3.23.3 (2002-05-22) HB
+------------------------------
+
+To avoid excessive memory usage the task automatically switches 
+from fast to slow pixelization mode in the rare cases where a large 
+number of attitude historgram bins is required due to an unstable 
+attitude. In task version 4.21 an error was introduced which resulted
+in exposure maps offset by about 1.5 arcmin in these cases.
+Corrected in version 3.23.3	
+
+	
+Version 3.23.2 (2002-03-05) HB
+------------------------------	
+
+Closed SPR:
++ SSC-SPR-2797 fails to compile on xmmos03
+	
+Version 3.23.1 (2002-02-27) HB
+------------------------------	
+
+CLOSED SPR:
++ SSC-SPR-2792 eexpmap doesn't compile on some machines:	
+
+EXPIDSTR & ATT_SRC propagated from input 	
+	
+Version 3.23 (2002-01-10) HB
+----------------------------
+
+Changes by UL (v3.18) which were missing in version 3.21/22 added again.
+	
+Version 3.22 (2002-01-09) HB
+----------------------------
+	
+Closed SPR:
++ SSC-SPR-2667 parameter badclean not fully explained	
+	
+Version 3.21 2001-12-03 (A.Finoguenov)
+--------------------------------------
+
+- Treatment of PN offset columns added. 
+
+New parameters:
+useoffset:bool , default=no (Use information on EPN offset columns)
+hducut:real (0<=hducut<=1000), default=0 (Threshold for column offset
+                                          selection [channel])
+
+
+Version 3.20 - 2001-11-22 (JBa)
+-------------------------------
+- doc/eexpmap_description.tex: fixed documentation
+
+
+Version 3.19 (2001-11-07)
+-------------------------
+
+module edetect_io renamed to edetect_io_exp	
+	
+
+Version 3.18 (2001-10-31) - UL
+-------------------------
++ brought in line with cal-3.121: type of CAMCOORD/TELCOORD coordinates
+  changed from single to double precision
+
+Version 3.17 (2001-10-08)
+-------------------------
+
+Closed SPR:
++ SSC-SPR-2562 (SPR raised on emldetect-4.2.3). The underlying problem
+  was an attitud table which contained NULL values. This resulted
+  in an empty exposure map which in turn caused emldetect to crash.
+  The SPR was fixed by modifying task eexpmap such that undefined
+  attitude values will be ignored and a warning will be issued.
+  As of version 4.3 task emldetect will terminate with an error
+  message if an empty exposure map is encountered.	 	
+	
+Version 3.16 (2001-09-12)
+-------------------------
+
+Closed SPR:
++ SSC-SPR-2550 eexpmap Out of Memory in the pipeline
+  The following changes were made:
+  *switch from withfastpixelization=yes to withfastpixelization=no
+   if there are more than 18 attitude histogram bins
+  *prevent the allocation of large arrays which are only needed if
+   withfastpixelization=yes in the case withfastpixelization=no  
+  *ignore attitude histogram bins which contain less than 1e-4 of the
+   total exposure	
+	
+Version 3.15 (2001-09-05)
+-------------------------
+
+- test harness corrected	
+	
+Version 3.14 (2001-08-30)
+-------------------------
+
+- treatment of option withpatterns=yes modified:
+  the three cases withpattern=no, withpattern=yes && pattern=" ", and
+  withpattern=yes && pattern=<all patterns> (<all patterns> = "0 1" for PN
+  and "0 1 ... 31" for MOS) now all result in an exposuremap which has
+  QE=1 everywhere. This is different from the previous versions of eexpmap
+  where the energy dependence of the QE was folded into the exposure map 
+  if withpatterns=yes. In the new version, dividing source counts by an
+  exposuremap created for the appropriate patterns will result in rates
+  which are normalized to the optical axis (i.e., vignetting corrected)
+  and to the <all patterns> case.	
+
+Closed SPR:
++ SSC-SPR-2544 Exposure in detector coordinates should not depend on pixel size	
+	
+Version 3.13.2 (2001-07-25)
+---------------------------
+
++ SSC-SPR-2484 Subscript 2 of FEXPEXT out of range 	
++ SSC-SPR-2489 == 2484 
+	
+Version 3.13.1 (2001-07-19)
+---------------------------
+
+- corrected an error in the exposure time calculation which was
+  introduced in the context of fixing SPR 2421 (v3.13)	 
+	
+Version 3.13 (2001-05-22)
+--------------------------
+
+- ERROR message if input image without GTI extensions is used in
+  usedss=yes mode
+		
+Closed SPRs:
+
++ SSC-SPR-2358 (SCR 59) Should allow vignetting to be switched off	
++ SSC-SPR-2337 hardcoded numbers	
++ SSC-SPR-2421 Need to restrict processing to exposure interval at early stage
+
+Version 3.12.5 (2001-05-10)
+---------------------------
+
+Closed SPR:
+
++ SSC-SPR-2259 Rank of array error
+
+		
+Version 3.12.4 (2001-05-04)
+---------------------------
+
+Closed SPR:
+	
++ SSC-SPR-2318 eexpmap documentation erratum
+	
+	
+Version 3.12.3 (2001-05-03)
+---------------------------
+
+Closed SPR:
+
++ SSC-SPR-2363 Array bound error	
+	
+Version 3.12.2 (2001-04-24)
+------------------------
+
+fixed test harness
+	
+Version 3.12.1 (2001-04-23)
+------------------------
+
+fixed test harness
+
+	
+Version 3.12 (2001-04-10)
+------------------------
+
+Changed default setting to usedss=yes
+
+
+
+Version 3.11 (2001-03-19)
+-------------------------
+
+Closed SPRs:
+	
++ SSC-SPR-2265 very long execution time if withdetcoords=yes
++ SSC-SPR-2252 fails test harness
++ SSC-SPR-2264 attrebin units not specified 
++ SSC-SPR-2302 problem if withdss=no
+	
+Version 3.10 (2001-02-19)
+-------------------------
+
+Closed SPR:
+	
++ SSC-SPR-2028 Shift of one pixel in window mode
+
+Version 3.9 (2001-02-02)
+------------------------
+
+Closed SPR:
+
++ SSC-SPR-2137 not understanding 'or'ed time intervals in DSS
++ SSC-SPR-2225 spatial, but not spectral, varn of filt trans should be incl
+
+Version 3.8 (2001-01-17)
+------------------------
+
+Closed SPR:
+
++ SSC-SPR-2195 wrong exposure in first gt interval
+
+Version 3.7 (2001-01-09)
+------------------------
+
+Closed SPR:
+	
++ SSC-SPR-2157 Subscript out of range 2
+	
+Version 3.6 (2000-11-24)
+------------------------
+
+Closed SPR:
+
++ SSC-SPR-2118 Subscript out of range	
+	
+Version 3.5.2 (2000-11-16)
+--------------------------
+
+Closed SPRs:
+
++ SSC-SPR-2073 problem if :STDGTInn gti filter appears in 
+	       more than one DSS component	
++ SSC-SPR-2079 expos map smeared while attitude stable (was SPR 2055)
+	
+Version 3.5.1 2000-11-09
+------------------------
+
+Closed SPRs:
+
++ SSC-SPR-1982  DSS support 	
++ SSC-SPR-2005  unwarranted NoFilt and NoSubMode warnin
++ SSC-SPR-2006  gti extention handling	
+		
+Version 3.5  2000-10-06
+------------------------
+	
++ test harness updated	
+	
+Version 3.4  2000-10-05
+------------------------
+
++ task now understands MOS window mode.
+	
+Closed SPRs:
+
++ SSC-SPR-1951 eventfile is eventset	
++ SSC-SPR-1952 core dumps on ngti out of range	
++ SSC-SPR-1953 stati build fails	
++ SSC-SPR-1954 strange effect in exposure map	
++ SSC-SPR-1970 exposure map shows dithering pattern
+	
+	
+Version 3.3  2000-07-24
+------------------------
+
+Closed SPRs:
+
++  SSC-SPR-1746 Missing .lyt file
++  SSC-SPR-1845	Exposure map doesn't account for time filtering
++  SSC-SPR-1906 Use lowercase to refer to other tasks
++  SSC-SPR-1937	Task fails with bus error
+	
+Version 3.2.1 2000-07-14
+------------------------
+
++ one pixel offset of exposure map corrected
+
+	
+Version 3.2  2000-07-12
+------------------------
+
++ task now supports generation of several exposure maps in different
+  energy bands in one run of the task	  
++ the algorithm for distributing the counts into the sky pixels
+  has been changed, resulting in some speed improvement	
+		
+Version 3.1  2000-07-04
+------------------------
+
++ loops for accessing bad pixel information optimized to 
+  improve execution speed. This reduces the execution time for 
+  MOS from ca. 90 min to 12 min.	
+
+Closed SPR:
+
++ SSC-SPR-1906 Use lowercase to refer to other tasks	
+	
+Version 3.0.3 (June 29, 2000)
+-----------------------------
+	
++ eexpmap now works when no GTI and/or no BADPIX extensions are
+  present (was SPR 1811)	
+
+	
+Version 3.0.2 (June 23, 2000)
+-----------------------------
+
+closed SPRs:
+
++ 1741 fails in low memory	
++ 1747 Misc comments on task description	
++ 1762 'eventfile' parameter doesn't fit with naming convention	
++ 1774 stop statement used instead of SAS error mechanism	
++ 1776 Non standard error description in documentation
++ 1777 Output exposure map contains NaNs	
++ 1786 missing info file	
++ 1811 eexpmap fails with a bus error	
++ 1838 Very large execution time for MOS
++ 1851 Offset between pn image and resulting exposure map	
+	
+
+Version 3.0.1 (June 9, 2000)
+----------------------------	
+
++ WCS keywords are now searched in the general header and
+  the primary image header (above and below the xmmsep keyword)	 
+
++ error in the determination of the contaminated area around bad pixels
+  has been corrrected (real funtion get_badradius)
+
++ routine CAL_getFOV does not (yet) set window mode windows. Therefore
+  this is (temporarily) done by boolean function wmode.	 
+
++ an as yet not completely understood error in the boresight treatment
+  has been correctd by introducing an instrument dependent offset	
+
++ unacceptably large execution times for MOS (due to the smaller pixel
+  size) were corrected by accessing the effective area and filter 
+  transmission CAL routines only on a 4 x 4 arcsecond grid (as for the PN)
+
++ test harness program checkoutput adjusted to the actual image size of
+  the test image	
+
+closed SPR:
+
++ 1721 Task fails with image created using 'evselect'	
+
+	
+Version 3.0 (May 27, 2000)
+--------------------------
+	
+- task now reads BADPIX and EXPOSURE extensions	
+- all CAL calls are now enabled
+	
+closed SPRs:
+
+- 1343 Energy bounds specified in keV
+- 1434 Use of energy information not described	
+- 1458 Task aborts 
+- 1681 WCS keywords not written	
+	
+ersion 2.5.2 - 1999-12-15 (Marco Beijersbergen)
+-------------
+- added DISTRIBUTION
+- removed obsolete DAL interfaces
+
+
+Version 2.5.1 - 1999-11-19
+-------------
+      + patched version by G. Vacanti
+      + (src/Makefile) remove calcxx calf90 from USEDLIBS as this caused segm
+entation faults in metatasks. cal is enough anyway.
+
+
+Version 2.5 (September 16, 1999)
+--------------------------------
+
+- task now reads attitude file format as generated by task atthkgen
+	
+	
+Version 2.4 (July 12, 1999)
+---------------------------	
+
+- parameter names changed to conform to conventions
+
+closed SPR: 
+
+ - 01030: test-harness corrected	
+
+open SPR: 
+
+ - 01029: bus error after execution 	
+
+	
+Version 2.2 & 2.3
+----------------------	
+
+- minor corrections
+
+	
+Version 2.1
+----------------------
+	
+- program now accepts input images of arbitrary size.
+- program expects one GTI extension per chip (PN:12; MOS:7).
+  The program als o produces useful output if only one or no
+  GTI extension is present.	
+- output is written as primary FITS image.
+- the test harness now uses 320 x 320 pixel test images. 
+  The task distribution .tgz file is thus much smaller.  	 
+
+Version 2.0
+----------------------	
+
+- "To do list" added to ChangeLog
+- eexpmap now uses 
+  (1) attitude from task ATTCALC
+  (2) GTI vom table extension in input_image
+  (3) CAL routines for CCD quantum efficiency, vignetting, and 
+      filter transmission	
+	
+Closed SPRs:
+
+ - 0077: cp_head moved to new module edetect_io which will be used
+	 by all AIP SAS tasks
+ - 0515: checkoutput -> ./checkoutput and unnecessary copying of 
+	 input files removed in test/eexpmap_test
+	
+Version 1.3
+----------------------
+
+Closed SPRs:
+
+ - 0009: HDUCLASS keywords added	
+ - 0468: "draft" deleted in task description	
+ - 0488: Test harness now uses f90 programto compare the contents
+         of the output image with a reference image. 
+	
+Version 1.2
+----------------------
+	
+Closed SPRs:
+
+ - 0325: Functionality added: This is an intermediate task version which
+ 	 uses a simple analytical representation the telescope vignetting.
+ - 0326: test/Makefile edited	
+	
+	
+Version 1.1
+----------------------
+
+ChangeLog added
+
+Closed SPRs:
+ 
+ - 0076: .par file provided instead of .prm
+ - 0078: test harness is more robust now
+ - 0079: "
+
+Open SPRs: (will be treated in next task version)
+
+ - 0075: test_plan
+ - 0077: cp_head to be replaced by generic mechanism 	
+
+Version 1.0
+----------------------------
+
+- Original version submitted to the SOC
+
+To do list:
+------------
+
+- read filter id from input file	
+- use attitude histogram	
+- use instrument map
+- speed up determination of ccdChipId
+- add treatment of event selection history
+- add proper error and verbosity handling

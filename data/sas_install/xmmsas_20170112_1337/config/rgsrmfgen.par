@@ -1,0 +1,121 @@
+<!-- converted from XPI formatted "rgsrmfgen.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="evlist" type="dataset" default="">
+   <DESCRIPTION>input events and exposure map extensions</DESCRIPTION>
+   </PARAM>
+
+  <PARAM id="rmfset" type="file" default="">
+   <DESCRIPTION>output response file</DESCRIPTION>
+   </PARAM>
+
+  <PARAM id="srclist" type="dataset" default="">
+   <DESCRIPTION>input sources and ASC region extensions</DESCRIPTION>
+   </PARAM>
+
+  <PARAM id="emax" type="real" default="2.8">
+   <DESCRIPTION>maximum output energy</DESCRIPTION>
+   <CONSTRAINTS>emax in [0:]</CONSTRAINTS>
+   </PARAM>
+
+  <PARAM id="emin" type="real" default="0.3">
+   <DESCRIPTION>minimum output energy</DESCRIPTION>
+   <CONSTRAINTS>emin in [0:]</CONSTRAINTS>
+   </PARAM>
+
+  <PARAM id="rows" type="int" default="4000">
+   <DESCRIPTION>number of energy bins</DESCRIPTION>
+   <CONSTRAINTS>rows in [1:]</CONSTRAINTS>
+   </PARAM>
+
+  <PARAM id="newrmf" type="bool" default="yes">
+   <DESCRIPTION>construct a new response matrix</DESCRIPTION>
+   <CASE>
+	<ITEM value="no"></ITEM>
+	<ITEM value="yes"> </ITEM>
+   </CASE>
+  </PARAM>
+
+     		<PARAM id="withspectrum" type="bool" default="yes">
+	      	<DESCRIPTION>make compatible with spectrum</DESCRIPTION>
+      		<CASE>
+       			<ITEM value="yes">
+			</ITEM>
+		        <ITEM value="no">
+			</ITEM>
+       		</CASE>
+      		</PARAM>
+     		<PARAM id="withmirrorpsf" type="bool" default="yes">
+	      	<DESCRIPTION>whether to include the standard mirror PSF distribution 
+		</DESCRIPTION>
+	        </PARAM>
+		<PARAM id="withangdist" type="bool" default="no">
+	        <DESCRIPTION>whether to include a custom angular distribution 
+		</DESCRIPTION>
+   		</PARAM>
+        	<PARAM id="angdistset" type="file" default="angdist.txt">
+         	<DESCRIPTION>user-defined angular distribution file
+		</DESCRIPTION>
+         	</PARAM>
+
+
+				<PARAM id="spectrumset" type="dataset" default="srspec.ds">
+				<DESCRIPTION>extracted spectrum file</DESCRIPTION>
+				</PARAM>
+    
+				<PARAM id="source" type="int" default="0">
+				<DESCRIPTION>target source</DESCRIPTION>
+				<CONSTRAINTS>source in [0:]</CONSTRAINTS>
+				</PARAM>
+				<PARAM id="order" type="int" default="1">
+				<DESCRIPTION>nominal order</DESCRIPTION>
+				<CONSTRAINTS>order in [1:]</CONSTRAINTS>
+			 	</PARAM>
+				<PARAM id="bkgcorrect" type="bool" default="yes">
+				<DESCRIPTION>enable background correction</DESCRIPTION>
+			 	</PARAM>
+
+
+  <PARAM id="fftdim" type="int" default="3">
+   <DESCRIPTION>convolution size exponent</DESCRIPTION>
+   <CONSTRAINTS>fftdim in [1:5]</CONSTRAINTS>
+   </PARAM>
+
+   <PARAM id="dyneffareacorr" type="bool" default="yes">
+    <DESCRIPTION>Use Dynamic Effective Area Correction based on Chebyshev polynomials</DESCRIPTION>
+   </PARAM>
+   
+   <PARAM id="withrectification" type="bool" default="no">
+    <DESCRIPTION>Use empirical RGS effective area correction</DESCRIPTION>
+   </PARAM>
+
+   <PARAM id="witheffectiveareacorrection" type="bool" default="no">
+    <DESCRIPTION>Use RGS effective area correction</DESCRIPTION>
+   </PARAM>
+
+   <PARAM id="witharffile" type="bool" default="false">
+    <DESCRIPTION>Create two independent ARF and RMF files</DESCRIPTION>
+   </PARAM>
+
+   <PARAM id="arfset" type="file" default="">
+   <DESCRIPTION>output ARF file name</DESCRIPTION>
+   </PARAM>
+
+
+  <PARAM id="spectrumbinning" type="string" default="lambda">
+   <DESCRIPTION>
+    Dispersion binning method
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="lambda">
+    </ITEM>
+    <ITEM value="beta">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+
+ </CONFIG>
+</FILE>

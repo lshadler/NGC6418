@@ -1,0 +1,175 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="obsidroots" type="string" list="yes" default=".">
+   <DESCRIPTION>
+    List of path names in which to find each observation. Each should contain a --prdssubdir subdirectory.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="entrystage" type="string" default="detprep">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="detprep">
+    </ITEM>
+
+    <ITEM value="makeskymasks">
+    </ITEM>
+
+    <ITEM value="makenonvig">
+    </ITEM>
+
+    <ITEM value="makebkgmap">
+    </ITEM>
+
+    <ITEM value="sensmaps">
+    </ITEM>
+
+    <ITEM value="addskyarea">
+    </ITEM>
+
+    <ITEM value="cleanup">
+    </ITEM>
+
+    <ITEM value="end">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="finalstage" type="string" default="addskyarea">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="makeskymasks">
+    </ITEM>
+
+    <ITEM value="makenonvig">
+    </ITEM>
+
+    <ITEM value="makebkgmap">
+    </ITEM>
+
+    <ITEM value="sensmaps">
+    </ITEM>
+
+    <ITEM value="addskyarea">
+    </ITEM>
+
+    <ITEM value="detprep">
+    </ITEM>
+
+    <ITEM value="cleanup">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="refband" type="int" default="1">
+   <DESCRIPTION>
+    The ID integer (should be a character) of the energy band which is to provide energy-independent maps and masks.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    refband in [1:9]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="bkgstyle" type="string" default="srcspecset">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="user">
+     <PARAM id="bkgrates" type="real" list="yes" default="5.0e-7">
+      <DESCRIPTION>
+       List (1 per band in the FLUX_SCALES table of --templateset) of total background count rates (counts / arcsec^2 / s).
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       bkgrates in [0.0:]
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="vigfractions" type="real" list="yes" default="0.2">
+      <DESCRIPTION>
+       List (1 per band in the FLUX_SCALES table of --templateset) of fractions of total background which are vignetted (ie, due to x-ray background).
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       vigfractions in [0.0:1.0]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="srcspecset">
+    </ITEM>
+
+    <ITEM value="products">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="prdssubdir" type="string" default="product">
+   <DESCRIPTION>
+    Name of the subdirectory (base taken from --obsidroots) from which product files are to be read.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="simopsubdir" type="string" default="sim_output">
+   <DESCRIPTION>
+    Name of the subdirectory (base taken from --obsidroots) into which simulation output files are to be written.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="simgensubdir" type="string" default="sim_generic">
+   <DESCRIPTION>
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="pseudoprodsubdir" type="string" default="pseudo_product">
+   <DESCRIPTION>
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="padsizearcsec" type="real" default="100">
+   <DESCRIPTION>
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    padsizearcsec in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="srcspecset" type="dataset" default="srcspec.fits">
+   <DESCRIPTION>
+    Name of the dataset which contains specifications for both the simulated sources and the energy bands.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="dettaskstyle" type="string" default="auto">
+   <DESCRIPTION>
+    How to tell the task which source-detection scheme to use.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="user">
+     <PARAM id="detpreptask" type="string" default="eimsimdetprep2xmm">
+      <DESCRIPTION>
+       Name of the task which performs one-off, detection-specific preparations.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="auto">
+     <PARAM id="dettype" type="string" default="2xmm">
+      <DESCRIPTION>
+       Code which indicates the source-detection scheme.
+      </DESCRIPTION>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="astest" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to run the script in test mode (just checks the perl grammar) or not.
+   </DESCRIPTION>
+  </PARAM>
+
+ </CONFIG>
+</FILE>
+

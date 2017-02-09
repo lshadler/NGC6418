@@ -1,0 +1,211 @@
+<!-- converted from XPI formatted "rgsangles.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="mergedset" type="dataset" mandatory="yes" default="merged.ds">
+   <DESCRIPTION>
+    Input/output data set containing RGS raw events
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="srclist" type="dataset" mandatory="yes" default="sources.ds">
+   <DESCRIPTION>
+    Input data set containing RGS source list
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="betabinning" type="string" default="binSize">
+   <DESCRIPTION>
+    Beta bins: specify range or bin-size
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="Range">
+     <PARAM id="betamin" type="real" default="0.03">
+      <DESCRIPTION>
+       lower bound of first beta bin [rad]
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="betamax" type="real" default="0.08">
+      <DESCRIPTION>
+       upper bound of last beta bin [rad]
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+    <ITEM value="binSize">
+     <PARAM id="betabinref" type="real" default="0.03578524">
+      <DESCRIPTION>
+       midpoint of bin for which BETACHA is 1 [rad]
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="betabinwidth" type="real" default="1.208e-05">
+      <DESCRIPTION>
+       width of beta bin [rad]
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       betabinwidth in [0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="nbetabins" type="int" default="3400">
+   <DESCRIPTION>
+    number of beta bins
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    nbetabins in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="xdispbinning" type="string" default="binSize">
+   <DESCRIPTION>
+    XDSP bins: specify range or bin-size
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="Range">
+     <PARAM id="xdispmin" type="real" default="-0.001">
+      <DESCRIPTION>
+       lower bound of first xdsp bin [rad]
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="xdispmax" type="real" default="0.001">
+      <DESCRIPTION>
+       upper bound of last xdsp bin [rad]
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+    <ITEM value="binSize">
+     <PARAM id="xdispbinref" type="real" default="-0.0009126">
+      <DESCRIPTION>
+       midpoint of bin for which XDSPCHA is 1 [rad]
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+
+     <PARAM id="xdispbinwidth" type="real" default="1.08e-05">
+      <DESCRIPTION>
+       width of cross dispersion bin [rad] 
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       xdispbinwidth in [0:]
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="nxdispbins" type="int" default="170">
+   <DESCRIPTION>
+    number of xdsp bins
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    nxdispbins in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withpointingcolumn" type="bool" default="no">
+   <DESCRIPTION>
+    Produce columns with Spacecraft Pointing
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withmlambdacolumn" type="bool" default="yes">
+   <DESCRIPTION>
+    Produce column with m*lambda (source at requested position)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="lambdabinref" type="real" default="4.005">
+   <DESCRIPTION>
+    midpoint of bin for which LAMBDACHA is one [Angstrom]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="lambdabinwidth" type="real" default="0.010">
+   <DESCRIPTION>
+    width of lambda bin [Angstroms]
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    lambdabinwidth in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="nlambdabins" type="int" default="3600">
+   <DESCRIPTION>
+    number of lambda bins
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    nlambdabins in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withheliocentriccorr" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply heliocentric velocity correction to mlambda column
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withsunanglecorr" type="bool" default="yes">
+   <DESCRIPTION>
+    Apply Sun Angle correction to mlambda column
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+ </CONFIG>
+</FILE>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="merge_comp_xmm">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="merge_comp_xmm.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="merge_comp_xmm.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+merge_comp_xmm (esas-0.9.39) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="merge_comp_xmm.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="merge_comp_xmm.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="merge_comp_xmm:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+This task combines the images produced for individual 
+observations into larger field mosaics.  This includes the event
+and exposure images (output from <TT>mos-spectra</TT>), QPB background images
+(output from <I>mos_back</I> processed by <I>rot-im-det-sky</I>), and the 
+soft proton images (output from <TT>proton</TT> also processed by 
+<I>rot-im-det-sky</I>).  Pixel size, coordinate system, and central coordinates 
+are all user selected.  The output images are <!-- MATH
+ $2000\times2000$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="87" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$2000\times2000$"></SPAN> pixels.  
+
+<P>
+<I>merge-comp-xmm</I> compensates for the inclusion of observations with 
+different filters in the mosaic.  It uses the results of PIMMS with the 
+assumption of a power-law spectrum with photon indecies (alpha) of 2.4, 
+1.7, and 1.0, and absorption of <!-- MATH
+ $N_{H}=2{\times}10^{20}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="100" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$N_{H}=2{\times}10^{20}$"></SPAN>&nbsp;H&nbsp;I&nbsp;cm<SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^{-2}$"></SPAN>.  
+The user enters a vlaue for alpha between 1.0 and 2.4 where 1.0
+will select the hard spectrum, 1.7 selects the medium spectrum, and 
+2.4 selects the soft spectrum.  Intermediate values will produce a
+linear scaling between the two nearest spectra.  The exposure image 
+is then scaled by the ratio 
+of the model count rates for the medium filter versus the thin or thick, 
+making the resultant image appropriate for the medium filter.
+
+<P>
+<B>Warning and requirements:</B> <I>merge_comp_xmm</I> is part of the 
+package <I>esas</I>, integrated into SAS, but (still) 
+limited to work within <I>esas</I>' data reduction scheme. 
+This is specially true wrt input files structure and names. 
+In particular, <I>merge_comp_xmm</I> assumes that other tasks from the package, 
+<I>mos-spectra</I> / <I>pn-spectra</I>, <I>proton</I> and <I>rot-im-det-sky</I> 
+have been successfully run for the exposures to be used.    
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="merge_comp_xmm.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

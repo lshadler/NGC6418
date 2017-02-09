@@ -1,0 +1,167 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="eventset" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    Name of eventlist dataset.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="templateset" type="dataset" mandatory="yes">
+   <DESCRIPTION>
+    Name of template image dataset.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="tempeventset" type="dataset" default="temp_evlist.ds">
+   <DESCRIPTION>
+    Name of a temporary dataset used to calculate region areas.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="outputstyle" type="string" default="sky">
+   <DESCRIPTION>
+    Style in which to write the exposure map.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="sky">
+     <PARAM id="flatexpimgset" type="dataset" default="flat_expmap.ds">
+      <DESCRIPTION>
+       Name of output, sky-coordinates non-vignetted exposure map.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="withvigexpimgset" type="bool" default="no">
+      <DESCRIPTION>
+       Whether to also produce a vignetted exposure map.  Note this is irrelevant unless outputstyle=sky (See withvigexpcubeset).
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="yes">
+        <PARAM id="vigexpimgset" type="dataset" default="vig_expmap.ds">
+         <DESCRIPTION>
+          Name of output, sky-coordinates vignetted exposure map.
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+
+     <PARAM id="attstyle" type="string" default="binnedset">
+      <DESCRIPTION>
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="binnedset">
+        <PARAM id="binnedatttab" type="table" mandatory="yes">
+         <DESCRIPTION>
+          Name of the dataset+table with the attitude time series; mandatory if outputstyle=sky and attstyle=binnedset.
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+
+       <ITEM value="template">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="raw">
+     <PARAM id="flatexpcubeset" type="dataset" default="flat_expmapcube.ds">
+      <DESCRIPTION>
+       Name of output non-vignetted exposure map, in CCD cube form.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="withvigexpcubeset" type="bool" default="no">
+      <DESCRIPTION>
+       Whether to also produce a vignetted exposure cube.  Note this is irrelevant unless outputstyle=raw (See withvigexpimgset).
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="yes">
+        <PARAM id="vigexpcubeset" type="dataset" default="vig_expmapcube.ds">
+         <DESCRIPTION>
+          Name of output vignetted exposure map, in CCD cube form.
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+
+  <PARAM id="patternlo" type="int" default="0">
+   <DESCRIPTION>
+    Lower limit (inclusive) of the event pattern selection.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="patternhi" type="int" mandatory="yes">
+   <DESCRIPTION>
+    Upper limit (inclusive) of the event pattern selection.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="flagmask" type="string" default="0x0">
+   <DESCRIPTION>
+    FLAG bit mask (hexadecimal string) used for event selection.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="pilos" type="int" list="yes" mandatory="yes">
+   <DESCRIPTION>
+    List of lower PI range bounds used for event selection.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="pihis" type="int" list="yes" mandatory="yes">
+   <DESCRIPTION>
+    List of upper PI range bounds used for event selection.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withgtis" type="bool" default="no">
+   <DESCRIPTION>
+    Whether to supply a list of gti table names (in the eventset).
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="yes">
+     <PARAM id="gtitabsnode0" type="table" list="yes" mandatory="yes">
+      <DESCRIPTION>
+       A list of gti table names, 1 per CCD (eg. gtitabsnode0='m1im8.FTZ:GTI00006 m1im8.FTZ:GTI00106').
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="withgtitabsnode1" type="bool" default="no">
+      <DESCRIPTION>
+       Whether to also look for a list of gti table names for the MOS redundant node.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="yes">
+        <PARAM id="gtitabsnode1" type="table" list="yes" mandatory="yes">
+         <DESCRIPTION>
+          A list of gti table names, 1 per CCD (MOS redundant node).
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="rawylo" type="int" default="0">
+   <DESCRIPTION>
+    Lower RAWY bound used for event selection.
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withboresightfudge" type="bool" default="yes">
+   <DESCRIPTION>
+    Flip the sign of the boresight euler%psi. This parameter should be removed after the boresight is fixed. 
+   </DESCRIPTION>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

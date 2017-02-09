@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Output Files</TITLE>
+<META NAME="description" CONTENT="Output Files">
+<META NAME="keywords" CONTENT="catcorr">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="catcorr.css">
+
+<LINK REL="next" HREF="node11.html">
+<LINK REL="previous" HREF="node9.html">
+<LINK REL="up" HREF="catcorr.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+catcorr (catcorr-0.9.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input Files"></A>
+<A HREF="catcorr.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="catcorr.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00070000000000000000"></A>
+<A NAME="catcorr:description:outputfiles"></A>
+<BR>
+Output Files
+</H1>
+
+<P>
+There is no separate output file, the output is inserted in the OBSMLI file which
+is the principal input.  Two columns RA_CORR and DEC_CORR are created (or 
+updated if already present) with corrected celestial positions (degrees) of the X-ray
+source; if the attempt to find frame shifts is unsuccesful then these
+columns will be identical to RA and DEC respectively.
+
+<P>
+A new column, SYSERRCC, is inserted in the table.  This is an estimate of the systematic error (in arc-seconds) in celestial positions that arises from the uncertainty in the position and rotation angle of the field of view.  This is estimated by catcorr from the errors of the fit to the reference sources.  Because a field rotation is fitted as well as shifts along the RA and declination axes, the uncertainty is slightly higher for detections further from the centre of the field, so that SYSERRCC is now a column and not just a fixed value for the field as it was in earlier versions of catcorr.  If catcorr is unable to get a satisfactory fit to reference sources then SYSERRCC is set to 1.5 arc-seconds for all detections in the field, this being the value detemined empirically which seems to be the best fit to the uncorrected positions.
+
+<P>
+The following keywords will be inserted in the FITS table (or updated if
+already present):
+
+<P>
+
+<UL>
+<LI>RAOFFSET, DEOFFSET the frame shifts applied (arc-seconds).
+
+<P>
+</LI>
+<LI>RAOFFERR, DEOFFERR the estimated standard errors in the above (arc-seconds).
+
+<P>
+</LI>
+<LI>ROT_CORR the frame rotation angle (degrees).
+
+<P>
+</LI>
+<LI>ROT_ERR the estimated standard error on the above (degrees).
+
+<P>
+</LI>
+<LI>LIK_HOOD the goodness of fit parameter.
+
+<P>
+</LI>
+<LI>NMATCHES the number of X-ray/reference catalogue matches used in the fit.
+
+<P>
+</LI>
+<LI>POSCOROK a logical value set T if the fitting was successful, F otherwise.
+If the fit is not sucessful the shift and rotation parameters will be zero.
+
+<P>
+</LI>
+<LI>ASTCORR is a logical value set F normally but set to T if the astcorr parameter has been set to implement the temporary astrometric corrections.
+
+<P>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node9.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Input Files"></A>
+<A HREF="catcorr.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

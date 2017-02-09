@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="calview">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="calview.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="calview.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+calview (calview-1.14) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="calview.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="calview.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="calview:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+The XMM calibration database is comprised of <SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$\approx 100$"></SPAN> calibration
+datasets (the current calibration file, or CCF [<A
+ HREF="node10.html#ct:SOCCCFICD">1</A>]),
+and a number of calibration algorithms and access functions (the
+calibration access layer, or <A NAME="294"></A><A NAME="tex2html6"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>). Many of the datasets in the
+CCF contain parameters that are meaningful only in conjunction with
+the calibration algorithms provided in the calibration access layer.
+
+<P>
+The fundamental philosophy of the XMM calibration database is that the
+only manner to access the calibration data, either in raw form (the
+contents of the datasets themselves) or in the interpreted form (the
+output of the algorithms) is through the functional interface provided
+by the calibration access layer.
+
+<P>
+While this approach has numerous advantages from the point of view of
+the task development process, it also means that the effect of a given
+calibration quantity can only be visualized by writing a small program
+to set the CAL state, and then call one of the calibration functions
+with the appropriate input parameters.
+
+<P>
+The purpose of <A NAME="298"></A><A NAME="tex2html7"
+  HREF="../calview/index.html"><SPAN  CLASS="textbf">calview</SPAN></A>
+is to reduce the user's programming
+effort in this sense to nil. To achieve this, and at the same time not
+require updating whenever a new calibration function is added to the
+<A NAME="302"></A><A NAME="tex2html8"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>, <A NAME="306"></A><A NAME="tex2html9"
+  HREF="../calview/index.html"><SPAN  CLASS="textbf">calview</SPAN></A>
+interacts with the <A NAME="310"></A><A NAME="tex2html10"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>
+through the
+interfaces provided by the calibration state server, and the
+calibration view server. The former is described in detail in
+<A NAME="314"></A><A NAME="tex2html11"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>. Here the two servers are described briefly insofar as they
+are used by <A NAME="318"></A><A NAME="tex2html12"
+  HREF="../calview/index.html"><SPAN  CLASS="textbf">calview</SPAN></A>.
+
+<P>
+The calibration state server allows one to set any of the calibration
+state parameters. These are: instrument, ccd, node, filter and mode
+identifiers, ccd and camera temperatures, on-chip binning factor,
+date, accuracy level, and randomization. The top part of the
+<A NAME="322"></A><A NAME="tex2html13"
+  HREF="../calview/index.html"><SPAN  CLASS="textbf">calview</SPAN></A>
+widget pane (figure&nbsp;<A HREF="#fig:calview_gui">1</A>) can be used
+to edit the calibration state. When a variable does not apply the
+corresponding widget is grayed out.
+
+<P>
+The behavior of the <A NAME="326"></A><A NAME="tex2html14"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>
+is also affected by the CCF in use.
+Through the pull down menu labelled ``CCF''
+(figure&nbsp;<A HREF="#fig:calview_gui">1</A>) one can direct the <A NAME="330"></A><A NAME="tex2html15"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>
+to use a
+particular set of calibration datasets. It is possible to point the
+<A NAME="334"></A><A NAME="tex2html16"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>
+to a CCF directory, to a CCF index file (see
+<A NAME="338"></A><A NAME="tex2html17"
+  HREF="../cifbuild/index.html"><SPAN  CLASS="textbf">cifbuild</SPAN></A>
+for information on how to generate one), or add
+individual CCF components to an existing list. It is also possible to
+list all of the CCF constituents in use, whether they were provided
+via the CIF or inserted at run time.
+
+<P>
+<A NAME="342"></A><A NAME="tex2html18"
+  HREF="../calview/index.html"><SPAN  CLASS="textbf">calview</SPAN></A>
+is also affected by the environment variables and
+command line options available to all SAS tasks that make use of the
+<A NAME="346"></A><A NAME="tex2html19"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>. Refer to the <A NAME="350"></A><A NAME="tex2html20"
+  HREF="../cal/index.html"><SPAN  CLASS="textbf">cal</SPAN></A>
+documentation for details.
+
+<P>
+The calibration view server affects <A NAME="354"></A><A NAME="tex2html21"
+  HREF="../calview/index.html"><SPAN  CLASS="textbf">calview</SPAN></A>
+in two areas. 
+
+<P>
+It allows the user to edit a number of state variables that affect the
+display of the calibration output. The following variables can be set:
+energy, position in the field of view, spectral order. These variables
+function as input data to the calibration algorithms.  For instance,
+for a given instrument and CCD the user can select the energy for
+which the CCD redistribution should be calculated.
+
+<P>
+Through the calibration view server, <A NAME="358"></A><A NAME="tex2html22"
+  HREF="../calview/index.html"><SPAN  CLASS="textbf">calview</SPAN></A>
+inquires which
+``viewables'' are available given the current calibration state. The
+list of available viewables is available in the pull down menu
+labelled ``View'' (figure&nbsp;<A HREF="#fig:calview_view_menu">2</A>). <A NAME="362"></A><A NAME="tex2html23"
+  HREF="../calview/index.html"><SPAN  CLASS="textbf">calview</SPAN></A>
+has no a priori knowledge of what calibration data can be
+viewed. Viewables can have sub-viewables. These are specialized views
+of a given calibration quantity.
+
+<P>
+After a viewable is displayed, the list of CCF constituents accessed
+is displayed.
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="fig:calview_gui"></A><A NAME="270"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 1:</STRONG>
+The <A NAME="366"></A><A NAME="tex2html2"
+  HREF="../calview/index.html"><SPAN  CLASS="textbf">calview</SPAN></A>
+user interface.</CAPTION>
+<TR><TD><IMG
+ WIDTH="452" HEIGHT="665" BORDER="0"
+ SRC="img2.png"
+ ALT="\begin{figure}\begin{center}
+\epsfig{file=calview_gui.ps,width=10cm}
+\end{center}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="fig:calview_view_menu"></A><A NAME="195"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 2:</STRONG>
+An example of the ``View'' pull down menu. Viewables with
+      sub-viewables can be further expanded.</CAPTION>
+<TR><TD><IMG
+ WIDTH="151" HEIGHT="226" BORDER="0"
+ SRC="img3.png"
+ ALT="\begin{figure}\begin{center}
+\epsfig{file=calview_view_menu.ps,height=5cm}
+\end{center}\end{figure}"></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="calview.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

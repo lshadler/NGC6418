@@ -1,0 +1,252 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="esky2det">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="esky2det.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="esky2det.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+esky2det (esky2det-1.18) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Task requirements."></A>
+<A HREF="esky2det.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="esky2det.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="esky2det:description:parameters"></A>
+<A NAME="684"></A>
+<tr valign=top bgcolor='silver'><td><b>datastyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>set</td><td>user|set</td></tr>
+
+<tr valign=top><td colspan=5>
+    By use of this parameter, the user can specify the style of input and output desired. If <TT>datastyle</TT>=`user', the task looks for position information for a single source in the parameters <TT>ra</TT> and <TT>dec</TT>. If <TT>datastyle</TT>=`set', the task looks for the source positions stored in columns <A NAME="702"></A><TT>RA</TT> and <A NAME="704"></A><TT>DEC</TT> of a FITS table specified by the parameter <TT>intab</TT>.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="707"></A>
+<tr valign=top bgcolor='silver'><td><b>intab</b></td><td>no</td><td><A HREF=../param/node3.html>table</A></td><td>inset.ds:INPUT</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Name of the FITS table that contains the sky positions. Active only if <TT>datastyle</TT>=`set'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="716"></A>
+<tr valign=top bgcolor='silver'><td><b>witherrorcol</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Active only if <TT>datastyle</TT>=`set'. If <TT>witherrorcol</TT>=`yes', <A NAME="734"></A><A NAME="tex2html10"
+  HREF="../esky2det/index.html"><SPAN  CLASS="textbf">esky2det</SPAN></A>
+looks for position uncertainties in decimal degrees in columns <A NAME="738"></A><TT>RA_ERR</TT> and <A NAME="740"></A><TT>DEC_ERR</TT> of <TT>intab</TT>. If neither of these columns is found, <A NAME="743"></A><A NAME="tex2html11"
+  HREF="../esky2det/index.html"><SPAN  CLASS="textbf">esky2det</SPAN></A>
+looks for a common value in arcseconds stored in a column named <A NAME="747"></A><TT>RADEC_ERR</TT>. This last is to cater for the format of source lists output by <A NAME="749"></A><A NAME="tex2html12"
+  HREF="../emldetect/index.html"><SPAN  CLASS="textbf">emldetect</SPAN></A>.
+
+<br>&nbsp;</td></tr>
+
+  <A NAME="753"></A>
+<tr valign=top bgcolor='silver'><td><b>withouttab</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Active only if <TT>datastyle</TT>=`set'. If <TT>withouttab</TT>=`yes', the task looks for <TT>outtab</TT> and writes the output to this file. Otherwise the output is written to columns in the <TT>intab</TT>.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="768"></A>
+<tr valign=top bgcolor='silver'><td><b>outtab</b></td><td>no</td><td><A HREF=../param/node3.html>table</A></td><td>outset.ds:OUTPUT</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Name of the FITS table that is to contain the camera-centric positions. Active only if <TT>datastyle</TT>=`set' and <TT>withouttab</TT>=`yes'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="779"></A>
+<tr valign=top bgcolor='silver'><td><b>ra</b></td><td>yes</td><td><A HREF=../param/node3.html>angle</A></td><td>0.0</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$0\le$"></SPAN><TT>ra</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\le360$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    The right ascension (in any of the allowed angle-parameter formats) of the source. Active only if <TT>datastyle</TT>=`user'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="790"></A>
+<tr valign=top bgcolor='silver'><td><b>dec</b></td><td>yes</td><td><A HREF=../param/node3.html>angle</A></td><td>0.0</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="49" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$-90\le$"></SPAN><TT>dec</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$\le90$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    The declination (in any of the allowed angle-parameter formats) of the source. Active only if <TT>datastyle</TT>=`user'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="801"></A>
+<tr valign=top bgcolor='silver'><td><b>witherrorradius</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Active only if <TT>datastyle</TT>=`user'. If <TT>witherrorradius</TT>=`yes', <A NAME="814"></A><A NAME="tex2html13"
+  HREF="../esky2det/index.html"><SPAN  CLASS="textbf">esky2det</SPAN></A>
+reads a single angular uncertainty from parameter <TT>errorradius</TT>.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="819"></A>
+<tr valign=top bgcolor='silver'><td><b>errorradius</b></td><td>yes</td><td><A HREF=../param/node3.html>angle</A></td><td>0.0</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$0\le$"></SPAN><TT>errorradius</TT></td></tr>
+
+<tr valign=top><td colspan=5>
+    The radius of the uncertainty circle around the source position. Active only if <TT>datastyle</TT>=`user' and <TT>witherrorradius</TT>=yes.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="832"></A>
+<tr valign=top bgcolor='silver'><td><b>withheader</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Active only if <TT>datastyle</TT>=`user'. If <TT>withheader</TT>=`yes', the task prints some lines of header information before printing the source position line; if `no', this is omitted. The `no' setting is convenient for those wishing to run <A NAME="844"></A><A NAME="tex2html14"
+  HREF="../esky2det/index.html"><SPAN  CLASS="textbf">esky2det</SPAN></A>
+from a script.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="848"></A>
+<tr valign=top bgcolor='silver'><td><b>outunit</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>raw</td><td>det|raw</td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>outunit</TT>=`det', the positions are calculated in the DETX/Y system. Otherwise, the RAWX/Y and CCDNR of the position are calculated.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="857"></A>
+<tr valign=top bgcolor='silver'><td><b>mosccdnode</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>primary</td><td>primary|redundant</td></tr>
+
+<tr valign=top><td colspan=5>
+    This allows the user to specify the readout node for positions on the MOS instruments. It is enabled only if <TT>outunit</TT>=`raw', and ignored for PN.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="866"></A>
+<tr valign=top bgcolor='silver'><td><b>calinfostyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>set</td><td>set|user</td></tr>
+
+<tr valign=top><td colspan=5>
+    If `set' the task obtains information about the instrument and spacecraft pointing from <TT>calinfoset</TT>; if `user', this information is obtained from parameters <TT>instrument</TT>, <TT>datetime</TT>, <TT>scattra</TT>, <TT>scattdec</TT> and <TT>scattapos</TT>.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="885"></A>
+<tr valign=top bgcolor='silver'><td><b>calinfoset</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>calinfo.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the dataset in which information about the instrument and spacecraft pointing etc is stored in keywords.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="892"></A>
+<tr valign=top bgcolor='silver'><td><b>instrument</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>EMOS1</td><td>EMOS1|EMOS2|EPN</td></tr>
+
+<tr valign=top><td colspan=5>
+    Active only if <TT>calinfostyle</TT>=`user'. The name of the relevant XMM instrument.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="901"></A>
+<tr valign=top bgcolor='silver'><td><b>datetime</b></td><td>yes</td><td><A HREF=../param/node3.html>string</A></td><td>0000-00-00T00:00:00</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If <TT>calinfostyle</TT>=`user', the date and time are expected via this string parameter.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="910"></A>
+<tr valign=top bgcolor='silver'><td><b>scattra</b></td><td>yes</td><td><A HREF=../param/node3.html>angle</A></td><td>0.0</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$0\le$"></SPAN><TT>attra</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\le360$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    The right ascenscion (in any of the allowed angle-parameter formats) of the spacecraft pointing. Active only if <TT>calinfostyle</TT>=`user'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="921"></A>
+<tr valign=top bgcolor='silver'><td><b>scattdec</b></td><td>yes</td><td><A HREF=../param/node3.html>angle</A></td><td>0.0</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="49" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$-90\le$"></SPAN><TT>attdec</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$\le90$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    The declination (in any of the allowed angle-parameter formats) of the spacecraft pointing. Active only if <TT>calinfostyle</TT>=`user'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="932"></A>
+<tr valign=top bgcolor='silver'><td><b>scattapos</b></td><td>yes</td><td><A HREF=../param/node3.html>angle</A></td><td>0.0</td><td><SPAN CLASS="MATH"><IMG
+ WIDTH="29" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$0\le$"></SPAN><TT>attapos</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="45" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$\le360$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    The position angle (in any of the allowed angle-parameter formats) of the spacecraft pointing. Active only if <TT>calinfostyle</TT>=`user'.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="943"></A>
+<tr valign=top bgcolor='silver'><td><b>checkfov</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    If set true then the task does not return detector coordinates for positions which don't lie on a CCD or within the field-of-view. Set to false to get a DET value for these cases.
+    <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Task requirements."></A>
+<A HREF="esky2det.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node15.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

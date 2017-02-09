@@ -1,0 +1,128 @@
+<!-- converted from XPI formatted "hkgtigen.par.xpi"-->
+<FILE>
+<CONFIG>
+
+<PARAM id="instrument" type="string" mandatory="yes" default="emos1">
+	<DESCRIPTION>
+		Instrument to which the GTIs are applicable
+	</DESCRIPTION>
+	<CASE>
+		<ITEM value="emos1"/>
+		<ITEM value="emos2"/>
+		<ITEM value="epn"/>
+		<ITEM value="om"/>
+		<ITEM value="rgs1"/>
+		<ITEM value="rgs2"/>
+		<ITEM value="xmm"/>
+	</CASE>
+</PARAM>
+
+<PARAM id="withgtiset" type="bool" default="yes">
+	<DESCRIPTION>
+		Generate GTI set?
+	</DESCRIPTION>
+	<CASE>
+	    <ITEM value="no"/>
+	    <ITEM value="yes">
+			<PARAM id="gtiset" type="dataset" default="gti.ds">
+				<DESCRIPTION>
+					Name of the GTI set to generate
+				</DESCRIPTION>
+			</PARAM>
+			<PARAM id="diagnosticmode" type="bool" default="no">
+				<DESCRIPTION>
+					Enable diagnostic mode of task?
+				</DESCRIPTION>
+				<CASE>
+					<ITEM value="no"/>
+					<ITEM value="yes">
+						<PARAM id="diagfile" type="string" default="STDOUT">
+							<DESCRIPTION>
+							Name of output ASCII diagnostic file to generate
+							</DESCRIPTION>
+						</PARAM>
+						<PARAM id="plotgtis" type="bool" default="no">
+							<DESCRIPTION>
+							Visiualize GTIs using dsplot?
+							</DESCRIPTION>
+						</PARAM>
+					</ITEM>
+				</CASE>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="withparameters" type="bool" default="no">
+	<DESCRIPTION>
+		Specify explicit list of HK parameters?
+	</DESCRIPTION>
+	<CASE>
+		<ITEM value="no"/>
+		<ITEM value="yes">
+			<PARAM id="parameters" type="string" list="yes">
+				<DESCRIPTION>
+					List of HK parameters to consider
+				</DESCRIPTION>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="except" type="bool" default="no">
+	<DESCRIPTION>
+		Consider all parameters except those specified
+	</DESCRIPTION>
+	<CASE>
+		<ITEM value="no"/>
+		<ITEM value="yes"/>
+	</CASE>
+</PARAM>
+
+<PARAM id="withoverrideparameters" type="bool" default="no">
+	<DESCRIPTION>
+		Specify list of additional parameters?
+	</DESCRIPTION>
+	<CASE>
+		<ITEM value="no"/>
+		<ITEM value="yes">
+			<PARAM id="overrideparameters" type="string" list="yes">
+				<DESCRIPTION>
+					List of override/additional parameters
+				</DESCRIPTION>
+			</PARAM>
+			<PARAM id="overrideparametervalues" type="string">
+				<DESCRIPTION>
+					|-separated list of parameter expressions
+				</DESCRIPTION>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="timecolumn" type="string" default="TIME">
+	<DESCRIPTION>
+		timecolumn parameter of tabgtigen
+	</DESCRIPTION>
+</PARAM>
+
+<PARAM id="prefraction" type="real" default="0.5">
+	<DESCRIPTION>
+		prefraction parameter of tabgtigen
+	</DESCRIPTION>
+	<CONSTRAINTS>
+		prefraction in [0.:1.]
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="postfraction" type="real" default="0.5">
+	<DESCRIPTION>
+		postfraction parameter of tabgtigen
+	</DESCRIPTION>
+	<CONSTRAINTS>
+		postfraction in [0.:1.]
+	</CONSTRAINTS>
+</PARAM>
+
+</CONFIG>
+</FILE>

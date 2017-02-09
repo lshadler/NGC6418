@@ -1,0 +1,164 @@
+<!-- converted from XPI formatted "omdetect.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="set" type="dataset" mandatory="yes" default="">
+   <DESCRIPTION>
+    Input image
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="outset" type="dataset" mandatory="yes" default="">
+   <DESCRIPTION>
+    Name of output source list
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="wdxset" type="dataset" mandatory="no" default="">
+   <DESCRIPTION>
+    Name of wdx file - needed if running on images produced by pre 5.4 Sas
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+
+ 
+  <PARAM id="nsigma" type="real" default="2.0">
+   <DESCRIPTION>
+    Number of sigma for a detection
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    nsigma in [1.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+
+  <PARAM id="minsignificance" type="real" default="2.0">
+   <DESCRIPTION>
+    Minimum allowed source significance
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    minsignificance in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+ 
+ <PARAM id="maxrawcountrate" type="real" default="50.0">
+   <DESCRIPTION>
+    Maximum allowed raw-count rate of a source to be included in psf fitting
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    maxrawcountrate in [0.0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+ 
+
+
+  <PARAM id="levelimage" type="dataset" default="">
+   <DESCRIPTION>
+    Output levels image
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+
+
+
+  <PARAM id="backgroundimage" type="dataset" default="">
+   <DESCRIPTION>
+    Output background image
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+
+
+
+
+  <PARAM id="regionfile" type="dataset" default="">
+   <DESCRIPTION>
+    Output region
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="detectextended" type="bool" default="yes">
+   <DESCRIPTION>
+    If yes will detect "extended" sources
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+ <PARAM id="psfphotometryenabled" type="bool" default="no">
+   <DESCRIPTION>
+    If true then sources with close neighbours will have their
+    photometry recomputed using point-spread-function fitting
+    (currently the use of this parameter is disabled) 
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="neighboursforpsfphotometry" type="int" default="1">
+   <DESCRIPTION>
+    Minimal number of neighbours of a source to implement its PSF-photometry
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    neighboursforpsfphotometry in [0:7]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="psfphotometryset" type="dataset" default="">
+   <DESCRIPTION>
+    Output source list with PSF-photometry
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+
+  <PARAM id="backgroundmethod" type="int" default="1">
+   <DESCRIPTION>
+    Point-source background method
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    backgroundmethod in [1:7]
+   </CONSTRAINTS>
+  </PARAM>
+
+
+ 
+ </CONFIG>
+</FILE>
+
+
+
+

@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Allocate real to a bin</TITLE>
+<META NAME="description" CONTENT="Allocate real to a bin">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node19.html">
+<LINK REL="previous" HREF="node17.html">
+<LINK REL="up" HREF="node14.html">
+<LINK REL="next" HREF="node19.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node17.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Rectangular bounds of the"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Array or vector scalar"></A>
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Simpler maxloc"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node6.html">General-purpose array-processing utilities</A> / <A  HREF="node14.html">Array or vector scalar</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00025400000000000000">
+Allocate real to a bin</A>
+</H3>
+
+<P>
+<PRE>
+  function getBinNumber(xBinEdges, x) result(binNum) 
+    real(single), intent(in) :: xBinEdges(:), x
+    integer(int32)           :: binNum
+  end function
+</PRE>
+
+<P>
+In a commonly encountered situation, one has a set of bins defined by a vector of bin edges xBinEdges, plus a real number x, and it is desired to know into which bin x falls. The present function accomplishes this calculation and returns the index of the bin. The bin edges should occur in increasing order, with no two values the same, but they don't have to be equidistant. The returned value obeys in general the rule
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+xBinEdges(i) \le x < xBinEdges(i+1) \Rightarrow binNum = i
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="387" HEIGHT="28" BORDER="0"
+ SRC="img9.png"
+ ALT="\begin{displaymath}
+xBinEdges(i) \le x &lt; xBinEdges(i+1) \Rightarrow binNum = i
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+However note the following limiting or pathological cases:
+
+<P>
+
+<UL>
+<LI><!-- MATH
+ $x < xBinEdges(1) \Rightarrow binNum = 0$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="249" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$x &lt; xBinEdges(1) \Rightarrow binNum = 0$"></SPAN>, ie 1 under the lower limit, is returned. It is up to the calling routine to catch these instances if it is necessary to prevent this return value from occurring.
+</LI>
+<LI>If <!-- MATH
+ $x = xBinEdges(size(xBinEdges))$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="249" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$x = xBinEdges(size(xBinEdges))$"></SPAN> it is judged to fall within the last bin and <!-- MATH
+ $binNum = size(xBinEdges)-1$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="234" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$binNum = size(xBinEdges)-1$"></SPAN> is returned.
+</LI>
+<LI><!-- MATH
+ $x > xBinEdges(size(xBinEdges)) \Rightarrow binNum = size(xBinEdges)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="477" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$x &gt; xBinEdges(size(xBinEdges)) \Rightarrow binNum = size(xBinEdges)$"></SPAN>, ie 1 over the upper limit, is returned. It is up to the calling routine to catch these instances if it is necessary to prevent this return value from occurring.
+      
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node17.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Rectangular bounds of the"></A>
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Array or vector scalar"></A>
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Simpler maxloc"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

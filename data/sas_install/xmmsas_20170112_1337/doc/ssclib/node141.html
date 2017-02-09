@@ -1,0 +1,218 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>`Rotated' and `phase' formats</TITLE>
+<META NAME="description" CONTENT="`Rotated' and `phase' formats">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node142.html">
+<LINK REL="previous" HREF="node140.html">
+<LINK REL="up" HREF="node140.html">
+<LINK REL="next" HREF="node142.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node140.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Routines which deal with"></A>
+<A HREF="node140.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Routines which deal with"></A>
+<A HREF="node142.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Is a given point"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node140.html">Routines which deal with</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION000111000000000000000">
+`Rotated' and `phase' formats</A>
+</H2>
+
+<P>
+Dealing with ellipses is complicated by the fact that there are at least two convenient ways to parameterise an ellipse, which I will call the `rotated' and `phase' forms. In the `rotated' form the ellipse is specified by two semiaxes <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img121.png"
+ ALT="$R_x$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img122.png"
+ ALT="$R_y$"></SPAN> and a an angle of rotation <SPAN CLASS="MATH"><IMG
+ WIDTH="14" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img123.png"
+ ALT="$\alpha$"></SPAN>. In these terms the ellipse is specified most transparently by three equations:
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+\frac{x_0^2}{R_x^2} + \frac{y_0^2}{R_y^2} = 1
+\end{equation}
+ -->
+<A NAME="ellipse0"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="ellipse0"></A><IMG
+ WIDTH="94" HEIGHT="47" BORDER="0"
+ SRC="img124.png"
+ ALT="\begin{displaymath}
+\frac{x_0^2}{R_x^2} + \frac{y_0^2}{R_y^2} = 1
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">2</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+x = x_0 \cos(\alpha) - y_0 \sin(\alpha)
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="171" HEIGHT="28" BORDER="0"
+ SRC="img125.png"
+ ALT="\begin{displaymath}
+x = x_0 \cos(\alpha) - y_0 \sin(\alpha)
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+y = y_0 \cos(\alpha) + x_0 \sin(\alpha).
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="175" HEIGHT="28" BORDER="0"
+ SRC="img126.png"
+ ALT="\begin{displaymath}
+y = y_0 \cos(\alpha) + x_0 \sin(\alpha).
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+The ellipse in `phase' format is specified by two amplitudes <SPAN CLASS="MATH"><IMG
+ WIDTH="24" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img127.png"
+ ALT="$A_x$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="23" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img128.png"
+ ALT="$A_y$"></SPAN> and a phase <SPAN CLASS="MATH"><IMG
+ WIDTH="27" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img72.png"
+ ALT="$phi$"></SPAN> by two parametric equations in <SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img73.png"
+ ALT="$theta$"></SPAN> as follows:
+
+<P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+x = A_x \cos(\theta)
+\end{equation}
+ -->
+<A NAME="ellipse1"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="ellipse1"></A><IMG
+ WIDTH="93" HEIGHT="28" BORDER="0"
+ SRC="img129.png"
+ ALT="\begin{displaymath}
+x = A_x \cos(\theta)
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">3</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+y = A_y \cos(\theta + \phi).
+\end{equation}
+ -->
+<A NAME="ellipse2"></A>
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><A NAME="ellipse2"></A><IMG
+ WIDTH="125" HEIGHT="29" BORDER="0"
+ SRC="img130.png"
+ ALT="\begin{displaymath}
+y = A_y \cos(\theta + \phi).
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">4</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+If an ellipse is thought of as a squashed circle, <SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img73.png"
+ ALT="$theta$"></SPAN> is the angle around the original circle.
+
+<P>
+Rotations of coordinate system are easily accommodated in the `rotated' format; changes of aspect ratio of the coordinate system are better accommodated in the `phase' format.
+
+<P>
+Subroutines are given for translating between the two formats:
+
+<P>
+<PRE>
+  subroutine ellipsePhaseToAngle(xAmp, yAmp, phase&amp;
+    , shortSemiAxis, longSemiAxis, rotatedAngle)
+
+    real(single), intent(in)  :: xAmp, yAmp, phase
+    real(single), intent(out) :: longSemiAxis, shortSemiAxis, rotatedAngle
+  end subroutine ellipsePhaseToAngle
+
+  subroutine ellipseAngleToPhase(shortSemiAxis, longSemiAxis, rotatedAngle&amp;
+    , xAmp, yAmp, phase)
+
+    real(single), intent(in)  :: longSemiAxis, shortSemiAxis, rotatedAngle
+    real(single), intent(out) :: xAmp, yAmp, phase
+  end subroutine ellipseAngleToPhase
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node140.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Routines which deal with"></A>
+<A HREF="node140.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Routines which deal with"></A>
+<A HREF="node142.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Is a given point"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

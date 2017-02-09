@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="omfastshift">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omfastshift.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="omfastshift.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omfastshift (omfastshift-1.25.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="omfastshift.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omfastshift.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="omfastshift:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+In Fast mode, because of telemetry constraints, the shift-and-add
+performed on the spacecraft in IMAGE mode is applied to FAST mode data
+on the ground. This is achieved using two SAS tasks. This task applies
+the `shift' and <SMALL>EVSELECT</SMALL> applies the `add'.
+
+<P>
+In IMAGE mode the DPU shift-and-add procedure is applied after every
+tracking frame integration, <!-- MATH
+ $t_{track} \sim$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="58" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="$t_{track} \sim$"></SPAN> 10-20 seconds. In FAST
+mode, a FAST mode time slice (FMTS) is defined with duration <!-- MATH
+ $t_{FMTS}
+< t_{track}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="110" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$t_{FMTS}
+&lt; t_{track}$"></SPAN>. Each event is tagged with a frame number corresponding
+to the FMTS in which the event was detected.  It is therefore possible
+to correct each event with a fine shift calculated from a linear
+interpolation of the tracking frame shifts
+
+<P>
+<SMALL>OMFASTSHIFT</SMALL> calculates drift-corrected event positions based on
+a linear interpolation over a tracking frame integration, of drifts
+stored in the ODF OM tracking history auxiliary data file. These are
+then written as additional columns to the input ODF OM fast mode event
+list file.
+
+<P>
+The drift-corrected OM Fast mode event list file is passed to <SMALL>OMFASTFLAT</SMALL> which uses the OM in-orbit flatfield and the RAWX/RAWY
+values of the event list to flatfield the event list on an event by
+event basis. The output flatfielded event list is then passed to <SMALL>EVSELECT</SMALL> to produce a Fast Mode flatfielded image which can be
+treated by subsequent SAS tasks in the same way as an Image Mode
+flatfielded image.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="omfastshift.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

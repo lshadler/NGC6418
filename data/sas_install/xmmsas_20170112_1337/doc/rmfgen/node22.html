@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Input Files</TITLE>
+<META NAME="description" CONTENT="Input Files">
+<META NAME="keywords" CONTENT="rmfgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rmfgen.css">
+
+<LINK REL="next" HREF="node23.html">
+<LINK REL="previous" HREF="node21.html">
+<LINK REL="up" HREF="rmfgen.html">
+<LINK REL="next" HREF="node23.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rmfgen (rmfgen-2.5.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node21.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Errors"></A>
+<A HREF="rmfgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node23.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Output Files"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rmfgen.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00060000000000000000"></A>
+<A NAME="rmfgen:description:inputfiles"></A>
+<BR>
+Input Files
+</H1>
+
+<P>
+
+<OL>
+<LI>Input counts spectrum dataset specified by the parameter <TT>spectrumset</TT>. The format of this dataset
+is defined in the OGIP document [<A
+ HREF="node31.html#ct:OGIP-92-007">2</A>], 
+but for the purposes of <A NAME="1151"></A><A NAME="tex2html27"
+  HREF="../rmfgen/index.html"><SPAN  CLASS="textbf">rmfgen</SPAN></A>, it must contain the following information:
+
+<P>
+
+<UL>
+<LI>The global attributes <A NAME="1155"></A><TT>TELESCOP</TT>, <A NAME="1157"></A><TT>INSTRUME</TT>, <A NAME="1159"></A><TT>FILTER</TT>.
+</LI>
+<LI>A table named <A NAME="1161"></A><TT>SPECTRUM</TT>, containing the attributes
+ <A NAME="1163"></A><TT>SPECPIX</TT>, <A NAME="1165"></A><TT>SPECDELT</TT> and <A NAME="1167"></A><TT>SPECVAL</TT>. This table in turn contains:
+
+<P>
+
+<UL>
+<LI>A column named <A NAME="1169"></A><TT>CHANNEL</TT>, which contains
+		the attributes <A NAME="1171"></A><TT>TLMIN</TT> and <A NAME="1173"></A><TT>TLMAX</TT>.
+	
+</LI>
+</UL>
+
+<P>
+</LI>
+</UL>
+
+<P>
+</LI>
+<LI>Input detector map. This is a file or array specified by the parameter <TT>detmaparray</TT>
+and containing the following information:
+
+<P>
+
+<UL>
+<LI>A 2-d array of any numerical type. By default this will be the primary array in
+an image dataset.
+</LI>
+<LI>The WCS attributes <A NAME="1176"></A><TT>CTYPE1</TT>, <A NAME="1178"></A><TT>CRPIX1</TT>, <A NAME="1180"></A><TT>CRVAL1</TT>, <A NAME="1182"></A><TT>CDELT1</TT>, <A NAME="1184"></A><TT>CTYPE2</TT>, <A NAME="1186"></A><TT>CRPIX2</TT>, <A NAME="1188"></A><TT>CRVAL2</TT>, <A NAME="1190"></A><TT>CDELT2</TT>.
+This map must be generated in terms of [<A NAME="1192"></A><TT>DETX</TT>,<A NAME="1194"></A><TT>DETY</TT>] coordinates, so the axis types,
+ie <A NAME="1196"></A><TT>CTYPE1</TT> and <A NAME="1198"></A><TT>CTYPE2</TT>, must be DETX and DETY respectively.
+</LI>
+</UL>
+This map is only used by <A NAME="1200"></A><A NAME="tex2html28"
+  HREF="../rmfgen/index.html"><SPAN  CLASS="textbf">rmfgen</SPAN></A>
+if <TT>detmaptype</TT> is set to 'dataset'.
+
+<P>
+</LI>
+</OL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node21.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Errors"></A>
+<A HREF="rmfgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node23.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Output Files"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node32.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

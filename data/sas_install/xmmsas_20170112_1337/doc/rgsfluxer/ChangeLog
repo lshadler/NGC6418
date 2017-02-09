@@ -1,0 +1,179 @@
+ChangeLog for rgsfluxer
+===============================
+
+Version 1.9.2 - 2016-01-29 (AI)
+-------------		
+	+ Doc updated. 
+	
+Version 1.9.1 - 2015-12-22 (AI)
+-------------	
+	+ New parameters "witharffile" and "arf"
+
+Version 1.9 - 2015-12-11 (AI)
+-------------	
+	+ new rgsfluxer implementation to take into account ARF files
+
+Version 1.8.4 - 2013-09-02 (AI)
+-------------	
+	+ Doc updated.
+	
+Version 1.8.3 - 2013-02-27 (AI)
+-------------	
+	+ Bug related to beta binning input spectra fixed.
+	
+Version 1.8.2 - 2013-02-25 (AI)
+-------------	
+	+ New functionality added to avoid rebinning when all the input spectrum have exactly the same lambda grid.
+	
+Version 1.8.1 - 2013-02-19 (AI)
+-------------	
+	+ eV~Ang constant taken from caloalutils 
+	
+Version 1.8 - 2012-03-23 (AI)
+-------------
+	+ Rebinning method only applied if spectral binning and default binning are different. 
+	
+Version 1.7.5 - 2010-04-16 (AI)
+-------------
+	+ default parameters min, max and bins changed to 4,40 and 3600
+	+ doc updated
+	
+Version 1.7.4 - 2008-05-23 (AI)
+-------------
+	+ Check if the input spectra were calculated in wavelength grid 
+	or beta grid. In case of a wavelength spectra, calculate the right 
+	wavelength channels to accumulate the spectra.
+	
+Version 1.7.3 - 2006-07-02 (CG)
+-------------
+	+ Fixed background subtraction bug for background in counts with 
+	different exposure time than source spectrum (SPR 2714) 
+	
+Version 1.7.2 - 2007-01-26 (AI)
+-------------
+	+ The energy grid calculated during the spectrum count rate rebinning,
+	is also uses in the response matrix rebinning method. All the 
+	calculation in rgsfluxer converted to double. Fixes SOC-SPR-2700
+	
+Version 1.7.1 - 2006-01-20 (CG)
+-------------
+	+ Wrong model background subtraction fixed (SPR 2643)
+	+ Non-subtraction and warning added if background subtraction asked
+	  (background files present) but Spectrum already bck-subtracted
+	
+
+Version 1.7 - 2005-04-20 (JAC)
+-----------
+	+ adapted to cope with TOTAL spectra, removing backcounts
+	+ if no background given, no change to previous algorithm
+	+ adapted to deal with background spectra as produced by rgsbkgmodel
+	+ error calculations updated for new background consideration
+
+Version 1.6 - 2003-10-20 (CG)
+-----------
+	+ bug in initialisation of _qualityRank fixed
+
+Version 1.5 - 2003-04-02 (CG)
+-----------
+	+ change to avoid C++ non compliance ( > error in gcc 3.2 )
+
+Version 1.4 - 2002-08-21 (UL)
+-----------
+	+ now DEPENDs on package sas
+
+Version 1.3 - 2002-06-25 (JDR)
+-----------
+- conforms with future standard naming convention for rmf: RSPMAT
+
+Version 1.2 - 2002-05-09 (JDR)
+-----------
+- requires param-2.0
+
+Version 1.1.1 - 2002-02-12 (JDR)
+-------------
+- changed output extension name from PRIMARY to FLUXED
+- infers rmf name from pha name according to new rgsproc convention
+- updated the task description
+
+Version 1.1 - 2002-01-16 (JDR)
+-----------
+- promoted from experimental to approved
+
+Version 0.16 - 2001-08-28 (JDR)
+------------
+- updated for rgsspectrum-1.1
+
+Version 0.15 - 2001-04-24 (JDR)
+------------
+- updated for rgsspectrum-0.10 (attribute ALPHANOM changed to RGSALPHA)
+
+Version 0.14 - 2001-03-23 (JDR)
+------------
+- requires rgslib-1.10
+
+Version 0.13 - 2000-12-18 (JDR)
+------------
+- compiles with optimizer enabled
+
+Version 0.12 - 2000-11-03 (JDR)
+------------
+- requires rgslib-1.2
+
+Version 0.11.1 - 2000-10-27 (JDR)
+--------------
+- updated GROUPS
+
+Version 0.11 - 2000-09-28 (JDR)
+------------
+- command-line interface documented in task description
+
+Version 0.10 - 2000-09-21 (JDR)
+------------
+- fixed a syntax error
+
+Version 0.9 - 2000-09-19 (JDR)
+-----------
+- compiles under gcc-2.95.2
+- moved rgsspectrum to its own package
+- moved rgsbackreg to rgsregion-2.25
+
+Version 0.8 - 2000-08-02 JDR
+-----------
+- rgsbackreg: channels fully outside the exposed surface are now excluded
+- rgsspectrum: removed parameter --expthresh and associated functionality
+- rgsspectrum: added temporary parameter --withaltnan=no
+- rgsspectrum: changed channel indexing to zero offset as per evselect
+- rgsspectrum: added attribute SYS_ERR=0
+
+Version 0.7 - 2000-07-27 JDR
+-----------
+- rgsspectrum: replaced --withbackground parameter with --type=net|total|bkg
+- rgsspectrum: now able to produce a spectrum with only the scaled background
+- rgsspectrum: added parameter --expthresh to flag underexposed channels
+
+Version 0.6 - 2000-07-24 JDR
+-----------
+- rgsspectrum: added attributes LINE_SEP and ALPHANOM
+- rgsfluxer: no longer requires SOURCES table or CCF
+
+Version 0.5 - 2000-07-11 JDR
+-----------
+- now depends on dal-1.21
+
+Version 0.4 - 2000-07-06 JDR
+-----------
+- new version of rgsfluxer: takes output of rgsspectrum
+
+Version 0.3 - 2000-06-29 JDR
+-----------
+- finished working draft of rgsspectrum
+
+Version 0.2 - 2000-06-23 JDR
+-----------
+- replaced ascii output to stdout with explicit file
+- added rgsbackreg and rgsspectrum
+
+Version 0.1 - 2000-06-15 JDR
+-----------
+- Directory structure created by pkgmaker.
+- working first draft

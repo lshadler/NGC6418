@@ -1,0 +1,61 @@
+<!-- parameter file for flspec after param 2.0 -->
+<FILE>
+
+<CONFIG>
+
+  <PARAM id="sourcelistset" type="dataset" default="emllist.fits" mandatory="yes">
+   <DESCRIPTION>Name of the EPIC (combined) source list set</DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="set" type="dataset" default="evtlist.fits" mandatory="yes">
+   <DESCRIPTION>Event list filename of the EPIC imaging observation</DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="imageset" type="dataset" default="image.fits" mandatory="yes">
+   <DESCRIPTION>EPIC Image set in a reference energy band</DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="exposureset" type="dataset" default="expmap.fits" mandatory="yes">
+   <DESCRIPTION>EPIC Exposure map corresponding to image</DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="tmpflatset" type="dataset" default="img_flat.fits">
+   <DESCRIPTION>Name of the file containing the temporary flatfielded image</DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="tmpbkgregionset" type="dataset" default="bkg.reg">
+   <DESCRIPTION>Name of the temporary file containing the background regions</DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="tmpsrclistset" type="dataset" default="src_list.ds">
+   <DESCRIPTION>Name of the temporary file used by region during filtering of source list
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="tmpposmaskset" type="dataset" default="mask_pos.fits">
+   <DESCRIPTION>Name of the file containing the temporary positive image mask</DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="tmpnegmaskset" type="dataset" default="mask_neg.fits">
+   <DESCRIPTION>Name of the file containing the temporary negative image mask</DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="tmpposspecset" type="dataset" default="spec_pos.fits">
+   <DESCRIPTION>Name of the file containing a temporary positive spectrum</DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="tmpnegspecset" type="dataset" default="spec_neg.fits">
+   <DESCRIPTION>Name of the file containing a temporary negative spectrum</DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="binsize" type="real" default="0.01666666" mandatory="yes">
+   <DESCRIPTION>Size of the rebinned pixels in degrees to define positive and negative regions. It will be rounded to the nearest integer multiple of the pixel size in the input image</DESCRIPTION>
+   <CONSTRAINTS> binsize .gt. 0.0 </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="spectrumsets" type="dataset" list="yes" default="specfl0.fits specfl1.fits specfl2.fits specfl3.fits specfl4.fits" mandatory="yes">
+   <DESCRIPTION>Output fits filenames containing the spectra of the background fluctuations extracted in equal-area annular regions at different offaxis values (between 0. and 12 arcmin).</DESCRIPTION>
+  </PARAM>
+
+</CONFIG>
+</FILE>

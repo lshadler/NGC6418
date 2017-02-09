@@ -1,0 +1,158 @@
+Cards
+#-----------------------
+  Page "Data Processing"
+#-----------------------
+    Row
+      Column 
+        Enable selectinstruments
+          Parameter emos1
+          Parameter emos2
+        end
+      end
+      Column
+        Enable selectccds
+          Parameter ccd1
+          Parameter ccd2
+          Parameter ccd3
+          Parameter ccd4
+          Parameter ccd5
+          Parameter ccd6
+          Parameter ccd7
+        end
+      end
+    end
+    Enable selectmodes
+      Parameter imaging
+      Parameter rimaging
+      Enable timing
+        Enable withsrccoords
+          Parameter srcra
+          Parameter srcdec
+        end
+      end
+      Enable ctiming
+        Enable withsrccoords
+          Parameter srcra
+          Parameter srcdec
+        end
+      end
+    end
+
+    Enable withinstexpids
+      Parameter instexpids
+    end
+    
+    Frame Temporaries
+      Parameter removetemporaries
+      Parameter removeintermediategtis
+      Parameter removeintermediateeventlists
+    end
+  end
+# --------------------------
+  Page "Good Time Intervals"
+# --------------------------
+    Enable runhkgtigen
+      Frame "Advanced Settings"
+        Enable withparameters
+          Parameter parameters
+        end
+        Parameter except
+        Enable withoverrideparameters
+          Parameter overrideparameters
+        end
+      end
+    end
+    Enable withgtiset
+      Parameter gtiset
+    end
+  end
+# -----------------------------------
+  Page "Attitude and sky coordinates"
+# -----------------------------------
+    Choice referencepointing
+      Page object
+      end
+      Page nominal
+      end
+      Page mean
+###        Parameter runatthkgen
+      end
+      Page median
+###        Parameter runatthkgen
+      end
+      Page user
+        Parameter ra
+        Parameter dec
+        Parameter posangle
+      end
+    end
+  end
+# -----------------------
+  Page "Filter and Merge"
+# -----------------------
+    Enable filterevents
+      Parameter filterexpression
+      Parameter flagfilteredevents
+    end
+    Parameter rungtimerge
+    Parameter applygti
+    Parameter runevlistcomb
+# This parameter is used during the flaring, but it has no sense
+# to allow the user to change it.
+#    Parameter timebin
+  end
+# -----------------
+  Page "Bad Pixels"
+# -----------------
+   Enable searchforbadpixels
+    Choice badpixfindalgo
+     Page badpixfind
+      Parameter searchforbadcolumns
+      Enable withbadpixgti
+       Parameter badpixgti
+      end
+      Frame "Advanced Settings"
+            Parameter thresholdlabel
+            Parameter lothresh
+            Parameter hithresh
+            Parameter columnsearchlabel
+            Parameter locolthresh
+            Parameter hicolthresh
+            Parameter flickertimesteps
+            Parameter flickerksthresh
+            Parameter flickerchisqthresh
+            Parameter backgroundrate
+            Parameter narrowerthanpsf
+            Parameter threshabovebackground
+            Parameter loenergythresh
+      end
+     end 
+     Page embadpixfind
+     end
+    end
+   end
+ end
+
+  Page "Details"
+    Frame emevents
+      Parameter keepsifluor
+      Parameter randomizeposition
+      Parameter rejectrows
+      Parameter maxeventsperrow
+      Parameter randomizetime
+    end
+    Frame emenergy
+      Parameter useccfdarkframe
+      Parameter randomizeenergy
+      Parameter correctcti
+      Parameter correctgain
+      Parameter ontimepha
+    end
+    Frame SciSim
+      Parameter analyzingSciSimdata
+    end
+    Frame "Additional run of embadpixfind below 500 eV?"
+      Parameter findlowener
+    end
+  end     
+end

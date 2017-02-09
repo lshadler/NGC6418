@@ -1,0 +1,87 @@
+ChangeLog for emtaglenoise
+==========================
+
+Open SPRs:
+None.
+
+Version 1.1 - 2014-04-21 (AI)
+-------------	
+	+ gcc 4.8.2 portability change
+	
+Version 1.0.5 - 2012-04-10 (AI)
+-------------	
+	+ emtaglenoise.cc: "true" logic sentence removed from the filter expression.
+	  SOC-SPR-6694 fized.
+	+ test-harness updated (DSS excluded from the fdiff command).
+	
+Version 1.0.4 - 2010-10-17 (C M Hubert Chen)
+-------------
++ src/AnomalousStateFinder.cc: Now skips CCDs with no STDGTI0n extensions.
+
+Version 1.0.3 - 2009-09-26 (C M Hubert Chen)
+-------------
++ test/test-emtaglenoise: Now calls fdiff exclude=CONTINUE to pass test at SOC.
+
+Version 1.0.2 - 2009-09-25 (C M Hubert Chen)
+-------------
++ src/AnomalousStateFinder.cc: (type-id)[n] |-> type-id[n] to comply w/ gcc4.
++ test/test-emtaglenoise: SAS_CCF now exported.
++ test/test-emtaglenoise: Now echoes lines 1-100 of fdiff output for debugging.
+
+Version 1.0.1 - 2009-08-01 (C M Hubert Chen)
+-------------
++ Updated cal dependency to version 3.191 to fix bug in ScreenThresholdServer.
++ Now open EVENTS table with Dal::Modify to fix I/O error in low-memory mode.
++ src/emtaglenoise.cc: Replaced *AnomalousStateFinder with class instance.
++ src/AnomalousStateFinder.h: Syntax correction to fix compile-time warning.
++ src/AnomalousStateFinder.cc: Announce all Cal/Dal access in SAS messages.
++ New test code test/test-{cal,dal}.cc to isolate and test cal/dal calls.
++ test/test-emtaglenoise: SAS_CCF defined by saslocate; test/ccf.cif removed.
++ test/test-emtaglenoise: Now runs always to the end w/o halting upon errors.
+
+Version 1.0 - 2009-04-14 (C M Hubert Chen)
+-----------
++ Removed all hardcoded parameters; task now calls cal access methods instead.
++ class AnomalousStateFinder::CCDdata: New method isInBand(int, EnergyBand).
+
+Version 0.6 - 2009-03-25 (C M Hubert Chen)
+-----------
++ Renamed package from goodpixelcount to emtaglenoise.
++ Renamed task    from emtaganomalous to emtaglenoise.
++ emtaglenoise now writes LENOISnn to file instead of printing to STDERR.
++ Implemented the filterbadccds and filteredset parameters.
++ Removed all dependencies of class AnomalousStateFinder on class PixelCounter.
++ Kept but no longer compiling task goodpixelcount.
+
+Version 0.5 - 2009-01-22 (C M Hubert Chen)
+-----------
++ class AnomalousStateFinder: Now tags verification states as anomalous as well.
++ class AnomalousStateFinder: New access methods getCount(Ccd, EnergyBand),
+  getGITsum(Ccd), getH(Ccd) and getR(Ccd).
++ AnomalousStateFinder.cc: assert(...) are now Sas::error(...).
++ Moved all '#include "<taskname>.h"' from class headers to <taskname>.cc .
++ New testing routine printstat() in printstat.cc .
+
+Version 0.4 - 2008-10-28 (C M Hubert Chen)
+-----------
++ First revision with a working PixelCounter and task goodpixelcount.
++ New class AnomalousStateFinder and task emtaganomalous.
+
+Version 0.3 - 2008-10-10 (C M Hubert Chen)
+-----------
++ This revision accepts a user-input selectlib-style expression for filtering,
+  in addition to discounting bad pixels based on the BADPIX0n extensions.
+  It counts in integral DETX/Y coordinates, covering all pixels on any CCD.
++ Works in principle, but looping through all 7 x 12000^2 DETX/Y takes forever.
++ Bug: PixelCounter::_goodPixelMaps is never initialised.
+
+Version 0.2 - 2008-09-09 (C M Hubert Chen)
+-----------
++ Restructured code from previous version to formal class PixelCounter.
+  There should be no change in functionality whatsoever.
+
+Version 0.1 - 2008-09-05 (C M Hubert Chen)
+-----------
++ Directory structure created by pkgmaker.
++ First sandbox version that does bad pixel filtering based on BADPIXnn.
+  Pixel counts are written to file header in PIXCOORD1 (RAWX/Y).

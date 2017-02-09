@@ -1,0 +1,131 @@
+<FILE>
+ <CONFIG>
+
+  <PARAM id="attsource" type="string" default="odf">
+   <DESCRIPTION>
+    Source of attitude information.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="odf">
+     <PARAM id="odfattsource" type="string" default="ahf">
+      <DESCRIPTION>
+       Source of attitude information in ODF.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="ahf">
+       </ITEM>
+       <ITEM value="om">
+       </ITEM>
+      </CASE>
+     </PARAM>
+
+     <PARAM id="timesource" type="string" default="user">
+      <DESCRIPTION>
+       Source of time-sample information.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="user">
+
+
+        <PARAM id="usertimestyle" type="string" default="timestamp">
+         <DESCRIPTION>
+          Style in which the time is input.
+         </DESCRIPTION>
+         <CASE>
+          <ITEM value="datestr">
+           <PARAM id="datestrstart" type="string" default="0000-00-00T00:00:00" mandatory="yes">
+            <DESCRIPTION>
+             Date/time of first time sample. 
+            </DESCRIPTION>
+           </PARAM>
+           <PARAM id="datestrstop" type="string" default="0000-00-00T00:00:00" mandatory="yes">
+            <DESCRIPTION>
+             Last date/time which can be a time sample.
+            </DESCRIPTION>
+           </PARAM>
+          </ITEM>
+
+          <ITEM value="timestamp">
+           <PARAM id="tstart" type="real" default="0" mandatory="yes">
+            <DESCRIPTION>
+             Timestamp of first time sample. 
+            </DESCRIPTION>
+           </PARAM>
+           <PARAM id="tstop" type="real" default="0" mandatory="yes">
+            <DESCRIPTION>
+             Last time stamp which can be a time sample.
+            </DESCRIPTION>
+           </PARAM>
+          </ITEM>
+         </CASE>
+        </PARAM>
+
+        <PARAM id="tstep" type="real" default="1.0" mandatory="yes">
+         <DESCRIPTION>
+          Time between samples of the attitude. 
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          tstep in (0.0:]
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+
+       <ITEM value="eventlist">
+        <PARAM id="eventset" type="dataset" mandatory="yes" default="">
+         <DESCRIPTION>
+          Input events set for provision of time samples. 
+         </DESCRIPTION>
+        </PARAM>
+
+        <PARAM id="pntkwdset" type="dataset" mandatory="yes" default="">
+         <DESCRIPTION>
+          Dataset which contains the mean or median pointing keywords. 
+         </DESCRIPTION>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+
+    <ITEM value="atthk">
+     <PARAM id="atthkset" type="dataset" mandatory="yes">
+      <DESCRIPTION>
+       atthkgen output file.
+      </DESCRIPTION>
+     </PARAM>
+
+     <PARAM id="atthkattsource" type="string" default="ahf">
+      <DESCRIPTION>
+       Source of attitude information in the attkhgen file.
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="ahf">
+       </ITEM>
+       <ITEM value="om">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="binnedattset" type="dataset" default="binned_att.ds">
+   <DESCRIPTION>
+    The dataset which contains the binned attitude data. 
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="maxdelta" type="real" default="0.02">
+   <DESCRIPTION>
+    A new attitude bin is started if the attitude jumps by more than this amount (arcsec). 
+   </DESCRIPTION>
+  </PARAM>
+
+  <PARAM id="withmedianpnt" type="bool" default="yes">
+   <DESCRIPTION>
+    Whether to use/calculate median or mean pointing for the _PNT keywords. 
+   </DESCRIPTION>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

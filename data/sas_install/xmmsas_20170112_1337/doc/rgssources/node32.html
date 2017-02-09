@@ -1,0 +1,332 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="rgssources">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgssources.css">
+
+<LINK REL="next" HREF="node33.html">
+<LINK REL="previous" HREF="node19.html">
+<LINK REL="up" HREF="rgssources.html">
+<LINK REL="next" HREF="node33.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgssources (rgssources-6.2.2) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node31.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Elaborations."></A>
+<A HREF="rgssources.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node33.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgssources.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00070000000000000000"></A>
+<A NAME="rgssources:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+  read parameters;
+
+################# start format upgrade section.
+
+  if (filemode eq 'modify') {
+    # convert old-style source list if necessary:
+    if (! instrument_supplied) {
+      if (hasAttribute(set, 'INSTRUME')) {
+        instrument = stringAttribute(oldListSet, 'INSTRUME');
+      } else {
+        # attempt to get it from file name:
+if (! instrument_in_filename) {call error;}
+      }
+    }
+
+    call CAL_setState(instrument=instrumentId);
+
+    rename table to 'SRCLIST';
+    get attitude from *_REF keywords;
+    write_generic_keywords;
+    if (writeobskwds) {write_observation_keywords;}
+    if (writeexpkwds) {
+      if (! exposure_supplied) {
+        if (hasAttribute(set, 'EXP_ID')) {
+          exposure = stringAttribute(oldListSet, 'EXP_ID');
+        } else {
+          # attempt to get it from file name:
+if (! exposure_in_filename) {call error;}
+        }
+      }
+    }
+
+    # Convert columns:
+    n_offaxis_sources = 0;
+    foreach (source) {
+      fixed_on_sky = true; # default
+      process      = false; # default
+      bkg_exclude  = false; # default
+      if (old_label eq 'proposal') {
+        new_label = 'PROPOSAL';
+        new_ra    = old_ra;
+        new_dec   = old_dec;
+
+      } elsif (label eq 'onaxis') {
+        new_label    = 'ON_AXIS';
+        new_ra       = attitude_ra;
+        new_dec      = attitude_dec;
+        delta_disp   = 0;
+        delta_xdsp   = 0;
+        new_fov_phi  = 0;
+        new_fov_r    = 0;
+        fixed_on_sky = false;
+
+      } elsif (label eq 'epic') {
+        new_label = 'OLDEPIC'.id_band.ml_id_src;
+        new_ra    = old_ra;
+        new_dec   = old_dec;
+        epic_file = number of bands found;
+
+      } elsif (label eq 'offaxis') {
+        n_offaxis_sources = n_offaxis_sources + 1;
+
+        new_label    = 'OFFAXIS'.n_offaxis_sources;
+        delta_disp   = rgs_disp;
+        delta_xdsp   = rgs_xdsp;
+        calculate new_fov_phi, new_fov_r;
+        fixed_on_sky = false;
+
+      } else { # assume is user-added source.
+        new_label = upper_case(old_label);
+        new_ra    = old_ra;
+        new_dec   = old_dec;
+      }
+      new_rate = old_rate;
+      if (src_select  &gt; 0) {process     = true;}
+      if (back_select &gt; 0) {bkg_exclude = true;}
+      if (fixed_on_sky) {
+        calculate delta_disp;
+        calculate delta_xdsp;
+        calculate new_fov_phi;
+        calculate new_fov_r;
+
+      } else {
+        calculate new_ra;
+        calculate new_dec;
+      }
+    }
+
+  calculate_confusion(src_data, prime_index);
+  delete old columns;
+  write column data to new columns;
+  write epic keywords;
+  }
+
+################# end format upgrade section.
+
+  # get the instrument:
+  if (filemode eq 'modify') {
+    instrument = stringAttribute(oldListSet, 'INSTRUME');
+  } else {
+    # get instrument from parameter;
+if (instrument parameter at default value) {call error;}
+  }
+  # get the exposure number:
+  expid_is_valid = true;
+  if (filemode eq 'modify') {
+    exposure = int32Attribute(oldListSet, 'EXP_ID');
+  } else {
+    # get exposure from parameter;
+    if (exposure parameter at default value) {
+      expid_is_valid = false;
+    }
+  }
+
+  call CAL_setState(instrument=instrumentId);
+
+  # get the pointing:
+  if (filemode .eq. 'modify' &amp;&amp; ! changeAttitude) {
+    # read attitude from old source list;
+  } elsif (attitudeStyle .eq. 'user') {
+    # read attitude from attra, attdec and attapos parameters;
+  } else {
+if (!expid_is_valid) {call error;}
+    call OAL_setState(instrument=instrument, exposureNr=exposure);
+    if (attitudeStyle .eq. 'start') {
+      # get attitude from attitude at start of observation;
+    } elsif (attitudeStyle .eq. 'mean') {
+      # get attitude from mean of attitude history file values;
+    } elsif (attitudeStyle .eq. 'median') {
+      # get attitude from median of attitude history file values;
+    }
+  }
+
+  allocate(src_data(max_number_sources));
+
+  if (filemode eq 'create') {
+    proposal position -&gt; src_data(1);
+    attitude position -&gt; src_data(2);
+
+  } else { # filemode eq 'modify'
+    open(old rgs set, 'READ');
+    call check(old rgs list); # This checks that all label names are unique,
+    # and that there is a proposal and attitude source.
+
+    old rgs sources -&gt; src_data;
+    release(old rgs set);
+
+    if (changeattitude) {attitude position -&gt; src_data(index of onaxis src);}
+  }
+
+  if (withepicset) {
+    clone(old epic set);
+    if (enablefilter) {spatial filtering of cloned epic set;}
+    foreach(epic source) {
+      label = 'epiclabelprefix'.column('*_ID_SRC');
+      foreach(source already in src_data) {
+        if (label eq src_data(LABEL)) {
+          no_label_clash = F;
+          if (clobberonlabel) {
+      last;
+          } else {
+call error;
+          }
+        }
+      }
+      if (no_label_clash) {
+        epic source -&gt; src_data;
+      }
+    }
+    release(old epic set);
+  }
+
+  if (addusersource) {
+    foreach(source already in src_data) {
+      if (label eq src_data(LABEL)) {
+        no_label_clash = F;
+        if (clobberonlabel) {
+    last;
+        } else {
+call error;
+        }
+      }
+    }
+    if (no_label_clash) {
+      user source -&gt; src_data;
+    }
+  }
+
+  # Possible routine in this place that filters out (or at least identifies)
+  # all pairs of too-close sources.
+
+  if (changeattitude or null in column) {
+    foreach(source in src_data) {
+      # Calculate ra/dec or delta_disp/delta_xdsp/fov_phi/fov_r, as appropriate;
+    }
+  }
+
+  # Write the data to file:
+  if (filemode eq 'create') {
+    open(new rgs set, 'CREATE');
+    # write keywords to header:
+    write_generic_keywords;
+    if (writeobskwds) {write_observation_keywords;}
+    if (writeexpkwds &amp;&amp; expid_is_valid) {write_exposure_keywords;}
+
+  } else { # filemode eq 'modify'
+    open(old rgs set, 'MODIFY');
+    if (changeattitude) {
+      rewrite attitude attributes (#RA_PNT etc);
+      delete all region extensions;
+      set PROCESS and BKG_EXCLUDE to false;
+    }
+    delete all table entries;
+  }
+
+  src_data -&gt; new rgs set;
+  if (withepicset) {
+    write_epic_specific_keywords;
+  }
+
+  if (enablefilter) {check that all members of the src list are within the
+  fov, flag them and warn if not;}
+
+  # Estimate groups of confused sources:
+  if (withepicset &amp;&amp; doEpicConfusion) {
+    mark_groups_of_confused_sources
+    foreach (confused_group) {
+      if (a confused group includes the proposed source) {
+        if (proposed source is confused with only one EPIC source) {
+          flag_the_proposed_and_leave_the_EPIC_one;
+        } else { # proposed source is confused with more than one EPIC source
+          flag_all_but_the_proposed;
+        }
+      } else { 
+        flag_all_but_the_brightest;
+      }
+    }
+  }
+
+  # Now calculate prime source index value:
+  if (filemode eq 'modify' &amp;&amp; !changeprime) {
+    prime_index = prime_index in old file;
+  } else {
+    if (addusersource &amp;&amp; userasprime) {
+      prime_index = index of (last) user-added source;
+    } else {
+      if (primestyle eq 'label') {
+        prime_index = index of source with label=primesourcelabel;
+      } elsif(primestyle eq 'index') {
+        prime_index = primesourceindex;
+      } elsif(primestyle eq 'brightest') {
+        prime_index = index of brightest source;
+      } elsif(primestyle eq 'auto') {
+        if (proposal source is within FOV and is not flagged as confused) {
+          prime_index = index of proposal source;
+        } elsif (there are some epic sources within FOV) {
+          prime_index = index of brightest within-FOV epic source;
+        } else {
+          prime_index = index of pointing (ONAXIS) source;
+        }
+      }
+    }
+  }
+
+  if (filemode eq 'create' || changeprime) {
+    prime_index -&gt; #PRIMESRC;
+  }
+
+  call calculate_confusion(src_data, prime_index);
+  # Write the confusion data to file:
+  # release the data set.
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

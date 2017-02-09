@@ -1,0 +1,191 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Data Model</TITLE>
+<META NAME="description" CONTENT="Data Model">
+<META NAME="keywords" CONTENT="dal">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="dal.css">
+
+<LINK REL="next" HREF="node3.html">
+<LINK REL="previous" HREF="node1.html">
+<LINK REL="up" HREF="dal.html">
+<LINK REL="next" HREF="node3.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+dal (dal-1.191.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node1.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Introduction"></A>
+<A HREF="dal.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Abstract API"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="dal.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00020000000000000000">
+Data Model</A>
+</H1>
+
+<P>
+The DAL is principally concerned with data organisation and access.
+
+<P>
+The DAL Data Model organises data into a collection of data sets.
+
+<P>
+A data set, which, for aesthetic reasons, will be written as the collocation
+dataset throughout this document, is an attributable set together with an
+ordered collection of zero or more blocks. Sometimes a dataset is said to be an
+attributable set or simply attributable.
+
+<P>
+A block is one of:
+
+<UL>
+<LI>an array
+</LI>
+<LI>a table.
+</LI>
+</UL>
+
+<P>
+An array is an attributable set together with an n-dimensional array (1 &#171; n &#171;
+3) of numeric scalars. The scalars all have the same type.  Sometimes an array
+is said to be an attributable set or simply attributable.
+
+<P>
+A table is an attributable set together with an ordered collection of zero or
+more columns.  Sometimes a table is said to be an attributable set or simply
+attributable.
+
+<P>
+A column is an attributable set together with a vector of cells.  Sometimes a column is said to be an attributable set
+ or simply attributable.
+A cell is one of:
+
+<UL>
+<LI>a string
+</LI>
+<LI>a scalar
+</LI>
+<LI>an n-dimensional array ( 1 &#171; n &#171; 4 ) of scalars
+</LI>
+</UL>
+
+<P>
+A scalar is one of:
+
+<UL>
+<LI>a numeric scalar
+</LI>
+<LI>a boolean
+</LI>
+</UL>
+
+<P>
+A numeric scalar is one of:
+
+<UL>
+<LI>an integer value with 8 bits of precission
+</LI>
+<LI>an unsigned integer value with 16 bits of precission
+</LI>
+<LI>an integer value with 16 bits of precission
+</LI>
+<LI>an unsigned integer value with 32 bits of precission
+</LI>
+<LI>an integer value with 32 bits of precission
+</LI>
+<LI>a real value with 32 bits of precission
+</LI>
+<LI>a real value with 64 bits of precission
+</LI>
+</UL>
+
+<P>
+The scalars within a particular array or column all have the same type.
+
+<P>
+An attributable set, which for the purposes of brevity will be shortened to
+attributable throughout this document, is the quintuple 
+<BR>{ name, label, setofattributes, setofhistoryrecords, setofcommentrecords } 
+<BR>
+where:
+
+<UL>
+<LI>name A string which is used to provide unique identification.
+</LI>
+<LI>label A textual description.
+</LI>
+<LI>setofattributes is a ordered collection of zero or more
+attributes
+</LI>
+<LI>setofhistoryrecords is an ordered collection of zero or more history
+records.  A history record is a string.
+</LI>
+<LI>setofcommentrecords is an ordered collection of zero or more comment records.  A comment record is a string.
+</LI>
+</UL>
+
+<P>
+An attribute is a quadruple { name, label, unit, value }, where:
+
+<UL>
+<LI>name A string which is used to provide unique identification.
+</LI>
+<LI>label A textual description.
+</LI>
+<LI>unit A string which is used to provide information on the units of the
+data.
+</LI>
+<LI>value Supported types are:
+
+<UL>
+<LI>string
+</LI>
+<LI>integer
+</LI>
+<LI>real
+</LI>
+<LI>boolean
+</LI>
+</UL>
+</LI>
+</UL>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node1.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Introduction"></A>
+<A HREF="dal.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Abstract API"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node36.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

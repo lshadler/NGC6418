@@ -1,0 +1,157 @@
+<!-- converted from XPI formatted "rgsspectrum.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="evlist" type="dataset" mandatory="yes" default="evlist.ds">
+   <DESCRIPTION>
+    contains EVENTS table and exposure maps
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="srclist" type="dataset" default="">
+   <DESCRIPTION>
+    contains SRCLIST table and selection regions
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withspectrum" type="bool" default="yes">
+   <DESCRIPTION>
+    generate a source spectrum
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="bkgcorrect" type="bool" default="no">
+   <DESCRIPTION>
+    background correct the spectrum
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="spectrumset" type="dataset" default="">
+   <DESCRIPTION>
+    source spectrum filename
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withbkgset" type="bool" default="yes">
+   <DESCRIPTION>
+    generate a background spectrum
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="bkgset" type="dataset" default="">
+   <DESCRIPTION>
+    background spectrum filename
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="source" type="int" default="0">
+   <DESCRIPTION>
+    id of source to extract
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    source in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="order" type="int" default="1">
+   <DESCRIPTION>
+    reflection order to extract
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    order in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="rebin" type="int" default="1">
+   <DESCRIPTION>
+    dispersion channel rebinning factor
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    rebin in [1:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="edgechannels" type="int" default="2">
+   <DESCRIPTION>
+    number of bad channels at chip edges
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    edgechannels in [0:]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withfracexp" type="bool" default="no">
+   <DESCRIPTION>
+    add FRAC_EXP column to output files
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="exposed" type="real" default="0.1">
+   <DESCRIPTION>
+    minimum good fractional exposure
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    exposed in [0:1]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="badquality" type="int" default="1">
+   <DESCRIPTION>
+    QUALITY used to flag bad channels
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    badquality in [0:5]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="spectrumbinning" type="string" default="lambda">
+   <DESCRIPTION>
+    Dispersion binning method
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="lambda">
+    </ITEM>
+    <ITEM value="beta">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+ </CONFIG>
+</FILE>

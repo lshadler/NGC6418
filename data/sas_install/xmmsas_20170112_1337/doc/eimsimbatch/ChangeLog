@@ -1,0 +1,159 @@
+ChangeLog for eimsim
+===============================
+
+Version 2.3 - 2012-05-11 (MAS/LUX)
+----------------------
+- Data directory eimsimdata is created at the top level and test/data/srcspec_{1,2}xmm.fits are moved to there.
+
+Version 2.2.2 - 2012-04-18 (EO)
+-------------
+	+ Fixed DEPEND.
+	+ SPRs 3201 and 3265 which showed as open, were already implemented. Removed from head of this file.
+
+Version 2.2.1 - 2009-05-12 (EO)
+-------------
+	+ Re-fixed DEPEND.
+
+Version 2.2 - 2009-05-11 (EO)
+-----------
+	+ Fixed DEPEND file.
+
+Version 2.1 - 2009-02-02 (MAS/LUX)
+----------------------
+- Changed back distribution from `ssc' to `world'.
+- Now it can run in the environment of the current devtrack SAS.
+- Now it may (or in fact likely) require the template images as well to run simulations.
+- Kept up with the updates of other tasks and libraries, particularly eexpmap, addattribute and ssclib.
+	
+Version 2.0.7 - 2008-05-29 (IMS/JBCA)
+----------------------
+- Added bkg rates to srcspec set for all inst, filter combos.
+- Added parameter --bkgstyle to eimsimprep. --bkgrates and --vigfractions are now only read if --bkgstyle='user'. NOTE! The default setting of --bkgstyle is 'srcspecset' not 'user'; the default behaviour of eimsim has changed in consequence.
+- The subroutine 'readEcfs' in eimsimperlsubs.pm has been updated to also read the 'BG' columns. All the perl tasks which read ecfs have been slightly altered to cope with this.
+- Added parameters --withfluxoffset and --fluxoffset to srcmap, eimsim and eimsimbatch, to help offset the nett addition to the background of all the faint sources.
+- Added call to fimgtrim to eimsim.pl (necessary to avoid negative-valued pixels if some flux offset is applied during the srcmatch call).
+- Changed TANX/Y columns to just X/Y, with units arcsec.
+- Slight bug-fixes to eimsimreliability and ModuleResources.pm.
+- Comments in srccompare have been slightly updated.
+- The doco has been updated.
+- Some plots have been added to eimsimreduce doco.
+- Fixed undesirable feature in eimsimprep where the name 'bkgrates' was used for different variables (one a list, the other a hash). Even though they were in different scopes, it is a bad idea.
+- Parameter --minhistoprob added to eimsimreliability to allow the user to omit from the histogram bright sources with very high DET_ML and thus low DETEC_PNULL.
+- eimsimreliability now checks that there are >1 y values before doing plot 2.
+
+Version 2.0.6 - 2007-08-23 (IMS/JBO)
+----------------------
+- Finished and tested drawLegend routine in l_pgplot_aux.
+- All relevant eimsimreduce plots now have legends.
+
+Version 2.0.5 - 2007-08-13 (IMS/JBO)
+----------------------
+- Task faintbackimgen renamed faintbackcalc.
+- Facility to calculate just a single value added to faintbackcalc.
+- Choice of output style added to faintbackcalc.
+- Added new imageutils task imstats (does what fimgstat is supposed to do!). This is temporary; in the longer term this task belongs in package 'tools'.
+- Did a little minor editing of eimsim.pl to make it clearer what srcmap and esrcmap are creating.
+- Fixed a bug in eimsimcompleteness whereby N_TRUE_DET of the completeness histogram could have negative values.
+- Modified eimsimreliability to check the merged det list for 'COMPARED' keyword. If it is not found (or if FALSE), all sources are counted as false detections.
+- Modified eimsimreduce so it again calls eimsimreliability, regardless of the 'COMPARED' keyword.
+- Modified eimsimbias to create 3 ps plots of interest.
+- Modified eimsimreliability to create 4 ps plots of interest.
+- Modified eimsimcompleteness to also create 5 ps plots of interest.
+- Module ssclib/histogram_utils has been modified and temporarily copied to eimsim/src as l_histogram_utils. eimsimcompleteness, eimsimreliability and eimsimbias are all using this version for the moment. Eventually the histogram_utils mods (new field %y in the structure def, correct formula for std dev) should be absorbed in a new version of ssclib.
+- Ditto pgplot_aux -> l_pgplot_aux.
+- eimsimcompleteness: changed histogram column SIM_FLUX_INT to SIM_FLUX_LO.
+- Changed eimsimbias a bit to try to make its functions less opaque.
+- Altered eimsimdetect2xmm so as to delete all files properly under cleanup.
+
+Version 2.0.4 - 2007-08-10 (IMS/JBO)
+----------------------
+- Added a --withsimsources parameter to eimsimbatch and eimsim, to enable source detection on blank fields, thus an estimate of the number of false positives.
+- Some commented lines deleted in eimsim.
+- Modified srccompare to write a keyword 'COMPARED' to the output source list table.
+- Modified eimsimreduce to check for this 'COMPARED' keyword. If not present, or present but FALSE, the only thing eimsimreduce can sensibly do is merge the lists of detections.
+- Added some messages to eimsimbias.
+- Fixed bug in eratetoflux which prevented all-null-RATE sources from being excluded.
+- Fixed another bug in eratetoflux which included RATE values for which RATE_ERR <= 0.
+
+Version 2.0.3 - 2007-08-09 (IMS/JBO)
+----------------------
+- eratetoflux now warns every time it filters out a source from the input list.
+- Column DETEC_PNULL was written as DETEC_NULL in some places in the eimsim documentation. This now corrected.
+- A little more explanation was added of the SRC_NUM and DETEC_PNULL columns in the source list output by the detection part of eimsim.
+- Removed some comment lines from eratetoflux.
+- eratetoflux now writes a keyword ID_COL to its output source list table.
+
+Version 2.0.2 - 2007-08-01 (IMS/JBO)
+----------------------
+- Some changes made to eratetoflux, in order to solve a problem pointed out by Masaaki Sakano, in which eimsimdetect2xmm.pl does not supply mandatory parameters to eratetoflux.
+- Added INSTRUMENTS and FILTERS tables to the source specification datasets.
+- Documentation for eimsimprep and eimsim is revised to describe the new tables and keywords in the source specification datasets.
+- Some changes to eimsimdetect1xmm.pl and eimsimdetect2xmm.pl to bring closer together the way they obtain ECF and filter info, and to allow eratetoflux to be called correctly in eimsimdetect2xmm.pl.
+- Bug in srcmap corrected: the width of the King function is given in arcsec, but the task had taken it to be in image pixels, resulting in King-profile PSFs which were 4 times too broad.
+
+Version 2.0.1 - 2007-05-14 (IMS/JBO)
+----------------------
+- Previously it was too easy for the user to call eimsimprep and eimsimbatch with clashing detection schemes. This has now been improved, which has required changes to the parameter interfaces, and the introduction of an 'eimsim_config' file.
+- To assist the above aim further, keywords '1XMM' and '2XMM' have been added to the appropriate source template files in the test/data subdirectory.
+- Added addattribute, eexpmap and emosaic to dependencies.
+- Fixed bug in which only THIN filter could be used with 2xmm detection scheme.
+- Default for eimsimbatch parameter --cleanup changed to 'no'.
+
+Version 2.0 - 2006-05-04 (IMS/LUX)
+----------------------
+- Chopped up eimsim_utils into numerous tasks.
+
+Version 1.5 - 2004-09-29 (IMS/LUX)
+----------------------
+- All perl tasks cleaned up and common routines put into a module eimsimperlsubs.pm.
+- ECF file format altered to make use of multiple-range energy bands.
+- Parameter --dettask (defaulting to 'eimsimdetect') added to eimsimchain (and eimsimslave) to allow a generic source-detection script to be called.
+- Parameter --detpreptask added to eimsimprep for the same reason. New perl task eimsimdetprep added (just calls emask).
+- Parameters --detentrystage and --detfinalstage added to eimsimchain (and eimsimslave) to be passed to --dettask.
+- Parameters --likemin and --mlmin removed from eimsimchain and eimsimslave.
+- Removed the requirement that there be 5 energy bands.
+- Each energy band may now be composed of the union of several energy intervals.
+- The tasks now assume that the detection script creates a single source list per observation.
+- SPR 3197 fixed (status variable set to 0 at start of the routine).
+- Test products have been moved to testprods; testprods has been added to the dependency.
+- Fixed SPR 3200 (changed the algorithm which calculates pixel width of gaussian PSF).
+- Fixed SPR 3198.
+- Changed the name of module srclistpatch to eimsimdetutils_mod and included some other related subroutines in this module.
+- Documentation has been overhauled.
+
+Version 1.4 - 2004-09-29 (IMS/LUX)
+----------------------
+- Fixed build prob
+
+Version 1.3 - 2004-04-19 (IMS/LUX)
+----------------------
+- Interfaces to ssclib upgraded to 3.9 standard.
+
+Version 1.2 - 2004-03-25 (IMS/LUX)
+----------------------
+- Copy of patches to devtrack.
+
+Version 1.1.4 - 2004-03-03 (IMS/LUX)
+----------------------------
+- Changed distribution from 'world' to 'ssc' until I can get a chance to chase the bugs out of it.
+- Some slight changes to accommodate changes to ssclib-3.6.8 module exposure.
+
+Version 1.1.3 - 2004-01-22 (IMS/LUX)
+----------------------------
+- Temporarily commented out the doc build to allow the task to build at MPE, until I get time to devote some attention to the task.
+
+Version 1.1.2 - 2003-12-19 (IMS/LUX)
+----------------------------
+- Adjusted the code to cope with changes to ssclib-3.6.2/coordinate.f90:getPsfImagePixelCorners.
+
+Version 1.1.1 - 2003-12-17 (IMS/LUX)
+----------------------------
+- Added dss and sasdal to the USEDLIBS line; task wouldn't compile statically without these. Fixes SPR 3176.
+
+Version 1.1 - 2003-12-11 (IMS/LUX)
+----------------------------
+- Got rid of some old files and moved incomplete stuff to src/unfinished.
+
+Version 1.0 - 2003-12-09 (IMS/LUX)
+----------------------------
+- First SOC-delivered version.

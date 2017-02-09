@@ -1,0 +1,235 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="ecubechip2sky">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ecubechip2sky.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="ecubechip2sky.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ecubechip2sky (eimchip2sky-2.5) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="ecubechip2sky.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ecubechip2sky.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="ecubechip2sky:description:parameters"></A>
+<A NAME="460"></A>
+<tr valign=top bgcolor='silver'><td><b>templateset</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The name of the input template image. This supplies information about the projection plane and pixel size (via WCS keywords) and pixel dimensions (via the array dimensions) of the output image.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="467"></A>
+<tr valign=top bgcolor='silver'><td><b>chipcubesets</b></td><td>yes</td><td><A HREF=../param/node3.html>dataset list</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    A list of names of input chip cubes (see the definition in the documentation for <A NAME="475"></A><A NAME="tex2html3"
+  HREF="../chipcube/index.html"><SPAN  CLASS="textbf">chipcube</SPAN></A>).
+
+<br>&nbsp;</td></tr>
+
+  <A NAME="479"></A>
+<tr valign=top bgcolor='silver'><td><b>outsets</b></td><td>no</td><td><A HREF=../param/node3.html>dataset list</A></td><td>outset.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    The list of output images (in sky coordinates). See the documentation for <A NAME="487"></A><A NAME="tex2html4"
+  HREF="../eimchip2sky/index.html"><SPAN  CLASS="textbf">eimchip2sky</SPAN></A>
+for a description of how they match up with the input cubes.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="491"></A>
+<tr valign=top bgcolor='silver'><td><b>withindices</b></td><td>no</td><td><A HREF=../param/node3.html>bool</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Whether to read the <TT>indices</TT> parameter.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="500"></A>
+<tr valign=top bgcolor='silver'><td><b>indices</b></td><td>yes</td><td><A HREF=../param/node3.html>integer list</A></td><td>1</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    See the documentation for <A NAME="508"></A><A NAME="tex2html5"
+  HREF="../eimchip2sky/index.html"><SPAN  CLASS="textbf">eimchip2sky</SPAN></A>
+for a description of how they work.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="512"></A>
+<tr valign=top bgcolor='silver'><td><b>attstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>template</td><td>binnedset|template|user</td></tr>
+
+<tr valign=top><td colspan=5>
+    As described in the documentation for <A NAME="524"></A><A NAME="tex2html6"
+  HREF="../eimchip2sky/index.html"><SPAN  CLASS="textbf">eimchip2sky</SPAN></A>, in general the attitude (ie, pointing direction and roll angle) of the spacecraft doesn't stay fixed during the course of an exposure. This `wandering' of the attitude can be approximated by sampling the attitude at a series of times during the exposure. A separate coordinate transform is computed for each attitude sample and the output image is build up of appropriately weighted contributions from each transform. The present parameter allows the user to choose whether to supply such a list of attitude samples (<TT>attstyle</TT>=`binnedset') or to simply compute a single coordinate transform for the whole exposure, either at an attitude read from the _PNT keywords of the <TT>templateset</TT> (<TT>attstyle</TT>=`template', the default) or at an attitude submitted by the user (<TT>attstyle</TT>=`user').
+
+<br>&nbsp;</td></tr>
+
+  <A NAME="532"></A>
+<tr valign=top bgcolor='silver'><td><b>binnedatttab</b></td><td>yes</td><td><A HREF=../param/node3.html>table</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read (and only mandatory) if <TT>attstyle</TT>=`binnedset'. The parameter should give the name of a dataset plus table (eg: `mySet.ds:ATT_TAB'). The table should contain samples of the XMM spacecraft attitude in time bins (see the task <A NAME="542"></A><A NAME="tex2html7"
+  HREF="../binned_att/index.html"><SPAN  CLASS="textbf">binned_att</SPAN></A>
+documentation for a description of the format).
+    <br>&nbsp;</td></tr>
+
+  <A NAME="546"></A>
+<tr valign=top bgcolor='silver'><td><b>weightstyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>gti</td><td>none|binnedset|gti</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>attstyle</TT>=`binnedset'. A series of attitude samples is supplied; it remains to decide how to calculate the weight for each sample. <TT>weightstyle</TT>=`none' is only valid if there is only 1 attitude sample: the task will fail with an error otherwise. For <TT>weightstyle</TT>=`binnedset', the task will seek for weights in a column named <A NAME="563"></A><TT>WEIGHTS</TT> in the <TT>binnedatttab</TT> table. If <TT>weightstyle</TT>=`gti', the task attempts to obtain a list of Good Time Intervals (GTIs), the exact way these are supplied being dictated via the parameter <TT>gtistyle</TT>; these GTIs are ANDed with the attitude time bins; the net GTI in each bin provides the weight.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="568"></A>
+<tr valign=top bgcolor='silver'><td><b>gtistyle</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>fromimages</td><td>user|kwd|fromcubes|gtitablist</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>weightstyle</TT>=`gti'. In this case the task attempts to obtain a list of Good Time Intervals (GTIs); these GTIs are ANDed with the attitude time bins; the net GTI in each bin provides the weight. Note that matters are complicated by the fact that different CCDs usually have different sets of GTIs. Parameter <TT>gtistyle</TT> specifies the way in which GTIs are supplied. If <TT>gtistyle</TT>=`user', the task obtains a single, simple GTI for all chip images from the parameters <TT>tstart</TT> and <TT>tstop</TT>. The same is true if <TT>gtistyle</TT>=`kwd', except that the task expects to the start and stop times in keywords <A NAME="598"></A><TT>TSTART</TT> and <A NAME="600"></A><TT>TSTOP</TT>, (or whatever alternates are specified via parameters <TT>tstartkwd</TT> and <TT>tstopkwd</TT>), in the FITS table specified by the parameter <TT>kwdtab</TT>. The alternate <TT>gtistyle</TT>=`fromcubes' tells the task to look for GTI extensions (via the <A NAME="606"></A><TT>KEY2IMGS</TT> table, see documentation for <A NAME="608"></A><A NAME="tex2html8"
+  HREF="../chipcube/index.html"><SPAN  CLASS="textbf">chipcube</SPAN></A>) in the cube sets. The final alternate, <TT>gtistyle</TT>=`gtitablist', affords the most general and flexible specification of GTIs. In this case the task looks for a list of GTI tables in the parameter <TT>gtitablist</TT>. Note that this parameter must have the same number of elements as <TT>chipcubesets</TT>.
+
+<br>&nbsp;</td></tr>
+
+  <A NAME="615"></A>
+<tr valign=top bgcolor='silver'><td><b>tstart</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>gtistyle</TT>=`user'. Specifies the start of the single, universal GTI.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="624"></A>
+<tr valign=top bgcolor='silver'><td><b>tstop</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>gtistyle</TT>=`user'. Specifies the end of the single, universal GTI.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="633"></A>
+<tr valign=top bgcolor='silver'><td><b>kwdtab</b></td><td>yes</td><td><A HREF=../param/node3.html>table</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>gtistyle</TT>=`kwd'. It gives the FITS table description in which to find the GTI start and stop keywords.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="642"></A>
+<tr valign=top bgcolor='silver'><td><b>tstartkwd</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>TSTART</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>gtistyle</TT>=`kwd'. Name of the keyword in <TT>kwdtab</TT> which specifies the start of the single, universal GTI.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="653"></A>
+<tr valign=top bgcolor='silver'><td><b>tstopkwd</b></td><td>no</td><td><A HREF=../param/node3.html>string</A></td><td>TSTOP</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>gtistyle</TT>=`kwd'. Name of the keyword in <TT>kwdtab</TT> which specifies the end of the single, universal GTI.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="664"></A>
+<tr valign=top bgcolor='silver'><td><b>gtitablist</b></td><td>yes</td><td><A HREF=../param/node3.html>table</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read if <TT>gtistyle</TT>=`gtitablist'. A list of FITS table descriptions, 1 per input image, which should contain GTI lists.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="673"></A>
+<tr valign=top bgcolor='silver'><td><b>ra</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read (and only mandatory) if <TT>attstyle</TT>=`user'.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="682"></A>
+<tr valign=top bgcolor='silver'><td><b>dec</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read (and only mandatory) if <TT>attstyle</TT>=`user'.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="691"></A>
+<tr valign=top bgcolor='silver'><td><b>apos</b></td><td>yes</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    This parameter is read (and only mandatory) if <TT>attstyle</TT>=`user'.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="700"></A>
+<tr valign=top bgcolor='silver'><td><b>usefast</b></td><td>no</td><td><A HREF=../param/node3.html>bool</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Whether to use a fast, approximate or slow and accurate regridding algorithm.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="707"></A>
+<tr valign=top bgcolor='silver'><td><b>conserveflux</b></td><td>no</td><td><A HREF=../param/node3.html>bool</A></td><td>yes</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    A CCD pixel covers, in general, a different amount of sky to a sky-image pixel. With some sorts of quantities (eg background rate per pixel) this change of area matters; for others (eg exposure time) it does not. In the former case you should set <TT>conserveflux</TT> to `yes', in the latter, `no'.
+  <br>&nbsp;</td></tr>
+
+  <A NAME="716"></A>
+<tr valign=top bgcolor='silver'><td><b>withnormalize</b></td><td>no</td><td><A HREF=../param/node3.html>bool</A></td><td>no</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    I am no longer sure what this is about. Best to leave it at default!
+  <br>&nbsp;</td></tr>
+
+  <A NAME="723"></A>
+<tr valign=top bgcolor='silver'><td><b>tempset</b></td><td>no</td><td><A HREF=../param/node3.html>dataset</A></td><td>tempset.ds</td><td>&nbsp;</td></tr>
+
+<tr valign=top><td colspan=5>
+    Name of a temporary dataset. If you are running more than 1 invocation of the task in the same working directory, you should name this uniquely for each invocation, to avoid crosstalk.
+  <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node3.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Description"></A>
+<A HREF="ecubechip2sky.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node5.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

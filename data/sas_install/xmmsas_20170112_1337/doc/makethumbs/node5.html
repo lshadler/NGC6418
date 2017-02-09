@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Note on the processing speed</TITLE>
+<META NAME="description" CONTENT="Note on the processing speed">
+<META NAME="keywords" CONTENT="makethumbs">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="makethumbs.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+makethumbs (makethumbs-0.6) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Overview"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Detail of the process"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="makethumbs.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00032000000000000000"></A>
+<A NAME="makethumbs:description:speed"></A>
+<BR>
+Note on the processing speed
+</H2>
+
+<P>
+Generating GIF files itself with this task is reasonably quick.
+However, to read an external catalogue may not be so,
+in particular the given external catalogue is a large one,
+such as the 2XMM catalogue FITS file.
+
+<P>
+The least required (or desirable) columns for the external catalogue
+given to this task are listed in the following
+Section&nbsp;<A HREF="node9.html#makethumbs:description:col_srclist">2</A>.
+If a user wants to give a large external catalogue
+as the input to this task, s/he is encouraged to trim (delete)
+the unnecessary columns in the catalogue before it is
+given to this task.
+
+<P>
+Unfortunately, it will take nevertheless 20 min or longer
+in the case of the catalogue based on the entire 2XMM catalogue,
+even if it is trimmed down to a minimised set of columns
+(in other words, it would take hours or longer if the raw 2XMM
+catalogue is given).  The bottle neck is known to be
+in reading the column for the source names in the external catalogue.
+However, there is no plan that this problem will be fixed
+in the foreseeable future, because this problem is rooted in
+a technical reason in the SAS scheme for Fortran,
+
+<P>
+As the work-around for this problem, the task <A NAME="635"></A><A NAME="tex2html2"
+  HREF="../ingestsrcnames/index.html"><SPAN  CLASS="textbf">ingestsrcnames</SPAN></A>
+is provided in this package.  With the task, users can ingest the all
+those parameters, which may be used in processing with this task,
+to the input source-list.  Then, even though the process of
+ingesting takes as long time as this task would do, it is
+a one-off process, and once it is done, users can produce
+GIF files with this task <A NAME="639"></A><A NAME="tex2html3"
+  HREF="../makethumbs/index.html"><SPAN  CLASS="textbf">makethumbs</SPAN></A>
+for any of the sources
+listed in the source list without waiting much,
+as the external catalogue is no longer given every time this task is run.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node4.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Overview"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node6.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Detail of the process"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node19.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="hkauxplot">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="hkauxplot.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="hkauxplot.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+hkauxplot (hkauxplot-4.7) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="hkauxplot.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node13.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="hkauxplot.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="hkauxplot:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+subroutine hkauxplot
+
+  subroutine getparams      # read the parameters from hkauxplot.par file
+  subroutine check_table    # open selected input file and check
+
+  subroutine get_y_cols	    # extract selected y-axis columns from infile
+   foreach y_column
+    fill_y_axis_array
+   next
+
+  if (.not. auxfile) then
+   if (TIME column) then
+    if (string) then
+     call ert2seconds      # convert '1999-12-15T12:00:00.000' to obt
+     fill x-axix array
+    else
+     fill x-axis array
+    end if
+   else 
+    fill x-axis array	
+   end if
+  else
+   if (FRAME column) then
+    sort frames by ccd     # segregate columns by frame numbers and CCDID
+    fill x-axis array
+    if (convert) then
+     call oal_frametoObt   # convert frame to time using framecounter_to_OBT
+    end if
+   else
+    fill x-axis array 
+   end if
+  end if
+
+  if (gtiyes) then	
+   call get_gti              # open GTI file selected, extract GTIs
+   equate time and gtitime   # create gti_array, 1 or 0 if 'GTI' or not
+  end if 
+
+  create_plot_titles       # use keywords from infile for plot labels
+
+  call do_plot
+
+   subroutine do_plot 
+
+    open_plot_device
+
+    Loop:
+
+     start_new_page            # plot_title
+
+     get_sub_interval_x
+
+     do column = 1 , ncolumns
+
+       if (gtiyes) then
+
+        do ccdno = 1 , n_selected_ccds
+
+          plot_panel
+          if (gtiyes) then
+           plot_gti_panel
+           foreach ON_GTI_area
+            fill_gti_area
+           next
+          end if
+
+          if (last_panel) then
+           finish_page
+           start_new_page
+          end if
+
+        end do
+
+       else
+
+        plot_panel
+        if (last_panel) then
+          finish_page
+          start_new_page
+        end if
+
+      end do
+
+       if (last_panel) then
+         if (points_remain) then
+           finish_page
+           start_new_page
+         end if
+       end if
+
+     next
+    close_plot
+  end subroutine do_plot
+
+end subroutine hkauxplot
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

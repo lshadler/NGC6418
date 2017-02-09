@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>A module containing routines to give supplementary information about EPIC</TITLE>
+<META NAME="description" CONTENT="A module containing routines to give supplementary information about EPIC">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="next" HREF="node146.html">
+<LINK REL="previous" HREF="node140.html">
+<LINK REL="up" HREF="ssclib.html">
+<LINK REL="next" HREF="node146.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node144.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="EllipseT structure definition"></A>
+<A HREF="ssclib.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node146.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="A module containing routines"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION000120000000000000000"></A>
+<A NAME="ssclib:description:epic_aux"></A>
+<BR>
+A module containing routines to give supplementary information about EPIC
+</H1>
+
+<P>
+Module name: <TT>epic_aux</TT>
+
+<P>
+Author: Masaaki Sakano (University of Leicester, mas@star.le.ac.uk)
+
+<P>
+<EM>Note that the contents of these routines should be ideally defined somewhere
+in the library of EPIC.</EM>
+
+<P>
+In the EPIC event files, they use Table names for the exposure
+in the form of
+<PRE>
+   'EXPOSU'//ccdNodeNum
+</PRE>
+where <TT>ccdNodeNum</TT> is a serial number for <TT>ccdNum</TT> (CCD chip number)
+and <TT>nodeNum</TT> (chip node number for MOSs, of which the default is 1
+in almost all the actual observations except for a very few test observations).
+<TT>ccdNodeNum</TT> is defined and hard-coded in the related tasks as
+<BR>
+<DIV ALIGN="RIGHT" CLASS="mathdisplay">
+
+<!-- MATH
+ \begin{equation}
+{\rm ccdNodeNum} = 10 \times ({\rm nodeNumLocal} - 1) + {\rm ccdNum}.
+\end{equation}
+ -->
+<TABLE WIDTH="100%" ALIGN="CENTER">
+<TR VALIGN="MIDDLE"><TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="374" HEIGHT="28" BORDER="0"
+ SRC="img133.png"
+ ALT="\begin{displaymath}
+{\rm ccdNodeNum} = 10 \times ({\rm nodeNumLocal} - 1) + {\rm ccdNum}.
+\end{displaymath}"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">5</SPAN>)</TD></TR>
+</TABLE>
+<BR CLEAR="ALL"></DIV><P></P>
+
+<P>
+The following subroutines in this module give this relation.
+
+<P>
+<PRE>
+  function getCcdNodeNum(ccdNum, nodeNum) result(ccdNodeNum)
+    integer(int8), intent(in) :: ccdNum
+    integer(int8), intent(in), optional :: nodeNum
+  end function getCcdNodeNum
+
+  subroutine inverseCcdNodeNum(ccdNodeNum, ccdNum, nodeNum, instrumentId)
+    integer(int32), intent(in) :: ccdNodeNum
+    integer(int8),  intent(out) :: ccdNum
+    integer(int8),  intent(out), optional :: nodeNum
+    integer(int32), intent(in),  optional :: instrumentId
+  end subroutine inverseCcdNodeNum
+</PRE>
+
+<P>
+In the latter <TT>inverseCcdNodeNum()</TT>, if <TT>instrumentId</TT> is not given,
+<TT>CAL</TT> is read and is essential.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node144.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="EllipseT structure definition"></A>
+<A HREF="ssclib.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node146.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="A module containing routines"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

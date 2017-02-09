@@ -1,0 +1,51 @@
+<!-- XMM SAS parameter file for preqgti -->
+<FILE>
+<CONFIG>
+	<PARAM id="preqgtifile" type="table" default="pointings.fit">
+		<DESCRIPTION>
+			Name of output stable pointing GTI table
+		</DESCRIPTION>
+		<CONSTRAINTS>
+			true
+		</CONSTRAINTS>
+	</PARAM>
+
+	<PARAM id="withatsfile" type="bool" default="no">
+		<DESCRIPTION> external ATS flag </DESCRIPTION>
+		<CASE>
+			<ITEM value="no"> </ITEM>
+			<ITEM value="yes">
+				<PARAM id="atsfile" type="table" default="">
+				<DESCRIPTION>
+					Name of ATS file
+				</DESCRIPTION>
+				<CONSTRAINTS>
+					true
+				</CONSTRAINTS>
+				</PARAM>
+			</ITEM>
+		</CASE>
+	</PARAM>
+
+	
+
+	<PARAM id="withtimeranges" type="bool" default="no">
+		<DESCRIPTION> Begin and end of an specific pointing </DESCRIPTION>
+		<CASE>
+			<ITEM value="no"> </ITEM>
+			<ITEM value="yes">
+			<PARAM id="timebegin" type="time" default="0" mandatory="yes">
+				<DESCRIPTION> Pointing start time </DESCRIPTION>
+			</PARAM>
+			<PARAM id="timeend" type="time" default="0" mandatory="yes">
+				<DESCRIPTION> Pointing end time </DESCRIPTION>
+			</PARAM>
+			</ITEM>
+		</CASE>
+	</PARAM>
+	
+	<PARAM id="withpointingattitude" type="bool" default="yes">
+		<DESCRIPTION> Write the attitude for each stable pointing </DESCRIPTION>	
+	</PARAM>
+</CONFIG>
+</FILE>

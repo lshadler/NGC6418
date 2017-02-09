@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Task requirements.</TITLE>
+<META NAME="description" CONTENT="Task requirements.">
+<META NAME="keywords" CONTENT="edet2sky">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="edet2sky.css">
+
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+edet2sky (esky2det-1.18) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="FITS file positions"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="edet2sky.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00033000000000000000"></A>
+  <A NAME="edet2sky:description:requirements"></A>
+<BR>
+Task requirements.
+</H2>
+
+<P>
+The task clearly needs to know the direction in space of the focal axis of 
+the relevant instrument at the time of the observation of interest. 
+There are three necessary pieces of information: the name of the instrument, 
+the date-time of the observation and the spacecraft pointing direction 
+(attitude) at this time. The task processes these as follows: the 
+instrument identification and the observation date-time are used 
+together to calculate (from values stored in the CCF) the instrument 
+boresight correction at the time of the observation; this correction is 
+then applied to the spacecraft pointing.
+
+<P>
+There are two ways to pass the `cal' information to <A NAME="579"></A><A NAME="tex2html4"
+  HREF="../edet2sky/index.html"><SPAN  CLASS="textbf">edet2sky</SPAN></A>, governed by the parameter <TT>calinfostyle</TT>:
+
+<P>
+
+<OL>
+<LI><TT>calinfostyle</TT> = `set': the information is sought from <A NAME="585"></A><TT>INSTRUME</TT>, <A NAME="587"></A><TT>DATE-OBS</TT> etc keywords in the header of the source list specified by <TT>calinfoset</TT>. These should be found in the primary headers of all XMM product data sets. It is recommended to use the source list itself as the <TT>calinfoset</TT>, provided it is an XMM product, and from the same instrument.
+
+<P>
+</LI>
+<LI><TT>calinfostyle</TT> = `user': the information must be provided by the user via the parameters <TT>instrument</TT>, <TT>datetime</TT>, <TT>scattra</TT>, <TT>scattdec</TT> and <TT>scattapos</TT>.
+</LI>
+</OL>
+
+<P>
+In order to be able to apply the correct boresight correction, as well as to have access to the instrument specifications, the task requires access to the CCF components relevant to the dates of observation and analysis. This is achieved in the usual way by constructing a cif file with <A NAME="597"></A><A NAME="tex2html5"
+  HREF="../cifbuild/index.html"><SPAN  CLASS="textbf">cifbuild</SPAN></A>
+and pointing to it with the environment variable SAS_CCF.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="FITS file positions"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node14.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

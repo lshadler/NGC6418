@@ -1,0 +1,397 @@
+Change log for emframes
+=======================
+
+Open SPRs:
+----------
+	None.
+
+Version 5.10 - 2016-09-06 (AI)
+-------------
+- (src/emframes_mod.f90) Initialization to null of all pointers that are passed 
+  to C++ (Dope vectors). If we do not initizialize the pointers, 
+  we get seg fault at run-time with gcc-6.2.	
+
+Version 5.9 - 2016-07-18 (AI)
+-------------
+	+ (src/emframes_mod.f90) gfortran compatibility change applied.
+
+Version 5.8.1 - 2010-03-10 (JB)
+-------------
+- Fix SPR 6600: problem with OBSID 0611180101 which occurred in timing mode
+  when most frames were lost to counting mode.
+
+Version 5.8 - 2007-11-26 (JB)
+-----------
+- Fix problem with OBSID 0510010701 which occurred when the frame renumbering
+  resulted in fewer frames than initially, or when the very last frame
+  was corrupted.
+
+Version 5.7 - 2007-01-11 (BFM)
+-----------
+- Makes use of the counting mode data for frame renumbering.
+
+Version 5.6 - 2006-01-20 (BFM)
+-----------
+- Missing deallocation of arrays, resulting in error in low memory mode.
+
+Version 5.5 - 2006-01-04 (BFM)
+-----------
+- Slight improvement of the timing accuracy (0.2 ms at most) by correcting
+  for the difference between the standard FTFINE unit (40 us) used in
+  OAL_frameCounterToObt and the better one (39.99 us) used in emframes.
+
+Version 5.4 - 2005-11-15 (BFM)
+-----------
+- Implemented a sort procedure in FRAMES before data handling to deal
+  with files containing repeated or out of order frame IDs. The list of
+  frame IDs is scanned first, and only a subset of the sequence is sorted.
+  A permutation array is created to access the frames in order of increasing
+  frame ID.  This preserves data and events in good frames that were
+  previously rejected because they appeared out of the normal sequence.
+- Divided main loop in FRAMES into three loops to improve legibility
+  of code and remove some of the intermediate arrays. The first loop
+  scans through all frames and flags problems in the frame numbering
+  and time sequence.  The second loop deals with telemetry drops and
+  event cleaning.  The third (very small) loop writes data to the output 
+  arrays, skipping over bad frames.
+- Added three flags: flag_badfid (64) and flag_mulfid (16) are used 
+  to identify rejected and retained frames repectively in a sequence
+  of duplicated frame numbers. flag_t_dec (16384) is used instead of 
+  flag_t_wrong (2048, formerly named flag_time) to identify frames 
+  where the time tag decreased. flag_t_wrong is now used only in cases 
+  where the time tag was negative or jumped in a fashion incompatible 
+  with extended frames or telemetry drops.
+- removed some of the intermediate allocatable arrays.
+	
+Version 5.3 - 2003-07-01 (JB)
+-----------
+- Force clone to High Mem for compressed files.
+
+Version 5.2 - 2003-04-18 (JB)
+-----------
+- Change FTFINE unit from 40 to 39.99 microseconds.
+
+Version 5.1 - 2002-12-11 (JB)
+-----------
+- Use supertabular for ChangeLog section in doc.
+- Remove test on the value of TFIT_RMS.
+
+Version 5.0 - 2002-08-02 (JB)
+-----------
+- Remove cosmicsize and cosmicoutoverin parameters (read from CAL).
+- Remove withodfeventset, flagbadtimes and withsrccoords parameters from doc.
+
+Version 4.14 - 2002-05-28 (JB)
+------------
+- Clarify warnings in code and doc.
+
+Version 4.13 - 2002-05-07 (JB)
+------------
+- Upgrade parameter file to param 2.0.
+
+Version 4.12 - 2002-04-30 (JB)
+------------
+- Do not send the frames10 warning when in controlled window mode W3.
+- Move HKGTI.FIT file from emsaplib/emodf to emframes/test.
+
+Version 4.11.3 - 2002-04-17 (JB)
+--------------
+- Stop sending the start time to OAL_obtToTimeTag to avoid negative OBTs.
+
+Version 4.11.2 - 2002-03-27 (UL)
+--------------
+- Minor adjustment to test harness to allow presence of new keyword
+  TFIT_IGH in primary header written by oal>=3.89.1 (modified test/primkey.ref)
+
+Version 4.11.1 - 2002-03-14 (JB)
+--------------
+- Correct bug introduced in 4.6, showing when several GATTI flags
+  are lost (0261_0125320701).
+
+Version 4.11 - 2002-01-28 (JB)
+------------
+- Read low/high gain from IPPV and write GAIN_CCD keyword.
+
+Version 4.10 - 2002-01-23 (JB)
+------------
+- Test harness updated to OAL_addCommonAttributes.
+
+Version 4.9 - 2002-01-10 (JB)
+-----------
+- Calls OAL_addCommonAttributes.
+- Writes IN_FOV keyword for flare screening.
+- More clever test for time cycling.
+
+Version 4.8 - 2001-12-19 (JB)
+-----------
+- Writes EXPIDSTR.
+
+Version 4.7.1 - 2001-10-22 (JB)
+-------------
+- Adapted to cal-3.121.
+
+Version 4.7 - 2001-08-17 (JB)
+-----------
+- Writes the revolution number into the REVOLUT keyword.
+
+Version 4.6.3 - 2001-07-24 (JB)
+-------------
+- Bug correction for low memory mode.
+- Check against spurious frame numbers in events file.
+
+Version 4.6.2 - 2001-07-19 (JB)
+-------------
+- Remove check on FILTER in test harness.
+
+Version 4.6.1 - 2001-07-10 (JB)
+-------------
+- Previous algo was wrong when many lost extended frames.
+
+Version 4.6 - 2001-07-03 (JB)
+-----------
+- More robust when many extended frames (such as CALCLOSED).
+
+Version 4.5.1 - 2001-06-12 (JB)
+-------------
+- Downgrade frames15 warning to message when < 0.05 s (src/emframes_mod.f90).
+
+Version 4.5 - 2001-03-21 (JB)
+-----------
+- Use source position for time offset in Timing mode.
+- Change vertical binning from 100 to 101 in Timing mode.
+
+Version 4.4.1 - 2001-03-09 (ML)
+-------------
+- Correct bug in dealing with frame repetition.
+- Check too large CLOCK_WRAP_AROUND.
+
+Version 4.4 - 2000-12-19 (JB)
+-----------
+- Call OAL_getIPPVint for CLOCK_WRAP_AROUND (src/emframes_mod.f90).
+- Improve wrap-around test.
+- Add relative tolerance in telemetry drop test.
+
+Version 4.3.3 - 2000-11-27 (JB)
+-------------
+- Time cycling at 32767 instead of 32768 (src/emframes_mod.f90).
+
+Version 4.3.2 - 2000-11-21 (JB)
+-------------
+- Removed UL's modification (changed emsaplib to 2.1.2 instead).
+- Fixed SPR 2086 (better MJDREF attribute comment) (src/emframes_mod.f90).
+- Adapted test harness to changed keywords (test/keyword.ref).
+- Improved description of boolean parameters (doc/emframes_description.tex).
+
+Version 4.3.1 - 2000-11-18 (UL)
+-------------
+- updated test/frames.ref after change of Xmm::missionReferenceTime
+  (caloalutil-1.36.3/oal-3.58.8)
+
+Version 4.3  -  2000-10-27 (JB)
+------------
+- Set GATTIVAL to 0 in output when GATTI was off (free-run, Timing).
+- Write CCDMODE and SUBMODE keywords.
+
+Version 4.2  -  2000-10-10 (JB)
+------------
+- Correct bug in case of extended frames.
+- Sets FILTER before calling the CAL to avoid meaningless warning.
+- Write FILTER to events file.
+
+Version 4.1  -  2000-10-09 (ML)
+------------
+- Correct bug in case of duplicated frames.
+- Copy FILTER to frames table (not just set).
+- Downgrade "duplicated frame" to information flag.
+- Change test harness to avoid modifying input event list.
+
+Version 4.0  -  2000-10-06 (ML)
+------------
+- Allow frame renumbering (src/emframes_mod.f90).
+- Changed 'newoutput' parameter to 'newframeset' (config/emframes.par).
+- Added 'neweventset' and 'outeventset' parameters (config/emframes.par).
+
+Version 3.20  -  2000-09-28 (JB)
+------------
+- Call OAL_getIPPVstring instead of OAL_activeFilter (src/emframes_mod.f90).
+
+Version 3.19  -  2000-07-26 (JB)
+------------
+- Looks for emodf test directory under lib/testodf (test/emframes_test).
+- Changed default for 'cosmicsize' parameter (config/emframes.par).
+
+Version 3.18.3  -  2000-06-30 (JB)
+--------------
+- Too many frames were flagged as extended (src/emframes_mod.f90).
+
+Version 3.18.2  -  2000-06-20 (JB)
+--------------
+- Removed blanks from error codes (doc/emframes_description.tex
+  and src/emframes_mod.f90).
+
+Version 3.18.1  -  2000-06-03 (JB)
+--------------
+- Writes CLOCKAPP=T, TIMEZERO=0.0, changed TIMESYS to 'TT'
+ 	(src/emframes_mod.f90).
+- Bug correction in CRRATIO (src/emframes_mod.f90).
+- Frame rejection when jump > 32 instead of 16 (src/emframes_mod.f90).
+- Updated doc (doc/emframes_description.tex).
+
+Version 3.18  -  2000-05-17 (JB)
+------------
+- Take care of large positive spike in frame number.
+
+Version 3.17  -  2000-04-06 (JB)
+------------
+- Removed EXPOSURE keyword from output.
+- Fixed SPR 1614 (emproc crash on non-increasing frame numbers).
+- Fixed SPR 1627 (Test harness fails under FTOOLS v5.0).
+
+Version 3.16  -  2000-03-06 (JB)
+------------
+- Correct bug for Compressed Timing mode.
+
+Version 3.15  -  2000-02-11 (JB)
+------------
+- Use Temp instead of copying auxiliary file.
+
+Version 3.14  -  09-02-2000
+------------
+- Recompute NPIXEL in Timing mode.
+- Preserve FRMTIME when all frames are extended.
+
+Version 3.13  -  26-01-2000
+------------
+- Generate temporary copy of auxiliary file (for selectlib).
+- Write keywords TIMEREF ('LOCAL') and TASSIGN ('SATELLITE').
+
+Version 3.12  -  05-01-2000
+------------
+- Temporarily removed call to CAL_getModeParameters
+- Temporarily reinstated EXPOSURE keyword.
+
+Version 3.11  -  21-12-1999
+------------
+- Generate keywords TELAPSE, ONTIME and LIVETIME instead of EXPOSURE.
+- Set TIMESYS to 'MJD'.
+
+Version 3.10  -  09-12-1999
+------------
+- removed calls to columnUnits.
+
+Version 3.9  -  24-11-1999
+-----------
+- flag first and last frames.
+- put_primary_keywords moved to emsaplib 1.2.
+- correct 'uninitialized POINTER FRAMENO' bug.
+
+Version 3.8  -  10-11-1999
+-----------
+- Uses new emsaplib library.
+
+Version 3.7  -  23-09-1999
+-----------
+- Test harness more robust.
+- Doc updated to sas 1.155.
+
+Version 3.6  -  03-09-1999
+-----------
+- Writes TIMEUNIT keyword.
+
+Version 3.5  -  01-09-1999
+-----------
+- Now allows a full (unselected) auxiliary file in input.
+- Changed default value of withodfeventset to False.
+- Test harness adapted to new emodf test directory in emevents.
+
+Version 3.4  -  27-08-1999
+-----------
+- Added EXPOSURE to primary header.
+
+Version 3.3  -  15-06-1999
+-----------
+- Fixed SPR 1003 (emframes_test fails > 3.0: Difference in GTI file).
+
+Version 3.2  -  09-06-1999
+-----------
+- Closed SPR 657 (No reference time in GTI header).
+- Upgraded to CAL 3.0.
+- Upgraded to 0AL 3.22.
+
+Version 3.1  -  26-05-1999
+-----------
+- Uses the OAL to generate correct times and primary keywords.
+- Supports all modes.
+- Removed unnecessary makegti parameter.
+- Simplified variable management by using parent function.
+- Uses the emevents/emodf directory for testing.
+
+Version 3.0  -  10-05-1999
+-----------
+- All parameter names changed to follow new guidelines.
+- Upgraded to be compatible with emutils in emevents 3.0.
+- Uses the new CAL_setState(block) facility.
+- FRMTIME now written in ms.
+- Uses the new presentation for columns, keywords, ... in the doc.
+- Includes a parameter layout file.
+
+Version 2.8  -  23-03-1999
+-----------
+- Minor correction to prevent core dump when 0 events in event file.
+
+Version 2.7  -  19-03-1999
+-----------
+- Upgraded to be compatible with CAL 2.x.
+- Upgraded to be compatible with emutils in emevents 2.8.
+- CCD column changed to CCDID in input auxiliary file.
+- STDGTI extension changed to STDGTInn in output GTI file.
+
+Version 2.6  -  11-12-1998
+-----------
+- Avoids duplication of error handling with DAL.
+- emutils_mod moved to emevents.
+
+Version 2.5  -  25-11-1998
+-----------
+- Fixed SPR 655 (Misleading information in Task Description).
+- Fixed SPR 656 (Task does not reread its own output).
+- Fixed SPR 659 (Algorithm description detail).
+- Fixed SPR 661 (Loss of sync of NVALID flag in i/p and o/p frame files).
+- Uses the new "layer" message interface.
+- Uses CAL_setStateFromScienceFile.
+- copyAttributes removed.
+- Generic routines set aside in a specific module.
+- New EXPOSURE keyword.
+- Now supports new output file when run on its own output.
+
+Version 2.4  -  17-09-1998
+-----------
+- Now uses 40 microsec as the unit for FTFINE.
+- Fixed SPR 526 (Cannot handle zero event).
+- Modified to adjust to param 1.10.
+- Modified to accept free run mode (GATTI OFF).
+- Version number jumped to 2.4 to meet that of description.
+	
+Version 2.1  -  30-07-1998
+-----------
+- Fixed SPR 511 (Test harness fails under DEC OSF).
+  The reference output is now produced within the test harness.
+- Uses the message facility instead of the prlev parameter.
+
+Version 2.0  -  20-07-1998
+-----------
+- Fixed SPR 334 (Change on/off parameters from integer to boolean).
+  This interface change is the reason for the new major version.
+- Fixed SPR 109 (task is an FTOOL).
+  This is the first version using the SAS DHS.
+
+Version 1.1  -  26-05-1998
+-----------
+- Tests event and frame file existence.
+- Propagates event file header into output GTI file.
+- Works for no HK GTI file.
+- Fills GATTIVAL with a reasonable value when less than 255 frames.
+
+Version 1.0  -  22-04-1998
+-----------
+- Initial version for SAS v1 integration.

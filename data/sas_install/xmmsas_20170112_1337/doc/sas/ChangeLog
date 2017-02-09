@@ -1,0 +1,726 @@
+ChangeLog for gui
+=================
+
+Version 1.52.10 - 2017-01-12 (AI)
+------------
+	+ src/SasTask.h               Resolved problem with name() returning blank string
+
+Version 1.52.9 - 2009-08-31 (AI)
+------------
+	+ Modifications is several source files to make gui gcc 4.3 compliant.
+	
+Version 1.52.8 - 2004-11-12 (AI)
+------------
+	+ Updated documentation. 
+
+Version 1.52.7 - 2004-02-25 (AI)
+------------
+        + (lib/guiparam/ParamDialog.cc) New warning message 
+	window that appears after you click on the "Save" button.
+	This warning message informs the user about the
+	consequencies of creating a user's preferences file.
+
+Version 1.52.6 - 2004-02-24 (AI)
+------------
+        + documentation updated.
+
+Version 1.52.5 - 2004-02-11 (AI)
+------------
+	+ Removed checkbox from warning message windows.
+
+Version 1.52.4 - 2004-02-10 (AI)
+------------
+	+ added SAS_SUPPRESS_WARNING to preferences (default value 1). 
+
+Version 1.52.3 - 2004-02-05 (AI)
+------------
+        + Added "refresh" button to DatasetBrowser (SPR-2472).
+
+Version 1.52.2 - 2004-01-28 (AI)
+------------
+        + Improved widget validation performance.
+
+Version 1.52.1 - 2004-01-15 (AI)
+------------
+        + Fixed SOC::SPR 2408. Now all the widgets are always validated.
+
+Version 1.52 - 2003-11-06 (EO)
+------------
+	+ Corrected a mistake introduced by changing the USEDLIBS parameter in previous
+	revision.
+
+Version 1.51 - 2003-11-05 (EO)
+------------
+	+ Modified USEDLIBS in Makefile in directories lib/guibrowser, lib/guiparam,  
+	lib/guiqt, tools, and  src, to set the proper ordering for static building.
+
+Version 1.50 - 2003-07-01 (JBa)
+------------
+	+ Added "Close" button to datasetBrowser when it is in "ViewOnly" mode
+	  This is needed as MacOsX darwin refuses to add the normal window
+	  buttons to a top-level Widget that is in modal mode.
+
+Version 1.49 - 2003-06-13 (GV)
+------------
+	+ Add include<cassert> to TaskManager.cc to make gcc-3.3 happy.
+
+Version 1.48 - 2003-05-30 (GV)
+------------
+	+ (tools/Makefile) Add layout and metatask to USEDLIBS.
+	
+Version 1.47 - 2003-05-16 (JBa)
+--------------
+	+ Fixed SOC::SPR 2443
+
+Version 1.46 - 2003-02-12 (JBa)
+--------------
+	+ Uses the ParamParser classes (as of param-2.12)
+	+ added save mechanism for parameters ;-)
+
+Version 1.45 - 2003-02-10 (JBa)
+--------------
+[merged the following from 1.37.4]
+Improved dataset browser with:
+  * a single click on an unqualified file (i.e. a file that can be a dataset)
+    will now qualify it AND select it if the selection expression allowed it.
+  * the Datset browser now remembers qualified names
+  * sorting is alpha-numeric
+  * when multi selection is on, the SelectionView is automatically visible
+
+Version 1.44 - 2003-01-31 (GV)
+------------
+	+ (Makefile) add subdir tools so the tools below gets actually built.
+
+Version 1.43 - 2003-01-28 (JBa)
+------------
+	(tools/sasdialog.cc)
+	+ helper binary that can kick of any arbitrary task
+	
+Version 1.42 - 2003-01-28 (JBa)
+------------
+	(src/SasMainWindow.*, src/SasTask.*)
+	+ refactored to use a separate message channel with children that
+	  belong to the SAS family (SOC::SPR-1187, SOC::SPR-2174)
+
+Version 1.41 - 2003-01-23 (UL)
+------------
+	+ added missing include directive in src/LogPane.cc
+
+Version 1.40 - 2003-01-22 (UL)
+------------
+    + Qt-3.x port: removed call to QObject::initMetaObject() in
+	  LongMenu::LongMenu() [lib/guiqt/LongMenu.cc] and
+	  Demo::Demo() [lib/guiqt/testLongMenu.cc] - according to Trolltech
+	  help desk this is safe
+
+Version 1.39 - 2002-09-12 (JBa)
+--------------
+    + Changes in source files in order to comply with ANSI C++ [Prepared
+      for compilation by GCC 3.1]
+
+Version 1.38 - 2002-05-21 (JBa)
+--------------
+	+ works with param v2
+	+ can create layouts if no layout-file is given
+	+ simplified the amount of classes needed
+	+ simplified parameter widgets
+	+ pretty icons for parameters that may trigger a dialog
+
+Version 1.37.3 - 2002-02-01 (JBa)
+--------------
+	+ (demo/config/demo_radial.par) fixed bug in syntax
+
+
+Version 1.37.2 - 2002-01-29 (JBa)
+--------------
+	+ LogPane registers, when a task has finished.
+
+Version 1.37.1 - 2002-01-28 (JBa)
+--------------
+	+ Fixed SOC::SCR-16
+
+Version 1.37 - 2002-01-25 (JBa)
+--------------
+	+ Fixed SOC::SPR-2136
+
+Version 1.36 - 2002-01-25 (JBa)
+--------------
+	+ Changed implementation of Column view, such that:
+	  * it uses a spreadsheet instead of a single piece of text,
+	  * the browser can show the contents of variable length columns.
+	  This fixes SPR-1420
+
+Version 1.35 - 2001-12-19 (JBa)
+--------------
+	+ Improved DataSet-browser performance
+	+ Updated DataSet browser, such that it can handle
+	  SAS_ODF as File|Directory and SAS_CCF as DataSet|Directory
+	+ Removed obsolete top-level entries: ODF,CCF,HOME,Current. Instead, 
+	  jump through root tree ;-)
+
+Version 1.34 - 2001-11-06 (JBa)
+--------------
+	+ Whenever a task gets focus in the TaskBrowser, it notifies
+	  all groups to the statusbar.
+
+Version 1.33 - 2001-06-14 (JBa)
+--------------
+	+ implementation of DirOrDataSet parameters (param-1.62)
+	+ SAS_ODF and SAS_CCF (preferences) are now of type DirOrDataSet
+
+
+Version 1.32.5 - 2001-06-07 (JBa)
+--------------
+	+ dataset browser now warns when shortcuts (SAS_ODF,SAS_CCF, etc..)
+	  are invalid
+
+Version 1.32.4 - 2001-06-07 (JBa)
+--------------
+	+ shrink width of GUI if the width is getting too large
+
+Version 1.32.3 - 2001-06-06 (JBa)
+--------------
+	+ added SAS_CCFPATH to preferences
+
+Version 1.32.2 - 2001-06-01 (UL)
+--------------
+	+ implemented SPR 2073: broken links in HTML doc
+
+Version 1.32.1 - 2001-05-10 (JBa)
+------------
+	+ * replaced old-style headers
+
+Version 1.32 - 2001-03-14 (JBa)
+------------
+	+ (lib/guibrowser/Folder.cc) fixes SOC-SCR 23
+	   Proper handling of gzipped FITS files
+	+ (lib/guiqt/Double*Edit.cc) fixes SOC-SPR 1931
+	   Improved precision. Allow upto 12 digits after decimal point only
+	   if necessary.
+	+ (gui_test_task/src/gui_test_task_mod.f90)
+	  fixed typo in parameter name
+
+Version 1.31 - 2001-02-28 (JBa)
+------------
+	+ (lib/guiparam/PopupParamListWidget.cc) Avoiding potential bug:
+	  only deleting this view in the destructor.
+
+Version 1.30 - 2001-02-22 (JBa)
+------------
+	+ implemented multiple views of same parameter (see param-1.58)
+
+Version 1.29 - 2001-01-02 (UL)
+------------
+	+ a couple of trivial changes to make the optimizer happy
+
+Version 1.28.6 - 2000-12-12 (JBa)
+--------------
+	+ (lib/guiparam/FrameWidget.*) Linux binaries crashed on some Layouts
+	+ (lib/guiparam/GuiBuilder.cc) Neater layout for StringChoice widgets
+
+Version 1.28.5 - 2000-11-27 (JBa)
+--------------
+	+ User friendly documentation
+	+ Updated developers section
+
+Version 1.28.4 - 2000-11-23 (JBa)
+--------------
+	+ trailing slash allowed in ODF,CCF etc directories in dataset browser
+	+ opening sas gives default focus to task browser
+	+ ODF,HOME,... etc, are better represented in dataset browser
+	+ first info file found in SAS_PATH is used instead of last
+
+Version 1.28.3 - 2000-11-06 (JBa)
+--------------
+	+ (lib/guibrowser/DalListView.cc) Allow 'single-click in left-pane
+	  to select (SPR 1751,1752)
+	+ added some tooltips
+
+Version 1.28.2 - 2000-11-03 (JBa)
+--------------
+	+ (lib/guiparam/FrameWidget.cc,lib/guiparam/GuiBuilder.cc)
+	  small changes to the layout mechanism
+
+Version 1.28.1 - 2000-10-29 (UL)
+--------------
+	+ fixed problem with some forgotten 'Preferences'->'GuiPreferences' in
+	  lib/guiqt
+
+Version 1.28 - 2000-10-27 (JBa)
+--------------
+	+(src/SasErrorHandler.h) added 'void tryExternal(ExternRoutine r);'
+
+Version 1.27.1 - 2000-10-24 (UL)
+--------------
+	+ changed 'Preferences' -> 'GuiPreferences' in various places to resolve
+	  name conflict in new package 'preferences'
+
+Version 1.27 2000-10-05 (JBa)
+------------
+	+ propagated changes in error 1.34
+        
+	
+Version 1.26 2000-09-14 (JBa)
+------------
+
+	+ (lib/guibrowser) new implementation of the browser!
+	  includes:
+	  * tree view
+	  * flat view
+	  * selection bin
+	  * fancier look
+	  * icons to visualize viewed items
+	+ (lib/guiqt/BoolListEdit.cc) bug fix of stale pointer
+	+ (lib/guiparam/PopupBrowserParamListWidget.*)
+	  (lib/guiparam/PopupBrowserParamWidget.*)
+	  (lib/guiparam/PopupParamListWidget.*)
+	  (lib/guiparam/PopupParamWidget.*)
+	  (lib/guiparam/SpecialStringParamWidgets.*)
+	  usage of new browser
+	+ (src/SasMainWindow.cc)
+	  usage of new browser
+	+ (src/TaskBrowser.cc) removed obsolete hardcoded task description list
+	+ (config/) moved information around to keep build happy
+	+ (lib/guiutils/SasStyleMenu.cc) experimental introduction of fonts
+
+Version 1.25 2000-08-31 (HS)
+------------
+
+	+ (lib/guiparam/ParamDialog.cc) Fixed corresponding to change
+	  to gcc-2.95-2
+
+
+Version 1.24.7 2000-07-06 (JBa)
+------------
+	+ (lib/guiparam/) Fixed SOC-SPR 1666
+
+Version 1.24.6 2000-07-06 (JBa)
+------------
+	+ (lib/guiparam/Makefile) removed old test, which was not a test
+	  anyway
+
+Version 1.24.5 2000-07-04 (JBa)
+------------
+	New implementation allows dynamic sizing of Parameter dialogs.
+	It allows resizing (stretching) of those fields, for which it makes
+	sense (think of lists).
+	
+	+ (lib/guibrowser/DatasetBrowser.cc) bugfix: parameter names differed
+	+ (lib/guiqt/Preferences.cc) bugfix: initial pointer set to null
+	+ (lib/guiqt/EnablingWidget.*) bugfix: setEnabled should be virtual
+	+ (lib/guiqt/MultiAngleEdit.*)
+	  (lib/guiqt/MultiAngleListEdit.*)
+	  (lib/guiqt/MultiTimeEdit.*)
+	  (lib/guiqt/MultiTimeListEdit.*)
+	  (lib/guiqt/AngleEdit.cc)
+	  (lib/guiqt/TimeEdit.cc)
+	  * cleaned-up
+	  * dynamically allocated fixed size of editing fields
+	  * improved mechanism for changing the format mode
+	+ (lib/guiparam/FrameWidget.*)
+	+ (lib/guiparam/LabelFrame.*)
+	+ (lib/guiparam/ChoiceFrame.*)
+	+ (lib/guiparam/EnableFrame.*)
+	+ (lib/guiparam/GuiBuilder.*)
+	+ (lib/guiparam/TabCardWidget.*)
+	+ (lib/guiparam/ParamDialog.cc)
+	  * allow dynamic sizing
+	  * improved layout mechanism within the current interface
+
+
+Version 1.24.4 2000-06-28 (JBa)
+------------
+	+ (lib/guiutils/System.cc) changed implementation, such that ::putenv
+	  is receiving a char* instead of a const char*
+	
+Version 1.24.3 2000-06-28 (JBa)
+------------
+	+ (lib/guiqt/Preferences src/SasMainWindow) Circular dependency dropped
+
+Version 1.24.2 2000-06-28 (JBa)
+------------
+	+ (doc/sas_description.tex doc/gui_images/preferences.*)
+	  Updated preferences
+	+ (config/Makefile config/sas) Cleanup gui preferences
+	+ (gui_config) Removed
+	+ (lib/guiqt/Preferences.*)
+	  -Simplified
+	  -Added extra settings
+	  -Emission of Changes
+	+ (lib/guiutils/System.*) Added getEnv,setEnv
+	+ (src/SasGuiGlobal.cc) Changed gui config location
+	+ (src/SasMainWindow.h)
+	  - Removed slots: selectOdfDir(), writeOdfDirToLog()
+	  - Added slot: writeCommandLog(const string&)
+	+ (src/PreferencesEditor.*) Removed obsolete item
+	+ (src/TaskBrowser.cc) Changed name of obsolete info file of all tasks
+	+ (src/LogPane.*)
+	  - spits out sh script (was csh)
+	  - improved script settings
+
+Version 1.24.1 2000-06-21 (JBa)
+------------
+	+ (doc/sas_description.tex) Fixed SPR 1188
+	+ (config/Makefile) Fixed SPR 1529
+	+ (src/TaskBrowser.cc) Relaxed rules for the parser for info files
+	
+
+Version 1.24 2000-05-22 (JBa)
+------------
+	+ (lib/guiparam/ParamDialog.cc) introduction of "C" function
+	  'bool popUpDialog(ParameterInfo* info)', that is used if a task
+	  on the command-line wants to popup the parameter Dialog.
+
+	
+Version 1.23 2000-05-11 (JBa)
+------------
+	+ Fixed SPR 1085 (Tasks should provide one-line descriptions)
+	  Currently implemented:
+	  * get all tasks for which we can find a .par file
+	  * overwrite task info for tasks described in the old information file
+	  * overwrite task info for tasks that have an .info file
+	+ Added empty sas.lyt file
+	+ Added .info files for various tests; only gui_test_task will appear!
+
+Version 1.22 2000-05-10 (JBa)
+------------
+	+ Bugfix: some widgets in Task dialog did not appear!
+
+Version 1.21 2000-05-09 (JBa)
+------------
+	+ Fixed SPR 739
+	+ key<ENTER> launches the dialog of the current selected task
+
+Version 1.20 2000-05-09 (JBa)
+------------
+	+ Bugfix: SPR 1328
+	
+Version 1.19 2000-04-14 (JBa)
+------------
+	+ GUI is now a proper qt-based task
+
+Version 1.18 2000-03-31 (JBa)
+------------
+	+ class Task becomes SasTask, avoiding name clash with sas package
+
+Version 1.17 2000-01-19 (JBr)
+------------
+
+ - Closed SOC-SPR-996 : Access to packages documentation from help in 
+   SAS GUI main window
+ - SOC-SPR-767 (empty comment lines in FITS) changed to SPR on DAL
+ - Closed SOC-SPR-1043 : Improve one-line descriptions, preferably move out
+     SPR-1085 raised to cover generation of one-line task descriptions
+
+Version 1.16 2000-01-18 (JBr)
+------------
+
+ - Closed SOC-SPR-869 : file browser always starts from current working
+   directory
+
+Version 1.15 2000-01-13 (JBr)
+------------
+ - Closed SOC-SPR-870  : special entry points for file browser
+ - Improved one-line task descriptions in task browser
+ - Fixed highlighting problem in dataset browser
+
+Version 1.14 1999-12-15 (JBr)
+------------
+
+ - Added note to documentation about searching in Task Browser
+ - Added missing newline to VERSION file
+
+Version 1.13 1999-12-15 (JBr)
+------------
+
+ - Closed SOC-SPR-1031 : icon has green streak
+ - Closed SOC-SPR-1038 : empty layout file causes the gui to segfault
+ - Simplified implementation of Layouts and added Layout destructors
+
+Version 1.12 1999-12-13 (JBr)
+------------
+
+ - Task browser for easy selection of tasks, instead of long Task menu
+ - Added help button to obtain information on GUI components
+ - Closed SOC-SPR-999 : Split of task list
+ - Closed SOC-SPR-1026 : ODF entry should be widget of type 'directory'
+ - Closed SOC-SPR-1027 : CCF entry should be widget of type 'directory'
+ - Closed SOC-SPR-1028 : about SAS dialog
+	
+Version 1.11 1999-12-06 (JBr)
+------------
+
+ - Added multi-format widgets for angle-list and time-list.
+
+Version 1.10 1999-12-02 (JBr)
+------------
+
+ - Closed SOC-SPR-860  : no support for date parameters
+ - Added multi-format widget for time parameters
+     Notes: Calendar format does not work properly (see SPR-994 on utils)
+ - Command-line uses selected format for times and angles
+ - SAS_ODFDIR and SAS_CCFDIR renamed SAS_ODF and SAS_CCF
+	
+Version 1.9 1999-11-24 (JBr)
+-----------
+
+ - Moved utility classes to utils package
+
+Version 1.8 1999-11-08 (JBr)
+-----------
+
+ - SAS_ODFDIR & SAS_CCFDIR did not get passed to tasks correctly.
+	
+Version 1.7 1999-11-05 (JBr)
+-----------
+
+ - Improved speed of writing to log window by factor of 4 (w.r.t. gui-1.5).
+ - Closed SOC-SPR-806 : ODF specification too much hidden
+	ODF is now set by File menu "Select ODF..."
+ - Browser supports uint16 and uint32 columns for dal-1.80
+ - Internal restructuring
+ - Documentation describes `Select ODF' on File menu
+
+Version 1.6 1999-10-15 (JBr)
+-----------
+
+ - Tasks which occur in more than one SAS_PATH directory, only appear 
+   on one task sub-menu.
+ - Closed SOC-SPR-857 : should support ftools (new `ftools' package)
+ - Documentation references new 'ftools' SAS package.
+
+Version 1.5 1999-10-13 (JBr)
+-----------
+
+ - Closed SOC-SPR-872 : Parameter dialogs should remember changed values
+
+Version 1.4 1999-09-21 (JBr)
+-----------
+
+ - Added parameter name as label for Choice Frame
+ - Closed SOC-SPR-805 : wrong version number in About
+ - Closed SOC-SPR-754: Dataset browser cannot display strings in table column
+ - Increase default size of browser dialog
+ - Task developer's notes now in developer's section of documentation
+
+Version 1.3 1999-09-13 (JBr)
+-----------
+
+ - Closed SOC-SPR-753 : Core dumps after "cancel" on attcalc (bis)
+
+Version 1.2 1999-09-08 (JBr)
+-----------
+
+ - Added DISTRIBUTION file
+ - Closed SOC-SPR-724 : object files listed twice in linker args
+ - Closed SOC-SPR-776 : gui doc does not use SAS latex environments
+ - Closed SOC-SPR-796 : broken links in documentation
+
+Version 1.1 1999-09-02 (JBr)
+-----------
+
+ - Corrected  and updated documentation
+ - Removed demo tasks
+
+Version 1.0 1999-08-13 (JBr)
+-----------
+
+ - Can run multiple tasks in parallel or queue for execution.
+ - Can kill a running task.
+ - Closed SOC-SPR-676 : Show work in progress
+ - Closed SOC-SPR-716 : Problems with multiply defined symbols
+ - Closed SOC-SPR-722 : Bad cursor behaviour when editing fields
+ - Added border so tab-pages don't touch sides of parameter dialog.
+ - Improved keyboard focus handling in parameter dialog.
+ - Cannot exit GUI when a task is running.
+
+Version 0.22 1999-07-22 (JBr)
+------------
+
+ - Ported to Qt-2.0 (mainly changes to layout management)
+ - gui_test_task extended
+
+Version 0.21 1999-06-29 (JBr)
+------------
+
+ - Closed SOC-SPR-675 : Verbosity is not propagated
+ - Fixed verbosity problem which resulted in spurious DAL messages
+ - Uses INTERFACES mechanism in libraries (interfaces not finalised)
+ - Improved parameter names in gui_test_task
+ - New ValidatedEdit class provides generic validation mechanism
+ - New validating list widgets for bool/int/real/string
+	except for angle-list and time-list
+ - String-list widget supports quotes
+ - Added angle widget (not completely debugged)
+ - Removed debugging message from browser
+ - Added new widget types to gui_test_task
+ - Cleaned up parameter MVC mechanism
+ - Qjb prefix dropped from class names, for consistency
+
+Version 0.20 1999-05-20 (JBr)
+------------
+
+ - Closed SOC-SPR-645 : File access is not convenient
+ - Parameter dialogs retain values between successive invocations
+ - Preferences "Defaults" button reverts to environment value,
+     where appropriate (e.g. SAS_CCFDIR)
+ - Preferences "Cancel" button now works
+ - Added latest parameter types to gui_test_task
+ - Improved format of GUI (non-task) error/warnings in log
+ - Can save log as executable script
+ - Gives error message if task does not exist
+ - Removed debug messages
+ - Updated documentation
+
+Version 0.19 1999-05-18 (JBr)
+------------
+
+ - Closed SOC-SPR-646 : Environment is not inherited from calling process
+
+Version 0.18 1999-05-12 (JBr)
+------------
+
+ - Added support for new parameter types 'y' and 'Y'
+ - SASDIR/ODFDIR preferences support directory browser
+
+Version 0.17 1999-05-12 (JBr)
+------------
+
+ - Info messages from task are logged but do not raise dialogs
+ - Some user preferences implemented:
+    - CCFDIR and ODFDIR can be set
+    - Task message verbosity can be set
+    - Can customise default layout when there is no layout file
+ - Eliminated global variable "sasApp"
+ - Converted to use new symbol names for error-1.18 & utils-1.30
+	
+Version 0.16 1999-05-10 (JBr)
+------------
+
+ - Error/warning dialogs improved:
+    - Warnings have checkbox for "Don't show again"
+    - Large messages generate scroll-bars
+    - Dialog has caption as some window managers don't show frame
+    - Task and non-task messages use same dialogs
+    - Updated documentation
+
+Version 0.15 1999-04-30 (JBr)
+------------
+
+ - Updated for error-1.17 ('err' renamed 'errHandler')
+ - Dataset browser improved:
+    - directory/file navigation integrated into browser
+    - possible to select a list of datasets
+    - handles absolute and relative paths
+    - preselects & makes visible the default/previous item
+    - added 'cancel' button
+    - documentation updated
+ 
+Version 0.14 1999-04-16 (JBr)
+------------
+
+ - Modified to work with error-1.16 (Verbosity/Layer arguments added)
+    (but no user control of Verbosity from GUI)
+ - Added final newlines to files to support diff/patch
+
+Version 0.13 1999-03-31 (JBr)
+------------
+
+ - Closed SOC-SPR-443: Merge TODO into documentation
+ - Closed SOC-SPR-593: No graphic examples in HTML doc
+ - Added test harness for ParamDialog
+ - Fixed geometry bug with TabFrame
+ - Improved main window
+ - Added tool bar + icons on menus
+ - Added printing support
+ - Updated documentation
+ - Images are clearer in HTML documentation (uses GIF instead of EPSI)
+ - Deleted unused `View' menu
+ - Updated demos
+
+Version 0.12 1999-03-12 (JBr)
+------------
+
+ - Improved dataset browser
+
+Version 0.11 1999-02-24 (JBr)
+------------
+
+ - Added prototype dataset browser (see File menu)
+ - Added prototype support for new parameter types for tables, columns, etc
+ - Real parameter widgets now use double instead of float (for param-1.25)
+
+Version 0.10 1999-02-17 (JBr)
+------------
+	
+ - Modified to work with param-1.24 (reintroduced vector<bool> fix)
+
+Version 0.9 1999-02-16 (JBr)
+-----------
+
+ - Modified to work with param-1.23 (to fix SPR-587 in param)
+ - Added "EXTERNALS = qt" to Makefiles instead of "LDLIBS += -lqt"
+
+Version 0.8 1999-02-08 (JBr)
+-----------
+
+ - Removed local workaround for long mangled C++ symbols names
+ - Commands are logged with prefix "@@" for later extraction
+ - Added Process and HelpViewer classes
+ - Made parameter dialog framework into a library
+ - Improved handling of errors/messages from tasks
+	
+Version 0.7 1999-02-01 (JBr)
+-----------
+
+ - Fixed for egcs-1.1.1
+ - Fixed for qt-1.42
+ - Prototype user preferences dialog (incomplete)
+ - Some restructuring to help further development
+	
+Version 0.6 1998-11-25 (JBr)
+-----------
+
+ - GUI layout is now controlled by a separate layout (".lyt") file.
+   This allows customisation of GUIs for FTOOLS, as well as SAS tasks.
+
+ - The ".lyt" file uses a hierarchical format to describe the layout.
+   This allows modular extension of the layout mechanisms, without 
+   disturbing existing tasks. It is also more flexible.
+
+ - Parameter dialog now has task name as title
+ - Improved geometry management
+ - Documentation expanded
+ - QTDIR no longer used; put Qt headers in CPLUS_INCLUDE_PATH
+
+Version 0.5 1998-10-15 (JBr)
+-----------
+
+ - Fixed SOC-SPR-446 : Error handler must be upgraded
+ - Added label as place-marker for data browser
+ - Added demos directory with demos of GUI layout
+
+Version 0.4 1998-10-05 (JBr)
+-----------
+
+ - Fixed warnings reported by egcs compiler (for Linux)
+ - "Default" button implemented
+
+Version 0.3 1998-10-01 (JBr)
+-----------
+
+ - Null test added so that "make test" does not fail (Testing
+   is manual, using the special task "gui_test_task").
+
+ - Modified to work with param-1.13, which has a work-around
+   for an egcs problem with vector<bool>.
+
+Version 0.2 1998-09-25 (JBr)
+-----------
+
+ - Deleted VERSION and DEPEND files from gui_test_task.
+
+Version 0.1 (JBr)
+-----------
+
+ - Initial prototype of GUI.

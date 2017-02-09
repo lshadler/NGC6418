@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Flare rejection</TITLE>
+<META NAME="description" CONTENT="Flare rejection">
+<META NAME="keywords" CONTENT="emchain">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="emchain.css">
+
+<LINK REL="next" HREF="node7.html">
+<LINK REL="previous" HREF="node5.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node7.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+emchain (emchain-11.19) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Main loop"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Bad pixels detection"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="emchain.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00033000000000000000"></A>
+<A NAME="emchain:description:description:flares"></A>
+<BR>
+Flare rejection
+</H2>
+
+<P>
+If <TT>makeflaregti</TT>=Y, for all merged files (*MIEVLI*),
+an additional call to <A NAME="926"></A><A NAME="tex2html30"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+(Fig <A HREF="node5.html#emchain:description:description:main:merge">1</A>) produces 
+a light curve of single events from CCDs in Imaging mode flagged with
+<A NAME="930"></A><TT>REJECTED_BY_GATTI</TT> (with actual energy above 14 keV),
+with time bins defined by <TT>flaretimebin</TT> (if that time bin is too
+small to give reasonable statistics per bin, it will be increased
+automatically).
+This is aimed at finding efficiently periods of flaring activity when
+the focal plane is illuminated by low-energy protons. 
+Those are mostly singles and are not cut-off by the mirror efficiency
+above 10 keV (contrary to astronomical sources).
+The result is divided by the area of the external CCDs 
+within the field of view, and expressed in cts/ks/arcmin<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^2$"></SPAN>.
+A fractional exposure column <A NAME="933"></A><TT>FRACEXP</TT> accounts
+for incomplete time bins.
+
+<P>
+If <TT>globalflare</TT>=Y (default), timeseries are built for
+all MOS event lists in the current directory, then summed together
+(the <A NAME="936"></A><TT>ERROR</TT> columns are summed quadratically) 
+to build a single global timeseries. 
+This allows to apply the same
+GTI to both MOS instruments, and to improve the statistics 
+in the timeseries.
+
+<P>
+This light curve is sent to <A NAME="938"></A><A NAME="tex2html31"
+  HREF="../tabgtigen/index.html"><SPAN  CLASS="textbf">tabgtigen</SPAN></A>
+which selects all intervals
+when the number of cts/ks/arcmin<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^2$"></SPAN> is lower than 
+<TT>flaremaxrate</TT>,
+and produces a Good Time Intervals file. 
+This file is filtered to avoid intervals only one <TT>flaretimebin</TT>
+long, which are usually negative fluctuations during a moderately
+strong flare.
+This file is NOT applied to the events list, 
+unless <TT>applyflaregti</TT>=Y.
+
+<P>
+The quiet level is around 0.8 cts/ks/arcmin<SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="18" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^2$"></SPAN>.
+The default value of <TT>flaremaxrate</TT> is conservative (to avoid
+rejecting too many intervals) and should be all right in most situations.
+The default value of <TT>flaretimebin</TT> is such that it covers an integer
+number of frames (20). It should not be chosen too small if
+<A NAME="947"></A><TT>TIME</TT> is not randomised (no 'T' option in <TT>randomize</TT>).
+
+<P>
+If <TT>applyflaregti</TT>=Y, the resulting Good Time Intervals are applied
+only if they total more than 10% of the exposure time. Otherwise
+the events list is left unscreened. This applies in particular
+to the bad pixels detection 
+(Sect. <A HREF="node7.html#emchain:description:description:badpix">3.4</A>).
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node5.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Main loop"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node7.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Bad pixels detection"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

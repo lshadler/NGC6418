@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parallel detection over bands (with no assumptions made about source spectrum)</TITLE>
+<META NAME="description" CONTENT="Parallel detection over bands (with no assumptions made about source spectrum)">
+<META NAME="keywords" CONTENT="ssclib">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="ssclib.css">
+
+<LINK REL="previous" HREF="node96.html">
+<LINK REL="up" HREF="node95.html">
+<LINK REL="next" HREF="node98.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+ssclib (ssclib-4.32) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node96.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Single-band detection"></A>
+<A HREF="node95.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Source detection limits"></A>
+<A HREF="node98.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Integrated Gaussian probability"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="ssclib.html">Home Page</A> / <A  HREF="node91.html">Poissonian statistics and source</A> / <A  HREF="node95.html">Source detection limits</A></DIV>
+<!--End of Navigation Panel-->
+
+<H3><A NAME="SECTION00084200000000000000">
+Parallel detection over <SPAN CLASS="MATH"><IMG
+ WIDTH="18" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$N$"></SPAN> bands (with no assumptions made about source spectrum)</A>
+</H3>
+
+<P>
+Here the situation is a little more complicated. If nothing can be assumed about the spectra of the sources, the best detection strategy appears to be as follows:
+
+<P>
+
+<UL>
+<LI>Detect in each band separately.
+</LI>
+<LI>Calculate likelihood values according to equation <A HREF="node95.html#equ1">1</A>.
+</LI>
+<LI>Add the band likelihoods together for each position.
+</LI>
+</UL>
+
+<P>
+This sum over likelihoods itself follows a Poisson-like distribution. It can thus be shown that the overall likelihood for any given value of this sum being not due to chance, ie, the overall likelihood <!-- MATH
+ $L_{\rm {total}}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="42" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img106.png"
+ ALT="$L_{\rm {total}}$"></SPAN> that there is a source at this position, is given by
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+L_{\rm {total}} = -ln\{1 - P \Big[ f(N), \sum_{i=1}^{N} L_i \Big] \}.
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="245" HEIGHT="56" BORDER="0"
+ SRC="img107.png"
+ ALT="\begin{displaymath}
+L_{\rm {total}} = -ln\{1 - P \Big[ f(N), \sum_{i=1}^{N} L_i \Big] \}.
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+<P>
+where <SPAN CLASS="MATH"><IMG
+ WIDTH="35" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img108.png"
+ ALT="$f(x)$"></SPAN> approximates a linear function of <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img14.png"
+ ALT="$x$"></SPAN> of slope 1. Monte Carlo studies indicate that <SPAN CLASS="MATH"><IMG
+ WIDTH="63" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img109.png"
+ ALT="$f(2) \sim 2$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="63" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img110.png"
+ ALT="$f(5) \sim 4$"></SPAN>, <SPAN CLASS="MATH"><IMG
+ WIDTH="71" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img111.png"
+ ALT="$f(10) \sim 8$"></SPAN> and so forth; however <A NAME="1640"></A><A NAME="tex2html30"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+at the present time assumes that <SPAN CLASS="MATH"><IMG
+ WIDTH="76" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img112.png"
+ ALT="$f(N) = N$"></SPAN>; hence that (arguably not quite correct) assumption has been built into the present subroutine as well.
+
+<P>
+<PRE>
+    subroutine minDetPoissonCountsVector(bkgCounts, likelihoodCutoff&amp;
+    , detectableSrcCounts, detectableSrcCountsUncert, srcCountRatios, status)
+      real(single), intent(in)            :: srcCountRatios(:),&amp;
+                                             bkgCounts(size(srcCountRatios)),&amp;
+                                             likelihoodCutoff
+      real(single), intent(out)           :: detectableSrcCounts(&amp;
+                                               size(srcCountRatios))
+      real(single), intent(out)           :: detectableSrcCountsUncert(&amp;
+                                               size(srcCountRatios))
+      integer,      intent(out), optional :: status
+    end subroutine minDetPoissonCountsVector
+  end interface minDetPoissonCounts
+</PRE>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node96.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Single-band detection"></A>
+<A HREF="node95.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Source detection limits"></A>
+<A HREF="node98.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Integrated Gaussian probability"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node195.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

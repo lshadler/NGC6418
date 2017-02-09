@@ -1,0 +1,178 @@
+<!-- xcolorcod parameter file -->
+<FILE>
+<CONFIG>
+
+<PARAM id="colortablechoice" type="string" default="internal">
+	<DESCRIPTION>Source of color table</DESCRIPTION>
+	<CASE>
+		<ITEM value="internal">
+			<PARAM id="colortable" type="string" default="heat">
+				<DESCRIPTION>Name of color table</DESCRIPTION>
+					<CASE>
+						<ITEM value="a"/><ITEM value="aips0"/><ITEM value="b"/><ITEM value="bb"/><ITEM value="blue"/><ITEM value="color"/><ITEM value="cool"/><ITEM value="green"/><ITEM value="grey"/><ITEM value="he"/><ITEM value="heat"/><ITEM value="hsv"/><ITEM value="i8"/><ITEM value="rainbow"/><ITEM value="red"/><ITEM value="sls"/><ITEM value="staircase"/><ITEM value="standard"/>
+					</CASE>
+			</PARAM>
+		</ITEM>
+		<ITEM value="external">
+			<PARAM id="colortableset" type="dataset">
+				<DESCRIPTION>Name of explicit color table data set
+				</DESCRIPTION>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="invertcolortable" type="bool" default="no">
+	<DESCRIPTION>Invert used color table?</DESCRIPTION>
+</PARAM>
+
+<PARAM id="table" type="table" mandatory="yes">
+	<DESCRIPTION>Name of event list table</DESCRIPTION>
+</PARAM>
+
+<PARAM id="xcolumn" type="string" default="X">
+	<DESCRIPTION>Name of X coord column for image creation</DESCRIPTION>
+</PARAM>
+
+<PARAM id="ycolumn" type="string" default="Y">
+	<DESCRIPTION>Name of Y coord column for image creation</DESCRIPTION>
+</PARAM>
+
+<PARAM id="ecolumn" type="string" default="PI">
+	<DESCRIPTION>Name of energy column</DESCRIPTION>
+</PARAM>
+
+<PARAM id="ecolumnminmax" type="string" default="actualminmax">
+	<DESCRIPTION>Method for scaling ecolumn data values</DESCRIPTION>
+	<CASE>
+		<ITEM value="actualminmax"/>
+		<ITEM value="legalminmax"/>
+		<ITEM value="explicitminmax">
+			<PARAM id="min" type="real" default="0.">
+				<DESCRIPTION>Minimum ecolumn data value</DESCRIPTION>
+			</PARAM>
+			<PARAM id="max" type="real" default="12000.">
+				<DESCRIPTION>Maximum ecolumn data value</DESCRIPTION>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="imagebinning" type="string" default="imageSize">
+	<DESCRIPTION>Use bin sizes or image sizes to determine binning factor
+	</DESCRIPTION>
+	<CASE>
+		<ITEM value="binSize"/>
+		<ITEM value="imageSize"/>
+	</CASE>
+</PARAM>
+
+<PARAM id="squarepixels" type="bool" default="no">
+	<DESCRIPTION>Force x and y bin size to be the same when imagebinning=imageSize</DESCRIPTION>
+	<CASE>
+		<ITEM value="no"/>
+		<ITEM value="yes"/>
+	</CASE>
+</PARAM>
+
+<PARAM id="ximagebinsize" type="real" default="1">
+	<DESCRIPTION>Binning factor for x axis in image creation</DESCRIPTION>
+	<CONSTRAINTS>
+		ximagebinsize in [0:]
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="ximagesize" type="int" default="600">
+	<DESCRIPTION>Image size in the x coordinate (used to determine binning factor)</DESCRIPTION>
+	<CONSTRAINTS>
+		ximagesize in [0:]
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="withxranges" type="bool" default="no">
+	<DESCRIPTION>Use min/max values for x axis image extraction</DESCRIPTION>
+	<CASE>
+		<ITEM value="no"/>
+		<ITEM value="yes"/>
+	</CASE>
+</PARAM>
+
+<PARAM id="ximagemin" type="real" default="1">
+	<DESCRIPTION>Lower limit of x axis for image extraction</DESCRIPTION>
+</PARAM>
+
+<PARAM id="ximagemax" type="real" default="600">
+	<DESCRIPTION>Upper limit of x axis for image extraction</DESCRIPTION>
+</PARAM>
+
+<PARAM id="yimagebinsize" type="real" default="1">
+	<DESCRIPTION>Binning factor for y axis in image creation</DESCRIPTION>
+	<CONSTRAINTS>
+		yimagebinsize in [0:]
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="yimagesize" type="int" default="600">
+	<DESCRIPTION>Image size in the y coordinate (used to determine binning factor)</DESCRIPTION>
+	<CONSTRAINTS>
+		yimagesize in [0:]
+	</CONSTRAINTS>
+</PARAM>
+
+<PARAM id="withyranges" type="bool" default="no">
+	<DESCRIPTION>Use min/max values for x axis image extraction</DESCRIPTION>
+	<CASE>
+		<ITEM value="no"/>
+		<ITEM value="yes"/>
+	</CASE>
+</PARAM>
+
+<PARAM id="yimagemin" type="real" default="1">
+	<DESCRIPTION>Lower limit of y axis for image extraction</DESCRIPTION>
+</PARAM>
+
+<PARAM id="yimagemax" type="real" default="600">
+	<DESCRIPTION>Upper limit of y axis for image extraction</DESCRIPTION>
+</PARAM>
+
+<PARAM id="scale" type="string" default="log">
+	<DESCRIPTION>Logarithmic or linear scaling</DESCRIPTION>
+	<CASE>
+		<ITEM value="lin"/>
+		<ITEM value="log">
+			<PARAM id="decades" type="real" default="4">
+				<DESCRIPTION>Decades for logarithmic scaling</DESCRIPTION>
+				<CONSTRAINTS>
+					decades in [-10:20]
+				</CONSTRAINTS>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+<PARAM id="outputchoice" type="string" default="dataset">
+	<DESCRIPTION>Where to write color image to</DESCRIPTION>
+	<CASE>
+		<ITEM value="ppmfile">
+			<PARAM id="ppmfile" type="string" default="stdout">
+				<DESCRIPTION>Name of RGB color ppm file</DESCRIPTION>
+			</PARAM>
+		</ITEM>
+		<ITEM value="dataset">
+			<PARAM id="colorset" type="dataset" default="colimg.ds">
+				<DESCRIPTION>Name of RGB color image</DESCRIPTION>
+			</PARAM>
+			<PARAM id="ascube" type="bool" default="no">
+				<DESCRIPTION>Write RGB image as data cube?</DESCRIPTION>
+				<CASE>
+					<ITEM value="no"/>
+					<ITEM value="yes"/>
+				</CASE>
+			</PARAM>
+		</ITEM>
+	</CASE>
+</PARAM>
+
+
+</CONFIG>
+</FILE>

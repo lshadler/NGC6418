@@ -1,0 +1,118 @@
+<!-- converted from XPI formatted "eexpmap.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="imageset" type="dataset" mandatory="yes" default="image.fits">
+   <DESCRIPTION>
+    Name of EPIC FITS image
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="attitudeset" type="dataset" mandatory="yes" default="attitude.fits">
+   <DESCRIPTION>
+    Name of attitude file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="eventset" type="dataset" mandatory="yes" default="events.fits">
+   <DESCRIPTION>
+    Event file, providing bad pixels and exposure extensions
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="expimageset" type="dataset" list="yes" mandatory="yes" default="expimage.fits">
+   <DESCRIPTION>
+    Name(s) of output exposure image(s)
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="withdetcoords" type="bool" default="no">
+   <DESCRIPTION>
+    If true, the exposure map will be output in detector coordinates.
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+  <PARAM id="withvignetting" type="bool" default="yes">
+   <DESCRIPTION>
+    If true, the exposure map will include vignetting
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="usefastpixelization" type="bool" default="no">
+   <DESCRIPTION>
+    If true, a faster but less accurate mode is used
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="usedlimap" type="bool" default="no">
+   <DESCRIPTION>
+    if true, use discarded line maps provided by epexposure
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="attrebin" type="real" default="4">
+   <DESCRIPTION>
+    Positional accuracy of attitude rebinning [arcsec]; 0.020626481 or smaller matches event lists.
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    attrebin in [0.0:60.0]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="pimin" type="int" list="yes" default="2000">
+   <DESCRIPTION>
+    Lower PI energy boundaries of exposure images
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    pimin in [0:30000]
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="pimax" type="int" list="yes" default="4500">
+   <DESCRIPTION>
+    Upper PI energy boundaries of exposure images
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    pimax in [0:30000]
+   </CONSTRAINTS>
+  </PARAM>
+
+ </CONFIG>
+</FILE>

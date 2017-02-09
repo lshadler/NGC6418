@@ -1,0 +1,86 @@
+<!-- converted from XPI formatted "adapt_2000.par.xpi"-->
+<FILE>
+ <CONFIG>
+	
+	<PARAM id="caldb" type="string" mandatory="yes" >
+ 		<DESCRIPTION>
+   	 		ESAS CCF data directory
+   		</DESCRIPTION>
+  	</PARAM>
+  
+ 	<PARAM id="clobber" type="bool" mandatory="no" default="yes">
+ 	<DESCRIPTION>
+   	 	 Clobber control (1 to clobber)
+   	</DESCRIPTION>
+   		<CONSTRAINTS>
+    			true
+   		</CONSTRAINTS>
+  	</PARAM>
+  
+ 	<PARAM id="withpartcontrol" type="bool" mandatory="yes" default="yes">
+ 	<DESCRIPTION>
+   	 	 Particle background control (1 to include)
+   	</DESCRIPTION>
+   		<CONSTRAINTS>
+    			true
+   		</CONSTRAINTS>
+  	</PARAM>
+
+	<PARAM id="withsoftcontrol" type="bool" mandatory="no" default="no">
+        <DESCRIPTION>
+                 Soft Proton background control (1 to include)
+        </DESCRIPTION>
+        </PARAM>
+
+	<PARAM id="withswcxcontrol" type="bool" mandatory="no" default="no">
+        <DESCRIPTION>
+                 SWCX background control (1 to include)
+        </DESCRIPTION>
+        </PARAM>
+
+  	<PARAM id="elowlist" type="int" list="yes" mandatory="yes" default="400 750">
+ 	<DESCRIPTION>
+   	 	 Lower energy limit for the energy band in eV
+   	</DESCRIPTION>
+   		<CONSTRAINTS>
+    		true
+   		</CONSTRAINTS>
+  	</PARAM>
+  	
+  	<PARAM id="ehighlist" type="int" list="yes" mandatory="yes" default="750 1250">
+ 	<DESCRIPTION>
+   	 	 Upper energy limit for the energy band in eV
+   	</DESCRIPTION>
+   		<CONSTRAINTS>
+    		true
+   		</CONSTRAINTS>
+  	</PARAM>
+  	
+        <PARAM id="alpha" type="real" mandatory="no" default="1.7">
+ 	<DESCRIPTION>
+   	 	Hardness correction spectral index
+   	</DESCRIPTION>
+   		<CONSTRAINTS>
+  			alpha in [1.0:2.4] 
+		</CONSTRAINTS>
+  	</PARAM>
+  	
+        <PARAM id="mask" type="int" mandatory="yes" default="0">
+ 	<DESCRIPTION>
+   	 	Masking control
+   	</DESCRIPTION>
+   		<CONSTRAINTS>
+  			mask in [0:4] .or. mask in [11:12] .or. mask in [31:32]
+		</CONSTRAINTS>
+  	</PARAM>
+
+        <PARAM id="prefixlist" type="string" list="yes" mandatory="yes" default="1S001 2S002 S003">
+        <DESCRIPTION>
+                 List of prefixes (e.g., 1S001 2S002 S003)
+        </DESCRIPTION>
+                <CONSTRAINTS>
+                true
+                </CONSTRAINTS>
+     </PARAM>
+ </CONFIG>
+</FILE>

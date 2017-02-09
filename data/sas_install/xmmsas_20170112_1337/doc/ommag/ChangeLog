@@ -1,0 +1,343 @@
+ChangeLog for ommag
+------------------- 	
+Version 3.11.1 - 2014-10-27 (RDS): 
+	Documentation fix - SCR-7248
+Version 3.11 - 2014-03-19 (VNY): 
+	Dependency updated to mssllib-2.75;  the calculation of the binobial 
+	error bars is switched on (it was switched off in the previous version);
+	modified the calculation of binomial
+	errors by using the observed count rates in the formula (7)
+	instead of incident coints (which was giving a smaller error
+	then expected); setting to null the corrected rate errors
+ 	for thge sources with raw count rates >0.97; 
+	fixed a bug in calculating the source count rate error
+	in the case when the initial source count rate error exceeds the source rate;
+	now in this case the source rate error is calculated by using the background rate,
+	i.e. using the formula sqrt(s+2b).
+Version 3.10.6 - 2013-11-26 (VNY)
+-------------	
+	+src/ommag_mod.f90, ccountrateerror_mod.f90: 
+	modified the column CORR_BKG_RATE_ERR by applying to it 
+	the time-dependent correction factor; 
+	fine-tuned the interpolation of binomial error bars.
+Version 3.10.5 - 2013-11-26 (VNY)
+-------------	
+	+src/ommag_mod.f90, countrateerror_mod.f90: 
+	changing the order of applying the time-dependent
+	correction factor and the coincidence-loss correction
+	factor to the count-rate errors: the time-dependent
+	factor is applied at the end because that is how it 
+	was calibrated (fixing the problem reported in 
+	SSC-SPR-0007165). Also removing the sqrt(s+2b) 
+	addition to the coincidence-loss corrected error
+	bars as this addition was already made in omdetect.
+	
+Version 3.10.4 - 2013-11-10 (VNY)
+--------------
+	+src/ommag_mod.f90, countrateerror_mod.f90: 
+	simplified the algorithm for calculating
+	the rigourous (binomial) count-rate error using the formula (7)
+	from Kuin&Rosen paper MNRAS 383, 383 (2008). The module brent2_mod.f90
+	is removed as obsolete for the simlified code.
+Version 3.10.3 - 2013-11-10 (VNY)
+--------------
+	+src/ommag_mod.f90, brent2_mod.f90, countrateerror_mod.f90:
+	fixed a bug in the subroutine "brent" which was leading
+        to wrong calcilation of the coincidence-loss correction 
+	error-bars. This change fixes the problem reported in 
+	SSC-SPR-7152.
+Version 3.10.2 -  2009-07-21 (CB)
+-------------
+        +test Removed ssclib from Makefile to fix
+	gcc4 build failure
+	
+Version 3.10.1 -  2009-07-20 (CB)
+-------------
+        +src Removed ssclib from Makefile to fix
+	gcc4 build failure
+Version 3.10 -  2009-02-12 (CB)
+-------------------------------
+        Deleted ssclib from DEPEND file to
+        fix build problem on xmac02 machine
+        (seems to have been in the file twice)
+
+
+Version 3.9 -  2009-02-11 (CB)
+-------------------------------
+        Deleted ssclib from DEPEND file to
+        fix build problem on xmac02 machine
+
+
+
+Version 3.8 -  2008-05-06 (CB)
+-------------------------------
+	Modified so that if the corrected count rate > 1000
+	magnitude set to null and significance to -significance
+
+Version 3.7 -  2008-05-01 (CB)
+-------------------------------
+	Modified so that if the corrected count rate > 1000
+	magnitude set to null.
+
+
+	
+Version 3.6 -  2005-09-12 (CB)
+-------------------------------
+	Made minor modification to the positioning of the magnitude
+	columns in the source-list table.
+	
+Version 3.5 -  2005-09-02 (CB)
+-------------------------------
+	Removed line of code that recomputes source significances.
+	
+Version 3.4.5 -  2005-06-28 (CB)
+-------------------------------
+	Ammended routine ommagnitude_mod in mssllib to set default 
+	polynomial coefficents to 1.0 and 0.0 (fixes SPR 3483 - mssllib
+	version 2.43.12 has this fix)	
+	Also replaced source-list file in test directory with a more
+	recent one to fix problem of negative magnitudes which cause
+	a test-failure on one system.
+	Also introduced Simon Rosen's algorithm for calculating more
+	accurate source-rate error bars for high count-rates (an SPR
+	3337 was raised for this some time ago, but unfortunately it was't
+	included in ommag). 
+	
+
+	
+Version 3.4.4 -  2005-05-18 (CB)
+-------------------------------
+	Modified to correct the count-rates for the OM sensitivity
+	degradation (fixes SPR 3449)
+	
+Version 3.4.3 -  2004-09-28 (CB)
+-------------------------------
+	Minor ammendment to ommag_mod.f90 to fix build problem
+	after fixing SPR 3391
+Version 3.4.2 -  2004-09-27 (CB)
+-------------------------------
+	ommag_mod.f90 ammended to use the UV psf function
+	to extrapolate CRLIMIT counts to 35 pixels for UV sources
+	(fixes SPR 3391)
+------------------------------
+Version 3.4.1 -  2004-03-15 (CB)
+-------------------------------
+	Documentation ammended
+	
+Version 3.4 -  2003-11-21 (CB)
+-------------------------------
+	Modified DEPEND file for ssclib 3.0
+	
+Version 3.3 -  2003-03-15 (CB)
+-------------------------------
+         Modified to use ommagmagnitude_mod in mssllib for computing
+	 instrumental magnitudes- same module will be used by omsource
+         
+Version 3.2 -  2003-02-26 (CB)
+-------------------------------
+        Uploaded into development track
+Version 3.1.2 -  2002-10-30 (CB)
+-------------------------------
+	Source list file in test harness updated to fix test failure.
+
+Version 3.1.1 -  2002-10-22 (CB)
+-------------------------------
+	Test harness ammended to fix SPR 3002
+
+Version 3.1 -  2002-10-17 (CB)
+-------------------------------
+	Uploaded for the release track
+	
+Version 3.0 -  2002-10-14 (CB)
+-------------------------------
+	Modified to use the source-list file produced by omdetect version
+	4.0- Does not now do the source coincidence-loss corrections, but
+	does the source-rate correction (where necessary) from 12 to 35
+	pixels and the dead-fraction correction. Adds a new column for the
+	former correction.
+	
+
+Version 2.4 -  2002-08-16 (CB)
+-------------------------------
+	Since omdetect has been modified to do the coincidence-loss 
+	correction ommag has been modified not to do this one.	
+Version 2.3 - 2002-05-15 (CB)
+-----------------------------
+	- Added the columns CORR-RATE, CORR-RATE-ERR,COINC-CORR,
+	PSF1-CORR, PSF2-CORR, CORR-BACKGROUNDRATES, and the keywords 
+	FRAMTIME and DEADFRAC	
+Version 2.2.5 2002-04-29  (CB)
+------------------------
+            +(src/ommag_mod.f90) Ammended program to apply the correct UV
+	    photometry correction from 12 to 35 pixels (fixes SPR 2846)
+	 
+	
+Version 2.2.4 2002-03-14  (CB)
+------------------------
+	Documentation corrected
+	
+Version 2.2.3 2002-02-18  (CB) DEPEND file further ammended to fix SPR
+2757. 0.02 magnitude erroradded to account for systematic errors. 
+_____________________________	
+
+Version 2.2.2 2002-02-15  (CB) DEPEND file ammended to fix SPR 2757. 
+_____________________________	
+
+Version 2.2.1 2002-01-27  (CB) 
+_____________________________	
+	 Modified configuration file. Changed call to Cal_omPhotNatural so
+	 that empiricallinearitycorrection flag is set to true and
+	 extendsource flag always set to false. (fixes SPR 2720).
+
+Version 2.2 2002-01-08  (CB) - Modified DEPEND file for ssclib
+
+Version 2.1 2001-12-13  (CB) - Modified to pass BINBPE parameter to 
+	GetFrameTime- which has been modified for SPR 2571.
+
+Version 2.0.1 2001-08-13  (CB) - Added check to stop the counts-frame
+ratio exceeding 1 - to fix SPR ? 
+
+Version 2.0 2001-07-16  (CB) - Program now reads in additional columns
+(source photometry aperture radii and source coordinates) from the
+source-list file produced by omdetect , and, if necessary (ie if the aperture radius is less
+than 12 pixels), extrapolates the source counts the to the
+12-pixel radius used by the CAL calibration. For the UV filters, a further
+extrapolation is done to a radius of 35 pixels. A bug in computing the
+magnitude errors fixed (SPRs 2460 and 2430- raised for omsrclistcomb).  
+Coincidence-loss corrections done correcty using the background counts.
+
+	
+Version 1.22 2001-04-23  (CB) - Version number changed.
+
+Version 1.21.1 2001-03-14  (CB)
+	+(src/ommag_mod.f90) Program uses latest call to
+	CAL_omPhotoNatural that doesn't call fatal if the count rate is
+	greater than the frame rate - fixes (SPR-2218).
+
+
+	
+Version 1.21 2001-02-02  (CB)
+	+(src/ommag_mod.f90) Program checks number of sources > 0 before
+	reading magnitude columns, etc - fixes (SPR-2159).
+
+
+Version 1.20 2001-02-02  (CB)
+	+(src/ommag_mod.f90) Program checks that the number of sources > 0
+	before trying to compute magnitides, etc, fixes (SPR-2159).
+
+
+Version 1.19 2001-02-02  (CB)
+	+(src/ommag_mod.f90) Code tidied up.
+
+	
+Version 1.18 2001-01-11  (CB)
+	+(src/ommag_mod.f90) Program now reads in the source background
+	count rates and corrects the counts properly. Call to the
+	subroutine to calculate the limiting magnitude ammended (fixes SPR 2159)  
+
+	
+Version 1.17.3 2000-11-07  (CB)
+	+(config/ommag.info) "om" added. 
+	
+Version 1.17.2 2000-11-07  (CB)
+	+(src/ommag_mod.f90) Instrumental limiting magnitude calculated
+	and stored in source-list file. 
+
+
+Version 1.17.1 2000-11-07  (CB)
+	+(config/ommag.info) "om" added. 
+	
+
+Version 1.17 2000-10-04  (AMK)
+	+(src/ommag_mod.f90) removed mssllib call getFilterId and replace
+	by oal call filterIdToInt. 
+	
+Version 1.16 2000-09-04  (CB)
+	+(src/ommag_mod.f90) added call to CAL_omGetColorTrans to
+	convert instrumental magnitudes to standard magnitudes. 
+	
+Version 1.15.1: 8th June 2000
+Added info file to task - SPR 1740 (AMK)
+	
+Version 1.15: 18th April 2000
+SPR 1647
+Ammended documentation for warning and error messaging
+	
+Version 1.14: 13th March 2000
+
+Modified code to read EFLAG column from sourcelist.
+Corrected CAL_omphotonatural interface for BOOL extended field.	
+	
+Version 1.13: 10 January 2000
+
+Modified getframetime function call to subroutine call	from mssllib 2.9
+	
+Version 1.12: 2nd December 1999
+
+Added DISTRIBUTION (world) file	
+	
+Version 1.11: 20 August 1999
+
+Updated window data file in test directory.
+
+Version 1.10: 8 June 1999
+	
+Updated dependencies for V3 delivery.
+	
+Version 1.9: 24 May 1999
+
+'Spring clean' of code (tidy, comment and fix bugs).
+Changed input parameters to conform to new standards.
+Added checks on input file types.
+Update testommag and checkoutput for new dataset.
+
+Version 1.8: 4 May 1999
+
+Updated DEPEND and src/Makefile for new structure of SAS
+Updated 'message' calls in code for new error library.
+
+Version 1.7: 26 March 1999
+
+removed accuracyLevel=LOW
+
+Version 1.6: 10 Dec 1998
+
+Changed dependancies for mssllib-2.0
+
+Version 1.5: 24 August 1998
+
+Frametime computation included - uses frametime_mod from mssllib
+extra parameter "win_file" added necessary for frametime computation
+
+SPR 420 closed: now uses errstr
+
+Version 1.4: 16th June 1998
+
+CAL routines commented out due to cal errors (spr submitted)
+
+SPR 421 closed: test harness now checks a magnitude value
+SPR 419 closed: .par file changed
+SPR 418 closed: file deleted
+
+Version 1.3: 21 May 1998
+
+ChangeLog added
+DEPEND edited
+
+Version 1.2: 8 May 1998
+
+SPR 237 closed: access privs changed
+SPR 3 closed: see 237
+test harness updated
+
+
+Version 1.1: 27 April 1998
+
+SPR 238 closed: .par file added
+SPR 239 closed: datestamp removed
+
+
+
+Version 1.0: 20 Match 1998
+
+Original version submitted to SOC

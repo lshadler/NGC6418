@@ -1,0 +1,247 @@
+#! /usr/bin/perl -w
+#
+#				majorbatch
+#
+# This task is designed to run colimchain on all the PPS exposures in all subdirectories under --prodsdir. It runs treehunter, which runs minorbatch (used to be imbatch), which runs colimchain.
+#
+#------------------------------------------------------------------------
+
+require 5.005;
+
+use English;
+#use strict;
+
+my ($file);
+
+#  my ($rest_cmd_str);
+#  my ($is_band_8, $req_band, $file_not_found, $available_band, $i);
+#  my ($instrument_lc, $opfile, $command, $status);
+
+  my $taskname = 'majorbatch';
+  my $log_name = 'log';
+
+  my $testflag = 1;
+
+  my %params = &getParams;
+
+  my $write_log = &boolTranslate($params{'writelog'});
+#  my $prodsdir = $params{'prodsdir'};
+  my $file_list_style = $params{'fileliststyle'};
+  my $with_treehunter = &boolTranslate($params{'withtreehunter'});
+  my $file_list_file = $params{'filelistfile'};
+  my $file_list_str = $params{'fileliststr'};
+
+  my $ccf_path = $params{'ccfpath'};
+  if (!defined($ccf_path) || $ccf_path eq '') {
+    if (!defined($ENV{'SAS_CCF'})) {
+&quit("You must set SAS_CCF before running colimchain.", 1);
+    } else {
+      $ccf_path = $ENV{'SAS_CCF'};
+    }
+  } else {
+    $ENV{'SAS_CCF'} = $ccf_path;
+  }
+
+  # If thumbnails dir doesn't exist, attempt to mkdir;
+  if (&boolTranslate($params{'withthumbnails'})) {
+    if (!-d "$params{'thumbnaildir'}"
+    && system("mkdir $params{'thumbnaildir'}")) {
+&quit("Could neither find nor mkdir directory to contain thumbnails.", 2);
+    }
+  }
+
+  if ($file_list_style eq 'file') {
+    if (!-e "$file_list_file") {
+&quit("Couldn't find $file_list_file.", 2.1);
+    }
+
+    @file_list = `cat $file_list_file`;
+    $file_list_str = join(' ', @file_list);
+
+  } elsif ($file_list_style eq 'string') {
+    @file_list = split('\s+', $file_list_str);
+
+  } else {
+&quit("Don't recognise value of parameter --fileliststyle.", 2.2);
+  }
+
+  my $rest_cmd_str = "astest=".$params{'astest'}
+  ." withthumbnails=".$params{'withthumbnails'}
+  ." thumbnaildir=".$params{'thumbnaildir'};
+
+  if($write_log) {
+    $rest_cmd_str .= " writelog=yes";
+  } else {
+    $rest_cmd_str .= " writelog=no";
+  }
+
+  if ($with_treehunter) {
+#    my $treehunter = `which treehunter`;
+#    chomp($treehunter);
+#    my $command = "$treehunter "
+    my $command = "treehunter "
+#    .       "dir=$prodsdir "
+    .  "rootlist='$file_list_str' "
+    .     "child=minorbatch "
+    . "infilekey='prodsdir=' "
+    ."restcmdstr='$rest_cmd_str' "
+    .   "useprev='yes' "
+    .  "writelog=$params{'writelog'} "
+    ;
+
+    &tell("invoke $command");
+#    if (!$testflag) {$status = system($command);}
+    if (!$testflag) {$status = (system($command) >> 8);}
+&quit("Couldn't execute command $command.", 3) if (&is_fatal($status));
+
+  } else { # don't use treehunter:
+    foreach $file (@file_list) {
+      $command = "minorbatch prodsdir=$file $rest_cmd_str";
+      &tell("invoke $command");
+      if (!$testflag) {$status = system($command);}
+&quit("Couldn't execute command $command.", 3.1) if ($status);
+    }
+  }
+
+  $command = "makeclrhtml";
+  &tell("invoke $command");
+  if (!$testflag) {$status = system($command);}
+&quit("Couldn't execute command $command.", 4) if ($status);
+
+exit 0;
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub getParams {
+# This routine is shared with rgsprods. Should therefore be in a separate module.
+
+  my ($possible_key, $actual_key, $value, $no_match_found, $unmatched_pars_found);
+
+  my %params = &getParamDefaults;
+
+#  # Look for '-v':
+#  foreach (@ARGV) {
+#    if ($_ eq '-v') {
+#&getVersionThenQuit();
+#    }
+#  }
+
+  $unmatched_pars_found = 0;
+  foreach (@ARGV) {
+    if ($_ =~ /^(\w+)(=+)/) {
+      $actual_key = $1;
+      $value = $';
+      $no_match_found = 1;
+      foreach $possible_key (keys(%params)) {
+        if ($possible_key eq $actual_key) {
+          $params{$possible_key} = $value;
+          $no_match_found = 0;
+      last;
+        }
+      }
+      if ($no_match_found) {
+        $unmatched_pars_found = 1;
+        &warn("Unrecognised parameter: $actual_key");
+      }
+    }
+  }
+&quit("Unmatched parameters found.", -1) if ($unmatched_pars_found);
+
+return %params;
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub getParamDefaults {
+# Loading default parameter values:
+
+  my %params = (
+    ccfpath        => '',
+#    prodsdir       => '.',
+    writelog       => 'no',
+    astest         => 'no',
+    withthumbnails => 'yes',
+    thumbnaildir   => './thumbnails',
+    fileliststyle  => 'file', # or string
+    filelistfile   => 'file_list',
+    fileliststr    => ".",
+    withtreehunter => 'no',
+  );
+
+return %params;
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub boolTranslate {
+  my ($inStr) = @_;
+  my $out;
+
+  if ($inStr =~ /^\w+$/) {
+    $inStr = lc($inStr);
+    if ($inStr eq 'y' || $inStr eq 'yes' || $inStr eq 't'
+    || $inStr eq 'true') {
+      $out = 1;
+    } elsif ($inStr eq 'n' || $inStr eq 'no' || $inStr eq 'f'
+    || $inStr eq 'false') {
+      $out = 0;
+    } else {
+&quit("Non-boolean variable $inStr treated as boolean.", -2);
+    }
+  } elsif ($inStr ne '0' && $inStr ne '1') {
+&quit("Non-boolean variable $inStr treated as boolean.", -3);
+  }
+
+return($out);
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub is_fatal {
+  my $status = 0;
+  my ($instatus) = @_;
+
+  if ($instatus == 1
+  || $instatus == 2
+  || $instatus == 3
+  ) {
+    $status = 1;
+  }
+
+return $status;
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub tell {
+  open(LOG, ">> $log_name") if ($write_log);
+  foreach (@_) {
+    print "$taskname:- $_\n\n";
+    print LOG "$taskname:- $_\n\n" if ($write_log);
+  }
+  close(LOG) if ($write_log);
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub warn {
+  open(LOG, ">> $log_name") if ($write_log);
+  foreach (@_) {
+    print "** $taskname: warning, $_\n\n";
+    print LOG "** $taskname: warning, $_\n\n" if ($write_log);
+  }
+  close(LOG) if ($write_log);
+}
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+sub quit {
+  my ($message, $status) = @_;
+
+  open(LOG, ">> $log_name") if ($write_log);
+  print "** $taskname: ERROR! $message\n\n";
+  print LOG "** $taskname: ERROR! $message\n\n" if ($write_log);
+  close(LOG) if ($write_log);
+
+exit $status;
+}

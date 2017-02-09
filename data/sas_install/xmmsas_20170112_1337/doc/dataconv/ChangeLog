@@ -1,0 +1,4516 @@
+ChangeLog for sas
+=================
+
+Version 1.580.1 - 2017-01-12 (EO)
+---------------
+	+ configure_install: Fix perlsed when SAS_PERL is selected.
+
+Version 1.580 - 2017-01-10 (EO)
+-------------
+	+ configure_install: Function identify_perl enhanced to handle
+	  hardcoded "/usr/local/bin/perl" she-bangs, perl scripts with
+	  non-printable hidden characters and additional blank space between
+	  she-bang "#!" and the perl binary location. 
+
+Version 1.579 - 2016-12-16 (EO)
+-------------
+	+ configure_install: 
+	  - Fixed identify_perl and change_perl functions 
+	    to improve detection and change of the perl shebang.
+	  - Better identification of errors.
+
+Version 1.578 - 2016-11-17 (EO)
+-------------
+	+ configure.in: 
+	  - Removed "-Wc,-fno-common" link option to be passed to
+	  GNU g++ linker on Mac OS X. This is not used in Linux and prevented the
+	  use of named common blocks from different objects that will form part of
+	  a shared library.
+
+Version 1.577 - 2016-10-28 (EO)
+-------------
+	+ configure.in: Added checking on whether GFORTRAN version is greater
+	  or equal to 5 or not. If not issue WARNING notice on some Fortran
+	  2003 standards will not be supported, e.g. IEEE_ARITHMETIC module
+	  used in omcat. 
+
+Version 1.576 - 2016-10-13 (EO)
+-------------
+	+ configure.in: Reinstated missing F90VERSION variable.
+	+ sas.environment.in: Replaced GFORTRAN_VERSION by GFORTRANVERSION as
+	  this is now the new name of the old variable.
+	+ packagedetails.html.in: Replaced GFORTRAN_VERSION by GFORTRANVERSION
+	  as this is now the new name of the old variable.
+
+Version 1.575 - 2016-10-11 (EO)
+-------------
+	+ configure.in: Fixed definition of Makefile variable F90.
+
+Version 1.574 - 2016-10-10 (EO)
+-------------
+	+ configure.in: 
+	  - No Fortran compiler by default. Both USENAGFORTRAN and USEGFORTRAN
+	    are set to "no" by default. Therefore, we must use either 
+	    --with-nagfor   -> NAG Fortran compiler
+	    --with-gfortran -> GNU Fortran compiler
+	  - f95 is not tested anymore to avoid confusion of old f95 from NAG
+	    with soft link to gfortran. 
+	  - NAG Fortran compiler is searched as nagfor.
+	  - NAG Fortran compiler license availability is tested when the NAG 
+	    Fortran compiler is set to use.
+	  - Removed -Wall for gfortran.
+	+ test/tesconfiguremake: The configure now runs with the same options
+	  used in the reference build.
+	+ AKA: 16.0.0 => Start of release mode for SAS 16.0.0.
+	  
+
+Version 1.573 - 2016-08-26 (EO)
+-------------
+	+ configure.in: Given the consequences on source code syntax 
+	  produced by using -fpp (NAG) or -cpp (GNU) preprocessor switches 
+	  on all Fortran compilations, we have decided to remove them from
+	  SASF90FLAGS and SASFFLAGS. 
+	  Just for reference of what we have found so far here are two cases
+	  which we have observed:
+	  - Blank lines can not be used between continuation lines (ended
+	  by &).
+	  - Standard Fortran comment lines (started with !) can not be ended 
+	  with character "\" because this is the preprocessor character used
+	  to continue preprocessor lines (those started with #).
+	  Therefore, Fortran preprocessor directives MUST be processed by
+	  means of code inlcuded ONLY in the individual source Makefiles
+	  (src/Makefile). 
+	  
+	  A good example is the following, that is used to allow to process 
+	  the use of the "f90_unix_proc" module only by the NAG Fortran compiler:
+	  
+	  ifeq ($(USENAGFORTRAN),yes)
+	  	F90FLAGS += -fpp -DNAGf90Fortran
+	  else
+	  	F90FLAGS += -cpp -DGFORTRAN
+	  endif
+	  
+	  This code must be placed after the statement
+
+	  include $(SAS_DIR)Make.include
+
+
+Version 1.572 - 2016-08-25 (EO)
+	+ configure.in: Changes to this file introduced in previous version
+	  were not made effective due to forgeting to run the update-configure
+	  script.
+
+Version 1.571 - 2016-08-24 (EO)
+-------------
+	+ configure.in: Added preprocessor switches to both NAG and GNU
+	  Fortran compiler compilation flags, SASF90FLAGS, to allow for
+	  processing conditional compilation preprocessor directives 
+	  embeded in the code, as for example 
+	      #ifdef NAGf90Fortran
+	      use f90_unix_proc
+	      #endif
+	  which will load NAG supplied module f90_unix_proc only when NAG
+	  Fortran compiler is used (when the macro NAGf90Fortran is included
+	  in F90FLAGS).
+	  The preprocessor switch is also added to SASFFLAGS.
+	  Given that NAG Fortran compiler is still the default Fortran
+	  compiler, the default compilation flags SASF90FLAGS and SASFFLAGS 
+	  include now the macro -DNAGf90Fortran.
+	  This change makes innecessary any possible changes included in local
+	  Makefile. 
+
+Version 1.570 - 2016-08-23 (EO)
+-------------
+	+ configure.in: Added -DGFORTRAN to SASFFLAGS to avoid missing this
+	  macro when building .f Fortran programs, e.g. saltec.  
+	  Aligned the SASF90FLAGS and SASFFLAGS used for Mac OS X with these
+	  for Linux. This operation implied to add -Wall, -fno-range-check and
+	  -DGFORTRAN to SASF90FLAGS and -Wall, -fno-range-check and -DGFORTRAN
+	  to SASFFLAGS. 
+
+Version 1.569 - 2016-08-23 (EO)
+-------------
+	+ bin/f90depend: Looking for Fortran compiler dependencies, exclude 
+	  any NAG Fortran supplied modules (f90_*) when NAG Fortran compiler 
+	  is in use. This situation occurs when the NAG Fortran "lib" 
+	  subdirectory (which is part of the NAG Fortran installation) is 
+	  included in the list of include directories passed to the script as
+	  first argument ($(F90INCFLAGS)). This variable is defined in the SAS Makefile
+	  and includes the NAGWare "lib" subdir only when USENAGFORTRAN is set to "yes". 
+	  Script documentation updated. 
+
+Version 1.568 - 2016-07-12 (RDS)
+-------------
+	+ bin/sastaskhdr_nag, bin/sastaskhdr_gfortran:	
+	  - Split the sastaskhdr script into two parts so that the
+	    module names are set as:
+	    NAGf90Fortran: $1_mod_MP_$1
+	    gFortran: __$1_mod_MOD_$1
+
+	+ Make.include.in: 
+	    uses one of the two sastaskhdr scripts depending on the compiler
+	    in use
+
+Version 1.567 - 2016-06-29 (EO)
+-------------
+	+ configure.in: 
+	  - Added -DGFORTRAN to SASCXXFLAGS when -with-gfortran is used (pending change 
+	    from previous changes to configure.in).
+	  - Added -fno-range-check to SASFFLAGS to support gfortran usage. 
+
+Version 1.566 - 2016-04-06 (EO)
+-------------
+	+ configure.in: 
+	  - Added GFORTRAN macro to CXXFLAGS and SASCXXFLAGS 
+	  to include specific defintions when the GNU Fortran compiler 
+	  is used (--with-gfortran).
+	  - Cleaning up of obsolete code. 
+	  - Removed g77 and libf2c.
+	  - For Mac OS X : Added -bind_at_load option to build shared
+	  libraries.
+	+ configure_install: Added missing "\" before $platform in setsas.csh. 
+
+Version 1.565 - 2016-02-09 (EO)
+-------------
+	+ AKA = 16.0.0-devel
+	+ configure.in: 16.0.0-devel
+
+Version 1.564 - 2015-12-11 (EO)
+-------------
+	+ configure.in: Cleaned from obsolete code.
+	+ Make.include.in: Changed sed field separators from / to ? to fix the
+	  problem of replacing -sasperl- by $$PT, given that $$PT
+	  is a path and includes / as directory separators.
+
+Version 1.563 - 2015-12-02 (EO)
+-------------
+	+ AKA: 14.0.0 -> 15.0.0
+	+ configure.in: 
+	  - Updated copyright dates to 1996-2016.
+	  - Removed/commented out checks for unsupported Solaris and OSF.
+	  - Review variables included from acconfig.h to produce config.h.in.
+	  - Removed/commented out obsolete checks for mysql++ and CERN.
+	  - Removed obsolete checking for CERN.  
+	+ Make.include.in:
+	  - Removed obsolete support for CERN, mysql, sfftw and dfftw
+	  - Changed the exit 1 by continue in dvipdf execution to avoid
+	    breaking the make doc target before processing html and 
+	    producing labels.pl, e.g. in cal, which is used by many 
+	    packages.
+	  - Fixed several typos in target commit for $$branch variable.
+	  - Added to git commit message the package version (pkgversion):
+	    "$$pkg-$$pkgversion: Committed through make", to improve
+	    readability when doing "git log"or "git status" for packages 
+	    committed by developers.
+	  - Target "upload" modifed:
+	  	= Variable needstash is now filtered out for the pkg being uploaded. 
+		= "git stash" command changed to "git stash save" with a message
+		  that includes the package name and version.
+		= git stash pop operation is now exited if failed. 
+	  - Target "commit" now includes the pkg version in git commit message.
+	  - Removed GNUPERLLDFLAGS variable that was used only on Solaris.
+	  - SAS_PERL defined as a function of the PERL value obtained from
+	    the configure. This is now used to set -sasperl- in main.pl of 
+	    package taskmain. As a consequence, all perl tasks use now in the
+	    sha-bang the PERL value determined in the configure. There, a new
+	    option to set a valid perl is provided by environment variable
+	    SAS_PERL. If not defined, the configure looks for valid perl
+	    installations in /usr/local/bin, /usr/bin, /sw/bin and
+	    /opt/local/bin, the last two only on Darwin. 
+	    taskmain 1.93 is the first using this mechanism. 
+	+ bin/evaluatebuild: Major review to fix some important bugs on
+	  elapsed time computation.
+
+Version 1.562 - 2014-09-24 (EO)
+-------------
+	+ bin/saslibs: Added libquadmath.so to extralibs because many SAS
+	  tasks depend now on it after gcc upgrade to 4.8.2.
+
+Version 1.561 - 2014-06-06 (EO)
+-------------
+	+ bin/chkdist: Removed checking of git status to avoid "-" in make check.
+
+Version 1.560 - 2014-04-25 (EC & EO)
+------------
+	+ Make.include.in: Modified dist, commit and upload targets to include
+	  git as a new revision system to work together with a complete SAS package
+	  repository under git.
+	+ bin/chkdist: Modified to work with git.
+
+Version 1.559 - 2014-04-16 (EO)
+-------------
+	+ Make.include.in: Modiefied second line of rule %.cc: %.y.
+	  Original: mv "$@".h "$(@:.cc=)".h
+	  Modified: mv "$(@:.cc=)".hh "$(@:.cc=)".h
+	  Historically this rule might not have been working ever.
+	  Recently, the past_ly script used in package selectlib (src/selcore)
+	  to touch time stamps of SelectParser.y and SelectLexer.l to be always 
+	  01 Jan 2000, such as they keep always older than SelectParser.cc and
+	  SelectLexer.cc, failed to run. The reason was the syntax of the touch
+	  command used in past_ly was obsolete and did not work. Therefore, 
+	  recently uploaded package selectlib-4.71 incorporated new SelectParser.cc and 
+	  SelectLexer.cc as generated by bison (2.4.1) and flex (2.3.35). 
+	  Together with SelectParser.cc, the bison command created SelectParser.hh
+	  that has to be "moved" to SelectParser.h. This transformation failed
+	  due to the wrong syntax of the rule changed with this fix.
+	   
+
+Version 1.558 - 2014-03-14 (EO)
+-------------
+	+ doc/lib/sasglobal: New alias \CALHBOOK for the "Calibration Access 
+	  and Data Handbook" URL.
+	+ Files prepared for SAS 14.0.0: AKA, configugre.in and Make.include.in.
+
+Version 1.557 - 2013-12-09 (EO)
+-------------
+	+ sas-setup.csh.in: Corrected typo in setting perlpath.
+	+ configure_sas: Unset/unsetenv SAS_PATH in setsas.(c)sh scripts before
+	  sourcing sas-setup.(c)sh.
+
+Version 1.556 - 2013-10-21 (EO)
+-------------
+	+ bin/mktophtml: Suppressed link to SSC http site.
+	+ doc/lib/SAS.pm: Changed base http URL and email.
+	+ README.html: Supressed link to SSC http site in base documentation.
+	+ AKA=13.5.0
+	+ sas-setup.(c)sh.in:
+	  - Added as default SAS_VERBOSITY=4
+	  - Added as default SAS_SUPPRESS_WARNING=1, until now set only for 
+	    development.
+	+ configure_install: 
+	  1) setsas.sh (Bash): Replaced "exit" by "return 1" to avoid exiting
+	  in case of an error.
+	  2) setsas.csh (csh/tcsh): Kept "exit" but added "1" to it.
+	  3) setsas.csh (csh/tcsh): Added check for (DY)LD_LIBRARY_PATH being
+	  undefined, to avoid breaking the script when these two variables are used
+	  in setting the values of SAS_PREV_(DY)LD_LIBRARY_PATH.
+	  1) and 2) were included in the public release but not commited.  
+	  
+
+Version 1.555 - 2013-04-23 (EO)
+-------------
+	+ configure_install: 
+	  1) Fixed typo in "cputype" withing identify_perl function.
+	  2) Fixed function change_perl to create single .old backup file.
+	  3) Fixed csh/tcsh for undefined (DY)LD_LIBRARY_PATH variables by adding the
+	     checking of LHEASOFT to setsas.(c)sh scripts.
+
+Version 1.554 - 2013-04-17 (EO)
+-------------
+	+ AKA: Forgotten in previous version ... now really set to 13.0.0.
+	+ configure_install:
+	  1) Provided that readlink has not the -f option on Mac OS X, use other
+	  tools to get the cannonical location of /usr/local/bin/perl when is a 
+	  symlink. 
+	  2) Added SAS_PREV_PATH, SAS_PREV_LD_LIBRARY_PATH and 
+	  SAS_PREV_DYLD_LIBRARY_PATH environment variables to store the PATH, 
+	  LD_LIBRARY_PATH and DYLD_LIBRARY_PATH settings prior to a SAS initialization.
+	  By checking whether SAS_PREV_PATH is set or not, we can restore the 
+	  values of these shell vriables prior to their values before SAS was
+	  initialized. This feature allows to assure that any initialization 
+	  of SAS does not take settings from a previous one.
+
+Version 1.553 - 2013-04-15 (EO)
+-------------
+	+ AKA: 13.0.0
+	+ bin/evaluatebuild: Fixed display of the version number of dependent package.
+	  Take build_log_${host} (alternately build_log) file change time to compute 
+	  end time of build.
+
+Version 1.552 - 2013-04-11 (EO)
+-------------
+	+ configure_intsall: 
+	  1) Added SAS_PERL environment variable. It lets the user set a specific 
+	  installed perl to be used for SAS perl executables replacing /usr/local/bin/perl. 
+	  Otherwise it will identify the available perl installed in the system.
+	  2) For /usr/local/bin/perl, added a second check on whether the ELF type of the
+	  that perl matches or not the kernel bit word length, 32-bit or 64-bit. Only
+	  if they match, i.e. both are 32-bit or 64-bit, that perl is used. Otherwise
+	  the install script looks for another available perl, e.g. /usr/bin/perl.
+	  This is set to avoid using 32-bit perl binaries available in 
+	  /usr/local/bin on machines with 64-bit kernels. Despite this could be done,
+	  this criteria forces to look for a true 64-bit perl, usually in /usr/bin/perl.
+	+ bin/evaluatebuild: Refurbished. Added failure categories FATAL, TEST and DOC.
+	  Thete report (evaluatebuild.txt) is changed to show the packages that depend 
+	  only on FATAL failures.
+	  Also added the detailed building statistics including build-time values for each
+	  package and the whole build.
+	+ bin/evaluateReport: Changed to accept the new output format of evaluatebuild.txt
+	  to be transformed into evaluatebuild.html.
+	+ bin/htmlReport: Added AKA. Kernel info (uname -a) substituted by short information 
+	  on OS and kernel version. 
+	+ install: AKA file is copied instead of symlinked to top directory. This way
+	  can be examined in build reports
+
+Version 1.551 - 2013-04-05 (EO)
+-------------
+	+ configure_install: Added already in previous version.
+	  Added two new functions: identify_perl and change_perl.
+	  The first allows to check for an installation of perl in four given 
+	  places: /usr/local/bin, /usr/bin, /opt/local/bin and /sw/bin.
+	  The second allows to change the default perl sha-bang in all SAS perl tasks
+	  and perl source code in lib/perl5, to the perl identified by the previous 
+	  function, according to the folloowing criteria: 
+	  - If a perl is found in /usr/local/bin either as a real binary or as a 
+	    symlink to other, it takes this one. Otherwise takes /usr/bin/perl if
+	    present.
+	  - If none of the previous two is fulfilled, will take either /opt/local/bin
+	    or /sw/bin installed perl.
+	  If none of them is found, exists and requests the user to install perl.
+
+Version 1.550 - 2013-04-05 (EO)
+-------------
+	+ AKA: 13.0.0-Beta.
+	+ bin/chkdist: For each package info, lyt and par files for each task
+	  will only be considered if they are found within the ./config subdir.
+
+Version 1.549 - 2013-02-18 (EO)
+-------------
+	+ AKA: 13.0.0-Alpha. Start release mode for SAS 13.
+	+ Minor updates in several files.
+
+Version 1.548 - 2012-11-21 (EO)
+-------------
+	+ aclocal.m4: Replaced ${CXX} in AC_TRY_LINK_F90 by ${F90} in link stage.
+	  From nagfor 5.3 onwards link stage must be done with nagfor not with g++.
+	  This feature is not affected by "-Wc"option in nagfor script.
+	+ configure.in: Removed wrong note abouth libf95.a for 64 bit.
+
+Version 1.547 - 2012-07-30 (EO)
+-------------
+	+ Change of masterbuilder to sasbld01. 
+
+Version 1.546.1 - 2012-07-02 (EO)
+---------------
+	+ AKA: Fixed typo.
+
+Version 1.546 - 2012-06-29 (EO)
+-------------
+	+ AKA: devel. Back to development mode.
+
+ 1.545.1 - 2012-06-21 (EO)
+---------------
+	+ AKA: 12.0.1. 
+	  Patched version of SAS 12.0.0 with the following updated packages:
+	  - arfgen-1.83.4
+	  - rgslccorr-0.52.1
+	  - epatplot-1.16.1
+	  - catcorr-0.4.4
+	  - barycen-1.20.2
+	  - eexpmap-4.6.5
+	  - edetect_chain-3.12.2
+	  - emldetect-5.17.4
+	  - emask-2.13.3
+	  - ewavelet-3.11.2
+	  - eboxdetect-4.22.3
+
+Version 1.545 - 2012-05-23 (EO)
+-------------
+	+ configure_install: Added 1 to exit due to error, to allow capture of error by
+	  the installation script 'install.sh".
+
+Version 1.544 - 2012-05-23 (EO)
+-------------
+	+ AKA: 12.0.0
+	+ doc/REDAME/install.html: removed.
+
+Version 1.543 - 2012-05-18 (EO)
+-------------
+	+ AKA = 12.0.0-Beta§
+	+ sas-setup.sh.in: Make this script compatible to users of Z-shell.
+	+ sas-setup.csh.in/sh.in: Set $TEXINPUT and $BIBINPUTS only in SAS building
+	  when $SAS_DIR/packages/sas/doc/lib exists.
+	+ configure.in: 
+	  1) NAG Fortran Optimiztion level (F90OLEVEL) on Mac OS X set to the same 
+	  value that is set on Linux, OLEVEL=2.
+	  2) Added --enable-force64 to be able to force building 64-bit on a 32-bit
+	  kernel.
+
+Version 1.542 - 2012-04-11 (EO)
+-------------
+	+ configure.in: Re-stated the tests to determine the behaviour of
+	  the command echo on Mac OS X. From Snow Leopard onwards, 
+	  /bin/echo -nx is equivalent to echo 'x\c', which is not 
+	  the GNU standard behaviour as in Linux echo tool.
+	+ configure_install: Fixed checking the presence of perl.
+
+Version 1.541 - 2012-03-28 (EO)
+-------------
+	+ AKA: 12.0.0-Alpha
+
+Version 1.540 - 2011-05-18 (EO)
+-------------
+	+ configure.in: PROCESSOR variable is set via 'uname -p' which on
+	Ubuntu 64 bit kernels provides 'unknown' instead of 'x86_64. 
+	Since 64 bit building is based on the proper identification of the
+	PROCESSOR variable, we have changed to 'uname -m', which provides on all
+	systems the right value.
+
+Version 1.539 - 2011-05-06 (EO)
+-------------
+	+ configure.in: SASLDFLAGS was set to -s despite of the value of DEBUG, which
+	  caused that even when DEBUG was requested, binaries did not contain 
+	  any debug information. Fixed.
+
+Version 1.538 - 2011-03-22 (EO)
+-------------
+	+ bin/mkpkgidx: In getInfo fixed reading DISTRIBUTION file for those who
+	  have additionoal blank lines.
+
+Version 1.537 - 2011-03-14 (EO)
+-------------
+	+ bin/mkpkgidx: Fixed getinfo routine to consider packages with one or
+	  more tasks, e.g. epicproc with epproc and emproc.
+
+Version 1.536 - 2011-02-24 (EO)
+-------------
+	+ AKA: devel. Back to development mode.
+	+ bin/saslibs: Fixed wrong symlinking in libextra.
+
+Version 1.535 - 2011-02-22 (EO)
+-------------
+	+ doc/lib/SAS.pm: Updated.
+	+ bin/mkpkgidx: 
+	  - Function getInfo modified to process only public
+	  packages.
+	  - Added command option -p to select the
+	  processing of public packages. Default option is to process all packages.
+	  - Public packages html pages are identified with (Public) appended 
+	  to [xmmsas_YYYYMMDD_HHMM] tag in the upper right corner of each page.
+	  - PS links replaced by PDF.
+	+ Makefile.top:
+	  - Target packages_html can create a top level
+	  documentation HTML page in doc/ ONLY for public (world) packages,
+	  depending on the environment variable SAS_PUBLIC_DOC set to yes.
+	  - New target exclude-list-mac to produce the list of
+	  files excluded on mac release with versioned libraries and a
+	  shared-suffix=dylib.
+	+ bin: All scripts updated.
+	+ bin/saslibs: Extensively modified to handle properly all SAS
+	binaries and libraries dependencies on SAS, external tools and OS
+	libraries.
+
+Version 1.534 - 2011-02-21 (EO)
+-------------
+	+ AKA: 11.0.0
+
+Version 1.533 - 2011-02-09 (EO)
+-------------
+	+ AKA: 11.0.0-Beta
+	+ sas-setup.sh.in: Restated export as standalone command to be compliant
+	  with old Bourne shell (/bin/sh).
+
+Version 1.532 - 2011-02-04 (EO)
+-------------
+	+ configure.in: config.h.in text amended.
+	+ configure.in: Added missing fields in AC_INIT.
+	+ sas-setup.(c)sh.in: Handling DYLD_LIBRARY_PATH with independence of 
+	  LD_LIBRARY_PATH to avoid messing them up between Linux and Mac.
+
+Version 1.531 - 2011-01-19 (EO)
+-------------
+	+ Wrong date set in version 1.530 (2010-11-30). Updated below to
+	2011-01-18.
+	+ AKA incorrectly set to 11.0.0. Ammended to 11.0.0-Alfa.
+	+ Make.include.in: Removed debugging statements left in versioned 
+	shared lib processing.
+	+ Make.include.in: Fixed wrong target ordering for versioned shared
+	libraries in Mac OS X. The $(LIBDIR)/lib%.$(SO_FULL_EXT) target MUST
+	be before the $(LIBDIR)/lib%.$(SO) target. Otherwise, soft linking
+	is made incorrectly.
+	+ configure.in: Now SASLDFLAGS is set to "-s" by default in this
+	stage. This option implies to strip executables at linking stage, 
+	unless debug or profiling are requested. 
+	The -s option to GNU ld is accepted by Linux and Solaris GNU ld
+	but it is not for BSD GNU's ld on Darwin. 
+	This option is not set anymore in the Make.include as it was until
+	mow.
+
+Version 1.530 - 2011-01-18 (EO)
+-------------
+	+ AKA: 11.0.0-Alfa
+	+ configure.in: SASCFLAGS removed -fpermissive. C++ only option.
+	+ sas-setup.sh.in: Cleaned up. 
+	+ configure_install: Added unset/unsetenv SAS_PATH to allow for SAS
+	version reset.
+	+ Make.include.in: Added EXTPERLMODS, EXTPERLDIR and EXTPERLSCRIPT to 
+	handle the building of external perl modules for a perl task.
+	Added a new target of the make named "extperlmods". It is included in
+	the TARGETS variable, which contains all targets to be done for "make
+	bin". As a consequence, the invocation of "make bin" or "make check"
+	will launch the execution of target extperlmods.
+	+ Fixed shared library numbering issue on Mac OS X.
+
+Version 1.529 - 2010-11-29 (EO)
+-------------
+	+ configure.in: Set to undefined CHRLEN_SIZE_64 on 64 bit systems.
+
+Version 1.528 - 2010-11-26 (EO)
+-------------
+	+ AKA : 10.5.0
+
+Version 1.527 - 2010-11-24 (EO)
+-------------
+	+ Fixed syntax typo in SASCFLAGS when setting OBJECT_SIZE_64.
+
+Version 1.526 - 2010-11-23 (EO)
+-------------
+	+ configure.in:
+	  - SAS_AKA by default is now devel (before was dt).
+	  - Checking of cut, whoami, strings, awk, head moved ahead in file.
+	  - Coded identification of ScientificLinux and Ubuntu OS in
+	    TARGET_OS.
+	  - Fixed identification of gfrotran version value.
+	  - Added -DOBJECT_SIZE_64 and -DCHRLEN_SIZE_64 to SASCXXFLAGS
+	    and SASCFLAGS, when the kernel is 64 bit.
+
+
+Version 1.525 - 2010-05-07 (EO)
+-------------
+	+ AKA: devel. To be used in the development track.
+	+ bin/mktophtml: removed reference to old SOC http hostname.
+
+Version 1.524 - 2010-04-22 (EO)
+-------------
+	*** Following changes were made to improve package distribution ***
+	+ Make.include.in: Include TARGET_OS as defined by configure.in
+	+ Makefile.top: Add variables TAKA (based on AKA), TOS and LCPU (based on TARGET_OS)
+	  to re-define TARBASE and TARBASECOM for tar.gz archive creation.
+	+ bin/saslibs: 
+	  - Updated the components of @extralibs: 
+	    libcfitsio  : CFITSIO 
+	    libfftw3    : FFTW 3.X
+	    libfftw3f   : FFTW 3.X Floating
+	    libgcc_s    : gcc 3.3.6 and 4.3.3 (in fact any gcc)
+	    libstdc++   : Any gcc
+	    libgfortran : Since gcc 4.X 
+	    libg2c      : Still for those using gcc 3.3.X
+	    libpgplot   : PGPLOT legacy code
+	    libqt       : Qt 3.3.X
+	  - Regarding these libraries Linux and Mac OS X are now treated the same.
+	  - Fixed mistake in looking for %extralibs components. 
+
+Version 1.523 - 2010-04-15 (EO)
+-------------
+	+ sas-setup.(c)sh: 
+	  1) If LHEASOFT is not defined, the script exits (return 1) with error.
+	  2) Now sets PGPLOT_FONT to $SAS_DIR/libextra/grfont.dat. Check first for it.
+	  3) Fixed issues about usage of return/exit in bash/tcsh scripts.
+	+ configure_install:
+	  1) Removed setting of SAS_PATH in setsas.(c)sh generated scripts. This 
+	  variable is set by sas-setup.(c)sh if not defined.
+	  2) Removed setting of DYLD_LIBRARY_PATH for Darwin. This is done
+	  already by sas-setp.(c)sh.
+	  3) Added unsetting SAS_DIR if already set to avoid mixing SAS versions.
+	  
+Version 1.522 - 2006-04-08 (EO)
+-------------
+	+ AKA: 10.0.0
+
+Version 1.521.2 - 2010-03-26 (EO)
+---------------
+	+ test/testconfiguremake: Fixed cleaning of dir lib/data/tm/sastest, after test.
+	+ configure.in: Set exit condition (AC_MSG_ERROR) when HEADAS/LHEASOFT variable not 
+	  defined. Until now, configure exited only when FTOOLS fversion was not found, because
+	  it is required by some tests. Now HEADAS is added as a mandatory condition to build
+	  and run SAS.
+	+ sas-setup.sh(c)sh: Fixed bug to define SAS_BROWSER. On Mac OS X this is set to
+	  "open -a Safari". Double quotes are mandatory. Otherwise, sas-setup.sh exits with
+	  error "-a : comand not found".
+
+Version 1.521.1 - 2010-03-25 (EO)
+---------------
+	+ sas-setup.sh.in: Fixed checking of HEADAS/HEASOFT presence.
+
+Version 1.521 - 2010-03-24 (EO)
+-------------
+	+ sas-setup.(c)sh.in: Reorganized+fixed DYLD_LIBRARY_PATH checking.
+          Included test of HEADAS/HEASOFT.
+	+ Make.include.in: 
+	  - SLOPPY = @SLOPPY@ from configure with --enable-sloppy option.
+	  - In case SLOPPY=no, removed -Werror in CXXFLAGS and CFLAGS to process mysql++.
+	  - Added USENAGFORTRAN and USEGFORTRAN to info target.
+	+ configure.in: Included check/definition of SAS_BROWSER="open -a Safari" in Mac OS X.
+
+Version 1.520 - 2010-03-10 (EO)
+-------------
+	+ configure.in: 
+	  1) Restated checking for -freg-struct-return option in NAG Fortran
+	  compiler. Despite of being obsolete, this option is required on Solaris.
+	  Its absence makes executables to crash with Segmentation Faults.
+	  2) Include the SLOPPY setting as a configure option via --enable-sloppy.
+	  The SLOPPY=yes is the default which corresponds to --enable-sloppy=yes
+	  The default (SLOPPY=yes) is taken in absence of any --enable-sloppy switch.
+	  3) Added information on the default values for each available optional 
+	  switch when the configure is invoked with the --help switch.
+	  4) Added GNUCCPATH and GNUCXXPATH varaibles to give the gcc/g++ full
+	  path specification of the gcc/g++ executables. 
+	+ AKA file: 10.0.0-Beta.
+
+Version 1.519.1 - 2010-02-27 (EO)
+---------------
+	+ configure.in: Fix typo in gfortran option "-fimplicit-none".
+	+ bin/uploadreport: Add AKA to list of the files included in the report.
+
+Version 1.519 - 2010-02-26 (EO)
+-------------
+	+ configure.in: 
+	  1) In AC_ARG_ENABLE for "sharedversion" feature (--enable-sharedversion),
+	  feature was set to "shared" instead of "sharedversion". Such a syntax error
+	  made this configure option did not work until now. Fixed.
+	  2) Fix output from GNU_FIND evaluation.
+	  3) Add -fno-range-check to SASF90FLAGS when Fortran compiler is gfortran.
+	+ install: Added AKA file to LINKS.
+
+Version 1.518 - 2010-02-25 (EO)
+-------------
+	+ Release mode activated today to produce SAS 10.0.0. Development track manifest
+	  creation stopped. Release track manifest creation started.
+	+ AKA file: dt replaced by 10.0.0-Alpha. It will produce the AKA in Make.include.
+	+ Changes from devel to user doc (--enable-user=no/yes) and to shared versioned
+	  libraries (--enable-sharedversion=yes except for the Mac OS X), are now made 
+	  through sasbuilder/sasconf files build.setup.rtuserdoc and build.setup.macuserdoc.
+
+Version 1.517 - 2010-02-24 (EO)
+-------------
+	+ configure.in: Added missing checking of libgfortran when USEGFORTRAN=yes. 
+	  If present, -lgfortran is added to LIBS then to LDLIBS in the Make.include. 
+
+Version 1.516 - 2010-02-24 (EO)
+-------------
+	+ configure.in: 
+	  1) Fix bug in setting F90_PIC_FLAG, SASF90FLAGS and SASFFLAGS when USEGFORTRAN
+	     is set to yes (--with-gfortran).
+	  2) Remove type "-DGFotran" in SASCXXFLAGS when USEGFORTRAN is set to yes.
+	  3) Fix setting of SASF90FLAGS and SASFFLAGS for Darwin.
+	+ packagedetails.html.in: Added missing @DYLD_LIBRARY_PATH@.
+	+ sas.environment.in: Added missing @DYLD_LIBRARY_PATH@.
+
+Version 1.515 - 2010-02-18 (EO)
+-------------
+	+ configure.in: 
+	  1) Use -DNAGf90Fortran instead of a specific -DGFORTRAN when 
+	  requested to use gfortran instead of NAG Fortran, until we
+	  find a proper solution.
+	  2) Remove any output in GNUAR_VERSION when it is not GNU ar.
+	+ bin/uploadreport: Replace system call by qx for tar.gz creation.
+	  At difference with system, qx waits until the tar.gz is complete.
+
+Version 1.514 - 2010-02-03 (EO)
+-------------
+	+ backward-gcc: Removed. References to it in configure.in/Make.include.in, removed.
+	+ Makefile: Deleted INTERFACES which contained backward-gcc.
+	+ Reviewed configure_install.
+	+ Reviewed Makefile.top.
+	+ configure.in: SAS_AKA by default is always equal to "dt" unless we edit it and change
+	  it to something else. 
+	+ Make.include.in: AKA :== @SAS_AKA@
+	+ reviewed Make.include.perl.in.
+	+ Altought acconfig.h was not needed anymore (and it was renamed to N-acconfig.h),
+	  it has been removed since this version on.
+	+ packagedetails.html.in: 
+	  - Replaced GNU_AR by GNUAR.
+	  - F2C removed.
+	  - Added USENAGFORTRAN and USEGFORTRAN.
+	+ Reviewed README and README.html files.
+	+ README.develop updated.
+	+ Updated sas.environment.in (ASCII version of packagedetails.html.in).
+	+ Reviewed sas-setup.csh.in: Added \$Id\$.
+	+ Reviewed sas-setup.sh.in: Added \$Id\$.
+	+ Reviewed test/testconfiguremake.
+	+ Reviewed testdoc.
+	+ Reviewed doc. dataconv document quite obsolete.
+
+Version 1.513 - 2010-01-29 (EO)
+-------------
+	+ Make.include.in: Previous edit of this file eliminated by mistake INCS definition.
+	  Fixed.
+
+Version 1.512 - 2010-01-29 (EO)
+-------------
+	+ Make.include.in: 
+	  - CXXFIXINC was missing due to removed obsolete check in configure.in. Removed.  
+	  - AR missing due to renamed variable in configure.in to GNUAR. Fixed.
+
+
+Version 1.511 - 2010-01-28 (EO)
+-------------
+	+ configure.in: Restated AC_SUBST for STRUCT_CXXFLAGS and STRUCT_CFLAGS. 
+	  These two variables were left undefined in Make.include.in which caused 
+	  all builds to fail.
+	+ configure.in: For some freaky systems having gfortran but not libgfortran,
+	  we have added a check of libgfortran to the test for compiling and linking
+	  a small pgplot program.
+
+Version 1.510 - 2010-01-27 (EO)
+-------------
+	+ Changes in configure.in:
+	  - Moved ahead of script the checking of basic tools (cut, whoami, strings, awk, head). 
+	  - Moved ahead of script the TARGET_OS determination.
+	  - Added new option --with-gfortran to use GNU Fortran as alternative to NAG Fortran. 
+	    . Default: --with-gfortran=no (--without-gfortran). USEGFORTRAN=no, USENAGFORTRAN=yes
+	    . Alternative: --with-gfortran=yes. USEGFORTRAN=yes, USENAGFORTRAN=no.
+	  - USENAGFORTRAN and USEGFORTRAN, together with remaining options, showed in output. 
+	  - Improved checking GNU tools (GNU make).
+	  - Fixed checking GNU and non-GNU ar tool (Mac OS X).
+	  - Removed checking of f2c.
+	  - Improved fversion checking.
+	  - Enhanced gfortran, f95, nagfor checking. Included test for --with-gfortran option.
+	  - Added Fortran compiler selection in F90 varaible.
+	  - Removed obslete check for freg-struct-return.
+	  - F90_PIC_FLAG set always to -Wc,-fPIC
+	  - Added new values of SASF90FLAGS and SASFFLAGS for GNUFORTRAN.
+	  - Enhanced definition of SASCXXFLAGS and SASCFLAGS for SLOPPY=yes/no.
+	  - Enhanced C/C++ for ~GNU C/C++ GCC determination.
+	  - Enhanced definition of Optimization levels.
+	  - Enhanced library checking.
+	  - Check for NAG Fortran library only when USENAGFORTRAN = yes.
+	  - Check compile and link of a small f90/f95 program only when USENAGFORTRAN = yes.
+	  - Fixed bug in libgfortran inclussion into pgplot small program compile/link.
+	  - Removed pgopen/pgclos obsolete checking in pgplot.
+	  - Provide code to check for compilation&linking of a small pgplot program when 
+	    USEGFORTRAN = yes. New functions AC_TRY_LINK_GFORTRAN and AC_TRY_COMPILE_GFORTRAN.
+	+ Successful test of new configure.in on all supported platforms.
+	+ Changes to aclocal.m4:
+	  - New function AC_TRY_LINK_GFORTRAN to compile and link a conftest.f90 program with gfortran.
+	  - New function AC_TRY_COMPILE_GFORTRAN to compile only a conftest.f90 program with gfortran.
+ 	+ Changes to Make.include.in:
+	  - Add to procedure the new variables USENGAFORTRAN and USEGFORTRAN.
+	  - F90FLAGS and FFLAGS set to only -g90 for NAG Fortran (removed -g to be in agreement with NAG 
+	    recommendation).
+	  - F90FLAGS and FFLAGS set to -g only for GNU Fortran.
+	  - Restrict NAGSUPMODS use to USENAGFORTRAN=yes. This is different for GNU Fortran.
+
+Version 1.509 - 2009-09-04 (EO)
+-------------
+	+ Make.include.in: AKA := dt
+
+Version 1.508 - 2009-09-04 (EO)
+-------------
+
+	+ configure.in: SHAREDVERSION=no
+
+Version 1.507 - 2009-09-04 (EO)
+-------------
+	+ Make.include.in:
+	  - AKA := 9.1.0
+	  - Target clobber: Include deletion of .out files produced
+	  by dvipdf processing.
+	+ configure.in: SHAREDVERSION=yes
+
+Version 1.506 - 2009-06-09 (EO)
+-------------
+	+ Ready for DT with AKA := dt.
+
+Version 1.505 - 2009-06-09 (EO)
+-------------
+	+ Mac track version
+	  - configure.in: SHAREDVERSION=no
+
+Version 1.504 - 2009-06-08 (EO)
+-------------
+	+ Release track version:
+	  - Make.include.in: 
+	    - AKA := 9.0.0
+	    - %.ps.gz: Added dvipdf command to make pdf
+	  - configure.in: SHAREDVERSION=yes
+
+Version 1.503 - 2009-05-09 (EO)
+-------------
+	+ Development track version.
+	+ Make.include.in: 
+	  - AKA := dt
+
+Version 1.502 - 2009-05-09 (EO)
+-------------
+	+ Mac tarck version. 
+	+ configure.in: 
+	  - SHAREDVERSION=no
+
+
+Version 1.501 - 2009-05-09 (EO)
+-------------
+	+ Fix AKA string mistake.
+	+ Release track version. 
+	+ configure.in: 
+	  - SHAREDVERSION=yes
+
+Version 1.500 - 2009-05-08 (EO)
+-------------
+	+ Version for mac track.
+	+ configure.in: 
+	  - SHAREDVERSION=no
+
+Version 1.499 - 2009-05-08 (EO)
+-------------
+	+ Release mode ON. Release manifest creation switched on.
+	+ this version is for track release. Next one is for mac track.
+	+ Make.include.in: 
+	  - AKA := 9.0.0 - Beta
+	+ configure.in:
+	  - SHAREDVERSION=yes
+
+Version 1.498 - 2009-04-29 (EO)
+-------------
+	+ configure.in: On Mac OS X, when gcc major version = 4
+	  removed from SASCXXFLAGS the -Wno-long-double and 
+	  -fno-coalesce-templates. 
+	  These are kept for previous gcc versions.
+
+Version 1.497 - 2009-04-29 (EO)
+-------------
+	+ Make.include.in: Fixed detection of f95/nagfor in NAGSUPMODS
+
+Version 1.496 - 2009-04-14 (EO)
+-------------
+	+ configure.in: Fixed condition to add -fpermissive.
+
+Version 1.495 - 2009-04-13 (EO)
+-------------
+	+ configure.in:
+	  * Modified TARGET_OS definition for SuSE targets.
+	  * Added checking for environment variable PERMISSIVE: If set
+	    to yes, then enable -fpermissive gcc/g++ flag 
+	    (SASCFLAGS and SASCXXFLAGS).
+
+Version 1.494 - 2009-03-26 (EO)
+-------------
+	+ doc/lib/sas.bib: Two new bibliographical references included
+	  (on behalf of C.M. Hubert Chen)
+
+Version 1.493 - 2009-03-06 (EO)
+-------------
+	+ configure.in: Added CPU word length (32/64 bits) to TARGET_OS.
+
+Version 1.492 - 2009-03-06 (EO)
+-------------
+	+ Fixed typo in the definition of CXXFLAGS
+
+Version 1.491 - 2009-03-06 (EO)
+-------------
+	+ configure.in: Fixed checking of libf95 when $F90 is nagfor.
+
+Version 1.490 - 2009-02-23 (EO)
+-------------
+	+ configure.in: 
+	  * Added test for NAG Fortran Compiler version 5.2. 
+	    With this version they changed the name of the 
+	    binary from f95 to nagfor.
+	    Now the configure must check both f95 for compatibility 
+	    with f95 NAG Fortran (until version 5.1) and for new nagfor.
+	    On some systems (e.g. RHEL5 64) besides the f95 NAG Fortran 
+	    Compiler, there exists an f95 Fortran Compiler, which is 
+	    usually a soft link to the GNU gfortran Fortran Compiler.
+	    Therefore, configure.in must be able to distinguish between
+	    the old f95 (versions 4.2, 5.0 and 5.1) NAG Fortran Compiler,
+	    the f95 as gfortran and the new NAG nagfor.
+	  * Despite no changes were made to the specific code 
+	    to check for the "echo" command, it does not work in Solaris. 
+	    Due to the higher version of autoconf (2.63) as compared to
+	    the one on Solaris (2.13), configure can not capture properly 
+	    how to work with Solaris echo. As a fix, the macro to check
+	    for echo has been modified as follows:
+	    AC_PATH_PROG(ECHO,echo,echo,/bin:/usr/bin) is replaced by
+	    AC_PATH_PROG(ECHO,echo,echo,)
+	    The consequence is that echo is looked for in the PATH
+	    variable set by the builder for software builds. 
+	    We recommend to put GNU echo in such a PATH (GNU coreutils).
+	  * Added code to define TARGET_OS for SunOS (Solaris).
+
+Version 1.489 - 2009-02-10 (EO)
+-------------
+	+ bin/uploadsas: pgp replaced by gpg (GnuPG).
+	  New gpg keys requested to developers.
+	  Old pgp keys still usable as far as local change in uploadsas
+	  to continue using pgp.
+
+	+ lib/SasServer.pm: xmm.vilspa.esa.es replaced by xmm.esac.esa.int.
+
+Version 1.488 - 2009-02-05 (EO)
+-------------
+	+ fancyheadings/fancyhdr: The fix included with previuos
+	  verion is wrong: If both files are present, both are
+	  loaded which results in a LaTeX processing error.
+	  On all supported OS (Linux, Mac OS X and Solaris),
+	  both styles, fancyheadings and fancyhdr, are present.
+	  On recent versions of Linux, fancyheadings is
+	  replaced by more modern fancyhdr.
+	  Adopted fix: Get off fancyheadings in favor of fancyhdr.
+	+ sas-setup.(c)sh: Wrong variable name SAS$BROWSER defined.
+	  Right name is SAS_BROWSER.
+
+Version 1.487 - 2009-02-03 (EO)
+-------------
+	+ doc/lib/sasbook.cls, sasdoc.cls and userguide.cls: 
+	  Latest Linux distros use fancyhdr.sty as a replacement
+	  for fancyheadings.sty, which is not provided anymore.
+	  To solve the problem while keeping the code backwards
+	  compatible with old Linux distros, the following
+	  modification has been made in these three files:
+	  Replace 
+	     \RequirePackage{fancyheadings}
+	  by
+	     \RequirePackage{fancyheadings,fancyhdr}
+	  since the latex2e command RequirePackage{packages} allows to
+	  specify several sty files separated by commas.
+
+Version 1.486 - 2009-02-02 (EO)
+-------------
+	+ configure.in: Refined the determination of GCC c/c++ and
+	  gfortran versions.
+
+Version 1.485 - 2009-01-30 (EO)
+-------------
+	+ configure.in: Added check for libgfortran to add such library
+	  to PGPLOT_LIBS if present. 
+	+ configure.in: Fixed checking of TARGET_OS for latest Fedora
+	  distributions.
+
+Version 1.484 - 2009-01-29 (EO)
+-------------
+	+ configure.in: 
+	 - Fixed gfortran determination when OS already provides one.
+	 - Fixed ds9 version checking. Obsolete code removed.
+	 - Added checking for mozilla or firefox to set SAS_BROWSER.
+	+ sas-setup.(c)sh.in: Added SAS$BROWSER.
+
+Version 1.483 - 2009-01-22 (EO)
+-------------
+	+ acconfig.h: The use of this file to generate config.h.in is
+	  deprecated and discouraged. Since autoconf/autoheader 2.61, 
+	  the contents of this file is included into configure.in.
+	  To generate config.h.in now, autoheader scans configure.in
+	  and produces config.h.in.
+	+ configure.in/AC_CONFIG_HEADER: The macro AC_CONFIG_HEADER 
+	  is now AC_CONFIG_HEADERS. The syntax to generate config.h.in
+	  within the sas package main dir is
+	           AC_CONFIG_HEADERS(config.h:config.h.in)
+	+ update-configure: In order to generate the config.h.in file
+	  from the configure.in file, it is enough to rin the autoheader
+	  as follows:
+	   autoheader
+	  Therefore, the only contents of update-confiure now is
+	   autoconf
+	   autoheader
+	  Additionaly, the script removes the autom4te.cache file 
+	  which is created for each run of autoconf.
+	  The new update-configure can be run on any modern system
+	  with recent versions of autoconf/autoheader. Tested in 
+	  Fedora 8 and RHEL 5.
+	+ configure.in: extensive re-writing of the file. Main issues:
+	  * Included acconfig.h code into it. Macros used: 
+	    - AH_VERBATIM(key,template)
+	    - AH_TOP(text)
+	  * AC_CONFIG_HEADER replaced by AC_CONFIG_HEADERS macro.
+	  * Included checking for HEADAS env variable besides LHEASOFT.
+	  * Removed the code that determines the ds9 version because
+	    it does not work anymore. No replacement found since 
+	    ds9 -version only works when DISPLAY is set which is not 
+	    the proper way when builds are run from crontabs.
+	  * Added checking for gfortran. GFORTRAN variable added.
+	    Added GFORTRAN_VERSION variable as well.
+	  * Added checking for dvipdf to create pdf documentation.
+	  * Fixed checking for CC, CCVERSION and CXXVERSION variables
+	  * Fixed the code in FIX CPATH.
+	  * Added checking of X11 libraries and includes on /usr/lib and
+	    /usr/include.
+	  * Fixed capture of cfitsio version 2 and 3, an min. version 2.400.
+	  * Added libgfortran.so and the -L~/local/gcc_${CCVERSION} dir
+	    to list of required LIBS to compile and link a small pgplot
+	    program.
+	  * Since gfortran can also be installed as a system binary 
+	    (usually under /usr/bin), a check is done here to assure 
+	    the gfortran version is the same that gcc version.
+	  * Added code to reduce TARGET_OS to mnemotecnic names.
+	+ Make.include.in: Added directory autom4te.cache to CLEANFILES.
+	  This directory is produced by autoconf.
+	+ configure_install: Modified stacksize max limit to 65532 (instead
+	  of 65536).
+	+ packagedetails.html.in: Added GFORTRAN, GFORTRAN_VERSION and DVIPDF.
+	+ sas.environment.in:  Added GFORTRAN, GFORTRAN_VERSION and DVIPDF.
+	+ README.html: Updated. Pending: doc/README/install.html
+	+ install: Added config.h.in to the list of LINKS, just to allow the
+	  testconfiguremake to succeed.
+	+ lib/perl5/Pod/Usage.pm (version 1.16): The perl module had a bug in
+	  line 532. The fix was replacing Usage.pm by version 1.36.
+	+ test/testconfiguremake: removed "type gmake" since configure already
+	  tests we are really using GNU make.
+Version 1.482 - 2008-10-08 (EO)
+-------------
+	+ Make.include.in: Include code to check for gcc version
+	  Variables: GCCVERS, MAJOR_GCCVERS and MINOR_GCCVERS.
+
+Version 1.481 - 2008-07-04 (EO)
+-------------
+	+ Back to development mode. Version for development track
+	  SHAREDVERSION=no (configure.in)
+          AKA := dt (Make.include.in)
+
+Version 1.480 - 2008-06-18 (EO)
+-------------
+	+ version for the mac track
+
+Version 1.479 - 2008-06-18 (EO)
+-------------
+	+ Makefile.include.in: New variable NAGSUPMODS which can be set
+	  to yes when NAG supplied modules are required, as for 
+	  example f90_uunix_proc (provides the system call), etc, from
+	  f95 code.
+	+ version for release track
+
+Version 1.478 - 2008-05-19 (EO)
+-------------
+	+ Fixed AKA - version for mac
+
+Version 1.477 - 2008-05-19 (EO)
+-------------
+	+ Fixed AKA - version for release
+
+Version 1.476 - 2008-05-16 (EO)
+-------------
+	+ Fix manifest missing proper sas package version 
+	  mac release (previous version for release).
+
+Version 1.475 - 2008-05-16 (EO)
+-------------
+	+ Fix manifest missing proper sas package version
+
+Version 1.474 - 2008-05-09 (EO)
+-------------
+	+ Modification for mac track only
+	  AKA := 8.0.0 - Beta (Make.include.in)
+	  SHAREDVERSION=no (configure.in)
+	+ By mistake the previous version did not include
+	  the amended SAS ESA Copyright date : 1996-2008.
+	  This does it.
+
+Version 1.473 - 2008-05-09 (EO)
+-------------
+	+ Release track mode made active
+	  - Stopped manifest building for dev track
+	  - Stopped building dev track (+devmac)
+	+ Modifications in Make.include.in:
+	    AKA := 8.0.0 - Beta
+	+ Modifications in configure.in:
+	    SHAREDVERSION=yes
+	+ These modifications apply except for mac track
+	  which is the equivalent to release track only
+	  for Mac. Next sas 1.474 applies for mac track.
+	+ Amended SAS ESA Copyright dates: 1996-2008.
+	    
+Version 1.472 - 2007-07-05 (EO)
+-------------
+	+ dev track version AKA := dt
+	+ Table of pkg vers 1.470-1.472:
+	  - 1.470 - release      - 7.1.0
+	  - 1.471 - mac          - 7.1.0
+	  - 1.472 - ddevelopment - dt
+
+Version 1.471 - 2007-07-05 (EO)
+-------------
+	+ mac track version AKA := 7.1.0
+
+Version 1.470 - 2007-07-05 (EO)
+-------------
+	+ Release track version AKA := 7.1.0
+
+Version 1.469 - 2007-07-02 (EO)
+-------------
+	+ dev track version
+	  SHAREDVERSION=no (configure.in)
+	  AKA :== dt (Make.include.in)
+	+ Table of pkg vers 1.467-1.469:
+	  1.467 - release       - 7.1-Beta
+	  1.468 - mac           - 7.1-Beta
+	  1.469 - development   - dt
+
+Version 1.468 - 2007-07-02 (EO)
+-------------
+	+ error in configure.in 
+	+ mac track version
+	  SHAREDVERSION=no (configure.in)
+	+ AKA :== 7.1-Beta
+
+Version 1.467 - 2007-07-02 (EO)
+-------------
+	+ release track version
+          SHAREDVERSION=yes (configure.in)
+        + AKA :== 7.1-Beta (Make.include.in)
+
+Version 1.466 - 2007-07-02 (EO)
+-------------
+	+ dev track version
+	+ Table of pkg vers 1.464-1.466:
+	  - 1.464 - release     - 7.1-Beta
+	  - 1.465 - mac         - 7.1-Beta
+	  - 1.466 - development - dt
+
+Version 1.465 - 2007-07-02 (EO)
+-------------
+	+ Version for the mac track
+	  SHAREDVERSION=no (configure.in)
+	+ AKA :== 7.1-Beta (Make.include.in)
+
+Version 1.464 - 2007-07-02 (EO)
+-------------
+	+ Version for the release track
+	  SHAREDVERSION=yes (configure.in)
+	+ AKA :== 7.1-Beta (Make.include.in)
+
+Version 1.463 - 2006-06-26 (EO)
+-------------
+	+ dev track version 
+	+ Table of pkg vers 1.461-1.463:
+	  - 1.461 - release     - 7.0.0
+	  - 1.462 - mac         - 7.0.0
+	  - 1.463 - development - dt
+
+Version 1.462 - 2006-06-26 (EO)
+-------------
+	+ mac track version with AKA = 7.0.0
+
+Version 1.461 - 2006-06-26 (EO)
+-------------
+	+ Release track version AKA= 7.0.0
+	+ Amended SAS ESA Copyright dates: 1996-2006.
+
+Version 1.460 - 2006-06-16 (EO)
+-------------
+	+ Version for the devlopment track
+	+ Table of package versions 1.458-1.460:
+	  - 1.458 - release       - SAS 7.0.0-Beta
+	  - 1.459 - mac           - SAS 7.0.0-Beta
+	  - 1.460 - development   - dt
+	
+Version 1.459 - 2006-06-16 (EO)
+-------------
+	+ Version for the mac track
+
+Version 1.458 - 2006-06-16 (EO)
+-------------
+	+ Version for the release track
+	+ AKA :== 7.0.0-Beta
+	+ The change logged in 1.455 was not effectively 
+	  done by mistake. Amended.
+
+Version 1.457 - 2006-06-15 (EO)
+-------------
+	+ Version for the development track.
+	  SHAREDVERSION=no (configure.in)
+	  AKA :== dt (Make.include.in)
+	
+	 Table of package versions 1.455-1.457:
+	 - 1.455 - release       - SAS 7.0.0-Alpha
+	 - 1.456 - mac           - SAS 7.0.0-Alpha
+	 - 1.457 - development   - dt
+
+Version 1.456 - 2006-06-15 (EO)
+-------------
+	+ Version for the mac track.
+	  SHAREDVERSION=no (configure.in)
+	  AKA :== 7.0.0-Alpha (Make.include.in)
+
+Version 1.455 - 2006-06-15 (EO)
+-------------
+	+ Version for the release track
+	  SHAREDVERSION=yes (configure.in)
+	  AKA := 7.0.0-Alpha (Make.include.in)
+	+ Modified definition of \url command in doc/lib/sasglobal.tex
+	  to avoid problems when no prior definition is done, by using
+	  \providecommand instead of \renewcommand.
+
+Version 1.454 - 2006-06-13 (EO)
+-------------
+	+ Version for the development track.
+	   SHAREDVERSION=no (configure.in)
+	   AKA :== dt (Make.include.in)
+
+	   Table of package versions 1.452-1.454:
+	   - 1.452 - release       - SAS 7.0.0-Alpha
+	   - 1.453 - mac           - SAS 7.0.0-Alpha
+	   - 1.454 - development   - dt
+
+Version 1.453 - 2006-06-13 (EO)
+-------------
+	+ Version for the mac track.
+	   SHAREDVERSION=no (configure.in)
+	   AKA :== 7.0.0-Alpha (Make.include.in)
+
+Version 1.452 - 2006-06-13 (EO)
+-------------
+	+ Version for the release track
+	+ SHAREDVERSION=yes (configure.in)
+	  AKA := 7.0.0-Alpha (Make.include.in)
+	+ Modified in doc/lib/sasglobal.tex the definition of \url
+	  command by using \renewcommand instead \newcommand, 
+	  to avoid conflict with latex2html prior definintion of \url.
+	+ Added SASLDFLAFS="-flat_namespace" in *darwin* section of 
+	  configure.in to avoid NAG Fortran undefined symbols in 
+	  Mac OS X 10.4.X (Tiger).
+
+
+Version 1.451 - 2006-06-02 (EO)
+-------------
+	+ Version for the development track
+	  SHAREDVERSION=no (configure.in)
+	  AKA :== dt (make.include.in)
+
+	  Table of package versions 1.449-1.451:
+	  - 1.449 - release       - SAS 7.0.0-Alpha
+	  - 1.450 - mac           - SAS 7.0.0-Alpha
+	  - 1.451 - development   - dt
+
+Version 1.450 - 2006-06-02 (EO)
+-------------
+	+ Version for the mac track
+	  SHAREDVERSION=no (configure.in)
+	  AKA :== 7.0.0-Alpha (make.include.in)
+
+
+Version 1.449 - 2006-06-02 (EO)
+-------------
+	+ Version for the release track - Start of next public release.
+	+ SHAREDVERSION=yes (configure.in)
+	  AKA := 7.0.0-Alpha (Make.include.in)
+	+ Replaced path variable by binpath in sas-setup.sh.in 
+	  to avoid the problem of nullifying PATH in Z-shell
+	  when path= in current script (SCR-207).
+
+Version 1.448 - 2005-09-15 (EO)
+-------------
+	+ Version for the development track.
+	  SHAREDVERSION=no (configure.in)
+	  AKA :== dt (make.include.in)
+
+	  Table of sas package versions 1.446-1.448:
+	  - 1.446 - release       - SAS 6.6.0
+	  - 1.447 - mac           - SAS 6.6.0 on Mac OS X
+	  - 1.448 - development   - dt
+
+Version 1.447 - 2005-09-15 (EO)
+-------------
+	+ SAS 6.6.0 for the mac track
+	  SHAREDVERSION=no (configure.in)
+	  AKA :== 6.6.0 (Make.include.in)
+
+Version 1.446 - 2005-09-15 (EO)
+-------------
+	+ SAS 6.6.0 for bulk pipeline reprocessing and 2XMM catalogue
+	  building.
+	  Its manifest baseline is SAS 6.5.0 with new versions for
+	  16 tasks. These tasks were uploaded with version numbers
+	  of the form M.m, not patching versions.
+	+ SHAREDVERSION=yes (configure.in)
+	  AKA := 6.6.0 (Make.include.in)
+
+Version 1.445 - 2005-08-12 (EO)
+-------------
+	+ Version for the development track
+	  SHAREDVERSION=no (configure.in)
+	  AKA := dt (Make.include.in)
+
+	  Table of sas package versions 1.443-1.445 :
+	  - 1.443 - release      - SAS 6.5.0
+	  - 1.444 - mac          - SAS 6.5.0 on Mac OS X
+	  - 1.445 - development  - dt
+
+Version 1.444 - 2005-08-12 (EO)
+-------------
+	+ SAS 6.5.0 for mac track
+	  SHAREDVERSION=no (configure.in)
+	  AKA := 6.5.0 (Make.include.in)
+
+Version 1.443 - 2005-08-12 (EO)
+-------------
+	+ bin/saslibs: Included support to save libfftw3 and libfftw3f
+	  shared libs into libextra tar.gz archive. It was missing.
+
+	+ SAS 6.5.0 
+	  SHAREDVERSION=yes (configure.in)
+	  AKA := 6.5.0 (Make.include.in)
+
+Version 1.442 - 2005-07-12 (EO)
+-------------
+	+ Version for the development track
+	  SHAREDVERSION=no (configure.in)
+	  AKA := dt (Make.include.in)
+
+	  Table of sas package versions 1.440-1.442 :
+	  - 1.440 - release     - SAS 6.5.0-Beta
+	  - 1.441 - mac         - SAS 6.5.0-Beta on Mac OS X
+	  - 1.442 - devloment   - dt
+
+Version 1.441 - 2005-07-12 (EO)
+-------------
+	+ Version for the mac track
+	  SHAREDVERSION=no (configure.in)
+	  AKA := 6.5.0-Beta (Make.include.in)
+
+Version 1.440 - 2005-07-12 (EO)
+-------------
+	+ Previous 1.438 and 1.439 were wrong concerning AKA
+	  so they are re-uploaded properly.
+
+	+ Version for release track
+	  SHAREDVERSION=yes (configure.in)
+	  AKA := 6.5.0-Beta (Make.include.in)
+
+
+Version 1.439 - 2005-07-12 (EO)
+-------------
+	+ Version for mac track
+	  SHAREDVERSION=no (configure.in)
+
+Version 1.438 - 2005-07-12 (EO)
+---------------
+	+ Include soft link from SAS_DIR to packages/sas/configure_install
+	  into install script.
+	+ Version for the release track
+	  SHAREDVERSION=yes (configure.in)
+
+Version 1.437.1 - 2005-07-09 (EO)
+---------------
+	+ Introduced new script configure_install in the installation top dir
+	  After the SAS public release archives are downloaded, the 
+	  script can be run to help create SAS generic setup scripts
+	  named setsas.sh (sh/bash/ksh) and setsas.csh (csh/tcsh).
+	  These scripts set SAS_DIR and SAS_PATH for the installation
+	  together with other relevant details required for SAS to work.
+	  
+	  The scripts can be taken as templates for the complete setup
+	  of SAS from the very moment of the installation.
+	  The definition of SAS_CCFPATH, SAS_CCF and SAS_ODF within these
+	  scripts is left to the user.
+
+	  The configure_install script makes some sanity checks on the
+	  SAS installation.
+
+
+Version 1.437 - 2005-06-13 (EO)
+-------------
+	+ Development track.
+	  SHAREDVERSION=no (configure.in)
+	  AKA := dt        (Make.include.in)
+
+	  Table of sas package versions 1.435-1.437 :
+	  - 1.435 - release     - SAS 6.5.0-Beta
+	  - 1.436 - mac         - SAS 6.5.0-Beta on Mac OS X
+	  - 1.437 - devloment   - dt
+
+Version 1.436 - 2005-06-13 (EO)
+-------------
+	+ Mac track frozen; entering release mode.
+	  SHAREDVERSION=no  (configure.in)
+	  AKA := 6.5.0-Beta (Make.include.in)
+	  
+Version 1.435 - 2005-06-13 (EO)
+-------------
+	+ Release track frozen; entering release mode.
+	  SHAREDVERSION=yes (configure.in)
+	  AKA := 6.5.0-Beta (Make.include.in)
+
+Version 1.434 - 2004-11-17 (EO)
+-------------
+	+ For the development track. SHAREDVERSION=no, AKA := dt
+	  Table of sas versions 1.430-1.434:
+	  - 1.430 - publicrt    - SAS 6.1.0 public release
+	  - 1.431 - release     - SAS 6.5.0-Alpha release track
+	  - 1.432 - publicmac   - SAS 6.1.0 public release on Mac OS X
+	  - 1.433 - mac         - SAS 6.5.0-Alpha release track on Mac OS X
+	  - 1.434 - development - development
+
+Version 1.433 - 2004-11-17 (EO)
+-------------
+	+ For the mac track. SHAREDVERSION=no, AKA :== 6.5.0-Alpha
+
+Version 1.432 - 2004-11-17 (EO)
+-------------
+	+ For the publicmac track. SHAREDVERSION=no, AKA := 6.1.0
+
+Version 1.431 - 2004-11-17 (EO)
+-------------
+	+ For the release track. SHAREDVERSION=yes, AKA := 6.5.0-Alpha.
+
+Version 1.430 - 2004-11-17 (EO)
+-------------
+	+ For the publicrt track. SHAREDVERSION=yes, AKA := 6.1.0
+
+Version 1.429 - 2004-10-07 (EO)
+------------- 
+	+ For the dev. track. SHAREDVERSION=no, AKA := dt.
+	  The last five sas versions are intended to provide support for
+          the five tracks now playing:
+	  - 1.425 - publicrt    - Public release of SAS 6.1.0
+	  - 1.426 - release     - release track (future SAS 6.5.0)
+	  - 1.427 - publicmac   - Public release SAS 6.1.0 on Mac OS X
+	  - 1.428 - mac         - release track on Mac OS X
+          - 1.429 - development - development track 
+
+Version 1.428 - 2004-10-07 (EO)
+-------------
+	+ For the mac track. SHAREDVERSION=no, AKA := 6.5.0-Alpha
+
+Version 1.427 - 2004-10-07 (EO)
+-------------
+	+ For the publicmac track which will give the SAS 6.1.0 on Mac 
+          OS X.  SHAREDVERSION=no, AKA := 6.1.0
+
+Version 1.426 - 2004-10-07 (EO)
+-------------
+	+ For release track with SHAREDVERSION=yes and 
+          AKA := 6.5.0-Alpha
+
+Version 1.425 - 2004-10-07 (EO)
+-------------
+	+ For SAS 6.1.0 public release with SHAREDVERSION=yes
+          and AKA := 6.1.0
+
+Version 1.424 - 2004-10-04 (EO)
+-------------
+	+ Copy of 1.423.1 for DT: SHAREDVERSION=no (configure.in) 
+          AKA := dt (Make.include.in).
+
+Version 1.423.1 - 2004-10-04 (EO)
+---------------
+	+ ftpsas: moved the assignment of $lockfile after GetOptions
+	  in order to be able to get $cache if entered as option
+	  (--cache). Otherwise $lockfile always set to $HOME/sascache.
+	+ Modified for RT: SHAREDVERSION=yes (configure.in) and
+	  AKA := 6.1.0-Alpha (Make.include.in).
+
+Version 1.423 - 2004-09-23 (EO)
+-------------
+	+ Copy of 1.422.1 for DT: SHAREDVERSION=no (configure.in)
+	                          AKA := dt (Make.include.in).
+
+Version 1.422.1 - 2004-09-23 (EO)
+---------------
+	+ configure.in: 
+	  - Defined PGPLOT_LIBS="$PGPLOT_LIBS -lpng -lz -lpgplot"
+            to allow for PNG driver in PGPLOT.
+          - For RT : SHAREDVERSION=yes
+	+ Make.include.in: 
+          - AKA := 6.1.0-Alpha
+
+
+Version 1.422 - 2004-09-02 (EO)
+-------------
+	+ Copy of 1.421.1 for DT: SHAREDVERSION=no (configure.in)
+	                          AKA := dt (Make.include.in)
+
+Version 1.421.1 - 2004-09-02 (EO)
+---------------
+	+ Added three new bibliographical entries in doc/lib/sas.bib
+	  on behalf of Ian Stewart @SSC.
+	+ Correct wrong syntax bibliographical entries in sas.bib.
+	+ configure.in: SHAREDVERSION=yes for RT
+        + Make.include.in: AKA = 6.1.0-Alpha for RT
+
+Version 1.421 - 2004-07-16 (EO)
+-------------
+	+ Copy of 1.420.1 for DT: SHAREDVERSION=no (configure.in)
+	                          AKA = dt (Make.include.in)
+
+Version 1.420.1 - 2004-07-16 (EO)
+---------------
+	+ configure.in: Included check for fftw version 3 (fftw3) 
+          double (libfftw3) and single (libfftw3f) precision libraries
+          and include (fftw3.h) files.
+	+ Make.include.in: Add code to capture usage of fftw 3 with
+          EXTERNALS directive in Makefiles.
+	+ configure.in: SHAREDVERSION=yes for RT
+	+ Make.include.in: AKA = 6.1.0-Alpha for RT
+
+Version 1.420 - 2004-06-16 (EO)
+-------------
+	+ Copy of 1.419.1 for DT: SHAREDVERSION=no (configure.in)
+	                          AKA = dt (Make.include.in)
+
+
+Version 1.419.1 - 2004-06-16 (EO)
+---------------
+	+ bin/saslibs adapted to work for Mac OS X (ldd replaced by
+	  otool -L) and other enhancements.
+	+ RT: SHAREDVERSION=yes in configure.in
+	      AKA = 6.1.0-Alpha in Make.include.in
+
+Version 1.419 - 2004-05-11 (EO)
+-------------
+	+ DT : SHAREDVERSION=no (Make.include.in)
+	       AKA = dt         (configure.in)
+		
+Version 1.418.1 - 2004-05-11 (EO)
+---------------
+	+ Allow deletion of dylib libraries when make clobber.
+	+ RT : SHAREDVERSION=yes in Make.include.in 
+	       AKA = 6.0.0 in configure.in
+	
+Version 1.418 - 2004-03-08 (EO)
+-------------
+	+ DT
+
+Version 1.417.1 - 2004-03-08 (EO)
+---------------
+	+ RT: SAS release 6.0.0 
+
+Version 1.417 - 2004-02-23 (EO)
+-------------
+	+ DT
+
+Version 1.416.1 - 2004-02-23 (EO)
+---------------
+        + RT 
+	Exclude libguiparam.so in perl script listxclude for option
+        --versioned-libaries to solve SPR 2392.
+
+Version 1.416 - 2004-02-23 (EO)
+-------------
+	+ Exclude libguiparam.so in perl script listxclude for option
+	--versioned-libaries to solve SPR 2392.
+
+Version 1.415 - 2004-02-20 (EO)
+-------------
+	+ DT
+
+Version 1.414.1 - 2004-02-20 (EO)
+---------------
+        + RT 
+	Added exclude-list-rt target into Makefile.top to elliminate
+        duplication of lib*.so files in binary tar package for RT distribution.
+
+Version 1.414 - 2004-02-20 (EO)
+-------------
+	+ Added exclude-list-rt target into Makefile.top to elliminate 
+	duplication of lib*.so files in binary tar package for RT distribution.
+
+Version 1.413 - 2004-02-16 (EO)
+-------------
+	+ Previous upload, SHAREDVERSION was set to yes by mistake.
+
+Version 1.412 - 2004-02-12 (EO)
+-------------
+	+ Version for DT 
+		+ reset AKA to dt 
+		+ Reset SHAREDVERSION=no
+
+Version 1.411.1 - 2004-02-12 (EO)
+---------------
+	+ SAS 6 Release Track
+		+ Set AKA=6.0.0-Beta in Make.include.in
+		+ Set SHAREDVERSION=yes in configure.in
+
+Version 1.411 - 2003-12-12 (EO)
+-------------
+	+ To continue with DT activity, resets the AKA to dt and 
+          SHAREDVERSION to no.
+
+Version 1.410.3 - 2003-12-12 (EO)
+---------------
+	+ Configure update with SHAREDVERSION=yes failed in RH 9.0
+	  Made under SuSE 7.3
+
+Version 1.410.2 - 2003-12-12 (EO)
+---------------
+	+ Missing SHAREDVERSION=yes in configure.in
+
+Version 1.410.1 - 2003-12-12 (EO)
+---------------
+	+ SAS 6.0.0
+		+ Set SHAREDVERSION=yes in configure.in
+		+ Set AKA=6.0.0-Alpha in Make.include.in
+
+Version 1.410 - 2003-11-10 (EO)
+-------------
+	+ Added core.* in Make.include.in CLEANFILES to remove core files in Linux.
+
+Version 1.409 - 2003-11-03 (EO)
+-------------
+	+ Added three new references to doc/lib/sas.bib on behalf of
+	Vladimir Yershov at MSSL, for the OM tasks development.
+
+	+ Added $(DATADIRTMP) as $(TOPDIR)/lib/data/tmp to the list of
+	required directories in Make.include.in.  Required by testconfiguremake
+	to test that the sas configure and make are able to run.	
+	
+	+ Modified CPPFLAGS and F90INCFLAGS setings in Make.include.in as follows:
+	CPPFLAGS += $(addprefix -I,$(shell $(SASBIN)/findinclude $(USEDLIBS)))
+	by
+	CPPFLAGS += $(addprefix -I,$(shell $(SASBIN)/findinclude $(sort $(USEDLIBS))))
+	and 
+	F90INCFLAGS += $(addprefix -I,$(shell $(SASBIN)/findinclude $(USEDLIBS)))
+	by 
+	F90INCFLAGS += $(addprefix -I,$(shell $(SASBIN)/findinclude $(sort $(USEDLIBS))))
+	This way elliminates excesive amount of Include dirs which give problems with f95.
+
+Version 1.408 - 2003-09-12 (GV)
+-------------
+	+ (Make.include.in) Implement the requirement that tasks making
+	use of param also need qt without using EXTERNALS = qt. This in an
+	attempt to make it possible to run tasks in the background without
+	first unsetting the environment variable DISPLAY.
+
+Version 1.407 - 2003-08-05 (GV)
+-------------
+	+ When running the second test make sure that the test log is
+	first erased. In an incremental build the test log is left
+	behind, and one wants to be sure that it is re-created from
+	scratch.
+	
+Version 1.406 - 2003-07-31 (EO)
+-------------
+	+ No changes to code.
+	Changed back in Make.include.in the AKA to dt.
+	Changed back the SHAREDVERSION to no in configure.in
+	
+Version 1.405.2 - 2003-07-30 (EO)
+---------------
+        + No changes to code. Made for the soctrack.
+        SHAREDVERSION in configure.in set to yes (not done before).
+
+Version 1.405.1 - 2003-07-30 (EO)
+---------------
+        + No changes to code. Made for the soctrack.
+	AKA in Make.include.in changed to soc.
+	SHAREDVERSION in configure.in set to yes.
+
+Version 1.405 - 2003-06-26 (GV)
+-------------
+	+ (mkpkgidx) Change wording of entries in index page from 'Index
+	of x' to 'Index of x referenced in the documentation'. SOC-SPR-2413.
+
+Version 1.404 - 2003-06-26 (GV)
+-------------
+	+ (Make.include.in) Change the way awk is called when make commit
+	is called, so that this works on Mac OS X. SOC-SPR-2448.
+	
+Version 1.403 - 2003-06-25 (GV)
+-------------
+	+ (testconfiguremake) Step out of the current directory before
+	deleting it at the end of the test.
+
+Version 1.402 - 2003-06-24 (GV)
+-------------
+	+ (configure.in) Using --enable-strict=no no longer skips the Qt
+	checks because Qt is required for param to work.
+
+Version 1.401 - 2003-06-20 (GV)
+-------------
+	+ (Makefile.top) Make the binary archive targets more verbose.
+	
+Version 1.400 - 2003-06-18 (GV)
+-------------
+	+ (configure) Check that Qt has DOM support. This is needed for
+	the parameter interface to work, but some commercial licenses
+	don't have it.
+	
+Version 1.399 - 2003-06-17 (GV)
+-------------
+	+ (Make.include) I had accidentally disabled SLOPPY.
+	+ (makefile.top) Rework all of the binary making commands. Make
+	use of both the saslibs and the listxcluded scripts.
+
+Version 1.398 - 2003-06-11 (GV)
+-------------
+	+ (configure.in) On Mac OS X add further flags to
+	SHARED_LIBS_FLAGS so that the libraries are created with the full
+	path (-install_name). In this manner when a task is linked against
+	libX, with libX linked against libY, the system finds libY even if
+	the latter is not explicitly given on the link line.
+	
+Version 1.397 - 2003-06-03 (GV)
+-------------
+	+ (Make.include.in) Add ';' after the if/then/else/fi structure
+	that determines whether the full documentation should be built for
+	an incremental build. This is what proper Bourne shells want.
+	+ Add development script saslibs, a helper script used to make
+	binary distributions.
+	+ Remove old scripts: uploadreport.csh constructManifest paramconv
+	sascommit checkReport incheckReport buildReport
+	+ (Makefile.top) Run the saslibs script before creating the binary
+	archives.
+	
+Version 1.396 - 2003-06-02 (GV)
+-------------
+	+ (Make.include) The incremental build now builds also the html
+	documentation. This can be switched off with make incheck
+	FULLDOC=no.
+	+ (Make.include) Change introduced in 1.394 caused a few libraries
+	not to take the value of EXTERNALS into account. This caused
+	linking of tasks against those libraries to fail on platforms
+	other than Mac OS X. Fixed.
+	
+Version 1.395 - 2003-05-30 (GV)
+-------------
+	+ (configure) Make the linker shut up on Mac OS X when an
+	undefined symbol is found when creating a library.
+	
+Version 1.394 - 2003-05-29 (GV)
+-------------
+	+ (Make.include.in, configure.in) Introduce LIBS_LDLIBS, flags to
+	be used when creating shared libraries. Normally this is the same
+	as LDLIBS (used to create executables), but on Mac OS X the two
+	linking processes must be different. Also, get rid of -m on Mac OS
+	X when creating executables.
+
+Version 1.393 - 2003-05-26 (GV)
+-------------
+	+ (Make.include.in) Get rid of another occurrence of == in a shell
+	test, that would make the incremental build stop in an environment
+	with a plain Bourne shell.
+
+Version 1.392 - 2003-05-25 (GV)
+-------------
+	+ (Make.include.in) The optimization levels are now set by
+	configure instead of being hard-coded.
+	+ (configure.in) Set optimization levels, so that c++ and f9x
+	levels can be set independently based on the OS. On Mac OS f9x
+	on slatec triggers a bug in gcc if complied with -O2: set to -O4.
+	+ (configure.in) Add -fno-coalesce-templates to c++ flags when
+	compiling on Mac OS X, or the CAL Glue does not create a shared
+	library. This should possibly be fixed in the CAL.
+	
+Version 1.391 - 2003-05-24 (GV)
+-------------
+	+ (configure.in) Was not passing -m when creating shared libraries
+	on Mac OS X.
+
+Version 1.390 - 2003-05-23 (GV)
+-------------
+	+ (configure.in) remove two occurrences of test x == y (== -> =)
+	because that syntax does not work on classic Bourne shells.
+	+ (configure.in) fix the selection of the shared library options
+	on Mac OS X, where the algorithm used to select whether f95 runs
+	with gcc fails because there gcc is called cc.
+
+Version 1.389 - 2003-05-22 (GV)
+-------------
+	+ Another small tweak for Mac OS X: -fPIC was not being passed
+	consistently to the compiler. Also, ask the linker to only warn of
+	undefined symbols (-flat_namespace -undefined warning) instead of
+	terminating with an error.
+	+ (sas-setup.[c]sh) updated DYLD_LIBRARY_PATH (Mac OS X).
+
+Version 1.388 - 2003-05-21 (GV)
+-------------
+	+ (configure.in, Make.include.in) Move some of the choices about
+	f90 and f77 from Make.include to configure. Promote Mac OS X to
+	supported system, and finalize flags needed to create shared
+	libraries on that system.
+
+Version 1.387 - 2003-05-21 (GV)
+-------------
+	+ (chkdist) permission check was too zealous.
+	
+Version 1.386 - 2003-05-19 (GV)
+-------------
+	+ More of the same permission nonsense.
+
+Version 1.385 - 2003-05-19 (GV)
+-------------
+	+ (Make.include,in) F90INCFLAGS was lower case.
+	+ (chkdist) fix check for file permissions, that was not being
+	executed correctly (not all the time any way).
+	
+Version 1.384 - 2003-05-07 (GV)
+-------------
+	+ (Make.include.in) if param is in USEDLIBS, also add the
+	dal. This may help static build on Mac.
+
+Version 1.383 - 2003-05-07 (GV)
+-------------
+	+ (SasServer.pm) fix error that prevented download of master MD5.
+	+ (ftpsas) fix error when comparing signatures from the MD5 master
+	file.
+	
+Version 1.382 - 2003-05-05 (GV)
+-------------
+	+ Re-upload of 1.381 when I had uploaded all of the bin/* scripts
+	with restrictive permissions.
+	
+Version 1.381 - 2003-05-01 (GV)
+-------------
+	+ (configure) can make use of libf96.so if a handcrafted
+	libf96fix.a containing quickfit.o is also found. 
+	
+Version 1.380 - 2003-04-29 (GV)
+-------------
+	+ (chkdist) had become too strict, checking for the file
+	build_log, but this file exists during a build and is created
+	before the chkdist is run => chkdist always failed during build.
+
+Version 1.379 - 2003-04-28 (GV)
+-------------
+	+ (Make.include.in) make sure that build_log_second is removed in
+	a make clobber.
+
+Version 1.378 - 2003-04-26 (GV)
+-------------
+	+ Create and upload packagedetails.html.
+	
+Version 1.377 - 2003-04-25 (GV)
+-------------
+	+ Re-upload of 1.376 to test package server in Vilspa.
+
+Version 1.376 - 2003-04-25 (GV)
+-------------
+	+ Re-upload of 1.375 to test package server in Vilspa.
+
+Version 1.375 - 2003-04-25 (GV)
+-------------
+	+ (htmkReport) make sure colors also work for short build.
+	
+Version 1.374 - 2003-04-24 (GV)
+-------------
+	+ (htmlReport) fix broken links, restructure table for clarity.
+	
+Version 1.373 - 2003-04-23 (GV)
+-------------
+	+ (configure) fix wrong test syntax (introduced at 1.371) that
+	prevented configure from going through on most machines.
+	
+Version 1.372 - 2003-04-22 (GV)
+-------------
+	+ (uploadreport) make sure the files build_log_second are uploaded
+	if they exist.
+	+ (htmlReport) link to build_log_second if necessary; add color
+	scheme legenda; adjust colors.
+	
+Version 1.371 - 2003-04-21 (GV)
+-------------
+	+ (configure.in) make use of libf96.so if a library called libf96fix
+	containing the NAG quickfit.o is found. This is necessary on
+	recent versions of RedHat (and presumably of other GNU/Linux
+	distributions) to prevent linking errors due to the fact that the
+	loading of old static libraries may fail.
+
+Version 1.370 - 2003-04-10 (GV)
+-------------
+	+ (sas-setup.sh) remove incorrect setting of LIBRARY_PATH
+	+ (testconfiguremake) source with '. ./sas-setup.sh' to avoid
+	failure when PATH does not contain '.'.
+	
+Version 1.369 - 2003-03-31 (GV)
+-------------
+	+ (uploadreport) Upload via intermediate tar file. Upload to
+	Vilspa machine.
+
+Version 1.368 - 2003-03-28 (GV)
+-------------
+	+ (uploadsas) uploads to Vilspa server. SasServer.pm updated to
+	provide interface to upload files.
+	
+Version 1.367 - 2003-03-20 (GV)
+-------------
+	+ (configure.in) additional Qt-related flags necessary on Mac OS X
+	were lost in transit. 
+
+Version 1.366 - 2003-03-19 (GV)
+-------------
+	+ (configure.in) additional Qt-related flags necessary on Mac OS X
+	were lost in transit. 
+
+Version 1.365 - 2003-03-01 (GV)
+-------------
+	+ (Make.include) Some commands are now chattier.
+	+ (configure) add -I to Qt include.
+	
+Version 1.364 - 2003-02-28 (GV)
+-------------
+	+ (Make.include) All grep statements that have to do with buildlog
+	redirect their output to /dev/null. They used to append to the log
+	their were grepping, creating the possibility of infinite loops
+	(this was sure the case on Mac OS X).
+
+Version 1.363 - 2003-02-28 (GV)
+-------------
+	+ (Make.include) if USEDLIBS contains param, then force EXTERNALS
+	= qt so that the static build works. Set MAKEFLAGS so that the
+	directory names are not printed out. Fix for echo -n on Dec.
+	make check was no longer creating the html doc,
+	fixed. SOC-SPR-2411.
+	Add echo command to the end of the target check/incheck/build, so
+	that build report does not show a long list of 'make[4]' entries.
+	+ (configure) On Mac OS X when using Qt -framework Security is
+	also needed in the linker flags.
+	
+Version 1.362 - 2003-02-21 (GV)
+-------------
+	+ (Make.include.in) Fix possible race condition while accessing
+	the build_log file for the second test, which could lead to an
+	infinite recursion while executing the second test harness.
+
+Version 1.361 - 2003-02-21 (GV)
+-------------
+	+ (configure) On Mac OS X switch off optimization.
+	
+Version 1.360 - 2003-02-20 (GV)
+-------------
+	+ (configure) now add the variables ECHO_N and ECHO_C to Make.include.
+	+ (Make.include) Use ECHO_N and ECHO_C to build a supposedly
+	platform-independent echo -n. Introduce GNU Make functions to
+	simplify the description of the targets check, incheck,
+	build. Make sure that if some of the directories where
+	Make.include wants to put symbolic links do not exist, an error is
+	generated. Add target required_dirs to create all the required
+	directories. This is not run automatically to prevent the creation
+	of these directories when this is not wanted.
+	
+Version 1.359 - 2003-02-18 (GV)
+-------------
+	+ (Make.include) Add missing space in rule to create libraries.
+
+Version 1.358 - 2003-02-17 (GV)
+-------------
+	+ (configure.in) When on a Mac OS X switch shared libraries off.
+	+ (Make.include.in) Use echo -n when a newline character doesn't
+	need to be generated, as this is more portable (to the Mac in
+	particular). Add rules to run ranlib on static libraries, as this
+	is required on a Mac.
+	+ (sas-setup) create ~/.sas.d/config
+	
+Version 1.357 - 2003-02-07 (GV)
+-------------
+	+ (Make.include) perl tasks depend explicitly on main.pl in
+	taskmain and on their own task.pl.
+	
+Version 1.356 - 2003-01-31 (GV)
+-------------
+	+ (Make.include) implement perl tasks as plain perl scripts.
+	+ (configure.in) primitive support for Mac OS X.
+	+ (Make.include) primitive support for Max OS X: mkae suffix for
+	shared library configurable via configure.
+	
+Version 1.355 - 2003-01-22 (GV)
+-------------
+	+ (testconfiguremake) really fix SOC-SPR-2395.
+	+ (configure.in):
+	  - skip some tests is -enable-strict=no
+	  - error/warning if ds9 is version 2.2.1
+	  - only support f95
+	  - Qt >= 2.3.2
+	
+Version 1.354 - 2003-01-21
+-------------
+	+ (Make.include) incremental build runs again the test harnesses.
+
+Version 1.353 - 2003-01-10
+-------------
+        + (sas.bib) fix typo on CALHB entry ct:calhb, update URLs for
+         Chandra documents (region, data model etc.)
+	+ (testconfiguremake) use gmake instead of make if
+	found. SOC-SPR-2395.	
+	
+Version 1.352 - 2003-01-06 (GV)
+-------------
+	+ (bin/uploadreport) force ftp to run in passive mode, so it works
+	from behind some firewalls.
+
+Version 1.351 - 2003-01-03 (GV)
+-------------
+	+ (Make.include.in) The fix at 1.348 was preventing the task
+	binaries from being removed (I should have used %\/ instead of %/
+	in the clean and clobber rules). SOC-SPR-2393.
+	+ (configure.in) check that tsort is available. SOC-SPR-2378.
+	
+Version 1.350 - 2002-12-23 (GV)
+-------------
+	+ (Make.include.in) run f90depend with LANG=C set, ot on RH8.0 not
+	all modules are correctly found.
+	
+Version 1.349 - 2002-12-19 (GV)
+-------------
+	+ (sas.bib) How many tries to get a reference right?? Fix typo in
+	URL for CALHB.
+
+Version 1.348 - 2002-12-18 (JBa)
+-------------
+	+ (bin/sasclean_cpath) 'sh' does not know about '==' operator
+	+ (Make.include.in) Forgot a trailing '/' in using addprefix(). This
+	  triggered mayhap on the backward directory.
+
+Version 1.347 - 2002-12-18 (GV)
+-------------
+	+ (sas.bib) Add missing space between \tt and text.
+
+Version 1.346 - 2002-12-17 (JBa)
+-------------
+	+ (configure.in,sas.environment.in,Make.include.in) Using CPATH:
+	  'make' as well as 'configure' will check and modify environment
+	  if necessary.
+	  We do it in both systems, as a 'developer' may want to force
+	  different environment setting, than the one that was used during
+	  configuration...
+	+ (bin/sasclean_cpath) added to do the above in 'configure' as well
+	  as in 'make'
+	
+Version 1.345 - 2002-12-17 (GV)
+-------------
+	+ (sas.bib) update URL for CAL HB.
+	+ (testconfiguremake) change exports to be portable (SOC-SPR-2384).
+	
+Version 1.344 - 2002-12-16 (GV)
+-------------
+	+ (Make.include.in) Restore name of CONFIGDIR that had been
+	removed. This triggered a number of failures on make depend.
+	+ (Make.include.in) A build with a stricter behavior of the c++
+	compiler can be achiver by specifying STRICTCPP=yes. By default
+	this is set to no, or the build explodes :)
+	+ (Make.include.in) Make running the test harnesses during an
+	incremental build conditional (RUNTESTS=yes).
+	+ Add PNG versions of all icons needed by latex2html.
+	
+Version 1.343 - 2002-12-14 (GV)
+-------------
+	+ (Make.include.in) name of directory below is include.
+
+Version 1.342 - 2002-12-14 (GV)
+-------------
+	+ (Make.include.in) re-introduce usage of config-std.h as this adds
+          using namespace std, and this is very much needed at this
+	  stage. However, this file is not generated by configure (which
+	  would trigger a rebuild in an incremental build) but just places
+	  in $SAS_DIR/config and included from there, so that a new build
+	  is only required when that file changes.  
+
+Version 1.341 - 2002-12-13 (GV)
+-------------
+	+ (Make.include.in) remove usage of config-std.h.
+
+Version 1.340 - 2002-12-13 (GV)
+-------------
+	+ (configure.in) replace using [] with test in file tests as this
+	is more portable.
+	+ (SasVersion.h) define more strings (like AKA).
+	+ (configure.in) remove creation of config-std.h.in as code is
+	  supposed to work with gcc-3.x now. Also, the creation of this file
+	  each time triggered a complete rebuild during incrementals.
+	+ (ftpsas) additional exit code when running in patch mode to
+          indicate that that package sas was updated and configure needs
+	  to be run again.
+
+Version 1.339 - 2002-12-12 (GV)
+-------------
+	+ (configure.in) identify RedHat and SuSE, make use of RELEASE file.
+	+ (SasVersion.h.in) add RELEASE constant.
+
+Version 1.338 - 2002-12-10 (GV)
+-------------
+        + (bin/createcompletionscripts) remove -s flag when creating bash file.
+	+ (configure) for gcc 3.2 we need to re-introduce the work around
+	concerning the way headers found in CPLUS_INCLUDE_PATH are treated
+	(they are considered to be C headers even if they are C++). This
+	leads to warnings in the build.
+
+Version 1.337 - 2002-12-09 (GV)
+-------------
+	+ (Makefile.top) at end of make check creates shell command line
+          completion scripts in SAS_DIR.
+
+Version 1.336 - 2002-12-05  (GV)
+-------------
+	+ (configure.in) change lack of GNU ar into a warning (it was an
+	error).
+
+Version 1.335 - 2002-12-05  (GV)
+-------------
+	+ (Make.include) targets clobber and clean remove the finale /
+	from CLOBBERFILES and CLEANFILES, or rm will fail for symlinks on
+	RedHat 8.0.
+	
+Version 1.334 - 2002-12-05 (GV)
+-------------
+	+ (Make.include) more support for CVS (make branch).
+
+Version 1.333 - 2002-12-04 (GV)
+-------------
+	+ (Make.include) additional CVS markers had entered the file,
+          breaking it.
+	+ (testconfiguremake) a new test harness where a mini SAS build of
+	one package is attempted. This to ensure that changes to configure
+	and Make.include are not deadly.
+	  
+Version 1.332 - 2002-12-03 (GV)
+-------------
+	+ (bin/Makefile) had forgotten to add htmlReport to DEVSCRIPTS.
+
+Version 1.331 - 2002-12-02 (GV)
+-------------
+	+ (htmlReport) subsumes incheckReport, checkReport,
+	buildReport. Re-work the color coding algorithm so that it can 
+	cope with incremental builds where no test harnesses are run at
+	all. All html report in Make.include are generated with this script.
+	
+Version 1.330 - 2002-11-28 (GV)
+-------------	
+	+ (Make.include) incheck does not run the test harnesses
+	now. Temporary change to allow people to decide where the time for
+	an incremental build goes.
+	
+Version 1.329 - 2002-11-22 (GV)
+-------------
+	+ (f90depend) make it work on RedHat 8.0 (SOC-SPR-2368).
+
+Version 1.328 - 2002-11-21 (GV)
+-------------
+	+ (ftpsas) preserve exit status in END block, otherwise it is
+	always reset to 0 because the END block is guaranteed to succeed.
+	+ (Makefile.top) do not echo the uploadreport command.
+	
+Version 1.327 - 2002-11-11 (GV)
+-------------
+	+ (Make.include) More tweaks to compiler flags when profiling.
+
+Version 1.326 - 2002-11-11 (GV)
+-------------
+	+ (Make.include) When PROFILE is on, make sure the debug flags are
+	correctly set.
+	
+Version 1.325 - 2002-10-31 (GV)
+-------------
+	+ (ftpsas) allow one to specify a name other than 'make' for GNU
+	Make. Add more protection to chdir/mkdir statements to prevent
+	ftpsas from unpacking packages in the wrong directory. 
+
+Version 1.324 - 2002-10-28 (GV)
+-------------
+	+ (Make.include) make incheck now only builds the ps
+	documentation, so as to speed it up even further (while I figure
+	out a way to introduce a reliable dependency mechanism for
+	latex2html). Add a rudimentary dependency mechanism to create the
+	ps documentation, so that the latter is not re-built unless the
+	latex source (or some of the auxiliary files in packages sas) have
+	changed. This is not fool proof, but should significantly improve
+	the speed of incremental builds.
+	
+
+Version 1.323 - 2002-10-14 (GV)
+-------------
+	+ (sasglobal.tex) \task{} macro generates bold text in ps doc (SOC-SPR-2318)
+
+Version 1.322 - 2002-10-03 (GV)
+-------------
+	+ (bin/uploadreport) make silent so cron jobs don't talk. Also
+	check exit status after ech ftp call, so cron jobs will talk when
+	an error.
+
+Version 1.321 - 2002-09-27 (GV)
+-------------
+	+ (bin/fixdoc) write final new line to sasdoc_version.tex.
+
+Version 1.320 - 2002-09-26 (GV)
+-------------
+	+ (bin/chkdist) introduce a @relaxed@ checking mode so that
+	incremental builds can run this test as well.
+	+ (Make.include) modify the incheck target so that chkdist is run
+	in relaxed mode.
+	+ (bin/incheckReport) updated with the extra column in the build
+	report.
+
+Version 1.319 - 2002-09-24 (GV)
+-------------
+	+ (src/runtestalarm.cc) allow one to set the maximum allowed
+	duration of a single test harness run via the environment variable
+	SAS_TEST_TIMEOUT. 
+
+Version 1.318 - 2002-09-24 (GV)
+-------------
+	+ (configure.in) additional fix for gcc 2.96 (early version found
+	on RH 7.1) whereby vthe environment variable CPLUS_INCLUDE_PATH is
+	ignored.
+
+Version 1.317 - 2002-09-20 (GV)
+-------------
+	+ (ftpsas, SasServer.pm) small updates to log/error messages and
+	documentation to clarify what is happening.
+
+
+Version 1.316 - 2002-09-19 (GV)
+-------------
+	+ (chkdist) package sas in DEPEND: restored for the DT.
+
+Version 1.315.1 - 2002-09-19 (GV)
+---------------
+	+ (chkdist) does not require that package sas be in DEPEND file,
+	as this check is too strict in current RT.
+
+Version 1.315 - 2002-09-19 (GV)
+-------------
+	+ (configure.in) accept Qt version 3 instead of stopping. Change
+	use of tr when checking for ftools version to eliminate warning
+	message in linux.
+	
+Version 1.314 - 2002-09-17 (GV)
+-------------
+	+ added backward-gcc2/streambuf
+	+ Make.include: make it possible to upload package sas with make upload.
+	
+Version 1.313 - 2002-09-12 (JBa)
+-------------
+	+ added backward-gcc2/istream
+
+Version 1.312 - 2002-09-01 (GV)
+-------------
+	+ (Make.include) implement INTERNALS correctly (it was referencing
+	EXTERNALS). 
+
+
+Version 1.311 - 2002-08-29 (GV)
+-------------
+	+ (bin/ftpsas) split one line in two as suggested in SOC-SPR-2333.
+	+ (bin/ftpsas) when --patch is given (incremental builds) before a
+	package can be unpacked the following is done:
+	   . cd package-directory and make clobber
+	   . rm -fr package-directory
+	
+
+Version 1.310 - 2002-08-01 (GV)
+-------------
+	+ (bin/ftpsas) supply 0777 mask to all mkdir calls, as the mask is
+	mandatory in perl 5.005. Also, detect which of MD5 or Digest::MD5
+	is present and use it. (The perl modules MD5 has been removed
+	Digest::Md5, with exactly the same interface and functionality.)
+	+ Pod::Usage.pm: define $progpath to be simply perldoc, so that it
+	works even when perldoc is not in the same bin directory as perl
+	itself. 
+
+	
+Version 1.309 - 2002-07-29 (GV)
+-------------
+	+ (configure.in) die if ds9 not >= 2.0.
+	
+Version 1.308 - 2002-07-29 (GV)
+-------------
+	+ (Make.include) Missing '/' in fix made in previous version.
+	
+Version 1.307 - 2002-07-26 (GV)
+-------------
+	+ (Make.include) If the gcc backward compatibility directory is
+	needed, takes it via -I$(SAS_DIR)/include and not $(INCDIR), or
+	compilation of c++ packages that need it will fail when those
+	packages are built in a subdirectory of SAS_PATH (SOC-SPR-2331).
+	+ (Make.include) Add directive PERLDIRS for subdirectories that
+	should be linked directly under lib/perl5, so that external
+	modules can be easily available to all scripts. Add PERLMODS
+	directive for individual modules.
+	+ Move SasServer to lib, and make it a PERLMODS.
+	+ Add Pod::Usage as a PERLDIRS so that ftpsas works also with perl
+	  5.005 without installation of additional modules.
+
+
+Version 1.306 - 2002-07-18 (GV)
+-------------
+	+ (sas.bib) add entries for DS9 and GAIA, as per ims request.
+	
+Version 1.305 - 2002-07-18 (GV)
+-------------
+	+ ftpsas had been left in package devel. Moved here.
+	+ (in)checkReport: change the color coding.
+	
+Version 1.304 - 2002-07-12 (GV)
+-------------
+	+ (bin/Makefile) I had left out uploadreport from DEVSCRIPTS.
+	+ (bin/checkReport) change colors.
+
+Version 1.303 - 2002-07-11 (GV)
+-------------
+	+ (Make.include) add targets distcheck and depcheck, so that it is
+	possible to run these checks independently.
+	+ (bin) add all of the scripts that were in package devel, so that
+	the latter can easily be taken out of the manifest when a public
+	binary is built.
+
+Version 1.302 - 2002-07-09 (GV)
+-------------
+	+ (chkdist) make it an error not to DEPEND at least on package
+	sas.
+	+ (chkdist) make it an error not to have a ChangeLog entry
+	matching the version number. Also, the matching entry must be the
+	first one in the file.
+	+ (chkdist) make it an error not to have a GROUPS entry in the
+	task.info file.
+	+ (Make.include.in) expand the range of targets executed in a make
+	incheck and make update. Preparation for incremental builds.
+	+ (configure.in) switching sharedversion on forces shared to be on
+	as well.
+	+ Change the maximum single test harness duration to 600s. Change
+	implementation of the timeout cndition to use system instead of
+	exec, so the alarm signal can be trapped.
+	+ incheckReport: added to report on incremental builds.
+	
+Version 1.301 - 2002-07-08 (GV)
+-------------
+	+ (Make.include) run test harnesses through runtestwrap. This sets
+	the maximum CPU time per test harness to 1000s, then runs the test
+	harness through runtestalarm, where the maximum wall clock time
+	per test harness is agains et to 1000s. This to prevent problems
+	with hanging test harnesses, or test harnesses that enter an
+	infinite loop.
+	+ (bin/runtestwrap) added
+	+ (src/runtestalarm.cc) added
+	
+Version 1.300 - 2002-06-27 (JBa)
+-------------
+	+ Preparation for GCC 3.1
+	  Added backward compatibility directory for GCC-2.9x
+
+Version 1.299 - 2002-06-27 (JBa)
+-------------
+	+ (test/check_dev_bins_scripts) make sure it works if current
+	  directory is not in PATH
+	
+Version 1.297 - 2002-06-11 (JBa)
+-------------
+	+ As the HTML documentation, the PostScript documentation now also
+	  contains a Parameter header. (SOC::SPR 2323)
+	
+Version 1.296 - 2002-06-10 (GV)
+-------------
+	+ configure now works with the latest autoconf (now required).
+	
+Version 1.295 - 2002-05-13 (GV)
+-------------
+	+ (Make.include.in) make sure all tasks are getting selectlib on the link line.
+	
+Version 1.294 - 2002-05-07 (GV)
+-------------
+	+ (chkdist) validateParameters is called only for XPI-style files.
+	
+Version 1.293 - 2002-05-02 (GV)
+-------------
+	+ (Make.include.in) add selector to USEDLIBS when param is also
+	used. This is needed to support param-2.0.
+	+ (Make.include.in) add DEVTASKS directive.
+	+ (Make.include.in) $(TASKHEADIMPS) are removed on the clobber and
+	not on the clean, so incremental builds can work. Also, all the
+	autogenerated code is now dependent on some of the source files in
+	package taskmain, so that it is re-created only if taskmain has
+	been updated.
+	
+Version 1.292 - 2002-04-29 (GV)
+-------------	
+	+ (Makefile.top) adjust target binary_exclude to exclude files in
+	bin/devel, lib/data/tmp, and lib/data
+	+ (configure.in) checks for mysql lib/header, set HAVE_MYSQL if
+	ok. Also check for some of the CERN libraries.
+	+ (acconfig.h) updated.
+	+ (Make.include.in) add ODFDIRS for symlinks under lib/testodf.
+	+ (Make.include.in) all tests now run with stdin from /dev/null,
+	so that running some ftools will not hang the build.
+	+ (chkdist) issue warning if no ChangeLog entry for VERSION is found.
+	
+Version 1.291 - 2002-04-28 (GV)
+-------------
+	+ (Make.include.in) change a couuple of SAS_DIR/bin to SASBIN,
+	as the former no longer contains the development scripts required
+	for the build.
+
+Version 1.290 - 2002-04-27 (GV)
+-------------
+	+ (bin/Makefile) fix DEVSCRIPTS (was mispelled).
+	+ (Make.include.in) re-introduce changes made at 1.288 that had gone missing.
+ 	+ (test) add test harnesses for DEVSCRIPTS and DEVBINS targets
+
+Version 1.289 - 2002-04-26 (GV)
+-------------
+	+ (configure.in) enforece cfitsio > 2.400.
+
+Version 1.288 - 2002-04-26 (GV)
+-------------
+        + (Makefile.top) create extra directories (lib/data/tmp lib/data
+        bin/devel).
+        + (Makefile.top) new target uploadreport
+        + (Make.include.in) add target updateparfile for transition to
+        param-2.0.
+        + (Make.include.in) introduce DEVSCRIPTS and DEVBINS, similar to
+        their DEV-less namesakes but to be linked under
+        SAS_DIR/bin/devel. sas-setup.[c]sh adjusted so that
+        SAS_DIR/bin/devel is in the PATH.
+	+ (bin/Makefile) change SCRIPTS to DEVSCRIPTS
+        + (uploadreport) issue error if it cannot ftp to SOC server,
+        instead of dying with an undefined variable.
+        + (Make.include.in) introduce DATADIRS target for directories that
+        are linked under lib/data
+
+Version 1.287.26 - 2002-04-26 (GV)
+----------------
+	+ (configure.in) adjust an already existing test that about the
+	need to add the option -E to the GNU linker. The test used to be
+	triggered only when the existing perl had been compiled with gcc
+	2.8.1, but the solution is applicable to a more general
+	case. SOC-SPR-2299. 
+	
+Version 1.287.25 - 2002-04-13 (GV)
+----------------
+	+ Re-upload.
+
+Version 1.287.24 - 2002-04-13 (GV)
+----------------
+	+ Re-generate configure on a machine other than xmmws0, as what is
+	created there does not run anywhere else (?)
+	
+Version 1.287.23 - 2002-04-13 (GV)
+----------------
+	+ (Makefile.top) change == to = in one of the test conditions.
+	+ (configure.in) detect GNU find (needed to make binaries).
+	+ (configure.in) by default version numbers in shared libraries is off again.
+	+ (Makefile.top) do not do a clean_binary when the binary
+	distribution is made, so that the SAS tree can be used to compile
+	against after a binary is made.
+	
+Version 1.287.22 - 2002-04-13 (GV)
+----------------
+	+ (Makefile.top) make clean_binary before creating the binary
+	distributions.
+
+Version 1.287.21 - 2002-04-09 (GV)
+----------------
+	+ (Makefile.top) if lib....so.n exist do not dump lib...so in the binary.
+
+Version 1.287.20 - 2002-04-09 (JBa)
+----------------
+	+ (doc/lib/sasref.perl)
+	Implementated a hyperlink from the 'type' of a parameter to the
+	parameter documentation.
+
+Version 1.287.19 - 2002-04-09 (GV)
+----------------
+	+ (Makefile.top) introduce the variables TAR and FIND, so that it
+	becomes possible to do make binary-target TAR=gtar etc, should GNU
+	tar have a different name. Eventually this should be detected by
+	configure.
+
+Version 1.287.18 - 2002-04-09 (GV)
+----------------
+	+ regenerate configure with an older version of autoconf, as the
+	new one on xmmws0 seems not to work (!). 
+
+Version 1.287.17 - 2002-04-08 (GV)
+----------------
+	+ (Makefile.top) change the name of the libsys tar ball.
+	+ (sas-setup.[s]sh) removes FTOOLS/pow, as no longer needed.
+	+ (configure) make it the default to build shared libraries with a
+	version number, in peparation for the binary release.
+	+ (configure.in) remove double registration of config.h.in that
+	made recent autoconf versions complain.
+
+Version 1.287.16 - 2002-04-05 (GV)
+----------------
+	+ (sas-setup.[s]sh) add libsys to *LIBRARY_PATH
+	+ (Makefile.top) add target to make libsys subdir and tar ball.
+
+Version 1.287.15 - 2002-04-04 (GV)
+----------------
+	+ sas-setup.sh: change a couple of 'if ! test ...' in 'if test ! ...'
+	  as the former does not seem to work with some sh flavors.
+
+Version 1.287.14 - 2002-03-28 (GV)
+----------------
+	+ (sas.bib) add dennerl99:_cti_pattern_xmm_epic_pn_ccd
+	
+Version 1.287.13 - 2002-03-19 (GV)
+----------------
+	+ (Makefile.top) change names of common tar balls.
+
+Version 1.287.12 - 2002-03-18 (JBa)
+---------------
+	+ (doc/lib/sasglobal.tex) Fixed a typo in taskerrorsnote. Kept old
+	  typo in place for backwards compatibility...
+
+Version 1.287.11 - 2002-03-13 (JBa)
+---------------
+	+ (doc/lib/icons) added images for foot notes, and cross references
+
+Version 1.287.10 - 2002-03-11 (JBa)
+---------------
+	+ (doc/lib/sasref.perl) IMproved layout for task Errors/Parameters
+	
+
+Version 1.287.9 - 2002-02-18 (JBa)
+---------------
+	+ (Make.include.in) changed combilib mechanism to work with 'make -j'
+	
+Version 1.287.8 - 2002-02-11 (GV)
+---------------
+	+ (Make.include.in) fortran olevel back to -O2: on sparc the problem
+	lies with gcc, and we should use 2.95.3 on cosine2.
+
+Version 1.287.7 - 2002-02-08 (GV)
+---------------
+	+ (Make.include.in) make the profile work unconditionally.
+
+Version 1.287.6 - 2002-02-08 (GV)
+---------------
+        + (Make.include.in) Change optimization level for fortran to 4
+	(there seems to be a problem with -O2 in f95 4.1 -- unders
+	investigation). 
+
+Version 1.287.5 - 2002-02-07 (GV)
+--------------- 
+	+ (Make.include.in) some sh did not like the test below. Made portable.
+
+Version 1.287.4 - 2002-02-01 (GV)
+---------------
+	+ (Make.include.in) extra check on VERSION when committing via CVS.
+	
+Version 1.287.3 - 2002-01-30 (JBa)
+---------------
+	+ (doc/lib/sasglobal.tex) PS doc:separation after
+	  \begin{taskparameters} needed.
+
+Version 1.287.2 - 2002-01-29 (GV)
+---------------
+	+ (Makefile.top) tar errors do not stop make.
+	
+Version 1.287.1 - 2002-01-28 (JBa)
+-------------
+	+ Added possibility to build libaries with stamped version numbers!
+
+Version 1.287 - 2002-01-25 (JBa)
+-------------
+	+ (doc/lib/sasglobal.tex) fixed SPR 2065
+
+Version 1.286 - 2002-01-22 (GV)
+-------------
+	+ (sas.bib) updated XMMPerHK.
+
+Version 1.285 - 2002-01-04 (GV)
+-------------
+	+ (Make.include.in) err left in ... aargh!
+
+Version 1.284 - 2002-01-03 (GV)
+-------------
+	+ (configure.in) remove some warnings that were printed also when
+	grace/fftw had been found.
+	+ (configure.in) allows one to control versioning of shared libraries.
+
+Version 1.283 - 2001-12-21 (GV)
+-------------
+	+ (sas.bib) update CCF ICD entry.
+
+Version 1.282 - 2001-12-17 (GV)
+-------------
+	+ (Make.include.in) add target commit for CVS support (with tag).
+	+ (Make.include.in) fix support for profiling.
+
+Version 1.281 - 2001-11-29 (GV)
+-------------
+	+ (fixdoc) created sasdoc_version.tex
+	+ (package.tex) use option version 
+	+ (sasdoc.cls) implement option version to have SAS version in ps
+	documentation. 
+	+ (Make.include) delete sasdoc_version.tex on clean.
+	
+Version 1.280 - 2001-11-23 (GV)
+-------------
+	+ (*.cls) XMM -> XMM-Newton in ps doc.
+
+Version 1.279 - 2001-11-22 (GV)
+-------------
+	+ (xmmlogo.eps) bring in line with gif version.
+	
+Version 1.278 - 2001-11-22 (JBa)
+-------------
+	+ (doc/lib/sasref.*, doc/lib/sasglobal)
+	  * introduction of macros \taskserrorsnote and \taskparametersnote
+
+Version 1.277 - 2001-11-20 (JBa)
+-------------
+	+ (doc/lib/sasref.sty)
+	  * Fixed another LaTex-bailout: "There's no line here to end."
+
+Version 1.276 - 2001-11-18 (JBa)
+-------------
+	+ (doc/lib/sasref.sty)
+	  * Fixed LaTex-bailout: "There's no line here to end."
+
+Version 1.275 - 2001-11-15 (JBa)
+-------------
+	+ (doc/lib/sasglobal.tex)
+	  * Fixed problem with caption labelling on figures
+	+ (lib/moreverb.perl)
+	  * latex2html placeholder for package 'moreverb'
+
+Version 1.274 - 2001-11-14 (JBa)
+-------------
+	+ (doc/lib/sasglobal.tex,doc/lib/sasref.*)
+	  * pretty layout for task parameters
+	  * improved pretty layout for errors
+	+ (lib/sasdoc.perl)
+	  * latex2html placeholder for class 'sasdoc'
+	
+Version 1.273 - 2001-11-09 (JBa)
+-------------
+	+ (doc/lib/sasglobal.tex,doc/lib/sasref.*)
+	  Tabular layout for error/warning documentation
+
+Version 1.272 - 2001-11-05 (GV)
+-------------
+	+ xmmsaslogo.gif: updated
+	+ sas.bib: updated with Marc Audard's entries.
+	
+Version 1.271 - 2001-11-02 (GV)
+-------------
+	+ configure.in: modified to cope with latest versions of latex2html.
+
+Version 1.270 - 2001-10-16 (JBa)
+-------------
+	+ Direct link to alphabetical list of packages from the entry page.
+
+Version 1.269 - 2001-10-25 (JBa)
+-------------
+	+ (Make.include.in/configure/configure.in/config-std.h.in)
+	  Adopted necessary changes to the infrastructure setup in order to
+	  compile with GCC 3. Changes include:
+	  * added 'using standard namespace' as a temporary fix. This is
+	    done in 'config-std.h' and included in Make.include with an
+	    '-include <file>' statement
+	  * a workaround for bug in GCC 3.0.1 (GNATS pr=4256). All headers
+	    in CPLUS_INCLUDE_PATH are treated as 'C' headers. The workaround
+	    consist of scanning the CPLUS_INCLUDE_PATH, and converting it into
+	    '-Idir' options in Make.include
+
+Version 1.268 - 2001-10-08 (GV)
+-------------
+	+ (configure.in, Make.include.in) compile on DEC with -mieee to
+	force floating point operations to be IEEE compliant. Add
+	SAS{CXX,C,F90,F)FLAGS.
+	+ (Make.include.in) make depend does not do a make info.
+	
+Version 1.267 - 2001-09-24 (GV)
+-------------
+	+ (Makefile.top) introduce several targets to make binary tarballs.
+	
+Version 1.266 - 2001-09-21 (GV)
+-------------
+	+ (configure.in) re-enable optimization=yes by default. Use
+	./configure --enable-optimization=no to disable it.
+
+Version 1.265 - 2001-09-13 (GV)
+-------------
+       + Updated config.guess and config.sub to cope with osf 5.1
+       + autoconf run again.                                                   
+        + This fix has also been made to the release track.
+
+Version 1.264 - 2001-08-17 (JBa)
+-------------
+	+ created new make rule:'make infokey'. By default it dumps the
+	  values of all compiler flags, but you can specify any make variable:
+	  $ make infokey KEYS="MAKE SASBIN"
+
+Version 1.263 - 2001-07-25 (UL)
+-------------
+	+ ran autoconf
+
+
+Version 1.262 - 2001-07-24 (UL)
+-------------
+	+ optimization is again off by default
+
+Version 1.261 - 2001-07-20 (JBa)
+-------------
+	+ (Makefile.top,bin/mkpkgidx,bin/mktophtml)
+	  Using RELEASE variable to denote version of the SAS (SPR 2120)
+
+Version 1.260 - 2001-07-12 (GV)
+-------------
+	+ (configure.in) O2 optimizations are on by default.
+	+ (Make.include) make info shows optimization flag.
+	
+Version 1.259.13 - 2001-06-17 (GV)
+----------------
+	+ (bin/uploadreport) added
+
+Version 1.259.12 - 2001-06-16 (GV)
+----------------
+	+ (bin/mktophtml) remove pointers to User's Guide.
+
+Version 1.259.11 - 2001-06-11 (GV)
+----------------
+	+ (bin/mktophtml) remove pointer to source installation.
+	+ (Make.include.in) fix double AKA.
+
+Version 1.259.10 - 2001-06-10 (GV)
+----------------
+	+ (install.html) re-order the sections (binary installation first).
+	
+Version 1.259.9 - 2001-06-07 (JBa)
+---------------
+	+ forgot a missing backquote
+	+ use m4 function 'changequote' to keep the square brackets
+
+Version 1.259.8 - 2001-06-06 (JBa)
+---------------
+	+ implemented SPR 1643: added PGPLOT to macros
+
+Version 1.259.7 - 2001-06-06 (JBa)
+---------------
+	+ implemented SPR 2080: make 'tr' work under solaris 2.8
+
+Version 1.259.6 - 2001-06-06 (UL)
+---------------
+	+ ironed out a couple of more docu problems
+
+Version 1.259.5 - 2001-06-01 (UL)
+---------------
+	+ fixed problem with URLs as arguments of \htmladdnormallink in sas.bib
+	  [character ~ is converted to blank by latex2html resulting in a
+	   broken link]
+	+ implemented SPR 2062: broken links in README.html
+
+Version 1.259.4 - 2001-05-23 (JBa)
+-------------
+	+ (Make.include.perl.in)
+	  * Fixed creation of dynamic perl modules
+	  * Improved target dependency. targets are created only once
+
+Version 1.259.2 - 2001-05-21 (JBa)
+-------------
+	+ (Make.include.perl.in)
+	  Removed hardcoding of linker-flags. Using flags as determined by
+	  configure.
+
+Version 1.259.1 - 2001-05-15 (JBa)
+-------------
+	+ (Make.include.in) make GNUPERLLDFLAGS available in debug mode too
+
+Version 1.259 - 2001-05-08 (JBa)
+-------------
+	+ (configure.in) Added dynamic link library (dl) to the system
+	  libraries again.
+	+ (Make.include.in) Changes in compiler FLAGS
+	  * Usage of '-imacros FILE' option instead of endless
+	    macro definitions
+	  * Removed duplication of macros
+	  * Added GNUPERLLDFLAGS: a variable that may contain extra compiler
+	    flags that are needed for usage of run-time, perl-distributed
+	    modules
+	+ (Make.include.perl.in) Replaced default linker and clearing some
+	  flags
+	+ (config.h.in,acconfig.h) Former generated from latter && configure.in
+	+ (configure.in) Creation of GNUPERLLDFLAGS
+
+Version 1.258 - 2001-05-01 (JBa)
+-------------
+	+ (configure.in) Added math library (m) to the system libraries again
+	  somehow, the need for this library depends on the order of library
+	  directories in $LIBRARY_PATH?
+
+Version 1.257 - 2001-04-27 (JBa)
+-------------
+	+ (Make.include.in configure.in) made the shared and binary linking
+	  stage *very* fast on solaris
+
+Version 1.256 - 2001-04-23 (GV)
+-------------
+	+ (Make.include.in) remove -ggdb from CXX debug options as it does
+	not bring any benefit (contrary to what advertized).
+	+ (Make.include.in) add target incheck: as check but doc is ps
+	only, object files are left in place to allow one to make
+	incremental builds. 
+	
+Version 1.255 - 2001-04-19 (GV)
+-------------
+	+ (configure.in) yet another tweak to the pgplot/g2c logic to work
+	around autoconf's cache. Also there are more pgplot/g2c/gcc
+	combinations out there ...
+	
+Version 1.254 - 2001-04-17 (GV)
+-------------
+	+ (configure.in) modify again the logic required to detect whether
+	pgplot is compiled with g77 and so it needs libg2c.
+	+ (Make.include.in) -lg2c is on the command line only when
+	EXTERNALS = pgplot is specified.
+
+Version 1.253 - 2001-04-12 (GV)
+-------------
+	+ (configure.in) f90 test does not try to do asin(10), as it fails
+	miserably on dec ;-)
+	
+Version 1.252 - 2001-04-09 (GV)
+-------------
+	+ (configure.in) modify the way the f90 link test is done, as it
+	did not always work (at least in one case). Now the linking is
+	done through c++. This ensures that: the linking is done as the
+	regular build procedure would; stdc++ is found; the presence of a
+	broken libf95.so is detected (the test will fail). (SOC-SPR-1985)
+	+ (Make.include.in) use variable MKDIR as set by configure.
+	+ (configure.in) detect whoami, mkdir, try mkdir -p (set MKDIR).
+	+ (configure.in) TRY_LINK_F90 now links with gcc, as done in the
+	SAS build, so that libraries are found (SOC-SPR-1985).
+	
+Version 1.251 - 2001-04-05 (GV)
+-------------
+	+ (Make.include.in) fix typo in the implementation of mysql support.
+
+Version 1.250 - 2001-04-03 (GV)
+-------------
+	+ (doc/lib/sas.bib) add ct:nrf. Fix typo in ct:nr.
+	+ (configure.in) try to compile and link a small pgplot program to
+	catch those cases when pgplot is compiled with g77 but no libg2c
+	has been detected. (SOC-SPR-1978)
+	
+Version 1.249 - 2001-04-02 (GV)
+-------------
+	+ (Make.include.in) add support for mysql (EXTERNALS = mysql).
+	+ (" ") fix AKA, that was being used twice.
+	+ (Makefile.top) add target clean_binary.
+
+Version 1.248 - 2001-03-30 (GV)
+-------------
+	+ (bin/chkdist) does not print header regexp.
+
+Version 1.247 - 2001-03-22 (GV)
+-------------
+	+ (bin/chkdist) warn of obsolete c++ headers.
+
+Version 1.246 - 2001-03-22 (GV)
+-------------
+	+ (SasVersion.h.in) added and filled in from configure.
+	+ (Make.top) add INTERFACES = SasVersion.h
+	+ (configure.in) another implementation of the solution of
+	SOC-SPR-1924 (at version 1.242). 
+	+ (configure.in) detect if -freg-struct-return is required.
+	+ (Make.include.in) use the above if required.
+
+Version 1.245 - 2001-03-16 (GV)
+-------------
+	+ (chkdist) forces directories and scripts to be rwxr-xr-x.
+	
+Version 1.244 - 2001-03-13 (GV)
+-------------
+	+ (Make.include.in) add AKA.
+	+ ( "           " ) experimental support for EXTERNALS = packlib
+	(CERN libraries) 
+
+Version 1.243 - 2001-03-13 (GV)
+-------------
+	+ (configure.in) convert FTOOLs warning to error (SAS-SCR-35).
+	+ (sas-setup.*.in) add $SAS_DIR/binextra to PATH.
+	+ (Makefile.top) create binextra.
+	
+Version 1.242 - 2001-03-09 (GV)
+-------------
+	+ (configure.in) add "socket nsl" when checking for cfitsio
+	(SOC-SPR-1919).
+	+ (configure.in) most warning converted to errors (SAS-SCR-35).
+	+ (configure.in) check for most of the executables needed to build
+	the SAS. Any missing executable gives now an error.
+	+ (sas.environment) add new variables.
+	+ (configure.in) add --with-f95-gcc and --with-f95-cc to
+	explicitly set the PIC flags for f95 (SOC-SPR-1924).
+	+ (doc/lib/install.html) update the software requirements
+	(SAS-SPR-1923). 
+	
+Version 1.241 - 2001-01-10 (UL)
+-------------
+	+ caloalutils needs now slatec; adapted USEDLIBS rules in 
+	Make.include.in accordingly.
+
+Version 1.240 - 2000-12-21 (GV)
+-------------
+	+ linking of test bins had been upset.
+
+Version 1.239 - 2000-12-20 (GV)
+-------------
+	+ (bin/findinclude) remove warning about include not found in
+	SAS_PATH as this is no longer a useful bit of information.
+	+ (Make.include.in) add EXTERNALS = fitsio.
+	+ Make.include.in (%_{B,TF,TC,TP}DEPEND):  don't use USEDLIBS with
+	shared libraries (makes linking significantly faster).
+	+ (Makefile.top) add targets binary_tarball and doc_tarball.
+	+ (sas.bib) change back to older version to restore html
+	links. Add SSC-LUX-SP-0004.  
+		
+Version 1.238.17 - 2000-12-13 (GV)
+----------------
+	+ (Make.include.in) add $(ECHO) "" to html target:
+# 20001213: some versions of latex2html seem to forget a final
+# '\n'. This breaks the grep '^Testing' checks, and reports a test
+# failure. This happens only for packages that have one test.
+#
+# It should be:
+#   latex2html output
+#   Testing testname
+#
+# But it is:
+#   latex2html outputTesting testname
+#
+	
+	
+Version 1.238.16 - 2000-12-02 (GV)
+----------------
+	+ (bin/mktophtml) add link to ps version of the UG.
+	
+Version 1.238.15 - 2000-11-29 (GV)
+----------------
+	+ (bin/mkpkgidx) Change text for html documentation in a few places.
+	+ (doc/latex2html.init):
+	  . change XMM to XMM-Newton
+	  . change name of EXTERNAL_UP_TITLE to "Meta Index"
+	+ (bin/mktophtml) change text and structure.
+
+Version 1.238.14 - 2000-11-27 (GV)
+----------------
+	+ (doc/README/install.html) updated software requirements.
+	+ (configure.in) no longer checks POW_LIBRARY as it is not
+	required.
+	+ (configure.in) remove a few old messages.
+	
+Version 1.238.13 - 2000-11-27 (JBa)
+----------------
+	+ (bin/fixdoc) fixed bug: exluded environments that are commented out,
+	  were not properly handled.
+
+Version 1.238.12 - 2000-11-24 (JBa)
+----------------
+	+ (Make.include.in) added "-type=$(RELEASETYPE)" to fixdoc
+	+ (bin/fixdoc) handles exclusion of development environments
+
+Version 1.238.11 - 2000-11-10 (GV)
+----------------
+	+ (Make.include.in) now it is make OPTIMIZATION=yes, to avoid name
+	clash with perl autogenerated make files.
+
+Version 1.238.10 - 2000-10-31 (GV)
+----------------
+	+ (Make.include.in) gzip of postscript now uses -f.
+	+ (configure.in) now detects gzip.
+
+Version 1.238.9 - 2000-10-30 (GV)
+---------------
+	+ (sas.bib) re-synced wrt xmmdoc.bib and updated with EPN documents.
+	
+Version 1.238.8 - 2000-10-27 (GV)
+---------------
+	+ (bin/chkdist) add group plot.
+
+Version 1.238.7 - 2000-10-26 (JBa)
+---------------
+	+ (bin/mkpkgidx) fixed entry of Postscript files in HTML documentation
+	+ (bin/mktophtml) improved README documentation
+	+ (Makefile.top) updates because of the above
+	+ (doc/Makefile doc/index.html) removed old stuff
+
+Version 1.238.6 - 2000-10-26 (JBa)
+---------------
+	+ (doc/lib/sasuser.tex) allow env-macro{abstract} to User Doc
+	  [Something goes wrong in the env-macro{excludecomment}, but -it
+	  has fuzzy logic anyway (imported code!)- we can not change it :-(]
+
+Version 1.238.5 - 2000-10-26 (GV)
+---------------
+	+ (Makefile.top) make binary_install now silent (tar without -v).
+	+ ("") change make check_html. It no longer starts netscape, it
+	writes its output to htmlcheck.
+	
+Version 1.238.4 - 2000-10-23 (JBa)
+---------------
+	+ (doc/index.html) Fixed broken links
+	+ (Make.include.in, bin/chkdist, bin/mkpkgidx, bin/overview)
+	  reference to gzip-ed PostScript files
+	+ (doc/lib/SAS.pm, Makefile.top, bin/Makefile, bin/mktophtml)
+	  Creation of toplevel README file.
+	
+
+Version 1.238.3 - 2000-10-20 (GV)
+---------------
+	+ make SLOPPY=yes
+
+Version 1.238.2 - 2000-10-20 (GV)
+---------------
+	+ (bin/chkdist) stricter, as it wouod have accepted pipelined
+	instead of pipeline.
+	+ (sas.info) add.
+
+Version 1.238.1 - 2000-10-19 (JBa)
+-------------
+	+ (Make.include.in) handling of TEX-books
+	  TEXFORM=book|package[=default]
+	+ (doc/lib/book.tex) template for books
+
+Version 1.238 - 2000-10-16 (GV)
+-------------
+	+ (Make.include) modified the failure detection logic of the
+	second test.
+
+Version 1.237 - 2000-10-16 (GV)
+-------------
+	+ (Make.include) modified the failure detection logic of the
+	second test.
+	+ (checkReport) change <pre> to </pre>.
+
+Version 1.236 - 2000-10-16 (GV)
+-------------
+	+ (checkReport buildReport) incorporate SAS_DIR/info.html if it
+	exists.  
+	+ (Make.include) make target OPTIMIZE=yes allowed (experimental)
+	+ (Make.include) add -ggdb to C++ code when DEBUG=yes
+	
+Version 1.235 - 2000-10-13 (GV)
+-------------
+	+ (Make.include) add the possibility to run a test a second
+	time. This requires that the file $SAS_DIR/second.test be
+	present. It hould contain some environment settings that are
+	sourced before make test is run a scond time.
+	+ (checkReport) adapted for the above.
+	+ (chechReport buildReport) if RELEASE is present include it in
+	the html report.
+	
+Version 1.234.1 - 2000-10-13 (GV)
+--------------
+	+ (configure) better check that GNU make is available SOC-SPR-1767.
+	
+Version 1.234 - 2000-10-11 (GV)
+-------------
+	+ (Make.include) now make bin does a make clobber first, or
+	the make depend fails. Better solution requires understanding
+	how to move some of the targets in CLEANFILES to CLOBBERFILES.
+
+Version 1.233 - 2000-10-09 (GV)
+-------------
+	+ (configure) check that GNU make is being used.
+	+ (sas.environment) tracks a few more variables to help debugging
+	(TEXINPUTS, BIBINPUTS, COMPILER_PATH).
+	
+Version 1.232 - 2000-10-03 (GV)
+-------------
+	+ (bin/Makefile) export chkprm.
+
+Version 1.231 - 2000-10-03 (GV)
+-------------
+	+ (Make.include.perl.in) pass LD='ld -shared' to all make
+	commands, to solve sudden problem on DEC.
+	
+Version 1.230 - 2000-09-29 (JBa)
+-------------
+	+ (depchk) re-implemented
+	+ (Make.include.in) simplied accordingly
+
+Version 1.229 - 2000-09-27 (UL)
+-------------
+	+ added to more entries and several URLs to doc/lib/sas.bib
+
+Version 1.228 - 2000-09-22 (UL)
+-------------
+	+ added URL of CAL HB in sas.bib
+
+Version 1.227 - 2000-09-21 (JBa)
+-------------
+	+ (doc/lib/sas.bib) Better usage of URLs
+	+ (doc/lib/sasglobal.tex) Introduction of \sascite{Title}{CiteLabel}
+
+Version 1.226 - 2000-09-20 (JBa)
+-------------
+	+ (doc/lib/html.sty) removed, as it is an old copy of 
+	  LATEX2HTMLDIR/texinputs/html.sty (LaTeX2HTML Version 96.1)
+
+Version 1.225 - 2000-09-13 (GV)
+-------------
+	+ (configure.in) require ftools >= 5.0.
+	
+Version 1.224 - 2000-09-08 (JBa)
+-------------
+	+ (Make.include.in) implemented version in shared libraries:
+	  make USE_SO_VERSION=yes
+
+Version 1.223 - 2000-09-05 (GV)
+-------------
+	+ (configure.in) detect LHEASOFT (for ftools 5.0).
+	+ (sas.environment.in) report LHEASOFT.
+	
+Version 1.222 - 2000-08-14 (GV)
+-------------
+	+ (bin/chkprm) added, but not yet activated.
+	+ (bin/chkdist) add demo to group list.
+	
+Version 1.221 - 2000-08-14 (GV)
+-------------
+	+ (bin/chkdist) add custom function to parse parameter records,
+	as the built in quotewords sometimes fails.
+
+Version 1.220 - 2000-08-11 (GV)
+-------------
+	+ (configure.in) expects to find fftw in single and double precision.
+	+ (Make.include.in) EXTERNALS = fftw removed. Added EXTERNALS =
+	sfftw and EXTERNALS = dfftw. 
+	
+Version 1.219 - 2000-08-10 (GV)
+-------------
+	+ (bin/chkdist) quiet about missing lyt files.
+
+Version 1.218 - 2000-08-10 (GV)
+-------------
+	+ (bin/chkdist) DISTRIBUTION check is not case sensitive.
+	
+Version 1.217 - 2000-08-09 (GV)
+-------------
+	+ (Make.include) add target upload (dist + uploadsas)
+	+ (bin/chkdist) validate task info files:
+	  - check for valid GROUPS
+	  - info file mandatory
+	+ ("         ") validate layout files:
+	  - run parselayout (from package lauyout) on each of them to
+	  check that they are valid. 
+	+ ("         ") validate parameter files:
+	  - check that 6 ',' are present in the file
+	  - check for uppercase, -, _ characters in parameter names
+	+ (           ) DEPEND with M.n.p is now error.
+		
+Version 1.216.8 - 2000-07-07 (GV)
+---------------
+	+ html documentation brought up to date.
+	+ references to SAS developers web pages removed and replaces with
+	the official URLs.
+	+ links to package devel also removed.
+	+ (doc/README/index.html) removed as not used.
+	+ (doc/README/ProblemReports.html) removed as irrelevant for the public.
+	
+Version 1.216.7 - 2000-07-06 (JBa)
+---------------
+	+ (bin/mkpkgidx)
+	  * bugfix: Index of ... pages were empty
+
+Version 1.216.6 - 2000-07-05 (JBa)
+---------------
+	+ (bin/mkpkgidx)
+	  * Separated package documentation, such that packages are sorted by
+	    groups
+	  * Added Summary for each package ;-0
+
+Version 1.216.5 - 2000-07-05 (JBa)
+---------------
+	+ (Make.include.in),(bin/mkpkgidx) Added ChangeLog to package doc.
+
+Version 1.216.4 - 2000-07-04 (JBa)
+---------------
+	+ SOC-SPR 1481::
+	  (bin/fixdoc)      cleaned-up and fixed
+	  (Make.include.in) included RELEASETYPE as created by configure
+          (configure.in)    included --enable-user
+          (configure)       created by autoconf
+	+ Removed obsolete packages::
+	  (doc/lib/sastools.sty),
+          (doc/lib/sasuser.perl),
+          (doc/lib/sasuser.sty),
+          (doc/lib/version.sty)
+	+ Implemented mechanism to create user documentation::
+	  (doc/lib/package.tex)   cleaned
+	  (doc/lib/sasglobal.tex) cleaned:removed developers environment
+	  (doc/lib/sasuser.tex)   added:ignores developers environment
+	  (doc/lib/sasglobal.tex) added:adds developers environment
+
+
+Version 1.216.3 - 2000-06-30 (GV)
+---------------
+	+ (sas.bib) update @TechReport{ct:SSCPROICD}
+	
+Version 1.216.2 - 2000-06-27 (Marco Beijersbergen, GV)
+---------------
+	+ (configure.in) on Linux, set -e for echo (SOC-SPR-1396).
+	+ (Make.include.in) replace .so by .a for Linux (SOC-SPR-1322)
+	+ (sas.bib) updated (ODF and CCF ICD).
+	
+Version 1.216.1 - 2000-06-20 (JBa)
+-------------
+	+ (doc/lib/sasglobal.tex):fixed SPR 1384
+	+ (doc/lib/sasref.perl):SAS_PATH is searched too for task.pl files.
+
+Version 1.216 - 2000-05-29 (GV)
+-------------
+	+ (Make.include) EXTERNALS fftw now brings in both libfftw and librfftw.
+
+Version 1.215 - 2000-05-23 (GV)
+-------------
+	+ (configure.in) when checking for libfftw, add dummy=action to
+	prevent the setting of the global LIBS.
+	+ (install.html) small updates to the list the software
+	requirements.
+	
+Version 1.214 - 2000-05-22 (GV)
+-------------
+	+ (Make.include) defile -DUSE_POPUP what shared libraries are
+	activated. 
+	
+Version 1.213 - 2000-05-18 (GV)
+-------------
+	+ (Make.include) add option EXTERNALS = fftw
+	+ (configure) check for libraries and include files required to
+	make the above work
+	+ (evaluateReport) remove usage of start_yable as some sub version
+	of perl 5.005 do not have it.
+	
+Version 1.212 - 2000-05-17 (JBa)
+-------------
+	+ Packages listed in the glossary are now sorted
+
+Version 1.211 - 2000-05-12 (JBa)
+-------------
+	+ added '-t' option to (bin/mkpkgidx) and (Make.include.in), so it
+	  will not generate html section pages in local directory.
+	+ added improved (doc/lib/alltt.perl)
+
+Version 1.210 - 2000-05-05 (JBa)
+-------------
+	+ (Makefile.top) creation of 'packages.html' is no longer done on
+	  stdout
+	+ (bin/mkpkgidx) glossary page is split up
+	+ (doc/lib/sasglobal.tex) added several macros + indexing
+
+Version 1.209 - 2000-05-05 (GV)
+-------------
+	+ (Make.include) fix screw up generated in 1.208.
+
+Version 1.208 - 2000-05-04 (GV)
+-------------
+	+ (Make.include) make dist now deletes *.tmp_.
+
+Version 1.207 - 2000-05-03 (GV)
+-------------
+	+ (Make.include) add metatask twice to USEDLIBS to try and help the static build.
+	
+Version 1.206 - 2000-05-03 (GV)
+-------------
+	+ (sasglobal.tex) add latex command \evatt{}.
+
+Version 1.205 - 2000-04-20 (GV)
+-------------
+	+ sas.bib updated.
+	+ (Make.include.in) add $(RM) *.tmp_ to check, so that distchk
+	does not fail if a previous check was killed (and left *.tmp_ around).
+	
+Version 1.204 - 2000-04-14 (JBa)
+-------------
+	+ (Make.include.in) added variable "TASKHEADIMPS", an implementation of
+	  the class derived from Info::Task. It is now part of dependency rules
+	  of task libraries and executable
+	+ (bin/Makefile) added script "sastaskhimp".
+	+ (bin/sastaskhimp,bin/sastaskhdr) creation of both Task header
+	  and its implementation.
+	
+Version 1.203 - 2000-04-12 (GV)
+-------------
+	+ (bin/evaluateReport) change a few print statement to make some
+	versions of perl happy (problem reported by Jean Ballet with perl
+	5.005_02:
+
+	> evaluateReport evaluatebuild.txt > evaluatebuild.html
+        > No comma allowed after filehandle at
+	/pps/sas4/latest/bin/evaluateReport line 22.
+
+	+ (test) add simple test harness that checks that the perl scripts
+	are syntactically correct.
+
+Version 1.202 - 2000-04-11
+-------------
+	+ changed acccess mode of evaluateReport (MB)
+
+Version 1.201 - 2000-04-11 (GV)
+-------------
+	+ Cannot type any longer!!! Aaaargh!
+
+Version 1.200 - 2000-04-10 (GV)
+-------------
+	+ (bin/Makefile) had the wrong name for the script evaluateReport.
+	
+Version 1.199 - 2000-04-07 (JBa)
+-------------
+	+ (bin/sastaskhdr) fixed the call to task() by f90 (and perl) 
+	  metatasks.
+
+Version 1.198 - 2000-04-07 (GV)
+-------------
+	+ (Make.include.in) generates check/build.txt before the make
+	complete. The complete stage from the top level Makefile now
+	expects to see these files.
+	
+Version 1.197 - 2000-04-06 (GV/JBa)
+-------------
+	+ (fixdoc and sastaskhdr) now accept $(PACKAGE)
+	+ (Make.include.in) now define $(PACKAGE).
+	+ (Make.include.in) defining USE_DAL etc would fail if the library
+	sought was present twice. Fixed with $(sort), that removes duplicates.
+	+ (Make.include.in) CLEANFILES += *.g90
+	+ sas.bib synched with xmmdoc.bib.
+	+ add copycmmdoc script to do that upon make data.
+	+ (Make.include.in) undo fix in Makefile.top (1.196), add a check
+	of the index file at the package level (%_html rule).
+	+ make doc now runs latex/bibtex/latex/latex SPR-1108.
+	+ (Makefile.top) complete also runs evaluate_build, that generates
+	a report on whihc tasks fail through DEPEND.
+	
+Version 1.196 - 2000-04-03 (GV, JBa)
+-------------
+	+ (Makefile.top) ignore errors from mkpkgidx.
+	+ (Make.include.in) TASKS now aways include metatask
+	+ (sastaskhdr) creates a TASK header file
+
+
+Version 1.195 - 2000-03-31 (JBa)
+-------------
+	+ fixed creation of "task/index.pl", needed by "bin/mkpkgidx"
+
+Version 1.194 - 2000-03-29 (GV)
+-------------
+	+ (configure.in) take only first field of latex2html -v
+	+ (sas.environment.in) add LATEX2HTML
+
+Version 1.193 - 2000-03-28 (GV)
+-------------
+	+ (bin/chkdist) add checks for missing info files.
+
+Version 1.192 - 2000-03-28 (GV)
+-------------
+	+ (Make.include.in) add -g90 to debug flags. This makes gdb happy
+	on Fortran (9x/77) code.
+
+Version 1.191 - 2000-03-27 (GV)
+-------------
+	+ (Make.include.in) temporary files created through a tee were, at
+	times, being deleted (via make clobber). Fixed. These files now
+	end with .tmp_. They must be explicitly removed in the rules that
+	create them.
+	+(bin/chkdist) extempt .tmp_ files from the check for a trailing
+	new line. These files are used by the make files with a tee, and
+	they are not guaranteed to have a trailing new line. These files
+	are explicitly removed.
+	
+Version 1.190 - 2000-03-24 (JBa)
+-------------
+	+ (Makefile.top)  bugfix in command.
+	+ (doc/index.html)  bugfix in package reference.
+
+Version 1.189 - 2000-03-24 (JBa)
+-------------
+	+ (Make.include)  modified fixdoc call.
+	+ (Makefile.top)  changed behaviour of packages_html rule.
+	+ (doc/lib/icons) replaced ugly navigation icons by some pretty ones
+	+ (bin/fixdoc)    propagates version/release and task name to TEX file
+	+ (doc/lib) [latex2html.init,package.tex,sasdoc.cls,sasuser.sty,
+	             sasuser.perl,sasglobal.tex,sasref.sty,sasref.perl,SAS.pm]
+	  (bin/)    [mkpkgidx]
+	  * extracted page-layout and navigation and put into a reusable 
+	    package called SAS;
+	  * pretty layout of documentation (created by both LaTeX and perl);
+	  * every HTML page bares the name/version of the current package;
+	  * added local indexing mechanism into the package documentation
+	  * added external indexing mechanism of common stuff like
+	    (Errors,Warnings,Packages,Parameters,...);
+	  * added external section referencing;
+	  * added mechanism to remove parts from the HTML documentation.
+
+
+Version 1.188 - 2000-03-24 (GV)
+-------------
+	+ (Make.include) profiler support for Solaris (PROFILE=yes)
+	
+Version 1.187 - 2000-03-23 (GV)
+-------------
+	+ (sas.bib): updated
+	
+Version 1.186 - 2000-03-14 (GV)
+-------------
+	+ undo: + (configure.in) stop checking for M77 and F77.
+
+
+Version 1.185 - 2000-03-13 (GV)
+-------------
+	+ (Make.include.in) make symlinks from task.ps to doc.
+	+ (bin/overview) put these new symlinks in packages.html.
+	+ (Make.include.in) now propagates package VERSION to
+	documentation
+	+ (bin/fixdoc) script that implements the above
+	+ (configure.in) check for pgplot's pgclos/pgopen
+	+ (configure.in) check for latex2html (warning)
+	+ (Make.include.in) include libraries twice in the link line to
+	catch the most common cause of failure in static builds (wrong
+	library order).
+	+ (configure.in) stop checking for M77 and F77.
+	+ (buildReport) color support for failures.
+	+ (checkReport) color support for failures, also alphabetical ordering.
+
+Version 1.184 - 2000-02-08 (GV)
+-------------
+	+ (Make.include.in) add dal to USEDLIBS of all packages that use the oal.
+
+Version 1.183 - 2000-02-03 (GV)
+-------------
+	+ (sas-setup.csh) SPR 1183: logic for FTOOLS was wrong
+	+ (sas-setup) SAS_IMAGEVIEWER overwritten only if not defined.
+	
+Version 1.182 - 2000-02-16 (GV)
+-------------
+	+ (Make.include) all packages that make use of the cal now also get selector. 
+	
+Version 1.181 - 2000-02-07 (GV)
+-------------
+	+ (sas.bib) resync with xmmdoc.bib after updates.
+	
+Version 1.180 - 2000-01-17 (GV)
+-------------
+	+ (sas.bib) resync with xmmdoc.bib after updates.
+
+Version 1.179 - 1999-12-23 (GV)
+-------------
+	+ (configure.in) issue warning if GNU patch is not found.
+	+ (sas-setup.csh.in) fix typo that unset LIBRARY_PATH.
+
+Version 1.178 - 1999-12-21 (GV)
+-------------
+	+ add GNU patch to the list of required packages.
+	+ (sas-setup.[c]sh) test if environment variables are set before
+	modifying them.
+	+ (install.html) remove references to obsolete environment variables.
+	
+Version 1.177 - 1999-12-16 (GV)
+-------------
+	+ (Make.include.in) add further library behind the scenes: if
+	param is used, the caloalutils is also needed.
+
+Version 1.176 - 1999-12-14 (UL)
+-------------
+	+ added SIAM ICD to sas.bib (ct:SIAMICD)
+
+Version 1.175 - 1999-12-07 (GV)
+-------------
+	+ (aclocal.m4) fix typo in F90 macros.
+
+Version 1.174 - 1999-12-02 (GV)
+-------------
+	+ (bin/chkdist) fix typo in regexp in validateDepend.
+
+Version 1.173 - 1999-12-01 (GV)
+-------------
+	+ (Make.include.in) add support for INTERNALS
+	+ (bin/chkdist) DISTRIBUTION mandatory (error)
+	+ ( "       " ) DISTRIBUTION content cheked (warning)
+	+ ( "       " ) trailing new line mandatory (error)
+	+ ( "       " ) warns of missing lay-out files
+	+ ( "       " ) DEPEND cannot contain 1.2.3 version numbers (warning)
+	
+Version 1.172 - 1999-11-18 (GV)
+-------------
+	+ (doc/index.html) fix a couple of broken html links.
+
+Version 1.171 - 1999-11-08 (GV)
+-------------
+	+ (configure.in) check for gracebat
+	+ (sas.environment.in) report the result of the check above.
+	+ (sas-setup.[c]sh) make sure both LIBRARY_PATH and
+	LD_LIBRARY_PATH contain $SAS_DIR/lib (fix a problem on Linux).
+
+Version 1.170 - 1999-11-03 (GV)
+-------------
+	+ fix small problem in shared lib generation when the library
+	being created is also in the USEDLIBS line. 
+
+Version 1.169 - 1999-11-03 (GV)
+-------------
+	+ (configure.in) add --enable-verbose to make gcc chatty.
+	+ (Make.include.in) support for the above.
+	+ (configure.in) remove extra ;;
+	+ (Make.include.in) add USEDLIBS to LDLIBS, so that shared
+	libraries that rely on other libraries do not copy symbols.
+	
+Version 1.168 - 1999-10-29 (GV)
+-------------
+	+ (configure.in) add a few more warning messages.
+
+Version 1.167 - 1999-10-28 (GV)
+-------------
+	+ (Make.include) re-introduce the hack below, as the fix caused
+	more problems than it cured.
+	+ (configure.in) SAOTNG becomes SAODISPLAY.
+	+ (configure.in) check for xmgrace instead of xmgr. Issue warning
+	if not found.
+	+ (configure.in) check for correct version of xpa tools.
+	+ (configure.in) remove redundant AC_SUBST.
+	+ (configure.in) only use AC_CHECK_PROG instead of AC_PATH_PROG.
+	+ (configure.in) issue warning if SAODISPLAY is not ds9.
+	+ (sas-seup.[c]sh.in) SAOTNG becomes SAODISPLAY.
+
+Version 1.166 - 1999-10-27 (GV)
+-------------
+	+ (Make.include) remove USEDLIBS hack, as cal and oal are now combilibs.
+
+Version 1.165 - 1999-10-26 (GV)
+-------------
+	+ (Make.include) remove calpnalgo from the list of libraries added to the link
+	line when the cal is used. calpnalgo is now absorbed in the cal. 
+
+Version 1.164 - 1999-10-25 (GV)
+-------------
+	+ (configure.in) add options --enable-debug --enable-trace --disable-shared
+	+ (Make.include.in) add support for the above (variable substitutions)
+	
+Version 1.163 - 1999-09-28 (GV)
+-------------
+        + reintroduce RAEDME.html that has been eaten by cvs.
+
+Version 1.162 - 1999-09-27 (GV)
+-------------
+	+ (Makefile.top) overview generates packages.html
+	+ (Makefile.top) creates directory libextra
+	+ (sas-setup) add SAS_DIR/libextra to LD_LIBRARY_PATH
+	+ (index.html) moved to doc.
+	+ (README.html) this is now the pre-build documentation entry
+	point, with most of the files paths hard coded. This is replaced
+	with a sym-link to doc/index.html after the build.
+	+ (Makefile.top) define target complete (runs after make check)
+	+ (configure.in) detects Qt version and writes it in sas.environment.
+	
+Version 1.161 - 1999-09-24 (MB GV)
+-------------
+        + add instructions for binary install.
+	+ modify sas-setup to allow for extra library directory containing
+	required to run the binary SAS.
+	+ (Make.include) detects RELEASE and propagates it to taskmain
+	+ rename a number of html files
+	+ fix documentation entry point (was README.html it is index.html)
+	  Also, it is now the real entry point istead of just being a link
+	  into doc subdirectory.
+	+ modify install
+	+ configure detects endiannes of machine
+	+ configure sets SOLARIS/LINUX/DECOSF
+	+ configure tests for xmgr header file
+	+ overview writes a different title
+	+ added SAOtng to the installation instructions.
+
+Version 1.160 - 1999-09-10 (MB)
+-------------
+	+ whichpart script now allows for symbolic links in directories
+          Fixes SPR103.
+
+Version 1.159 - 1999-09-08 (GV)
+-------------
+        + update sas.bib (SPR 801)
+	+ (Make.include) *DEPEND targets make use of both OBJS and
+	QOBJS. They were using both but would fail if _OBJS was missing.
+
+Version 1.158 - 1999-09-07 (GV)
+-------------
+	+ tweaks to latex2html.init to make documentation movable.
+
+Version 1.157 - 1999-09-06 (GV)
+-------------
+	+ add LaTeX command \remark. 
+
+Version 1.156 - 1999-09-06 (GV)
+-------------
+	+ (Make.include) fix problem with VERSION.
+	+ (latex2html.init) all paths are relative to make sure doc can be moved.
+
+Version 1.155 - 1999-09-04 (GV)
+-------------
+	+ add version.sty and userdoc.cls: remove developer's sections
+	from the LaTeX file.
+	+ add option [useronly] to sasdoc.cls.
+	+ update macros for error/warning (SPR 677)
+	+ (Make.include) new target DOCDIRS: HTML trees that are symlinked under doc/
+	+ (Make.include) removes all of the cat VERSION but the first one.
+	+ various fixes to documentation lay out (use DOCDIRS)
+	+ (Makefile.top) overview writes to doc/index.html
+	
+Version 1.154 - 1999-09-01 (GV)
+-------------
+	+ changed perl logic slightly: only warnings.
+	+ use tr in a more portable manner (SPR 763)
+	+ added script bin/stripnonuserenv for removing non-user relevant
+	  environments from package documentations (LaTeX sources)
+	+ added option 'useronly' to sasdoc class (doc/lib/sasdoc.cls)
+	+ edited install.html.
+
+Version 1.153 - 1999-08-31 (MB)
+-------------
+	+ fixed error in update ($$n)
+
+Version 1.152 - 1999-08-31 (MB)
+-------------
+	+ fixed problem in update
+
+Version 1.151 - 1999-08-31 (MB)
+-------------
+	+ added target 'data' which runs the DATASCRIPTS
+	+ added target 'update' for incremental builds
+
+Version 1.150 - 1999-08-30 (GV)
+-------------
+	+ (Make.include) versioned shared libraries, with correct DT_SONAME
+	+ (    "       ) experimental support for combilibs
+	+ (configure) make use of --prefix (also in Make.include)
+	+ experimental support for binary release (make binary_install in $SAS_DIR)
+	+ (sas-setup.*) export SAS_IMAGEVIEWER
+	
+Version 1.149 - 1999-08-26 (UL)
+-------------
+	+ added \RequirePackage{float} to doc/lib/sasdoc.cls (gives
+	  better control over placements of floating figures and tables)
+
+Version 1.148 - 1999-08-23 (GV)
+-------------
+	+ (chkdist) add warning about missing DISTRIBUTION
+	+ (   "   ) warn that trailing new line will be an error
+	+ switch off versioned libraries as some package have ad hoc rules
+	that must be brought under control first.
+
+Version 1.147 - 1999-08-23 (GV)
+-------------
+	+ configure tests Qt compile,link,run time behavior.
+	+ changes to the version number of shared libraries. Also put a
+	sym link from lib/lib%.so to lib/lib%.so.version for the linker.
+
+Version 1.146 - 1999-08-21 (GV)
+-------------
+	+ fix typo in Make.include.in that was preventing the .par files
+	  from being created in config.
+
+Version 1.145 - 1999-08-20 (GV)
+-------------
+	+ update istall.html
+	+ chkdist does not issue warning for length 0 files.
+
+Version 1.144 - 1999-08-20 (GV)
+-------------
+	+ close 734 732 726 705 663 403 441 372 101
+	+ CONFIGFILES: ignore .prm files (they were never used), don't
+	make symlinks for them.
+	+ configure: remove most --enable-ARG switches, use standard
+	macros to search for libraries and headers.
+	+ configure: check for lg2c lf2c lredhat6fix only on Linux
+	+ shared libraries have version numbers (only when building from
+	the top directory of a package).
+	+ more diagnostic info to sas.environment (version of the
+	compilers, cfitsio, perl).
+	+ create perl.version with output of perl -V.
+	+ catch bug in perl version test.
+	+ check that there is no other perl executable in the path ahead
+	of /usr/local/bin/perl.
+	+ mkpkglist warns instead of exiting if a DEPEND file is not
+	found. The corresponding package is ignored.
+	
+Version 1.143 - 1999-08-06 (GV)
+-------------
+	+ The fix for SPR 638 below was too severe (all par files removed
+	with make clobber). Fixed that.
+	
+Version 1.142 - 1999-08-04 (GV)
+-------------
+	+ add flags required to create shared libraries on OSF (experimental)
+	+ close SPR 638 (added $(CONFIGDIR)/*.par to CLOBBERFILES
+	+ target_os written to sas.environment
+	+ depend.here executes make info
+
+
+Version 1.141 - 1999-07-23 (GV)
+------------- 
+	+ cal now also needs slatec, hence added to Make.include.
+
+Version 1.140 - 1999-07-21 (GV)
+------------- 
+	+ Make.include: fix ransparent adding of libraries
+	required by the cal and the oal so that the order of the libraries
+	is not altered. This required a change in UL's hack (1.137), and
+	using $+ instead of $^ in the rule to make binaries. Close SPR
+	714.
+
+Version 1.139 - 1999-07-12 (JBr)
+-------------
+	- INTERFACES now works with multiple directories in SAS_PATH.
+
+Version 1.138 - 1999-06-28 (UL)
+-------------
+	- added two ASC docs to doc/lib/sas.bib (these were already
+	  in sas-1.23 - where had they gone ... ?)
+
+Version 1.137 - 1999-06-23 (UL)
+-------------
+	- hack in Make.include.in: dependeny checks related to Cal/Oal modified;
+	  tasks which use Cal and/or Oal do not need to specify libraries
+	  Cal/Oal depend on (caloalutils/calpnalgo) in USEDLIBS; this
+	  might be replaced which a more general mechanism in the future
+
+Version 1.136 - 1999-06-15 (GV)
+-------------
+	+ configure updated to check for CFITSIO v2.0
+	+ do not check for libieee on Linux
+	+ add check for longnam.h (cfitsio)
+	+ add check for libredhat6fix.a (NAG f95 patch)
+	
+Version 1.135 - 1999-05-27 (JB)
+-------------
+	+ INTERFACES for ".f90" files now infer ".mod" automatically
+
+Version 1.134 - 1999-05-26 (JB)
+-------------
+	+ added support for INTERFACES statement in Makefiles
+	+ 'findincludes' gives warning, instead of error, if module not found
+	  (required in order to implement INTERFACES mechanism)
+	+ added the - before bibtex back in, because it will otherwise
+          break on a document without citations.
+
+Version 1.133 - 1999-05-26
+-------------
+	+ also remove - from bibtex, so that make pays attention to the error.
+	
+Version 1.132 - 1999-05-26
+-------------
+	+ fix bibtex command so that ir does not hang
+
+Version 1.131 - 1999-05-22 
+-------------
+
+Version 1.130 - 1999-05-21 (GV)
+-------------
+	+ doc targets would hang with more than one latex error (SPR 662)
+	+ Makefile.top: mkdir lib/perl5
+	+ Make.include.perl: simplifies. Everything is installed under lib/perl5
+	+ sas-setup.*: PERL5LIB settings reflect change above
+	
+Version 1.129 - 1999-05-20 (GV)
+-------------
+	+ sas-set.csh had the wrong syntax.
+
+Version 1.128 - 1999-05-19 (GV)
+-------------
+	+ fixed logic in various paths in sas-setup.* (SPR 650)
+	
+Version 1.127 - 1999-05-19 (JB)
+-------------
+	+ Fixed chkdist to work with Digital Unix
+
+Version 1.126 - 1999-05-17 (GV)
+-------------
+	+ latex doc commands store their output to a temporay file that is
+	cat-ed if errors are detected. This is needed because latex writes
+	only to stdout.
+	
+Version 1.125 - 1999-05-07 (GV)
+-------------
+	+ bibtex command must be run with -, so make will ignore its error
+	status (which is 2 when non citation commands are found). 
+Version 1.124 - 1999-05-07 (GV)
+-------------
+	+ Fix logic error in the setting of QT_LIBS: it was putting the
+	wrong directory in the -L.
+	+ redirect stdout of latex2html and latext to /dev/null.
+	
+Version 1.123 - 1999-05-06 (MB)
+-------------
+	+ removed make doc targets in toplevel Makefile, since they were broken.
+	
+Version 1.122 1999-05-03 (GV)
+-------------
+	+ Make.include.perl now makes use of perl executable determined by
+	configure.
+	+ added bin/checkmakefile
+	
+Version 1.121 1999-04-29 (MB)
+-------------
+	+ added user and hostname to reports.
+	+ ensure that complete is done after build.
+
+Version 1.120 1999-04-29 (MB)
+-------------
+	+ fixed automatic build of documentation
+	+ moved the script overview to the bin directory
+
+Version 1.119 1999-04-28
+-------------
+	+ Make.include.in: made checking of usage of infrastructure components
+      more robust (USEDLIBS = tabcalc  lead to  -DUSE_CAL) (UL)
+
+Version 1.118 1999-04-28
+-------------
+        + added system info to checkReport and buildReport, fixed missing </A>
+          in buildReport (MB)
+	+ updated sas.bib with SAS TN about parameter names and event
+          attributes. (GV)
+	
+Version 1.116 1999-04-27 (MB)
+-------------
+	+ reintroduced rule to produce package overview
+
+Version 1.115 1999-04-15 (GV)
+-------------
+	+ had acidentally removed X11 flag substitution in configure.
+
+Version 1.114 1999-04-14 (GV)
+-------------
+	+ add flags for creation of shared libraries on Sparc
+	(configure.in and MAke.include.in).
+	+ use ExtUtils:;Embed module to determine Perl's flags.
+	+ remove /usr/local/lib from list of libraries returned by Perl
+	(this was a problem at Saclay SPR 615).
+	+ add some code to configure to find X11 stuff when the standard
+	autoconf macro fails. Still do nothing with the output.
+	+ chkdist checks that files end with trailing new line. Only a
+	warning, to be promoted to error in a later version.
+	
+Version 1.113 1999-04-13 (GV)
+-------------
+	+ more changes to configure to support the linux build
+
+Version 1.112 1999-04-09 (GV)
+-------------
+	+ more linux fixes: acrobatic maneuvers around g77
+
+Version 1.111 1999-04-09 (GV)
+-------------
+	+ small fix to configure for Linux
+	+ updated sas.bib from xmmdoc.bib
+	
+Version 1.110 1999-04-08 (MB)
+-------------
+	+ allow for third number in version (patch number)
+	+ define -DUSE_QT if qt is in the EXTERNALS
+
+Version 1.109 1999-04-08 (GV)
+-------------
+	+ fix typo in configure.in (wrong includes for Qt) (GV)
+	+ remove Make.depends with make clobber (MB)
+
+Version 1.108 1999-04-06 (MB)
+-------------
+	+ do not remove Make.depends with make clean, so that make -k test can
+          be done.
+
+Version 1.107 1999-04-02 (GV)
+-------------
+	+ fix search for libf9(0|5) to cover cases when there is a shared
+	version of those libraries. 
+
+Version 1.106 1999-03-30 (GV)
+-------------
+	+ fix typo in Make.include.perl.in
+	
+Version 1.105 1999-03-29 (GV)
+-------------
+	+ fixes to perl path in sas-setup.*
+	+ changes to Make.include.perl.in to support perl tasks.
+
+Version 1.104 1999-03-29 (GV)
+-------------
+	+ fix to find f2c on Linux 
+	+ fix to find the PGPLOT library (it needs X11 and the X11
+	libraries were not being used in the test). 
+
+Version 1.103
+-------------
+- (SPR 608) update link line for EXTERNALS = ftools (version 4.2) (GV)
+- updated latex2html-init file (MB)
+
+Version 1.102 1999-03-24 (GV)
+-------------
+- changed the handling of the EXTERNALS = pgplot in Make.include. The use
+	is now expected to have the pgplot lib and include directories in
+	his environment variables. The Make.include hardcode -lpgplot in
+	the link line.
+	
+Version 1.101 1999-03-22 (MB)
+-------------
+- changed perl path to /usr/local/bin in f90depend script.
+
+Version 1.100 1999-03-12 (MB)
+-------------
+- updated the installation instructions
+
+Version 1.99 1999-03-11 (MB)
+------------
+- reintroduced -W
+ 
+Version 1.98 1999-03-10 (MB)
+------------
+- removed temporarily -W until packages are made to work with TRACE=no
+ 
+Version 1.97 1999-03-10 (GV)
+------------
+- EXTERNALS pgplot also uses X11 (had gone missing)
+
+Version 1.96 1999-03-08 (MB)
+------------
+- default TRACE is off.
+
+Version 1.95 1999-03-08 (MB)
+------------
+- build libraries without VPATH= so that packages can be replaced
+  (fixes SPR246)
+- added TRACE switch, default on.
+
+Version 1.94 1999-03-05 (MB)
+------------
+- fixed libtominl (wrong when library name contains 'lib', e.g. saslib)
+
+Version 1.93 1999-03-05 (MB)
+------------
+- modified the make procedure so that no absolute path to the shared libraries
+  is put into the executables.
+
+Version 1.92 1999-03-04 (MB)
+------------
+- Make.depends is now created such that the dependency on the libraries
+  is generated dynamically; this ensures that we link against the shared lib
+  and that an executable is regenerated when the lib is updated.
+- fix make prepare for testodf (links.here depends on make_dirs)
+
+Version 1.91 1999-03-02 (MB)
+------------
+- cleaned up make_dirs
+- added to make info
+- updatedepend added to SCRIPTS
+
+Version 1.90 1999-02-25 (MB)
+------------
+- fixed the lib.a and lib.so problem
+
+Version 1.89 1999-02-22 (GV)
+------------
+- EXTERNALS pgplot also uses X11
+- modified configure to look for socket and nsl libraries (needed by
+  cfitsio 2.0) 
+	
+Version 1.88 1999-02-22 (MB)
+------------
+- Changed the order of the values in TARGETS so that task libraries are
+  built before the tasks themselves.
+
+Version 1.87 1999-02-19 (MB)
+------------
+- added target libs, to be used with make VPATH=
+
+Version 1.86 1999-02-17 (MB)
+------------
+- The test harness fix was not correct. The problem was that FAILED appeard on the next line after the Testing label. Now only looks for FAILED.
+
+Version 1.85 1999-02-17 (MB)
+------------
+- fix test harness; sometimes a failure went unnoticed (oaltest segfault)
+
+Version 1.84 1999-02-16
+------------
++ changes order of libraries when EXTERNALS are used (GV)
+
+Version 1.83
+------------
+- re-added support for Q object files.(MB)
+
+Version 1.82
+------------
+- support for f77 (MB)
+
+Version 1.81
+------------
+- re-added link to task directory in $TOP_DIR/include (MB)
+
+Version 1.80
+------------
+- libraries and executables are now built from all the files
+  that they depend upon. This allows to add wrappers for task subroutines so
+  that they can be accessed from all languages. This also simplifies the
+  Make.include, which is never a bad thing. (MB)
+
+Version 1.79
+------------
+
+- no link was generated to the task libraries (MB)
+
+Version 1.78
+------------
+	+ temporary fix for new perl install directories. Need a better one.
+	
+Version 1.77
+------------
+
+- Put -DUSE_OAL and -DUSE_CAL in CPPFLAGS, so they appear only once (MB)
+- Better task libraries with a common interface. (MB)
+ 
+Version 1.76 (MB)
+------------
+
+- removed passing on SHARED and DEBUG; this is done already automatically and
+  it did not work.
+- added a '-' to the ccarg for shared libraries.
+
+Version 1.75 (GV)
+------------
+ 	- by default the build is without -g. Use: make <target> DEBUG=yes
+	will compile with debugging information.
+	- new EXTERNALS: xmgr and qt
+	- configure is considerably more quiet about what it does not
+	find. It shouts only if something is missing that would prevent
+	the core sas from building correctly.
+	
+Version 1.74
+------------
+ - Make.include.in: define variables $(USE_CAL)/$(USE_OAL) which are
+   either empty or set to "-DUSE_CAL"/"-DUSE_OAL" depending on
+   whether the task uses Cal/Oal ($(USEDLIBS) is inspected for that) -
+   needed for conditional comilation of CAL/OAL specific code in main.cc (UL)
+
+Version 1.73
+------------
+ - configure checks for qwidget.h now (closes SPR 535)
+	
+Version 1.72
+------------
+ - configure checks for a few more executables (saotng etc).
+	
+Version 1.71
+------------
+
+ - Fixed missing ) (MB)
+
+Version 1.70
+------------
+ - configure checks FTOOLS version number
+ - X11 libraries are not used by default. Use EXTERNALS = X11 in make file.
+ - PGPLOT libraries not used by default. USe EXTERNALS = pgplot in make file.
+ - record more of the environment in sas.environment.
+	
+Version 1.69
+------------
+
+ - supports latex2html-98.1p1 by calling texcombine first.
+
+Version 1.68
+------------
+
+ - now also installs texcombine
+
+Version 1.67
+------------
+
+ - added texcombine script as workaround for a latex2html-98.1b1 problem (MB)
+
+Version 1.66
+------------
+
+ - preferred Fortran compiler is now f95
+ - added OGIP/92-002 (Defn of rmf and arf formats) to sas.bib (HS)
+ - added J Ballet's pile-up paper to sas.bib (HS)
+	
+Version 1.65
+------------
+
+ - make check and make will also do make clean. (MB)
+ - make clobber removes links. (MB)
+
+Version 1.64
+------------
+
+ - updated installation instructions. (MB)
+ - saslocate now also works for files. (MB)
+ - added constructManifest, which will check whether the result of
+   make check was sufficient and produces a manifest file of the packages
+   that succeeded. (MB)
+
+Version 1.63 (GV)
+------------
+
+ - there was another error in the logic supporting Perl tasks.
+
+Version 1.62 (GV)
+------------
+
+ - record that -u is now added to the Fortran flags.
+
+Version 1.61 (GV)
+------------
+
+ - fix variable typo.
+
+Version 1.60 (GV)
+------------
+
+ - remake configure. This should be a special rule in the make file?
+
+Version 1.59 (GV)
+------------
+
+	- modify rules for Perl targets so that Make.include changes do
+	not affect taskmain 
+	- configure warns about SAOTNG, xmgr, and scisim not being found.
+
+Version 1.58 (GV)
+------------
+
+ - add COMBILIBS to LINKS
+ - fix typo in yacc rules
+
+Version 1.57
+------------
+
+ - add support for lex/yacc.
+
+Version 1.56
+------------
+
+ - fix Perl-related rules that were sending make into a loop. (GV)
+	
+Version 1.55
+------------
+
+ - Added script saslocate. (MB)
+ - checkReport now requires the input file as argument. (MB)
+ - change target names for EXTERNAL and PERL to make consistent
+   with others. (GV)
+
+Version 1.54
+------------
+
+ - fix f90depend that could not cope with -ccarg flags
+ - Make.include now tests for SHARED=yes, not just defined.
+
+Version 1.53
+------------
+
+ - add Make.include.perl here, instead of replicating it everywhere.
+
+Version 1.52
+------------
+
+ - Fixed SPR-22:  f90depend should produce dependencies to .mod, not .o (JB)
+ - Fixed reporting Build succeeded and failed at the same time (MB)
+
+Version 1.51
+------------
+
+ - solved 'make check fails on missing check.txt' (MB)
+
+Version 1.50
+------------
+
+ - added -u (enforce implicit none) to F90 flags. (MB)
+ - added support for PERL, EMBED_PERL changed into EXTERNAL = perl
+
+Version 1.49
+------------
+
+ - added FMODS variable for f90 modules that are not part of a library or
+   executable (e.g. interface definitions) (MB)
+
+Version 1.48 (MB)
+------------
+
+ - fixed sas-setup.csh.in
+
+Version 1.47 (MB)
+------------
+
+ - fixed wrong quote.
+
+Version 1.46 (GV)
+------------
+
+ - introduce support for shared libraries. Compile with make SHARED=yes
+   sas-setup modified to set LD_LIBRARY_PATH. (GV)
+
+ - f95 is the preferred compiler now. Use configure --enable-nagware to
+   go back to f90. (GV)
+
+ - now deletes <task>.tex (fixes SPR422). (MB)
+
+ - make check produces check.txt and check.html; make or make all
+   produces build.txt and build.html. (MB)
+
+Version 1.45 (MB)
+------------
+
+ - make is now a package-by-package build from scratch, which produces the
+   build HTML table in integration.html and exits with status != 0 in case of an
+   error. make check is no longer required; just use make. To compile the
+   binaries only, do make bin.
+ - No longer does make doc twice, since there are hardly any external references
+ - Made available checkReport.
+
+Version 1.44 (MB)
+------------
+
+ - Fixed .ref confusion.
+ - Added loggin of time to make check.
+
+Version 1.43 (MB)
+------------
+
+ - Simplified and improved make all and make check.
+
+Version 1.42 (MB)
+------------
+
+ - keep the -g flag for the moment, since gcc 2.7.2.3 on Solaris cannot compile
+   the SAS without -g.
+
+Version 1.41 (GV)
+------------
+
+	+ to help with the integration of Perl modules, the configure
+	script identifies the name Perl gives to the architecture. This is
+	used to modify the PERLLIB variables in sas-set.
+
+	
+Version 1.40 (GV)
+------------
+
+  - PATH is recoded in sas.environment.
+
+Version 1.39 (MB)
+------------
+
+  - lib/perl is no longer made by Makefile.top, since both lib and lib/perl
+    in MKDIRS gives a race condition with a parallel make.
+
+Version 1.38 (GV)
+------------
+
+   - sas-setup now defines POW_LIBRARY. This closes SPR 467.
+	
+Version 1.37 (GV)
+------------
+
+   - SPRs (mostly already closed):
+     +   101 : Documentation of external packages not integrated
+     +   228 : make depend crashes (rejected)
+     +   99 : Trailing space in MKDIRS gives error (rejected)
+
+   - configure: 
+     + tentative support for f95. Not tested.
+     + environment found by configure recorded in sas.environment
+     + Perl incs/libs not in default INCS/LIBS (reduce external dependencies of core)
+     + do not check for pquery2 (FTOOLS) as this is no longer needed by the CAL
+     + warn if QTDIR not set
+
+   - Make.include:
+     + tentative support for f95. Not tested.
+     + strip executables, do not compile with debugging symbols by default. Use make DEBUG=yes instead.
+     + use make EMBED_PERL=yes to use Perl libs/incs.
+	
+Version 1.36 (GV)
+------------
+
+  - forgot to run autoconf, so the previous release was the same as 1.34.
+
+Version 1.35 (GV)
+------------
+
+  - and an extra -lm when compiling with nagace. This is an empirical solution.
+    This should close SPR 453.
+	
+Version 1.34 (GV)
+------------
+
+  - fix >< problem in instal..html.
+
+Version 1.33 (GV)
+------------
+
+ - updated the installation instructions.
+
+Version 1.32 (MB)
+------------
+
+ - removed packages/cal/ccftools from PERL(5)LIB dir; instead, make sure a link
+   exists in lib/perl
+
+Version 1.31 (MB)
+------------
+
+ - fixed test target that broke in 1.30
+
+Version 1.30 (MB)
+------------
+
+ - added checkReport script.
+ - checked make depend logic, so that it now works with parallel make
+ 
+Version 1.29 (MB)
+------------ 
+
+ - do final linking with c++, not cc, since the main program is C++;
+   also solves version conflicts between cc and c++.
+
+Version 1.28 (MB)
+------------
+
+ - added empty test harness.
+
+Version 1.27 (GV)
+------------
+
+ - replace grep -e in Make.include with a simple grep, as the -e is not
+   supported by every grep.
+	
+Version 1.26 (GV)
+------------
+
+ - modify grep expressions in Make.include to make them more unambiguous.
+	
+Version 1.25 (GV)
+------------
+
+ - close SPR 411
+ - in sas-setup.sh make a few test on strings more robust/portable.
+	
+Version 1.24
+------------
+
+ - added -DNAGf90Fortran to Make.include to make cfortran.h happy on Linux.
+
+Version 1.23
+------------
+
+ - added two entries to doc/lib/sas.bib (UL)
+
+Version 1.22
+------------
+
+ - fixed bug in sas.bib (missing comma)
+ - added bibliography to package toplevel document (package.tex)
+ - tasks are also turned into a library
+ - create link from config directory to the .par as well
+
+Version 1.21
+------------
+
+ - removed check for Make.depends for targets all and check.
+
+Version 1.20
+------------
+
+ - added extra targets to the file existance checks at the end of Make.include.
+ - added lib/perl to MKDIRS in Makefile.top
+
+Version 1.19
+------------
+
+ - removed the injection of comments into the '+-' sequence of make check.
+
+Version 1.18
+------------
+
+ - modified the make check target; it picked up 'pedal:' when looking for
+   'dal:'
+
+Version 1.17
+------------
+
+ - modifications to the PERLLIB variables: now they point to
+   $SAS_DIR/lib/perl
+	
+Version 1.16
+------------
+
+ - make test exits with error status != 0 if a test fails
+ - changed name of verify into check
+ - make all will try to build everything package by package
+
+Version 1.15
+------------
+
+ - added a target verify that produces a +/- list of successive stages in the
+   build.
+
+Version 1.14
+------------
+	
+ - sas-setup scripts correctly prepend SAS_PATH/bin to the path.
+
+Version 1.13
+------------
+
+ - LaTeX now no longer waits for input when an error occurs during make doc.
+
+Version 1.12
+------------
+
+ - now doc generates the toplevel LaTeX document; enforces compliant
+   documentation.
+
+Version 1.11
+------------
+
+ - temporarily allows non-compliant documentation.
+
+Version 1.10
+------------
+
+ - make doc now generates the toplevel LaTeX document itself, so it is no longer
+   needed in the packages. The uniform toplevel document ensures that the
+   documents can also be integrated in another toplevel document, e.g. with
+   all package documents as a chapter in a single document.
+
+ - added a list of standard LaTeX packages to sasbook and the toplevel
+   LaTeX template (package.tex).
+
+ - added an installation instruction for latex2html to solve a conflict with
+   verbatim.sty.
+
+Version 1.9
+-----------
+
+ - update doc/README.html to make it look less out of date
+ - close SPR 357: sas-setup.sh does not build PATH correctly
+
+Version 1.8
+-----------
+ - added a couple of new macros and one new environment to doc/lib/sastools.sty
+   (UL)
+ - added two references to doc/lib/sas.bin (UL)	
+
+Version 1.7
+-----------
+
+ - fixed SPR 257: chkdist did not allow ".gz" files
+ - fixed SPR 256: install script did not work with bash or /usr/ucb/ln
+ - Added Horne (1986), PASP 98/609 to bib file
+
+Version 1.6
+-----------
+
+ - fixed SPR 245 : Missing latex2html icons
+
+Version 1.5
+-----------
+
+ - Changed overview script so that relative links are produced.
+
+Version 1.4
+-----------
+
+ - Added a script sasbook and LaTeX style sasbook.cls that can be used to
+   produce a SAS printed manual.
+
+ - Makefile.top is changed such that the package overview is always produced
+   when doing make doc.
+
+ - improved overview script; it now scans SAS_PATH.
+
+Version 1.3
+-----------
+
+ - Make.include now provides the version number to the tasks.
+ - Make.include now supports C++ tasks.
+
+Version 1.2 - 28-05-98
+-----------
+
+ - paramconv now handles quotes properly.
+
+ - chkdist script now warns about ".prm" files, but doesn't warn about 
+   missing final newlines. Also quiet when there are no errors.
+
+ - depchk and chkdist now have links in "bin".
+
+Version 1.1 - 25-05-98
+-----------
+
+ - depchk now ignores blank lines in DEPEND files and does not use
+   SAS_DIR environment variable.
+
+ - paramconv now only removes the parameters that exactly match 'mode'
+   or 'clobber', not parameters like 'amode1'.
+
+ - added *.prm to CLOBBERFILES, closes SPR223.
+
+
+Version 1.0 - 14-05-98
+-----------
+
+Initial version for SAS v1 integration.

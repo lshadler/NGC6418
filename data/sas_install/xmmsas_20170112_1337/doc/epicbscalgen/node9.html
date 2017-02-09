@@ -1,0 +1,351 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Parameters</TITLE>
+<META NAME="description" CONTENT="Parameters">
+<META NAME="keywords" CONTENT="epicbscalgen">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="epicbscalgen.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="epicbscalgen.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+epicbscalgen (ccftools-1.35.1) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Practical examples and hints"></A>
+<A HREF="epicbscalgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="epicbscalgen.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00040000000000000000">
+Parameters</A>
+</H1>This section documents the parameters recognized by this task (if any).
+<BR><br><table width="100%" border=0 cellpadding=0 cellspacing=1>
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+<A NAME="epicbscalgen:description:parameters"></A>  <A NAME="587"></A>
+<tr valign=top bgcolor='silver'><td><b>eventtable</b></td><td>yes</td><td><A HREF=../param/node3.html>table</A></td><td>&nbsp;</td><td>Name of existing EPIC event list</td></tr>
+
+<tr valign=top><td colspan=5>
+The input event table which drives the boresight angle optimization.
+It must contain sky image coordinates computed by <A NAME="597"></A><A NAME="tex2html22"
+  HREF="../attcalc/index.html"><SPAN  CLASS="textbf">attcalc</SPAN></A>; it is
+likely to be the primary output event list from the chain processing
+tasks <A NAME="601"></A><A NAME="tex2html23"
+  HREF="../emproc/index.html"><SPAN  CLASS="textbf">emproc</SPAN></A>
+or <A NAME="605"></A><A NAME="tex2html24"
+  HREF="../epproc/index.html"><SPAN  CLASS="textbf">epproc</SPAN></A>.
+
+<br>&nbsp;</td></tr>
+
+  <A NAME="609"></A>
+<tr valign=top bgcolor='silver'><td><b>xcolumn</b></td><td>no</td><td><A HREF=../param/node3.html>column</A></td><td>X</td><td>name of existing column in table
+<TT>eventtable</TT></td></tr>
+
+<tr valign=top><td colspan=5>
+The name of the column in the input event table containing X-coordinates
+of sky pixels (used to accumulate sky image with <A NAME="618"></A><A NAME="tex2html25"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>)
+
+<br>&nbsp;</td></tr>
+
+  <A NAME="622"></A>
+<tr valign=top bgcolor='silver'><td><b>ycolumn</b></td><td>no</td><td><A HREF=../param/node3.html>column</A></td><td>Y</td><td>name of existing column in table
+<TT>eventtable</TT></td></tr>
+
+<tr valign=top><td colspan=5>
+The name of the column in the input event table containing Y-coordinates
+of sky pixels (used to accumulate sky image with <A NAME="631"></A><A NAME="tex2html26"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>)
+
+<br>&nbsp;</td></tr>
+
+  <A NAME="635"></A>
+<tr valign=top bgcolor='silver'><td><b>binx</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>50</td><td><!-- MATH
+ $1\le\mbox{\tt binx}\le200$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="112" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$1\le\mbox{\tt binx}\le200$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    size of sky image pixel bin in X-direction (used to accumulate
+sky image with <A NAME="644"></A><A NAME="tex2html27"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>)  - please note: values less than 20
+will lead to very large sky images and corresponding performance
+degradations
+
+<br>&nbsp;</td></tr>
+
+  <A NAME="648"></A>
+<tr valign=top bgcolor='silver'><td><b>biny</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>50</td><td><!-- MATH
+ $1\le\mbox{\tt biny}\le200$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="112" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$1\le\mbox{\tt biny}\le200$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+    size of sky image pixel bin in Y-direction (used to accumulate
+sky image with <A NAME="657"></A><A NAME="tex2html28"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>)  - please note: values less than 20
+will lead to very large sky images and corresponding performance
+degradations
+
+<br>&nbsp;</td></tr>
+
+  <A NAME="661"></A>
+<tr valign=top bgcolor='silver'><td><b>nruns</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>1</td><td><!-- MATH
+ $1\le\mbox{\tt nruns}\le4$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="104" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$1\le\mbox{\tt nruns}\le4$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+Duplicates corresponding parameter of task <A NAME="671"></A><A NAME="tex2html29"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>; controls
+the source detection process; for more information please consult
+description of task <A NAME="675"></A><A NAME="tex2html30"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>.
+
+<br>&nbsp;</td></tr>
+
+  <A NAME="679"></A>
+<tr valign=top bgcolor='silver'><td><b>likemin</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>15</td><td><!-- MATH
+ $1\le\mbox{\tt likemin}\le20$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="129" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.png"
+ ALT="$1\le\mbox{\tt likemin}\le20$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+Duplicates corresponding parameter of task <A NAME="689"></A><A NAME="tex2html31"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>; controls
+the source detection process; for more information please consult
+description of task <A NAME="693"></A><A NAME="tex2html32"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>.
+
+<br>&nbsp;</td></tr>
+
+  <A NAME="697"></A>
+<tr valign=top bgcolor='silver'><td><b>sourceradius</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>.01</td><td><!-- MATH
+ $0.0001\le\mbox{\tt sourceradius}\le2$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="199" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$0.0001\le\mbox{\tt sourceradius}\le2$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+Radius in degrees of circle that will be drawn around each detected
+source.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="705"></A>
+<tr valign=top bgcolor='silver'><td><b>runshowdetect</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>true</td><td>false<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$\vert$"></SPAN>true</td></tr>
+
+<tr valign=top><td colspan=5>
+Boolean switch determining whether or not to show the result of the
+<A NAME="713"></A><A NAME="tex2html33"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+run in each iteration.
+    <br>&nbsp;</td></tr>
+
+<A NAME="717"></A>
+<tr valign=top bgcolor='silver'><td><b>withrefsrclist</b></td><td>no</td><td><A HREF=../param/node3.html>boolean</A></td><td>false</td><td>false<SPAN CLASS="MATH"><IMG
+ WIDTH="8" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$\vert$"></SPAN>true</td></tr>
+
+<tr valign=top><td colspan=5>
+	Boolean parameter controlling the source reference input method.
+When set to <TT>false</TT> the celestial coordinates of the reference
+sources have to be typed in explicitly, otherwise they are taken
+from the source list data set in <TT>refsrclist</TT>.
+<br>&nbsp;</td></tr>
+
+<A NAME="728"></A>
+<tr valign=top bgcolor='silver'><td><b>refsrclist</b></td><td>no</td><td><A HREF=../param/node3.html>data set</A></td><td>&nbsp;</td><td>name of existing source list</td></tr>
+
+<tr valign=top><td colspan=5>
+	If <TT>withrefsrclist</TT> is set to <TT>true</TT> the parameter
+contains the name of an <A NAME="743"></A><A NAME="tex2html34"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>-compliant source list from
+which the true celestial coordinates of the reference sources are to
+be read. Actually, from all the columns in an <A NAME="747"></A><A NAME="tex2html35"
+  HREF="../eboxdetect/index.html"><SPAN  CLASS="textbf">eboxdetect</SPAN></A>
+source list
+only <TT>RA</TT> and <TT>DEC</TT> shall be used, i.e., the others can be
+omitted. The source table row number is used as the source index starting
+from 1.
+<br>&nbsp;</td></tr>
+
+<A NAME="753"></A>
+<tr valign=top bgcolor='silver'><td><b>phi</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td><!-- MATH
+ $-3600\le\phi\le+3600$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="144" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$-3600\le\phi\le+3600$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+Starting value of the boresight misalignment angle <!-- MATH
+ $180^{\circ}-\phi$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="64" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.png"
+ ALT="$180^{\circ}-\phi$"></SPAN>
+(see Figure&nbsp;1) in arcsecs.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="761"></A>
+<tr valign=top bgcolor='silver'><td><b>theta</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td><!-- MATH
+ $-3600\le\phi\le+3600$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="144" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$-3600\le\phi\le+3600$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+Starting value of the boresight misalignment angle <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.png"
+ ALT="$\theta$"></SPAN> (see Figure&nbsp;1)
+in arcsecs.
+   <br>&nbsp;</td></tr>
+
+<A NAME="768"></A>
+<tr valign=top bgcolor='silver'><td><b>psi</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>&nbsp;</td><td><!-- MATH
+ $-3\le\psi\le+3$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="98" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.png"
+ ALT="$-3\le\psi\le+3$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+Starting value of the boresight misalignment angle <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$\psi$"></SPAN> (see Figure&nbsp;1)
+in degrees.
+   <br>&nbsp;</td></tr>
+
+  <A NAME="775"></A>
+<tr valign=top bgcolor='silver'><td><b>tol1</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1.e-1</td><td><!-- MATH
+ $10^{-10}\le\mbox{\tt tol1}\le10^{-1}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="152" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$10^{-10}\le\mbox{\tt tol1}\le10^{-1}$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+The parameter controls the stopping criterion for the stage-I minimization
+as described above. The scheme stops if the fractional convergence tolerance
+in the function value <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$\epsilon$"></SPAN> is lower than the given value. Please note:
+The default value is quite large because the stage-I minimization
+is only intended to yield approximately correct value for <SPAN CLASS="MATH"><IMG
+ WIDTH="13" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img37.png"
+ ALT="$\phi$"></SPAN> and <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img34.png"
+ ALT="$\theta$"></SPAN>
+for a given fixed <SPAN CLASS="MATH"><IMG
+ WIDTH="15" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$\psi$"></SPAN>.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="785"></A>
+<tr valign=top bgcolor='silver'><td><b>tol2</b></td><td>no</td><td><A HREF=../param/node3.html>real</A></td><td>1.e-4</td><td><!-- MATH
+ $10^{-10}\le\mbox{\tt tol1}\le10^{-1}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="152" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$10^{-10}\le\mbox{\tt tol1}\le10^{-1}$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+The parameter controls the stopping criterion for the stage-II minimization
+as described above. The scheme stops if the fractional convergence tolerance
+in the function value <SPAN CLASS="MATH"><IMG
+ WIDTH="10" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"
+ SRC="img21.png"
+ ALT="$\epsilon$"></SPAN> is lower than the given value. Please note:
+This value is smaller than the corresponding one for stage I because
+is determines the quality of the final set of angles.
+    <br>&nbsp;</td></tr>
+
+  <A NAME="795"></A>
+<tr valign=top bgcolor='silver'><td><b>maxiter</b></td><td>no</td><td><A HREF=../param/node3.html>integer</A></td><td>1000</td><td><!-- MATH
+ $0\le\mbox{\tt maxiter}\le1000$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="145" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$0\le\mbox{\tt maxiter}\le1000$"></SPAN></td></tr>
+
+<tr valign=top><td colspan=5>
+Maximum allowed number of iterations in stage I + stage II to find
+a unique solution.
+    <br>&nbsp;</td></tr>
+
+<tr valign=top bgcolor='yellow'><td><b>Parameter</b></td><td><b>Mand </b></td><td><b>Type </b></td><td><b>Default </b></td><td><b>Constraints </b></td></tr>
+</table>
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node8.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Practical examples and hints"></A>
+<A HREF="epicbscalgen.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node10.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Errors"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node17.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

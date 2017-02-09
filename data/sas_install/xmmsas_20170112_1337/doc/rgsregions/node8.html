@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="rgsregions">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsregions.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="rgsregions.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsregions (rgsregions-1.22) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="rgsregions.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsregions.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="rgsregions:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$\bullet$"></SPAN> S<SMALL>OURCE </SMALL>S<SMALL>ELECTIONS</SMALL>
+<PRE>
+  if --procsrcsexpr is non-empty:
+    use --procsrcsexpr to select sources for image and order regions
+    if --setflags is true:
+      update SRC_SELECT column with this result
+  else:
+    initialize selected sources from SRC_SELECT column
+</PRE>
+
+<P>
+<SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$\bullet$"></SPAN> E<SMALL>XCLUDED </SMALL>S<SMALL>OURCE </SMALL>S<SMALL>ELECTIONS</SMALL>
+<PRE>
+  if --exclsrcsexpr is non-empty:
+    use --exclsrcsexpr to select sources for exclusion from background region
+    if --setflags is true:
+      update BACK_SELECT column with this result
+  else:
+    initialize excluded sources from BACK_SELECT column
+</PRE>
+
+<P>
+<SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$\bullet$"></SPAN> S<SMALL>PATIAL </SMALL>B<SMALL>ACKGROUND </SMALL>R<SMALL>EGION</SMALL>
+<PRE>
+  unless a correctly specified or protected background region exists:
+    initialize empty region
+    for each node:
+      add polygon bounding the exposed surface
+      for each excluded source:
+        intersect polygon excluding --xpsfexcl percent of cross-dispersion PSF
+    scan region for total number of enclosed pixels
+    add region to source list
+</PRE>
+
+<P>
+<SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="15" ALIGN="BOTTOM" BORDER="0"
+ SRC="img8.png"
+ ALT="$\bullet$"></SPAN> I<SMALL>MAGE AND </SMALL>O<SMALL>RDER </SMALL>R<SMALL>EGIONS</SMALL>
+<PRE>
+  for each selected source:
+
+    unless a correctly specified or protected image region exists:
+      initialize empty region
+      for each node:
+        if Spectroscopy:
+          add polygon enclosing the xdsp PSF from --xpsfbelow to --xpsfabove
+        else: (High Time Resolution)
+          add polygon enclosing all exposure
+      scan region for total number of enclosed pixels
+      add region to source list
+
+    for each order (1 to --maxorder):
+
+       unless a correctly specified or protected order region exists:
+         initialize empty region
+         for each node:
+           add polygon enclosing --pdistincl percent of PI distribution
+         add excluded rectangle to each node with a calibration source
+         scan region for total number of enclosed pixels
+         add region to source list
+
+       unless Spectroscopy or a correctly specified or protected background order region exists:
+         initialize empty region
+         for each node:
+           if first order and CCD &lt; 4: switch to second order
+           construct polygon enclosing --pdistincl percent of PI distribution
+           transform it by reflecting around top vertex at each vertex pair
+           add transformed polygon to region
+         add excluded rectangle to each node with a calibration source
+         scan region for total number of enclosed pixels
+         add region to source list
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

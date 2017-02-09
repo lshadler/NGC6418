@@ -1,0 +1,152 @@
+ChangeLog for sasperl
+=====================
+
+Version 1.11 - 2008-10-10 (EO)
+------------
+	+ Modified DEPEND: sas 1.480 (old 1.0), utils 1.114 (old 1.88)
+
+Version 1.10 - 2003-06-13 (GV)
+------------
+	+ (param.pm) Move the routine that cleans up the command line
+	inside each of the parameter-related functions. In this manner the
+	command line is not modified unless a perl task is actually trying
+	to read one of the parameters. This allows the correct processing
+	of the --verbosity option to take place.
+	
+Version 1.9 - 2003-02-24 (GV)
+-----------
+	+ (error.pm) client initialized changed from ? to ..
+
+Version 1.8 - 2003-02-18 (GV)
+-----------
+	+ (param.pm) add required " to ARGV, so list of parameters are not
+	correctly identified.
+
+Version 1.7 - 2003-02-12 (GV)
+-----------
+	+ (error.pm) set client to a non empty string, or scripts that use
+	the module will terminate with an internal error.
+	
+Version 1.6 - 2003-02-11 (GV)
+-----------
+	+ (error.pm, param.pm, SAS.pm) update the documentation.
+	
+Version 1.5 - 2003-02-10 (GV)
+-----------
+	+ (param.pm) chomp return values or parametsrs end up with a final
+	'\n'. 
+
+Version 1.4 - 2003-02-07 (GV)
+-----------
+	+ (sasparam.cc) do not use vector.at() as this does not exist in
+	gcc-2.95.3. Use vector.operator[] instead.
+	+ (param.pm) when sasparam fails exit with an error instead of
+	continuing.
+	
+Version 1.3 - 2003-01-31 (GV)
+-----------
+	+ New implementation of SAs::param.pm and SAS::error.pm. Same perl
+	interface.
+	
+Version 1.2 - 2002-07-11 (GV)
+-----------
+	+ DEPEND on sas.
+
+Version 1.1 - 2002-05-07 (GV)
+-----------
+	+ (Makefile.PL) add dependency to selecor (required by param-2.0)
+	
+Version 1.0.1 - 2002-01-30 (JBa)
+-----------
+	+ Fixed the introduction of PERL_POLLUTE,as it was magnifying problems
+	  on linux/perl5.003:
+	    Make sure that old CCFLAGS of Conifgure.pm are not overwritten
+
+Version 1.0 - 2001-12-18 (GV)
+-----------
+	+ Re-uploaded as 1.0.
+
+Version 0.28 - 2001-11-28 (GV)
+------------
+	+ Move -DPERL_POLLUTE to Makefile.PL, instead of using
+	perlcompatibility.h 
+	
+Version 0.27 - 2001-11-23 (GV)
+------------
+	+ Makefile.PL: missing include
+
+Version 0.26 - 2001-11-22 (GV)
+------------
+	+ (SWIG/{error,param}/*.i now include perlcomatibility.h to work with perl 5.6.x
+
+Version 0.25 - 2000-09-28 (JBa)
+------------
+	+ (src/error/Makefile.PL, src/param/Makefile.PL) changed 
+	  initialisation, such that:
+	  * one can work on this package
+	    without building the complete SAS core tree
+	  * perltasks can be run under gcc-2.95 (it is suprising that it 
+	    worked under egcs anyways)
+
+	
+Version 0.24 - 2000-03-15 (GV)
+------------
+	+ fix message layer codes.
+	+ extend test harness.
+	
+Version 0.23 1999-12=06
+------------
+	+ param now needs caloalutils.
+
+Version 0.22 1999-09-09
+------------
+        + param now makes use of INTERFACES. Includes in SAS_DIR/include.
+
+Version 0.21 1999-09-08
+------------
+        + error now makes use of INTERFACES. Includes in SAS_DIR/include.
+
+Version 0.20 1999-08-20
+------------
+	+ add doc subdir. Latex doc refers to perldoc.
+
+Version 0.19 1999-06-15
+------------
+	+ updated DEPEND, after fixes to the infrastructure required to
+	close SPR 674. 
+	
+Version 0.18 1999-05-25
+------------
+	+ support for error library
+	+ documentation for parameter and error supoprt.
+	
+Version 0.17 1999-04-23
+------------
+	+ more fixes to single/list arameter handling.
+
+Version 0.16 1999-04-22
+------------
+	+ fix handling of list parameters, not working because of ||
+	instead of or. 
+	
+Version 0.15 1999-04-08
+------------
+        + fix make file: does not create (or remove!) lib/perl5.
+
+Version 0.13 1999-03-31
+------------
+        + add proper test harness.
+
+Version 0.12 1999-03-31
+------------
+	+ add dummy test subdirectory. Tests are actually run in the perl
+	modules.
+
+Version 0.11 1999-03-31
+------------
+	+ bring in line with latest param (1.30)
+
+Version 0.10 1999-03-30
+------------
+	+ initial release. Perl support for parameter interface.
+

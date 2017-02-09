@@ -1,0 +1,574 @@
+ChangeLog for emchain
+=====================
+
+Open SPRs:
+----------
+	None.
+Version 11.19  -  2015-12-09 (AI)
+-------------
+- Documentation updated: MOS event screening criteria paragraph removed.
+  	SOC-SPR-7225 closed
+	
+Version 11.18  -  2014-10-31 (JB)
+-------------
+- Updated test harness for emtaglenoise.
+
+Version 11.17  -  2010-10-08 (JB)
+-------------
+- Added call to emtaglenoise.
+
+Version 11.16  -  2009-06-18 (HC)
+-------------
+- Updated reference event list for test harness to work with upgraded test CCF.
+
+Version 11.15  -  2006-01-11 (JB)
+-------------
+- Adjust to emframes 5.7 (pass counting mode file).
+
+Version 11.14.1  -  2006-06-20 (JB)
+---------------
+- Do not check CALINDEX extension.
+
+Version 11.14  -  2006-01-24 (JB)
+-------------
+- Adjust test harness to emframes 5.6.
+
+Version 11.13  -  2005-08-05 (JB)
+-------------
+- Rename individual files with instrument and exposure when runevlistcomb=N
+  to avoid overwriting one exposure with the next one.
+- Parameter withemevents was inoperant.
+
+Version 11.12  -  2005-07-26 (JB)
+-------------
+- Propose #XMMEA_SM for spectral selection in the documentation.
+- Developments in preparation to calling lccorr for flare screening.
+
+Version 11.11  -  2005-04-20 (JB)
+-------------
+- Check that number of events is > 1 when building light curve.
+
+Version 11.10  -  2005-02-04 (JB)
+-------------
+- Add writeccdbackground parameter for offset calibration.
+
+Version 11.9  -  2005-01-13 (JB)
+------------
+- Remove medianset argument to embadpixfind 2.0.
+
+Version 11.8  -  2004-12-23 (JB)
+------------
+- Prevent too small statistics for flare screening.
+- More robust test harness for wc (HB).
+
+Version 11.7  -  2004-11-10 (JB)
+------------
+- Allow entering exposures as a single number.
+
+Version 11.6  -  2004-11-08 (JB)
+------------
+- Change tolerance to allow flare screening on CCD 1 only in SW mode.
+- Remove useless switch parameters after param 2.
+- Modify test harness to be in synch with emenergy 8.1.3
+
+Version 11.5.1  -  2004-10-11 (JB)
+--------------
+- Fix test harness to accommodate change in number of CCF files.
+
+Version 11.5  -  2004-09-13 (JB)
+------------
+- Better exposure correction to flare screening timeseries.
+  RATE is now divided by FRACEXP.
+
+Version 11.4.6  -  2004-07-08 (JB)
+--------------
+- Corrects logic hole when startfromodf=N.
+
+Version 11.4.5  -  2004-04-14 (JB)
+--------------
+- Addresses SPR 3285 (emchain crashes with applyflaregti=Y, reissued).
+
+Version 11.4.4  -  2004-04-02 (JB)
+--------------
+- Addresses SPR 3284 (emchain crashes with applyflaregti=Y).
+
+Version 11.4.3  -  2004-03-17 (JB)
+--------------
+- Parameter lowenerbadpix was inoperant.
+
+Version 11.4.2  -  2004-02-06 (JB)
+--------------
+- Add fromccf=N to intermediate call to ebadpixupdate to avoid failures
+  in Timing mode when SUBMODE is not set.
+- Remove badpixfindalgo=NO from test harness call to test the above.
+
+Version 11.4.1  -  2004-01-13 (JB)
+--------------
+- Change [] defining extensions in ftools to + (was not correctly
+  interpreted by some shells).
+
+Version 11.4  -  2003-12-05 (JB)
+------------
+- Adapted test harness to new number of calibration files.
+
+Version 11.3  -  2003-11-28 (JB)
+------------
+- Keep all columns for Timing mode when fulloutput=Y.
+
+Version 11.2  -  2003-11-17 (JB)
+------------
+- Change rejectionflag default to weed out events ON_BADOFFSET.
+
+Version 11.1  -  2003-11-03 (JB)
+------------
+- Adapted test harness to new number of calibration files.
+
+Version 11.0  -  2003-10-14 (JB)
+------------
+- Propagate OFFSETS extension to merged events list.
+
+Version 10.9  -  2003-08-26 (JB)
+------------
+- Accept lists in parameters transmitted to component tasks.
+- Reinstate withemenergy (emenergy was always called).
+
+Version 10.8  -  2003-06-27 (JB)
+------------
+- Upgrade to ebadpixupdate 1.4.
+
+Version 10.7  -  2003-05-14 (JB)
+------------
+- Change getotherbadpix from N to Y in call to badpix when badpixfindalgo=em|ep
+
+Version 10.6  -  2003-04-25 (JB)
+------------
+- Bug in flare GTI name introduced in 10.4.
+
+Version 10.5  -  2003-04-22 (JB)
+------------
+- New lowenerbadpix parameter to look specifically for bright pixels < 500 eV.
+- Calls ebadpixupdate to deal with very strong bright pixels.
+
+Version 10.4  -  2003-04-15 (JB)
+------------
+- Fixed SPR 3096 (fkeyprint call).
+- New FRACEXP column in flare screening timeseries.
+- Added globalflare parameter (default) to build single flare screening
+  timeseries for all MOS exposures.
+- Makes use of FLICKERING flag.
+- Includes CCD 1 in flare background time series (except Timing).
+- Accepts gzipped ODF files.
+- Writes messages to STDOUT, following new SAS policy.
+- Use supertabular for ChangeLog section in doc.
+
+Version 10.3  -  2002-09-17 (JB)
+------------
+- Added test for slew data to avoid needless warning.
+- Editorial improvements.
+
+Version 10.2  -  2002-08-29 (JB)
+------------
+- Changed test harness to accommodate emevents 7.1.
+
+Version 10.1  -  2002-08-02 (JB)
+------------
+- Changed DEPEND for new major version of emframes, emevents and emenergy.
+
+Version 10.0  -  2002-07-26 (JB)
+------------
+- Use more specific intermediate file names containing 'mos' (SPR 2895).
+- Add requirement on perl 5.005.
+- Modify getMode to accommodate EDUMODE=3 in Timing mode.
+- Make embadpixfind default (as in PPS), remove withbadpixfind parameter.
+- Change keeprejected parameter into rejectbadevents (opposite meaning).
+- Add rejectionflag and addvigweight parameters.
+
+Version 9.2  -  2002-05-27 (JB)
+-----------
+- Clarify warnings in code and doc.
+
+Version 9.1  -  2002-05-15 (JB)
+-----------
+- Upgrade parameter file to param 2.0.
+
+Version 9.0  -  2002-05-03 (JB)
+-----------
+- Add filterhk, filteratt and atttol parameters for GTI definition.
+- Remove HKGTI.FIT entry in ODF dir.
+- Move BAD.FIT entry from ODF dir to current dir.
+- Move HKGTI.FIT and BAD.FIT files from emsaplib/emodf to emchain/test.
+- Add stopafterbadpixfind parameter for investigations.
+- Remove 'errors' file on successful output.
+
+Version 8.4.1  -  2002-04-08 (JB)
+-------------
+- Correct bug on testing flare screening GTI length introduced in 8.1.
+
+Version 8.4  -  2002-03-01 (JB)
+-----------
+- Call badpix with windowfilter=Y.
+- Make test harness less sensitive to precision on TIME.
+
+Version 8.3  -  2002-01-29 (JB)
+-----------
+- Does not process low gain data unless processlowgain is set.
+
+Version 8.2  -  2002-01-22 (JB)
+-----------
+- Doc corrected for flare screening.
+- Accepts instrument specifications like mos1, emos1 (not only m1).
+
+Version 8.1  -  2002-01-11 (JB)
+-----------
+- Add CONTENT keyword to flare background timeseries.
+- Change background timeseries to /ks/arcmin2.
+
+Version 8.0  -  2002-01-10 (JB)
+-----------
+- Generate flare background timeseries in RATE format.
+- flaremaxcounts becomes flaremaxrate.
+- Reject GTIs only one flaretimebin long.
+- exposure, instrument become exposures, instruments.
+- Make use of new EXPIDSTR keyword.
+- Support propagation of parameters to constituent tasks.
+- Gently inform of deprecated parameters.
+
+Version 7.5  -  2001-11-26 (JB)
+-----------
+- Adapted to evselect 3.43 (updateexposure=N on single CCD events lists).
+- Changed name of flare background timeseries to follow PPS.
+- Write specific error message after each error in task.
+
+Version 7.4  -  2001-11-22 (JBa)
+------------
+- (doc/emchain_description.tex): fixed documentation
+
+Version 7.3.1  -  2001-10-29 (JB)
+-------------
+- Adapted test harness to cal 3.121 (test).
+
+Version 7.3  -  2001-10-09 (JB)
+-----------
+- Set default for badpixfindalgo to EM (like in PPS products).
+- Randomize TIME by default (like in PPS products) in Imaging modes.
+
+Version 7.2.2  -  2001-07-19 (JB)
+-------------
+- Change test harness to accommodate cal 3.117.
+
+Version 7.2.1  -  2001-07-19 (JB)
+-------------
+- Remove check on FILTER in test harness.
+
+Version 7.2  -  2001-07-02 (JB)
+-----------
+- Avoid evselect error when XMMEA_22 does not exist.
+- Check on too small flare GTI (< 10%).
+
+Version 7.1  -  2001-05-29 (JB)
+-----------
+- Fixed SPR 2384 (emchain does not support -h).
+- Also supports other standard options.
+- Changed doc to avoid mixing parameters in HTML doc.
+
+Version 7.0  -  2001-05-11 (JB)
+-----------
+- Move bad pixel search to after flare GTI filtering.
+- Add badpixfindalgo, stoponerror, startfromodf, clobber,
+  withemevents, withemenergy parameters for better flexibility.
+- Improved documentation.
+
+Version 6.5  -  2001-04-24 (JB)
+-----------
+- Add useccfdark parameter for emenergy 6.1.
+- Correct bug in doc (Parameters section).
+
+Version 6.4  -  2001-03-22 (JB)
+-----------
+- Add srcra and srcdec parameters for emframes 4.5 (Timing mode).
+
+Version 6.3  -  2001-03-08 (JB)
+-----------
+- set VISIBLE to no (config/emchain.info).
+- change tests on FLAG to include EVATT_UNDERSHOOT (0x40000000).
+- Adapt to emevents 6.0 and emenergy 6.0.
+- Add emenergy to intermediate loop before badpixfind.
+
+Version 6.2  -  2001-02-22 (JB)
+-----------
+- Call emevents with rejectrows=Y in Timing mode.
+- Adapt test harness to cal 3.100 (bad pixels in Timing mode).
+
+Version 6.1  -  2001-02-19 (JB)
+-----------
+- Adapt test harness to emevents 5.7.
+
+Version 6.0.1  -  2001-02-08 (JB)
+-------------
+- Correct bug in Change History (doc/emchain_description.doc).
+
+Version 6.0  -  2001-01-16 (JB)
+-----------
+- Replace ccd parameter by ccds (list).
+- Add runccdloop, runevlistcomb, applyccdgti and makeflaregti parameters
+  (default is yes).
+- Add keepintermediate and applyflaregti parameters (default is no).
+- Change logic to accommodate 2-node event reconstruction and 
+  improve modularity.
+
+Version 5.2.2  -  2000-11-21 (JB)
+-------------
+- Keep as output files timeseries used for flare filtering (src/emchain).
+- Recovered compatibility with Ftools 4.2 (src/emchain).
+- Updated test harness to emsaplib 2.1.2
+
+Version 5.2.1 - 2000-11-18 (UL)
+-------------
+- updated test reference data sets
+        test/struct.ref
+        test/merged.ref.gz
+        test/timstruct.ref
+        test/evtime.ref
+  after change of Xmm::missionReferenceTime (caloalutil-1.36.3/oal-3.58.8)
+
+Version 5.2  -  2000-10-31 (JB)
+-----------
+- Call emevents with flagtruncatede1=Y in Timing mode (src/emchain).
+- Write CONTENT keyword (src/emchain).
+
+Version 5.1.2  -  2000-10-27 (JB)
+-------------
+- Fixed SPR 2009 (Wrong names for event list files) (src/emchain).
+
+Version 5.1.1  -  2000-10-19 (JB)
+-------------
+- Use attcalc default for attitudelabel and refpointlabel (src/emchain).
+
+Version 5.1  -  2000-10-09 (JB)
+------------
+- Modify default value of flaremaxcounts.
+- Add cleandss=Y to final evselect call in test harness.
+
+Version 5.0  -  2000-10-05 (JB)
+------------
+- Keep truncated events in output file (src/emchain).
+- Build light curve for flare rejection from truncated events (src/emchain).
+- Writes CALINDEX extension to output files (src/emchain).
+
+Version 4.15  -  2000-10-02 (JB)
+------------
+- Allows automatic bad pixels detection using withbadpixfind (src/emchain).
+
+Version 4.14  -  2000-09-29 (JB)
+------------
+- Updated test harness for new OAL (test/emchain_test).
+- Updated to emevents 5.0 (src/emchain).
+- Changed suffix of graphics file from ps to eps (doc/imaging0.ps).
+
+Version 4.13  -  2000-07-05 (JB)
+------------
+- Always call badpix with getuplnkbadpix=Y even when a *BAD.FIT file 
+  is present (src/emchain).
+- Looks for emodf test directory under lib/testodf (test/emchain_test).
+
+Version 4.12.2  -  2000-06-28 (JB)
+--------------
+- Fix SPR 1879 (Disagreement in parameters).
+	Modified config/emchain.par, config/emchain.lyt.
+- No exposure computation on unmerged event files (src/emchain).
+
+Version 4.12.1  -  2000-06-23 (JB)
+--------------
+- The events out of the FOV were being rejected anyway (src/emchain).
+
+Version 4.12  -  2000-06-14 (JB)
+------------
+- Do not reject events out of the field of view.
+- Build good time intervals for flare rejection.
+
+Version 4.11.1  -  2000-05-31 (JB)
+--------------
+- Correct bug in Perl logic when withattcalc is set explicitly (src/emchain).
+- Use dsslib with #XMMEA_EM (src/emchain).
+
+Version 4.11 - 2000-05-29 (GV/SOC)
+------------
+- (test/struct.ref) updated, because the order of the extensions
+  in struct.lst had changed.
+
+Version 4.10  -  2000-05-29 (JB)
+------------
+- Update DEPEND file.
+
+Version 4.9  -  2000-05-28 (JB)
+-----------
+- Adapted to new default parameters of evselect.
+- Uses outset parameter of badpix.
+- Uses gtimerge instead of mgtime.
+- Updated output file names to Data Products ICD 2.1.
+- keeprejected=N is now default.
+
+Version 4.8  -  2000-04-09 (JB)
+-----------
+- Adapt keeprejected option to new meaning of XMMEA_EM.
+
+Version 4.7  -  2000-04-28 (JB)
+-----------
+- Correct bug in parameter input.
+- Adapt test harness to new event attribute codes.
+
+Version 4.6  -  2000-04-20 (JB)
+-----------
+- Fixed SPR 1629 (Test harness fails under FTOOLS v5.0).
+
+Version 4.5  -  2000-04-06 (JB)
+-----------
+- Added writedss and updateexposure to final call to evselect.
+- Do not analyse events when emframes ends in error.
+- Added parameters fulloutput, keeprejected and randomize.
+
+Version 4.4  -  2000-04-05 (JB)
+-----------
+- Added -w 10 option to all SAS calls.
+- Changed test harness following CAL/CCF and emenergy evolution.
+
+Version 4.3  -  2000-02-29 (JB)
+-----------
+- Improved -v answer and removed rogue output when verbosity is set to none.
+
+Version 4.2  -  08-02-2000
+-----------
+- Improved -v answer when emchain is a local version.
+
+Version 4.1  -  28-01-2000
+-----------
+- Add withatthkgen, withbadpix and withattcalc parameters.
+- Correct bug preventing run for data obtained with node 1 only.
+- Tests HK GTI file for MJDREF in mgtime.
+
+Version 4.0  -  20-12-1999
+-----------
+- Changed output file names to conform to the SSC DP ICD.
+- Aligns and merges the HK GTI with the CCD GTIs.
+- Removed the logic for energy combination (now in calmosalgo).
+
+Version 3.1  -  30-11-1999
+-----------
+- Modified test harness due to new behaviour of emframes and emenergy.
+
+Version 3.0  -  15-11-1999
+-----------
+- Added instrument, exposure, ccd optional parameters.
+- Uses new emsaplib library.
+- Changed SAS_ODFDIR into SAS_ODF, odfdir into odf.
+
+Version 2.9  -  03-11-1999
+-----------
+- Modified test harness due to new behaviour of emevents.
+
+Version 2.8  -  19-10-1999
+-----------
+- Change test harness to adapt to new gain values.
+
+Version 2.7  -  07-10-1999
+-----------
+- Upgraded for emevents 3.7, emenergy 3.5 and evlistcomb 4.0.
+- Treats mono and bipixels differently from larger events in emenergy.
+- Sends a list of files for offsets to emevents.
+- Global error status.
+- Supports '-v' argument.
+- Doc updated to sas 1.155.
+
+Version 2.6  -  03-09-1999
+-----------
+- Writes all messages to STDERR.
+- Less sensitive test harness.
+
+Version 2.5  -  01-09-1999
+-----------
+- Upgraded for attcalc 4.8, calling atthkgen.
+- Upgraded for emframes 3.5 (calls directly the auxiliary file).
+- Better error handling.
+- Writes version of constituent tasks in verbose mode.
+
+Version 2.4  -  13-08-1999
+-----------
+- Added refpointlabel parameter for attcalc.
+- May use SAS_ODFDIR directly instead of odfdir parameter.
+- Better error handling.
+
+Version 2.3  -  05-08-1999
+-----------
+- Upgraded for evselect 3.0.
+
+Version 2.2  -  28-07-1999
+-----------
+- Closed SPR 1122 (perl may complain: uninitialized variable SAS_VERBOSITY)
+
+Version 2.1  -  11-06-1999
+-----------
+- Includes test harness for Reduced Imaging mode.
+- Keeps silent if SAS_VERBOSITY is 0 or not set.
+- Upgraded for evselect 2.0.
+
+Version 2.0  -  31-05-1999
+-----------
+- Closed SPR 879 (Non-compliance with the DP ICD).
+- Closed SPR 883 (Behaviour when no i/p files are available).
+- Better coding practise.
+- New parameter names.
+- Uses the emevents/emodf directory for testing.
+- Includes test harness for Timing mode.
+- Includes a parameter layout file.
+
+Version 1.9  -  11-05-1999
+-----------
+- Upgraded to be compatible with badpix 2.0, attcalc 4.0, 
+  emframes 3.0, emevents 3.0, emenergy 3.0, evlistcomb 3.0.
+- Uses the new presentation for columns, keywords, ... in the doc.
+- Uses a more recent set of test data.
+
+Version 1.8  -  09-04-1999
+-----------
+- Fixed SPR 980 (zcat in test harness).
+
+Version 1.7  -  31-03-1999
+-----------
+- Removed unnecessaries dependencies in DEPEND.
+
+Version 1.6  -  26-03-1999
+-----------
+- Does not reject bad events in final call to evselect any more.
+- CCDID --> CCDNR in output.
+- Closed SPR 878 (ODF non-compliance).
+- Closed SPRs 880, 881, 882 after evolution of the constitutive tasks.
+- ROWOFFST and COLOFFST exchanged in offset files after ODF ICD clarification.
+- Uses \psfig instead of \includegraphics to include Postscript figures.
+- Upgraded to be compatible with attcalc 3.1.
+
+Version 1.5  -  08-12-1998
+-----------
+- Fixed SPR 877 (Documentation).
+- Modified due to restriction on parameter case in attcalc 2.1
+
+Version 1.4  -  27-11-1998
+-----------
+- Fixed SPR 815 (emchain wrong perl path; emchain_test regression test buggy).
+- Modified to follow new attcalc 2.0 parameters.
+
+Version 1.3
+-----------
+- Input files made coherent with badpix.
+
+Version 1.2
+-----------
+- Test harness corrected.
+
+Version 1.1
+-----------
+- Modified to follow new attcalc parameters.
+- Several minor improvements.
+
+Version 1.0
+-----------
+- Initial version for SAS v1 integration.

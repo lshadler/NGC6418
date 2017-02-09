@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Algorithm</TITLE>
+<META NAME="description" CONTENT="Algorithm">
+<META NAME="keywords" CONTENT="omprep">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="omprep.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="omprep.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+omprep (omprep-2.47) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node7.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Output Files"></A>
+<A HREF="omprep.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node9.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Comments"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node12.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="omprep.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="omprep:description:algorithm"></A>
+<BR>
+Algorithm
+</H1>
+
+<P>
+<PRE>
+subroutine omprep
+
+  Read in parameters.
+  Read in ODF Image / Event List / Tracking History Data Auxiliary file.
+  Determine file type from file name in primary header.
+
+  Read in keywords and data from input file.
+
+  IF OM Imaging Mode Data Image file.
+
+    Get a handle on the image array extension.
+    Read in the image array extension keywords.
+    Get a pointer to the image.
+    Get the dimensions of the image.
+
+  IF OM Fast Mode Event List file.
+
+    Get a handle on the event list binary table extension.
+    Read in the event list binary table extension keywords.
+    Get handles and pointers on the event list binary table extension columns.
+    Get the number of rows in the event list binary table extension.
+
+  IF  OM Tracking History Data Auxiliary file.
+
+    Get a handle on the event list binary table extension.
+    Read in the tracking history binary table extension keywords.
+    Get handles and pointers on the tracking history binary table extension columns.
+    Get the number of frames in the tracking history binary table extension.
+ 
+  IF Incompatible file.
+ 
+    call fatal("badFileType", "Value for keyword FILENAME is incompatible")
+
+  ENDIF
+
+  Extract exposure from header. If not present, use mssllib routine to extract 
+  start and end time of exposure from the observation summary file via 
+  getstartendexp(nphSet, expNumber ,OBTstart, OBTend ,dateObs ,dateEnd ,filterString)
+  in which case exposure = obtEnd - obtStart
+  Also get filter information from summary file and check validity. 
+
+
+  Read in OM ODF Priority Window Data Auxiliary file.
+  Determine file type from file name in primary header.
+  Get a handle on the window data binary table extension.
+  Get binAx1 from SWP1 and binAx2 from SWP2.
+  sciWin numbering system still not settled. May add sampling time and bfast ID to event list.
+  Release handles on data.
+ 
+  IF Incompatible file call fatal("badFileType", "Value for keyword FILENAME is incompatible")
+
+  Open the ODF. call OAL_openODF(trim(odfDir))
+  Get the proposal info. from observation summary file.  call OAL_proposalInfo(propInfo)
+
+  Write out OM image / event list / tracking history intermediate output filename.
+  Write keywords to outFile.
+  Gets attitude information via oal
+%  Write CONTENT keyword to outFile.
+%  Write RA_SCX, DEC_SCX and PA keywords.
+  Write further keywords to outfile.
+  Write data to outFile. 
+ 
+  IF OM Imaging Mode Data Image file
+    Convert Image from int32 data in odf to real32 data for output.
+  ENDIF
+
+  IF NOT OM Tracking History Data Auxiliary file
+  Add a MODES extension, detailing the science window parameters.
+
+  Release handles on data.
+
+end subroutine  omprep
+</PRE>
+
+<P>
+<HR> <BR>
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

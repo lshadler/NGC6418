@@ -1,0 +1,817 @@
+ChangeLog for evselect
+======================
+
+Version 3.62 - 2013-09-19 (AI)
+------------
+	+ SOC-SPR-7082 fixed
+	
+Version 3.61.1 - 2012-03-29 (AI)
+------------
+	+ (config/evselect.par) spectral default parameters changed. SOC-SPR-299
+	
+Version 3.61 - 2010-06-01 (AI)
+------------
+	+ (src/rate.cc src/histo.cc) Truncation to a float number in the calculation of the bin index value removed. 
+	Now the index calculation is using doubles and the rounded with floor.
+	
+Version 3.60.5 - 2010-04-22 (AI)
+------------
+	+ documentation updated.
+	
+Version 3.60.4 - 2009-08-31 (AI)
+------------
+	+  Modifications is several source files to make evselect gcc 4.3 compliant. 
+	
+Version 3.60.3 - 2009-05-11 (AI)
+------------
+	+ SOC-SPR-6528 fixed.
+	+ Debug lines removed.
+	+ Documentation updated.
+	
+Version 3.60.2 - 2008-06-17 (AI)
+------------
+	+ (src/Extractor.cc) SOC-SPR 6479 fixed.
+
+Version 3.60.1 - 2008-06-09 (AI)
+------------
+	+ (src/Extractor.cc) New method to calculate the light curve start time and stop time. SAS-SCR-238
+	+ (src/rate.cc) New call  GetObservationLimits". SAS-SCR-238
+	+ (test/rate.ref) light curve test case updated. SAS-SCR-238 
+	
+Version 3.60 - 2006-12-13 (AI)
+------------
+	+ (src/xmmexposure.cc) ONTIME and LIVETIME keywords correctly
+	calculated if filtering by empty GTI. Fixes SOC-SPR-2629.
+	
+
+Version 3.59 - 2006-02-27 (AI)
+------------
+	+ (src/eveselect.cc & src/xmmexposure.cc) Update LIVETInn keywords also when 
+	PHASE filtering is applied. Fixes SOC-SPR-2632.
+	
+Version 3.58.7 - 2005-06-21 (AI)
+--------------
+	+ (config/evselect.par) "default" keyword added to dssblock
+	parameter (Mac OSX 7.3 crashed because of that).
+
+Version 3.58.6 - 2005-05-31 (AI)
+------------
+	+ (src/image.cc) Fix problem with filtering images. 
+	  Closes SOC-SPR-2551
+	
+Version 3.58.5 - 2004-11-04 (AI)
+------------
+	+ (src/histo.cc) the definition of the vairable "histoZero" 
+	  back to its old value.
+
+Version 3.58.4 - 2004-10-05 (AI)
+------------
+	+ Update DEPEND file. cal entry added.	 
+
+Version 3.58.3 - 2004-07-28 (AI)
+------------
+        + (src/histo.cc) Extra info lines removed.
+
+Version 3.58.2 - 2004-07-09 (AI)
+------------
+        + Fixed SSC-SPR-3316. (spec.cc and rate.cc) Set the keywords HDUCLAS2 and 
+	HDUCLAS3 properly, checking if the spectrum is stored as counts or rates. 
+
+Version 3.58.1 - 2004-02-24 (AI)
+------------
+        + Fixed SSC-SPR-3145. (src/image.cc) Now the EXPOSURE value, when you
+	select a CCDNR, is correct.
+
+Version 3.58 - 2003-07-01 (GV/SOC)
+------------
+	+ (test/*fits) The TIME column in the event lists should have had
+	's' instead of SECONDS as unit.
+
+Version 3.57 - 2003-06-27 (GV/SOC)
+------------
+	+ (wcs_lin.c) Remove inclusion of malloc.h as this is not standard
+	and fails on Mac OS X.
+	+ (image.cc) Remove include of values.h, a fix I had already made
+	once. This is not a standard header, and it does not exist on Mac
+	OS X.
+	
+Version 3.56 - 2003-01-27 (DH)
+------------
+	+ Remove mention of imagechain task from the documentation, as it is not part
+	  of the public distribution of the SAS.  Closes SSC-SPR-3049.
+
+Version 3.55 - 2002-10-23 (DH)
+------------
+	+ Update documentation as in 3.47.7 .
+	+ Update parameter file to incorporate relationships between various
+	  parameters, eliminating the need for using many controlling parameters
+	  on the command line.
+	+ Update documentation to reflect change in parameter usage.  17 parameters
+	  eliminated from the main documentation section.
+	+ Incoporate changes from 3.47.8
+
+Version 3.47.8 - 2002-11-18 (DH)
+--------------
+	+ Replace E_MIN, E_MAX, E_UNITS keywords in light curves with CHANMIN, CHANMAX 
+	  CHANTYPE keywords, as these better convey wanted filtering information.
+
+Version 3.47.7 - 2002-10-15 (DH)
+--------------
+	+ Update DEPEND file for new dsslib.
+	+ Update documentation.  Closes SSC-SPR-2974.
+
+Version 3.54 - 2002-09-24 (DH)
+------------
+	+ Incorporate changes from 3.47.4 .
+
+Version 3.47.5 - 2002-09-23 (DH)
+--------------
+	+ Take cout debug print statements (sigh!).
+
+Version 3.47.4 - 2002-09-23 (DH)
+--------------
+	+ Fix problem with merging of GTIs when updating exposure info.  GTIs must
+	  be sorted before they are merged.  Closes SSC-SPR-2985.
+	+ Fix algorithm for writing LTV/M keywords.  Closes SSC-SPR-2967.
+	+ Write new set of WCS keywords of type 'L'.  These are for the physical
+	  coordinate system, and provide the same info as the LTV/M keywords, which
+	  will soon be deprecated.
+
+Version 3.53 - 2002-09-17 (GV/SOC)
+------------
+	+ (wcs.c wcs_proj.c) initialize a few variables otherwise the
+	optimizer (gcc-2.96) issues a warning about them possibly being
+	used uninitialized.
+
+Version 3.52 - 2002-09-16 (GV/SOC)
+------------
+	+ Misc code adjustments for gcc-3.1
+	+ wcs_proj.c: change a few abs into fabs (abs does not exist in	C).
+	
+Version 3.51 - 2002-09-04 (DH)
+------------
+	+ Correct a couple of stupidities in version 3.50:
+	  - clean up unneeded files.
+	  - remove cout << statement.
+
+Version 3.50 - 2002-08-05 (DH)
+------------
+	+ Fix algorithm for writing LTV/M keywords.  Closes SSC-SPR-2967.
+	+ Properly initialize dss parser for re-use.  Closes SSC-SPR-2953.
+	+ Add FILTER to keywords which get propogated from event list.  Closes
+	  SSC-SPR-2909.
+	+ Change type of timemin and timemax parameters from real to time.  Closes
+	  SSC-SPR-2959.
+	+ Tighten up test for detecting empty event lists when calculating exposures.
+	  Closes SSC-SPR-2811.
+	+ Trap errors thrown by ExprColumnGenerator.doIt() method, and die gracefully.
+	  Closes SSC-SPR-2897.
+	+ Convert evselect code to use the new sstream classes.
+
+Version 3.49 - 2002-07-08 (GV/SOC)
+------------
+	+ (rate.cc histo.cc) add #include <strstream>
+	
+Version 3.48 - 2002-05-27 (DH)
+------------
+	+ Convert to new style parameter file.  Update DEPEND file.
+
+Version 3.47.3 - 2002-05-16 (DH)
+--------------
+	+ Documentation updates.  Closes SPR 2825.
+
+Version 3.47.2 - 2002-02-27 (DH)
+--------------
+	+ Fix bug which caused an infinite exposure to be calculated for some
+	  products if the input filtered event list was empty.
+
+Version 3.47.1 - 2002-01-28 (DH)
+--------------
+	+ Documentation updates.
+
+Version 3.47 - 2001-11-21 (DH)
+------------
+	+ Rearrange parameter file so that parameters are in same order as in the 
+	  documentation.
+	+ Initialize various variables to zero in wcs_proj.c in order to avoid
+	  optmized compiler warnings on linux.
+	+ Removal of un-needed EXPOSUnn extensions now occurs when exposure updating
+	  is set, even if no TIME filtering is done.
+	+ Fix bug which in some cases caused the last bin (ie. row) in a histogram
+	  or lightcurve not to be created.  Closes SSC-SPR-2656.
+	+ If the column used to accumulate a histogram is named COUNTS, it now gets
+	  rename to OLD_COUNTS in the histogram, instead of crashing evselect.  
+	  Closes SSC-SPR-2637.
+
+Version 3.46 - 2001-11-21 (DH)
+------------
+	+ Increment version number for book keeping purposes.
+
+Version 3.45 - 2001-11-21 (DH)
+------------
+	+ Include string.h and stdio.h in wcs_proj.c .  Hopefully fixes a Dec compile
+	  problem.
+
+Version 3.44 - 2001-11-07 (DH)
+------------
+	+ Check for existence of CCDNR column in XmmExposure constructor.  Closes
+	  SSC-SPR-2622.
+
+Version 3.43 - 2001-10-29 (DH)
+------------
+	+ Incorporate C version of wcslib into the evselect code.
+	+ Add option to shift image to be centered at a given Ra and Dec.  Closes
+	  SAS-SCR-11.
+	+ Remove makesparserates option, as this produces a lightcurve which is
+	  a mis-interpetation of the OGIP standard.  Closes SSC-SPR-1975.
+	+ Add makeratecolumn option, which makes a RATE column instead of a COUNTS
+	  column in a light curve.  Closes SAS-SCR-12.
+
+Version 3.42 - 2001-10-16 (DH)
+------------
+	+ Mention imagechain in documentation as an example of evselect use.
+
+Version 3.41 - 2001-10-12 (DH)
+------------
+	+ Fix problems causing compiler problems with optimization turned on.  Some
+	  pointers needed to be initialized to zero.  Closes SSC-SPR-2595.
+
+Version 3.40 - 2001-10-11 (DH)
+------------
+	+ Add spectrum accumulation using a 'weight' column (withzcolumn=true).  For
+	  spectra, light curves and histograms the error column for the weight 
+	  (withzerrorcolumn=true) is now optional.
+	
+Version 3.39 - 2001-09-24 (DH)
+------------
+	+ Changed all standard containers to use the explicit std:: scope operator.
+	+ Implement SCR 66: Inefficient selection of EXPOSUnn extensions.  Note that
+	  the algorithm is executed only when evselect thinks it needs to update
+	  exposure information.
+	+ Fix some errors in the documentation introduced in 3.38 .
+	+ Fix error in algorithm used for caculating exposure for a spectrum region
+	  that spans more than one ccd.  Exposure was being over estimated. 
+	  Closes SSC-SPR-2570.
+
+Version 3.38 - 2001-09-19 (DH)
+------------
+        + Major rework of getGtiLists method of XmmExposure.  Now more robust in
+	  determining which TIME filters can be appropriately applied for exposure
+	  correction.  Closes SSC-SPR-2285 and SSC-SPR-2467.
+
+Version 3.37 - 2001-08-13 (DH)
+------------
+	+ Change system and compiler include statements to conform to standard.
+	+ Change test harness bourne shell script so that queried keyword values
+	  are returned correctly on all systems.  Fixes SSC-SPR-2396.
+	+ Warning now given when doing exposure updating if data subspace parsing
+	  failed.  Closes SSC-SPR-2029.
+	+ Use new compressRegions() method to compact data subspace when old and
+	  new dss specifications have been combined.
+	+ Change test harness to reflect different polygon algorithm in selectlib.
+	+ Change exposure info correction so that it no longer requires access to
+	  the ccf via the cal.  Closes SCR-73.
+
+Version 3.36 - 2001-08-06 (DH)
+------------
+	+ Test for zero bin sizes.  Fixes SSC-SPR-2241.
+	+ Add writing of LTV/LTM coordinate keywords to extracted images.  Closes
+	  SCR 27.
+	+ Empty product tables are now created when no events are selected.  Closes
+	  SCR 24.  Documentation updated for relavent error and warning messages.
+      	+ Option for calculating BACKSCAL keyword in evselect removed from the 
+          documentation.  Closes SSC-SPR-2405.
+	
+Version 3.35 - 2001-04-19 (DH)
+------------
+	+ Remove iostream.h includes.
+	+ Remove backscale calculation option from spectral extraction.
+
+Version 3.34 - 2001-02-21 (UL)
+------------
+	+ brought in line with cal-3.100
+
+Version 3.33 - 2000-12-22 (UL)
+------------
+	+ a couple of trivial changes to make the optimizer happy
+
+Version 3.32.5 - 2000-11-07 (DH)
+--------------
+	+ Rework Image page of evselect layout file in order to account for limitations
+	  in the GUI parameter interface.
+	
+Version 3.32.4 - 2000-10-27 (DH)
+--------------
+	+ Update info file.
+	+ Now issue seperate warnings depending on whether the input event list is empty,
+	  or the event list is empty after filtering.  Closes SSC-SPR-1997.
+
+Version 3.32.3 - 2000-10-26 (DH)
+--------------
+	+ Fix SSC-SPR-2003, "temporary dataset not released"
+	+ Minor change to test harness.
+	+ Really fix the test harness for linux.
+
+Version 3.32.2 - 2000-10-20 (DH)
+--------------
+	+ Fix bug causing floating excpetion on DEC when filtered event lists are empty.
+	+ Loosen pass criteria for evselect EXPOSURe calculation, so it will pass on
+	  linux.
+
+Version 3.32.1 - 2000-10-12 (DH)
+--------------
+	+ Add documentation and layout for the dssclean parameter.
+	+ Evselect now only filters EXPOSUnn extension if keepfilteroutput=true, ie.
+	  only when the event list is being written out or modified.  
+	+ Slight change to how empty GTIs are handled when filtering EXPOSUnn extensions.
+	+ Add '#include <stdio.h>' to evselect.cc and xmmselect.cc .  Hopefully will fix
+	  linux problem.
+
+Version 3.32 - 2000-10-02 (DH)
+------------
+	+ Add filtering of EXPOSUnn extensions in exposure correction.  Controlled by
+	  the filterexposure parameter.
+	+ Remove tempsetmemenv from evselect.  Closes SSC-SPR-1852.
+	+ Evselect now always writes CHANTYPE keyword when making spectra, setting it
+	  to the name of the extraction column.  Closes SSC-SPR-1946.
+	+ EXPOSURE keyword for images calculated as per JO proposal.  Lightcurve EXPOSURE
+	  now done as for spectra. Closes SSC-SPR-1943.
+	+ Add/remove parameters from lyt file to reflect recent changes.
+	
+Version 3.31 - 2000-10-02 (DH)
+------------
+	+ Change error checking for datasubspace parser, so that now a warning is issued
+	  in case of failure, rather than an error.
+	+ New parameter 'calculatebackscale', which turns on the calculation of the BACKSCAL
+	  keyword for spectra.  Closes SSC-SPR 1944.
+	+ Changes to prevent BACKSCAL calculation from consuming unreasonable amounts of
+	  memory.  Hopefull closes SSC-SPR 1958.
+
+Version 3.30 - 2000-09-22 (DH)
+------------
+	+ In exposure correction, allow for a TIMEDEL keyword replacing a TIMEDEL column
+	  in the EXPOSUnn extensions.
+	+ New parameter ingorelegallimits, which if true causes evselect to ingore TLMIN
+	  and TLMAX when keywords when setting column extraction limits.
+	+ Remove MaxDataRange and MinDataRange warnings, as these were not working properly
+	  anyway.
+
+Version 3.29 - 2000-08-01 (DH)
+------------
+	+ Fix SSC-SPR-1939, cannot create a non real-64 image with --withzcolumn=true
+	+ Fix SSC-SPR-1941, evselect should create a SYS_ERR keyword
+	+ Fix SSC-SPR-1942, icorrect(sic) value assigned to backscal keyword
+
+Version 3.28 - 2000-07-27 (DH)
+------------
+	+ Add missing '#include <cstdio>' to spec.cc .
+	+ Remove EXPOSURE keyword from light curve and image products.
+
+Version 3.27 - 2000-07-20 (DH)
+------------
+	+ Test whether x/y columns exist before trying to calculate the BACKSCAL
+	  keyword.  Closes SCC-SPR-1932.
+	+ Change slightly meaning of keepfilteroutput parameter, so that if it is
+	  false, then the value of the withfilteredset is ignored, and no output
+	  event list is written. Closes SSC-SPR-1930.
+	
+Version 3.26 - 2000-07-19 (DH)
+------------
+	+ Incorporates all changes through evselect 3.25.10.
+	+ Implement calculation of BACKSCAL keyword in spectrum production.  Update
+	  documentation.  Closes SPR 1674.
+	+ Fix the some bad uses of the kn macro in the documentation.  Closes SPRs
+	  1895 and 1896.
+	+ Add 'squarepixels' parameter, which forces x and y bin sizes to be the same
+	  when imagebinning=imageSize.  Update documentation.  Closes SOC SCR 1607.
+	+ Add 'Sparse' message about the number of events selected.  Closes SCR on
+	  "NUmber of selected events".
+	+ Add test, so that if the user selects that no output be produced (or files
+	  modified), then evselect exits before doing any significant processing.
+	+ Add warning message when updateexposure=true and writedss=false.
+
+Version 3.25.10 - 2000-07-06 (DH)
+---------------
+	+ Fix test so it does a more robust comparison of real exposure values, using
+	  a perl call.
+
+Version 3.25.9 - 2000-07-06 (GV)
+--------------
+	+ edit away DATE and CREATOR from test/ev1000.fits.
+	
+Version 3.25.8 - 2000-07-05 (UL)
+--------------
+	+ fixed small /bin/sh compatability problem in test/evseltest
+	  (caused test to fail with sh syntax error under Linux).
+
+Version 3.25.7 - 2000-07-03 (DH)
+--------------
+	+ Fix problem which was causing exposure correction to only work properly for simple 
+	  selection expressions.
+	+ Fix bug which was causing crash when a (cleaned) data subspace had no components.
+
+Version 3.25.6 - 2000-06-23 (DH)
+--------------
+	+ E_MIN, E_MAX and E_UNITS now written to rates files.  Update docs.  Fixes SPR 1650.
+	+ Rearrange layout file to reflect the mulitple uses of the parameter energycolumn.
+	+ test harness file ev.fits had been corrupted.  Replace with file from old version.
+
+Version 3.25.5 - 2000-06-21 (DH)
+--------------
+	+ Fix SPR 1853, Small typo into config file for ycolumn.
+	+ SPR 1775 closed in dsslib 3.0.3 .
+	+ Add new attributestocopy parameter for copying attributes from the input
+	  table to the output products table or array.  Closes SPR 1842.
+
+Version 3.25.4 - 2000-06-15 (DH)
+--------------
+	+ Added calculation of EXPOSURE keyword for images and lightcurves.  Closes
+	  SSC-SPR-1764.
+	+ SPR 1778 closed in dsslib 3.0.2 .
+	+ SPR 1814 closed in dsslib 3.0.2 .
+	+ Fix SPR 1825, DOC::broken links.
+	+ Fix bug with propogating units to histograms.  Closes SPR 1839.
+
+Version 3.25.3 - 2000-06-12 (DH)
+--------------
+        + Major upgrade to ``Extraction Stage'' section of documentation, as well as
+	  some other small changes.  Closes SPRs 1451 and 1711.
+	+ Fix test harness to better catch exposure calcualtion errors.
+	
+Version 3.25.2 - 2000-06-05 (DH)
+--------------
+	+ Fix SPR 1704, Does not write ONTIME and LIVETIME in event list.
+	  Exposure information was never being updated.
+
+Version 3.25.1 - 2000-06-01 (DH)
+--------------
+	+ Fix problem causing crashes for some spectral extractions
+        + Fix SPR 1691, changes not documented
+	+ Fix SPR 1692, GTI filter set not released (closed in dsslib 3.0.1)
+	+ Fix SPR 1697, task fails if selected time interval has no events (closed in dsslib 3.0.1)
+	
+Version 3.25 - 2000-05-29 (GV)
+------------
+	+ Copy test data sets from 3.23, as they had been dspurified.
+
+Version 3.24 - 2000-05-29 (UL)
+------------
+	+ fixed problem in XmmExposure::XmmExposure() (EMOS2 and EPN were
+	  not handled correctly)
+	+ more elegant way to set the instrument of the CAL state
+
+Version 3.23 - 2000-05-26 (DH)
+------------
+	+ Add propagation of RGS keywords from region extensions
+	  to spectrum file in the exposure updating part of evselect.
+	+ Fix problem which may have been causing CCDNR column to be
+	  required when it shouldn't be.
+	+ Handle range type TIME filters in exposure updating for
+	  EPIC insturments (closes SPR 1623).
+	+ Fix setting of column units in light curve generation 
+	  (closes SPR 1675).
+	+ Change default values to: destruct=true, keepfilteroutput=false.
+	+ Fix bug which was determining wrong limits under some
+	  circumstances.
+
+Version 3.22 - 2000-05-16 (DH)
+------------
+	+ Fix bug in calculation of TLMAX value for a spectrum's
+	  CHANNEL column.
+	+ Fix bug in calculation of a spectrum's SPECVAL keyword.
+	+ Add propagation of the RGS EXPOSURE keyword to a spectrum.
+	+ Change exposure correction so it complains rather than
+	  aborts if it cannot update exposure info.
+	+ Make writedss=true and updateexposure=true the defaults.
+
+Version 3.21 - 2000-03-05 (DH)
+------------
+	+ Fix bug in calculation of the SPECVAL keyword.
+	+ Fix yet another bug causing array overwrites in image
+	  extraction under special circumstances.
+
+Version 3.20 - 2000-03-22 (DH)
+------------
+	+ Fix bug that was causing crashes when an image was extracted
+	  under certain special conditions.  Evselect was writing
+	  outside of array bounds (closes SPR 1586).
+	+ Make calculation of exposure information more robust - a
+	  DSS spec is no longer required, and some problems dealing
+	  with missing EXPOUSnn extensions fixed.
+
+Version 3.19 - 2000-03-08 (DH)
+------------
+	+ Fix bug introduce in 3.18 - temporay dataset opened with
+	  wrong dal mode.
+	
+Version 3.18 - 2000-03-08 (DH)
+------------
+	+ Use new DataSetServer::clone function in evselect.cc .  
+	+ Switch to using tempnam to generate temporary file names.
+
+Version 3.17 - 2000-02-29 (DH)
+------------
+	+ Add data subspace 'cleaning' to generation of dss info in
+	  evselect.  See description of cleanDSS in dsslib documentation
+	  for details.
+	+ Minor change to layout file, making updateexposure dependant on
+	  writedss.
+	+ Remove unexecutable block from evselect.cc .
+
+Version 3.16 - 2000-02-24 (DH)
+------------
+	+ Fix SPR 1500, spectrum extraction requires CCDNR column
+	+ Change spectrum extraction so that it now does true binning,
+	  instead of OGIP grouping.  Keywords are written to the spectrum
+	  giving information on the binning and offset.
+
+Version 3.15 - 2000-02-21 (UL)
+------------
+	+ brought in line with selectlib-4.28 (selected rows are now marked
+	  by _setting_ flag bit)
+	+ updated description of parameters 'flagbit'/'flagcolumn' accordingly
+
+Version 3.14 - 2000-02-21 (DH)
+------------
+	+ Fixed up DEPEND file.
+	+ Changes to test harness to improve test harness.
+	
+Version 3.13 - 2000-02-17 (DH)
+------------
+	+ Exposure information now updated by evselect, as per agreed
+	  procedures.  New parameter updateexposure to control this,
+	  turned off by default.  Closes SPR 1315.  Docuemntation
+	  updated.
+
+Version 3.12 - 2000-02-15 (UL)
+------------
+	+ if "imagebinning=imageSize" store effective bin size in task
+	  parameters "xy/imagebinsize" such that meta-tasks like xmmselect
+	  can read them; this is necessary to fix SOC-SPR 1148: region not
+	  properly transformed when imagebinning=imageSize
+
+Version 3.11 - 2000-02-10 (DH)
+------------
+	+ Fixed bug which caused read-only failure in some cases when using
+	  a null filtering expression.
+	+ Fixed SPR 1461, "evselect not recognising WCS keywords".  This was
+	  due to the fact that the block copying function in the Dal does not
+	  copy column attributes.
+
+Version 3.10 - 2000-02-04 (UL)
+------------
+	+ for keepfilteredoutput=no the input data set is now copied to
+	  a Temp data set which is destructively filtered; advantage:
+	  in highmem mode, the filtered Temp set is never written back to
+	  disk which improves the execution time; in the lowmem case, the
+	  opening of the Temp set can be enforced in highmem mode with
+	  tempsetmemenv=false
+
+Version 3.9 - 2000-02-02 (DH)
+-----------
+	+ Fix SPR 1450 "Attempts to modify read-only object".  Fix also closes
+	  SPR 1162 "evselect should put temporary columns in a temporary dataset"
+
+Version 3.8 - 2000-01-28 (DH)
+-----------
+	+ First version with data subspace support
+	+ Fix problem with sizing of images from integer-valued columns
+	+ Replace boolean parameter withimagebinsize with string parameter imagebinning.
+	  This change is not backward compatible, but should only effect the down-stream
+	  task imagechain.
+	+ Incorporate new parameters into layout file.
+	+ Rationalize the behaviour of keepfilteredoutput and withfilteredset parameters
+	  to be consistent with the documentation.
+	+ Allow real-valued columns as input for spectral extraction. Real values are
+	  truncated to integers before the spectrum is accumulated.
+	+ Change COUNTS column in spectra from Int16 to Int32.
+
+Version 3.7 - 1999-12-20 (DH)
+-----------
+	+ Fix SPR 1162, HDUCLAS2 to be ALL or ACCEPTED depending on destruct parameter
+	+ New histogram prodcut type, for general binning of real or integer columns.
+	+ New parameters for controlling the extracted image size.  Now by default the
+	  size of the image is specified, rather than the binning factor.
+	+ Update documentation to reflect above changes.
+
+Version 3.6 - 1999-09-15 (GV)
+-----------
+        - fix DEPEND
+
+Version 3.5 - 1999-09-13 (UL/DH)
+-----------
+	+ documentation:
+		+ removed 'DOCS = evselect/evselect.html' from Makefile as
+		  this is now automatically handled by Make.include
+		+ fixed SOC-SPR 774: wrong use of /warn{} in user doc.
+		+ fixed SOC-SPR 775: use of own formatting is documentation
+	        + more general cleanup of marcos and error messages.
+	+ Now writes selection expression to the keyword SLCTEXPR, which is
+	  propogated to the products.  The old history keywords specifying
+	  the parameters used in evselect have been removed.
+	+ Clean up error messages detailing that OGIP spectra must be extracted
+	  from and integer-valued energy column.  Change spectralbinsize parameter
+	  to an integer type.
+
+Version 3.4 - 1999-08-26 (DH)
+-----------
+	+ Remove spurious debugging message.
+	+ Minor fixes to documentation.
+
+Version 3.3 - 1999-08-12 (DH)
+-----------
+	+ Change COUNTS column in spectral files from Int32 to Int16 in
+	  order to conform to the OGIP standard.
+	
+Version 3.2 - 1999-08-06 (DH)
+-----------
+	+ Fix bug which corrupted output event list when extracting images
+	+ New algorithm for generating temporary column names.
+
+Version 3.1 - 1999-08-05 (DH)
+-----------
+	+ Fix bug in implementation of the 'table' parameter, put test of
+	  'table' syntax into the test harness.
+	+ Fix SPR 1142, HDUCLAS3 keyword.
+	+ Fix SPR 1156, documentation updated.
+
+Version 3.0 - 1999-07-30 (DH)
+-----------
+	+ Change 'set' parameter to 'table' parameter, using Dal set:table convention.
+	+ Fix SPR 913, so that 'zcolumn' now populates lightcurves, and add 'zerrorcolumn'
+	  parameter for light curve rate errors.
+	+ Fix SPR 1002 by changing warning messages for constant columns.
+	+ Remove all mention of second order quantities from task description, as the
+	  generation of these quantities is now to be contained in the task 'tabcalc'.  
+	  Close SPR 625 as it is no longer relavent.
+	+ Change default value of 'flag' parameter to EVFLAG to avoid conflict with
+	  the standard FLAG column in event lists.
+
+Version 2.1 - 1999-07-06 (DH)
+-----------
+	+ Fix SPR 861, type of image should be selectable from the command line
+	+ Fix SPR 1011, Documentation mistake
+	+ Fix SPR 1012, Mistake in test harness
+	+ Fix SPR 1015, SAOIMAGE coordinates
+	+ Update documentation and layout file for new parameters for setting type of image
+
+Version 2.0 - 1999-05-28 (DH)
+-----------
+	+ Fix SPR 284, evselect extension propagation.
+	  A parameter blockstocopy has been added for this purpose.
+	+ Eveselect now attempts to estimate the smallest sensible data type for
+	  an image, and then uses that value when extracting the image.
+	+ Expressions can now be used to specify extraction columns.
+	+ TSTART and TSTOP now set in time series according to agreed convention.
+	+ New parameters maketimecolumn and makesparserates to control creation
+	  of time series files.
+	+ Renaming of parameters to conform to new standard. These changes are
+	  of course NOT BACKWARD COMPATIBLE.
+	+ Addition of new controlling boolean parameters.  Gui layout file reworked
+	  to reflect this new structure.
+
+Version 1.24 - 1999-05019 (DH)
+------------
+	+ Fix SPR 996, evselect generated images should contain WCS attributes.
+	+ Fix SPR 997, evselect.lyt missing from CONFIGFILES.
+
+Version 1.23 - 1999-05-12 (UL)
+------------
+	+ added support for subexpressions in table attributes
+	  (see CHANGE HISTORY in evselect.cc or documentation for details)
+
+Version 1.22 - 1999-05-11 (UL)
+------------
+	+ brought in line with error-1.18
+
+Version 1.21 - 1999-04-16 (UL)
+------------
+	+ brought in line with selectlib 4.0
+
+Version 1.20 - 1999-03-04 (DH)
+------------
+	+ Change extractor code to make correct use of the data() method.
+	+ Add evselect.lyt to the Makefile in the config directory.
+
+Version 1.19 - 1999-03-04 (UL)
+------------
+	+ config/evselect.par: 'infile' is now the only mandatory parameter ('q'),
+	  all others are optional ('h')
+
+Version 1.18 - 1999-03-02 (UL)
+------------
+	+ test/region.fits + test/region2.fits: value of TDIM1 was wrong:
+	  16 instead of 20 - problem revealed by switch to cfitsio 2.0
+
+Version 1.17 - 1999-03-02 (UL)
+------------
+	+ config/evselect.lyt: newly added file to improve the look of the
+	  parameter dialog
+
+Version 1.16 - 1999-02-11 (UL)
+------------
+	+ src/evselect.cc: added include statement enforced by taskmain >v1.17
+
+Version 1.15 - 1999-01-25 (DH+UL)
+------------
+   SPR 872 fixed in selectlib 3.18.  Slight change to test harness.	
+	
+Version 1.14 - 1999-01-19 (DH)
+------------
+	+ SPR's fixed:
+	171, Own clobber + system calls
+	593, Image generation
+	622, When entering a bad type of file, the error message is not clear
+	628, There is no differences between different verbosity levels
+	633, When the rate time range is invalid, evselect does not produce an output
+	817, evselect crashes when destructive=yes
+	851, spectrum extraction incorrect when TLMIN/TLMAX keywords missing
+	858, wrong message mechanism
+	873, Mask cannot be in primary array [fixed in selectlib 3.17, 
+	     DEPEND file updated]
+	+ Spectral binning now done via OGIP grouping conventions.
+	+ Seperate binning factors for x and y in image extraction.
+	+ Filtering step only executed when necessary.
+	+ Input file opened readonly when not modified.
+
+Version 1.13 - 1998-11-04 (DH)
+------------
+	+ fix SPR 588 (includes selectlib fix by UL)
+	+ Remove lower limit on image extraction range parameters
+	+ Open input file read-only if it will not be modified
+
+Version 1.12 - 1998-10-22 (DH)
+------------
+	+ fix bug in the writing of keywords for rates files
+
+Version 1.11 - 1998-10-14 (DH+UL)
+------------
+	+ fix for mods to test files that were missed out in 1.10
+
+Version 1.10 - 1998-10-07 (DH+UL)
+------------
+	+ added test to check correctness of WCS support in mask filter
+     (selectlib-3.11)
+
+Version 1.9 - 07-10-98 (DH)
+-----------
+	+ Minor fix to work around selectlib operator bug.
+
+Version 1.8 - 21-09-98 (DH)
+-----------
+	+ Changes to make evselect work with the new parameter system, 
+	  including a work around for parameters with no default values.
+	+ Modified evseltest so no attempt is made to use the yet to be 
+	  implemented clobber parameter.
+
+Version 1.7 - 26-08-98 (DH)
+-----------
+	+ Parameters can be used to specify ranges for all types of extraction
+	+ Much broader support for extraction of data from columns of various data types
+	+ Light curve extraction implemented
+	+ WCS keywords supported for image extraction
+	+ Bug fix for problem when creating non-square images
+	+ closed SPR 018, No image file has been created
+	+ closed SPR 282, Keywords detection and propagation problem
+	+ closed SPR 460, Don't create output file with no data in it
+	+ closed SPR 518, zcol for image and rate file creation
+	+ closed SPR 520, Rates file creation
+
+Version 1.6 - 03-06-98 (UL+DH)
+-----------
+	+ fixed SSC-SPR 169 (generic main)
+	+ fixed SSC-SPR 290 (doc)
+	+ brought in line with selectlib v3.0
+	+ d/f value of flagbit parameter is now -1 (most-significant-bit)
+	+ doc/evselect.tex removed - now constructed on the fly by 'make ps'
+	+ Uses new Dal (1.18) functions and API.
+	+ Support for FLAG column of type Int8, Int16 and Int32.
+	+ Image is now created in the primary array.
+	+ More robust test harness for image and spec creation.
+	+ fixed SPR 001 (Empty error and warning codes)
+	+ fixed SPR 366, Move TODO section into developer's section of description
+	+ fixed SPR 368 (Use type f for file parameters
+	+ fixed SPR 370, evselect.tex should closely follow template
+	+ fixed SPR 371 (Remove dalif from USEDLIBS)
+	+ fixed SPR 372 (Do not modify CXXFLAGS)
+	+ fixed SPR 496 (Upgrade required)
+	+ fixed SPR 497 (Compilation Errors)
+
+Version 1.5 - 27-05-98 (UL)
+-----------
+	+ fixed SSC-SPRs 168, 170, 175
+	+ write task parameter values to history section of filtered event list
+	  file
+
+Version 1.4 - 21-05-98 (DH)
+-----------
+	+ Added valid DEPEND file
+	+ Deleted NEWS.html
+	+ Added this Changelog file
+	+ SPR's fixed:
+		167, Spurious files
+		172, Add FITS files to CLEANFILES
+		173, Colon in .par file
+		174, Test harness fails
+
+

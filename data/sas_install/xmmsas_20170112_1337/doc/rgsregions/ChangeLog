@@ -1,0 +1,144 @@
+ChangeLog for rgsregions
+===============================
+
+Version 1.22 - 2014-04-28 (AI)
+--------------
+	+ rgsDisp bug fixed in background computations.
+	
+Version 1.21.2 - 2014-03-05 (AI, EC, EOP)
+--------------
+	+ Deep analysis showed that the change made in 1.21.1 to 
+	  call manager.background replacing rgsDisp[i] by 
+	  rgsDisp[excl.size() - 1], was incorrect.
+	  It is changed now to rgsDisp[0].  
+
+Version 1.21.1 - 2014-02-26 (EC, EOP, AI)
+--------------
+	+ Changed call to manager.background in parameter rgsDisp form 
+	  rgsDisp[i] to rgsDisp[excl.size()-1].
+
+Version 1.21 - 2014-02-04 (AI)
+--------------	
+	+ code refractoring. The static function narrow is now a Node method
+	
+Version 1.20.1 - 2013-02-19 (AI)
+--------------	
+	+ eV~Ang constant taken from caloalutils.
+	
+Version 1.20 - 2012-12-18 (AI)
+--------------
+	+ New functionality to calculate regions (spatial, source, background) in lambda space. 
+	These modifications are related to the SOC-SPR-6688
+	+ New parameter "spectrumbinning" to switch between region calculations 
+	in beta or lambda space.
+	+ documentation updated.
+	
+Version 1.19.3 - 2009-05-29 (AI)
+--------------
+	+ New paremeters "withpicutoff" and "picutoff" added. SOC-SCR-241 closed.
+	This parameter supplies the minimum cutoff in PI for region selection.
+	+ Doc updated.
+	
+Version 1.19.2 - 2006-06-22 (AI)
+--------------
+	+ (config/rgsregion.par) New default values for parameters:
+	xpsfbelow=95, xpsfabove=95, xpsfexcl=98, pdistincl=95
+	
+Version 1.19.1 - 2006-02-17 (CG)
+--------------
+	+ re-submission after cleaning directories
+
+Version 1.19 - 2005-01-12 (BC + CG)
+------------
+	+ updated for extended source analysis
+        + see TN (XMM-SOC-SW-TN-0020)
+	+ Wavelength/Energy conversion accuracy fix - SPR2549
+
+Version 1.18 - 2003-06-30 (CG)
+------------
+	+ broken link in documentation fixed
+
+Version 1.17 - 2002-08-19 (UL)
+------------
+	+ a few transparent changes to improve C++ standard compliance
+
+Version 1.16 - 2002-07-29 (UL)
+------------
+	+ now depends on selectlib-4.58 and sas-1.0
+
+Version 1.15 - 2002-05-09 (JDR)
+------------
+- requires param-2.0
+
+Version 1.14 - 2002-04-23 (JDR)
+------------
+- implements order-specific background regions for HTR mode
+
+Version 1.13 - 2002-02-20 (JDR)
+------------
+- added support for HTR mode data
+
+Version 1.12 - 2001-11-08 (JDR)
+------------
+- spatial regions diminish to null as DELTA_XDSP leaves the exposed surface
+
+Version 1.11 - 2001-10-17 (JDR)
+------------
+- added std namespace qualifiers
+- fixed bug in spatial regions near the top of the chips
+- removed automatic PRIMESRC regions (and associated warning)
+- chip 1 CCD redistribution function used for all chips
+- the silicon edge is resolved regardless of --orderres
+- excludes calibration sources from PI regions
+- handles null exposure maps
+
+Version 1.10 - 2001-10-10 (JDR)
+------------
+- changed parameter name --set to --srclist and --eventset to --evlist
+
+Version 1.9 - 2001-09-28 (JDR)
+-----------
+- updated runtime default filenames
+
+Version 1.8 - 2001-04-11 (JDR)
+-----------
+- updated for rgssources-4.0
+
+Version 1.7 - 2001-04-05 (JDR)
+-----------
+- replaced default output column names with BETA_CORR, XDSP_CORR, and PI
+
+Version 1.6 - 2001-03-23 (JDR)
+-----------
+- requires rgslib-1.10 and cal-3.103
+
+Version 1.5 - 2001-03-09 (JDR)
+-----------
+- avoids energies for which no CCD redistribution function is available
+- expects new exposure map extension names
+
+Version 1.4 - 2001-02-07 (JDR)
+-----------
+- updated for and requires rgslib-1.5
+
+Version 1.3 - 2001-01-12 (JDR)
+-----------
+- replaced --xpsfincl with --xpsfbelow and --xpsfabove
+- added --protect mechanism to avoid destruction of customized regions
+
+Version 1.2 - 2001-01-10 (JDR)
+-----------
+- updated for and requires rgslib-1.4
+
+Version 1.1 - 2000-12-28 (JDR)
+-----------
+- various minor interface changes as requested for approval
+
+Version 0.2 - 2000-11-28 (JDR)
+-----------
+- bug fix: now conforms with ASC region specification (requires rgslib-1.3)
+
+Version 0.1 - 2000-11-21 (JDR)
+-----------
+- working draft, ready for testing and design review
+- directory structure created by pkgmaker

@@ -1,0 +1,301 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Spectral analysis</TITLE>
+<META NAME="description" CONTENT="Spectral analysis">
+<META NAME="keywords" CONTENT="evigweight">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="evigweight.css">
+
+<LINK REL="next" HREF="node8.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="node3.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+evigweight (evigweight-1.7) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Event processing"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Spatial analysis"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="evigweight.html">Home Page</A> / <A  HREF="node3.html">Description</A></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00034000000000000000"></A>
+<A NAME="evigweight:description:description:spectral"></A>
+<BR>
+Spectral analysis
+</H2>
+
+<P>
+One can then define (via <A NAME="460"></A><A NAME="tex2html6"
+  HREF="../evselect/index.html"><SPAN  CLASS="textbf">evselect</SPAN></A>
+called with <TT>withzcolumn</TT>=Y
+<TT>withzerrorcolumn</TT>=N)
+a `corrected' spectrum <SPAN CLASS="MATH"><IMG
+ WIDTH="42" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$O'(I)$"></SPAN> within region <SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$Reg$"></SPAN> 
+(usually in sky coordinates)
+and its associated error <SPAN CLASS="MATH"><IMG
+ WIDTH="64" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$\sigma(O'(I))$"></SPAN>:
+<BR>
+<DIV ALIGN="CENTER">
+
+<!-- MATH
+ \begin{eqnarray}
+O'(I) & = & \sum_j \frac{w_j}{T_{exp}(CCD_j)}
+~~~~~~~~(\alpha_j,\delta_j) \in Reg; \;
+E_I-\Delta E_I/2 \: < \: E_j \: < \: E_I+\Delta E_I/2 \\
+\sigma^2(O'(I)) & = & \sum_j \frac{w_j^2}{T^2_{exp}(CCD_j)}
+\end{eqnarray}
+ -->
+<TABLE CELLPADDING="0" ALIGN="CENTER" WIDTH="100%">
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT"><IMG
+ WIDTH="42" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$\displaystyle O'(I)$"></TD>
+<TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$\textstyle =$"></TD>
+<TD ALIGN="LEFT" WIDTH="50%" NOWRAP><IMG
+ WIDTH="520" HEIGHT="53" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$\displaystyle \sum_j \frac{w_j}{T_{exp}(CCD_j)}
+~~~~~~~~(\alpha_j,\delta_j) \in Reg; \;
+E_I-\Delta E_I/2 \: &lt; \: E_j \: &lt; \: E_I+\Delta E_I/2$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">3</SPAN>)</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT"><IMG
+ WIDTH="71" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$\displaystyle \sigma^2(O'(I))$"></TD>
+<TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$\textstyle =$"></TD>
+<TD ALIGN="LEFT" WIDTH="50%" NOWRAP><IMG
+ WIDTH="121" HEIGHT="59" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$\displaystyle \sum_j \frac{w_j^2}{T^2_{exp}(CCD_j)}$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">4</SPAN>)</TD></TR>
+</TABLE></DIV>
+<BR CLEAR="ALL"><P></P>
+where <!-- MATH
+ $T_{exp}(CCD_j)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="91" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$T_{exp}(CCD_j)$"></SPAN> is the exposure time for the CCD/node where
+the event was detected and <SPAN CLASS="MATH"><IMG
+ WIDTH="36" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$\Delta E_I$"></SPAN> the width of bin <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.png"
+ ALT="$I$"></SPAN>.
+If the region <SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$Reg$"></SPAN> extends over a single CCD, the exposure time may
+be taken out of the sums.
+<SPAN CLASS="MATH"><IMG
+ WIDTH="42" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$O'(I)$"></SPAN> is an estimate of the spectrum one would get if the detector was flat.
+
+<P>
+In terms of the usual `uncorrected' spectrum:
+<BR>
+<DIV ALIGN="CENTER"><A NAME="evigweight:description:description:spectral:corspec"></A><A NAME="evigweight:description:description:spectral:corerr"></A>
+<!-- MATH
+ \begin{eqnarray}
+O'(I) & = & \langle{w_j}\rangle(I) \: O(I)
+\\
+\sigma^2(O'(I)) & = & \langle{w_j^2}\rangle(I) \: O(I)
+\end{eqnarray}
+ -->
+<TABLE CELLPADDING="0" ALIGN="CENTER" WIDTH="100%">
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT"><IMG
+ WIDTH="42" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$\displaystyle O'(I)$"></TD>
+<TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$\textstyle =$"></TD>
+<TD ALIGN="LEFT" WIDTH="50%" NOWRAP><IMG
+ WIDTH="92" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="$\displaystyle \langle{w_j}\rangle(I) \: O(I)$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">5</SPAN>)</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT"><IMG
+ WIDTH="71" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$\displaystyle \sigma^2(O'(I))$"></TD>
+<TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$\textstyle =$"></TD>
+<TD ALIGN="LEFT" WIDTH="50%" NOWRAP><IMG
+ WIDTH="93" HEIGHT="37" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$\displaystyle \langle{w_j^2}\rangle(I) \: O(I)$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">6</SPAN>)</TD></TR>
+</TABLE></DIV>
+<BR CLEAR="ALL"><P></P>
+where the <!-- MATH
+ $\langle\rangle$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="16" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$\langle\rangle$"></SPAN> denote the average over the <SPAN CLASS="MATH"><IMG
+ WIDTH="37" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$O(I)$"></SPAN> photons in 
+bin <SPAN CLASS="MATH"><IMG
+ WIDTH="12" HEIGHT="14" ALIGN="BOTTOM" BORDER="0"
+ SRC="img7.png"
+ ALT="$I$"></SPAN>.
+
+<P>
+The corresponding source spectrum <SPAN CLASS="MATH"><IMG
+ WIDTH="40" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.png"
+ ALT="$S(E)$"></SPAN> is also obtained by summing 
+over the region, and the model spectrum <SPAN CLASS="MATH"><IMG
+ WIDTH="46" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$M'(I)$"></SPAN> (to be compared to the data)
+by multiplying with the central effective area 
+and applying the response matrix.
+<BR>
+<DIV ALIGN="CENTER">
+
+<!-- MATH
+ \begin{eqnarray}
+S(E) & = & \sum_{\alpha,\delta \in Reg} s_{\alpha,\delta}(E) \\
+M'(I) & = & \int_e \: R_{Reg}(e,I) \: A_{0,0}(e) \: S(e) \: \mathrm d e
+\end{eqnarray}
+ -->
+<TABLE CELLPADDING="0" ALIGN="CENTER" WIDTH="100%">
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT"><IMG
+ WIDTH="40" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$\displaystyle S(E)$"></TD>
+<TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$\textstyle =$"></TD>
+<TD ALIGN="LEFT" WIDTH="50%" NOWRAP><IMG
+ WIDTH="107" HEIGHT="54" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$\displaystyle \sum_{\alpha,\delta \in Reg} s_{\alpha,\delta}(E)$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">7</SPAN>)</TD></TR>
+<TR VALIGN="MIDDLE"><TD NOWRAP WIDTH="50%" ALIGN="RIGHT"><IMG
+ WIDTH="46" HEIGHT="35" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.png"
+ ALT="$\displaystyle M'(I)$"></TD>
+<TD ALIGN="CENTER" NOWRAP><IMG
+ WIDTH="16" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$\textstyle =$"></TD>
+<TD ALIGN="LEFT" WIDTH="50%" NOWRAP><IMG
+ WIDTH="202" HEIGHT="53" ALIGN="MIDDLE" BORDER="0"
+ SRC="img34.png"
+ ALT="$\displaystyle \int_e \: R_{Reg}(e,I) \: A_{0,0}(e) \: S(e) \: \mathrm d e$"></TD>
+<TD CLASS="eqno" WIDTH=10 ALIGN="RIGHT">
+(<SPAN CLASS="eqn-number">8</SPAN>)</TD></TR>
+</TABLE></DIV>
+<BR CLEAR="ALL"><P></P>
+Of course the response matrix should be taken (via <A NAME="466"></A><A NAME="tex2html7"
+  HREF="../rmfgen/index.html"><SPAN  CLASS="textbf">rmfgen</SPAN></A>)
+in the true detector region (not at the center) associated
+with the sky region <SPAN CLASS="MATH"><IMG
+ WIDTH="32" HEIGHT="30" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$Reg$"></SPAN>.
+The central effective area may be obtained by calling <A NAME="470"></A><A NAME="tex2html8"
+  HREF="../arfgen/index.html"><SPAN  CLASS="textbf">arfgen</SPAN></A>
+with special settings:
+<PRE>
+arfgen arfset=your_arf spectrumset=your_spectrum withbadpixcorr=N modelee=N  \
+       withdetbounds=Y filterdss=N detmaptype=flat detxbins=1 detybins=1  \
+       withsourcepos=Y sourcecoords=tel sourcex=0 sourcey=0
+</PRE>
+
+<P>
+Model fitting may be performed via XSPEC, entering <SPAN CLASS="MATH"><IMG
+ WIDTH="42" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$O'(I)$"></SPAN> as <A NAME="474"></A><TT>RATE</TT>,
+and <SPAN CLASS="MATH"><IMG
+ WIDTH="64" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$\sigma(O'(I))$"></SPAN> as <A NAME="476"></A><TT>STAT_ERR</TT>, with <SPAN CLASS="MATH"><IMG
+ WIDTH="53" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.png"
+ ALT="$A_{0,0}(e)$"></SPAN> 
+and <SPAN CLASS="MATH"><IMG
+ WIDTH="74" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$R_{Reg}(e,I)$"></SPAN> in the Ancillary Response File and 
+Redistribution Matrix File, respectively.
+
+<P>
+Note that the weighting procedure is incompatible with using the Poisson
+model (C-statistic) in XSPEC (the <SPAN CLASS="MATH"><IMG
+ WIDTH="21" HEIGHT="34" ALIGN="MIDDLE" BORDER="0"
+ SRC="img37.png"
+ ALT="$\chi^2$"></SPAN> formula must be used).
+This means that care must be taken to have enough counts per spectral bin.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node6.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Event processing"></A>
+<A HREF="node3.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Description"></A>
+<A HREF="node8.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Spatial analysis"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node20.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>

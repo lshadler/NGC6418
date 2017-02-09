@@ -1,0 +1,226 @@
+<!-- converted from XPI formatted "emenergy.par.xpi"-->
+<FILE>
+ <CONFIG>
+
+  <PARAM id="ineventset" type="dataset" mandatory="yes" default="">
+   <DESCRIPTION>
+    Input events file
+   </DESCRIPTION>
+   <CONSTRAINTS>
+    true
+   </CONSTRAINTS>
+  </PARAM>
+
+  <PARAM id="newoutput" type="bool" default="no">
+   <DESCRIPTION>
+    Create output events file (no for overwriting input)
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="outeventset" type="dataset" default="events.out">
+      <DESCRIPTION>
+       Output events file
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="flagevents" type="bool" default="yes">
+   <DESCRIPTION>
+    Use EVFLAG sub_task
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="correctcti" type="bool" default="yes">
+   <DESCRIPTION>
+    Use CTI_CORR sub_task
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="getccdbkg" type="bool" default="yes">
+   <DESCRIPTION>
+    Use E4 values in CCDBKG
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="minenergy" type="int" default="100">
+      <DESCRIPTION>
+       Min E1 for use in CCDBKG
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       minenergy in [0:]
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="maxperipix" type="int" default="0">
+      <DESCRIPTION>
+       Max PERIPIX for use in CCDBKG
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       maxperipix in [0:7]
+      </CONSTRAINTS>
+     </PARAM>
+     <PARAM id="fillccdbkg" type="bool" default="yes">
+      <DESCRIPTION>
+       Fill the empty areas of the background map
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+        <PARAM id="fillminnumber" type="int" default="10">
+         <DESCRIPTION>
+          Max number of events for averaging
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          fillminnumber in [0:]
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+     <PARAM id="writebackgroundset" type="bool" default="no">
+      <DESCRIPTION>
+       Create output file for E4 image and time-series
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+        <PARAM id="backgroundset" type="dataset" default="bkgccd.map">
+         <DESCRIPTION>
+          Output file for E4 image and time-series
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          true
+         </CONSTRAINTS>
+        </PARAM>
+        <PARAM id="timebin" type="real" default="100">
+         <DESCRIPTION>
+          Time bin for E4 time-series
+         </DESCRIPTION>
+         <CONSTRAINTS>
+          timebin in [0.:]
+         </CONSTRAINTS>
+        </PARAM>
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="useccfdarkframe" type="bool" default="no">
+   <DESCRIPTION>
+    Use dark frame in CCF
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="withmaskedccdset" type="bool" default="no">
+   <DESCRIPTION>
+    Need CCD background image
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="maskedccdset" type="dataset" mandatory="yes" default="">
+      <DESCRIPTION>
+       CCD masked image from emdiag or emenergy
+      </DESCRIPTION>
+      <CONSTRAINTS>
+       true
+      </CONSTRAINTS>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="rejectbade3e4" type="bool" default="yes">
+   <DESCRIPTION>
+    Throw away events with non-physical E3/E4
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="makepha" type="bool" default="yes">
+   <DESCRIPTION>
+    Use MAKE_E sub_task
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+     <PARAM id="randomizeenergy" type="bool" default="yes">
+      <DESCRIPTION>
+       Randomize PHA within one ADU bin
+      </DESCRIPTION>
+      <CASE>
+       <ITEM value="no">
+       </ITEM>
+       <ITEM value="yes">
+       </ITEM>
+      </CASE>
+     </PARAM>
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="correctgain" type="bool" default="yes">
+   <DESCRIPTION>
+    Use ENERGY sub_task
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+  <PARAM id="ontimepha" type="bool" default="no">
+   <DESCRIPTION>
+    Timinig ,ode statistical correction
+   </DESCRIPTION>
+   <CASE>
+    <ITEM value="no">
+    </ITEM>
+    <ITEM value="yes">
+    </ITEM>
+   </CASE>
+  </PARAM>
+
+
+
+ </CONFIG>
+</FILE>

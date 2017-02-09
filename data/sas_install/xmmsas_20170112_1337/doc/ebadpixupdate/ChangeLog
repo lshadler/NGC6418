@@ -1,0 +1,73 @@
+ChangeLog for ebadpixupdate
+===============================
+
+Open SPRs: None.
+
+Version 1.10 - 2006-08-04 (JB)
+-------------------------
+- Add CCDID and CCDNODE or QUADRANT when creating BADPIX extension.
+
+Version 1.9 - 2006-06-12 (JB)
+------------------------
+- Add ebadpixupdate11 warning.
+
+Version 1.8 - 2005-12-16 (JB)
+------------------------
+- Fixed SPR-3554: ebadpixupdate show side effect on other CCD
+  Serious bug in evFlagImage which occurred when overwrite=Y.
+  In that case all CCDs were cleared of their flags while only those
+  defined by the user were recomputed, leaving the others unflagged.
+- Cleaned up test directory.
+
+Version 1.7.1 - 2005-06-07 (NW)
+-------------------------- 
+- Changes made to the DEPEND for the releasetrack version
+	
+Version 1.7 - 2005-04-19 (NW)
+------------------------
+- Now call selectReleaseMemory only once in evflagImage to avoid
+  the program crashing when there are no rows in the event file.  A
+  new if loop was all added to avoid looping over -1 rows
+  (SSC-SPR-3442 - `Task crashes if event list is empty') and changed
+  ccd_id to NumBadPixExt in the error string `bad pixels read in the
+  CCF for CCDNR' for now as the ccd_id is not yet defined for the
+  pn, in response to the SSC-SPR-3441 (`Unitialized variable used in
+  message').
+
+Version 1.6.1 - 2004-02-06 (JB)
+--------------------------
+- Do not call CAL_setState when fromccf=N.
+
+Version 1.6 - 2003-10-17 (JB)
+------------------------
+- Add new overwrite parameter (=Y to replace the existing bad pixels)
+  with subsidiary forcereplace and replaceonboard parameters.
+
+Version 1.5 - 2003-06-30 (JB)
+------------------------
+- Downgraded several messages from Sparse to Verbose.
+
+Version 1.4 - 2003-05-22 (JB)
+------------------------
+- Remove set -e in ebadpixupdate_test.
+
+Version 1.3 - 2003-05-19 (JB)
+------------------------
+- Flag events on dead pixels as ON_BADPIX.
+
+Version 1.2 - 2003-05-16 (JB)
+------------------------
+- Change origin parameter into fromccf/fromfiles
+- Accept bad pixel tables to allow direct input from event files
+
+Version 1.1 - 2003-04-13 (JB)
+------------------------
+- Change array size for calling mergeBad.
+
+Version 1.0 - 2003-03-03 (NAW)
+------------------------
+- Original version submitted to the SOC      	
+	
+Version 0.1 - 2002-06-07 (JB)
+------------------------
+- Directory structure created by pkgmaker.

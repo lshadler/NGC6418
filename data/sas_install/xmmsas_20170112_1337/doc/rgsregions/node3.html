@@ -1,0 +1,267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2016 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Description</TITLE>
+<META NAME="description" CONTENT="Description">
+<META NAME="keywords" CONTENT="rgsregions">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2016">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="rgsregions.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="rgsregions.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EE"VLINK="#551A8B" ALINK="#FF0000"><A HREF=http://xmm.esac.esa.int/sas/><IMG SRC="../icons/xmmsaslogo.gif" ALT="XMM-Newton SAS Home Page" HEIGHT=60 WIDTH=60 ALIGN="LEFT"></A>
+<DIV ALIGN=RIGHT><B><FONT SIZE=+2>XMM-Newton Science Analysis System</FONT>
+<BR>
+<BR>
+<BR>
+rgsregions (rgsregions-1.22) [xmmsas_20170112_1337-16.0.0]</B></DIV>
+<BR CLEAR=ALL>
+
+<DIV CLASS="navigation"><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="rgsregions.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+<BR><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A  HREF="../packages.html">Meta Index</A> / <A  HREF="rgsregions.html">Home Page</A></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00030000000000000000"></A>
+<A NAME="rgsregions:description:description"></A>
+<BR>
+Description
+</H1>
+
+<P>
+<A NAME="526"></A><A NAME="tex2html3"
+  HREF="../rgsregions/index.html"><SPAN  CLASS="textbf">rgsregions</SPAN></A>
+defines and constructs the various RGS
+ event-selection regions, and adds them to the source list (see
+ <A NAME="530"></A><A NAME="tex2html4"
+  HREF="../rgssources/index.html"><SPAN  CLASS="textbf">rgssources</SPAN></A>).  Event-selection regions are closed
+
+two-dimensional shapes that may be used to filter the event list for
+ the purpose of spectral analysis (see <A NAME="534"></A><A NAME="tex2html5"
+  HREF="../rgsspectrum/index.html"><SPAN  CLASS="textbf">rgsspectrum</SPAN></A>).  The
+
+regions are stored as extension tables in the source list, formatted
+ according to the specifications of the ``ASC FITS File Designers'
+ Guide''.  Image regions and the spatial background region refer to
+ the plane of dispersion versus cross-dispersion (<EM>image plane</EM>)
+ and select events based on their spatial coordinates.  An image
+ region selects events from a specific astrophysical source, while the
+ spatial background region selects events that are presumed consistent
+ with the lack of any particular source.  The order regions refer to
+ the plane of dispersion versus calibrated pulse-height (<EM>energy
+ plane</EM>) and select events from a specific astrophysical source within
+ a particular reflection order.  The order regions exploit the
+ over-determined nature of coordinates in the energy plane to greatly
+ reduce spurious detections. For all types of regions (image, spatial
+ background and order regions) the <TT>spectrumbinning</TT> parameter
+ should be used to switch the dispersion plane unit from beta to 
+ lambda and vice versa.
+
+<P>
+In High Time Resolution (HTR) mode the entire cross-dispersion
+ dimension is collapsed into one row, inextricably mixing source and
+ background events together.  There is no spatial background region in
+ this mode, and all image regions simply outline the exposure map with
+ no dependence on source position.  Reproducing the same degenerate
+ image region for each source is redundant, of course, but
+ nevertheless preferable to specifying a separate region naming
+ convention just for HTR mode data.  The missing spatial background
+ region is replaced by a collection of order-specific background
+ regions in the energy plane.  Throughout this document a <IMG
+ WIDTH="8" HEIGHT="27" ALIGN="MIDDLE" BORDER="0"
+ SRC="img1.png"
+ ALT="\dag"> marks
+ items that do not apply to HTR mode data and a <IMG
+ WIDTH="8" HEIGHT="27" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="\ddag"> marks items
+ that apply only to HTR mode data.
+
+<P>
+The <A NAME="539"></A><TT>SRCLIST</TT> table contains two columns, <A NAME="541"></A><TT>SRC_SELECT</TT>
+ and <A NAME="543"></A><TT>BACK_SELECT</TT>, which control the default behavior of
+ <A NAME="545"></A><A NAME="tex2html6"
+  HREF="../rgsregions/index.html"><SPAN  CLASS="textbf">rgsregions</SPAN></A>.  Each source with <A NAME="549"></A><TT>SRC_SELECT</TT> set true is
+
+given one image region and an order region for each reflection order
+ from one to the value of the <TT>maxorder</TT> parameter.  In HTR mode
+ only there is an order background region paired with each order
+ region.  The spatial background region is the entire exposed surface
+ in the image plane with regions around the more significant
+ identified sources excluded: each source with <A NAME="552"></A><TT>BACK_SELECT</TT>
+ set true is excluded from this region.  The task parameters,
+ <TT>procsrcsexpr</TT> and <TT>exclsrcsexpr</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^{\dag }$"></SPAN>, allow the user to
+ override these default selections without having to edit the
+ <A NAME="557"></A><TT>SRCLIST</TT> table.  The <TT>procsrcsexpr</TT> expression replaces
+ the list derived from <A NAME="560"></A><TT>SRC_SELECT</TT> and the
+ <TT>exclsrcsexpr</TT> expression replaces the list derived from
+ <A NAME="563"></A><TT>BACK_SELECT</TT>.  Specifying <TT>setflags</TT>=yes (non-default)
+ makes these replacements permanent in the <A NAME="566"></A><TT>SRCLIST</TT> table
+ itself (in HTR mode <TT>exclsrcsexpr</TT> is ignored and
+ <A NAME="569"></A><TT>BACK_SELECT</TT> is set to false for all sources).  The
+ selection expressions are parsed in the context of the whole
+ <A NAME="571"></A><TT>SRCLIST</TT> table, including all of its columns and attributes.
+
+<P>
+The same basic procedure applies to the construction of all regions.
+ A region is an assemblage of separate polygons, each corresponding to
+ a specific node and source.  Only nodes with an exposure map
+ extension in the event list are considered.  The exposure map sets
+ the bounding limits of the polygon, and a
+ parameter--<TT>spatialres</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^{\dag }$"></SPAN> in the image plane and
+ <TT>orderres</TT> in the energy plane--sets the number of opposing
+ vertex pairs.  The pairs are distributed evenly across the dispersion
+ axis so that the first and last pairs align with the extreme edges of
+ the node.  Each vertex in a pair has the same dispersion coordinate
+ value, and with the other coordinate the pair spans some portion of
+ the applicable model curve: the canonical cross-dispersion PSF in the
+ image plane and the canonical pulse-height (PI) distribution in the
+ energy plane.  This portion is specified differently for each type of
+ region.  Note that in the case of the spatial background region each
+ of these polygons define a region that is excluded from the larger
+ region defined by the limits of the exposure map.  The list of
+ sources excluded from the spatial background region is recorded in
+ its extension by a non-standard (not part of the ASC standard)
+ attribute, <A NAME="576"></A><TT>EXCLSRCS</TT>.  For all regions (except for HTR image
+ regions) the number of vertex pairs per node is recorded by the
+ non-standard <A NAME="578"></A><TT>SPACING</TT> attribute.
+
+<P>
+The PI limits of an order region (at each vertex pair) are chosen to
+ provide the narrowest span that covers at least the specified
+ percentage of the model PI distribution.  This percentage is
+ specified by the <TT>pdistincl</TT> parameter and is recorded in the
+ region extension by the non-standard <A NAME="581"></A><TT>COVERAGE</TT> attribute. And
+ additional parameter <TT>picutoff</TT> supplies the minimum cutoff in
+PI. For all spatial regions the cross-dispersion off-axis angle of the
+ relevant astrophysical source divides the model cross-dispersion PSF
+ into two parts: upper and lower.  The upper limit of an image region
+ (at each vertex pair) is chosen to cover at least the specified
+ percentage of the upper part.  This percentage is specified by the
+ <TT>xdspabove</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^{\dag }$"></SPAN> parameter and is recorded in the region
+ extension by the non-standard <A NAME="586"></A><TT>COVABOVE</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^{\dag }$"></SPAN> attribute.
+ Similarly the lower limit is specified by the <TT>xdspbelow</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^{\dag }$"></SPAN>  parameter, which is recorded as <A NAME="591"></A><TT>COVBELOW</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^{\dag }$"></SPAN>.  For each excluded
+ source in the spatial background region a single parameter,
+ <TT>xpsfexcl</TT><SPAN CLASS="MATH"><IMG
+ WIDTH="11" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"
+ SRC="img3.png"
+ ALT="$^{\dag }$"></SPAN>, specifies both the upper and lower limits, and
+ is recorded in the region extension as <A NAME="596"></A><TT>COVERAGE</TT>.
+
+<P>
+An addition for easing the analysis of extended sources is provided with the
+ parameters <TT>xdspregions</TT> and <TT>xdspbackground</TT>. They define
+ rectangular regions in (units arcminutes)in cross-dispersion direction. Any
+ number of rectangular regions can be defined at once, which may apply to a 
+ central
+ position of a source defined under <A NAME="600"></A><A NAME="tex2html7"
+  HREF="../rgssources/index.html"><SPAN  CLASS="textbf">rgssources</SPAN></A>. So, a call to
+
+<A NAME="604"></A><A NAME="tex2html8"
+  HREF="../rgsregions/index.html"><SPAN  CLASS="textbf">rgsregions</SPAN></A>
+as following:
+<BR> &gt; <code>rgsregions srclist='PxxxSRCLI_0000.FIT' evlist='PxxxEVENLI0000.FIT' xdspregions="-1.0 0.0 0.0 1.0" xdspbackground="1.5 2.0"</code> 
+<BR>
+will define two "source" rectangular regions with <code>DELTA_XDSP=[1.0,0.0] arcmin</code> 
+ and <code>DELTA_XDSP=[0.0,1.0] arcmin</code> respectively and one rectangular
+ "background" region with <code>DELTA_XDSP=[1.5,2.0] arcmin</code>.
+
+<P>
+The on-board calibration sources are characterized simply as
+ rectangles in the energy plane.  These rectangles are always excluded
+ from the order regions if there is overlap.  This can usually be seen
+ in the second order region, but not in the first order region for an
+ on-axis source.  The image plane footprint of the calibration sources
+ is not excluded from the spatial regions because that would eliminate
+ too many valid photons for off-axis sources.  Another peculiarity of
+ the order regions is the silicon edge, where the PI distribution
+ function changes shape abruptly.  To ensure that this edge is
+ properly resolved, two extra pairs of vertices are added to the
+ relevant polygon just on either side of the edge.  The HTR mode order
+ background regions are just the regular order regions transformed by
+ reflecting each vertex pair vertically around the upper vertex.  To
+ avoid overlapping the second-order region the vertex pairs of the
+ second-order region are used in the first-order background region for
+ chips 1, 2 and 3.
+
+<P>
+If the source list already contains a region that <A NAME="608"></A><A NAME="tex2html9"
+  HREF="../rgsregions/index.html"><SPAN  CLASS="textbf">rgsregions</SPAN></A>
+is supposed to add, that region is inspected to determine whether it
+ was constructed to the specifications established under the current
+ task parameters; if so (or if it is protected) it is left in place,
+ otherwise it is deleted and replaced.  A region is considered
+ protected if the non-standard <A NAME="612"></A><TT>PROTECT</TT> attribute is missing or
+ set true.  The <TT>protect</TT> parameter can be used to mark each
+ region added or replaced as protected, and once a region is so marked
+ it must be manually deleted by the user before it can be replaced by
+ <A NAME="615"></A><A NAME="tex2html10"
+  HREF="../rgsregions/index.html"><SPAN  CLASS="textbf">rgsregions</SPAN></A>.  This feature should be used very selectively.  At
+
+verbosity level four (Sparse) the name of each region added or
+ replaced is noted.
+
+<P>
+Two final non-standard attributes of all regions, which are provided
+ solely for their diagnostic value, are <A NAME="619"></A><TT>PIX_ENCL</TT> and
+ <A NAME="621"></A><TT>PIX_AREA</TT>.  These describe the enclosed area of the region in
+ terms of the number of pixels enclosed and the area of a pixel.  The
+ dimensions of a pixel are: one dispersion channel width by one
+ cross-dispersion channel width in the image plane, and one dispersion
+ channel width by one PI unit in the energy plane.  The channel widths
+ are as defined in the event list.
+
+<P>
+
+<DIV CLASS="navigation"><IMG BORDER="0" SRC="../icons/bar.gif">
+<BR><A HREF="node2.html"><IMG BORDER="0" SRC="../icons/prev.gif" ALT="Use"></A>
+<A HREF="rgsregions.html"><IMG BORDER="0" SRC="../icons/up.gif" ALT="Home Page"></A>
+<A HREF="node4.html"><IMG BORDER="0" SRC="../icons/next.gif" ALT="Parameters"></A>
+<A HREF="index.html"><IMG BORDER="0" SRC="../icons/home.gif" ALT="Home"></A>
+
+<A HREF="node11.html"><IMG BORDER="0" SRC="../icons/index.gif" ALT="Index"></A>
+</DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+XMM-Newton SOC/SSC -- 2017-01-12
+</ADDRESS>
+</BODY>
+</HTML>
