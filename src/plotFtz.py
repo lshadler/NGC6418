@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 import sys
 
 SAMPLE_FILE = "../../CapstoneData/pps/P0782940101PNS003IMAGE_1000.FTZ"
+NBINS = 1000
+
+
 def main():
     if len(sys.argv) != 2:
         print("ERROR: Please Specify File...")
@@ -22,8 +25,9 @@ def main():
     
     plt.figure()
     plt.imshow(image_data, cmap='gray')
-    plt.colorbar()
+    plt.colorbar()  
+    #plt.figure()
+    #histogram = plt.hist(np.nonzero(image_data[1,:]), 1000)
     plt.show()
-
 if __name__ == '__main__':
     main()
